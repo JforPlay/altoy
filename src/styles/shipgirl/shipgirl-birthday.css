@@ -446,7 +446,7 @@ body.calendar-page {
 }
 
 .calendar-month:hover {
-  transform: translateY(-2px);
+  transform: translateY(var(--card-lift));
   box-shadow: 0 4px 16px var(--calendar-shadow);
 }
 
@@ -754,7 +754,7 @@ body.calendar-page {
 
 .event-card:hover {
   background: var(--calendar-event-bg);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-lift));
 }
 .event-card img { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; }
 .event-card .title { font-weight: 700; }

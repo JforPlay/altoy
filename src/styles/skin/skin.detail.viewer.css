@@ -248,8 +248,8 @@
 
 .info-item:hover {
   border-color: var(--primary-color);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-sm);
+  transform: translateY(var(--card-lift));
+  box-shadow: var(--card-hover-shadow);
 }
 
 .info-label {
@@ -553,8 +553,8 @@
 }
 
 .description-item:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(var(--card-lift));
+  box-shadow: var(--card-hover-shadow);
   border-color: var(--primary-color);
 }
 

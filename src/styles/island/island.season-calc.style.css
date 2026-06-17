@@ -233,7 +233,7 @@
 .calc-item-card:hover {
     border-color: var(--island-accent);
     box-shadow: var(--island-shadow-sm);
-    transform: translateY(-2px);
+    transform: translateY(var(--card-lift));
 }
 
 .calc-item-card.has-quantity {
@@ -683,7 +683,7 @@
 }
 
 .season-tier:hover {
-    transform: translateY(-4px);
+    transform: translateY(var(--card-lift));
     box-shadow: var(--island-shadow-sm);
 }
 

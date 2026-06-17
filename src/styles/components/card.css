@@ -1,0 +1,24 @@
+/* =================================================================
+   CARD HOVER — canonical lift + shadow affordance (CSS unification Wave 1)
+   ---------------------------------------------------------------------
+   Apply `.card-hover` to any card-like container (tile / panel / item)
+   to get the shared hover affordance: a small lift + a deepened shadow.
+
+   Token-driven so it auto-recolors per theme/dark (the shadow aliases
+   --shadow-lg) and so a page can override the look locally via the
+   --card-lift / --card-hover-shadow var hooks (e.g. a flagship card that
+   keeps a bespoke glow overrides --card-hover-shadow but still consumes
+   --card-lift for a unified motion). Tokens live in theme.css (on `body`).
+
+   The .card base in common.css and the per-page card selectors all consume
+   the same two tokens, so every content card lifts identically site-wide.
+   Loaded globally via Layout.astro — no per-page import needed.
+   ================================================================= */
+.card-hover {
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.card-hover:hover {
+  transform: translateY(var(--card-lift));
+  box-shadow: var(--card-hover-shadow);
+}

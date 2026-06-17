@@ -162,8 +162,8 @@ body.dark-mode .goal-select-dropdown optgroup {
 }
 
 .goal-card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+  box-shadow: var(--card-hover-shadow);
+  transform: translateY(var(--card-lift));
 }
 
 .goal-card.complete {
@@ -381,8 +381,8 @@ body.dark-mode .goal-select-dropdown optgroup {
 }
 
 .faction-tech-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(var(--card-lift));
+  box-shadow: var(--card-hover-shadow);
   border-color: var(--primary-color);
 }
 

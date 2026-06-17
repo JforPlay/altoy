@@ -543,8 +543,8 @@
 
 .shipgirl-card:hover {
   border-color: var(--primary-color);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+  box-shadow: var(--card-hover-shadow);
+  transform: translateY(var(--card-lift));
 }
 
 .shipgirl-card .shipyard-icon {

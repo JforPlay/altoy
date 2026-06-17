@@ -34,7 +34,8 @@
 }
 
 .score-table-wrapper:hover {
-  box-shadow: var(--shadow-md);
+  transform: translateY(var(--card-lift));
+  box-shadow: var(--card-hover-shadow);
   border-color: var(--primary-color);
 }
 
@@ -215,7 +216,3 @@ body.dark-mode .score-table-wrapper::before {
   opacity: 0.5;
 }
 
-body.dark-mode .score-table-wrapper:hover {
-  box-shadow: var(--shadow-lg);
-  border-color: var(--primary-color);
-}

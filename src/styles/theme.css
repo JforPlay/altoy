@@ -182,6 +182,19 @@ body {
   --focus-ring: 0 0 0 3px var(--primary-alpha-15);
 }
 
+/* --- Card hover — canonical lift + shadow affordance (CSS unification Wave 1) ---
+   Consumed as `transform: translateY(var(--card-lift)); box-shadow:
+   var(--card-hover-shadow)` by .card / .card-hover and the per-page card
+   selectors. Declared on `body` (NOT :root) on purpose: --card-hover-shadow
+   aliases --shadow-lg, which is overridden in body.dark-mode / body[data-theme]
+   — resolving on body picks up those overrides automatically; on :root it would
+   freeze the light value (same rationale as --focus-ring above). A page may
+   override --card-lift / --card-hover-shadow locally to keep a bespoke look. */
+body {
+  --card-lift: -2px;
+  --card-hover-shadow: var(--shadow-lg);
+}
+
 /* --- Dark Mode --- */
 body.dark-mode {
   /* Background */

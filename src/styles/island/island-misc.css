@@ -66,6 +66,7 @@ body {
 
 .island-misc-section:hover {
   box-shadow: var(--island-shadow-md);
+  transform: translateY(var(--card-lift));
 }
 
 .island-misc-section summary {

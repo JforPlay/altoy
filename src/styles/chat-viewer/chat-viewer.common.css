@@ -250,9 +250,9 @@ body {
 }
 
 .character-card:hover {
-  transform: translateY(-0.3125rem);
+  transform: translateY(var(--card-lift));
   border-color: var(--border-hover);
-  box-shadow: 0 0.25rem 0.75rem var(--shadow-light);
+  box-shadow: var(--card-hover-shadow);
 }
 
 .character-card:focus-visible {

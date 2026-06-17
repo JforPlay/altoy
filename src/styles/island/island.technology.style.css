@@ -207,7 +207,7 @@
 }
 
 .skill-tree-node:not(.empty):hover {
-    transform: translateY(-4px);
+    transform: translateY(var(--card-lift));
     box-shadow: var(--island-shadow-md);
     border-color: var(--island-accent);
 }
@@ -381,7 +381,7 @@
 }
 
 .tech-card:hover {
-    transform: translateY(-2px);
+    transform: translateY(var(--card-lift));
     box-shadow: var(--island-shadow-md);
     border-color: var(--island-accent);
 }

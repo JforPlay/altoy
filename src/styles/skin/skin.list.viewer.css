@@ -45,13 +45,15 @@
   flex-direction: column;
   border: 1px solid var(--border-color);
   height: 100%;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition: border-color var(--transition-fast),
+    box-shadow var(--transition-fast), transform var(--transition-fast);
   box-shadow: 0 2px 8px var(--overlay-lightest);
 }
 
 .skin-box-link:hover .skin-box {
   border-color: var(--primary-color);
   box-shadow: 0 4px 12px var(--primary-alpha-10);
+  transform: translateY(var(--card-lift));
 }
 
 /* --- Owned / Wanted card indicators --- */

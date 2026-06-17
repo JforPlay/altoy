@@ -204,3 +204,49 @@ test('badge: --count bubble is accent-blue, not a red alert (homepage, light)', 
     const bg = await probeStyle(page, 'badge badge--count', 'backgroundColor');
     expect(bg, `expected accent-blue count, got: ${bg}`).toBe('rgb(0, 113, 235)');
 });
+
+// --- Wave-1 card-hover unification: canonical lift token applied ---------------
+// theme.css defines `body { --card-lift: -2px; --card-hover-shadow: var(--shadow-lg) }`
+// and components/card.css (global via Layout) maps .card-hover:hover to the tokens;
+// the .card base + every per-page card selector consume them. Assert the token is
+// delivered globally AND actually applies on a real hover — proving every migrated
+// card lifts by the single canonical amount. RED before migration: no --card-lift
+// token (empty) and pages carried bespoke -3/-5/-7px lifts.
+
+test('card-hover: --card-lift token is delivered globally (homepage)', async ({ page }) => {
+    await page.goto('./', { waitUntil: 'load' });
+    expect(await bodyVar(page, '--card-lift')).toBe('-2px');
+});
+
+// Inject a .card-hover element, genuinely hover it (Playwright moves the mouse),
+// and read the resolved transform. transition:none avoids reading a mid-animation
+// frame. translateY(-2px) computes to matrix(1, 0, 0, 1, 0, -2).
+const probeCardHoverLift = async (page) => {
+    await page.evaluate(() => {
+        const el = document.createElement('div');
+        el.id = '__card_hover_probe__';
+        el.className = 'card-hover';
+        el.style.cssText =
+            'position:fixed;top:0;left:0;width:60px;height:60px;z-index:99999;transition:none;';
+        document.body.appendChild(el);
+    });
+    await page.hover('#__card_hover_probe__');
+    return page.evaluate(() => {
+        const el = document.getElementById('__card_hover_probe__');
+        const t = getComputedStyle(el).transform;
+        el.remove();
+        return t;
+    });
+};
+
+test('card-hover: canonical lift applies on hover (shipgirl-stats, default theme)', async ({ page }) => {
+    await page.goto(pathFor('shipgirl-stats'), { waitUntil: 'load' });
+    // RED if a page kept a -3/-5/-7px literal instead of var(--card-lift).
+    expect(await probeCardHoverLift(page)).toBe('matrix(1, 0, 0, 1, 0, -2)');
+});
+
+test('card-hover: canonical lift is identical on an accent-theme page (expression-viewer)', async ({ page }) => {
+    await page.goto(pathFor('expression-viewer'), { waitUntil: 'load' });
+    // Accent theme does not redefine --card-lift, so the lift is the same -2px.
+    expect(await probeCardHoverLift(page)).toBe('matrix(1, 0, 0, 1, 0, -2)');
+});

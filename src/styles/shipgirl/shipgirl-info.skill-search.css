@@ -322,7 +322,7 @@ body.dark-mode .skill-view-btn.active {
 }
 
 .skill-result-ship-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(var(--card-lift));
   border-color: var(--primary-color);
 }
 

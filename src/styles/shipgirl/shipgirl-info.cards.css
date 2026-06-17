@@ -192,7 +192,7 @@ body.dark-mode .shipgirl-card .scrim {
 
 /* ===== Gallery hover (root box-shadow is mode-scoped; art zoom is inner) ===== */
 .shipgirl-grid:not(.list-view) .shipgirl-card:hover {
-  transform: translateY(-7px);
+  transform: translateY(var(--card-lift));
   box-shadow: 0 16px 34px var(--shadow-hover),
               0 0 0 1px color-mix(in srgb, var(--r) 30%, transparent),
               0 10px 30px color-mix(in srgb, var(--r) 45%, transparent);
@@ -226,8 +226,8 @@ body.dark-mode .shipgirl-grid:not(.list-view) .shipgirl-card:hover {
   gap: 0.55rem;
 }
 .shipgirl-grid.list-view .shipgirl-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px var(--shadow-hover);
+  transform: translateY(var(--card-lift));
+  box-shadow: var(--card-hover-shadow);
 }
 /* flush-left, full-height 3:4 art panel (left corners clipped by the row radius) */
 .lthumb {

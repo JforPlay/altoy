@@ -791,7 +791,7 @@
 }
 
 .skin-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(var(--card-lift));
     box-shadow: var(--island-shadow-lg);
 }
 

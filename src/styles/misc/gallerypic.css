@@ -60,9 +60,9 @@
 }
 
 .gallery-item:hover {
-  transform: translateY(-3px);
+  transform: translateY(var(--card-lift));
   border-color: var(--primary-color);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--card-hover-shadow);
 }
 
 .gallery-item:focus-visible,

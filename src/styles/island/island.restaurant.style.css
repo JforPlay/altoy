@@ -403,6 +403,7 @@
 .menu-card:hover {
     border-color: var(--island-accent);
     box-shadow: var(--island-shadow-sm);
+    transform: translateY(var(--card-lift));
 }
 
 .menu-card.error {

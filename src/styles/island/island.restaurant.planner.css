@@ -83,8 +83,9 @@
 }
 
 .planner-modern-card:hover {
-    box-shadow: 0 2px 8px var(--overlay-lighter);
+    box-shadow: var(--card-hover-shadow);
     border-color: rgba(var(--island-accent-rgb), 0.3);
+    transform: translateY(var(--card-lift));
 }
 
 /* Card Header - Compact */
@@ -542,11 +543,13 @@
     margin-bottom: var(--island-spacing-sm);
     border: 1px solid var(--island-border);
     overflow: visible;
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
 .planner-result-group-card:hover {
     border-color: rgba(var(--island-accent-rgb), 0.3);
-    box-shadow: 0 4px 12px var(--overlay-light);
+    box-shadow: var(--card-hover-shadow);
+    transform: translateY(var(--card-lift));
 }
 
 .group-header {

@@ -197,8 +197,8 @@ body {
 }
 
 .gallery-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px var(--shadow);
+  transform: translateY(var(--card-lift));
+  box-shadow: var(--card-hover-shadow);
 }
 
 .gallery-item:focus-visible,

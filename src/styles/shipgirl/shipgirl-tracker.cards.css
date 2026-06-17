@@ -20,8 +20,8 @@
 }
 
 .ship-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15), 0 2px 4px var(--overlay-light);
+  transform: translateY(var(--card-lift));
+  box-shadow: var(--card-hover-shadow);
 }
 
 .ship-icon {
@@ -142,8 +142,4 @@
 /* ===== Dark Mode Overrides ===== */
 body.dark-mode .ship-card {
   box-shadow: 0 2px 4px var(--shadow-color);
-}
-
-body.dark-mode .ship-card:hover {
-  box-shadow: 0 4px 12px var(--shadow-color);
 }

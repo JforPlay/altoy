@@ -259,8 +259,8 @@ body::before {
 }
 
 .timeline-item:hover {
-  transform: translateY(-0.3125rem) scale(1.02);
-  box-shadow: 0.4rem 0.4rem 1.5rem var(--shadow-color),
+  transform: translateY(var(--card-lift));
+  box-shadow: var(--card-hover-shadow),
     0 0 1.5rem var(--accent-color);
 }
 

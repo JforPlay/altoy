@@ -243,7 +243,7 @@ body:has(#event-selection-view) {
 }
 
 .hof-character-card:hover {
-  transform: translateY(-0.5rem) scale(1.02);
+  transform: translateY(var(--card-lift)) scale(1.02);
   box-shadow: 0 0.75rem 1.75rem color-mix(in srgb, var(--shadow-color) 150%, black),
               0 0 0 1px color-mix(in srgb, var(--accent-color) 40%, transparent);
 }

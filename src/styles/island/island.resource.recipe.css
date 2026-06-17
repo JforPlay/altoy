@@ -385,7 +385,7 @@
 .material-item:hover {
     border-color: var(--island-border);
     background: var(--island-surface);
-    transform: translateY(-2px);
+    transform: translateY(var(--card-lift));
 }
 
 /* Rarity colors defined below with vertical items */

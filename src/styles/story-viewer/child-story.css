@@ -214,8 +214,8 @@
 .navi-card:hover,
 .tb-card:hover,
 .lora-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+  transform: translateY(var(--card-lift));
+  box-shadow: var(--card-hover-shadow);
 }
 
 .navi-card-image,
@@ -282,6 +282,7 @@
 }
 
 .polaroid-card:hover {
+  transform: translateY(var(--card-lift));
   box-shadow: 0 12px 32px rgba(var(--child-story-primary-rgb), 0.2);
 }
 
@@ -351,8 +352,8 @@
 }
 
 .photo-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(var(--card-lift));
+  box-shadow: var(--card-hover-shadow);
 }
 
 .photo-card img {
@@ -474,7 +475,7 @@
 }
 
 .polaroid-info-item:hover {
-  transform: translateY(-2px);
+  transform: translateY(var(--card-lift));
   box-shadow: 0 4px 12px rgba(var(--child-story-primary-rgb), 0.15);
 }
 

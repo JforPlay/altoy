@@ -85,12 +85,13 @@
     border-radius: var(--radius-lg);
     padding: 1.125rem 1.25rem;
     box-shadow: var(--shadow-sm);
-    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
 }
 
 .info-card:hover {
     border-color: var(--primary-alpha-30);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--card-hover-shadow);
+    transform: translateY(var(--card-lift));
 }
 
 .info-card.full-width {
@@ -396,8 +397,8 @@
 }
 
 .ship-drop-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    transform: translateY(var(--card-lift));
+    box-shadow: var(--card-hover-shadow);
 }
 
 .ship-drop-portrait {

@@ -87,7 +87,8 @@ header h1 {
 }
 
 .gallery-item:hover {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  transform: translateY(var(--card-lift));
+  box-shadow: var(--card-hover-shadow);
   z-index: 10;
 }
 

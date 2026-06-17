@@ -190,8 +190,8 @@
 
 .esv-skin-card:hover,
 .esv-skin-card:focus-visible {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    transform: translateY(var(--card-lift));
+    box-shadow: var(--card-hover-shadow);
     outline: none;
 }
 

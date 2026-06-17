@@ -291,7 +291,7 @@ body.dark-mode .patch-notes-content ul {
 }
 
 .bento-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(var(--card-lift));
   background: var(--card-bg-hover);
   border-color: var(--card-border-hover);
   box-shadow: 0 12px 40px rgba(0, 113, 235, 0.2);
@@ -517,7 +517,7 @@ body.dark-mode .external-link-desc {
 .dual-link-item:hover {
   background: var(--dual-link-bg-hover);
   border-color: var(--dual-link-border-hover);
-  transform: translateY(-4px) scale(1.05);
+  transform: translateY(var(--card-lift)) scale(1.05);
   box-shadow: 0 6px 16px rgba(0, 113, 235, 0.25);
 }
 

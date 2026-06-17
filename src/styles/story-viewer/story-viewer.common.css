@@ -297,8 +297,8 @@ body {
 }
 
 .grid-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px var(--shadow-color);
+  transform: translateY(var(--card-lift));
+  box-shadow: var(--card-hover-shadow);
 }
 
 .grid-card:focus-visible,
