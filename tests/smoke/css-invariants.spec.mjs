@@ -463,10 +463,15 @@ test('page-header: a real consumer adopts the canonical row class (equip-viewer)
 });
 
 // skin-detail-viewer + expression-viewer wrap their <h1> + action button(s) in ONE
-// .page-header-title row. Regression guard: the canonical row must sit on a WRAPPER
-// div (not the bare <h1>), so the buttons stay on the title's line. RED before the
-// fix: .page-header-title sat on the <h1> alone → it became a full-width flex block
-// and every sibling button dropped to a 2nd line (button top fell below the h1 bottom).
+// .page-header-title row. Two regression guards, both rooted in the Wave-2 page-header
+// migration that deleted the original .title-wrapper div:
+//   1. The canonical row must sit on a WRAPPER div (not the bare <h1>), so the buttons
+//      stay on the title's line. RED before fix #1: .page-header-title sat on the <h1>
+//      alone → it became a full-width flex block and every sibling button dropped to a
+//      2nd line (button top fell below the h1 bottom).
+//   2. The row keeps a non-zero margin-bottom, so the search section below it doesn't
+//      butt against the title. RED before fix #2 (expression-viewer): the wrapper's
+//      margin-bottom was lost in the migration → search bar sat flush under the title.
 for (const { key, btnId } of [
     { key: 'skin-detail-viewer', btnId: 'random-skin-btn' },
     { key: 'expression-viewer', btnId: 'info-button' },
@@ -481,6 +486,7 @@ for (const { key, btnId } of [
             return {
                 inRow: !!row && row.contains(h1),
                 display: row ? getComputedStyle(row).display : null,
+                marginBottom: row ? parseFloat(getComputedStyle(row).marginBottom) : 0,
                 // On one line (align-items:center) the button overlaps the h1 vertically:
                 // its top sits above the h1's bottom. A wrap pushes it strictly below.
                 sameLine: btn.getBoundingClientRect().top < h1.getBoundingClientRect().bottom,
@@ -490,6 +496,7 @@ for (const { key, btnId } of [
         expect(probe.inRow, 'action button must live inside the same .page-header-title row as the <h1>').toBe(true);
         expect(probe.display).toBe('flex');
         expect(probe.sameLine, 'action button must sit on the title line, not wrap to a 2nd row').toBe(true);
+        expect(probe.marginBottom, 'title row must keep a gap above the search section below it').toBeGreaterThan(0);
     });
 }
 

@@ -11,11 +11,14 @@
 
 /* Title row: the <h1> + info button share ONE centered, wrapping flex row.
    Carries the canonical .page-header-title, so the component supplies
-   flex / align-items / justify-center / flex-wrap; we only set the wider 1rem gap.
+   flex / align-items / justify-center / flex-wrap; we set the wider 1rem gap
+   via hook + the margin that separates the row from the search section below
+   (mirrors skin-detail-viewer; without it the search bar butts the title).
    The button MUST live inside this row — putting .page-header-title on the bare
    <h1> made the h1 a full-width flex block and dropped the button to a 2nd line. */
 .title-wrapper {
     --page-header-gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
 }
 
 .page-title {
