@@ -424,6 +424,7 @@ id,name,rarity,type,nation,icon_url
 31260,127mm 단장 양용포,R,함포(구축),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/31260.webp
 31280,127mm 연장포改,SR,함포(구축),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/31280.webp
 31300,127mm 연장포 (D형),SSR,함포(구축),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/31300.webp
+31320,시제형 127mm 5식 연장포,UR,함포(구축),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/31320.webp
 32020,140mm 단장포,N,함포(경순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/32000.webp
 32040,140mm 단장포,R,함포(경순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/32000.webp
 32060,152mm 단장포,R,함포(경순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/32060.webp
@@ -637,6 +638,7 @@ id,name,rarity,type,nation,icon_url
 48000,Ar-195 함상 뇌격기,R,뇌격기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/48000.webp
 48020,Fi-167 함상 뇌격기,SR,뇌격기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/48020.webp
 48040,Ju-87 D-4,SSR,뇌격기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/48040.webp
+48060,FW-190 F-8/U2,SSR,뇌격기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/48060.webp
 49000,Ju-87C 급강하폭격기,N,폭격기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/49000.webp
 49020,Ju-87C 급강하폭격기,R,폭격기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/49000.webp
 49040,Ju-87C 급강하폭격기,SR,폭격기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/49000.webp
@@ -678,6 +680,10 @@ id,name,rarity,type,nation,icon_url
 85760,R-5,R,폭격기,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85760.webp
 85780,LBSh,SR,폭격기,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85780.webp
 85800,SM-40 시제형 220mm 3연장포,UR,함포(중순),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85800.webp
+85820,I-15,R,전투기,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85820.webp
+85840,시제 함재형 Yak-1,SR,전투기,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85840.webp
+85860,시제 함재형 Yak-3,SR,전투기,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85860.webp
+85880,시제 함재형 Yak-7,SR,전투기,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85880.webp
 89000,랜덤 워드 생성기,SSR,기타,AI,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89000.webp
 89020,표코표코,SSR,기타,AI,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89020.webp
 89040,인텔리젼트 칩,SSR,기타,AI,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89040.webp
@@ -742,6 +748,8 @@ id,name,rarity,type,nation,icon_url
 90580,37mm 연장 고사포 Mle1933,SR,대공포,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/90580.webp
 90600,2연장 37mm 고사포 Mle1936,SSR,대공포,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50600.webp
 90620,57mm/L60 연장 보포스 대공기관포 Mle1951,UR,대공포,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50620.webp
+90640,100mm 연장고각포 Mle 1937,SR,대공포,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50640.webp
+90660,100mm 연장고각포 Mle 1945,SSR,대공포,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50660.webp
 90700,138.6mm 단장포 Mle1927,N,함포(구축),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50700.webp
 90720,138.6mm 단장포 Mle1927,R,함포(구축),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50700.webp
 90740,138.6mm 단장포 Mle1927,SR,함포(구축),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50700.webp
