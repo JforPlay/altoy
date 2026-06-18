@@ -69,6 +69,19 @@ const probeStyle = (page, className, prop) =>
         return value;
     }, { className, prop });
 
+// Resolve a CSS color expression (e.g. `var(--token)`) to its computed rgb(...)
+// form on the CURRENT page/theme, so it compares equal to another element's
+// computed background-color (same serialised representation).
+const resolveColor = (page, expr) =>
+    page.evaluate((e) => {
+        const el = document.createElement('div');
+        el.style.backgroundColor = e;
+        document.body.appendChild(el);
+        const v = getComputedStyle(el).backgroundColor;
+        el.remove();
+        return v;
+    }, expr);
+
 // THE decoupling invariant. RED before the refactor (sim-weapon imports
 // skin.common.css, which sets .filter-container { display: flex }); GREEN after
 // (sim-weapon imports common.css only; sim.common.css has no .filter-container).
@@ -479,4 +492,52 @@ test('filter-bar canonical: flex row that wraps', async ({ page }) => {
     await page.goto('./', { waitUntil: 'load' });
     expect(await probeStyle(page, 'filter-bar', 'display')).toBe('flex');
     expect(await probeStyle(page, 'filter-bar', 'flex-wrap')).toBe('wrap');
+});
+
+// --- chip rarity bridge (Wave-2 chip mop-up, 2026-06-17) ---------------------
+// The byte-identical per-page rarity→--chip-accent maps (secretary-story +
+// shipgirl-stats) were consolidated onto ONE `.chip--rarity` bridge in rarity.css
+// (it feeds the chip's --chip-accent hook from the palette's --r/--r-text). These
+// guard: (1) a real consumer chip fills with its tier colour, (2) the bridge is
+// DELIVERED to secretary-story (newly opted into rarity.css), and (3) it stays
+// OPT-IN — a page without rarity.css gets the accent-blue fallback, not a leaked
+// rarity fill. Light mode is seeded only for determinism; both compared values
+// resolve on the same page/theme, so equality holds regardless.
+
+test('chip rarity bridge: a real UR chip fills with the tier colour (shipgirl-stats)', async ({ page }) => {
+    await page.addInitScript(() => { localStorage.setItem('theme', 'light'); });
+    await page.goto(pathFor('shipgirl-stats'), { waitUntil: 'load' });
+    await page.waitForSelector('.chip.chip--rarity.rarity-UR', { timeout: 15_000 });
+    // chip.css transitions background-color (0.15s); toggling .active and reading
+    // getComputedStyle synchronously would catch the white start frame. Kill
+    // transitions so the active fill is the instantaneous, settled value.
+    await page.addStyleTag({ content: '*,*::before,*::after{transition:none!important;animation:none!important}' });
+    const chipBg = await page.evaluate(() => {
+        const el = document.querySelector('.chip.chip--rarity.rarity-UR');
+        if (!el) return null;
+        el.classList.add('active');                 // force the active fill
+        const v = getComputedStyle(el).backgroundColor;
+        el.classList.remove('active');
+        return v;
+    });
+    expect(chipBg, 'no .chip.chip--rarity.rarity-UR on shipgirl-stats').not.toBeNull();
+    const urToken = await resolveColor(page, 'var(--rarity-ur)');
+    expect(chipBg, `UR chip.active must fill --rarity-ur, got: ${chipBg}`).toBe(urToken);
+});
+
+test('chip rarity bridge: delivered to secretary-story (newly opted into rarity.css)', async ({ page }) => {
+    await page.addInitScript(() => { localStorage.setItem('theme', 'light'); });
+    await page.goto(pathFor('secretary-story'), { waitUntil: 'load' });
+    const ssrBg = await probeStyle(page, 'chip chip--rarity rarity-SSR active', 'background-color');
+    const ssrToken = await resolveColor(page, 'var(--rarity-ssr)');
+    expect(ssrBg, `bridge must resolve --rarity-ssr on secretary-story, got: ${ssrBg}`).toBe(ssrToken);
+});
+
+test('chip rarity bridge: stays opt-in — no rarity leak without rarity.css (homepage)', async ({ page }) => {
+    await page.addInitScript(() => { localStorage.setItem('theme', 'light'); });
+    await page.goto('./', { waitUntil: 'load' });   // homepage does not import rarity.css
+    const leakedBg = await probeStyle(page, 'chip chip--rarity rarity-UR active', 'background-color');
+    const accentBlue = await resolveColor(page, 'var(--accent-blue)');
+    // --r is undefined here, so --chip-accent is invalid → .chip.active falls back to --accent-blue.
+    expect(leakedBg, `no rarity.css → must fall back to accent-blue, got: ${leakedBg}`).toBe(accentBlue);
 });

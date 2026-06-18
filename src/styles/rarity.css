@@ -14,6 +14,7 @@
         .rarity-tint     full chip, faded fill + coloured text
         .rarity-text     accent only — paints `color` (e.g. a name link)
         .rarity-outline  accent only — paints `border-color`
+        .chip--rarity    bridge — feeds a filter `.chip`'s --chip-accent hook
 
    Markup: `<span class="rarity-badge rarity-SSR">SSR</span>`,
            `<a class="search-name rarity-text rarity-UR">…</a>`.
@@ -65,6 +66,15 @@
 /* ── 2c. accents: paint a single property on an existing element ──────────── */
 .rarity-text    { color: var(--r-fg); }
 .rarity-outline { border-color: var(--r-fg); }
+
+/* ── 2d. chip bridge: feed the palette into chip.css's active-fill hooks ─────
+   A filter/toggle `.chip` that also carries `.chip--rarity` + a `.rarity-X`
+   palette class fills its `.active` state with that tier's colour (via the
+   chip's own --chip-accent / --chip-accent-text hooks, see chip.css).
+   Consumers: secretary-story + shipgirl-stats rarity filters. Unknown grades
+   (PR / DR — no palette class) leave --r unset, so .chip.active falls back to
+   chip.css's default --accent-blue, exactly as before this was centralised. */
+.chip--rarity { --chip-accent: var(--r); --chip-accent-text: var(--r-text); }
 
 @keyframes rainbow {
   0%   { background-position: 0% 50%; }

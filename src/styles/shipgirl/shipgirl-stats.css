@@ -244,14 +244,9 @@ body {
     align-items: center;
 }
 
-/* Rarity tier chip active-fill overrides — feed rarity tokens into the canonical
-   --chip-accent / --chip-accent-text hooks from chip.css. "전체" (data-rarity="")
-   and gimmick chips fall back to the default --accent-blue. */
-.chip[data-rarity="UR"]  { --chip-accent: var(--rarity-ur);  --chip-accent-text: var(--rarity-ur-text); }
-.chip[data-rarity="SSR"] { --chip-accent: var(--rarity-ssr); --chip-accent-text: var(--rarity-ssr-text); }
-.chip[data-rarity="SR"]  { --chip-accent: var(--rarity-sr);  --chip-accent-text: var(--rarity-sr-text); }
-.chip[data-rarity="R"]   { --chip-accent: var(--rarity-r);   --chip-accent-text: var(--rarity-r-text); }
-.chip[data-rarity="N"]   { --chip-accent: var(--rarity-n);   --chip-accent-text: var(--rarity-n-text); }
+/* Rarity-tier active-fill now comes from the shared `.chip--rarity` bridge in
+   rarity.css (the grade chips carry `chip--rarity rarity-<grade>` in the markup).
+   "전체" (data-rarity="") + gimmick chips keep the default --accent-blue. */
 
 /* -- Dashboard -- */
 .dashboard-section {

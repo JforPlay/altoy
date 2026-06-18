@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const unknown = Array.from(rarities).filter((r) => !RARITY_ORDER.includes(r));
       [...known, ...unknown].forEach((rarity) => {
         const chip = makeChip({
-          extraClass: '',
+          extraClass: `chip--rarity rarity-${rarity}`,
           ariaLabel: rarity,
           dataAttr: { name: 'data-rarity', value: rarity },
           children: [(() => {
