@@ -282,8 +282,10 @@ function setupEventListeners() {
         gridViewBtn.addEventListener('click', () => {
             state.viewMode = 'grid';
             shipgirls.className = 'shipgirl-grid card-grid';
-            gridViewBtn.classList.add('active');
-            listViewBtn.classList.remove('active');
+            gridViewBtn.classList.add('is-active');
+            listViewBtn.classList.remove('is-active');
+            gridViewBtn.setAttribute('aria-selected', 'true');
+            listViewBtn.setAttribute('aria-selected', 'false');
             setStorageItem('shipgirl-view-mode', 'grid');
             renderShipgirls(); // Re-render with grid layout
         });
@@ -291,8 +293,10 @@ function setupEventListeners() {
         listViewBtn.addEventListener('click', () => {
             state.viewMode = 'list';
             shipgirls.className = 'shipgirl-grid list-view card-grid';
-            listViewBtn.classList.add('active');
-            gridViewBtn.classList.remove('active');
+            listViewBtn.classList.add('is-active');
+            gridViewBtn.classList.remove('is-active');
+            listViewBtn.setAttribute('aria-selected', 'true');
+            gridViewBtn.setAttribute('aria-selected', 'false');
             setStorageItem('shipgirl-view-mode', 'list');
             renderShipgirls(); // Re-render with list layout
         });

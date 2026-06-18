@@ -600,3 +600,27 @@ test('modal: equip-upgrade matModal sits on the --z-modal token (was hardcoded 1
     // Full-migration path: replace this probe with a `.c-modal` presence assertion.
     expect(await probeStyle(page, 'mat-modal-overlay', 'zIndex')).toBe('2000');
 });
+
+// --- Task 8: tabs fold — shipgirl-info view-toggle → .btn-group ---------------
+// Guard that the bespoke .view-toggle CSS has been deleted and replaced by the
+// canonical segmented pattern (.btn-group + .btn-outline + .is-active). Asserts
+// the wrapper carries .btn-group, each segment carries .btn, and exactly ONE
+// segment holds .is-active in the default (grid) state.
+
+test('tabs fold: shipgirl-info view-toggle adopts the canonical .btn segmented control', async ({ page }) => {
+    await page.goto(pathFor('shipgirl-info'), { waitUntil: 'load' });
+    await page.waitForSelector('#gridViewBtn', { timeout: 15_000 });
+    const probe = await page.evaluate(() => {
+        const grid = document.getElementById('gridViewBtn');
+        const wrap = document.querySelector('.view-toggle');
+        return {
+            btn: grid.classList.contains('btn'),
+            group: wrap.classList.contains('btn-group'),
+            // exactly one segment is active via the canonical class
+            active: document.querySelectorAll('.view-toggle .is-active').length,
+        };
+    });
+    expect(probe.btn, 'view-toggle button must carry .btn').toBe(true);
+    expect(probe.group, 'wrapper must carry .btn-group').toBe(true);
+    expect(probe.active).toBe(1);
+});

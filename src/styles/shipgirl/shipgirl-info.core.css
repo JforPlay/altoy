@@ -286,37 +286,7 @@ body.dark-mode .filter-rail.stuck {
   cursor: progress;
 }
 
-/* View Toggle — sized to match the dropdown filters' height (1px border, no
-   wrapper padding; sub-buttons inherit the dropdown's vertical padding). */
-.view-toggle {
-  display: flex;
-  background: transparent;
-  border: 1px solid var(--border-color);
-  border-radius: 0.7rem;
-  overflow: hidden;
-}
-
-.view-toggle-btn {
-  background: transparent;
-  border: none;
-  padding: 0.625rem 0.75rem;
-  cursor: pointer;
-  color: var(--text-secondary);
-  transition: background 0.3s, color 0.3s;
-  font-size: 1em;
-  line-height: 1.2;
-}
-
-.view-toggle-btn:hover {
-  background: var(--input-border);
-}
-
-/* --primary-color is grayscale (silver in dark mode); --accent-blue stays legible
-   with #fff text in both themes (matches .filter-toggle-btn[aria-pressed="true"]). */
-.view-toggle-btn.active {
-  background: var(--accent-blue);
-  color: #fff;
-}
+/* View Toggle — folded onto .btn-group + .btn-outline + .is-active (button.css). */
 
 /* ===== Construction-specific Styles ===== */
 
