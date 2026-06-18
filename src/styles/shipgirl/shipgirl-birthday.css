@@ -224,27 +224,17 @@ body.calendar-page {
   transform: rotate(180deg);
 }
 
-/* Upcoming birthdays sidebar */
+/* Upcoming birthdays sidebar — canonical .drawer owns the shell; this keeps the
+   calendar palette, below-navbar placement, and inner padding/scroll via hooks. */
 .upcoming-panel {
-  position: fixed;
-  right: 0;
-  top: var(--navbar-height, 64px); /* Fallback for safety */
-  width: 420px;
-  height: calc(100vh - var(--navbar-height, 64px));
-  background: var(--calendar-bg);
-  border-left: 1px solid var(--calendar-border);
+  --drawer-width: 26.25rem;                                   /* 420px */
+  --drawer-bg: var(--calendar-bg);
+  --drawer-border: var(--calendar-border);
+  --drawer-shadow: -4px 0 24px var(--calendar-shadow);
+  --drawer-top: var(--navbar-height, 64px);                   /* sit below the navbar */
+  --drawer-height: calc(100vh - var(--navbar-height, 64px));
   padding: 2rem;
-  box-shadow: -4px 0 24px var(--calendar-shadow);
-  z-index: 998;
-  transform: translateX(100%);
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-}
-
-.upcoming-panel.open {
-  transform: translateX(0);
 }
 
 .upcoming-panel-header {
@@ -274,25 +264,7 @@ body.calendar-page {
   transform: rotate(90deg);
 }
 
-/* Sidebar backdrop */
-.sidebar-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: var(--overlay-heavy);
-  backdrop-filter: blur(4px);
-  z-index: 997;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-.sidebar-backdrop.visible {
-  opacity: 1;
-  visibility: visible;
-}
+/* Sidebar backdrop — canonical .drawer-backdrop (drawer.css) owns the shell */
 
 .upcoming-list {
   display: flex;
@@ -711,6 +683,7 @@ body.calendar-page {
 
 /* Responsive behaviour */
 @media (max-width: 768px) {
+  /* Birthday panel keeps 90% / 420px cap on mobile; overrides canonical's width:100% */
   .upcoming-panel {
     width: 90%;
     max-width: 420px;
