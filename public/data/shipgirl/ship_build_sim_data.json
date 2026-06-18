@@ -505,6 +505,11 @@
             "rarity": "R",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/401190.webp"
         },
+        "401991": {
+            "name": "오토 폰 알벤슬레벤",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/401990.webp"
+        },
         "402011": {
             "name": "쾨니히스베르크",
             "rarity": "N",
@@ -544,6 +549,11 @@
             "name": "엘빙",
             "rarity": "SR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/402080.webp"
+        },
+        "402101": {
+            "name": "레겐스부르크",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/402100.webp"
         },
         "501051": {
             "name": "롱우",
@@ -1112,6 +1122,11 @@
             "rarity": "UR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/405030.webp"
         },
+        "405051": {
+            "name": "비스마르크 Zwei",
+            "rarity": "UR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/405050.webp"
+        },
         "503011": {
             "name": "지엔우",
             "rarity": "SSR",
@@ -1579,6 +1594,11 @@
             "rarity": "UR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/405030.webp"
         },
+        "405051": {
+            "name": "비스마르크 Zwei",
+            "rarity": "UR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/405050.webp"
+        },
         "406011": {
             "name": "베저",
             "rarity": "SR",
@@ -1683,6 +1703,11 @@
             "name": "위다",
             "rarity": "SR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600050.webp"
+        },
+        "9708011": {
+            "name": "U-556·META",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9708010.webp"
         }
     }
 }

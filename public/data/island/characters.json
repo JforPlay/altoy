@@ -542,6 +542,7 @@
                 "ship_group": 10110,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             }
         ],
@@ -899,6 +900,7 @@
                 "ship_group": 10117,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             }
         ],
@@ -1224,6 +1226,7 @@
                 "ship_group": 10205,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             }
         ],
@@ -1549,6 +1552,7 @@
                 "ship_group": 10517,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             }
         ],
@@ -1874,6 +1878,7 @@
                 "ship_group": 10703,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             }
         ],
@@ -2199,6 +2204,7 @@
                 "ship_group": 20121,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             }
         ],
@@ -2835,6 +2841,7 @@
                 "ship_group": 20603,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             }
         ],
@@ -3160,6 +3167,7 @@
                 "ship_group": 29903,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             }
         ],
@@ -3796,6 +3804,7 @@
                 "ship_group": 30311,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             }
         ],
@@ -4121,6 +4130,7 @@
                 "ship_group": 30312,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             }
         ],
@@ -4446,6 +4456,7 @@
                 "ship_group": 30407,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             }
         ],
@@ -5087,6 +5098,7 @@
                 "ship_group": 31201,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             }
         ],
@@ -5412,6 +5424,7 @@
                 "ship_group": 40303,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             }
         ],
@@ -5737,6 +5750,7 @@
                 "ship_group": 49902,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             }
         ],
@@ -6062,6 +6076,7 @@
                 "ship_group": 49906,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             }
         ],
@@ -6387,6 +6402,7 @@
                 "ship_group": 50107,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             }
         ],
@@ -6712,6 +6728,7 @@
                 "ship_group": 50201,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             }
         ],
@@ -7659,6 +7676,7 @@
                 "ship_group": 50601,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             }
         ],
@@ -8917,6 +8935,7 @@
                 "ship_group": 990001,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             },
             {
@@ -8930,6 +8949,7 @@
                 "ship_group": 990001,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             }
         ],
@@ -9255,6 +9275,7 @@
                 "ship_group": 990002,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             },
             {
@@ -9268,6 +9289,7 @@
                 "ship_group": 990002,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             }
         ],
@@ -9593,6 +9615,7 @@
                 "ship_group": 990003,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             },
             {
@@ -9606,6 +9629,7 @@
                 "ship_group": 990003,
                 "shop_goods_id": 0,
                 "shop_id": 0,
+                "tag": "",
                 "tech_id": 0
             }
         ],

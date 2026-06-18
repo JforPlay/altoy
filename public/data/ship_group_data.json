@@ -20639,6 +20639,36 @@
         ],
         "rarity": "SR"
     },
+    "970112": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9701120.webp",
+        "name": "브리스톨·META",
+        "add_get_attr": 2,
+        "add_get_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 1,
+        "add_level_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_level_value": 2,
+        "class": 970112,
+        "id": 970112,
+        "max_star": 6,
+        "pt_get": 13,
+        "pt_level": 19,
+        "pt_upgrage": 26,
+        "nationality": 97,
+        "type": 1,
+        "description": [
+            "META 연구실·정보 동기화"
+        ],
+        "rarity": "SSR"
+    },
     "970201": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9702010.webp",
         "name": "헬레나·META",

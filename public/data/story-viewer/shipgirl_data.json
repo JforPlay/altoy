@@ -2299,6 +2299,10 @@
         "name": "창문맡 일광욕",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/1101011.webp"
     },
+    "1101012": {
+        "name": "맹그로브의 수호정령",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/1101012.webp"
+    },
     "1102010": {
         "name": "드 제번 프로빈시엔",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/1102010.webp"
@@ -3178,6 +3182,10 @@
     "202204": {
         "name": "파라다이스 코니",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/202204.webp"
+    },
+    "202208": {
+        "name": "Alba Sirius",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/202208.webp"
     },
     "202210": {
         "name": "퀴라소 ",
@@ -4890,6 +4898,10 @@
     "301892": {
         "name": "명절의 사치 타임♪",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301892.webp"
+    },
+    "301898": {
+        "name": "인연을 맺는 사랑의 다리",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301898.webp"
     },
     "301900": {
         "name": "아사나기",
@@ -7774,6 +7786,10 @@
     "506013": {
         "name": "취원가수",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/506013.webp"
+    },
+    "506018": {
+        "name": "붉은 밀월의 밤",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/506018.webp"
     },
     "506019": {
         "name": "젠하이·改",
@@ -10838,6 +10854,10 @@
     "9701110": {
         "name": "카라비니에레·META",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9701110.webp"
+    },
+    "9701120": {
+        "name": "브리스톨·META",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9701120.webp"
     },
     "9702010": {
         "name": "헬레나·META",

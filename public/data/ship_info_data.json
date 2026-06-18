@@ -120413,10 +120413,10 @@
             0
         ],
         "timer": "00:40:00",
-        "light": false,
+        "light": true,
         "heavy": false,
         "special": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 238,
@@ -123098,10 +123098,10 @@
             0
         ],
         "timer": "01:20:00",
-        "light": false,
+        "light": true,
         "heavy": false,
         "special": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 671,
@@ -129786,9 +129786,9 @@
         ],
         "timer": "06:00:00",
         "light": false,
-        "heavy": false,
-        "special": false,
-        "limited": true
+        "heavy": true,
+        "special": true,
+        "limited": false
     },
     {
         "id": 647,
@@ -181835,6 +181835,243 @@
         "limited": false
     },
     {
+        "id": 30062,
+        "gid": 970112,
+        "sid": 9701121,
+        "nationality": 97,
+        "type": 1,
+        "rarity": "SSR",
+        "skill": {
+            "802271": {
+                "id": 802271,
+                "parent": 802271,
+                "upgrade": 802272,
+                "downgrade": null,
+                "requirement": "Limit Break 1",
+                "weapon_true": true
+            },
+            "802272": {
+                "id": 802272,
+                "parent": 802271,
+                "upgrade": null,
+                "downgrade": 802271,
+                "requirement": "Limit Break 3",
+                "weapon_true": true
+            },
+            "802240": {
+                "id": 802240,
+                "parent": 802240,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": true
+            },
+            "802250": {
+                "id": 802250,
+                "parent": 802250,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": true
+            },
+            "802260": {
+                "id": 802260,
+                "parent": 802260,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            }
+        },
+        "base": {
+            "9701121": {
+                "health": 417,
+                "firepower": 35,
+                "torpedo": 78,
+                "antiair": 45,
+                "aviation": 0,
+                "reload": 95,
+                "accuracy": 69,
+                "evasion": 56,
+                "speed": 41,
+                "luck": 78,
+                "asw": 55
+            },
+            "9701122": {
+                "health": 519,
+                "firepower": 44,
+                "torpedo": 97,
+                "antiair": 56,
+                "aviation": 0,
+                "reload": 95,
+                "accuracy": 69,
+                "evasion": 56,
+                "speed": 41,
+                "luck": 78,
+                "asw": 69
+            },
+            "9701123": {
+                "health": 722,
+                "firepower": 61,
+                "torpedo": 136,
+                "antiair": 78,
+                "aviation": 0,
+                "reload": 95,
+                "accuracy": 69,
+                "evasion": 56,
+                "speed": 41,
+                "luck": 78,
+                "asw": 96
+            },
+            "9701124": {
+                "health": 1027,
+                "firepower": 87,
+                "torpedo": 194,
+                "antiair": 111,
+                "aviation": 0,
+                "reload": 95,
+                "accuracy": 69,
+                "evasion": 56,
+                "speed": 41,
+                "luck": 78,
+                "asw": 136
+            }
+        },
+        "growth": {
+            "9701121": {
+                "health": 8452,
+                "firepower": 439,
+                "torpedo": 970,
+                "antiair": 612,
+                "aviation": 0,
+                "reload": 661,
+                "accuracy": 933,
+                "evasion": 897,
+                "speed": 0,
+                "luck": 0,
+                "asw": 719
+            },
+            "9701122": {
+                "health": 8452,
+                "firepower": 439,
+                "torpedo": 970,
+                "antiair": 612,
+                "aviation": 0,
+                "reload": 661,
+                "accuracy": 933,
+                "evasion": 897,
+                "speed": 0,
+                "luck": 0,
+                "asw": 719
+            },
+            "9701123": {
+                "health": 8452,
+                "firepower": 439,
+                "torpedo": 970,
+                "antiair": 612,
+                "aviation": 0,
+                "reload": 661,
+                "accuracy": 933,
+                "evasion": 897,
+                "speed": 0,
+                "luck": 0,
+                "asw": 719
+            },
+            "9701124": {
+                "health": 8452,
+                "firepower": 439,
+                "torpedo": 970,
+                "antiair": 612,
+                "aviation": 0,
+                "reload": 661,
+                "accuracy": 933,
+                "evasion": 897,
+                "speed": 0,
+                "luck": 0,
+                "asw": 719
+            }
+        },
+        "enhance": {
+            "health": 407,
+            "antiair": 44,
+            "accuracy": 68,
+            "evasion": 55,
+            "torpedo": 77,
+            "reload": 71
+        },
+        "armor": 1,
+        "base_list": {
+            "9701121": [
+                1,
+                1,
+                1
+            ],
+            "9701122": [
+                1,
+                1,
+                1
+            ],
+            "9701123": [
+                1,
+                2,
+                1
+            ],
+            "9701124": [
+                1,
+                2,
+                1
+            ]
+        },
+        "description": [
+            "META 연구실·정보 동기화"
+        ],
+        "name": "브리스톨·META",
+        "gift_dislike": [
+            180008,
+            180007
+        ],
+        "skin_id": 9701120,
+        "class_name": "브리스톨·META",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9701120.webp",
+        "equip_1": [
+            1
+        ],
+        "equip_2": [
+            5
+        ],
+        "equip_3": [
+            6
+        ],
+        "equip_4": [
+            10,
+            14
+        ],
+        "equip_5": [
+            10,
+            14
+        ],
+        "equipment_proficiency": [
+            1.35,
+            1.35,
+            1.6
+        ],
+        "equipment_proficiency_base": [
+            1.25,
+            1.25,
+            1.5
+        ],
+        "preload_count": [
+            0,
+            1,
+            0
+        ],
+        "timer": null,
+        "light": false,
+        "heavy": false,
+        "special": false,
+        "limited": false
+    },
+    {
         "id": 30003,
         "gid": 970201,
         "sid": 9702011,
@@ -193427,8 +193664,8 @@
         "timer": "00:13:00",
         "light": false,
         "heavy": false,
-        "special": false,
-        "limited": true
+        "special": true,
+        "limited": false
     },
     {
         "id": 30022,

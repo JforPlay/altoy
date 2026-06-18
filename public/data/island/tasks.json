@@ -24564,5 +24564,486 @@
                 ]
             ]
         ]
+    },
+    "90002001": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 90002001,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "고양이 쓰다듬기",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                46,
+                1010015,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 900020011,
+            "jump_ui": "",
+            "name": "고양이 쓰다듬기",
+            "target_num": 1,
+            "target_param": [
+                6201
+            ],
+            "tips": "",
+            "type": 1
+        },
+        "task_desc": "고양이 쓰다듬기",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 9,
+        "unlock_condition": [],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    6,
+                    18
+                ],
+                [
+                    0,
+                    0,
+                    0
+                ]
+            ],
+            [
+                [
+                    2026,
+                    7,
+                    2
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "90002002": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 90002002,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "임의의 농작물 30개 획득",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                1,
+                1000
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 900020021,
+            "jump_ui": "",
+            "name": "임의의 농작물 30개 획득",
+            "target_num": 30,
+            "target_param": [
+                10121
+            ],
+            "tips": "10010040",
+            "type": 53
+        },
+        "task_desc": "임의의 농작물 30개 획득",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 9,
+        "unlock_condition": [],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    6,
+                    18
+                ],
+                [
+                    0,
+                    0,
+                    0
+                ]
+            ],
+            [
+                [
+                    2026,
+                    7,
+                    2
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "90002003": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 90002003,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "임의의 아일랜드 의뢰 1개 처리",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                46,
+                1030014,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 900020031,
+            "jump_ui": "6",
+            "name": "임의의 아일랜드 의뢰 1개 처리",
+            "target_num": 1,
+            "target_param": [
+                0
+            ],
+            "tips": "",
+            "type": 54
+        },
+        "task_desc": "임의의 아일랜드 의뢰 1개 처리",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 9,
+        "unlock_condition": [],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    6,
+                    18
+                ],
+                [
+                    0,
+                    0,
+                    0
+                ]
+            ],
+            [
+                [
+                    2026,
+                    7,
+                    2
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "90002004": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 90002004,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "자원 생산 슬롯에 동료 배치",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                1,
+                1000
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 900020041,
+            "jump_ui": "",
+            "name": "자원 생산 슬롯에 동료 배치",
+            "target_num": 1,
+            "target_param": [
+                0
+            ],
+            "tips": "",
+            "type": 7
+        },
+        "task_desc": "자원 생산 슬롯에 동료 배치",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 9,
+        "unlock_condition": [],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    6,
+                    18
+                ],
+                [
+                    0,
+                    0,
+                    0
+                ]
+            ],
+            [
+                [
+                    2026,
+                    7,
+                    2
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "90002005": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 90002005,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "동료와 상호작용하기",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                46,
+                1020014,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 900020051,
+            "jump_ui": "",
+            "name": "동료와 상호작용하기",
+            "target_num": 1,
+            "target_param": "",
+            "tips": "",
+            "type": 55
+        },
+        "task_desc": "동료와 상호작용하기",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 9,
+        "unlock_condition": [],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    6,
+                    18
+                ],
+                [
+                    0,
+                    0,
+                    0
+                ]
+            ],
+            [
+                [
+                    2026,
+                    7,
+                    2
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "90002006": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 90002006,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "임의의 수송 의뢰 1회 처리",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                1,
+                1000
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 900020061,
+            "jump_ui": "7",
+            "name": "임의의 수송 의뢰 1회 처리",
+            "target_num": 1,
+            "target_param": [
+                0
+            ],
+            "tips": "",
+            "type": 12
+        },
+        "task_desc": "임의의 수송 의뢰 1회 처리",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 9,
+        "unlock_condition": [],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    6,
+                    18
+                ],
+                [
+                    0,
+                    0,
+                    0
+                ]
+            ],
+            [
+                [
+                    2026,
+                    7,
+                    2
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "90002007": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 90002007,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "임의의 요리 3개 획득",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                46,
+                1060013,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 900020071,
+            "jump_ui": "",
+            "name": "임의의 요리 3개 획득",
+            "target_num": 3,
+            "target_param": [
+                20000
+            ],
+            "tips": "",
+            "type": 53
+        },
+        "task_desc": "임의의 요리 3개 획득",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 9,
+        "unlock_condition": [],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    6,
+                    18
+                ],
+                [
+                    0,
+                    0,
+                    0
+                ]
+            ],
+            [
+                [
+                    2026,
+                    7,
+                    2
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
     }
 }

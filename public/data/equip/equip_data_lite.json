@@ -16324,6 +16324,53 @@
         "compare_group": 1
     },
     {
+        "id": 31320,
+        "name": "시제형 127mm 5식 연장포",
+        "icon": "31320",
+        "rarity": 6,
+        "rarity_name": "UR",
+        "type": 1,
+        "type_name": "함포",
+        "type_name2": "함포(구축)",
+        "nationality": 3,
+        "nation_name": "사쿠라 엠파이어",
+        "nation_code": "IJN",
+        "speciality": "<[LOCK]>",
+        "label": [
+            "IJN",
+            "DD",
+            "MG",
+            "HE"
+        ],
+        "tech": 0,
+        "level_count": 14,
+        "attrs": [
+            {
+                "key": "cannon",
+                "name": "포격",
+                "value": 45
+            },
+            {
+                "key": "antiaircraft",
+                "name": "대공",
+                "value": 20
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "cannon",
+                "name": "포격",
+                "value": 45
+            },
+            {
+                "key": "antiaircraft",
+                "name": "대공",
+                "value": 20
+            }
+        ],
+        "compare_group": 1
+    },
+    {
         "id": 32020,
         "name": "140mm 단장포",
         "icon": "32000",
@@ -24144,6 +24191,42 @@
         "compare_group": 4
     },
     {
+        "id": 48060,
+        "name": "FW-190 F-8/U2",
+        "icon": "48060",
+        "rarity": 5,
+        "rarity_name": "SSR",
+        "type": 8,
+        "type_name": "뇌격기",
+        "type_name2": "뇌격기",
+        "nationality": 4,
+        "nation_name": "메탈 블러드",
+        "nation_code": "KMS",
+        "speciality": "<[TRP]>",
+        "label": [
+            "KMS",
+            "CV",
+            "TB"
+        ],
+        "tech": 0,
+        "level_count": 14,
+        "attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 45
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 45
+            }
+        ],
+        "compare_group": 4
+    },
+    {
         "id": 49000,
         "name": "Ju-87C 급강하폭격기",
         "icon": "49000",
@@ -25640,6 +25723,150 @@
             }
         ],
         "compare_group": 1
+    },
+    {
+        "id": 85820,
+        "name": "I-15",
+        "icon": "85820",
+        "rarity": 3,
+        "rarity_name": "R",
+        "type": 7,
+        "type_name": "전투기",
+        "type_name2": "전투기",
+        "nationality": 7,
+        "nation_name": "노스 유니온",
+        "nation_code": "SN",
+        "speciality": "<[AIR]>",
+        "label": [
+            "SN",
+            "CV",
+            "FT"
+        ],
+        "tech": 0,
+        "level_count": 8,
+        "attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 12
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 12
+            }
+        ],
+        "compare_group": 4
+    },
+    {
+        "id": 85840,
+        "name": "시제 함재형 Yak-1",
+        "icon": "85840",
+        "rarity": 4,
+        "rarity_name": "SR",
+        "type": 7,
+        "type_name": "전투기",
+        "type_name2": "전투기",
+        "nationality": 7,
+        "nation_name": "노스 유니온",
+        "nation_code": "SN",
+        "speciality": "<[AIR]>",
+        "label": [
+            "SN",
+            "CV",
+            "FT"
+        ],
+        "tech": 0,
+        "level_count": 12,
+        "attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 25
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 25
+            }
+        ],
+        "compare_group": 4
+    },
+    {
+        "id": 85860,
+        "name": "시제 함재형 Yak-3",
+        "icon": "85860",
+        "rarity": 4,
+        "rarity_name": "SR",
+        "type": 7,
+        "type_name": "전투기",
+        "type_name2": "전투기",
+        "nationality": 7,
+        "nation_name": "노스 유니온",
+        "nation_code": "SN",
+        "speciality": "<[AIR]>",
+        "label": [
+            "SN",
+            "CV",
+            "FT"
+        ],
+        "tech": 0,
+        "level_count": 12,
+        "attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 25
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 25
+            }
+        ],
+        "compare_group": 4
+    },
+    {
+        "id": 85880,
+        "name": "시제 함재형 Yak-7",
+        "icon": "85880",
+        "rarity": 4,
+        "rarity_name": "SR",
+        "type": 7,
+        "type_name": "전투기",
+        "type_name2": "전투기",
+        "nationality": 7,
+        "nation_name": "노스 유니온",
+        "nation_code": "SN",
+        "speciality": "<[AIR]>",
+        "label": [
+            "SN",
+            "CV",
+            "FT"
+        ],
+        "tech": 0,
+        "level_count": 12,
+        "attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 25
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 25
+            }
+        ],
+        "compare_group": 4
     },
     {
         "id": 89000,
@@ -28118,6 +28345,78 @@
                 "key": "antiaircraft",
                 "name": "대공",
                 "value": 65
+            }
+        ],
+        "compare_group": 3
+    },
+    {
+        "id": 90640,
+        "name": "100mm 연장고각포 Mle 1937",
+        "icon": "50640",
+        "rarity": 4,
+        "rarity_name": "SR",
+        "type": 6,
+        "type_name": "대공포",
+        "type_name2": "대공포",
+        "nationality": 8,
+        "nation_name": "아이리스 리브레",
+        "nation_code": "FFNF",
+        "speciality": "<[SRG]>",
+        "label": [
+            "FFNF",
+            "DD",
+            "AA"
+        ],
+        "tech": 3,
+        "level_count": 12,
+        "attrs": [
+            {
+                "key": "antiaircraft",
+                "name": "대공",
+                "value": 25
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "antiaircraft",
+                "name": "대공",
+                "value": 25
+            }
+        ],
+        "compare_group": 3
+    },
+    {
+        "id": 90660,
+        "name": "100mm 연장고각포 Mle 1945",
+        "icon": "50660",
+        "rarity": 5,
+        "rarity_name": "SSR",
+        "type": 6,
+        "type_name": "대공포",
+        "type_name2": "대공포",
+        "nationality": 8,
+        "nation_name": "아이리스 리브레",
+        "nation_code": "FFNF",
+        "speciality": "<[SRG]>",
+        "label": [
+            "FFNF",
+            "DD",
+            "AA"
+        ],
+        "tech": 0,
+        "level_count": 14,
+        "attrs": [
+            {
+                "key": "antiaircraft",
+                "name": "대공",
+                "value": 45
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "antiaircraft",
+                "name": "대공",
+                "value": 45
             }
         ],
         "compare_group": 3
