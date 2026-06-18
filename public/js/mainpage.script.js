@@ -129,7 +129,7 @@ function initHeroCarousel() {
     indicatorsContainer.innerHTML = '';
     const indicators = slides.map((_, index) => {
         const indicator = document.createElement('button');
-        indicator.classList.add('indicator');
+        indicator.classList.add('indicator', 'pagination-dot');
         indicator.setAttribute('aria-label', `Go to slide ${index + 1}`);
         setButtonCurrent(indicator, index === currentIndex);
         indicator.addEventListener('click', () => goToSlide(index));
@@ -295,7 +295,7 @@ const EventCarousel = (function () {
 
     function createIndicator(index) {
         const indicator = document.createElement('button');
-        indicator.className = 'event-indicator';
+        indicator.className = 'event-indicator pagination-dot';
         indicator.setAttribute('aria-label', `Go to event ${index + 1}`);
         setButtonCurrent(indicator, index === 0);
         indicator.addEventListener('click', () => goToSlide(index));

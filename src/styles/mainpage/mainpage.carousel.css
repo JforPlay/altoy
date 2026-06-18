@@ -202,26 +202,32 @@
   z-index: 50;
 }
 
-.indicator {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
+/* Shared dot base — round, slide-tracker shape; per-carousel size via --dot-size;
+   active pill width stays local (.indicator.active / .event-indicator.active). */
+.pagination-dot {
+  width: var(--dot-size, 10px);
+  height: var(--dot-size, 10px);
+  border-radius: var(--radius-full);
   background: rgba(255, 255, 255, 0.4);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
+  border: none;
   padding: 0;
+  cursor: pointer;
+  transition: width 0.3s ease, background 0.3s ease;
+}
+
+.pagination-dot.active { background: var(--primary); }
+
+.pagination-dot:hover { background: rgba(255, 255, 255, 0.7); }
+
+/* Hero indicators — 10px default dot; active pill expands to 32px with accent border. */
+.indicator {
+  border: 2px solid transparent;
 }
 
 .indicator.active {
-  background: var(--primary);
   width: 32px;
   border-radius: 5px;
   border-color: var(--highlight-strong);
-}
-
-.indicator:hover {
-  background: rgba(255, 255, 255, 0.7);
 }
 
 /* =====================================================
@@ -375,23 +381,12 @@
   z-index: 50;
 }
 
+/* Event indicators — 8px dot (smaller than hero); active pill expands to 24px. */
 .event-indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.4);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: none;
-  padding: 0;
+  --dot-size: 8px;
 }
 
 .event-indicator.active {
-  background: var(--primary);
   width: 24px;
   border-radius: 4px;
-}
-
-.event-indicator:hover {
-  background: rgba(255, 255, 255, 0.7);
 }
