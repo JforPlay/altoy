@@ -1062,7 +1062,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function openDrawer() {
         const drawer = document.getElementById('filter-drawer');
         const backdrop = document.getElementById('filter-drawer-backdrop');
-        showElement(backdrop);
+        backdrop.classList.add('visible');
         drawer.classList.add('open');
         document.body.style.overflow = 'hidden';
     }
@@ -1071,7 +1071,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const drawer = document.getElementById('filter-drawer');
         const backdrop = document.getElementById('filter-drawer-backdrop');
         drawer.classList.remove('open');
-        hideElement(backdrop);
+        backdrop.classList.remove('visible');
         document.body.style.overflow = '';
     }
 

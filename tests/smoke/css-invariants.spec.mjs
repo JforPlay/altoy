@@ -575,3 +575,16 @@ test('drawer: a real consumer adopts the canonical class (equip-viewer)', async 
     expect(probe.position).toBe('fixed');
     expect(probe.zIndex).toBe('998');
 });
+
+test('drawer: tracker drawer rises onto the --z-drawer token (200 → 998)', async ({ page }) => {
+    await page.goto(pathFor('shipgirl-tracker'), { waitUntil: 'load' });
+    await page.waitForSelector('#filter-drawer', { timeout: 15_000 });
+    const probe = await page.evaluate(() => {
+        const el = document.getElementById('filter-drawer');
+        const cs = getComputedStyle(el);
+        return { hasClass: el.classList.contains('drawer'), zIndex: cs.zIndex };
+    });
+    expect(probe.hasClass, 'tracker drawer must carry the canonical class').toBe(true);
+    // RED before migration: 200 (local). Now the canonical --z-drawer.
+    expect(probe.zIndex).toBe('998');
+});

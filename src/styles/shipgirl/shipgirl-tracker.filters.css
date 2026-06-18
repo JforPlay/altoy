@@ -3,41 +3,12 @@
    Right-side drawer, filter controls, rarity chips, search dropdown
    ========================================================================== */
 
-/* --- Drawer Backdrop --- */
+/* --- Drawer Backdrop --- canonical .drawer-backdrop (drawer.css) owns the shell */
 
-.st-drawer-backdrop {
-  position: fixed;
-  inset: 0;
-  background: var(--overlay-heavy);
-  z-index: 199;
-  opacity: 0;
-  transition: opacity var(--transition-base);
-}
-
-.st-drawer-backdrop:not(.hidden) {
-  opacity: 1;
-}
-
-/* --- Drawer --- */
-
+/* --- Drawer --- canonical .drawer (drawer.css) owns the shell; per-page width + inner overflow only */
 .st-drawer {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 360px;
-  height: 100vh;
-  background: var(--card-bg);
-  z-index: 200;
-  transform: translateX(100%);
-  transition: transform var(--transition-base);
-  box-shadow: var(--shadow-lg);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.st-drawer.open {
-  transform: translateX(0);
+  --drawer-width: 22.5rem;   /* 360px */
+  overflow: hidden;          /* inner .st-drawer-body scrolls */
 }
 
 .st-drawer-header {
@@ -513,10 +484,7 @@
 }
 
 /* --- Dark Mode Overrides --- */
-
-body.dark-mode .st-drawer {
-  box-shadow: -4px 0 20px var(--overlay-strong);
-}
+/* (body.dark-mode .st-drawer box-shadow removed — converges to canonical --shadow-xl) */
 
 body.dark-mode .checkbox-filter-item label {
   background-color: var(--highlight-subtle);
