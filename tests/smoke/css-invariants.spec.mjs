@@ -588,3 +588,15 @@ test('drawer: tracker drawer rises onto the --z-drawer token (200 → 998)', asy
     // RED before migration: 200 (local). Now the canonical --z-drawer.
     expect(probe.zIndex).toBe('998');
 });
+
+// --- Task 7: equip-upgrade matModal z-token fix -------------------------------
+// .mat-modal-overlay hardcoded z-index: 1100 (above navbar but below the
+// canonical modal layer). Fixed to var(--z-modal) = 2000 so it stacks correctly
+// with other modals and the z-scale is respected.
+
+test('modal: equip-upgrade matModal sits on the --z-modal token (was hardcoded 1100)', async ({ page }) => {
+    await page.goto(pathFor('equip-upgrade'), { waitUntil: 'load' });
+    // Bespoke path: the .mat-modal-overlay shell now resolves z-index 2000 (--z-modal).
+    // Full-migration path: replace this probe with a `.c-modal` presence assertion.
+    expect(await probeStyle(page, 'mat-modal-overlay', 'zIndex')).toBe('2000');
+});
