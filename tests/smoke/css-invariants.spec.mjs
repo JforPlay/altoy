@@ -560,3 +560,18 @@ test('drawer: --z-drawer token resolves on the page (homepage)', async ({ page }
     expect((await bodyVar(page, '--z-drawer'))).toBe('998');
     expect((await bodyVar(page, '--z-drawer-backdrop'))).toBe('997');
 });
+
+test('drawer: a real consumer adopts the canonical class (equip-viewer)', async ({ page }) => {
+    await page.goto(pathFor('equip-viewer'), { waitUntil: 'load' });
+    await page.waitForSelector('#detailPanel', { timeout: 15_000 });
+    const probe = await page.evaluate(() => {
+        const el = document.getElementById('detailPanel');
+        if (!el) return null;
+        const cs = getComputedStyle(el);
+        return { hasClass: el.classList.contains('drawer'), position: cs.position, zIndex: cs.zIndex };
+    });
+    expect(probe, 'no #detailPanel on equip-viewer').not.toBeNull();
+    expect(probe.hasClass, 'panel must carry the canonical drawer class').toBe(true);
+    expect(probe.position).toBe('fixed');
+    expect(probe.zIndex).toBe('998');
+});

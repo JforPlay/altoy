@@ -5,41 +5,11 @@
    Transform-based slide-in panel from right
    ============================================ */
 
-/* ===== Backdrop ===== */
-.equip-panel-backdrop {
-    position: fixed;
-    inset: 0;
-    background: var(--overlay-heavy);
-    z-index: 997;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity var(--transition-base), visibility var(--transition-base);
-}
+/* ===== Backdrop ===== canonical .drawer-backdrop owns the shell (drawer.css) */
 
-.equip-panel-backdrop.visible {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* ===== Side Panel ===== */
+/* ===== Side Panel ===== canonical .drawer owns the shell; only width is per-page */
 .equip-detail-panel {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 450px;
-    height: 100%;
-    background: var(--card-bg);
-    border-left: 1px solid var(--border-color);
-    box-shadow: var(--shadow-xl);
-    z-index: 998;
-    display: flex;
-    flex-direction: column;
-    transform: translateX(100%);
-    transition: transform var(--transition-base);
-}
-
-.equip-detail-panel.open {
-    transform: translateX(0);
+    --drawer-width: 28.125rem;   /* 450px */
 }
 
 /* ===== Panel Header ===== */
@@ -418,8 +388,3 @@ body.dark-mode .upgrade-table .current-level {
 }
 
 /* ===== Responsive ===== */
-@media (max-width: 768px) {
-    .equip-detail-panel {
-        width: 100%;
-    }
-}
