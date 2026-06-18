@@ -160,6 +160,8 @@
   --z-base: 1;
   --z-dropdown: 100;
   --z-sticky: 500;      /* sticky sub-headers beneath the navbar */
+  --z-drawer-backdrop: 997;  /* slide-in drawer scrim — below navbar */
+  --z-drawer: 998;           /* slide-in side panels — nav stays accessible above */
   --z-navbar: 1000;
   --z-overlay: 1500;    /* page-dimming backdrops */
   --z-modal: 2000;      /* dialog content/backdrop above the page */

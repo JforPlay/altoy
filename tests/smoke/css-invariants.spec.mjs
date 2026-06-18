@@ -541,3 +541,22 @@ test('chip rarity bridge: stays opt-in — no rarity leak without rarity.css (ho
     // --r is undefined here, so --chip-accent is invalid → .chip.active falls back to --accent-blue.
     expect(leakedBg, `no rarity.css → must fall back to accent-blue, got: ${leakedBg}`).toBe(accentBlue);
 });
+
+// --- Wave-3 drawer unification: canonical .drawer applied ----------------------
+// drawer.css is imported globally via Layout.astro. A bare injected .drawer must
+// resolve to the canonical fixed/right shell at --z-drawer (998), and
+// .drawer-backdrop to the scrim at --z-drawer-backdrop (997). RED before: no
+// global drawer component (position:static, z-index:auto).
+
+test('drawer: canonical .drawer shell is delivered globally (homepage)', async ({ page }) => {
+    await page.goto('./', { waitUntil: 'load' });
+    expect(await probeStyle(page, 'drawer', 'position')).toBe('fixed');
+    expect(await probeStyle(page, 'drawer', 'zIndex')).toBe('998');
+    expect(await probeStyle(page, 'drawer-backdrop', 'zIndex')).toBe('997');
+});
+
+test('drawer: --z-drawer token resolves on the page (homepage)', async ({ page }) => {
+    await page.goto('./', { waitUntil: 'load' });
+    expect((await bodyVar(page, '--z-drawer'))).toBe('998');
+    expect((await bodyVar(page, '--z-drawer-backdrop'))).toBe('997');
+});

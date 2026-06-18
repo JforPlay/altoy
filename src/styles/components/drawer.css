@@ -1,0 +1,49 @@
+/* =========================================================================
+   drawer.css — right-anchored slide-in overlay drawer + backdrop (Wave 3).
+   SHELL ONLY: fixed position, right-edge translateX slide, scrim. Inner
+   header/body/footer stay per-page. Color token-only. Palette + size +
+   vertical placement via hooks so section-themed drawers (birthday =
+   --calendar-*; below-navbar) keep their look. Backdrop converges to the
+   Modal.astro scrim (blur 4px). Toggle: .drawer.open + .drawer-backdrop.visible.
+   Consumers: shipgirl-tracker (.st-drawer), shipgirl-birthday (.upcoming-panel),
+   equip-viewer (.equip-detail-panel). Exceptions (bespoke): dorm (docked desktop
+   + bottom-peek mobile), see dev/active/2026-06-17-css-wave3-interactive-design.md.
+   ========================================================================= */
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-heavy);
+  backdrop-filter: blur(4px);
+  z-index: var(--z-drawer-backdrop);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-base), visibility var(--transition-base);
+}
+.drawer-backdrop.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.drawer {
+  position: fixed;
+  right: 0;
+  top: var(--drawer-top, 0);
+  height: var(--drawer-height, 100%);
+  width: var(--drawer-width, 26rem);
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--drawer-bg, var(--card-bg));
+  border-left: 1px solid var(--drawer-border, var(--border-color));
+  box-shadow: var(--drawer-shadow, var(--shadow-xl));
+  z-index: var(--z-drawer);
+  transform: translateX(100%);
+  transition: transform var(--transition-base);
+}
+.drawer.open {
+  transform: translateX(0);
+}
+
+@media (max-width: 768px) {
+  .drawer { width: 100%; }
+}
