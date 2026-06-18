@@ -684,7 +684,7 @@ body.calendar-page {
 /* Responsive behaviour */
 @media (max-width: 768px) {
   /* Birthday panel keeps 90% / 420px cap on mobile; overrides canonical's width:100% */
-  .upcoming-panel {
+  .upcoming-panel.drawer {
     width: 90%;
     max-width: 420px;
   }
