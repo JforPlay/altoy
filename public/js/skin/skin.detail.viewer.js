@@ -4,7 +4,7 @@
  * Orchestrates three sub-modules: skin.data.js (data), skin.audio.js (audio), skin.expression.js (gallery).
  * Part of the skin module group.
  */
-import { debounce, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl, normalizeRomanNumerals, createIcon, createGemIconImg, lockBodyScroll, unlockBodyScroll, renderStatus, setupModal, openModal, closeModal } from '../utils.js';
+import { debounce, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl, normalizeRomanNumerals, createIcon, createGemIconImg, renderStatus, setupModal, openModal, closeModal } from '../utils.js';
 import { init as initSkinData, searchCharacters, getSkinsForCharacter, getSkinByName, getManifest, getAllCharacterNames, getReleaseDate, getSkinFilterData } from './skin.data.js';
 import { init as initSkinAudio, stopCurrentAudio, handlePlayClick, createVolumeControlElement, attachVolumeListeners } from './skin.audio.js';
 import { init as initSkinExpression, setManifest, renderImageGallery } from './skin.expression.js';
@@ -527,6 +527,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             closeOnEscape: true,
             closeOnBackdrop: true,
             restoreFocus: true,
+            onClose: () => randomBtn.setAttribute('aria-expanded', 'false'),
         });
 
         function initFilterData() {
