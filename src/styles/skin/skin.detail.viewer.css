@@ -795,11 +795,6 @@
    DARK MODE OVERRIDES
    ================================================================= */
 
-body.dark-mode .random-skin-modal-content {
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
-}
-
 body.dark-mode .random-filter-group select {
   background: var(--bg-input);
   color: var(--text-primary);

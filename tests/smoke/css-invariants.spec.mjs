@@ -612,15 +612,18 @@ test('tabs fold: shipgirl-info view-toggle adopts the canonical .btn segmented c
     await page.waitForSelector('#gridViewBtn', { timeout: 15_000 });
     const probe = await page.evaluate(() => {
         const grid = document.getElementById('gridViewBtn');
+        const list = document.getElementById('listViewBtn');
         const wrap = document.querySelector('.view-toggle');
         return {
             btn: grid.classList.contains('btn'),
+            listBtn: list.classList.contains('btn'),
             group: wrap.classList.contains('btn-group'),
             // exactly one segment is active via the canonical class
             active: document.querySelectorAll('.view-toggle .is-active').length,
         };
     });
     expect(probe.btn, 'view-toggle button must carry .btn').toBe(true);
+    expect(probe.listBtn, 'list view-toggle button must carry .btn').toBe(true);
     expect(probe.group, 'wrapper must carry .btn-group').toBe(true);
     expect(probe.active).toBe(1);
 });
