@@ -4,6 +4,7 @@
  * Converted from pages/skin/skin-detail-viewer.html
  */
 import Layout from '../../layouts/Layout.astro';
+import Modal from '../../components/Modal.astro';
 import '../../styles/common.css';
 import '../../styles/skin/skin.common.css';
 import '../../styles/skin/skin.detail.viewer.css';
@@ -96,35 +97,30 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div id="asmr-table-area" class="text-content-area hidden"></div>
     </div>
 
-    <div id="random-skin-modal" class="random-skin-modal" style="display: none;" role="dialog" aria-label="랜덤 스킨 선택" aria-modal="true" aria-hidden="true">
-        <div class="random-skin-modal-backdrop"></div>
-        <div class="random-skin-modal-content">
-            <h3><i class="fas fa-dice"></i> 랜덤 스킨 구경가기</h3>
-            <div class="random-skin-filters">
-                <div class="random-filter-group">
-                    <label for="random-rarity-filter">레어도</label>
-                    <select id="random-rarity-filter"><option value="">전체</option></select>
-                </div>
-                <div class="random-filter-group">
-                    <label for="random-type-filter">스킨 타입</label>
-                    <select id="random-type-filter"><option value="">전체</option></select>
-                </div>
-                <div class="random-filter-group">
-                    <label for="random-tag-filter">스킨 태그</label>
-                    <select id="random-tag-filter"><option value="">전체</option></select>
-                </div>
-                <div class="random-filter-group">
-                    <label for="random-nation-filter">진영</label>
-                    <select id="random-nation-filter"><option value="">전체</option></select>
-                </div>
+    <Modal id="random-skin-modal" title="랜덤 스킨" maxWidth="480px">
+        <div class="random-skin-filters">
+            <div class="random-filter-group">
+                <label for="random-rarity-filter">레어도</label>
+                <select id="random-rarity-filter"><option value="">전체</option></select>
             </div>
-            <div class="random-skin-actions">
-                <span id="random-skin-count" class="random-skin-count"></span>
-                <button id="random-skin-go" class="btn btn-primary random-skin-go-btn" type="button"><i class="fas fa-random"></i> 랜덤 구경가기!</button>
-                <button id="random-skin-close" class="btn btn-close random-skin-close-btn" type="button">닫기</button>
+            <div class="random-filter-group">
+                <label for="random-type-filter">스킨 타입</label>
+                <select id="random-type-filter"><option value="">전체</option></select>
+            </div>
+            <div class="random-filter-group">
+                <label for="random-tag-filter">스킨 태그</label>
+                <select id="random-tag-filter"><option value="">전체</option></select>
+            </div>
+            <div class="random-filter-group">
+                <label for="random-nation-filter">진영</label>
+                <select id="random-nation-filter"><option value="">전체</option></select>
             </div>
         </div>
-    </div>
+        <div class="random-skin-actions">
+            <span id="random-skin-count" class="random-skin-count"></span>
+            <button id="random-skin-go" class="btn btn-primary random-skin-go-btn" type="button"><i class="fas fa-random"></i> 랜덤 구경가기!</button>
+        </div>
+    </Modal>
 
     <div id="lightbox-modal" class="lightbox-modal" role="dialog" aria-label="이미지 확대 보기" aria-hidden="true">
         <button class="lightbox-close" aria-label="닫기" type="button"><i class="fas fa-times"></i></button>

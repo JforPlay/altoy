@@ -4,7 +4,7 @@
  * Orchestrates three sub-modules: skin.data.js (data), skin.audio.js (audio), skin.expression.js (gallery).
  * Part of the skin module group.
  */
-import { debounce, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl, normalizeRomanNumerals, createIcon, createGemIconImg, lockBodyScroll, unlockBodyScroll, renderStatus } from '../utils.js';
+import { debounce, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl, normalizeRomanNumerals, createIcon, createGemIconImg, lockBodyScroll, unlockBodyScroll, renderStatus, setupModal, openModal, closeModal } from '../utils.js';
 import { init as initSkinData, searchCharacters, getSkinsForCharacter, getSkinByName, getManifest, getAllCharacterNames, getReleaseDate, getSkinFilterData } from './skin.data.js';
 import { init as initSkinAudio, stopCurrentAudio, handlePlayClick, createVolumeControlElement, attachVolumeListeners } from './skin.audio.js';
 import { init as initSkinExpression, setManifest, renderImageGallery } from './skin.expression.js';
@@ -511,9 +511,6 @@ document.addEventListener('DOMContentLoaded', async () => {
      */
     function setupRandomSkin() {
         const randomBtn = document.getElementById('random-skin-btn');
-        const modal = document.getElementById('random-skin-modal');
-        const backdrop = modal.querySelector('.random-skin-modal-backdrop');
-        const closeBtn = document.getElementById('random-skin-close');
         const goBtn = document.getElementById('random-skin-go');
         const countEl = document.getElementById('random-skin-count');
 
@@ -524,6 +521,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         let skinPool = [];
         let filterData = null;
+
+        // Wire canonical modal (backdrop-click + ESC + .modal-close provided by setupModal)
+        setupModal('random-skin-modal', {
+            closeOnEscape: true,
+            closeOnBackdrop: true,
+            restoreFocus: true,
+        });
 
         function initFilterData() {
             if (filterData) return;
@@ -558,36 +562,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             goBtn.disabled = filtered.length === 0;
         }
 
-        function openModal() {
+        randomBtn.addEventListener('click', () => {
             initFilterData();
             updateCount();
-            modal.style.display = 'flex';
-            modal.setAttribute('aria-hidden', 'false');
             randomBtn.setAttribute('aria-expanded', 'true');
-            lockBodyScroll();
+            openModal('random-skin-modal', { restoreFocus: true, focusFirst: false });
             goBtn.focus();
-        }
-
-        function closeModal() {
-            modal.style.display = 'none';
-            modal.setAttribute('aria-hidden', 'true');
-            randomBtn.setAttribute('aria-expanded', 'false');
-            unlockBodyScroll();
-            randomBtn.focus();
-        }
-
-        randomBtn.addEventListener('click', openModal);
-        closeBtn.addEventListener('click', closeModal);
-        backdrop.addEventListener('click', closeModal);
+        });
 
         // Update count on filter change
         [raritySelect, typeSelect, tagSelect, nationSelect].forEach(sel => {
             sel.addEventListener('change', updateCount);
-        });
-
-        // Close on ESC
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.style.display !== 'none') closeModal();
         });
 
         // Go button - pick random and navigate
@@ -596,7 +581,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (filtered.length === 0) return;
 
             const pick = filtered[Math.floor(Math.random() * filtered.length)];
-            closeModal();
+            randomBtn.setAttribute('aria-expanded', 'false');
+            closeModal('random-skin-modal');
 
             // Navigate to the picked skin
             handleCharacterSelect(pick.charName, false);

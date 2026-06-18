@@ -85,48 +85,7 @@
   transform: translateY(0);
 }
 
-/* --- Random Skin Modal --- */
-.random-skin-modal {
-  position: fixed;
-  inset: 0;
-  z-index: var(--z-modal);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.random-skin-modal-backdrop {
-  position: absolute;
-  inset: 0;
-  background: var(--overlay-strong);
-}
-
-.random-skin-modal-content {
-  position: relative;
-  background: var(--bg-secondary);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-xl);
-  max-width: 480px;
-  max-height: calc(100vh - 2rem);
-  width: 90%;
-  overflow-y: auto;
-  box-shadow: var(--shadow-xl);
-  z-index: 1;
-}
-
-.random-skin-modal-content h3 {
-  margin: 0 0 var(--spacing-lg) 0;
-  color: var(--text-primary);
-  font-size: 1.25rem;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-}
-
-.random-skin-modal-content h3 i {
-  color: var(--primary-color);
-}
-
+/* --- Random Skin Modal (slotted into Modal.astro — shell CSS lives in Modal.astro scoped styles) --- */
 .random-skin-filters {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -174,16 +133,6 @@
   font-size: 0.9rem;
   color: var(--text-muted);
   flex: 1;
-}
-
-/* Random-skin modal actions migrated to canonical buttons (components/button.css):
-   the "go" CTA → .btn.btn-primary; the labeled "닫기" → .btn.btn-close.
-   .btn-close is icon-square (aspect-ratio:1); since this close carries a TEXT
-   label, locally relax it back to auto width + horizontal padding so "닫기" fits.
-   The .btn compound keeps this winning over .btn-close regardless of CSS order. */
-.btn.random-skin-close-btn {
-  aspect-ratio: auto;
-  padding: var(--btn-pad-y) var(--btn-pad-x);
 }
 
 /* --- Skin Info Box (Card Style) --- */
