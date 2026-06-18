@@ -14,14 +14,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 <Layout title="함순이 스킨/대사보기 (Modern UI)" theme="accent" {base}>
     <div class="main-container">
         <header class="controls-header page-header page-header--center">
-            <h1 class="page-title page-header-title">함순이 스킨 / 대사보기</h1>
-            <button id="info-button" class="info-button" aria-label="도움말 보기" type="button">
-                <i class="fas fa-info-circle"></i>
-            </button>
-            <button id="random-skin-btn" class="random-skin-btn" title="랜덤 스킨 구경가기" aria-label="랜덤 스킨 구경가기" aria-expanded="false" aria-controls="random-skin-modal" type="button">
-                <i class="fas fa-dice"></i>
-                <span>랜덤 스킨 구경가기</span>
-            </button>
+            <div class="title-wrapper page-header-title">
+                <h1 class="page-title">함순이 스킨 / 대사보기</h1>
+                <button id="info-button" class="info-button" aria-label="도움말 보기" type="button">
+                    <i class="fas fa-info-circle"></i>
+                </button>
+                <button id="random-skin-btn" class="random-skin-btn" title="랜덤 스킨 구경가기" aria-label="랜덤 스킨 구경가기" aria-expanded="false" aria-controls="random-skin-modal" type="button">
+                    <i class="fas fa-dice"></i>
+                    <span>랜덤 스킨 구경가기</span>
+                </button>
+            </div>
 
             <div id="info-popup" class="info-popup" role="dialog" aria-labelledby="popup-title" aria-hidden="true">
                 <div class="info-popup-content">
@@ -97,7 +99,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div id="asmr-table-area" class="text-content-area hidden"></div>
     </div>
 
-    <Modal id="random-skin-modal" title="랜덤 스킨" maxWidth="480px">
+    <Modal id="random-skin-modal" maxWidth="480px">
+        <h2 id="random-skin-modal-title" class="random-skin-modal-title"><i class="fas fa-dice"></i> 랜덤 스킨 구경가기</h2>
         <div class="random-skin-filters">
             <div class="random-filter-group">
                 <label for="random-rarity-filter">레어도</label>

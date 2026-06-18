@@ -462,6 +462,37 @@ test('page-header: a real consumer adopts the canonical row class (equip-viewer)
     expect(probe.display).toBe('flex');
 });
 
+// skin-detail-viewer + expression-viewer wrap their <h1> + action button(s) in ONE
+// .page-header-title row. Regression guard: the canonical row must sit on a WRAPPER
+// div (not the bare <h1>), so the buttons stay on the title's line. RED before the
+// fix: .page-header-title sat on the <h1> alone → it became a full-width flex block
+// and every sibling button dropped to a 2nd line (button top fell below the h1 bottom).
+for (const { key, btnId } of [
+    { key: 'skin-detail-viewer', btnId: 'random-skin-btn' },
+    { key: 'expression-viewer', btnId: 'info-button' },
+]) {
+    test(`page-header: ${key} title + action button share one row (no wrap)`, async ({ page }) => {
+        await page.goto(pathFor(key), { waitUntil: 'load' });
+        const probe = await page.evaluate((id) => {
+            const btn = document.getElementById(id);
+            const h1 = document.querySelector('.controls-header h1');
+            if (!btn || !h1) return null;
+            const row = btn.closest('.page-header-title');
+            return {
+                inRow: !!row && row.contains(h1),
+                display: row ? getComputedStyle(row).display : null,
+                // On one line (align-items:center) the button overlaps the h1 vertically:
+                // its top sits above the h1's bottom. A wrap pushes it strictly below.
+                sameLine: btn.getBoundingClientRect().top < h1.getBoundingClientRect().bottom,
+            };
+        }, btnId);
+        expect(probe, `${key} header elements missing`).not.toBeNull();
+        expect(probe.inRow, 'action button must live inside the same .page-header-title row as the <h1>').toBe(true);
+        expect(probe.display).toBe('flex');
+        expect(probe.sameLine, 'action button must sit on the title line, not wrap to a 2nd row').toBe(true);
+    });
+}
+
 // --- Wave-2 chip + filter-bar unification (Task 1) ---------------------------
 // chip.css and filter-bar.css are imported globally via Layout.astro. These
 // prove DELIVERY (the rules reach an arbitrary page) and the key invariants:

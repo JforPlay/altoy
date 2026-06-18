@@ -9,13 +9,18 @@
   margin-bottom: var(--spacing-xl);
 }
 
-/* .title-wrapper removed — centering handled by .page-header--center. */
-
-/* flex row now from .page-header-title; flex-wrap + margin kept local.
-   gap: 1rem (--spacing-md) differs from the default 0.75rem — set via hook. */
-.page-title {
+/* Title row: the <h1> + info/random action buttons share ONE centered, wrapping
+   flex row. Carries the canonical .page-header-title, so the component supplies
+   flex / align-items / justify-center / flex-wrap; we only set the wider 1rem gap
+   (vs the 0.75rem default) via hook + the internal margin below the row.
+   The buttons MUST live inside this row — putting .page-header-title on the bare
+   <h1> made the h1 a full-width flex block and dropped both buttons to a 2nd line. */
+.title-wrapper {
   --page-header-gap: var(--spacing-md);
-  flex-wrap: wrap;
+  margin-bottom: var(--spacing-xl);
+}
+
+.page-title {
   margin: 0;
 }
 
@@ -86,6 +91,21 @@
 }
 
 /* --- Random Skin Modal (slotted into Modal.astro — shell CSS lives in Modal.astro scoped styles) --- */
+/* Custom slotted title (dice icon + label). Modal.astro's scoped .c-modal-title
+   can't reach slotted content, so mirror its separator here + color the icon. */
+.random-skin-modal-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin: 0 2rem 1rem 0;
+  padding-bottom: 0.625rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.random-skin-modal-title i {
+  color: var(--primary-color);
+}
+
 .random-skin-filters {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -689,8 +709,7 @@
 
 /* --- Responsive Styles --- */
 @media (max-width: 768px) {
-  /* .title-wrapper removed — no mobile override needed. */
-  /* page-header-title flex is already row; keep responsive font-size only. */
+  /* .title-wrapper already wraps (flex-wrap from --center); keep responsive font-size only. */
   .page-title {
     font-size: 1.25rem;
   }
