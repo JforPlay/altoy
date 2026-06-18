@@ -3,6 +3,7 @@
  * Weapon Simulator — Skill barrage visualization
  */
 import Layout from '../../layouts/Layout.astro';
+import Modal from '../../components/Modal.astro';
 import '../../styles/common.css';
 import '../../styles/simulators/sim.common.css';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -90,33 +91,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
 
     <!-- Shipgirl Browse Modal -->
-    <div id="ship-browse-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="ship-browse-title">
-        <div class="modal-backdrop"></div>
-        <div class="modal-dialog card">
-            <div class="modal-header">
-                <h3 id="ship-browse-title">함순이 검색</h3>
-                <button class="modal-close-btn btn btn-icon" type="button" aria-label="닫기">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
-            <input type="text" id="ship-search-input" placeholder="함순이 이름 검색..." class="search-input" aria-label="함순이 이름 검색" />
-            <div id="ship-browse-list" class="ship-grid card-grid scroll-styled" role="group" aria-label="함순이 목록"></div>
-        </div>
-    </div>
+    <Modal id="ship-browse-modal" title="함순이 검색">
+        <input type="text" id="ship-search-input" placeholder="함순이 이름 검색..." class="search-input" aria-label="함순이 이름 검색" />
+        <div id="ship-browse-list" class="ship-grid card-grid scroll-styled" role="group" aria-label="함순이 목록"></div>
+    </Modal>
 
     <!-- Class Group Modal -->
-    <div id="class-group-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="class-group-title">
-        <div class="modal-backdrop"></div>
-        <div class="modal-dialog card">
-            <div class="modal-header">
-                <h3 id="class-group-title"></h3>
-                <button class="modal-close-btn btn btn-icon" type="button" aria-label="닫기">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
-            <div id="class-group-list" class="ship-grid card-grid scroll-styled" role="group" aria-label="동급 함순이 목록"></div>
-        </div>
-    </div>
+    <Modal id="class-group-modal">
+        <h2 id="class-group-title" class="c-modal-title"></h2>
+        <div id="class-group-list" class="ship-grid card-grid scroll-styled" role="group" aria-label="동급 함순이 목록"></div>
+    </Modal>
 
     <script is:inline src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <script is:inline type="module" src={`${base}/js/simulators/sim.engine.oceanbg.js`}></script>

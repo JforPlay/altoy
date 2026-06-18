@@ -793,48 +793,8 @@ body.dark-mode {
 
 /* ===== SHIP BROWSE MODAL ===== */
 
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: var(--z-modal);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-overlay.hidden { display: none; }
-
-.modal-backdrop {
-  position: absolute;
-  inset: 0;
-  background: var(--overlay-heavy);
-  backdrop-filter: blur(4px);
-}
-
-.modal-dialog {
-  position: relative;
-  width: 90%;
-  max-width: 600px;
-  max-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  z-index: 1;
-}
-
-.modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--spacing-sm);
-}
-
-.modal-header h3 {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
-}
+/* Modal shell migrated to components/Modal.astro (Wave 3). The slotted content
+   below (.search-input, .ship-grid) stays page-styled. */
 
 .search-input {
   width: 100%;
