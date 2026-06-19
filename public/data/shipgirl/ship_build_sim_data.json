@@ -735,6 +735,11 @@
             "rarity": "SSR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/901130.webp"
         },
+        "901141": {
+            "name": "로데슈",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/901140.webp"
+        },
         "902021": {
             "name": "마르세예즈",
             "rarity": "SSR",
@@ -1207,10 +1212,20 @@
             "rarity": "SSR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/903020.webp"
         },
+        "903031": {
+            "name": "듀플렉스",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/903030.webp"
+        },
         "904011": {
             "name": "됭케르크",
             "rarity": "SR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/904010.webp"
+        },
+        "904021": {
+            "name": "스트라스부르",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/904020.webp"
         },
         "9600021": {
             "name": "상 마르티뉴",

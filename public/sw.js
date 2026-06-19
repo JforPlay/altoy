@@ -8,7 +8,7 @@
 // See CLAUDE.md "Cache & Data Versioning" for the bump rules.
 // ============================================
 
-const CACHE_VERSION = '1.37.2';
+const CACHE_VERSION = '1.37.3';
 const STATIC_CACHE = `altoy-static-${CACHE_VERSION}`;
 const DATA_CACHE = `altoy-data-${CACHE_VERSION}`;
 

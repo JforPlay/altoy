@@ -171672,10 +171672,10 @@
             0
         ],
         "timer": "00:33:00",
-        "light": false,
+        "light": true,
         "heavy": false,
         "special": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 456,
@@ -172849,9 +172849,9 @@
         ],
         "timer": "01:45:00",
         "light": false,
-        "heavy": false,
+        "heavy": true,
         "special": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 352,
@@ -173293,9 +173293,9 @@
         ],
         "timer": "04:05:00",
         "light": false,
-        "heavy": false,
+        "heavy": true,
         "special": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 353,
