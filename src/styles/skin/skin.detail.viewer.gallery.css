@@ -1,0 +1,266 @@
+/* =============================================================================
+   skin.detail.viewer.gallery.css
+   Part of the skin.detail.viewer style split (formerly skin.detail.viewer.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* --- Image Gallery (Modern Layout) --- */
+.image-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  position: relative;
+  overflow: visible;
+}
+
+.image-gallery img {
+  background-color: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  border: 2px solid var(--border-color);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.08);
+}
+
+.image-gallery img:not(.base-image):not(.face-overlay):not(.expression-thumb):hover {
+  transform: scale(1.02);
+  border-color: var(--primary-color);
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 113, 235, 0.15);
+  filter: brightness(1.1);
+}
+
+.image-gallery .face-overlay-container img:hover {
+  transform: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+.gallery-top-banner {
+  width: 100%;
+  aspect-ratio: 22 / 14;
+  position: relative;
+  display: block;
+}
+
+.gallery-bottom-panel {
+  display: grid;
+  grid-template-columns: 60% auto;
+  gap: var(--spacing-lg);
+}
+
+.bottom-left-panel {
+  height: 100%;
+}
+
+.bottom-left-panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.bottom-right-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  height: 100%;
+}
+
+.thumbnail-group {
+  display: flex;
+  gap: var(--spacing-md);
+  flex: 1;
+}
+
+.tall-group {
+  flex: 2.5;
+}
+
+.small-group {
+  flex: 1;
+}
+
+.thumbnail-group img {
+  flex: 1;
+  width: 0;
+  height: 100%;
+  object-fit: contain;
+}
+
+.tall-thumbnail {
+  aspect-ratio: 3 / 4;
+}
+
+.dummy-image-box {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  color: var(--text-dim);
+  font-style: italic;
+  text-align: center;
+  padding: var(--spacing-lg);
+  box-sizing: border-box;
+  border: 2px dashed var(--border-color);
+}
+
+/* Layout/background/blur are shared via `.image-popup, .lightbox-modal` in skin.common.css.
+   Activation here is display-based with a fade-in animation. */
+.lightbox-modal {
+  display: none;
+  animation: fade-in var(--transition-base);
+}
+
+.lightbox-modal.active {
+  display: flex;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+#lightbox-image {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  animation: zoom-in var(--transition-slow);
+}
+
+@keyframes zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.lightbox-caption {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  text-align: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+}
+
+.lightbox-counter {
+  position: absolute;
+  top: var(--spacing-lg);
+  right: var(--spacing-lg);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  box-shadow: var(--shadow-md);
+}
+
+.lightbox-close,
+.lightbox-download,
+.lightbox-prev,
+.lightbox-next {
+  position: absolute;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: none;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-md);
+  z-index: calc(var(--z-modal) + 1);
+}
+
+.lightbox-close {
+  top: var(--spacing-lg);
+  left: var(--spacing-lg);
+}
+
+/* Sit immediately right of the close button — same row, same size. */
+.lightbox-download {
+  top: var(--spacing-lg);
+  left: calc(var(--spacing-lg) + 3rem + var(--spacing-sm));
+}
+
+.lightbox-prev {
+  left: var(--spacing-xl);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lightbox-next {
+  right: var(--spacing-xl);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lightbox-close:hover,
+.lightbox-download:hover,
+.lightbox-prev:hover,
+.lightbox-next:hover {
+  background: var(--primary-color);
+  transform: scale(1.1);
+  box-shadow: var(--shadow-lg);
+}
+
+.lightbox-close:hover {
+  transform: scale(1.1) rotate(90deg);
+}
+
+.lightbox-download:hover {
+  transform: scale(1.1) translateY(2px);
+}
+
+.lightbox-prev:hover {
+  transform: translateY(-50%) translateX(-5px) scale(1.1);
+}
+
+.lightbox-next:hover {
+  transform: translateY(-50%) translateX(5px) scale(1.1);
+}
+
+/* Lightbox slide animation */
+.lightbox-content {
+  overflow: hidden;
+} /* keep the slide inside the frame */
+
+#lightbox-image {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* turn on transition only during an animation */
+#lightbox-image.animating {
+  transition: transform 250ms ease, opacity 250ms ease;
+}
+
+/* starting states for the slide */
+#lightbox-image.slide-from-left {
+  transform: translateX(-40px);
+  opacity: 0;
+}
+#lightbox-image.slide-from-right {
+  transform: translateX(40px);
+  opacity: 0;
+}
+

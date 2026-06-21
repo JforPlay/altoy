@@ -1,0 +1,77 @@
+/* =============================================================================
+   fleet-sim.responsive.css
+   Part of the fleet-sim style split (formerly fleet-sim.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ===== RESPONSIVE ===== */
+
+/* Tablet: stack fleet columns */
+@media (max-width: 1024px) {
+  .fleet-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fleet-summary-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile: full-screen modals */
+@media (max-width: 640px) {
+  .fleet-sim-page .sim-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .fleet-sim-page .header-actions {
+    width: 100%;
+  }
+
+  .fleet-sim-page .header-actions .btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .equip-slots-grid {
+    max-width: none;
+  }
+
+  .equip-slot {
+    max-width: 48px;
+  }
+
+  /* Full-screen picker modals on mobile */
+  #shipPickerModal .c-modal-dialog,
+  #equipPickerModal .c-modal-dialog {
+    margin: 0;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    border-radius: 0;
+  }
+
+  .picker-grid {
+    max-height: none;
+    flex: 1;
+    --grid-min: 80px;
+  }
+
+  #saveLoadModal .c-modal-dialog {
+    margin: 5vh 0 1rem;
+    max-width: 100%;
+    height: auto;
+    max-height: 90vh;
+  }
+
+  /* Filter chips scroll horizontally on mobile */
+  .filter-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+
+  .filter-chip {
+    flex-shrink: 0;
+  }
+}
+

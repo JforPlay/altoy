@@ -1,0 +1,106 @@
+/* =============================================================================
+   skin.list.viewer.lightbox.css
+   Part of the skin.list.viewer style split (formerly skin.list.viewer.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* =================================================================
+   IMAGE POPUP (Lightbox)
+   ================================================================= */
+
+/* Layout/background/blur are shared via `.image-popup, .lightbox-modal` in skin.common.css.
+   Activation here is opacity-based so the popup can fade in/out. */
+.image-popup {
+  display: flex;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease, visibility 0.15s ease;
+}
+
+.image-popup.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.image-popup-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.popup-image {
+  max-width: 100%;
+  max-height: 75vh;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xl);
+  transition: opacity 0.2s ease;
+}
+
+.popup-image.loading {
+  opacity: 0;
+  min-height: 12rem;
+}
+
+.popup-skin-info {
+  margin-top: 0.875rem;
+  text-align: center;
+  color: var(--text-primary);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  padding: 0.75rem 1.5rem 1rem;
+  border-radius: var(--radius-md);
+  max-width: 37.5rem;
+}
+
+.popup-skin-name {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+}
+
+.popup-char-name {
+  font-size: 0.95em;
+  color: var(--text-muted);
+  margin-bottom: 0.625rem;
+}
+
+.popup-detail-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #fff;
+  background: var(--primary-color);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: filter var(--transition-fast), transform var(--transition-fast);
+}
+
+.popup-detail-link:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+/* Base shape from .btn.btn-close (components/button.css); only the lightbox
+   corner placement + oversized "×" glyph + danger-tinted hover stay local. */
+.close-image-popup-btn {
+  position: absolute;
+  top: -2.5rem;
+  right: 0;
+  font-size: 2.5em;
+  color: var(--text-primary);
+}
+
+.close-image-popup-btn:hover {
+  color: var(--danger-color);
+  background: transparent;
+  transform: scale(1.1);
+}
+

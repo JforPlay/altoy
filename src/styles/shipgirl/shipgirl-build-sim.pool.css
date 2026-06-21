@@ -1,0 +1,372 @@
+/* =============================================================================
+   shipgirl-build-sim.pool.css
+   Part of the shipgirl-build-sim style split (formerly shipgirl-build-sim.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+
+/* ===== Ship Adder / Custom Pool ===== */
+
+.ship-adder {
+    background: var(--section-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    border: 2px dashed var(--border-color);
+}
+
+.ship-adder h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+}
+
+.adder-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.search-container {
+    flex: 1;
+    min-width: 250px;
+    position: relative;
+}
+
+.ship-search-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+}
+
+.ship-search-input:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+}
+
+.ship-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    margin-top: 0.5rem;
+    box-shadow: var(--shadow-lg);
+    z-index: 1000;
+}
+
+.ship-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    transition: background 0.2s ease;
+}
+
+.ship-option:hover {
+    background: var(--section-bg);
+}
+
+.ship-option-empty {
+    pointer-events: none;
+    color: var(--text-secondary);
+}
+
+.ship-option.selected {
+    background: var(--bg-secondary);
+}
+
+.ship-option-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    object-fit: cover;
+    background: var(--bg-secondary);
+}
+
+.ship-option-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.ship-option-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.ship-option-id {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.ship-option-rarity {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    align-self: flex-start;
+}
+
+.ship-option-rarity.ur { background: var(--rarity-ur-bg); color: var(--rarity-ur-text); }
+.ship-option-rarity.ssr { background: var(--rarity-ssr); color: var(--rarity-ssr-text); }
+.ship-option-rarity.sr { background: var(--rarity-sr); color: var(--rarity-sr-text); }
+.ship-option-rarity.r { background: var(--rarity-r); color: var(--rarity-r-text); }
+.ship-option-rarity.n { background: var(--rarity-n); color: var(--rarity-n-text); }
+
+.pickup-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.pickup-input-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.pickup-rate-input {
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-size: 1rem;
+    width: 150px;
+}
+
+.pickup-rate-input:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+}
+
+/* 추가 = `.btn .btn-primary`, 풀 초기화 = `.btn .btn-danger` (components/button.css);
+   sized a touch taller to line up with the adder inputs. */
+.add-ship-btn,
+.reset-pool-btn {
+    --btn-pad-y: 0.75rem;
+    --btn-pad-x: 1.5rem;
+    --btn-font-size: 1rem;
+}
+
+.added-ships-list {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.added-ship-tag {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    position: relative;
+}
+
+.added-ship-tag.pickup {
+    border-color: var(--warning-color);
+    background: color-mix(in srgb, var(--warning-color) 10%, var(--card-bg));
+}
+
+.added-ship-tag-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.added-ship-tag-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.added-ship-tag-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+.added-ship-tag-rate {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.added-ship-tag-remove {
+    margin-left: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.added-ship-tag-remove:hover {
+    background: var(--bg-secondary);
+    color: var(--rarity-ur);
+}
+
+/* ===== Collapsible Sections ===== */
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.section-header h2 {
+    margin: 0;
+}
+
+.collapse-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    color: var(--text-primary);
+}
+
+.collapse-btn:hover {
+    background: var(--bg-secondary);
+}
+
+.collapse-btn .material-symbols-outlined {
+    transition: transform 0.3s ease;
+}
+
+.collapse-btn.collapsed .material-symbols-outlined {
+    transform: rotate(180deg);
+}
+
+/* Collapsible Content */
+.collapsible-content {
+    max-height: 5000px;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    opacity: 1;
+}
+
+.collapsible-content.collapsed {
+    max-height: 0;
+    opacity: 0;
+}
+
+/* ===== Pool Filters ===== */
+
+.pool-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.pool-filters .filter-bar label {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.rarity-filters {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.rarity-filter {
+    padding: 0.5rem 1rem;
+    border: 2px solid var(--border-color);
+    background: var(--section-bg);
+    color: var(--text-primary);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.rarity-filter:hover {
+    background: var(--bg-secondary);
+}
+
+.rarity-filter.active {
+    background: var(--accent-blue);
+    color: white;
+    border-color: transparent;
+}
+
+.ship-search {
+    flex: 1;
+    min-width: 250px;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+/* ===== Ship Grid (Pool Browser) ===== */
+
+.ship-grid {
+    --grid-min: 100px;
+    --grid-gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.ship-grid .ship-card {
+    animation: none;
+    width: 100%;
+    padding: 0.75rem;
+}
+
+.ship-grid .ship-card-icon {
+    width: 70px;
+    height: 70px;
+}
+
+.ship-grid .ship-card-name {
+    font-size: 0.8rem;
+}
+
+.ship-grid .ship-card-rarity {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+}
+
+.ship-count {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}

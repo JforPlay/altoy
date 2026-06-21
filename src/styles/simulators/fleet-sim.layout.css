@@ -1,0 +1,62 @@
+/* =============================================================================
+   fleet-sim.layout.css
+   Part of the fleet-sim style split (formerly fleet-sim.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* =================================================================
+   FLEET BUILD SIMULATOR — fleet-sim.css
+   Dashboard layout for 6-ship fleet composition with equipment,
+   stats, and reload timings.
+
+   Imports: common.css (design tokens), sim.common.css (shared layout)
+   ================================================================= */
+
+/* ===== HEADER LAYOUT ===== */
+
+.fleet-sim-page .sim-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.fleet-sim-page .header-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+/* ===== FLEET GRID ===== */
+
+.fleet-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-md);
+}
+
+.fleet-section-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.fleet-section-header h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.fleet-section-header .section-icon {
+  font-size: 1.3rem;
+  color: var(--primary-color);
+}
+
+.ship-card-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+

@@ -1,0 +1,46 @@
+/* =============================================================================
+   skin.detail.viewer.dark-mode.css
+   Part of the skin.detail.viewer style split (formerly skin.detail.viewer.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* =================================================================
+   DARK MODE OVERRIDES
+   ================================================================= */
+
+body.dark-mode .random-filter-group select {
+  background: var(--bg-input);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+/* Voice Line Table - Darker backgrounds for dark mode */
+body.dark-mode .voice-line-table tbody tr:nth-child(even) {
+  background-color: var(--overlay-medium);
+}
+
+body.dark-mode .voice-line-table tbody tr:hover {
+  background-color: var(--primary-alpha-10);
+}
+
+/* Image Gallery - Dark mode adjustments */
+body.dark-mode .image-gallery img {
+  border: none;
+  box-shadow: none;
+}
+
+body.dark-mode .image-gallery img:not(.base-image):not(.face-overlay):not(.expression-thumb):hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Volume Control - Dark mode adjustments */
+body.dark-mode .volume-control-container {
+  background: var(--bg-elevated);
+  border: none;
+  box-shadow: none;
+}
+
+/* Volume Slider - Darker track in dark mode */
+body.dark-mode .volume-slider {
+  background: var(--bg-tertiary);
+}
+

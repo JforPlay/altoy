@@ -1,0 +1,77 @@
+/* =============================================================================
+   island.restaurant.base.css
+   Part of the island.restaurant style split (formerly island.restaurant.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ==========================================================================
+   ISLAND RESTAURANT MODULE STYLES
+   Modern profit calculator and menu management interface
+   ========================================================================== */
+
+:root {
+    --planner-bg: #1a1a1a;
+    --planner-text: #ffffff;
+    --planner-border: var(--island-accent);
+    --planner-surface: rgba(255, 255, 255, 0.05);
+    --planner-surface-hover: rgba(255, 255, 255, 0.1);
+}
+
+/* ==========================================================================
+   1. RESTAURANT TABS (Horizontal Sub-tabs)
+   ========================================================================== */
+
+.restaurant-tabs-container {
+    background: var(--island-surface);
+    border-radius: var(--island-radius-xl);
+    padding: var(--island-spacing-md);
+    margin-bottom: var(--island-spacing-lg);
+    box-shadow: var(--island-shadow-md);
+}
+
+.restaurant-tabs {
+    display: flex;
+    gap: var(--island-gap-sm);
+    overflow-x: auto;
+    padding-bottom: var(--island-spacing-xs);
+}
+
+.restaurant-tab {
+    background: var(--island-bg);
+    border: 2px solid var(--island-border);
+    border-radius: var(--island-radius-md);
+    padding: var(--island-spacing-sm) var(--island-spacing-md);
+    cursor: pointer;
+    transition: var(--island-transition);
+    display: flex;
+    align-items: center;
+    gap: var(--island-gap-sm);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.restaurant-tab .material-symbols-outlined {
+    font-size: var(--island-icon-md);
+    color: var(--island-text-tertiary);
+}
+
+.restaurant-tab-name {
+    font-size: var(--island-text-md);
+    font-weight: 600;
+    color: var(--island-text-secondary);
+}
+
+.restaurant-tab:hover {
+    border-color: var(--island-accent);
+    background: var(--island-surface);
+}
+
+.restaurant-tab.active {
+    background: var(--island-accent);
+    border-color: var(--island-accent);
+}
+
+.restaurant-tab.active .material-symbols-outlined,
+.restaurant-tab.active .restaurant-tab-name {
+    color: #ffffff;
+}
+

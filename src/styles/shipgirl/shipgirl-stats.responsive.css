@@ -1,0 +1,106 @@
+/* =============================================================================
+   shipgirl-stats.responsive.css
+   Part of the shipgirl-stats style split (formerly shipgirl-stats.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* -- Responsive -- */
+@media (max-width: 768px) {
+    .stats-app {
+        padding: var(--spacing-sm);
+    }
+
+    .stats-header-title h1 {
+        font-size: 1.4rem;
+    }
+
+    .stats-header-title > .material-symbols-outlined {
+        font-size: 1.75rem;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-card.wide-card {
+        grid-column: 1;
+    }
+
+    .filter-bar-inner {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-search {
+        max-width: none;
+    }
+
+    .compare-bar {
+        left: 0;
+        right: 0;
+        max-width: 100%;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+
+    .compare-bar.is-active {
+        transform: translateY(0);
+    }
+
+    .compare-modal-inner {
+        max-width: 100%;
+    }
+
+    .compare-grid {
+        min-width: 28rem;
+    }
+
+    .stats-table {
+        font-size: 0.8rem;
+    }
+
+    .stats-table th,
+    .stats-table td {
+        padding: 0.4rem 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-header-title h1 {
+        font-size: 1.2rem;
+    }
+
+    .tab-toggle-btn {
+        padding: 0.4rem 1rem;
+        min-width: 5.5rem;
+        font-size: 0.8rem;
+    }
+
+    .rarity-chips .chip {
+        padding: 0.25rem 0.625rem;
+        font-size: 0.75rem;
+    }
+
+    .stats-table {
+        font-size: 0.75rem;
+    }
+
+    .stats-table th,
+    .stats-table td {
+        padding: 0.35rem 0.4rem;
+    }
+
+    .table-ship-icon {
+        width: 1.6rem;
+        height: 1.6rem;
+    }
+
+    .compare-bar {
+        padding: 0.625rem var(--spacing-md);
+        gap: var(--spacing-xs);
+    }
+
+    .pagination-btn {
+        min-width: 2rem;
+        height: 2rem;
+        font-size: 0.8rem;
+    }
+}

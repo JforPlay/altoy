@@ -1,0 +1,124 @@
+/* =============================================================================
+   fleet-sim.interactions.css
+   Part of the fleet-sim style split (formerly fleet-sim.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ===== RETROFIT TOGGLE (Task 5) ===== */
+
+.retrofit-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  user-select: none;
+  flex-shrink: 0;
+  padding: 2px 0;
+}
+
+.retrofit-toggle input[type="checkbox"] {
+  display: none;
+}
+
+.retrofit-toggle .toggle-track {
+  width: 28px;
+  height: 14px;
+  background: var(--surface-border);
+  border-radius: 7px;
+  position: relative;
+  transition: background var(--transition-fast);
+}
+
+.retrofit-toggle .toggle-track::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 10px;
+  height: 10px;
+  background: var(--text-muted);
+  border-radius: 50%;
+  transition: transform var(--transition-fast), background var(--transition-fast);
+}
+
+.retrofit-toggle input:checked ~ .toggle-track {
+  background: var(--primary-color);
+}
+
+.retrofit-toggle input:checked ~ .toggle-track::after {
+  transform: translateX(14px);
+  background: #fff;
+}
+
+.retrofit-toggle .toggle-label {
+  font-weight: 600;
+  transition: color var(--transition-fast);
+}
+
+.retrofit-toggle input:checked ~ .toggle-label {
+  color: var(--primary-color);
+}
+
+/* ===== SP WEAPON SLOT (Task 1) ===== */
+
+.equip-slot.sp-slot .equip-slot-label {
+  color: var(--rarity-ur);
+  font-weight: 600;
+}
+
+.equip-slot.sp-dedicated .equip-slot-icon-box {
+  border-style: solid;
+  border-color: var(--rarity-ur);
+  cursor: default;
+}
+
+/* ===== DRAG AND DROP (Task 6) ===== */
+
+.ship-card .drag-handle {
+  cursor: grab;
+  color: var(--text-dim);
+  font-size: 16px;
+  transition: color var(--transition-fast);
+  padding: 2px;
+}
+
+.ship-card .drag-handle:hover {
+  color: var(--text-secondary);
+}
+
+.ship-card .drag-handle:active {
+  cursor: grabbing;
+}
+
+.ship-card.dragging {
+  opacity: 0.4;
+  border-style: dashed;
+}
+
+.ship-card.drag-over {
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-lg), inset 0 0 0 1px var(--primary-color);
+}
+
+.ship-card--empty.drag-over {
+  border-color: var(--primary-color);
+  background: var(--primary-alpha-10);
+}
+
+/* ===== ANIMATIONS ===== */
+
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ship-card:not(.ship-card--empty) {
+  animation: cardFadeIn 0.3s ease-out;
+}

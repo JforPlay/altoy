@@ -1,0 +1,258 @@
+/* =============================================================================
+   fleet-sim.stats.css
+   Part of the fleet-sim style split (formerly fleet-sim.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ===== STATS TOGGLE ===== */
+
+.stats-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-xs) var(--spacing-md);
+  cursor: pointer;
+  user-select: none;
+  border-top: 1px solid var(--surface-border);
+  transition: background var(--transition-fast);
+}
+
+.stats-toggle:hover,
+.stats-toggle:focus-visible {
+  background: var(--primary-alpha-10);
+  outline: none;
+}
+
+.stats-toggle:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--primary-color);
+}
+
+.stats-toggle-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.stats-toggle .material-symbols-outlined {
+  font-size: 18px;
+  color: var(--text-muted);
+  transition: transform var(--transition-fast);
+}
+
+.stats-toggle.collapsed .material-symbols-outlined {
+  transform: rotate(180deg);
+}
+
+.ship-stats-collapsible {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.2s ease;
+}
+
+.ship-stats-collapsible.collapsed {
+  grid-template-rows: 0fr;
+}
+
+.ship-stats-collapsible-inner {
+  overflow: hidden;
+}
+
+/* ===== STATS GRID (2×4) ===== */
+
+.ship-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  padding: var(--spacing-xs) var(--spacing-md);
+}
+
+.ship-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px var(--spacing-xs);
+  border-radius: var(--radius-xs);
+}
+
+/* Alternating row stripes in 2-column grid: children 1-2 = row1, 3-4 = row2, etc. */
+.ship-stat-row:nth-child(4n+1),
+.ship-stat-row:nth-child(4n+2) {
+  background: var(--section-bg);
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-value.stat-zero {
+  color: var(--text-dim);
+}
+
+/* Highest stat marker */
+.stat-value.stat-best {
+  color: var(--primary-color);
+}
+
+.stat-best-marker {
+  font-size: 0.6rem;
+  margin-left: 2px;
+  color: var(--warning-color);
+}
+
+/* ===== STAT BREAKDOWN ===== */
+
+.ship-stat-row.has-breakdown {
+  flex-wrap: wrap;
+}
+
+.stat-breakdown {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.6rem;
+  line-height: 1;
+  padding-top: 1px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-breakdown > span::before {
+  content: '';
+}
+
+/* Base value — no prefix */
+.bd-base {
+  color: var(--text-muted);
+}
+
+/* Equipment bonus — teal accent */
+.bd-equip {
+  color: var(--accent-green);
+}
+
+/* Fleet tech bonus — blue accent */
+.bd-tech {
+  color: var(--accent-blue);
+}
+
+/* Passive skill buff — warm */
+.bd-buff {
+  color: var(--warning-color);
+}
+
+.bd-buff small {
+  opacity: 0.8;
+}
+
+/* ===== RELOAD ITEMS (used in .ship-reload-bar) ===== */
+
+.reload-item {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  background: var(--overlay-lightest);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.reload-item .material-symbols-outlined {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.reload-value {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===== FLEET SUMMARY ===== */
+
+.fleet-summary {
+  margin-top: var(--spacing-lg);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+}
+
+.fleet-summary-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.fleet-summary-header .material-symbols-outlined {
+  font-size: 1.3rem;
+  color: var(--primary-color);
+}
+
+.fleet-summary-header h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.fleet-summary-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+}
+
+.summary-panel h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 var(--spacing-sm);
+}
+
+.tech-bonus-list,
+.passive-skill-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.tech-bonus-item,
+.passive-skill-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--section-bg);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.tech-bonus-value,
+.passive-skill-value {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-left: auto;
+}
+
+.passive-skill-item .skill-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-xs);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+

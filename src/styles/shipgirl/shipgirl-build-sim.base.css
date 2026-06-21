@@ -1,0 +1,126 @@
+/* =============================================================================
+   shipgirl-build-sim.base.css
+   Part of the shipgirl-build-sim style split (formerly shipgirl-build-sim.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* Build Simulator Styles */
+
+@import url('../theme.css');
+
+/* ===== Tokens =================================================================
+   All colors come from theme.css (imported above): surfaces
+   (--card-bg / --section-bg / --bg-secondary), text (--text-primary /
+   --text-secondary), borders (--border-color), shadows (--shadow-md / -lg),
+   rarity (--rarity-* + paired --rarity-*-text), and the accent (--accent-blue).
+   No page-local palette and no per-page dark-mode block — light/dark is driven
+   entirely by theme.css, matching shipgirl-info. */
+
+/* ===== Base / Layout ===== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* ===== Header ===== */
+
+/* Title row mirrors shipgirl-info: boxless left-aligned icon + h1 in the flat
+   grayscale --primary-color (theme.css), not the page's purple gradient.
+   Flex row + gap now from page-header-title canonical; gap hook overrides default. */
+
+.header-title-container {
+    --page-header-gap: 0.55rem;
+}
+
+.header-title-container .material-symbols-outlined {
+    font-size: 1.5rem;
+}
+
+.page-header h1 {
+    color: var(--primary-color);
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.page-header-subtitle {
+    margin: 0.3rem 0 0;
+}
+
+.build-sim-status {
+    margin: 0 auto 2rem;
+    padding: 1rem;
+    max-width: 42rem;
+    text-align: center;
+    color: var(--danger-color);
+    background: var(--card-bg);
+    border: 2px solid var(--danger-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+}
+
+/* ===== Pool Selector ===== */
+
+/* Two stacked rows: the primary row (limited banners + standard pools) and the
+   despair row below it. Each row is its own uniform grid — equal-width cells
+   that align into neat columns (same template ⇒ columns line up across rows). */
+.pool-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    margin-bottom: 2rem;
+}
+
+.pool-group {
+    --grid-min: 190px;
+    --grid-gap: var(--spacing-sm);
+}
+
+/* Pool toggles are `.btn .btn-secondary` (canonical) + `.is-active` for the
+   selected pool (accent-blue fill); they stretch to fill each grid cell.
+   Only the segmented-selector layout (grid placement + glyph/label boxes) stays
+   local — the button shape/color/active state come from components/button.css. */
+
+/* Pin emoji glyphs to a fixed box so chips align regardless of glyph width */
+.pool-icon {
+    font-size: 0.95rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.pool-name {
+    font-weight: 600;
+}
+
+/* ===== Section Panels ===== */
+
+section {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-md);
+}
+
+section h2 {
+    margin: 0 0 1.5rem 0;
+    font-size: 1.5rem;
+    color: var(--text-primary);
+}
+
+section h3 {
+    margin: 1.5rem 0 1rem 0;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+}

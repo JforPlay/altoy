@@ -1,0 +1,261 @@
+/* =============================================================================
+   island.technology.detail.css
+   Part of the island.technology style split (formerly island.technology.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ==========================================================================
+   7. TECH DETAIL PANEL
+   ========================================================================== */
+
+.tech-detail-content {
+    padding: 1.5rem;
+}
+
+/* Detail Header */
+.tech-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--island-border);
+}
+
+.tech-detail-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    min-width: 3.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid;
+}
+
+.tech-detail-title h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--island-text-primary);
+    margin: 0 0 0.75rem 0;
+    line-height: 1.3;
+}
+
+.tech-detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+/* `.tech-category-badge` = `.badge` + inline category color (exception).
+   `.tech-level-badge` = `.badge.badge--neutral` (CSS unification Wave 1). */
+
+/* Description */
+.tech-description {
+    font-size: 0.9375rem;
+    color: var(--island-text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Requirements */
+.no-requirements {
+    font-size: 0.875rem;
+    color: var(--island-text-tertiary);
+    font-style: italic;
+    margin: 0;
+}
+
+.requirements-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.requirement-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: var(--island-bg);
+    border-radius: 8px;
+    border-left: 3px solid var(--island-accent);
+    transition: var(--island-transition);
+}
+
+.requirement-item.clickable {
+    cursor: pointer;
+    position: relative;
+}
+
+.requirement-item.clickable:hover {
+    background: var(--island-surface-hover);
+    border-left-color: var(--island-accent-hover);
+    transform: translateX(2px);
+}
+
+.requirement-item.clickable .link-arrow {
+    opacity: 0;
+    transition: var(--island-transition);
+    font-size: 1.125rem;
+    color: var(--island-accent);
+}
+
+.requirement-item.clickable:hover .link-arrow {
+    opacity: 1;
+    transform: translateX(2px);
+}
+
+.requirement-item .material-symbols-outlined {
+    font-size: 1.25rem;
+    color: var(--island-accent);
+    flex-shrink: 0;
+}
+
+.requirement-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+.requirement-content > span {
+    font-size: 0.875rem;
+    color: var(--island-text-primary);
+    font-weight: 500;
+}
+
+/* Requirement category: `.badge` + inline category color (exception);
+   keeps only its currentColor outline. */
+.requirement-category-badge {
+    border: 1px solid currentColor;
+}
+
+/* Requirement quest: `.badge` + brand-green color exception. */
+.requirement-quest-badge {
+    background-color: rgba(67, 181, 129, 0.15);
+    color: #43b581;
+    border: 1px solid #43b581;
+}
+
+/* Formula Stats */
+.formula-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.formula-stat {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.875rem;
+    background: var(--island-bg);
+    border-radius: 8px;
+}
+
+.stat-icon {
+    font-size: 1.75rem;
+    color: var(--island-accent);
+}
+
+.stat-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: var(--island-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--island-text-primary);
+}
+
+/* Formula Costs */
+.formula-costs {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--island-border);
+}
+
+.formula-costs h4 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--island-text-secondary);
+    margin: 0 0 0.75rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cost-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.cost-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.625rem 0.875rem;
+    background: var(--island-bg);
+    border-radius: 6px;
+    font-size: 0.875rem;
+}
+
+.cost-resource {
+    color: var(--island-text-secondary);
+}
+
+.cost-amount {
+    font-weight: 600;
+    color: var(--island-text-primary);
+}
+
+.cost-resource-display {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.cost-resource-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.cost-resource-icon.material-symbols-outlined {
+    font-size: 1.5rem;
+    color: var(--island-text-secondary);
+}
+
+.cost-resource-name {
+    font-size: 0.875rem;
+    color: var(--island-text-secondary);
+    font-weight: 500;
+}
+
+/* Completion Tips */
+.completion-tips {
+    padding: 1rem;
+    background: var(--island-success)10;
+    border-left: 3px solid var(--island-success);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    color: var(--island-text-secondary);
+    line-height: 1.6;
+}
+
+.completion-tips .highlight {
+    color: var(--island-accent);
+    font-weight: 600;
+}
+

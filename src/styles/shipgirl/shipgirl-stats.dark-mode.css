@@ -1,0 +1,62 @@
+/* =============================================================================
+   shipgirl-stats.dark-mode.css
+   Part of the shipgirl-stats style split (formerly shipgirl-stats.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* -- Dark Mode -- */
+body.dark-mode .stats-filter-card {
+    box-shadow: var(--shadow-md);
+}
+
+body.dark-mode .dashboard-card {
+    box-shadow: var(--shadow-md);
+}
+
+body.dark-mode .table-section {
+    box-shadow: var(--shadow-md);
+}
+
+body.dark-mode .compare-bar.is-active {
+    box-shadow: var(--shadow-xl);
+}
+
+body.dark-mode .compare-modal-inner {
+    box-shadow: var(--shadow-xl);
+}
+
+body.dark-mode .tab-toggle {
+    background: var(--highlight-subtle);
+}
+
+body.dark-mode .summary-stat {
+    background: var(--highlight-subtle);
+}
+
+body.dark-mode .compare-ship-header {
+    background: var(--highlight-subtle);
+}
+
+body.dark-mode .expand-cols-btn:not(.active) {
+    background: var(--highlight-subtle);
+}
+
+body.dark-mode .expand-cols-btn:not(.active):hover {
+    background: var(--highlight-soft);
+}
+
+/* Dark text on light --primary-color (#b0b0b0) backgrounds */
+body.dark-mode .tab-toggle-btn.active {
+    color: #1a1a1a;
+}
+
+/* (pagination + compare-bar buttons are now canonical .btn variants that carry
+   stable hues, so the old --primary-color dark-text overrides were removed.) */
+
+body.dark-mode .filter-select {
+    background: #2a2a2a;
+}
+
+body.dark-mode .filter-search {
+    background: #2a2a2a;
+}
+

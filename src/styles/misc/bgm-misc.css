@@ -2,7 +2,7 @@
  * bgm-misc.css
  * Minimal list page for orphan BGM stems. No carousel, no covers.
  * Themed via theme.css tokens — auto-adapts to dark mode.
- * Play button + row hover style mirror skin.detail.viewer.css.
+ * Play button + row hover style mirror skin.detail.viewer.content.css.
  */
 body {
     color: var(--text-primary);
@@ -152,7 +152,7 @@ body {
     color: var(--text-secondary);
 }
 
-/* --- Play button: mirrors .play-voice-btn from skin.detail.viewer.css --- */
+/* --- Play button: mirrors .play-voice-btn from skin.detail.viewer.content.css --- */
 .bgm-misc-play {
     background: linear-gradient(135deg, var(--primary-color), var(--accent-blue));
     color: white;

@@ -1,0 +1,299 @@
+/* =============================================================================
+   fleet-sim.pickers.css
+   Part of the fleet-sim style split (formerly fleet-sim.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ===== PICKER MODALS (Ship & Equipment) ===== */
+
+/* Modal.astro shell overrides: pickers pin the search/filters and scroll only
+   the grid, so the dialog itself must be a non-scrolling flex column. The ID
+   prefix outranks the shell's Astro-scoped styles; max-width lives here (not
+   the maxWidth prop) so the mobile full-screen override below can win. */
+#shipPickerModal .c-modal-dialog,
+#equipPickerModal .c-modal-dialog {
+  max-width: 700px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.picker-search-input {
+  width: 100%;
+  padding: 10px var(--spacing-sm);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 14px;
+  margin-bottom: var(--spacing-sm);
+  transition: border-color var(--transition-fast);
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.picker-search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: var(--focus-ring);
+}
+
+/* Filter section */
+.picker-filters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-sm);
+}
+
+.filter-row {
+  --filter-bar-gap: var(--spacing-sm);
+}
+
+.filter-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  min-width: 40px;
+  flex-shrink: 0;
+}
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.filter-chip {
+  padding: 3px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--section-bg);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: inherit;
+  line-height: 1.4;
+}
+
+.filter-chip:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.filter-chip.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff;
+}
+
+/* Rarity-colored filter chips */
+.filter-chip[data-rarity="ur"].active  { background: var(--rarity-ur); border-color: var(--rarity-ur); }
+.filter-chip[data-rarity="ssr"].active { background: var(--rarity-ssr); border-color: var(--rarity-ssr); color: var(--rarity-ssr-text); }
+.filter-chip[data-rarity="sr"].active  { background: var(--rarity-sr); border-color: var(--rarity-sr); }
+.filter-chip[data-rarity="r"].active   { background: var(--rarity-r); border-color: var(--rarity-r); }
+.filter-chip[data-rarity="n"].active   { background: var(--rarity-n); border-color: var(--rarity-n); color: var(--rarity-n-text); }
+
+/* Picker item grid */
+.picker-grid {
+  --grid-min: 100px;
+  --grid-gap: var(--spacing-xs);
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  max-height: 50vh;
+  padding-right: var(--spacing-xs);
+}
+
+/* Scrollbar styling comes from the global .scroll-styled utility
+   (applied in markup on .picker-grid and .save-slot-list). */
+
+.picker-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  background: var(--section-bg);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-align: center;
+  transition: all var(--transition-fast);
+  font-family: inherit;
+}
+
+.picker-item:hover,
+.picker-item:focus-visible {
+  border-color: var(--primary-color);
+  background: var(--primary-alpha-10);
+  outline: none;
+}
+
+.picker-item-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+.picker-item-name {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Rarity indicator dot on picker items */
+.picker-item[data-rarity="ur"]  { border-left: 3px solid var(--rarity-ur); }
+.picker-item[data-rarity="ssr"] { border-left: 3px solid var(--rarity-ssr); }
+.picker-item[data-rarity="sr"]  { border-left: 3px solid var(--rarity-sr); }
+.picker-item[data-rarity="r"]   { border-left: 3px solid var(--rarity-r); }
+.picker-item[data-rarity="n"]   { border-left: 3px solid var(--rarity-n); }
+
+/* Assigned ship indicator (checkmark overlay) */
+.picker-item.assigned {
+  opacity: 0.55;
+  position: relative;
+}
+
+.picker-item.assigned::after {
+  content: '\e5ca'; /* Material Symbols "check" */
+  font-family: 'Material Symbols Outlined';
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 16px;
+  color: var(--success-color);
+  background: var(--overlay-medium);
+  border-radius: var(--radius-full);
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* Unequip option in picker */
+.picker-item-unequip {
+  border: 1px dashed var(--border-color);
+  color: var(--text-muted);
+}
+
+.picker-item-unequip:hover {
+  border-color: var(--danger-color);
+  color: var(--danger-color);
+  background: var(--primary-alpha-10);
+}
+
+.picker-unequip-icon {
+  font-size: 28px;
+}
+
+/* ===== SAVE/LOAD MODAL ===== */
+
+#saveLoadModal .c-modal-dialog {
+  max-width: 480px;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.save-load-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.save-input-row {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
+.save-input-row .picker-search-input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.save-divider {
+  height: 1px;
+  background: var(--surface-border);
+  margin: var(--spacing-sm) 0;
+}
+
+.save-slot-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.save-slot-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background: var(--section-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast);
+}
+
+.save-slot-item:hover {
+  border-color: var(--primary-color);
+}
+
+.save-slot-info {
+  flex: 1;
+  min-width: 0;
+  display: block;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-family: inherit;
+  cursor: pointer;
+  color: inherit;
+}
+
+.save-slot-info:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.save-slot-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.save-slot-date {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+/* Slot action buttons are emitted as canonical .btn .btn-sm .btn-primary (불러오기)
+   / .btn-danger (삭제) by _createSaveActionButton — button.css owns their styling. */
+.save-slot-actions {
+  display: flex;
+  gap: 4px;
+}
+
+/* Loading overlay → canonical .page-status--overlay (components/status.css) */
+
+

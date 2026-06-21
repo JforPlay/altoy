@@ -1,0 +1,227 @@
+/* =============================================================================
+   shipgirl-stats.dashboard.css
+   Part of the shipgirl-stats style split (formerly shipgirl-stats.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* -- Dashboard -- */
+.dashboard-section {
+    margin-bottom: var(--spacing-lg);
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+}
+
+.dashboard-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-md);
+    box-shadow: var(--shadow-sm);
+    transition: background var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.dashboard-card.wide-card {
+    grid-column: 1 / -1;
+}
+
+.dashboard-card-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.dashboard-card-title .material-symbols-outlined {
+    font-size: 1.125rem;
+    color: var(--primary-color);
+}
+
+.chart-header-controls {
+    margin-bottom: var(--spacing-sm);
+}
+
+.chart-container {
+    position: relative;
+    height: 14rem;
+    min-height: 14rem;
+    width: 100%;
+}
+
+.chart-container.chart-empty::after {
+    content: "차트를 불러올 수 없습니다";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.chart-container-wide {
+    height: 16rem;
+}
+
+.chart-container-tall {
+    height: 20rem;
+    min-height: 20rem;
+}
+
+/* -- Summary Card -- */
+.summary-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    align-items: flex-start;
+}
+
+.summary-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--section-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    min-width: 5.5rem;
+    transition: background var(--transition-fast);
+}
+
+.summary-stat-value {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: 1.2;
+}
+
+.summary-stat-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-align: center;
+    white-space: nowrap;
+}
+
+.rarity-breakdown {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+    align-items: center;
+    width: 100%;
+}
+
+/* Colour comes from the shared palette (rarity.css `--r`/`--r-text`); this
+   class only owns its bespoke pill box. */
+.rarity-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    border-radius: 2rem;
+    white-space: nowrap;
+    background: var(--r);
+    color: var(--r-text);
+}
+
+/* -- Threshold Filters -- */
+.threshold-section {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+    transition: background var(--transition-fast);
+}
+
+.threshold-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-md);
+    cursor: pointer;
+    user-select: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    transition: background var(--transition-fast);
+}
+
+.threshold-toggle:hover {
+    background: var(--overlay-lightest);
+}
+
+.threshold-toggle .material-symbols-outlined {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+}
+
+.threshold-toggle .toggle-arrow {
+    margin-left: auto;
+    transition: transform var(--transition-fast);
+}
+
+.threshold-section.open .toggle-arrow {
+    transform: rotate(180deg);
+}
+
+.threshold-controls {
+    display: none;
+    padding: var(--spacing-md);
+    border-top: 1px solid var(--border-color);
+}
+
+.threshold-section.open .threshold-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.threshold-group {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    flex: 1;
+    min-width: 10rem;
+}
+
+.threshold-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: 3rem;
+}
+
+.threshold-input {
+    width: 5.5rem;
+    padding: 0.375rem 0.5rem;
+    font-size: 0.85rem;
+    background: var(--input-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-md);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.threshold-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: var(--focus-ring);
+}
+

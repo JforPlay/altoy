@@ -1,0 +1,300 @@
+/* =============================================================================
+   island.restaurant.controls.css
+   Part of the island.restaurant style split (formerly island.restaurant.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ==========================================================================
+   2. CONTROLS (Rank Selector + Event Toggles)
+   ========================================================================== */
+
+.restaurant-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--island-spacing-md);
+    margin-bottom: var(--island-spacing-lg);
+}
+
+/* Rank Selector */
+.rank-selector-container {
+    background: var(--island-surface);
+    border-radius: var(--island-radius-lg);
+    padding: var(--island-spacing-md);
+    box-shadow: var(--island-shadow-md);
+}
+
+.rank-selector-label {
+    display: flex;
+    align-items: center;
+    gap: var(--island-gap-xs);
+    margin-bottom: var(--island-spacing-sm);
+    font-size: var(--island-text-md);
+    font-weight: 600;
+    color: var(--island-text-primary);
+}
+
+.rank-selector-label .material-symbols-outlined {
+    font-size: var(--island-icon-md);
+    color: var(--island-accent);
+}
+
+.rank-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--island-gap-sm);
+}
+
+.rank-btn {
+    background: var(--island-bg);
+    border: 2px solid var(--island-border);
+    border-radius: var(--island-radius-md);
+    padding: var(--island-spacing-sm);
+    cursor: pointer;
+    transition: var(--island-transition);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.rank-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--rank-color);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.rank-btn.active::before {
+    opacity: 1;
+}
+
+.rank-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.rank-name {
+    font-size: var(--island-text-xs);
+    font-weight: 600;
+    color: var(--island-text-secondary);
+}
+
+.rank-coeff {
+    font-size: 0.65rem;
+    color: var(--island-text-tertiary);
+    font-weight: 600;
+}
+
+.rank-btn:hover {
+    border-color: var(--rank-color);
+    background: var(--island-surface);
+}
+
+.rank-btn.active {
+    border-color: var(--rank-color);
+    background: linear-gradient(to bottom, var(--island-surface), var(--island-bg));
+    box-shadow: 0 0 12px rgba(var(--rank-color), 0.3);
+}
+
+.rank-btn.active .rank-name {
+    color: var(--rank-color);
+}
+
+/* Event Toggles */
+.event-toggles-container {
+    background: var(--island-surface);
+    border-radius: var(--island-radius-lg);
+    padding: var(--island-spacing-md);
+    box-shadow: var(--island-shadow-md);
+}
+
+.event-toggles-label {
+    display: flex;
+    align-items: center;
+    gap: var(--island-gap-xs);
+    margin-bottom: var(--island-spacing-sm);
+    font-size: var(--island-text-md);
+    font-weight: 600;
+    color: var(--island-text-primary);
+}
+
+.event-toggles-label .material-symbols-outlined {
+    font-size: var(--island-icon-md);
+    color: var(--island-accent);
+}
+
+.event-checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--island-gap-sm);
+}
+
+.event-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: var(--island-gap-sm);
+    padding: var(--island-spacing-xs) var(--island-spacing-sm);
+    background: var(--island-bg);
+    border: 2px solid var(--island-border);
+    border-radius: var(--island-radius-md);
+    cursor: pointer;
+    transition: var(--island-transition);
+}
+
+.event-checkbox {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.event-checkbox-custom {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--island-border);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--island-transition);
+    flex-shrink: 0;
+}
+
+.event-checkbox-custom::after {
+    content: '✓';
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.2s;
+}
+
+.event-checkbox:checked + .event-checkbox-custom {
+    background: var(--island-accent);
+    border-color: var(--island-accent);
+}
+
+.event-checkbox:checked + .event-checkbox-custom::after {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.event-checkbox-label:hover {
+    border-color: var(--island-accent);
+    background: var(--island-surface);
+}
+
+.event-name {
+    flex: 1;
+    font-size: var(--island-text-sm);
+    font-weight: 500;
+    color: var(--island-text-secondary);
+}
+
+.event-bonus {
+    font-size: var(--island-text-xs);
+    font-weight: 700;
+    color: var(--island-success);
+    background: rgba(39, 174, 96, 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: var(--island-radius-sm);
+}
+
+/* ==========================================================================
+   2b. SHIPGIRL SELECTORS
+   ========================================================================== */
+
+.shipgirl-selector-container {
+    background: var(--island-surface);
+    border-radius: var(--island-radius-lg);
+    padding: var(--island-spacing-md);
+    box-shadow: var(--island-shadow-md);
+}
+
+.shipgirl-selector {
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.shipgirl-selector.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.shipgirl-selector-label {
+    display: flex;
+    align-items: center;
+    gap: var(--island-gap-xs);
+    margin-bottom: var(--island-spacing-sm);
+    font-size: var(--island-text-md);
+    font-weight: 600;
+    color: var(--island-text-primary);
+}
+
+.shipgirl-selector-label .material-symbols-outlined {
+    font-size: var(--island-icon-md);
+    color: var(--island-accent);
+}
+
+/* Gold-only: brand gradient exception — keeps its fill + the layout helper,
+   adopts the shared `.badge` base shape. */
+.gold-only-badge {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #1a1d23;
+    margin-left: auto;
+}
+
+.shipgirl-attributes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--island-gap-sm);
+}
+
+.attribute-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.attribute-label {
+    font-size: var(--island-text-xs);
+    font-weight: 600;
+    color: var(--island-text-secondary);
+    padding-left: 0.25rem;
+}
+
+.attribute-select {
+    background: var(--island-bg);
+    border: 2px solid var(--island-border);
+    border-radius: var(--island-radius-md);
+    padding: var(--island-spacing-sm) var(--island-spacing-md);
+    font-size: var(--island-text-sm);
+    font-weight: 600;
+    color: var(--island-text-primary);
+    cursor: pointer;
+    transition: var(--island-transition);
+}
+
+.attribute-select:hover:not(:disabled) {
+    border-color: var(--island-accent);
+    background: var(--island-surface);
+}
+
+.attribute-select:focus {
+    outline: none;
+    border-color: var(--island-accent);
+    box-shadow: var(--focus-ring);
+}
+
+.attribute-select:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+

@@ -1,0 +1,69 @@
+/* =============================================================================
+   shipgirl-build-sim.responsive.css
+   Part of the shipgirl-build-sim style split (formerly shipgirl-build-sim.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+
+/* ===== Responsive / Media Queries ===== */
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem 0.5rem;
+    }
+
+    section {
+        padding: 1.5rem 1rem;
+    }
+
+    .simulator-controls {
+        flex-direction: column;
+    }
+
+    .sim-btn {
+        min-width: 100%;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .ship-grid {
+        --grid-min: 120px;
+    }
+
+    .ship-card {
+        width: 120px;
+    }
+
+    .pool-filters .filter-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .resource-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .ship-grid {
+        --grid-min: 85px;
+    }
+
+    .ship-grid .ship-card {
+        padding: 0.5rem;
+    }
+
+    .ship-grid .ship-card-icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .ship-grid .ship-card-name {
+        font-size: 0.75rem;
+    }
+
+    .probability-graph-container {
+        padding: 1rem;
+    }
+}

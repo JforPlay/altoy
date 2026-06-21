@@ -1,0 +1,220 @@
+/* =============================================================================
+   shipgirl-build-sim.modal.css
+   Part of the shipgirl-build-sim style split (formerly shipgirl-build-sim.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+
+/* ===== Despair Pool Modal ===== */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--overlay-intense);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--z-modal);
+    padding: 1rem;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    border-radius: 16px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--text-primary);
+}
+
+/* Modal close = `.btn .btn-close` (components/button.css); no local rule needed
+   (it sits in the header flex row, not absolutely positioned). */
+
+.modal-body {
+    padding: 2rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.selection-info {
+    background: var(--section-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.selection-info p {
+    margin: 0 0 1rem 0;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.selection-status {
+    display: flex;
+    gap: 2rem;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+.selection-status span {
+    font-weight: 600;
+}
+
+.selection-status span span {
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.rarity-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.rarity-tab {
+    flex: 1;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid var(--border-color);
+    background: var(--section-bg);
+    color: var(--text-primary);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.rarity-tab:hover {
+    background: var(--bg-secondary);
+}
+
+.rarity-tab.active {
+    background: var(--accent-blue);
+    color: white;
+    border-color: transparent;
+}
+
+.modal-ship-grid {
+    --grid-min: 120px;
+    min-height: 300px;
+}
+
+.modal-ship-card {
+    background: var(--section-bg);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.modal-ship-card:hover {
+    transform: translateY(var(--card-lift));
+    box-shadow: var(--card-hover-shadow);
+}
+
+.modal-ship-card.selected {
+    border-color: var(--accent-blue);
+    background: var(--primary-alpha-10);
+}
+
+.modal-ship-card.ur { border-color: var(--rarity-ur); }
+.modal-ship-card.ssr { border-color: var(--rarity-ssr); }
+.modal-ship-card.sr { border-color: var(--rarity-sr); }
+
+.modal-ship-card.selected.ur {
+    background: color-mix(in srgb, var(--rarity-ur) 12%, var(--section-bg));
+    box-shadow: 0 0 20px color-mix(in srgb, var(--rarity-ur) 35%, transparent);
+}
+
+.modal-ship-card.selected.ssr {
+    background: color-mix(in srgb, var(--rarity-ssr) 12%, var(--section-bg));
+    box-shadow: 0 0 20px color-mix(in srgb, var(--rarity-ssr) 35%, transparent);
+}
+
+.modal-ship-card.selected.sr {
+    background: color-mix(in srgb, var(--rarity-sr) 12%, var(--section-bg));
+    box-shadow: 0 0 20px color-mix(in srgb, var(--rarity-sr) 35%, transparent);
+}
+
+.modal-ship-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    background: var(--bg-secondary);
+}
+
+.modal-ship-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
+    color: var(--text-primary);
+}
+
+.modal-ship-rarity {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+}
+
+.modal-ship-rarity.ur { background: var(--rarity-ur-bg); color: var(--rarity-ur-text); }
+.modal-ship-rarity.ssr { background: var(--rarity-ssr); color: var(--rarity-ssr-text); }
+.modal-ship-rarity.sr { background: var(--rarity-sr); color: var(--rarity-sr-text); }
+
+.selected-check {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--accent-blue);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px var(--overlay-strong);
+}
+
+.selected-check .material-symbols-outlined {
+    color: white;
+    font-size: 24px;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    border-top: 2px solid var(--border-color);
+}
+
+/* 취소 = `.btn .btn-secondary`, 확인 = `.btn .btn-primary` (components/button.css).
+   Only the footer-split layout (each button fills half the footer) stays local. */
+.modal-btn {
+    flex: 1;
+}

@@ -1,0 +1,106 @@
+/* =============================================================================
+   skin.list.viewer.dark-mode.css
+   Part of the skin.list.viewer style split (formerly skin.list.viewer.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* =================================================================
+   DARK MODE OVERRIDES
+   ================================================================= */
+
+body.dark-mode .info-line strong {
+  color: var(--text-dim);
+}
+
+body.dark-mode #search-input::placeholder {
+  color: var(--text-dim);
+}
+
+body.dark-mode .sort-select,
+body.dark-mode .ownership-select {
+  background-color: var(--bg-input);
+  border-color: var(--bg-secondary);
+}
+
+body.dark-mode .autocomplete-items {
+  background-color: var(--bg-input);
+  border: 1px solid var(--bg-secondary);
+  box-shadow: none;
+}
+
+body.dark-mode .autocomplete-items div {
+  border-bottom: 1px solid var(--bg-secondary);
+}
+
+body.dark-mode .autocomplete-items div:hover {
+  background-color: var(--primary-color);
+}
+
+/* Skin Cards - Dark mode adjustments */
+body.dark-mode .skin-box {
+  border: 1px solid var(--bg-input);
+  box-shadow: none;
+}
+
+body.dark-mode .skin-box.is-owned {
+  border-color: var(--success-color);
+  box-shadow: inset 3px 0 0 var(--success-color);
+}
+
+body.dark-mode .skin-box.is-wanted {
+  border-color: var(--danger-color);
+  box-shadow: inset -3px 0 0 var(--danger-color);
+}
+
+body.dark-mode .skin-box.is-owned.is-wanted {
+  box-shadow: inset 3px 0 0 var(--success-color), inset -3px 0 0 var(--danger-color);
+}
+
+body.dark-mode .skin-box-link:hover .skin-box {
+  box-shadow: none;
+}
+
+body.dark-mode .skin-box-link:hover .skin-box.is-owned {
+  box-shadow: inset 3px 0 0 var(--success-color);
+}
+
+body.dark-mode .skin-box-link:hover .skin-box.is-wanted {
+  box-shadow: inset -3px 0 0 var(--danger-color);
+}
+
+body.dark-mode .skin-box-link:hover .skin-box.is-owned.is-wanted {
+  box-shadow: inset 3px 0 0 var(--success-color), inset -3px 0 0 var(--danger-color);
+}
+
+/* Cart dark mode */
+body.dark-mode .cart-modal-content {
+  border: 1px solid var(--bg-input);
+}
+
+body.dark-mode .cart-item {
+  background: var(--bg-input);
+}
+
+body.dark-mode .cart-item:hover {
+  background: var(--bg-secondary);
+}
+
+body.dark-mode .cart-buyall-btn {
+  border-color: var(--success-color);
+}
+
+body.dark-mode .cart-buyall-btn:hover {
+  background: var(--success-color);
+  color: #fff;
+}
+
+body.dark-mode .filter-footer {
+  background-color: var(--bg-secondary);
+  border: none;
+  border-top: 1px solid var(--bg-input);
+}
+
+body.dark-mode .popup-skin-info {
+  background-color: var(--bg-secondary);
+  border: none;
+  box-shadow: none;
+}

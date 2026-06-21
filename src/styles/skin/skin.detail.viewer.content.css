@@ -1,0 +1,252 @@
+/* =============================================================================
+   skin.detail.viewer.content.css
+   Part of the skin.detail.viewer style split (formerly skin.detail.viewer.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* --- Text Content Area --- */
+.text-content-area {
+  margin-top: var(--spacing-xl);
+}
+
+.descriptions-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.description-item {
+  flex: 1 1 100%;
+  background: var(--bg-secondary);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-sm);
+}
+
+.description-item:hover {
+  transform: translateY(var(--card-lift));
+  box-shadow: var(--card-hover-shadow);
+  border-color: var(--primary-color);
+}
+
+.description-item h2 {
+  margin-top: 0;
+  font-size: 1.25rem;
+  color: var(--primary-light);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.description-item h2::before {
+  content: "";
+  width: 4px;
+  height: 1.5rem;
+  background: linear-gradient(
+    180deg,
+    var(--primary-color),
+    var(--accent-color)
+  );
+  border-radius: 999px;
+}
+
+.description-item p {
+  margin-bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-md);
+  line-height: 1.7;
+}
+
+.self-intro {
+  flex-grow: 2;
+}
+
+/* --- Voice Line Table (Modern) --- */
+.voice-line-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-top: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+}
+
+.voice-line-table th,
+.voice-line-table td {
+  padding: var(--spacing-md) var(--spacing-lg);
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.voice-line-table thead th {
+  background: linear-gradient(
+    135deg,
+    var(--bg-tertiary) 0%,
+    var(--bg-secondary) 100%
+  );
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  text-align: center;
+  padding: var(--spacing-lg);
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+.voice-line-table tbody tr {
+  transition: all var(--transition-fast);
+}
+
+.voice-line-table tbody tr:nth-child(even) {
+  background-color: rgba(0, 113, 235, 0.04);
+}
+
+.voice-line-table tbody tr:hover {
+  background-color: rgba(0, 113, 235, 0.08);
+  transform: scale(1.005);
+}
+
+.voice-line-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.voice-line-table td:first-child {
+  font-weight: 600;
+  color: var(--primary-light);
+  width: 20%;
+  font-size: 0.9375rem;
+}
+
+.voice-line-table td:last-child {
+  line-height: 1.6;
+  white-space: pre-line;
+  color: var(--text-secondary);
+}
+
+.voice-line-table td:last-child div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+/* --- Play Button ---
+   Base shape from .btn.btn-icon (components/button.css). Only the inline
+   no-shrink layout + the active "playing" state (red fill + pulse, a real
+   functional indicator) stay local. */
+.play-voice-btn {
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.play-voice-btn.playing {
+  background: var(--danger-color);
+  border-color: var(--danger-color);
+  color: #fff;
+  animation: playing-pulse 1s ease-in-out infinite;
+}
+
+.play-voice-btn.playing:hover {
+  color: #fff;
+  border-color: var(--danger-color);
+}
+
+@keyframes playing-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(240, 71, 71, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(240, 71, 71, 0);
+  }
+}
+
+/* --- Volume Control --- */
+.table-header-with-volume {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  flex-wrap: wrap;
+}
+
+.volume-control-container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: var(--bg-tertiary);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.volume-slider {
+  width: 6rem;
+  height: 0.375rem;
+  background: var(--border-light);
+  outline: none;
+  border-radius: 999px;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 1rem;
+  height: 1rem;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--accent-color)
+  );
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: var(--shadow-md);
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 1rem;
+  height: 1rem;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--accent-color)
+  );
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.volume-slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: var(--shadow-md);
+}
+
+.volume-icon {
+  color: var(--text-muted);
+  font-size: 1rem;
+  min-width: 1rem;
+}
+
+.volume-percentage {
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  min-width: 2.5rem;
+  text-align: right;
+}
+

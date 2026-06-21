@@ -1,0 +1,206 @@
+/* =============================================================================
+   skin.detail.viewer.header.css
+   Part of the skin.detail.viewer style split (formerly skin.detail.viewer.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* =================================================================
+   Skin Detail Viewer (Page-Specific Styles)
+   Requires: css/common.css + css/skin/skin.common.css
+   ================================================================= */
+
+/* --- Header & Page Title (Detail Viewer Specific) --- */
+/* centering now from .page-header--center; margin-bottom kept local. */
+.controls-header {
+  margin-bottom: var(--spacing-xl);
+}
+
+/* Title row: the <h1> + info/random action buttons share ONE centered, wrapping
+   flex row. Carries the canonical .page-header-title, so the component supplies
+   flex / align-items / justify-center / flex-wrap; we only set the wider 1rem gap
+   (vs the 0.75rem default) via hook + the internal margin below the row.
+   The buttons MUST live inside this row — putting .page-header-title on the bare
+   <h1> made the h1 a full-width flex block and dropped both buttons to a 2nd line. */
+.title-wrapper {
+  --page-header-gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+}
+
+.page-title {
+  margin: 0;
+}
+
+/* --- Selectors (Detail Viewer Specific) --- */
+.selectors {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-lg);
+}
+
+.selector-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  flex: 1;
+  min-width: 250px;
+  max-width: 350px;
+}
+
+.selector-wrapper label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  letter-spacing: 0.025em;
+}
+
+.selector-wrapper label i {
+  color: var(--primary-color);
+}
+
+/* Extend dropdown container for detail viewer */
+.dropdown-container input {
+  height: 3rem;
+}
+
+/* --- Random Skin Button (Title Row) --- */
+.random-skin-btn {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md); /* was 999px pill — rectangular per command-button rule */
+  padding: 0.4rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.random-skin-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  filter: brightness(1.1);
+}
+
+.random-skin-btn:active {
+  transform: translateY(0);
+}
+
+/* --- Random Skin Modal (slotted into Modal.astro — shell CSS lives in Modal.astro scoped styles) --- */
+/* Custom slotted title (dice icon + label). Modal.astro's scoped .c-modal-title
+   can't reach slotted content, so mirror its separator here + color the icon. */
+.random-skin-modal-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin: 0 2rem 1rem 0;
+  padding-bottom: 0.625rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.random-skin-modal-title i {
+  color: var(--primary-color);
+}
+
+.random-skin-filters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.random-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.random-filter-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.random-filter-group select {
+  height: 2.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0 var(--spacing-sm);
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  background: var(--bg-input);
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+}
+
+.random-filter-group select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.random-skin-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.random-skin-count {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  flex: 1;
+}
+
+/* --- Skin Info Box (Card Style) --- */
+.skin-info-box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: var(--bg-tertiary);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: 0.9375rem;
+  transition: all var(--transition-fast);
+  border: 1px solid transparent;
+}
+
+.info-item:hover {
+  border-color: var(--primary-color);
+  transform: translateY(var(--card-lift));
+  box-shadow: var(--card-hover-shadow);
+}
+
+.info-label {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.info-value {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.skin-detail-error {
+  width: 100%;
+  color: var(--danger-color);
+  font-weight: 600;
+  text-align: center;
+}
+

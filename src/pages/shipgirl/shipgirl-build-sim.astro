@@ -4,7 +4,12 @@
  * Converted from pages/shipgirl/shipgirl-build-sim.html
  */
 import Layout from '../../layouts/Layout.astro';
-import '../../styles/shipgirl/shipgirl-build-sim.css';
+import '../../styles/shipgirl/shipgirl-build-sim.base.css';
+import '../../styles/shipgirl/shipgirl-build-sim.probability.css';
+import '../../styles/shipgirl/shipgirl-build-sim.results.css';
+import '../../styles/shipgirl/shipgirl-build-sim.pool.css';
+import '../../styles/shipgirl/shipgirl-build-sim.modal.css';
+import '../../styles/shipgirl/shipgirl-build-sim.responsive.css';
 import { dataForToyUrl } from '../../../public/js/utils.js';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const cubeIconUrl = dataForToyUrl('props/nengyuanshi.webp');

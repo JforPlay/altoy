@@ -1,0 +1,108 @@
+/* =============================================================================
+   skin.detail.viewer.responsive.css
+   Part of the skin.detail.viewer style split (formerly skin.detail.viewer.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* --- Responsive Styles --- */
+@media (max-width: 768px) {
+  /* .title-wrapper already wraps (flex-wrap from --center); keep responsive font-size only. */
+  .page-title {
+    font-size: 1.25rem;
+  }
+
+  .info-button {
+    flex-shrink: 0;
+    font-size: 1.25rem;
+  }
+
+  .selectors {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .selector-wrapper {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  /* Full width dropdowns on mobile */
+  .dropdown-container {
+    width: 100%;
+  }
+
+  .clear-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .random-skin-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .descriptions-panel {
+    flex-direction: column;
+  }
+
+  .voice-line-table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .table-header-with-volume {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  /* Larger touch target on mobile — bump the .btn size knobs (stays square via
+     .btn-icon's aspect-ratio, so no width/height override needed). */
+  .play-voice-btn {
+    --btn-pad-y: 0.6rem;
+    --btn-font-size: 1rem;
+  }
+
+  .lightbox-prev,
+  .lightbox-next {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.25rem;
+  }
+
+  .lightbox-prev {
+    left: var(--spacing-md);
+  }
+
+  .lightbox-next {
+    right: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .skin-info-box {
+    gap: var(--spacing-sm);
+  }
+
+  .image-gallery {
+    gap: var(--spacing-md);
+  }
+
+  .lightbox-close {
+    top: var(--spacing-sm);
+    left: var(--spacing-sm);
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .lightbox-download {
+    top: var(--spacing-sm);
+    left: calc(var(--spacing-sm) + 2.5rem + var(--spacing-sm));
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .lightbox-counter {
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    font-size: 0.875rem;
+  }
+}
+

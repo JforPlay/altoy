@@ -1,0 +1,244 @@
+/* =============================================================================
+   shipgirl-build-sim.results.css
+   Part of the shipgirl-build-sim style split (formerly shipgirl-build-sim.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+
+/* ===== Simulator Controls ===== */
+
+.simulator-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.sim-btn {
+    flex: 1;
+    min-width: 150px;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    color: white;
+}
+
+.primary-btn {
+    background: var(--accent-blue);
+}
+
+.secondary-btn {
+    background: var(--accent-green);
+}
+
+.tertiary-btn {
+    background: var(--info-color);
+}
+
+.sim-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.sim-btn:active {
+    transform: translateY(0);
+}
+
+/* Emoji glyph inside the (hidden) sim buttons — renamed off `.btn-icon` so it
+   no longer shadows the canonical icon-button class from components/button.css. */
+.sim-btn-emoji {
+    font-size: 1.25rem;
+}
+
+/* ===== Build Results ===== */
+
+.build-results {
+    min-height: 300px;
+    background: var(--section-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-content: flex-start;
+}
+
+.placeholder {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.ship-card {
+    width: 140px;
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    border: 3px solid transparent;
+    animation: cardAppear 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.2s ease;
+}
+
+.ship-card:hover {
+    transform: scale(1.05);
+}
+
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.8) rotateY(90deg);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) rotateY(0deg);
+    }
+}
+
+.ship-card.ur { border-color: var(--rarity-ur); box-shadow: 0 0 20px color-mix(in srgb, var(--rarity-ur) 35%, transparent); }
+.ship-card.ssr { border-color: var(--rarity-ssr); box-shadow: 0 0 20px color-mix(in srgb, var(--rarity-ssr) 35%, transparent); }
+.ship-card.sr { border-color: var(--rarity-sr); box-shadow: 0 0 20px color-mix(in srgb, var(--rarity-sr) 35%, transparent); }
+.ship-card.r { border-color: var(--rarity-r); box-shadow: 0 0 20px color-mix(in srgb, var(--rarity-r) 35%, transparent); }
+.ship-card.n { border-color: var(--rarity-n); }
+
+.ship-card.custom-ship {
+    position: relative;
+    box-shadow: 0 0 25px color-mix(in srgb, var(--warning-color) 55%, transparent);
+}
+
+/* Shape + amber fill come from `.badge.badge--warning` (components/badge.css);
+   only the absolute corner-pin positioning is page-local. */
+.pickup-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    box-shadow: 0 2px 8px var(--overlay-strong);
+    z-index: 10;
+}
+
+.ship-card-icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    object-fit: cover;
+    background: var(--bg-secondary);
+}
+
+.ship-card-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+    color: var(--text-primary);
+}
+
+.ship-card-rarity {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+}
+
+.ship-card-rarity.ur { background: var(--rarity-ur-bg); color: var(--rarity-ur-text); }
+.ship-card-rarity.ssr { background: var(--rarity-ssr); color: var(--rarity-ssr-text); }
+.ship-card-rarity.sr { background: var(--rarity-sr); color: var(--rarity-sr-text); }
+.ship-card-rarity.r { background: var(--rarity-r); color: var(--rarity-r-text); }
+.ship-card-rarity.n { background: var(--rarity-n); color: var(--rarity-n-text); }
+
+/* Build Simulator Section - HIDDEN FOR PROTOTYPE */
+.simulator-section {
+    display: none;
+}
+
+/* ===== Build Statistics ===== */
+
+.stats-grid {
+    --grid-min: 150px;
+}
+
+.stat-card {
+    background: var(--section-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    border-left: 4px solid var(--border-color);
+}
+
+.stat-card.ur-stat { border-left-color: var(--rarity-ur); }
+.stat-card.ssr-stat { border-left-color: var(--rarity-ssr); }
+.stat-card.sr-stat { border-left-color: var(--rarity-sr); }
+.stat-card.r-stat { border-left-color: var(--rarity-r); }
+.stat-card.n-stat { border-left-color: var(--rarity-n); }
+
+.stat-label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* ===== Resource Statistics ===== */
+
+.resource-stats {
+    --grid-min: 200px;
+    margin-top: 1.5rem;
+}
+
+.resource-card {
+    background: var(--section-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-left: 4px solid var(--accent-blue);
+}
+
+.resource-icon {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+.resource-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+}
+
+.resource-label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.resource-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}

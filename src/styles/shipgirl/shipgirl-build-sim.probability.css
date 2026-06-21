@@ -1,0 +1,234 @@
+/* =============================================================================
+   shipgirl-build-sim.probability.css
+   Part of the shipgirl-build-sim style split (formerly shipgirl-build-sim.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+
+/* ===== Probability Chart ===== */
+
+.probability-chart-compact {
+    margin-bottom: 2rem;
+}
+
+.stacked-bar {
+    display: flex;
+    height: 60px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 1rem;
+}
+
+.stacked-segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.25rem;
+    transition: all 0.3s ease;
+    position: relative;
+    min-width: 0;
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.stacked-segment:hover {
+    filter: brightness(1.1);
+    transform: scaleY(1.05);
+    z-index: 10;
+}
+
+.stacked-segment.ur { background: var(--rarity-ur); }
+.stacked-segment.ssr { background: var(--rarity-ssr); }
+.stacked-segment.sr { background: var(--rarity-sr); }
+.stacked-segment.r { background: var(--rarity-r); }
+.stacked-segment.n { background: var(--rarity-n); }
+
+.segment-label {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: white;
+    text-shadow: 0 1px 2px var(--overlay-strong);
+    white-space: nowrap;
+}
+
+.segment-value {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 1px 2px var(--overlay-strong);
+}
+
+/* Hide labels on very small segments */
+.stacked-segment[style*="width: 0%"] {
+    display: none;
+}
+
+.probability-legend {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 1rem;
+    background: var(--section-bg);
+    border-radius: 8px;
+}
+
+.legend-item-compact {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+}
+
+.legend-color.ur { background: var(--rarity-ur); }
+.legend-color.ssr { background: var(--rarity-ssr); }
+.legend-color.sr { background: var(--rarity-sr); }
+.legend-color.r { background: var(--rarity-r); }
+.legend-color.n { background: var(--rarity-n); }
+
+.legend-text {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.legend-percent {
+    color: var(--text-secondary);
+}
+
+/* ===== Ship Probability Calculator ===== */
+
+.probability-calculator {
+    background: var(--section-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+}
+
+.ship-select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+
+.probability-result {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    background: var(--card-bg);
+    border-radius: 8px;
+}
+
+.result-label {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.result-value {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+}
+
+/* ===== Probability Graph ===== */
+
+.probability-graph-container {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 2px solid var(--border-color);
+}
+
+.probability-graph-container h4 {
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+}
+
+#probability-graph {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    max-width: 100%;
+    display: block;
+    border-radius: 8px;
+    background: var(--section-bg);
+}
+
+.graph-legend {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent-blue);
+}
+
+/* ===== Graph Tooltip ===== */
+
+.graph-tooltip {
+    position: fixed;
+    display: none;
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    box-shadow: var(--shadow-lg);
+    z-index: var(--z-modal);
+    pointer-events: none;
+    min-width: 200px;
+}
+
+.tooltip-ship {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.tooltip-builds,
+.tooltip-prob {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0.25rem 0;
+}
+
+.tooltip-builds strong,
+.tooltip-prob strong {
+    color: var(--text-primary);
+    font-weight: 700;
+}

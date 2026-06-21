@@ -1,0 +1,160 @@
+/* =============================================================================
+   skin.detail.viewer.expression.css
+   Part of the skin.detail.viewer style split (formerly skin.detail.viewer.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* --- Face Expression Overlay --- */
+.face-overlay-container {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: auto;
+    line-height: 0; /* Remove inline gaps that could offset overlay */
+}
+
+.face-overlay-container img.base-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    position: relative;
+    z-index: 1;
+}
+
+.face-overlay-container img.face-overlay {
+    position: absolute;
+    z-index: 10;
+    pointer-events: none;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    transform-origin: top left;
+    max-width: none;
+    max-height: none;
+    transition: opacity var(--transition-base), transform var(--transition-base), filter var(--transition-base);
+}
+
+.face-overlay-container img.base-image:hover,
+.face-overlay-container img.face-overlay:hover {
+    transform: none;
+    filter: none;
+}
+
+.face-overlay-container img.base-image.gallery-top-banner {
+    aspect-ratio: auto; /* Use natural ratio so overlay percentages stay accurate */
+}
+
+.face-overlay-container:hover img.base-image,
+.face-overlay-container:hover img.face-overlay {
+    transform: none;
+    filter: none;
+}
+
+/* Expression Selector (New Top Layout) */
+.expression-selector-container {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    border: 1px solid var(--border-color);
+}
+
+.expression-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.expression-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+    margin-bottom: 0; /* Override previous margin */
+}
+
+.expression-label i {
+    color: var(--primary-color);
+}
+
+.expression-hint {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.expression-note {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.expression-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    justify-content: flex-start; /* Left align typically looks better in top bar */
+}
+
+.expression-thumb {
+    width: 108px;
+    height: 108px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all var(--transition-fast);
+    object-fit: contain;
+    background-color: var(--bg-tertiary);
+}
+
+.expression-thumb:hover {
+    transform: scale(1.1);
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.expression-thumb.active {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(var(--accent-color-rgb), 0.3);
+    transform: scale(1.05);
+}
+
+/* --- ASMR Section --- */
+.asmr-illust-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: var(--transition-fast);
+}
+
+.asmr-illust-toggle:hover {
+    background: var(--primary-alpha-10);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.asmr-illust-container {
+    margin-bottom: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.asmr-illust-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--radius-lg);
+}

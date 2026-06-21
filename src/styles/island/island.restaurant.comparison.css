@@ -1,0 +1,188 @@
+/* =============================================================================
+   island.restaurant.comparison.css
+   Part of the island.restaurant style split (formerly island.restaurant.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ==========================================================================
+   5. EXPANDABLE RANK COMPARISON
+   ========================================================================== */
+
+.menu-details {
+    border-top: 2px solid var(--island-border);
+    padding-top: var(--island-spacing-md);
+}
+
+.menu-details summary {
+    display: flex;
+    align-items: center;
+    gap: var(--island-gap-sm);
+    cursor: pointer;
+    padding: var(--island-spacing-sm);
+    background: var(--island-surface);
+    border-radius: var(--island-radius-md);
+    font-size: var(--island-text-sm);
+    font-weight: 600;
+    color: var(--island-text-secondary);
+    transition: var(--island-transition);
+    list-style: none;
+    user-select: none;
+}
+
+.menu-details summary::-webkit-details-marker {
+    display: none;
+}
+
+.menu-details summary .material-symbols-outlined {
+    font-size: var(--island-icon-md);
+    color: var(--island-accent);
+}
+
+.menu-details summary:hover {
+    background: var(--island-surface-hover);
+    color: var(--island-accent);
+}
+
+.menu-details[open] summary {
+    border-bottom: 1px solid var(--island-border);
+    margin-bottom: var(--island-spacing-sm);
+}
+
+/* Rank Comparison Table */
+.rank-comparison-table {
+    display: flex;
+    flex-direction: column;
+    gap: var(--island-gap-xs);
+}
+
+.rank-comparison-row {
+    display: grid;
+    grid-template-columns: auto 1fr 1fr 0.8fr 1fr;
+    align-items: center;
+    gap: var(--island-spacing-md);
+    padding: var(--island-spacing-sm);
+    background: var(--island-bg);
+    border: 1px solid var(--island-border);
+    border-radius: var(--island-radius-md);
+    transition: var(--island-transition);
+}
+
+.rank-comparison-row:hover {
+    background: var(--island-surface);
+    border-color: var(--island-accent);
+}
+
+.rank-comparison-row.current {
+    background: rgba(var(--island-accent-rgb), 0.1);
+    border-color: var(--island-accent);
+}
+
+.rank-label {
+    display: flex;
+    align-items: center;
+    gap: var(--island-gap-xs);
+    font-weight: 600;
+    font-size: var(--island-text-sm);
+}
+
+.rank-label .material-symbols-outlined {
+    font-size: var(--island-icon-sm);
+}
+
+/* `.current-badge` migrated to `.badge.badge--success` (CSS unification Wave 1). */
+
+.rank-sell-price {
+    font-size: var(--island-text-sm);
+    font-weight: 600;
+    color: var(--island-text-secondary);
+    text-align: right;
+}
+
+.rank-profit {
+    font-size: var(--island-text-sm);
+    font-weight: 700;
+    text-align: right;
+}
+
+.rank-profit.profit-positive {
+    color: var(--island-success);
+}
+
+.rank-profit.profit-negative {
+    color: var(--island-danger);
+}
+
+.rank-profit.profit-neutral {
+    color: var(--island-text-tertiary);
+}
+
+.rank-profit small {
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-left: 0.25rem;
+}
+
+.rank-sales-count {
+    font-size: var(--island-text-xs);
+    font-weight: 600;
+    color: var(--island-text-tertiary);
+    text-align: right;
+}
+
+.rank-total-profit {
+    font-size: var(--island-text-sm);
+    font-weight: 700;
+    color: var(--island-success);
+    text-align: right;
+}
+
+/* Cost Breakdown List */
+.cost-breakdown-details {
+    margin-top: var(--island-spacing-md);
+}
+
+.cost-breakdown-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--island-gap-xs);
+}
+
+.cost-breakdown-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--island-spacing-xs) var(--island-spacing-sm);
+    background: var(--island-surface);
+    border-radius: var(--island-radius-sm);
+    font-size: var(--island-text-sm);
+}
+
+.cost-breakdown-item .resource-name {
+    color: var(--island-text-secondary);
+    font-weight: 500;
+}
+
+.cost-breakdown-item .resource-amount {
+    color: var(--island-text-primary);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.profit-row .resource-count {
+    color: var(--island-accent);
+    font-weight: 600;
+}
+
+.menu-actions {
+    display: flex;
+    gap: var(--island-gap-sm);
+    margin-top: var(--island-spacing-md);
+}
+
+.menu-card-highlight {
+    outline: 2px solid var(--island-accent);
+    box-shadow: 0 0 0 6px rgba(var(--island-accent-rgb), 0.12);
+}
+
+/* Planner command buttons migrated to canonical .btn variants
+   (.btn-secondary reset / .btn-primary calculate); see button.css. */
+

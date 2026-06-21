@@ -1,0 +1,84 @@
+/* =============================================================================
+   island.restaurant.responsive.css
+   Part of the island.restaurant style split (formerly island.restaurant.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ==========================================================================
+   7. RESPONSIVE DESIGN
+   ========================================================================== */
+
+@media (max-width: 1200px) {
+    .restaurant-controls {
+        grid-template-columns: 1fr;
+    }
+
+    .restaurant-menu-list {
+        --grid-min: 350px;
+    }
+
+    .rank-comparison-row {
+        grid-template-columns: auto 1fr 1fr 0.8fr 1fr;
+        font-size: var(--island-text-xs);
+    }
+}
+
+@media (max-width: 768px) {
+    .restaurant-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+
+    .restaurant-tab {
+        font-size: var(--island-text-sm);
+    }
+
+    .rank-buttons {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .restaurant-menu-list {
+        grid-template-columns: 1fr;
+    }
+
+    .rank-comparison-row {
+        grid-template-columns: auto 0.8fr 0.8fr 0.6fr 0.8fr;
+        font-size: var(--island-text-xs);
+        gap: var(--island-spacing-xs);
+    }
+
+}
+
+@media (max-width: 480px) {
+    .restaurant-tabs-container {
+        padding: var(--island-spacing-sm);
+    }
+
+    .restaurant-tab {
+        padding: var(--island-spacing-xs) var(--island-spacing-sm);
+    }
+
+    .restaurant-tab-name {
+        font-size: var(--island-text-sm);
+    }
+
+    .rank-buttons {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--island-gap-xs);
+    }
+
+    .rank-btn {
+        padding: var(--island-spacing-xs);
+    }
+
+    .event-checkboxes {
+        gap: var(--island-gap-xs);
+    }
+
+    .event-checkbox-label {
+        padding: 0.25rem 0.5rem;
+    }
+
+    .profit-row {
+        font-size: var(--island-text-xs);
+    }
+}

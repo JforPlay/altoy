@@ -1,0 +1,431 @@
+/* =============================================================================
+   fleet-sim.ship-card.css
+   Part of the fleet-sim style split (formerly fleet-sim.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ===== SHIP CARD (BASE) ===== */
+
+.ship-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: box-shadow var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+  overflow: hidden;
+}
+
+.ship-card:hover {
+  box-shadow: var(--card-hover-shadow);
+  transform: translateY(var(--card-lift));
+}
+
+/* Rarity-colored top border (applied by JS via data-rarity attribute) */
+.ship-card[data-rarity="ur"]  { border-top: 3px solid var(--rarity-ur); }
+.ship-card[data-rarity="ssr"] { border-top: 3px solid var(--rarity-ssr); }
+.ship-card[data-rarity="sr"]  { border-top: 3px solid var(--rarity-sr); }
+.ship-card[data-rarity="r"]   { border-top: 3px solid var(--rarity-r); }
+.ship-card[data-rarity="n"]   { border-top: 3px solid var(--rarity-n); }
+
+/* ===== EMPTY CARD STATE ===== */
+
+.ship-card--empty {
+  border-style: dashed;
+  min-height: 200px;
+}
+
+.ship-card-add {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: color var(--transition-fast), background var(--transition-fast);
+  padding: var(--spacing-lg);
+  font-family: inherit;
+}
+
+.ship-card-add .material-symbols-outlined {
+  font-size: 2.5rem;
+}
+
+.ship-card-add .add-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.ship-card-add:hover {
+  color: var(--primary-color);
+  background: var(--primary-alpha-10);
+}
+
+/* ===== POPULATED CARD ===== */
+
+/* Ship identity section: [drag] [portrait] [2-row content] [close] */
+.ship-card-identity {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.ship-identity-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ship-identity-top,
+.ship-identity-bottom {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.ship-name-group {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.ship-name-group .ship-name {
+  min-width: 0;
+}
+
+.ship-identity-bottom .ship-type-nation {
+  flex: 1;
+  min-width: 0;
+}
+
+.ship-card-identity > .ship-card-actions {
+  align-self: flex-start;
+  flex-shrink: 0;
+}
+
+.ship-portrait {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+}
+
+.ship-portrait:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.ship-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ship-type-nation {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Remove/swap button — canonical .btn-close (borderless X); only the destructive
+   danger-red hover is a genuine local difference (default .btn-close hover is neutral). */
+.ship-card-actions {
+  display: flex;
+  gap: 2px;
+}
+
+.ship-card-actions .btn-close:hover {
+  color: var(--danger-color);
+  background: var(--primary-alpha-10);
+}
+
+/* ===== RELOAD BAR (replaces old config row position) ===== */
+
+.ship-reload-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-md);
+  background: var(--section-bg);
+  flex-wrap: wrap;
+  min-height: 28px;
+}
+
+.config-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+
+.config-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Level stepper (Task 3) — buttons are canonical .btn-icon inside a .btn-group
+   (button.css owns their shape/color/joins); .level-stepper just aligns the
+   middle value span vertically with the grouped +/- buttons. */
+.level-stepper {
+  align-items: center;
+}
+
+.level-stepper .stepper-value {
+  min-width: 32px;
+  padding: 2px 2px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  cursor: text;
+  border-left: 1px solid var(--surface-border);
+  border-right: 1px solid var(--surface-border);
+  line-height: 1.5;
+}
+
+.level-stepper .stepper-edit {
+  width: 36px;
+  padding: 2px 2px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+  border: none;
+  background: var(--primary-alpha-10);
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+  outline: none;
+}
+
+/* Hide native number spinner */
+.config-input::-webkit-inner-spin-button,
+.config-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.config-input { -moz-appearance: textfield; }
+
+.stepper-edit::-webkit-inner-spin-button,
+.stepper-edit::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.stepper-edit { -moz-appearance: textfield; }
+
+.config-select {
+  padding: 3px 6px;
+  font-size: 0.75rem;
+  color: var(--text-primary);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color var(--transition-fast);
+}
+
+.config-select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+/* ===== EQUIPMENT SLOTS (6×1 Row) ===== */
+
+.equip-slots-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 2px var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+}
+
+/* Each slot is a vertical stack: label on top, icon below */
+.equip-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  cursor: pointer;
+}
+
+.equip-slot-label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.equip-slot-icon-box {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  background: var(--section-bg);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+  overflow: hidden;
+}
+
+.equip-slot:hover .equip-slot-icon-box {
+  border-color: var(--primary-color);
+  background: var(--primary-alpha-10);
+}
+
+.equip-slot:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.equip-slot:focus-visible .equip-slot-icon-box {
+  border-color: var(--primary-color);
+  background: var(--primary-alpha-10);
+}
+
+/* Equipped state: solid border */
+.equip-slot.equipped .equip-slot-icon-box {
+  border-style: solid;
+}
+
+/* Rarity-colored border for equipped items */
+.equip-slot[data-equip-rarity="ur"] .equip-slot-icon-box  { border-color: var(--rarity-ur); }
+.equip-slot[data-equip-rarity="ssr"] .equip-slot-icon-box { border-color: var(--rarity-ssr); }
+.equip-slot[data-equip-rarity="sr"] .equip-slot-icon-box  { border-color: var(--rarity-sr); }
+.equip-slot[data-equip-rarity="r"] .equip-slot-icon-box   { border-color: var(--rarity-r); }
+.equip-slot[data-equip-rarity="n"] .equip-slot-icon-box   { border-color: var(--rarity-n); }
+
+.equip-slot-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Equip icon with rarity background overlay */
+.equip-icon-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.equip-icon-wrapper .equip-icon-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-xs);
+}
+
+.equip-icon-wrapper .equip-icon-fg {
+  position: absolute;
+  top: 8%;
+  left: 8%;
+  width: 84%;
+  height: 84%;
+  object-fit: contain;
+}
+
+/* Picker grid equip icon wrapper */
+.picker-item .equip-icon-wrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.equip-slot-empty {
+  font-size: 1rem;
+  color: var(--text-dim);
+}
+
+.equip-slot-empty .material-symbols-outlined {
+  font-size: 16px;
+}
+
+/* Enhance level badge (bottom-right corner) — Task 2 improved */
+.equip-enhance-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: var(--overlay-intense);
+  color: var(--rarity-ssr);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 1px 5px;
+  line-height: 1.4;
+  border-radius: var(--radius-xs) 0 var(--radius-xs) 0;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  z-index: 2;
+}
+
+.equip-enhance-badge:hover {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+/* Enhance level popover (fixed to body, positioned by JS) */
+.enhance-popover {
+  background: var(--card-bg);
+  border: 1px solid var(--primary-color);
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+  box-shadow: var(--shadow-lg);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  animation: popoverIn 0.15s ease-out;
+}
+
+.enhance-popover input[type="range"] {
+  width: 80px;
+  height: 4px;
+  accent-color: var(--primary-color);
+  cursor: pointer;
+}
+
+.enhance-popover .enhance-level-display {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--rarity-ssr);
+  min-width: 22px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes popoverIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Locked/disabled slot */
+.equip-slot.locked {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-style: solid;
+  background: var(--surface-border);
+}
+
+.equip-slot.locked:hover {
+  border-color: var(--border-color);
+  background: var(--surface-border);
+}
+
