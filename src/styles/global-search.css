@@ -451,7 +451,7 @@ body.dark-mode .global-search-item.active {
 }
 
 body.dark-mode .global-search-item.active {
-  outline-color: rgba(114, 137, 218, 0.4);
+  outline-color: var(--primary-alpha-40);
 }
 
 body.dark-mode .global-search-item-icon {

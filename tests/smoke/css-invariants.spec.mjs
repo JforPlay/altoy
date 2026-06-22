@@ -731,3 +731,13 @@ test('4b #11: #back-to-tabs background is dark-glass in dark', async ({ page }) 
     });
     expect(bg).toContain('0, 0, 0'); // rgba(0, 0, 0, 0.95)
 });
+
+// 4b #12: collapsing the .lightbox-modal light/dark pair to var(--bg-glass) must
+// preserve both theme values (white-glass light, black-glass dark).
+for (const [theme, rgb] of [['light', '255, 255, 255'], ['dark', '0, 0, 0']]) {
+    test(`4b #12: .lightbox-modal background unchanged in ${theme}`, async ({ page }) => {
+        await page.addInitScript((t) => localStorage.setItem('theme', t), theme);
+        await page.goto(pathFor('expression-viewer'), { waitUntil: 'load' });
+        expect(await probeStyle(page, 'lightbox-modal', 'backgroundColor')).toContain(rgb);
+    });
+}
