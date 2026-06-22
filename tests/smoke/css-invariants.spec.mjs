@@ -699,3 +699,11 @@ for (const [theme, rgb] of [['light', '0, 113, 235'], ['dark', '114, 137, 218']]
         }
     });
 }
+
+// 4b #3: the active nav-link glow must track the theme (dark-block already flips
+// its fill+border; the box-shadow was the orphaned electric-blue literal).
+test('4b #3: .nav-links.active glow is blurple in dark', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('theme', 'dark'));
+    await page.goto('./', { waitUntil: 'load' });
+    expect(await probeStyle(page, 'nav-links active', 'boxShadow')).toContain('114, 137, 218');
+});
