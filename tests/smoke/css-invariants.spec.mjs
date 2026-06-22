@@ -665,3 +665,16 @@ test('tabs fold: shipgirl-info view-toggle adopts the canonical .btn segmented c
     expect(probe.group, 'wrapper must carry .btn-group').toBe(true);
     expect(probe.active).toBe(1);
 });
+
+// --- Phase 4a tokenization: minted ladder stops resolve on a real page ----------
+// shipgirl-info.cards.css adopted --overlay-06/40/60/intense. Assert the tokens
+// resolve to their exact literal value on the page (no local override drift). The
+// values are theme-invariant, so this holds in the default (dark) theme too.
+test('4a: overlay ladder tokens resolve to their literal on shipgirl-info', async ({ page }) => {
+    await page.goto(pathFor('shipgirl-info'), { waitUntil: 'load' });
+    const v = async (expr) => (await resolveColor(page, expr)).replace(/\b0(\.\d)/g, '$1');
+    expect(await v('var(--overlay-40)')).toBe('rgba(0, 0, 0, .4)');
+    expect(await v('var(--overlay-60)')).toBe('rgba(0, 0, 0, .6)');
+    expect(await v('var(--overlay-06)')).toBe('rgba(0, 0, 0, .06)');
+    expect(await v('var(--overlay-intense)')).toBe('rgba(0, 0, 0, .7)');
+});
