@@ -473,7 +473,7 @@ body.dark-mode .poll-box:hover {
 
 .poll-image-button:hover .poll-image {
   transform: scale(1.02);
-  box-shadow: 0px 4px 12px rgba(114, 137, 218, 0.5);
+  box-shadow: 0px 4px 12px var(--primary-alpha-50);
 }
 
 /* Poll Info Section */
