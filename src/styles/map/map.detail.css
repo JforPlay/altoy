@@ -107,8 +107,8 @@
 .info-card-icon--oil { background: rgba(34, 197, 94, 0.12); color: #22c55e; }
 .info-card-icon--drop { background: rgba(6, 182, 212, 0.12); color: #06b6d4; }
 .info-card-icon--ship { background: rgba(91, 138, 245, 0.12); color: #5b8af5; }
-.info-card-icon--fleet { background: rgba(155, 89, 182, 0.12); color: #9b59b6; }
-.info-card-icon--condition { background: rgba(245, 158, 11, 0.12); color: #f59e0b; }
+.info-card-icon--fleet { background: rgba(155, 89, 182, 0.12); color: var(--accent-purple); }
+.info-card-icon--condition { background: rgba(245, 158, 11, 0.12); color: var(--accent-amber); }
 .info-card-icon--info { background: rgba(91, 138, 245, 0.12); color: #5b8af5; }
 .info-card-icon--exp { background: rgba(34, 197, 94, 0.12); color: #22c55e; }
 
@@ -199,11 +199,11 @@
 }
 
 .map-detail-card:has(.fleet-type--elite) {
-    border-left-color: #9b59b6;
+    border-left-color: var(--accent-purple);
 }
 
 .map-detail-card:has(.fleet-type--champion) {
-    border-left-color: #f59e0b;
+    border-left-color: var(--accent-amber);
 }
 
 /* Override hover for fleet-typed cards to keep their accent */
@@ -212,11 +212,11 @@
 }
 
 .map-detail-card:has(.fleet-type--elite):hover {
-    border-left-color: #9b59b6;
+    border-left-color: var(--accent-purple);
 }
 
 .map-detail-card:has(.fleet-type--champion):hover {
-    border-left-color: #f59e0b;
+    border-left-color: var(--accent-amber);
 }
 
 .map-detail-card-title {
@@ -233,9 +233,9 @@
 
 /* Fleet type colors in detail */
 .fleet-type--normal { color: var(--text-secondary); }
-.fleet-type--elite  { color: #9b59b6; }
+.fleet-type--elite  { color: var(--accent-purple); }
 .fleet-type--boss   { color: #ef4444; }
-.fleet-type--champion { color: #f59e0b; }
+.fleet-type--champion { color: var(--accent-amber); }
 
 /* Stat requirement badges */
 .stat-req {
