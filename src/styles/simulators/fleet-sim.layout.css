@@ -8,7 +8,7 @@
    Dashboard layout for 6-ship fleet composition with equipment,
    stats, and reload timings.
 
-   Imports: common.css (design tokens), sim.common.css (shared layout)
+   Imports: common.css (design tokens), sim.common.* siblings (shared layout)
    ================================================================= */
 
 /* ===== HEADER LAYOUT ===== */

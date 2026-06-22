@@ -1,0 +1,125 @@
+/* =============================================================================
+   story-viewer.common.audio.css
+   Part of the story-viewer.common style split (formerly story-viewer.common.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* --- Audio Player --- */
+.audio-player-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: var(--dialogue-bg);
+  padding: 0.5rem 1rem;
+  border-radius: 3.125rem; /* Pill shape */
+  box-shadow: 0 4px 15px var(--shadow-color);
+  backdrop-filter: blur(5px);
+  z-index: 20;
+  min-width: 15rem;
+  flex-wrap: nowrap;
+}
+
+.bgm-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 3.125rem;
+  flex-grow: 1;
+  text-align: center;
+  margin: 0 0.5rem;
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Waveform Visualization */
+.waveform-container {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 1.5rem;
+  padding: 0 0.5rem;
+}
+
+.waveform-bar {
+  width: 3px;
+  background: var(--accent-color);
+  border-radius: 2px;
+  height: 4px;
+  transition: height 0.1s ease;
+  will-change: height;
+}
+
+/* Animated waveform bars - staggered delays create wave effect */
+.audio-player-container.playing .waveform-bar:nth-child(1) {
+  animation: wave 0.8s ease-in-out infinite;
+  animation-delay: 0s;
+}
+
+.audio-player-container.playing .waveform-bar:nth-child(2) {
+  animation: wave 0.8s ease-in-out infinite;
+  animation-delay: 0.1s;
+}
+
+.audio-player-container.playing .waveform-bar:nth-child(3) {
+  animation: wave 0.8s ease-in-out infinite;
+  animation-delay: 0.2s;
+}
+
+.audio-player-container.playing .waveform-bar:nth-child(4) {
+  animation: wave 0.8s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+.audio-player-container.playing .waveform-bar:nth-child(5) {
+  animation: wave 0.8s ease-in-out infinite;
+  animation-delay: 0.4s;
+}
+
+/* Audio controls = canonical `.btn .btn-icon`. Local keeps only the oversized
+   transport glyph (bigger than the canonical 1.2em) and a transparent,
+   borderless fit inside the pill-shaped player. */
+.audio-btn {
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-color);
+}
+
+.audio-btn .material-symbols-outlined {
+  font-size: 2rem;
+}
+
+/* Volume slider styling */
+#volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 6.25rem;
+  height: 5px;
+  background: var(--border-color);
+  outline: none;
+  border-radius: 5px;
+}
+
+#volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 0.9375rem;
+  height: 0.9375rem;
+  background: var(--accent-color);
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+#volume-slider::-moz-range-thumb {
+  width: 0.9375rem;
+  height: 0.9375rem;
+  background: var(--accent-color);
+  cursor: pointer;
+  border-radius: 50%;
+  border: none;
+}
+

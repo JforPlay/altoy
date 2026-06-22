@@ -1,7 +1,7 @@
 /* ============================================================================
    JUUS HOT ISSUE - 쥬쥬 핫 이슈 (Official Account Posts)
    Inline feed: each post fully expanded (image + body + authored comments +
-   commander options). Tokens come from chat-viewer.common.css.
+   commander options). Tokens come from chat-viewer.common.vars.css.
    ============================================================================ */
 
 .hot-issue-grid {

@@ -1,0 +1,97 @@
+/* =============================================================================
+   story-viewer.common.modals.css
+   Part of the story-viewer.common style split (formerly story-viewer.common.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* --- Modals --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--overlay-intense);
+  z-index: var(--z-modal);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background-color: var(--card-bg);
+  padding: 2rem;
+  border-radius: 0.75rem;
+  max-width: 50rem;
+  width: 90%;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 10px 30px var(--overlay-strong);
+}
+
+/* Summary modal content styling */
+#summary-modal-content h2 {
+  font-size: 1.8rem;
+  color: var(--accent-color);
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
+#summary-modal-content h3 {
+  font-size: 1.4rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-color);
+}
+
+#summary-modal-content p {
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+#summary-modal-content ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+#summary-modal-content li {
+  background-color: var(--bg-color);
+  border-left: 4px solid var(--accent-color);
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 4px;
+}
+
+/* Modal close = canonical `.btn .btn-close`; only the absolute positioning in
+   the modal corner stays local (per the button-component contract). */
+.close-modal-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}
+
+.full-script-content,
+#summary-modal-content {
+  overflow-y: auto;
+  padding-right: 1rem;
+}
+
+.full-script-content p {
+  margin-bottom: 1rem;
+}
+
+.full-script-content strong,
+#summary-modal-content strong {
+  color: var(--accent-color);
+  margin-right: 0.5em;
+}
+
+#view-script-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+

@@ -1,0 +1,83 @@
+/* =============================================================================
+   chat-viewer.common.vars.css
+   Part of the chat-viewer.common style split (formerly chat-viewer.common.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ============================================================================
+   CHAT VIEWER - COMMON STYLES
+   Shared styles for both Dorm3D and Juustagram chat viewers
+   ============================================================================ */
+
+/* --- CSS Variables & Theme System --- */
+/* Light mode defaults */
+body.chat-viewer {
+  --bg-primary: #f5f5f5;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f0f0f0;
+  --chat-border: #e0e0e0;
+  --border-hover: #5865f2;
+
+  --chat-text: #1a1a1a;
+  --chat-text-secondary: #666;
+  --text-muted: #888;
+  --text-heading: #1a1a1a;
+
+  --accent-primary: #5865f2;
+  --accent-hover: #4752c4;
+  --accent-light: #5865f2;
+  --accent-danger: #f44336;
+  --accent-danger-hover: #d32f2f;
+
+  --player-bg: #bbdefb;
+  --player-text: #0d47a1;
+  --character-bg: #f0f0f0;
+  --red-envelope: #da373c;
+
+  --shadow-light: rgba(0, 0, 0, 0.05);
+  --shadow-medium: rgba(0, 0, 0, 0.1);
+
+  /* Accessibility */
+  --animation-duration: 0.3s;
+}
+
+/* Dark mode overrides */
+body.chat-viewer.dark-mode {
+  --bg-primary: #36393f;
+  --bg-secondary: #2f3136;
+  --bg-tertiary: #292b2f;
+  --chat-border: #40444b;
+  --border-hover: #7289da;
+
+  --chat-text: #dcddde;
+  --chat-text-secondary: #b9bbbe;
+  --text-muted: #a3a6aa;
+  --text-heading: #ffffff;
+
+  --accent-primary: #5865f2;
+  --accent-hover: #4752c4;
+  --accent-light: #7289da;
+  --accent-danger: #f04747;
+  --accent-danger-hover: #d84040;
+
+  --player-bg: #7289da;
+  --player-text: #ffffff;
+  --character-bg: #40444b;
+  --red-envelope: #da373c;
+
+  --shadow-light: rgba(0, 0, 0, 0.1);
+  --shadow-medium: rgba(0, 0, 0, 0.2);
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --animation-duration: 0.01ms;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

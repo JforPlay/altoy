@@ -1,0 +1,87 @@
+/* =============================================================================
+   sim.common.responsive.css
+   Part of the sim.common style split (formerly sim.common.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 1024px) {
+  .sim-content {
+    grid-template-columns: 1fr;
+  }
+
+  .sim-sidebar {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .sim-sidebar > * {
+    flex: 1;
+    min-width: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sim-page .page-title {
+    font-size: 1.2rem;
+    padding: var(--spacing-md) var(--spacing-sm) var(--spacing-sm);
+  }
+
+  .playback-bar {
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  .bar-separator { display: none; }
+
+  .sim-sidebar {
+    flex-direction: column;
+  }
+
+  .sim-sidebar > * {
+    min-width: unset;
+  }
+
+  .weapon-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== ANIMATIONS ===== */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.weapon-card { animation: fadeIn 0.3s ease-out; }
+
+/* ===== WEAPON-DRIVER RENDER (beam type 24 / space-laser type 28) ===== */
+/* 0-reached in current data; styled for when a future EquipmentType base-chain
+   resolves them. Tokens: the plan's `--primary-alpha-60`/`--highlight-10` don't
+   exist (max primary-alpha is -30; highlights are named, not numbered), so we
+   substitute the nearest existing tokens per CLAUDE.md's no-hardcoded-rgba rule. */
+.beam-segment {
+  position: absolute;
+  pointer-events: none;
+  background: linear-gradient(90deg, var(--primary-alpha-30), var(--primary-color));
+  box-shadow: 0 0 6px var(--primary-alpha-30);
+  border-radius: 2px;
+  z-index: 6;
+}
+
+.space-laser-column {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  z-index: 6;
+}
+.space-laser-column.is-alert {
+  background: var(--highlight-soft);
+  border: 1px dashed var(--primary-alpha-30);
+}
+.space-laser-column.is-attack {
+  background: var(--primary-alpha-30);
+  box-shadow: 0 0 10px var(--primary-color);
+}

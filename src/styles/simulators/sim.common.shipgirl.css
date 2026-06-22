@@ -1,0 +1,119 @@
+/* =============================================================================
+   sim.common.shipgirl.css
+   Part of the sim.common style split (formerly sim.common.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ===== SHIPGIRL CARD ===== */
+
+.shipgirl-card {
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.shipgirl-card:hover {
+  border-color: var(--primary-color);
+  box-shadow: var(--card-hover-shadow);
+  transform: translateY(var(--card-lift));
+}
+
+.shipgirl-card .shipyard-icon {
+  height: 56px;
+  width: auto;
+  margin-bottom: var(--spacing-xs);
+}
+
+.shipgirl-card .ship-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.shipgirl-card .ship-class {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.shipgirl-card .more-info {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.class-group-current {
+  border-color: var(--primary-color) !important;
+  background: var(--primary-alpha-10) !important;
+}
+
+/* Skill Info Card */
+#skill-info-card {
+  font-size: 0.875rem;
+}
+
+.skill-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.aircraft-stats {
+  margin-top: var(--spacing-sm);
+}
+
+.aircraft-equip-icon {
+  border-radius: var(--radius-sm);
+}
+
+.aircraft-rarity-badge {
+  margin-left: auto;
+}
+
+#aircraft-info-card {
+  cursor: pointer;
+}
+
+.skill-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border-color);
+  object-fit: cover;
+}
+
+.skill-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.skill-meta-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.skill-meta-row:last-child { border-bottom: none; }
+
+.meta-label {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.meta-value {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.skill-desc {
+  margin-top: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+

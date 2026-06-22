@@ -1,0 +1,171 @@
+/* =============================================================================
+   sim.common.weapon.css
+   Part of the sim.common style split (formerly sim.common.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ===== WEAPON INFO CARDS ===== */
+
+.weapon-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.weapon-card:last-child { margin-bottom: 0; }
+
+.weapon-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--surface-border);
+  margin-bottom: var(--spacing-sm);
+}
+
+.weapon-card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.weapon-card-id {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: monospace;
+}
+
+/* Ammo type badge — canonical .badge base SHAPE + a color-only local rule:
+   the fill is a dynamic, non-semantic functional color set inline by JS
+   (var(--ammo-color-N) / a rarity color via .style.background), so it keeps
+   #fff text here rather than routing through a semantic --badge modifier. */
+.ammo-badge {
+  color: #fff;
+}
+
+/* Placeholder ammo type colors — update with game-accurate values when available */
+:root {
+  --ammo-color-1: #4a90d9;   /* 철갑탄 AP — blue */
+  --ammo-color-2: #e05555;   /* 고폭탄 HE — red */
+  --ammo-color-3: #d4a843;   /* 통상탄 Normal — yellow */
+  --ammo-color-4: #6ec4a7;   /* 음향 유도 Acoustic — teal */
+  --ammo-color-5: #c4b060;   /* 통상 Normal — gold */
+  --ammo-color-6: #b54dce;   /* 삼식탄 Sanshiki — purple */
+  --ammo-color-7: #e08547;   /* 반철갑탄 SAP — orange */
+  --ammo-color-8: #5caed4;   /* 자성식 Magnetic — cyan */
+  --ammo-color-9: #c45858;   /* 격발식 Impact — red-dark */
+  --ammo-color-10: #888;     /* 없음 None — gray */
+  --ammo-color-11: #7a8fd4;  /* 미사일 Missile — blue-gray */
+}
+
+body.dark-mode {
+  --ammo-color-1: #5ea3ef;
+  --ammo-color-2: #ef6b6b;
+  --ammo-color-3: #e0b94f;
+  --ammo-color-4: #7dd4b5;
+  --ammo-color-5: #d4c06a;
+  --ammo-color-6: #c95de8;
+  --ammo-color-7: #f09555;
+  --ammo-color-8: #6ec0e8;
+  --ammo-color-9: #d46a6a;
+  --ammo-color-10: #999;
+  --ammo-color-11: #8ea3ef;
+}
+
+/* Weapon stats grid */
+.weapon-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xs) var(--spacing-md);
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px var(--spacing-sm);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Armor modifiers row */
+.armor-row {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: var(--spacing-xs);
+  padding: 6px var(--spacing-sm);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+}
+
+.armor-chip {
+  flex: 1;
+  text-align: center;
+  padding: 4px 8px;
+  border-radius: var(--radius-xs);
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--bg-elevated);
+}
+
+.armor-chip .armor-label {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* Barrage breakdown rows (inline; replaces the old <details>) */
+.barrage-rows {
+  margin-top: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--surface-border);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.barrage-row,
+.barrage-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 3px var(--spacing-xs);
+  font-size: 0.8rem;
+}
+
+.barrage-total {
+  margin-top: 4px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--surface-border);
+  font-weight: 700;
+}
+
+.barrage-total .stat-value {
+  font-size: 0.95rem;
+  color: var(--primary-color);
+}
+
+/* Muted secondary value (raw reload_max beside the cooldown) */
+.stat-sub {
+  margin-left: 6px;
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+

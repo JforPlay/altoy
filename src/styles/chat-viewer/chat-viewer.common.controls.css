@@ -1,0 +1,116 @@
+/* =============================================================================
+   chat-viewer.common.controls.css
+   Part of the chat-viewer.common style split (formerly chat-viewer.common.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ============================================================================
+   STORY CONTROLS
+   ============================================================================ */
+
+.story-controls {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.9375rem;
+  align-items: start;
+  padding: 1.25rem 1.5625rem 0.9375rem 1.5625rem;
+  border-bottom: 1px solid var(--chat-border);
+  flex-shrink: 0;
+}
+
+.story-controls-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9375rem;
+}
+
+.story-select-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.story-select-label {
+  font-weight: bold;
+  color: var(--text-heading);
+  flex-shrink: 0;
+  transition: color var(--animation-duration) ease;
+}
+
+#story-dropdown {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 0.3125rem;
+  border: 1px solid var(--chat-border);
+  background-color: var(--bg-tertiary);
+  color: var(--chat-text);
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color var(--animation-duration) ease,
+    border-color var(--animation-duration) ease,
+    color var(--animation-duration) ease;
+}
+
+#story-dropdown:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+  border-color: var(--accent-primary);
+}
+
+.flavor-text-box {
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--chat-border);
+  border-radius: 0.5rem;
+  padding: 0.9375rem;
+  text-align: center;
+  min-height: 1.5rem;
+  transition: background-color var(--animation-duration) ease,
+    border-color var(--animation-duration) ease;
+}
+
+body.dark-mode .flavor-text-box {
+  background-color: var(--bg-secondary);
+}
+
+.flavor-text-box p {
+  margin: 0;
+  line-height: 1.6;
+  font-style: italic;
+  color: var(--chat-text-secondary);
+  transition: color var(--animation-duration) ease;
+}
+
+.flavor-text-box strong {
+  font-weight: bold;
+  color: var(--text-heading);
+  margin-right: 0.5rem;
+  font-style: normal;
+  transition: color var(--animation-duration) ease;
+}
+
+/* EXCEPTION: adopts the `.btn` base shape (inline-flex, focus-ring) but keeps
+   the chat-viewer danger identity (--accent-danger fill) + fixed 3rem height as
+   a scoped brand rule — not re-forked as a base button variant. */
+.restart-button {
+  background-color: var(--accent-danger);
+  color: #ffffff;
+  border: none;
+  border-radius: 0.3125rem;
+  padding: 0.75rem 1.125rem;
+  font-size: 0.9em;
+  font-weight: bold;
+  height: 3rem;
+}
+
+.restart-button:hover {
+  background-color: var(--accent-danger-hover);
+}
+
+.restart-button:focus-visible {
+  outline: 2px solid var(--accent-danger);
+  outline-offset: 2px;
+}
+
+.restart-button:active {
+  transform: scale(0.98);
+}
+

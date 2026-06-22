@@ -1,0 +1,43 @@
+/* =============================================================================
+   sim.common.layout.css
+   Part of the sim.common style split (formerly sim.common.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* Simulator UI uses common.css design tokens (imported by Astro page) */
+
+/* ===== PAGE LAYOUT ===== */
+
+.sim-page {
+  max-width: 75rem;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md) var(--spacing-xl);
+}
+
+/* ===== PAGE HEADER ===== */
+.sim-header {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md) var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+  margin-top: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+.sim-header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.sim-header .header-icon {
+  font-size: 1.75rem;
+  /* color now from .page-header-title .material-symbols-outlined via --page-header-accent */
+}
+
+.sim-page .page-title .material-symbols-outlined {
+  font-size: 1.8rem;
+  color: var(--primary-color);
+}
+

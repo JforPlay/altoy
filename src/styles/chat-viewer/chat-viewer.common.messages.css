@@ -1,0 +1,208 @@
+/* =============================================================================
+   chat-viewer.common.messages.css
+   Part of the chat-viewer.common style split (formerly chat-viewer.common.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ============================================================================
+   STORY DISPLAY - CHAT MESSAGES
+   ============================================================================ */
+
+#story-display-section {
+  max-width: 56.25rem;
+  margin: 0 auto;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--chat-border);
+  border-radius: 0.625rem;
+  box-sizing: border-box;
+  transition: background-color var(--animation-duration) ease,
+    border-color var(--animation-duration) ease;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 17.5rem);
+}
+
+.story-container {
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9375rem;
+  padding: 1.25rem 1.5625rem;
+  overflow-y: auto;
+  flex: 1;
+
+  /* Modern scrolling improvements */
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+
+
+/* Character message wrapper with portrait */
+.character-line-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.625rem;
+  max-width: 80%;
+  align-self: flex-start;
+  opacity: 0;
+  transform: translateY(1.25rem);
+  animation: bubble-fade-in 0.4s forwards;
+}
+
+.character-line-wrapper .portrait {
+  width: 2.8125rem;
+  height: 2.8125rem;
+  border-radius: 50%;
+  border: 2px solid var(--chat-border);
+  flex-shrink: 0;
+  object-fit: cover;
+  transition: border-color var(--animation-duration) ease;
+}
+
+/* Message bubbles */
+.message-bubble {
+  padding: 0.75rem 0.9375rem;
+  border-radius: 0.5rem;
+  max-width: 75%;
+  line-height: 1.4;
+  box-sizing: border-box;
+  transition: background-color var(--animation-duration) ease,
+    color var(--animation-duration) ease;
+}
+
+.player,
+.narrator {
+  opacity: 0;
+  transform: translateY(1.25rem);
+  animation: bubble-fade-in 0.4s forwards;
+}
+
+@keyframes bubble-fade-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-bubble p {
+  margin: 0;
+  word-break: break-word;
+}
+
+.speaker-name {
+  font-weight: bold;
+  margin-bottom: 0.3125rem;
+  color: var(--text-heading);
+  transition: color var(--animation-duration) ease;
+}
+
+.speaker-id {
+  color: var(--text-muted);
+  font-size: 0.8em;
+  font-weight: normal;
+  margin-left: 0.25rem;
+  transition: color var(--animation-duration) ease;
+}
+
+/* Message types */
+.character {
+  background-color: var(--character-bg);
+  color: var(--chat-text);
+}
+
+.player {
+  background-color: var(--player-bg);
+  align-self: flex-end;
+  max-width: 75%;
+  color: var(--player-text);
+}
+
+.narrator {
+  background-color: transparent;
+  font-style: italic;
+  color: var(--text-muted);
+  text-align: center;
+  align-self: center;
+  max-width: 90%;
+}
+
+/* ============================================================================
+   PLAYER CHOICES & OPTIONS
+   ============================================================================ */
+
+.options-container {
+  max-width: 100%;
+  padding: 0.9375rem 1.5625rem 1.25rem 1.5625rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.625rem;
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--chat-border);
+}
+
+/* EXCEPTION: adopts the `.btn` base shape (inline-flex, focus-ring) but keeps
+   the chat-viewer blurple identity (--accent-primary fill), right-aligned
+   chat-bubble look + big touch target as a scoped brand rule. */
+.choice-button {
+  background-color: var(--accent-primary);
+  color: #ffffff;
+  border: none;
+  border-radius: 0.3125rem;
+  padding: 0.75rem 1.125rem;
+  font-size: 1em;
+  text-align: right;
+  justify-content: flex-end;
+  max-width: 80%;
+}
+
+.choice-button:hover {
+  background-color: var(--accent-hover);
+}
+
+.choice-button:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.choice-button:active {
+  transform: scale(0.98);
+}
+
+/* Selected choice styling */
+.message-bubble.selected-choice {
+  font-size: 0.85em;
+  opacity: 0.8;
+  margin: 0.5rem 0;
+  padding: 0.5rem 0.75rem;
+  background-color: rgba(88, 101, 242, 0.15);
+  border: 1px solid var(--accent-primary);
+  color: var(--chat-text);
+}
+
+body.dark-mode .message-bubble.selected-choice {
+  opacity: 0.7;
+  background-color: var(--accent-primary);
+  border-color: var(--accent-hover);
+  color: #ffffff;
+}
+
+/* End of conversation message */
+.end-of-conversation {
+  text-align: center;
+  padding: 1.25rem;
+  margin: 1.25rem 0;
+  font-size: 1.1em;
+  font-weight: bold;
+  color: var(--chat-text-secondary);
+  background-color: var(--bg-tertiary);
+  border-radius: 0.625rem;
+  border: 2px dashed var(--chat-border);
+  transition: background-color var(--animation-duration) ease,
+    border-color var(--animation-duration) ease,
+    color var(--animation-duration) ease;
+}
+
+body.dark-mode .end-of-conversation {
+  background-color: var(--bg-secondary);
+}
+

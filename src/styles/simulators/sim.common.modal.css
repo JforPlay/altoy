@@ -1,0 +1,78 @@
+/* =============================================================================
+   sim.common.modal.css
+   Part of the sim.common style split (formerly sim.common.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ===== SHIP BROWSE MODAL ===== */
+
+/* Modal shell migrated to components/Modal.astro (Wave 3). The slotted content
+   below (.search-input, .ship-grid) stays page-styled. */
+
+.search-input {
+  width: 100%;
+  box-sizing: border-box; /* keep padding + border inside the 100% so it never overflows the dialog */
+  padding: 10px var(--spacing-sm);
+  background: var(--bg-input);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 14px;
+  margin-bottom: var(--spacing-sm);
+  transition: border-color var(--transition-fast);
+  font-family: inherit;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: var(--focus-ring);
+}
+
+.ship-grid {
+  --grid-min: 120px;
+  --grid-gap: var(--spacing-xs);
+  overflow-y: auto;
+  max-height: 50vh;
+  padding-right: var(--spacing-xs);
+  overscroll-behavior: contain;
+}
+
+.ship-grid-item {
+  padding: var(--spacing-sm);
+  text-align: center;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
+  font-family: inherit;
+  text-decoration: none;
+}
+
+.ship-grid-item .ship-grid-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+.ship-grid-item:hover {
+  border-color: var(--primary-color);
+  background: var(--primary-alpha-10);
+}
+
+.shipgirl-card:focus-visible,
+#aircraft-info-card:focus-visible,
+.ship-grid-item:focus-visible {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: var(--focus-ring);
+}
+

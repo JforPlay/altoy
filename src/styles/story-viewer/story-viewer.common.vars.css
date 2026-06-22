@@ -1,0 +1,67 @@
+/* =============================================================================
+   story-viewer.common.vars.css
+   Part of the story-viewer.common style split (formerly story-viewer.common.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+@import url('../theme.css');
+
+/* =============================================================================
+   STORY VIEWER COMMON STYLES
+   Shared styles for all story viewer pages (main story and world events)
+
+   Organization:
+   1. CSS Variables & Theme System
+   2. Global Resets & Utilities
+   3. Selection View (Card Grid)
+   4. Story Viewer Layout
+   5. UI Components (Dialogue, Audio Player, Modals)
+   6. Effects & Animations
+   7. Responsive Media Queries
+
+   Z-Index Layering System:
+   - 0: Background images
+   - 5: Info screen overlays
+   - 10: Story header, dialogue boxes
+   - 20: Audio player
+   - 999: Sticky headers (selection view)
+   - 2000: Modals and notifications
+   - 9998-9999: Full-screen effects (fade, flash)
+============================================================================= */
+
+/* =============================================================================
+   1. CSS VARIABLES & THEME SYSTEM
+============================================================================= */
+
+:root {
+  /* Light Mode Theme (Default) */
+  --bg-color: #f4f7fa;
+  --text-color: #333333;
+  --header-bg: rgba(255, 255, 255, 0.85);
+  --card-bg: #ffffff;
+  --dialogue-bg: rgba(255, 255, 255, 0.9);
+  --border-color: #d1d9e6;
+  --input-bg: #ffffff;
+  --accent-color: #007bff;
+  --subtitle-color: #555555;
+  --shadow-color: rgba(44, 62, 80, 0.15);
+}
+
+body.dark-mode {
+  /* Dark Mode Theme */
+  --bg-color: #121212;
+  --text-color: #e0e0e0;
+  --header-bg: rgba(28, 28, 28, 0.9);
+  --card-bg: rgba(30, 30, 30, 0.85);
+  --dialogue-bg: rgba(28, 28, 28, 0.9);
+  --border-color: #444444;
+  --input-bg: #2a2a2a;
+  --accent-color: #4dabf7;
+  --subtitle-color: #aaaaaa;
+  --shadow-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Dark mode specific overrides */
+body.dark-mode .story-header {
+  color: #ffffff;
+}
+

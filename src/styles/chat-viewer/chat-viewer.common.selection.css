@@ -1,0 +1,202 @@
+/* =============================================================================
+   chat-viewer.common.selection.css
+   Part of the chat-viewer.common style split (formerly chat-viewer.common.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ============================================================================
+   CHARACTER SELECTION SECTION
+   ============================================================================ */
+
+#character-selection-section {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--chat-border);
+  padding: 1.25rem 1.5625rem;
+  border-radius: 0.625rem;
+  margin: 0 auto 1.875rem auto;
+  max-width: 56.25rem;
+  box-sizing: border-box;
+  transition: background-color var(--animation-duration) ease,
+    border-color var(--animation-duration) ease,
+    max-height var(--animation-duration) ease;
+}
+
+/* Collapsed state - shows only when character is selected */
+#character-selection-section.collapsed {
+  padding: 0.9375rem 1.5625rem;
+}
+
+#character-selection-section.collapsed .character-grid {
+  max-height: 0;
+  overflow: hidden;
+  margin-top: 0;
+  transition: max-height 0.3s ease, margin-top 0.3s ease;
+}
+
+#character-selection-section:not(.collapsed) .character-grid {
+  max-height: 31.25rem;
+  margin-top: 0.9375rem;
+  padding-top: 0.5rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: max-height 0.3s ease, margin-top 0.3s ease;
+
+  /* Smooth scrollbar */
+  scroll-behavior: smooth;
+}
+
+
+#character-selection-section h2,
+#character-selection-section h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+#character-selection-section h3 {
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+#character-selection-section h3:hover {
+  color: var(--accent-light);
+}
+
+#character-selection-section h3:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 3px;
+  border-radius: 0.25rem;
+}
+
+/* Toggle indicator */
+#character-selection-section h3::after {
+  content: "▼";
+  font-size: 0.8em;
+  transition: transform 0.3s ease;
+}
+
+#character-selection-section.collapsed h3::after {
+  transform: rotate(-90deg);
+}
+
+/* Selected character display in collapsed state */
+.selected-character-display {
+  display: none;
+  font-size: 0.9em;
+  color: var(--chat-text-secondary);
+  font-weight: normal;
+  margin-left: 0.9375rem;
+}
+
+#character-selection-section.collapsed .selected-character-display {
+  display: inline;
+}
+
+/* Character Grid Layouts (uses global .card-grid) */
+.character-grid {
+  --grid-min: clamp(6.875rem, 15vw, 9.375rem);
+  --grid-gap: 1.25rem;
+}
+
+/* Juus variant - more compact grid */
+.character-grid.juus {
+  --grid-min: clamp(6.25rem, 12vw, 8.125rem);
+}
+
+/* Loading / empty / error states use the canonical .page-status component
+   (src/styles/components/status.css, loaded globally) — emitted by the page JS
+   or written as static markup, never re-styled here. */
+
+/* ============================================================================
+   CHARACTER CARDS
+   ============================================================================ */
+
+.character-card {
+  background-color: var(--bg-secondary);
+  border: 2px solid var(--chat-border);
+  border-radius: 0.625rem;
+  padding: 0.9375rem;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease,
+    background-color var(--animation-duration) ease, box-shadow 0.2s ease;
+}
+
+.character-card:hover {
+  transform: translateY(var(--card-lift));
+  border-color: var(--border-hover);
+  box-shadow: var(--card-hover-shadow);
+}
+
+.character-card:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.character-card.selected {
+  border-color: var(--accent-primary);
+  background-color: rgba(88, 101, 242, 0.08);
+  box-shadow: 0 0 0.75rem var(--shadow-medium);
+}
+
+body.dark-mode .character-card.selected {
+  background-color: var(--bg-tertiary);
+}
+
+.character-card img {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  margin-bottom: 0.625rem;
+  background-color: var(--bg-tertiary);
+  object-fit: cover;
+  transition: background-color var(--animation-duration) ease;
+}
+
+.character-card .char-name {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: var(--text-heading);
+  margin: 0 0 0.3125rem 0;
+  transition: color var(--animation-duration) ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.character-card .ship-name {
+  font-size: 0.9em;
+  color: var(--chat-text-secondary);
+  margin: 0;
+  transition: color var(--animation-duration) ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+/* Juus variant - more compact cards */
+.character-grid.juus .character-card {
+  padding: 0.625rem;
+  border-radius: 0.5rem;
+}
+
+.character-grid.juus .character-card img {
+  width: 3.75rem;
+  height: 3.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.character-grid.juus .character-card .char-name {
+  font-size: 0.85em;
+  margin: 0 0 0.25rem 0;
+  line-height: 1.2;
+}
+
+.character-grid.juus .character-card .ship-name {
+  font-size: 0.75em;
+  line-height: 1.2;
+}
+

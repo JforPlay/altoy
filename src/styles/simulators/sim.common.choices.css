@@ -1,0 +1,106 @@
+/* =============================================================================
+   sim.common.choices.css
+   Part of the sim.common style split (formerly sim.common.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ===== CHOICES.JS THEMING ===== */
+
+.choices,
+.choices *,
+.choices *::before,
+.choices *::after { box-sizing: border-box; }
+
+.choices { width: 100%; }
+
+.sim-page .choices__inner {
+  width: 100%;
+  /* !important: beat the CDN choices.min.css, which loads after this bundle and
+     otherwise reverts the background to #f9f9f9 (white-on-white in dark mode). */
+  background: var(--bg-input) !important;
+  border: 1px solid var(--input-border);
+  color: var(--text-primary) !important;
+  border-radius: var(--radius-md);
+  padding: 0 var(--spacing-sm);
+  font-size: 14px;
+  min-height: 40px;
+  transition: border-color var(--transition-fast);
+  display: flex;
+  align-items: center;
+}
+
+.choices__inner:hover { border-color: var(--primary-color); }
+
+.choices.is-focused .choices__inner {
+  border-color: var(--primary-color);
+  box-shadow: var(--focus-ring);
+}
+
+.choices__list--dropdown,
+.choices__list[aria-expanded] {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  margin-top: 4px;
+  box-shadow: var(--shadow-lg);
+  z-index: 1002;
+  max-height: min(60vh, 420px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.choices__list--dropdown .choices__item--selectable.is-highlighted,
+.choices__list[aria-expanded] .choices__item--selectable.is-highlighted {
+  background: var(--primary-alpha-20);
+  color: var(--text-primary);
+}
+
+/* Currently-selected item shown in the list — keep it readable in both modes
+ * (Choices.js default sets it white-on-white). */
+.choices__list--dropdown .choices__item.is-selected,
+.choices__list[aria-expanded] .choices__item.is-selected {
+  background: var(--primary-alpha-15);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Choices.js group headings */
+.choices__group .choices__heading {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  padding: 8px 12px 4px;
+  border-bottom: 1px solid var(--surface-border);
+  text-transform: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.choices__group .choices__heading .group-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-xs);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.choices__item { color: var(--text-primary); padding: 8px 12px; }
+
+.sim-page .choices__input {
+  /* !important: the typed-search text. CDN choices.min.css overrides the
+     background back to near-white on later load; force both so it stays legible. */
+  background-color: var(--bg-input) !important;
+  color: var(--text-primary) !important;
+  border-radius: var(--radius-sm);
+  padding: 6px;
+}
+
+.choices[data-type*="select-one"]::after {
+  border-color: var(--text-secondary) transparent transparent;
+  margin-top: -2px;
+}
+.choices[data-type*="select-one"].is-open::after {
+  border-color: transparent transparent var(--text-secondary);
+  margin-top: -7.5px;
+}
+

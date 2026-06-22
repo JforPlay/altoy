@@ -1,0 +1,178 @@
+/* =============================================================================
+   story-viewer.common.effects.css
+   Part of the story-viewer.common style split (formerly story-viewer.common.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* =============================================================================
+   6. EFFECTS & ANIMATIONS
+============================================================================= */
+
+/* --- Full-screen Effects --- */
+.fade-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  z-index: calc(var(--z-max) - 1);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease-in-out;
+  will-change: opacity;
+}
+
+.fade-overlay.visible {
+  opacity: 1;
+}
+
+.shake {
+  /* Amplitude, per-cycle duration, and iteration count all come from the
+     engine via inline --shake-* vars (set from line.shake = {number, speed,
+     y}). Defaults cover the case where .shake is added without them. */
+  --shake-x: 10px;
+  --shake-y: 0px;
+  --shake-duration: 440ms;
+  --shake-iterations: 1;
+  animation: story-shake-dynamic var(--shake-duration) ease-in-out var(--shake-iterations) both;
+}
+
+/* Dialog-box horizontal shake driven by line.dialogShake. A smooth symmetric
+   back-and-forth pan — matches the game's TweenMovex(dialogueWin, x, origX,
+   speed, delay, number). Amplitude / duration / iterations come from inline
+   --dialog-shake-* vars set by the engine. */
+.dialog-shake {
+  --dialog-shake-x: 10px;
+  --dialog-shake-duration: 100ms;
+  --dialog-shake-iterations: 1;
+  animation: story-dialog-shake var(--dialog-shake-duration) ease-in-out var(--dialog-shake-iterations) both;
+}
+
+@keyframes story-dialog-shake {
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(var(--dialog-shake-x)); }
+  50%  { transform: translateX(0); }
+  75%  { transform: translateX(calc(var(--dialog-shake-x) * -1)); }
+  100% { transform: translateX(0); }
+}
+
+/* Painting/portrait shake driven by line.action[].type="shake".
+   Supports both X and Y axes. In the game this is a LeanTween ping-pong
+   move on the character painting element. */
+.painting-shake {
+  --painting-shake-x: 0px;
+  --painting-shake-y: 0px;
+  --painting-shake-duration: 150ms;
+  --painting-shake-iterations: 2;
+  animation: story-painting-shake var(--painting-shake-duration) ease-in-out var(--painting-shake-iterations) both;
+}
+
+@keyframes story-painting-shake {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(var(--painting-shake-x), var(--painting-shake-y)); }
+  50%  { transform: translate(0, 0); }
+  75%  { transform: translate(calc(var(--painting-shake-x) * -1), calc(var(--painting-shake-y) * -1)); }
+  100% { transform: translate(0, 0); }
+}
+
+.flash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  z-index: var(--z-max);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.flash.flash-black {
+  background-color: black;
+}
+
+/* Step-level flashout/flashin curtain. One overlay, animated via JS. */
+.story-flash-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-max) - 1);
+  pointer-events: none;
+  opacity: 0;
+  background-color: rgb(0, 0, 0);
+}
+
+/* Color blink overlay for line.flashN — distinct from the flashout/flashin
+   curtain so color flashes don't collide with scene transitions. Lower
+   z-index than story-flash-overlay so the curtain can dominate. */
+.story-flashn-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-max) - 2);
+  pointer-events: none;
+  opacity: 0;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+/* line.oldPhoto sepia tint — game overlays Color(0.62, 0.58, 0.14, 0.36)
+   on the scene for flashbacks (storyplayer.lua:1157-1169). Sits above the
+   bg (0) and paintings (1), below the dialogue UI. Color set inline when
+   the step carries a custom RGBA. */
+.story-oldphoto-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background-color: rgba(158, 148, 36, 0.36);
+}
+
+/* --- Keyframe Animations --- */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Story-viewer uses a dynamic shake keyframe that reads amplitude from CSS
+   custom properties (--shake-x / --shake-y) so each story effect can set its
+   own intensity. The global @keyframes shake in theme.css is kept for other
+   pages that rely on its fixed-amplitude behavior. */
+@keyframes story-shake-dynamic {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  15%, 85% { transform: translate3d(calc(var(--shake-x) * -0.12), calc(var(--shake-y) * -0.12), 0); }
+  30%, 70% { transform: translate3d(calc(var(--shake-x) *  0.25), calc(var(--shake-y) *  0.25), 0); }
+  45%      { transform: translate3d(calc(var(--shake-x) * -0.25), calc(var(--shake-y) * -0.25), 0); }
+  60%      { transform: translate3d(calc(var(--shake-x) *  0.12), calc(var(--shake-y) *  0.12), 0); }
+}
+
+@keyframes flash-anim {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes wave {
+  0%,
+  100% {
+    height: 4px;
+  }
+  50% {
+    height: 1.25rem;
+  }
+}
+

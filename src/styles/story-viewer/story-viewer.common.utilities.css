@@ -1,0 +1,134 @@
+/* =============================================================================
+   story-viewer.common.utilities.css
+   Part of the story-viewer.common style split (formerly story-viewer.common.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* =============================================================================
+   2. GLOBAL RESETS & UTILITIES
+============================================================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* .hidden utility class defined in global.style.css */
+
+/* --- Theme Toggle Button --- */
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  position: relative;
+}
+
+.theme-toggle:hover {
+  background-color: var(--border-color);
+}
+
+.theme-icon-sun,
+.theme-icon-moon {
+  font-size: 1.5rem;
+  color: var(--text-color);
+  transition: opacity 0.3s;
+}
+
+/* --- Notifications --- */
+/* Error notification (top-center, red background) */
+.error-container {
+  position: fixed;
+  top: 4.375rem; /* Below navbar */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--danger-color);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  z-index: var(--z-modal);
+  box-shadow: 0 4px 15px var(--overlay-medium);
+}
+
+/* Flavor text box (floating warning in memory selection / tab views) */
+.flavor-text-box {
+  position: fixed;
+  bottom: 6rem; /* Above footer */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+
+  background-color: color-mix(in srgb, var(--card-bg) 85%, transparent);
+  backdrop-filter: blur(0.75rem);
+  -webkit-backdrop-filter: blur(0.75rem);
+  border: 1px solid color-mix(in srgb, var(--border-color) 60%, transparent);
+  border-radius: 1.5rem;
+  padding: 0.65rem 1.5rem;
+  width: fit-content;
+  max-width: calc(100% - 2rem);
+  text-align: center;
+  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.15),
+              0 0 0 1px color-mix(in srgb, var(--accent-color) 20%, transparent);
+
+  /* Smooth entrance animation - appears at 0.3s, fades out at 5.3s */
+  animation: floatInOut 5.6s ease 0.3s both;
+}
+
+@keyframes floatInOut {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(1rem);
+  }
+  5% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  90% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(1rem);
+  }
+}
+
+.flavor-text-box p {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-color);
+  letter-spacing: 0.01em;
+}
+
+/* Icon before text for visual interest */
+.flavor-text-box p::before {
+  content: '🎵';
+  margin-right: 0.5rem;
+}
+
+/* Responsive adjustments for flavor text */
+@media (max-width: 480px) {
+  .flavor-text-box {
+    bottom: 5rem;
+    padding: 0.55rem 1rem;
+    border-radius: 1.25rem;
+  }
+
+  .flavor-text-box p {
+    font-size: 0.75rem;
+  }
+}
+

@@ -1,0 +1,195 @@
+/* =============================================================================
+   story-viewer.common.dialogue.css
+   Part of the story-viewer.common style split (formerly story-viewer.common.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* =============================================================================
+   5. UI COMPONENTS
+============================================================================= */
+
+/* --- Info Screen Overlay --- */
+.info-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  z-index: 5;
+  pointer-events: none;
+}
+
+#info-screen-text {
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  background: var(--overlay-heavy);
+  padding: 1.25rem 1.75rem;
+  border-radius: 0.75rem;
+  max-width: 80%;
+  max-height: 70vh;
+  margin: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: auto;
+  line-height: 1.5;
+  --sequence-base-size: 1.35rem;
+  font-size: var(--sequence-base-size);
+}
+
+#info-screen-text .sequence-line {
+  display: block;
+  font-size: calc(var(--sequence-base-size) * var(--sequence-scale, 1));
+  white-space: pre-line;
+  word-break: break-word;
+}
+
+/* --- Dialogue Box --- */
+.dialogue-box {
+  background-color: var(--dialogue-bg);
+  backdrop-filter: blur(5px);
+  width: 90%;
+  max-width: 50rem;
+  margin: 0 auto 1rem auto;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 0 20px var(--overlay-medium);
+  display: flex;
+  align-items: center;
+  z-index: 10;
+}
+
+.actor-portrait {
+  width: 6.25rem;
+  height: 6.25rem;
+  margin-right: 1.5rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--border-color);
+  background-color: var(--bg-color);
+}
+
+.actor-portrait.actor-shadow {
+  box-shadow: 0 0 10px 5px var(--overlay-heavy);
+  filter: brightness(0.5);
+  opacity: 0.7;
+}
+
+.actor-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dialogue-content {
+  flex-grow: 1;
+}
+
+.actor-name {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+/* Faction tag suffix after the speaker name (game's factiontag/subText). */
+.actor-faction-tag {
+  font-size: 0.8em;
+  font-weight: normal;
+  opacity: 0.9;
+}
+
+.dialogue-text {
+  font-size: 1.1rem;
+}
+
+.next-page-indicator {
+  position: absolute;
+  bottom: 1rem;
+  right: 1.5rem;
+  font-size: 1.5rem;
+  animation: bounce 1s infinite;
+}
+
+/* --- Choice Options --- */
+.options-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 90%;
+  max-width: 37.5rem;
+  margin: 0 auto 2rem auto;
+  z-index: 10;
+}
+
+/* Story-choice button (EXCEPTION): adopts the `.btn` base shape (inline-flex,
+   focus-ring) but keeps its full-width card-bg story-choice look + big touch
+   target as a scoped brand rule — not re-forked as a base button variant. */
+.option-button {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.3rem;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.option-button:hover {
+  background-color: var(--border-color);
+}
+
+/* --- Bottom Bar & Navigation --- */
+.bottom-bar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 0 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.story-nav-arrows {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+/* Nav / story-nav / auto-play buttons now use the canonical `.btn .btn-secondary`
+   (text) or `.btn .btn-icon` (the bare-arrow .back-button). Shape, color, hover
+   and :disabled all come from button.css. Only the slight lift on hover is kept
+   as a story-viewer flourish. */
+.nav-button:hover,
+.story-nav-btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Branch-end hint: shown when the player has reached the end of a
+   branch but the underlying script still has other branches to explore. */
+.branch-end-hint {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(5rem + 1.5rem); /* sits just above the nav-arrows row */
+  padding: 0.5rem 1rem;
+  background-color: color-mix(in srgb, var(--primary-color) 88%, black);
+  color: #fff;
+  border-radius: 0.4rem;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  z-index: 5;
+  pointer-events: none;
+  max-width: 92vw;
+  text-align: center;
+}
+
+/* Auto-play toggle active state = canonical `.btn.is-active` (accent-blue + #fff,
+   contrast-safe in both themes). The engine toggles `.is-active` on the button. */
+

@@ -1,0 +1,183 @@
+/* =============================================================================
+   story-viewer.common.selection.css
+   Part of the story-viewer.common style split (formerly story-viewer.common.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* =============================================================================
+   3. SELECTION VIEW (CARD GRID)
+   Used on the initial story/chapter selection screen
+============================================================================= */
+
+/* --- Header Bar --- */
+.viewer-header {
+  background-color: var(--header-bg);
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.header-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 1rem;
+}
+
+.search-container {
+  flex-grow: 1;
+  margin: 0 2rem;
+  max-width: 25rem; /* Prevent search bar from becoming too wide */
+}
+
+#search-bar {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+/* --- Card Grid Container --- */
+.story-grid-container {
+  --grid-min: 17.5rem;
+  --grid-gap: var(--spacing-lg);
+  padding: 2rem;
+  max-width: 100rem;
+  margin: 0 auto;
+}
+
+/* --- Skeleton Loading States --- */
+/* Displayed while data is being fetched */
+.skeleton-card {
+  pointer-events: none;
+  cursor: default;
+}
+
+.skeleton-card:hover {
+  transform: none;
+  box-shadow: 0 4px 15px var(--shadow-color); /* Maintain shadow, no lift */
+}
+
+.skeleton-thumbnail,
+.skeleton-title,
+.skeleton-subtitle {
+  background: linear-gradient(
+    90deg,
+    var(--border-color) 25%,
+    var(--bg-color) 50%,
+    var(--border-color) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeleton-title,
+.skeleton-subtitle {
+  height: 1.2rem;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.skeleton-title {
+  width: 70%;
+  height: 1.4rem;
+}
+
+.skeleton-subtitle {
+  width: 90%;
+}
+
+/* --- Story/Chapter Cards --- */
+.grid-card {
+  background-color: var(--card-bg);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 4px 15px var(--shadow-color);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  will-change: transform, box-shadow;
+}
+
+.grid-card:hover {
+  transform: translateY(var(--card-lift));
+  box-shadow: var(--card-hover-shadow);
+}
+
+/* Card keeps its bespoke focus outline; the .btn-based nav/story/option buttons
+   now get the canonical --focus-ring from button.css. */
+.grid-card:focus-visible {
+  outline: 3px solid var(--accent-color);
+  outline-offset: 3px;
+}
+
+/* Highlighted card (e.g., "Continue Reading" indicator) */
+.grid-card.highlighted-card {
+  border: 2px solid var(--accent-color);
+  box-shadow: 0 6px 25px
+    color-mix(in srgb, var(--accent-color) 50%, transparent);
+  transform: translateY(-5px) scale(1.02);
+}
+
+/* Ribbon badge on highlighted card */
+.grid-card.highlighted-card::after {
+  content: "다음 회차보기"; /* "View Next Episode" in Korean */
+  position: absolute;
+  top: 1rem;
+  right: -2.2rem;
+  background-color: var(--accent-color);
+  color: #ffffff;
+  padding: 0.2rem 2.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: center;
+  transform: rotate(45deg);
+  box-shadow: 0 2px 5px var(--overlay-medium);
+  white-space: nowrap;
+}
+
+.grid-card.world-story-link {
+  border: 2px dashed var(--accent-color);
+  box-shadow: 0 6px 18px
+    color-mix(in srgb, var(--accent-color) 35%, transparent);
+}
+
+.card-thumbnail {
+  width: 100%;
+  height: 10rem;
+  background-color: #ccc; /* Fallback color */
+  background-size: cover;
+  background-position: center;
+}
+
+.card-thumbnail.is-placeholder {
+  background-color: #34495e;
+}
+
+.card-content {
+  padding: 1rem;
+  flex-grow: 1;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  word-break: keep-all; /* Korean text wrapping */
+}
+
+.card-subtitle {
+  font-size: 0.9rem;
+  color: var(--subtitle-color);
+}
+

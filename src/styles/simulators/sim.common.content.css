@@ -1,0 +1,134 @@
+/* =============================================================================
+   sim.common.content.css
+   Part of the sim.common style split (formerly sim.common.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ===== PLAYBACK BAR ===== */
+
+.playback-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin-top: var(--spacing-sm);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  flex-wrap: wrap;
+}
+
+.bar-separator {
+  width: 1px;
+  height: 28px;
+  background: var(--border-color);
+  margin: 0 var(--spacing-xs);
+}
+
+/* Buttons — base/variants now come from the global components/button.css.
+   Only the sim-local --warning-color override on .btn-secondary.centered remains. */
+.btn-secondary.centered {
+  background: var(--warning-color);
+  color: #fff;
+  border-color: var(--warning-color);
+}
+
+/* Level Toggle (in playback bar) → canonical .btn-secondary + .is-active (button.css). */
+
+/* ===== TWO-COLUMN CONTENT ===== */
+
+.sim-content {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+  align-items: start;
+}
+
+.sim-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  position: sticky;
+  top: var(--spacing-md);
+}
+
+.sim-main {
+  min-width: 0;
+}
+
+/* Cards */
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-sm);
+}
+
+.card-header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* Type filter bar */
+.type-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: var(--spacing-sm);
+}
+
+.type-filter-btn {
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: inherit;
+}
+
+.type-filter-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.type-filter-btn.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff;
+}
+
+.sim-muted-text {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.placeholder-card {
+  text-align: center;
+  color: var(--text-muted);
+  padding: var(--spacing-xl);
+}
+
+/* Selector Card */
+.selector-card {
+  position: relative;
+  z-index: 10;
+}
+
+.selector-card .choices {
+  width: 100%;
+}
+
