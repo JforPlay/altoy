@@ -707,3 +707,11 @@ test('4b #3: .nav-links.active glow is blurple in dark', async ({ page }) => {
     await page.goto('./', { waitUntil: 'load' });
     expect(await probeStyle(page, 'nav-links active', 'boxShadow')).toContain('114, 137, 218');
 });
+
+// 4b #9: the active-ship outline must match its sibling .global-search-item.active
+// (which already uses var(--primary-alpha-30)) — electric-blue in light, not blurple.
+test('4b #9: .global-search-ship.active outline is electric-blue in light', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('theme', 'light'));
+    await page.goto(pathFor('shipgirl-stats'), { waitUntil: 'load' });
+    expect(await probeStyle(page, 'global-search-ship active', 'outlineColor')).toContain('0, 113, 235');
+});
