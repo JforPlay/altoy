@@ -678,3 +678,13 @@ test('4a: overlay ladder tokens resolve to their literal on shipgirl-info', asyn
     expect(await v('var(--overlay-06)')).toBe('rgba(0, 0, 0, .06)');
     expect(await v('var(--overlay-intense)')).toBe('rgba(0, 0, 0, .7)');
 });
+
+// 4a: minted tokens are NOT locally overridden on overrider/accent pages.
+for (const sub of ['island/', 'expression-viewer', 'sim-weapon']) {
+    test(`4a: overlay/highlight ladder resolves cleanly on ${sub}`, async ({ page }) => {
+        await page.goto(pathFor(sub), { waitUntil: 'load' });
+        const v = async (e) => (await resolveColor(page, e)).replace(/\b0(\.\d)/g, '$1');
+        expect(await v('var(--overlay-40)')).toBe('rgba(0, 0, 0, .4)');
+        expect(await v('var(--highlight-85)')).toBe('rgba(255, 255, 255, .85)');
+    });
+}
