@@ -79,7 +79,7 @@ body {
   width: fit-content;
   max-width: calc(100% - 2rem);
   text-align: center;
-  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.15),
+  box-shadow: 0 0.25rem 1rem var(--overlay-15),
               0 0 0 1px color-mix(in srgb, var(--accent-color) 20%, transparent);
 
   /* Smooth entrance animation - appears at 0.3s, fades out at 5.3s */
