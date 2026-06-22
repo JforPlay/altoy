@@ -23,7 +23,7 @@
 .navbar.scrolled {
   top: 0.5rem;
   background: var(--navbar-bg-scrolled);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 20px var(--overlay-15);
 }
 
 .navbar::after {
@@ -49,12 +49,12 @@
 
 /* Dark Mode Navbar Adjustments */
 body.dark-mode .navbar {
-  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.6),
+  box-shadow: 0 0.5rem 2rem var(--overlay-60),
     0 0 0 1px var(--highlight-subtle) inset;
 }
 
 body.dark-mode .navbar.scrolled {
-  box-shadow: 0 0.75rem 2.5rem rgba(0, 0, 0, 0.8), 0 0 3.75rem rgba(0, 113, 235, 0.1);
+  box-shadow: 0 0.75rem 2.5rem var(--overlay-80), 0 0 3.75rem rgba(0, 113, 235, 0.1);
 }
 
 body.dark-mode .navbar::after {
@@ -132,14 +132,14 @@ body.dark-mode .nav-links.active {
 .mega-menu {
   background: #ffffff;
   border-top: 2px solid rgba(0, 113, 235, 0.25);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15),
+  box-shadow: 0 10px 40px var(--overlay-15),
     0 4px 24px rgba(0, 113, 235, 0.15);
 }
 
 body.dark-mode .mega-menu {
   background: #0a0a0a;
   border-top: 2px solid var(--primary-alpha-30);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8),
+  box-shadow: 0 10px 40px var(--overlay-80),
     0 0 0 1px var(--highlight-subtle) inset, 0 4px 24px rgba(0, 113, 235, 0.2);
 }
 

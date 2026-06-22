@@ -372,7 +372,7 @@
   padding: 1px 6px;
   font-size: 0.65rem;
   font-family: inherit;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--highlight-60);
 }
 
 /* Light mode navbar trigger */

@@ -134,8 +134,8 @@
 /* Requirement quest: `.badge` + brand-green color exception. */
 .requirement-quest-badge {
     background-color: rgba(67, 181, 129, 0.15);
-    color: #43b581;
-    border: 1px solid #43b581;
+    color: var(--accent-green);
+    border: 1px solid var(--accent-green);
 }
 
 /* Formula Stats */

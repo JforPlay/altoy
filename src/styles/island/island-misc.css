@@ -235,9 +235,9 @@ body {
 .island-misc-lightbox .lightbox-prev,
 .island-misc-lightbox .lightbox-next {
   position: absolute;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--highlight-soft);
   backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid var(--highlight-medium);
   color: white;
   font-size: 2rem;
   cursor: pointer;
@@ -253,7 +253,7 @@ body {
 .island-misc-lightbox .lightbox-close:hover,
 .island-misc-lightbox .lightbox-prev:hover,
 .island-misc-lightbox .lightbox-next:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--highlight-medium);
   transform: scale(1.1);
 }
 
@@ -272,7 +272,7 @@ body {
 
 .island-misc-lightbox .lightbox-prev:disabled:hover,
 .island-misc-lightbox .lightbox-next:disabled:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--highlight-soft);
 }
 
 .island-misc-lightbox .lightbox-close {
@@ -313,7 +313,7 @@ body {
   bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.7);
+  background: var(--overlay-intense);
   backdrop-filter: blur(10px);
   padding: 0.75rem 1.5rem;
   border-radius: 50px;

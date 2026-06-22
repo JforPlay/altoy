@@ -15,7 +15,7 @@
   align-items: center;
   text-align: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px var(--overlay-lighter);
+  box-shadow: 0 1px 3px var(--overlay-12), 0 1px 2px var(--overlay-lighter);
 }
 
 .ship-card:hover {

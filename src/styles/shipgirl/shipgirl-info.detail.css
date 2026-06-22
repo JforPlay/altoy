@@ -64,7 +64,7 @@ body.dark-mode .back-button {
 body.dark-mode .back-button:hover:not(:disabled) {
   background: #4a4a4a;
   border-color: #5a5a5a;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 8px var(--overlay-40);
 }
 
 .back-button:disabled {

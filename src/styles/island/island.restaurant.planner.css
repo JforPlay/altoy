@@ -661,7 +661,7 @@
     font-weight: 800;
     padding: 0.1rem 0.25rem;
     border-radius: 4px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    box-shadow: 0 2px 6px var(--overlay-40);
     border: 2px solid var(--island-bg);
     z-index: 11;
     min-width: 20px;
