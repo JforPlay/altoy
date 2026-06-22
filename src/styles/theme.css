@@ -161,6 +161,9 @@
   --primary-alpha-15: rgba(0, 113, 235, 0.15);
   --primary-alpha-20: rgba(0, 113, 235, 0.2);
   --primary-alpha-30: rgba(0, 113, 235, 0.3);
+  --primary-alpha-25: rgba(0, 113, 235, 0.25);
+  --primary-alpha-40: rgba(0, 113, 235, 0.4);
+  --primary-alpha-50: rgba(0, 113, 235, 0.5);
 
   /* Danger color alpha variants */
   --danger-alpha-10: rgba(231, 76, 60, 0.1);
@@ -300,6 +303,9 @@ body.dark-mode {
   --primary-alpha-15: rgba(114, 137, 218, 0.15);
   --primary-alpha-20: rgba(114, 137, 218, 0.2);
   --primary-alpha-30: rgba(114, 137, 218, 0.3);
+  --primary-alpha-25: rgba(114, 137, 218, 0.25);
+  --primary-alpha-40: rgba(114, 137, 218, 0.4);
+  --primary-alpha-50: rgba(114, 137, 218, 0.5);
 
   /* Danger color alpha variants (same base as light since --danger-color is shared) */
   --danger-alpha-10: rgba(231, 76, 60, 0.1);

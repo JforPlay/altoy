@@ -688,3 +688,14 @@ for (const sub of ['island/', 'expression-viewer', 'sim-weapon']) {
         expect(await v('var(--highlight-85)')).toBe('rgba(255, 255, 255, .85)');
     });
 }
+
+// --- Phase 4b: minted flipping alpha tokens (electric-blue light / blurple dark) ---
+for (const [theme, rgb] of [['light', '0, 113, 235'], ['dark', '114, 137, 218']]) {
+    test(`4b: --primary-alpha-25/40/50 resolve ${rgb} in ${theme}`, async ({ page }) => {
+        await page.addInitScript((t) => localStorage.setItem('theme', t), theme);
+        await page.goto('./', { waitUntil: 'load' });
+        for (const stop of ['--primary-alpha-25', '--primary-alpha-40', '--primary-alpha-50']) {
+            expect(await bodyVar(page, stop), stop).toContain(rgb);
+        }
+    });
+}
