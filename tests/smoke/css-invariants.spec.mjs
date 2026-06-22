@@ -715,3 +715,19 @@ test('4b #9: .global-search-ship.active outline is electric-blue in light', asyn
     await page.goto(pathFor('shipgirl-stats'), { waitUntil: 'load' });
     expect(await probeStyle(page, 'global-search-ship active', 'outlineColor')).toContain('0, 113, 235');
 });
+
+// 4b #11: the floating back-to-tabs button was missed by child-story's dark pass
+// (white-glass bg on a dark page). --bg-glass flips it to black-glass in dark.
+test('4b #11: #back-to-tabs background is dark-glass in dark', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('theme', 'dark'));
+    await page.goto(pathFor('tb-story'), { waitUntil: 'load' });
+    const bg = await page.evaluate(() => {
+        const el = document.createElement('div');
+        el.id = 'back-to-tabs';
+        document.body.appendChild(el);
+        const v = getComputedStyle(el).backgroundColor;
+        el.remove();
+        return v;
+    });
+    expect(bg).toContain('0, 0, 0'); // rgba(0, 0, 0, 0.95)
+});
