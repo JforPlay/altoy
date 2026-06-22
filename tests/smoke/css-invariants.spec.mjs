@@ -688,3 +688,56 @@ for (const sub of ['island/', 'expression-viewer', 'sim-weapon']) {
         expect(await v('var(--highlight-85)')).toBe('rgba(255, 255, 255, .85)');
     });
 }
+
+// --- Phase 4b: minted flipping alpha tokens (electric-blue light / blurple dark) ---
+for (const [theme, rgb] of [['light', '0, 113, 235'], ['dark', '114, 137, 218']]) {
+    test(`4b: --primary-alpha-25/40/50 resolve ${rgb} in ${theme}`, async ({ page }) => {
+        await page.addInitScript((t) => localStorage.setItem('theme', t), theme);
+        await page.goto('./', { waitUntil: 'load' });
+        for (const stop of ['--primary-alpha-25', '--primary-alpha-40', '--primary-alpha-50']) {
+            expect(await bodyVar(page, stop), stop).toContain(rgb);
+        }
+    });
+}
+
+// 4b #3: the active nav-link glow must track the theme (dark-block already flips
+// its fill+border; the box-shadow was the orphaned electric-blue literal).
+test('4b #3: .nav-links.active glow is blurple in dark', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('theme', 'dark'));
+    await page.goto('./', { waitUntil: 'load' });
+    expect(await probeStyle(page, 'nav-links active', 'boxShadow')).toContain('114, 137, 218');
+});
+
+// 4b #9: the active-ship outline must match its sibling .global-search-item.active
+// (which already uses var(--primary-alpha-30)) — electric-blue in light, not blurple.
+test('4b #9: .global-search-ship.active outline is electric-blue in light', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('theme', 'light'));
+    await page.goto(pathFor('shipgirl-stats'), { waitUntil: 'load' });
+    expect(await probeStyle(page, 'global-search-ship active', 'outlineColor')).toContain('0, 113, 235');
+});
+
+// 4b #11: the floating back-to-tabs button was missed by child-story's dark pass
+// (white-glass bg on a dark page). --bg-glass flips it to black-glass in dark.
+test('4b #11: #back-to-tabs background is dark-glass in dark', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('theme', 'dark'));
+    await page.goto(pathFor('tb-story'), { waitUntil: 'load' });
+    const bg = await page.evaluate(() => {
+        const el = document.createElement('div');
+        el.id = 'back-to-tabs';
+        document.body.appendChild(el);
+        const v = getComputedStyle(el).backgroundColor;
+        el.remove();
+        return v;
+    });
+    expect(bg).toContain('0, 0, 0'); // rgba(0, 0, 0, 0.95)
+});
+
+// 4b #12: collapsing the .lightbox-modal light/dark pair to var(--bg-glass) must
+// preserve both theme values (white-glass light, black-glass dark).
+for (const [theme, rgb] of [['light', '255, 255, 255'], ['dark', '0, 0, 0']]) {
+    test(`4b #12: .lightbox-modal background unchanged in ${theme}`, async ({ page }) => {
+        await page.addInitScript((t) => localStorage.setItem('theme', t), theme);
+        await page.goto(pathFor('expression-viewer'), { waitUntil: 'load' });
+        expect(await probeStyle(page, 'lightbox-modal', 'backgroundColor')).toContain(rgb);
+    });
+}
