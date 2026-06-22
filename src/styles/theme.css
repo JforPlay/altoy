@@ -63,11 +63,28 @@
   --overlay-intense:   rgba(0, 0, 0, 0.7);
   --overlay-opaque:    rgba(0, 0, 0, 0.9);
 
+  /* Numeric overlay stops (CSS unify Phase 4a) — black-alpha values that recur
+     in page CSS at alphas the semantic ladder above doesn't cover. :root-only =
+     theme-invariant. Each == the literal exactly (value-preserving on adoption). */
+  --overlay-06: rgba(0, 0, 0, 0.06);
+  --overlay-12: rgba(0, 0, 0, 0.12);
+  --overlay-15: rgba(0, 0, 0, 0.15);
+  --overlay-40: rgba(0, 0, 0, 0.4);
+  --overlay-60: rgba(0, 0, 0, 0.6);
+  --overlay-80: rgba(0, 0, 0, 0.8);
+
   /* Highlight alpha (white transparency for dark-mode surfaces, glass effects) */
   --highlight-subtle:  rgba(255, 255, 255, 0.05);
   --highlight-soft:    rgba(255, 255, 255, 0.1);
   --highlight-medium:  rgba(255, 255, 255, 0.2);
   --highlight-strong:  rgba(255, 255, 255, 0.3);
+
+  /* Numeric highlight stops (CSS unify Phase 4a) — white-alpha, :root-only. */
+  --highlight-02: rgba(255, 255, 255, 0.02);
+  --highlight-60: rgba(255, 255, 255, 0.6);
+  --highlight-70: rgba(255, 255, 255, 0.7);
+  --highlight-85: rgba(255, 255, 255, 0.85);
+  --highlight-90: rgba(255, 255, 255, 0.9);
 
   /* Theme-aware glass backdrop (used with backdrop-filter blur) — flips light/dark */
   --bg-glass:          rgba(255, 255, 255, 0.95);
@@ -140,6 +157,15 @@
   --danger-alpha-15: rgba(231, 76, 60, 0.15);
   --danger-alpha-25: rgba(231, 76, 60, 0.25);
   --danger-alpha-40: rgba(231, 76, 60, 0.4);
+
+  /* Success / info / points alpha variants (CSS unify Phase 4a). These hues are
+     fully theme-stable (identical light/dark/accent), so a single :root literal
+     ladder is value-preserving everywhere - unlike --primary-alpha-NN/--danger-alpha-NN
+     which flip by mode and are intentionally NOT mirrored here. */
+  --success-alpha-05: rgba(39, 174, 96, 0.05);
+  --success-alpha-10: rgba(39, 174, 96, 0.1);
+  --success-alpha-20: rgba(39, 174, 96, 0.2);
+  --info-alpha-40:    rgba(52, 152, 219, 0.4);
 
   /* Island semantic colors */
   --island-stamina:   #3498db;
