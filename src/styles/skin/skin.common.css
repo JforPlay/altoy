@@ -262,7 +262,7 @@
   align-items: center;
 }
 
-/* .hidden utility class defined in global.style.css */
+/* .hidden utility class defined in global.utilities.css */
 
 /* --- Responsive Styles --- */
 @media (max-width: 768px) {

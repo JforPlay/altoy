@@ -19,8 +19,15 @@ const {
     base = "/altoy"
 } = Astro.props;
 
-// Import global styles
-import '../styles/global.style.css';
+// Import global styles (split by concern from the former global.style.css monolith;
+// keep this source order — Astro bundles them in import order to preserve the cascade)
+import '../styles/global.base.css';
+import '../styles/global.navbar.css';
+import '../styles/global.footer.css';
+import '../styles/global.components.css';
+import '../styles/global.info-blocks.css';
+import '../styles/global.utilities.css';
+import '../styles/global.responsive.css';
 import '../styles/sync/sync.css';
 // Canonical state component (loading/empty/error) — @imports spinner.css, so
 // both are available site-wide without per-page imports.

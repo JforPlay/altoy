@@ -281,7 +281,7 @@
 }
 
 /* Tinted treatment (faded fill + foreground rarity colour), sourced from the
-   theme.css tokens. global-search loads on every page via global.style.css, so
+   theme.css tokens. global-search loads on every page via global.base.css, so
    it references the tokens directly rather than the opt-in rarity.css component
    (which mirrors this same pattern as `.rarity-tint`). */
 .global-search-rarity.rarity-UR  { background: color-mix(in srgb, var(--rarity-ur)  20%, transparent); color: var(--rarity-ur-fg); }

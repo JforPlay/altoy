@@ -177,7 +177,7 @@
    the light value, since the dark overrides live on <body>. Built on
    --primary-alpha-* so the ring is identical on default + accent pages (accent
    does not redefine those tokens) and auto-adapts to dark mode. theme.css is
-   loaded site-wide via Layout → global.style.css, so the token resolves on every
+   loaded site-wide via Layout → global.base.css, so the token resolves on every
    page. The one hue exception is valentine's pink ring (uses its own
    --val-accent-light token directly); loadingbg keeps its standalone indigo. */
 body {

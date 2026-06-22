@@ -1,0 +1,31 @@
+/* =============================================================================
+   global.footer.css
+   Part of the global style split (formerly global.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ==========================================================================
+   7. FOOTER
+   ========================================================================== */
+
+.site-footer {
+  background: var(--footer-bg);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--footer-border);
+  color: var(--footer-text);
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: 4rem;
+}
+
+.site-footer .footer-links {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+}
+.site-footer .footer-links a {
+  color: var(--footer-text);
+  text-decoration: underline;
+}
+.site-footer .footer-links a:hover {
+  color: var(--text-primary);
+}
+

@@ -44,5 +44,5 @@ body {
   transition: color var(--animation-duration) ease;
 }
 
-/* .hidden utility class defined in global.style.css */
+/* .hidden utility class defined in global.utilities.css */
 

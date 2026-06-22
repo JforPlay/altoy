@@ -7,7 +7,7 @@
  *
  * Responsive Font Scaling:
  * This CSS uses rem units for scalable elements that adapt to screen size.
- * Root font-size (from global.style.css):
+ * Root font-size (from global.base.css):
  *   - Desktop: 16px (default)
  *   - Tablet (≤768px): 15px (6.25% smaller)
  *   - Mobile (≤480px): 14px (12.5% smaller)

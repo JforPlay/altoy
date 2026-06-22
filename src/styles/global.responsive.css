@@ -1,0 +1,104 @@
+/* =============================================================================
+   global.responsive.css
+   Part of the global style split (formerly global.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ==========================================================================
+   12. PAGE STATUS / EMPTY / ERROR / LOADING — moved to components/status.css
+   (the canonical state component, loaded globally via Layout.astro).
+   ========================================================================== */
+
+/* --- Mobile Responsive (Global Components) ---
+   Adjustments for utility components on mobile devices */
+@media (max-width: 768px) {
+  .scroll-to-top {
+    bottom: 1rem;
+    right: 1rem;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.125rem;
+  }
+
+  .info-popup {
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  .info-popup-content {
+    max-height: 90vh;
+    width: calc(100% - 2rem);
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-top: 5vh;
+    margin-bottom: 0.5rem;
+    border-radius: 0.75rem;
+  }
+
+  .popup-header {
+    padding: 1rem;
+  }
+
+  .popup-body {
+    padding: 1rem;
+  }
+
+  .dropdown-container {
+    width: 100%;
+  }
+}
+
+/* Small mobile devices (≤480px)
+   Further reductions in size and spacing */
+@media (max-width: 480px) {
+  .info-popup-content {
+    width: calc(100% - 1rem);
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    margin-top: 3vh;
+    margin-bottom: 0.5rem;
+    max-height: 94vh;
+  }
+
+  .popup-header {
+    padding: 0.5rem 1rem;
+  }
+
+  .popup-header h2 {
+    font-size: 1rem;
+  }
+
+  .popup-body {
+    padding: 0.5rem 1rem;
+  }
+
+  /* Step components mobile adjustments */
+  .info-icon {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
+  }
+
+  .info-content h3 {
+    font-size: 0.9375rem;
+  }
+
+  .info-content p {
+    font-size: 0.875rem;
+  }
+
+  .info-step {
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Warning box mobile adjustments */
+  .warning-box {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.75rem;
+  }
+
+  .warning-box i {
+    font-size: 1.25rem;
+  }
+}

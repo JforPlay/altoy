@@ -20,7 +20,7 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
-/* .hidden utility class defined in global.style.css */
+/* .hidden utility class defined in global.utilities.css */
 
 /* --- Theme Toggle Button --- */
 .theme-toggle {

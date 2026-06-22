@@ -1,0 +1,367 @@
+/* =============================================================================
+   global.components.css
+   Part of the global style split (formerly global.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ==========================================================================
+   8. GLOBAL UTILITY COMPONENTS
+   ==========================================================================
+
+   These components are available globally across all pages.
+   Usage: Simply add the HTML structure and functionality is automatic.
+   Styling is consistent but can be overridden in page-specific CSS.
+   ========================================================================== */
+
+/* --- Scroll to Top Button ---
+   Usage: Add button with .scroll-to-top class to any page
+   Auto-shows when scrolled >300px (handled by global.script.js)
+   Note: Some pages override this (event-timeline.css) */
+.scroll-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 999;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-green));
+  color: white;
+  border: none;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(100px);
+}
+
+.scroll-to-top:not(.hidden),
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.scroll-to-top:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 1rem 2rem var(--overlay-heavy);
+}
+
+.scroll-to-top:active {
+  transform: translateY(-2px);
+}
+
+.scroll-to-top i {
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-to-top:hover i {
+  transform: translateY(-3px);
+}
+
+/* Let the scroll-to-top button animate instead of disappearing */
+.scroll-to-top.hidden {
+  /* cancel the global .hidden display:none for this component only */
+  display: flex !important;
+
+  /* animate to the "hidden" state instead of popping out */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(100px);
+  pointer-events: none; /* prevents clicks while hidden */
+}
+
+/* Optional: respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-to-top {
+    transition: none;
+  }
+}
+
+/* --- Info Button ---
+   Usage: <button class="info-button"><i class="material-symbols-outlined">info</i></button>
+   Inline variant: Add .info-button-inline for smaller buttons in page titles */
+#info-button,
+.info-button {
+  background: none;
+  border: none;
+  color: var(--accent-blue);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Inline variant for smaller buttons in page titles */
+.info-button-inline {
+  font-size: 0.7em;
+  padding: 0.25rem;
+}
+
+#info-button:hover,
+.info-button:hover {
+  color: #8ea1e1;
+  background: var(--primary-alpha-10);
+  transform: scale(1.1) rotate(15deg);
+}
+
+#info-button:focus,
+.info-button:focus {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+/* --- Info Popup (Modal) ---
+   Usage: Create overlay with .info-popup, add .visible class to show
+   Contains .info-popup-content with .popup-header and .popup-body
+   Used for help dialogs, instructions, and feature explanations */
+#info-popup,
+.info-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--overlay-heavy);
+  backdrop-filter: blur(8px);
+  z-index: var(--z-max);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#info-popup.visible,
+.info-popup.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.info-popup-content {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: 1rem;
+  max-width: 37.5rem;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 1rem 2rem var(--overlay-heavy);
+  animation: popup-scale-in 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+@keyframes popup-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--surface-border);
+  background: linear-gradient(135deg, var(--surface-elevated) 0%, var(--card-bg) 100%);
+  border-radius: 1rem 1rem 0 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.popup-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--accent-blue);
+}
+
+.close-popup-btn {
+  background: var(--surface-elevated);
+  border: 1px solid var(--surface-border);
+  color: var(--text-on-surface);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+}
+
+.close-popup-btn:hover {
+  color: #ffffff;
+  background: var(--danger-color);
+  border-color: var(--danger-color);
+  transform: rotate(90deg);
+}
+
+.popup-body {
+  padding: 1.5rem;
+  text-align: left;
+}
+
+.info-popup-content p {
+  margin: 0 0 0.75rem 0;
+  line-height: 1.6;
+  color: var(--text-on-surface);
+}
+
+.info-popup-content strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Dark Mode Info Popup Overrides */
+body.dark-mode .info-popup {
+  background: var(--overlay-opaque);
+}
+
+body.dark-mode .popup-header {
+  background: linear-gradient(135deg, var(--section-bg) 0%, var(--surface-card) 100%);
+}
+
+/* --- Dropdown Container (for Fuse.js search) ---
+   Usage: Wrap search input in .dropdown-container
+   Results shown in .dropdown-content with fuzzy match highlighting
+   Fuse.js must be loaded globally (via default.html) */
+.dropdown-container {
+  position: relative;
+  width: 100%;
+}
+
+.dropdown-container input {
+  font-size: 1rem;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  border: 2px solid var(--surface-border);
+  background-color: var(--surface-elevated);
+  color: var(--text-primary);
+  border-radius: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+}
+
+.dropdown-container input:hover {
+  border-color: var(--text-secondary);
+  background-color: var(--surface-card);
+}
+
+.dropdown-container input:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+  box-shadow: var(--focus-ring);
+  transform: translateY(-1px);
+}
+
+.dropdown-container input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dropdown-container input::placeholder {
+  color: var(--text-secondary);
+}
+
+.dropdown-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-on-surface);
+  pointer-events: none;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dropdown-container input:focus + .dropdown-icon {
+  transform: translateY(-50%) rotate(180deg);
+  color: var(--accent-blue);
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: var(--surface-elevated);
+  width: 100%;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.4);
+  z-index: 100;
+  max-height: 18.75rem;
+  overflow-y: auto;
+  border: 1px solid var(--surface-border);
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
+  animation: dropdown-slide-in 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes dropdown-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-content a {
+  color: var(--text-primary);
+  padding: 0.875rem 1rem;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  border-left: 3px solid transparent;
+}
+
+.dropdown-content a:hover {
+  background: linear-gradient(
+    90deg,
+    var(--primary-alpha-20) 0%,
+    transparent 100%
+  );
+  color: #ffffff;
+  border-left-color: var(--accent-blue);
+  padding-left: 1.25rem;
+}
+
+.dropdown-content a:focus {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: -2px;
+}
+
+.dropdown-content .no-results {
+  color: var(--text-secondary);
+  padding: 1.5rem;
+  text-align: center;
+  font-style: italic;
+}
+
+.dropdown-content a mark {
+  background-color: var(--accent-blue);
+  color: white;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-weight: 600;
+}
+

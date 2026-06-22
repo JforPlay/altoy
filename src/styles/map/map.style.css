@@ -1,5 +1,5 @@
 /* Base body line-height — formerly inherited from common.css (import dropped
-   2026-06-21; the body margin:0 reset now lives globally in global.style.css).
+   2026-06-21; the body margin:0 reset now lives globally in global.base.css).
    Self-supplied here so page text keeps its 1.6 rhythm. */
 body {
   line-height: 1.6;

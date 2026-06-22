@@ -1,0 +1,65 @@
+/* =============================================================================
+   global.base.css
+   Part of the global style split (formerly global.css, one monolith).
+   The page imports each sibling in source order — keep rules in original order.
+============================================================================= */
+/* ==========================================================================
+   GLOBAL STYLES — base concern
+   ==========================================================================
+
+   First sibling of the global style split (see banner above). Carries the three
+   CSS @imports (must stay ahead of all rules), html font-size scaling, the body
+   background + margin:0 reset, and the --footer-* theme vars. Navbar, footer,
+   components, info-blocks, utilities, and responsive rules live in the sibling
+   global.*.css files, imported after this one (in order) by Layout.astro.
+
+   Note: Some pages override these styles (mainpage.style.css, event-timeline.css).
+   Be careful when changing selectors or cascade order.
+   ========================================================================== */
+
+@import url('theme.css');
+@import url('toast.css');
+@import url('global-search.css');
+
+/* ==========================================================================
+   1. BASE & THEME VARIABLES
+   ========================================================================== */
+
+/* Global font size scaling for responsive design */
+html {
+  font-size: 16px; /* Desktop base */
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 15px; /* Tablet - 6.25% smaller */
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 14px; /* Mobile - 12.5% smaller */
+  }
+}
+
+body {
+  font-family: "Noto Sans KR", "Roboto", sans-serif;
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  min-height: 100vh;
+  /* Canonical body-margin reset (overrides the UA 8px). Lives here so every page
+     gets it, instead of being re-supplied per-page via common.css or *{margin:0}. */
+  margin: 0;
+}
+
+:root {
+  --footer-bg: rgba(0, 0, 0, 0.02);
+  --footer-border: rgba(0, 0, 0, 0.05);
+  --footer-text: rgba(0, 0, 0, 0.6);
+}
+
+body.dark-mode {
+  --footer-bg: rgba(255, 255, 255, 0.02);
+  --footer-border: rgba(255, 255, 255, 0.05);
+  --footer-text: rgba(255, 255, 255, 0.6);
+}
+
