@@ -543,7 +543,7 @@
 
 .season-pass-toggle:hover {
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+    box-shadow: 0 4px 12px var(--info-alpha-40);
 }
 
 .season-pass-toggle:active {
@@ -717,7 +717,7 @@
 
 .season-tier.unlocked .season-tier-icon {
     border-color: var(--island-accent);
-    box-shadow: 0 0 12px rgba(52, 152, 219, 0.4);
+    box-shadow: 0 0 12px var(--info-alpha-40);
 }
 
 .season-tier.high-value .season-tier-icon {
@@ -789,7 +789,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 6px rgba(52, 152, 219, 0.4);
+    box-shadow: 0 2px 6px var(--info-alpha-40);
 }
 
 .season-tier-check .material-symbols-outlined {

@@ -310,7 +310,7 @@
 }
 
 .menu-option-icon.empty-icon {
-    background: rgba(231, 76, 60, 0.1);
+    background: var(--danger-alpha-10);
     border-color: var(--island-danger);
 }
 
