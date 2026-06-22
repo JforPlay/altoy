@@ -121,6 +121,16 @@
   --accent-blue: #0071eb;
   --accent-green: #43b581;
 
+  /* Extended accent palette (CSS unify Phase 4a) — additive, theme-stable,
+     hue-named, for reuse beyond --accent-blue/--accent-green. Define-only:
+     defining these changes nothing on screen; pages adopt opportunistically. */
+  --accent-coral:       #ff6b6b;
+  --accent-amber:       #f59e0b;
+  --accent-purple:      #9b59b6;
+  --accent-teal:        #14b8a6;
+  --accent-slate:       #2d3748;
+  --accent-slate-light: #4a5568;
+
   /* Rarity Colors */
   --rarity-ur:        #e91e8c;
   --rarity-ur-light:  #ffb3d9;
