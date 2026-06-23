@@ -161,22 +161,29 @@ body > header {
 
 .main-container {
     display: flex;
-    flex-wrap: wrap;
     gap: 20px;
     max-width: 1400px;
     margin: 0 auto;
+    align-items: stretch;            /* both columns share the row height */
+    min-height: calc(100vh - 185px); /* floor: keep the viewport-tall look for short posts */
 }
 
 /* ===== Gallery (Character List) ===== */
 
-.gallery-container {
+.gallery-col {
     flex: 1;
     min-width: 300px;
+    position: relative;   /* anchor: the gallery fills this column absolutely so its
+                             height tracks the post panel instead of its own content */
+}
+
+.gallery-container {
     /* Responsive grid via global .card-grid */
     --grid-min: clamp(80px, 10vw, 120px);
     --grid-gap: var(--spacing-sm);
-    height: calc(100vh - 185px);
-    overflow-y: auto;
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;     /* scrolls internally when thumbnails exceed the post height */
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
     padding: 10px;
@@ -256,14 +263,14 @@ body > header {
 #post-display-wrapper {
     flex: 2;
     min-width: 400px;
-    height: calc(100vh - 185px);
+    display: flex;   /* let the card stretch to the shared column height */
 }
 
 .post-display-container {
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    height: 100%;
+    flex: 1;         /* fill #post-display-wrapper; the height comes from the content */
     display: flex;
     flex-direction: column;
     box-shadow: 0 2px 4px var(--shadow-color);
@@ -279,12 +286,11 @@ body > header {
 
 .post-content {
     padding: 25px;
-    overflow-y: auto;
-    flex-grow: 1;
+    flex-grow: 1;   /* fills the card on short posts, grows with comments on long ones.
+                       No overflow set → the panel height is content-driven, no inner scrollbar. */
 
     /* Modern CSS: Smooth scrolling */
     scroll-behavior: smooth;
-    overscroll-behavior: contain;
 }
 
 .post-header {
@@ -483,22 +489,23 @@ body > header {
 
     .main-container {
         flex-direction: column;
+        min-height: 0;   /* drop the desktop height floor when stacked */
     }
 
     #post-display-wrapper,
-    .gallery-container {
+    .gallery-col {
         min-width: 0;
         height: auto;
-        max-height: none;
+    }
+
+    .gallery-container {
+        position: static;   /* back into normal flow under the post */
+        height: auto;
+        max-height: 300px;
     }
 
     .post-content {
-        overflow-y: visible;
         flex-grow: initial;
-    }
-
-    .gallery-container {
-        max-height: 300px;
     }
 
     #image-preview {
