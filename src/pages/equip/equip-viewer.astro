@@ -57,6 +57,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                                 <span class="view-toggle-label">자세히</span>
                             </button>
                         </div>
+                        <button id="compareToggleBtn" class="compare-toggle-btn btn btn-outline" type="button" title="여러 장비 비교 — 같은 분류끼리 선택" aria-pressed="false">
+                            <span class="material-symbols-outlined">compare_arrows</span>
+                            <span class="compare-toggle-label">비교</span>
+                        </button>
                     </div>
                 </div>
                 <div class="search-filter-container">
@@ -133,10 +137,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <span class="material-symbols-outlined">science</span>
                     연구 트리
                 </a>
-                <button id="detailCompareBtn" class="detail-action-btn btn btn-secondary" type="button">
-                    <span class="material-symbols-outlined">compare_arrows</span>
-                    비교하기
-                </button>
                 <button id="detailDownloadBtn" class="detail-action-btn btn btn-secondary" type="button">
                     <span class="material-symbols-outlined">download</span>
                     아이콘 저장
@@ -150,10 +150,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <span class="material-symbols-outlined">compare_arrows</span>
                 <span id="compareModeText">비교할 장비를 선택하세요</span>
             </div>
-            <button id="compareModeCancel" class="compare-mode-cancel btn btn-secondary" type="button">
-                <span class="material-symbols-outlined">close</span>
-                취소
-            </button>
+            <div class="compare-mode-actions">
+                <button id="compareModeGo" class="compare-mode-go btn" type="button" disabled>비교하기</button>
+                <button id="compareModeCancel" class="compare-mode-cancel btn btn-secondary" type="button">
+                    <span class="material-symbols-outlined">close</span>
+                    취소
+                </button>
+            </div>
         </div>
 
         <!-- ===== Compare Modal ===== -->

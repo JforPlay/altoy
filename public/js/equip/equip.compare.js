@@ -1,13 +1,19 @@
 /**
  * equip.compare.js
- * Renders the side-by-side compare modal for equipment diff highlighting.
+ * Renders the multi-equip compare modal as a ROW-WISE table: one row per equipment
+ * (so adding more equips grows the table vertically, never cramping horizontally),
+ * one column per comparable stat, with a per-row level slider and best/worst
+ * highlighting down each stat column. Columns include a per-armor-type "이론 DPS"
+ * (theoretical DPS) folding damage × bullets × armor-mod / 사속.
  * Part of the equip viewer module group (viewer + data + detail + compare + upgrade).
- * State is shared via a ref passed to setup() from equip.viewer.js.
- * Depends on equip.data.js for full equipment data and weapon/bullet lookups.
+ * Selection is driven by equip.viewer.js (toolbar 비교 select-mode); state is shared
+ * via a ref passed to setup(). Pure flagging + DPS arithmetic live in equip.compare.logic.js.
+ * Depends on equip.data.js for full equipment data and weapon/bullet/barrage lookups.
  */
 
-import { showToast, openModal, closeModal, setupModal, setUrlParams } from '../utils.js';
-import { getEquipIconUrl, getRarityBgUrl, getFullEquipData, getLevelStatistics, replaceEquipCodes, getBulletTemplate, getFiringPattern, getVisibleLevelCount, formatLevel, getMergedWeaponProperties, getPrimaryWeaponProperty } from './equip.data.js';
+import { openModal, setupModal, setUrlParams, escapeHtml } from '../utils.js';
+import { getEquipIconUrl, getRarityBgUrl, getFullEquipData, getLevelStatistics, replaceEquipCodes, getFiringPattern, getVisibleLevelCount, formatLevel, getMergedWeaponProperties, getPrimaryWeaponProperty, getTheoreticalSurfaceDps } from './equip.data.js';
+import { buildComparisonRows, compareRowFlags, formatDps } from './equip.compare.logic.js';
 
 let state;
 
@@ -20,7 +26,7 @@ export function setup(stateRef) {
 
 /**
  * Wire up close handlers for the compare modal.
- * On close, resets compareSlots/compareLevels and clears the URL compare param.
+ * On close, clears the resolved items and the URL compare param.
  */
 export function setupCompareModal() {
     setupModal('compareModal', {
@@ -28,8 +34,7 @@ export function setupCompareModal() {
         closeOnBackdrop: true,
         restoreFocus: true,
         onClose: () => {
-            state.compareSlots = [null, null];
-            state.compareLevels = [0, 0];
+            state.compareItems = [];
             setUrlParams({ compare: null }, { replace: true });
         }
     });
@@ -38,30 +43,17 @@ export function setupCompareModal() {
 // ===== Render Compare Modal =====
 
 /**
- * Populate and open the compare modal with two equipment entries.
- * Renders both slot headers, level sliders, equip selectors, and the stats table.
+ * Populate and open the compare modal for a list of equips.
+ * @param {{equip:object, level?:number}[]} items  full equip data + start level per column.
  */
-export function renderCompareModal(equip0, equip1) {
+export function renderCompareModal(items) {
     const modalBody = document.getElementById('compareModalBody');
     if (!modalBody) return;
 
-    state.compareSlots = [equip0, equip1];
-    state.compareLevels = [0, 0];
+    state.compareItems = items.map(it => ({ equip: it.equip, level: it.level || 0 }));
+    state.compareColumns = freezeColumns(state.compareItems);
 
-    let html = `
-        <div class="compare-slots">
-            <div class="compare-slot" id="compareSlot0">
-                ${renderCompareSlot(equip0, 0)}
-            </div>
-            <div class="compare-slot" id="compareSlot1">
-                ${renderCompareSlot(equip1, 1)}
-            </div>
-        </div>
-    `;
-
-    html += renderCompareTable(equip0, equip1);
-
-    modalBody.innerHTML = html;
+    modalBody.innerHTML = renderCompareTable();
     setupCompareListeners();
     openModal('compareModal');
 }
@@ -69,214 +61,221 @@ export function renderCompareModal(equip0, equip1) {
 // ===== Load Compare from URL =====
 
 /**
- * Parse a "id1,id2" URL compare param and open the modal.
- * Silently no-ops if either ID fails to resolve.
+ * Parse an "id1,id2,id3,…" URL compare param and open the modal.
+ * Silently no-ops if fewer than two IDs resolve.
  */
 export async function loadCompareFromUrl(compareParam) {
-    const ids = compareParam.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
+    const ids = compareParam.split(',').map(id => parseInt(id.trim())).filter(id => !Number.isNaN(id));
     if (ids.length < 2) return;
 
-    const [equip0, equip1] = await Promise.all([
-        getFullEquipData(ids[0]),
-        getFullEquipData(ids[1])
-    ]);
+    const equips = await Promise.all(ids.map(id => getFullEquipData(id)));
+    const items = equips.filter(Boolean).map(equip => ({ equip, level: 0 }));
 
-    if (equip0 && equip1) {
-        renderCompareModal(equip0, equip1);
-    }
+    if (items.length >= 2) renderCompareModal(items);
 }
 
-// ===== Render Helpers =====
+// ===== Columns model =====
+// One column per comparable stat. Columns are FROZEN at modal open (and after a
+// removal) so cell ids stay stable as level sliders move — a level change re-resolves
+// values in place rather than rebuilding the table (which would kill a dragging slider).
+// Each column carries an impure resolve(equip, level) → {value, display}: `value` is
+// the number compared for best/worst (null = the equip lacks that stat → neutral);
+// `display` is the cell text (may be styled HTML, hence not escaped at render).
 
-/**
- * Render one slot header: icon, name, optional equip selector (for compare_group siblings),
- * and optional level range slider.
- */
-function renderCompareSlot(equip, slotIndex) {
-    const iconUrl = getEquipIconUrl(equip.icon);
-    const maxLevel = getVisibleLevelCount(equip);
-    const currentLevel = state.compareLevels[slotIndex];
+const ARMOR_LABELS = ['경장', '중형', '중장']; // damage_type[0..2] = Light / Medium / Heavy
 
-    // Build selector options from same compare_group
-    const sameGroupEquips = state.equipData
-        ? state.equipData.filter(e => e.compare_group === equip.compare_group)
-        : [];
+/** Build every candidate stat column (with resolvers) for the compared items. */
+function getCompareColumns(items) {
+    const cols = [];
 
-    let selectorHtml = '';
-    if (sameGroupEquips.length > 1) {
-        selectorHtml = `
-            <select class="compare-equip-selector" data-slot="${slotIndex}">
-                ${sameGroupEquips.map(e => `
-                    <option value="${e.id}" ${e.id === equip.id ? 'selected' : ''}>${e.name} (${e.rarity_name})</option>
-                `).join('')}
-            </select>
-        `;
-    }
-
-    return `
-        <div class="compare-slot-header">
-            <div class="compare-slot-icon">
-                <img class="equip-icon-bg-img" src="${getRarityBgUrl(equip.rarity)}" alt="">
-                ${iconUrl ? `<img class="equip-icon-img" src="${iconUrl}" alt="${equip.name}">` : ''}
-            </div>
-            <div class="compare-slot-info">
-                <div class="compare-slot-name">${equip.name}</div>
-                <div class="compare-slot-type">${equip.type_name2 || equip.type_name} / ${equip.rarity_name}</div>
-            </div>
-        </div>
-        ${selectorHtml}
-        ${maxLevel > 1 ? `
-            <div class="compare-level-selector">
-                <label>단계</label>
-                <input type="range" min="0" max="${maxLevel - 1}" value="${currentLevel}" data-slot="${slotIndex}" class="compare-level-input">
-                <span class="compare-level-value" id="compareLevelValue${slotIndex}">${formatLevel(currentLevel)} / +${maxLevel - 1}</span>
-            </div>
-        ` : ''}
-    `;
-}
-
-/**
- * Build the stats comparison table HTML for the current level selection.
- * Merges attr keys from both slots — missing attrs on one side show "-".
- * Highlights better/worse values; for reload and armor, lower/higher rules are inverted.
- */
-function renderCompareTable(slot0, slot1) {
-    const level0 = slot0.levels[state.compareLevels[0]] || slot0.levels[0];
-    const level1 = slot1.levels[state.compareLevels[1]] || slot1.levels[0];
-
-    // Merge all attr keys from both
+    // Attributes — union of every equip's attr_info keys (higher is better).
     const allAttrs = new Map();
-    for (const attr of (slot0.attr_info || [])) {
-        allAttrs.set(attr.key, attr);
-    }
-    for (const attr of (slot1.attr_info || [])) {
-        if (!allAttrs.has(attr.key)) {
-            allAttrs.set(attr.key, attr);
+    for (const it of items) {
+        for (const attr of (it.equip.attr_info || [])) {
+            if (!allAttrs.has(attr.key)) allAttrs.set(attr.key, attr);
         }
     }
-
-    let rows = '';
     for (const [key, attr] of allAttrs) {
-        const val0 = getAttrValue(slot0, level0, key);
-        const val1 = getAttrValue(slot1, level1, key);
-        const num0 = parseFloat(val0) || 0;
-        const num1 = parseFloat(val1) || 0;
-
-        let class0 = 'compare-equal';
-        let class1 = 'compare-equal';
-        if (num0 > num1) { class0 = 'compare-better'; class1 = 'compare-worse'; }
-        if (num1 > num0) { class1 = 'compare-better'; class0 = 'compare-worse'; }
-
-        rows += `<tr>
-            <td>${attr.icon ? `<img class="stat-icon" src="${attr.icon}" alt="${attr.name}">` : ''}${attr.name}</td>
-            <td class="${class0}">${val0 || '-'}</td>
-            <td class="${class1}">${val1 || '-'}</td>
-        </tr>`;
+        cols.push({
+            key: `attr:${key}`, label: escapeHtml(attr.name), icon: attr.icon || null, dir: 'higher',
+            resolve: (equip, level) => getAttrCell(equip, level, key),
+        });
     }
 
-    // Damage comparison
-    if (level0.damage || level1.damage) {
-        rows += `<tr>
-            <td>데미지</td>
-            <td>${level0.damage ? replaceEquipCodes(level0.damage) : '-'}</td>
-            <td>${level1.damage ? replaceEquipCodes(level1.damage) : '-'}</td>
-        </tr>`;
+    // 데미지 — styled text (replaceEquipCodes emits spans, so not escaped). Not ranked.
+    cols.push({
+        key: 'damage', label: '데미지', icon: null, dir: 'none',
+        resolve: (equip, level) => {
+            const d = level && level.damage;
+            return { value: null, display: d ? replaceEquipCodes(d) : '-' };
+        },
+    });
+
+    // 데미지 수정배율 — weapon coefficient (`corrected`, %), higher is better. The same
+    // coefficient folded into 이론 DPS; read from the DPS weapon so they stay consistent.
+    cols.push({
+        key: 'coefficient', label: '데미지 수정배율', icon: null, dir: 'higher',
+        resolve: (equip, level) => {
+            const wp = getPrimaryMergedWeapon(equip, level);
+            const c = wp && wp.corrected != null ? wp.corrected : null;
+            return { value: c, display: c != null ? `${c}%` : '-' };
+        },
+    });
+
+    // 사속 (reload, seconds) — lower is better.
+    cols.push({
+        key: 'reload', label: '사속', icon: null, dir: 'lower',
+        resolve: (equip, level) => {
+            const r = getReloadValue(equip, level);
+            return { value: r, display: r != null ? `${r}s` : '-' };
+        },
+    });
+
+    // 이론 DPS · 경장/중형/중장 — equip-only theoretical DPS per armor type (higher is better).
+    for (let a = 0; a < 3; a++) {
+        cols.push({
+            key: `dps${a}`, label: `${a === 0 ? '이론 DPS · ' : ''}${ARMOR_LABELS[a]}`, icon: null, dir: 'higher',
+            resolve: (equip, level) => getDpsCell(equip, level, a),
+        });
     }
 
-    // Reload (사속) comparison — lower is better
-    const reload0 = getReloadValue(slot0, level0);
-    const reload1 = getReloadValue(slot1, level1);
-    if (reload0 != null || reload1 != null) {
-        let rc0 = 'compare-equal', rc1 = 'compare-equal';
-        if (reload0 != null && reload1 != null) {
-            if (reload0 < reload1) { rc0 = 'compare-better'; rc1 = 'compare-worse'; }
-            if (reload1 < reload0) { rc1 = 'compare-better'; rc0 = 'compare-worse'; }
-        }
-        rows += `<tr>
-            <td>사속</td>
-            <td class="${rc0}">${reload0 != null ? `${reload0}s` : '-'}</td>
-            <td class="${rc1}">${reload1 != null ? `${reload1}s` : '-'}</td>
-        </tr>`;
-    }
+    // 대형 작전 세이렌 증가 대미지 (anti-siren) — higher is better.
+    cols.push({
+        key: 'siren', label: '대형 작전 세이렌 증가 대미지', icon: null, dir: 'higher',
+        resolve: (equip, level) => {
+            const stats = getLevelStatistics(level.id);
+            const siren = stats && stats.anti_siren ? stats.anti_siren : null;
+            return { value: siren, display: siren != null ? `${(siren / 100).toFixed(0)}%` : '-' };
+        },
+    });
 
-    // Firing pattern comparison (plain text, no better/worse)
-    const pattern0 = getFiringPatternValue(slot0, level0);
-    const pattern1 = getFiringPatternValue(slot1, level1);
-    if (pattern0 || pattern1) {
-        rows += `<tr>
-            <td>발사 패턴</td>
-            <td>${pattern0 || '-'}</td>
-            <td>${pattern1 || '-'}</td>
-        </tr>`;
-    }
+    return cols;
+}
 
-    // Armor modifiers (대갑 배율) comparison
-    const armor0 = getArmorModifiers(slot0, level0);
-    const armor1 = getArmorModifiers(slot1, level1);
-    if (armor0 || armor1) {
-        const labels = ['경장', '중형', '중장'];
-        for (let i = 0; i < 3; i++) {
-            const v0 = armor0 ? Math.round(armor0[i] * 100) : null;
-            const v1 = armor1 ? Math.round(armor1[i] * 100) : null;
-            let ac0 = 'compare-equal', ac1 = 'compare-equal';
-            if (v0 != null && v1 != null) {
-                if (v0 > v1) { ac0 = 'compare-better'; ac1 = 'compare-worse'; }
-                if (v1 > v0) { ac1 = 'compare-better'; ac0 = 'compare-worse'; }
-            }
-            rows += `<tr>
-                <td>${i === 0 ? '대갑 배율 - ' : ''}${labels[i]}</td>
-                <td class="${ac0}">${v0 != null ? `${v0}%` : '-'}</td>
-                <td class="${ac1}">${v1 != null ? `${v1}%` : '-'}</td>
-            </tr>`;
-        }
-    }
+/**
+ * Freeze the column set: keep only columns at least one equip carries (drops e.g.
+ * a 대공 column when nothing in the comparison is anti-air). Reuses the pure
+ * buildComparisonRows drop rule against the current levels.
+ */
+function freezeColumns(items) {
+    const levels = items.map(it => it.equip.levels[it.level] || it.equip.levels[0]);
+    const defs = getCompareColumns(items);
+    const pseudoRows = defs.map(col => ({
+        key: col.key, dir: col.dir,
+        cells: items.map((it, i) => col.resolve(it.equip, levels[i])),
+    }));
+    const surviving = new Set(buildComparisonRows(pseudoRows).map(r => r.key));
+    return defs.filter(col => surviving.has(col.key));
+}
 
-    // Anti-siren comparison
-    const stats0 = getLevelStatistics(level0.id);
-    const stats1 = getLevelStatistics(level1.id);
-    const siren0 = stats0?.anti_siren || 0;
-    const siren1 = stats1?.anti_siren || 0;
-    if (siren0 || siren1) {
-        let sc0 = 'compare-equal', sc1 = 'compare-equal';
-        if (siren0 > siren1) { sc0 = 'compare-better'; sc1 = 'compare-worse'; }
-        if (siren1 > siren0) { sc1 = 'compare-better'; sc0 = 'compare-worse'; }
-        rows += `<tr>
-            <td>대형 작전 세이렌 증가 대미지</td>
-            <td class="${sc0}">${siren0 ? `${(siren0 / 100).toFixed(0)}%` : '-'}</td>
-            <td class="${sc1}">${siren1 ? `${(siren1 / 100).toFixed(0)}%` : '-'}</td>
-        </tr>`;
-    }
+// ===== Render =====
+
+/**
+ * Build the row-wise compare table: a sticky header row of stat columns, then one
+ * row per equip (sticky identity cell + level slider + stat cells). Adding equips
+ * grows the table downward; the column count is fixed by the (frozen) stat set.
+ */
+function renderCompareTable() {
+    const headCols = state.compareColumns.map(col =>
+        `<th class="compare-stat-head" title="${col.label}">${col.icon ? `<img class="stat-icon" src="${col.icon}" alt="">` : ''}${col.label}</th>`
+    ).join('');
 
     return `
         <div class="compare-stats-section">
-            <div class="compare-stats-title">스탯 비교</div>
-            <table class="compare-table" id="compareTable">
-                <thead>
-                    <tr>
-                        <th>스탯</th>
-                        <th>${slot0.name}</th>
-                        <th>${slot1.name}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${rows}
-                </tbody>
-            </table>
+            <div class="compare-table-scroll scroll-styled">
+                <table class="compare-table compare-table--rows">
+                    <thead>
+                        <tr>
+                            <th class="compare-corner">장비</th>
+                            <th class="compare-level-head">강화</th>
+                            ${headCols}
+                        </tr>
+                    </thead>
+                    <tbody id="compareTableBody">
+                        ${renderCompareBodyRows()}
+                    </tbody>
+                </table>
+            </div>
         </div>
     `;
 }
 
-/** Look up the level-specific value for a given attr key using attr_info index. */
-function getAttrValue(equip, level, attrKey) {
-    for (const attr of (equip.attr_info || [])) {
-        if (attr.key === attrKey) {
-            return level[`attr_${attr.index}_value`] || 0;
-        }
-    }
-    return 0;
+/** Resolve every (column × equip) cell + best/worst flag for the current levels. */
+function resolveCompareMatrix() {
+    const items = state.compareItems;
+    const levels = items.map(it => it.equip.levels[it.level] || it.equip.levels[0]);
+    return state.compareColumns.map(col => {
+        const cells = items.map((it, i) => col.resolve(it.equip, levels[i]));
+        const flags = compareRowFlags(cells.map(c => c.value), col.dir);
+        return { col, cells, flags };
+    });
 }
 
-/** Get reload value (사속) from the primary weapon — standard path, matching
+/** CSS class for one resolved cell given its column + flag. */
+function cellClass(col, flag) {
+    const neutral = col.dir === 'none' ? '' : 'compare-equal';
+    const tone = flag === 'best' ? 'compare-better' : flag === 'worst' ? 'compare-worse' : neutral;
+    return `compare-data-cell ${tone}`.trim();
+}
+
+/** Render every equip row (identity + level + stat cells). */
+function renderCompareBodyRows() {
+    const matrix = resolveCompareMatrix();
+    return state.compareItems.map((it, i) => {
+        const dataCells = matrix.map(({ col, cells, flags }, ci) =>
+            `<td id="cmpCell-${i}-${ci}" class="${cellClass(col, flags[i])}">${cells[i].display}</td>`
+        ).join('');
+        return `<tr>${renderEquipCell(it, i)}${renderLevelCell(it, i)}${dataCells}</tr>`;
+    }).join('');
+}
+
+/** Sticky identity cell: rarity-framed icon, name, 발사 패턴 sub-line, remove button. */
+function renderEquipCell(it, i) {
+    const iconUrl = getEquipIconUrl(it.equip.icon);
+    const name = escapeHtml(it.equip.name);
+    const pattern = getFiringPatternValue(it.equip, it.equip.levels[it.level] || it.equip.levels[0]);
+    // Removing is only offered above the 2-item floor so a comparison always keeps ≥2 rows.
+    const removeBtn = state.compareItems.length > 2
+        ? `<button class="compare-col-remove" data-col="${i}" type="button" aria-label="비교에서 제거" title="비교에서 제거"><span class="material-symbols-outlined">close</span></button>`
+        : '';
+    return `<td class="compare-equip-cell">
+        <div class="compare-equip-id">
+            ${removeBtn}
+            <div class="compare-slot-icon">
+                <img class="equip-icon-bg-img" src="${getRarityBgUrl(it.equip.rarity)}" alt="">
+                ${iconUrl ? `<img class="equip-icon-img" src="${iconUrl}" alt="${name}">` : ''}
+            </div>
+            <div class="compare-equip-meta">
+                <span class="compare-col-name" title="${name}">${name}</span>
+                ${pattern ? `<span class="compare-equip-pattern" title="${escapeHtml(pattern)}">${escapeHtml(pattern)}</span>` : ''}
+            </div>
+        </div>
+    </td>`;
+}
+
+/** Per-row level slider cell (or a dash when the equip has no enhance levels). */
+function renderLevelCell(it, i) {
+    const maxLevel = getVisibleLevelCount(it.equip);
+    if (maxLevel <= 1) return `<td class="compare-level-cell"><span class="compare-level-value">—</span></td>`;
+    return `<td class="compare-level-cell">
+        <input type="range" min="0" max="${maxLevel - 1}" value="${it.level}" data-col="${i}" class="compare-level-input" aria-label="${escapeHtml(it.equip.name)} 강화 단계">
+        <span class="compare-level-value" id="compareLevelValue${i}">${formatLevel(it.level)}</span>
+    </td>`;
+}
+
+// ===== Stat resolvers (impure: read loaded weapon/bullet/barrage/statistics data) =====
+
+/** Resolve one attr's level value into a cell — absent attr → neutral '-'. */
+function getAttrCell(equip, level, attrKey) {
+    const attr = (equip.attr_info || []).find(a => a.key === attrKey);
+    if (!attr) return { value: null, display: '-' };
+    const raw = level[`attr_${attr.index}_value`];
+    const n = parseFloat(raw);
+    if (raw == null || raw === '' || Number.isNaN(n)) return { value: null, display: '-' };
+    return { value: n, display: escapeHtml(String(raw)) };
+}
+
+/** Get reload value (사속, seconds) from the primary weapon — standard path, matching
  *  the detail panel's 사속 row (never resolved through the aircraft chain). */
 function getReloadValue(equip, level) {
     const wp = getPrimaryWeaponProperty(equip, level);
@@ -284,69 +283,84 @@ function getReloadValue(equip, level) {
     return Math.floor((wp.reload_max / 150) * 100) / 100;
 }
 
-/** Get the firing-pattern string from a slot's primary weapon, or null. */
-function getFiringPatternValue(equip, level) {
-    const weapons = getMergedWeaponProperties(equip, level);
-    return weapons.length ? getFiringPattern(weapons[0]) : null;
+/** First merged weapon property for a level — the one 데미지 수정배율 / 대갑 / 패턴 / DPS
+ *  all read (aircraft-safe via getMergedWeaponProperties), or null. */
+function getPrimaryMergedWeapon(equip, level) {
+    return getMergedWeaponProperties(equip, level)[0] || null;
 }
 
-/** Get armor modifiers (대갑 배율) from merged weapon properties */
-function getArmorModifiers(equip, level) {
-    const weapons = getMergedWeaponProperties(equip, level);
-    if (!weapons.length) return null;
-    // Use first weapon's first bullet
-    const wp = weapons[0];
-    const bulletIds = wp.bullet_ID || [];
-    for (const bid of bulletIds) {
-        const bullet = getBulletTemplate(bid);
-        if (bullet && bullet.damage_type && bullet.damage_type.length >= 3) {
-            return bullet.damage_type;
-        }
-    }
-    return null;
+/** Get the firing-pattern string from a slot's primary weapon, or null. */
+function getFiringPatternValue(equip, level) {
+    const wp = getPrimaryMergedWeapon(equip, level);
+    return wp ? getFiringPattern(wp) : null;
+}
+
+/**
+ * Resolve one equip's combined 이론 DPS against armor type `armorIndex` (0=경장,1=중형,2=중장).
+ * Sums every surface weapon (aircraft drop ordnance over the airstrike cadence × 2.2, strafing
+ * guns excluded; surface mounts use their own 사속) via `getTheoreticalSurfaceDps`. The cell
+ * shows the DPS (drives best/worst); a single-weapon equip also shows its 대갑 배율 as a muted
+ * sub-label (a multi-weapon sum has no single mod, so it's omitted there).
+ */
+function getDpsCell(equip, level, armorIndex) {
+    const result = getTheoreticalSurfaceDps(equip, level);
+    const dps = result ? result.dps[armorIndex] : null;
+    if (dps == null) return { value: null, display: '-' };
+    const mod = result.mods ? result.mods[armorIndex] : null;
+    const modLabel = mod != null ? `<span class="compare-dps-mod">${Math.round(mod * 100)}%</span>` : '';
+    return { value: dps, display: `<span class="compare-dps-val">${formatDps(dps)}</span>${modLabel}` };
 }
 
 // ===== Event Listeners =====
 
 /**
- * Attach input and change listeners after modal HTML is injected.
- * Level slider updates the stats table in-place; equip selector re-renders the whole modal.
+ * Attach listeners after modal HTML is injected. A level slider re-resolves stat
+ * cells IN PLACE (the slider DOM is untouched, so a drag isn't interrupted). The
+ * per-row remove button drops that equip, re-freezes columns, and re-renders.
  */
 function setupCompareListeners() {
-    // Level sliders
     document.querySelectorAll('#compareModalBody .compare-level-input').forEach(input => {
         input.addEventListener('input', (e) => {
-            const slot = parseInt(e.target.dataset.slot);
-            state.compareLevels[slot] = parseInt(e.target.value);
-            const valueEl = document.getElementById(`compareLevelValue${slot}`);
-            if (valueEl) valueEl.textContent = `${formatLevel(state.compareLevels[slot])} / +${e.target.max}`;
-            updateCompareTable();
+            const col = parseInt(e.target.dataset.col);
+            if (!state.compareItems[col]) return;
+            state.compareItems[col].level = parseInt(e.target.value);
+            const valueEl = document.getElementById(`compareLevelValue${col}`);
+            if (valueEl) valueEl.textContent = formatLevel(state.compareItems[col].level);
+            refreshCompareCells();
         });
     });
 
-    // Equipment selector dropdowns
-    document.querySelectorAll('#compareModalBody .compare-equip-selector').forEach(select => {
-        select.addEventListener('change', async (e) => {
-            const slot = parseInt(e.target.dataset.slot);
-            const newId = parseInt(e.target.value);
-            const equip = await getFullEquipData(newId);
-            if (equip) {
-                state.compareSlots[slot] = equip;
-                state.compareLevels[slot] = 0;
-                // Re-render the full modal content
-                renderCompareModal(state.compareSlots[0], state.compareSlots[1]);
-            }
+    document.querySelectorAll('#compareModalBody .compare-col-remove').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const col = parseInt(e.currentTarget.dataset.col);
+            state.compareItems.splice(col, 1);
+            setUrlParams({ compare: state.compareItems.map(it => it.equip.id).join(',') }, { replace: true });
+            rerenderCompareModal();
         });
     });
 }
 
-function updateCompareTable() {
-    const slot0 = state.compareSlots[0];
-    const slot1 = state.compareSlots[1];
-    if (!slot0 || !slot1) return;
+/**
+ * Re-resolve stat cells for the current levels and update them in place (text +
+ * best/worst class) without rebuilding the equip/level cells — so the slider being
+ * dragged survives. Best/worst can shift for OTHER equips too, so every cell refreshes.
+ */
+function refreshCompareCells() {
+    resolveCompareMatrix().forEach(({ col, cells, flags }, ci) => {
+        cells.forEach((c, i) => {
+            const el = document.getElementById(`cmpCell-${i}-${ci}`);
+            if (!el) return;
+            el.className = cellClass(col, flags[i]);
+            el.innerHTML = c.display;
+        });
+    });
+}
 
-    const tableContainer = document.querySelector('#compareModalBody .compare-stats-section');
-    if (tableContainer) {
-        tableContainer.outerHTML = renderCompareTable(slot0, slot1);
-    }
+/** Rebuild the whole table (after a row is removed) and re-bind listeners. */
+function rerenderCompareModal() {
+    const modalBody = document.getElementById('compareModalBody');
+    if (!modalBody) return;
+    state.compareColumns = freezeColumns(state.compareItems);
+    modalBody.innerHTML = renderCompareTable();
+    setupCompareListeners();
 }

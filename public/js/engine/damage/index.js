@@ -12,6 +12,7 @@ export { computeHitDamage } from './formula.js';
 export { computeSalvo } from './salvo.js';
 export { countSalvos, rollUpWeapon } from './timeline.js';
 export { calculateReloadTime, calculateAirAssistReloadMax } from './reload.js';
+export { salvoFiringDuration, weaponSalvoDuration } from './salvo-timing.js';
 export { ARMOR_PRESETS, makeTarget, DEFAULT_ADAPT, DEFAULT_ARMOR_REDUCE } from './targets.js';
 
 /**
@@ -27,7 +28,10 @@ export function simulateAttacker(attacker, weapons, target, opts = {}) {
     const hit = computeHitDamage(attacker, w, target);
     const salvo = computeSalvo(hit, w.bulletsPerSalvo);
     const reloadInterval = calculateReloadTime(w.reloadMax, attacker.reload);
-    const roll = rollUpWeapon(salvo.expectedSalvo, reloadInterval, { initialDelay: w.initialDelay ?? 0, window: timeWindow });
+    // Salvos are spaced by the full fire cycle: reload + salvo firing time + 발사 후 경직 (cycleExtra,
+    // a fixed time NOT scaled by the reload stat). reloadInterval is still reported raw for display.
+    const cycleInterval = reloadInterval + (w.cycleExtra ?? 0);
+    const roll = rollUpWeapon(salvo.expectedSalvo, cycleInterval, { initialDelay: w.initialDelay ?? 0, window: timeWindow });
     return {
       label: w.label,
       oneSalvoExpected: salvo.expectedSalvo,

@@ -65,12 +65,12 @@ const state = {
     activeLabels: new Set(),
     activeRarities: new Set(),
 
-    // Compare state
-    compareSlots: [null, null],
-    compareLevels: [0, 0],
-    compareMode: false,
-    compareFirstItem: null,
-    compareGroupFilter: null,
+    // Compare state (multi-select)
+    compareMode: false,         // select mode active
+    compareGroupFilter: null,   // compare_group locked by the first selected card
+    compareSelection: [],       // selected equip IDs in click order (→ row order)
+    compareItems: [],           // [{ equip (full), level }] resolved for the open modal
+    compareColumns: [],         // frozen stat-column defs for the open modal (equip.compare.js)
 
     // Search
     searchIndex: null,
@@ -111,12 +111,13 @@ const detailPanel = document.getElementById('detailPanel');
 const detailBackdrop = document.getElementById('detailBackdrop');
 const detailPanelContent = document.getElementById('detailPanelContent');
 const detailPanelClose = document.getElementById('detailPanelClose');
-const detailCompareBtn = document.getElementById('detailCompareBtn');
 const detailDownloadBtn = document.getElementById('detailDownloadBtn');
 
 // Compare mode elements
+const compareToggleBtn = document.getElementById('compareToggleBtn');
 const compareModeBar = document.getElementById('compareModeBar');
 const compareModeText = document.getElementById('compareModeText');
+const compareModeGo = document.getElementById('compareModeGo');
 const compareModeCancel = document.getElementById('compareModeCancel');
 
 state.elements = {
@@ -315,17 +316,13 @@ function setupEventListeners() {
     detailBackdrop.addEventListener('click', closeDetailPanel);
 
     // Detail panel footer buttons
-    detailCompareBtn.addEventListener('click', () => {
-        if (state.currentEquip) {
-            enterCompareMode(state.currentEquip);
-        }
-    });
-
     detailDownloadBtn.addEventListener('click', () => {
         downloadEquipIcon(state.currentEquip);
     });
 
-    // Compare mode cancel
+    // Compare: toolbar toggle enters/exits select-mode; floating-bar buttons open/cancel
+    if (compareToggleBtn) compareToggleBtn.addEventListener('click', toggleCompareMode);
+    if (compareModeGo) compareModeGo.addEventListener('click', openCompareFromSelection);
     compareModeCancel.addEventListener('click', exitCompareMode);
 
     // ESC key for panel
@@ -594,7 +591,9 @@ function renderEquipGrid() {
 
             card.addEventListener('click', () => {
                 if (equip._isSPWeapon) {
-                    openSPWeaponDetail(equip._spId);
+                    // SP weapons have no compare_group → not comparable; say so in select mode.
+                    if (state.compareMode) showToast('특수 장비는 비교할 수 없습니다.', 'info');
+                    else openSPWeaponDetail(equip._spId);
                 } else {
                     onCardClick(equip.id);
                 }
@@ -634,10 +633,10 @@ function updateFilterStats() {
 
 // ===== Card Click Handler =====
 
-/** Route card clicks: in compare mode selects the second item, otherwise opens detail. */
+/** Route card clicks: in compare mode toggles selection, otherwise opens detail. */
 function onCardClick(equipId) {
     if (state.compareMode) {
-        selectCompareSecondItem(equipId);
+        toggleCompareSelection(equipId);
     } else {
         openDetailPanel(equipId);
     }
@@ -803,67 +802,110 @@ function closeDetailPanel() {
     setUrlParams({ equip: null }, { replace: true });
 }
 
-// ===== Compare Mode =====
+// ===== Compare Mode (multi-select) =====
 
-// Mode lifecycle — enter/exit toggle the floating bar and card overlays
+// Select-mode lifecycle — the toolbar 비교 toggle enters/exits; the user clicks cards in
+// one compare_group to build a set, then the floating bar opens the N-column modal.
+
+/** Toggle select-mode from the toolbar 비교 button. */
+function toggleCompareMode() {
+    if (state.compareMode) exitCompareMode();
+    else enterCompareMode();
+}
 
 /**
- * Enter compare mode after the user clicks "Compare" in the detail panel.
- * Closes the panel, shows the floating instruction bar, and dims cards
- * that don't share the same compare_group as the first item.
+ * Enter compare select-mode: reset the selection, switch to the icon grid
+ * (where cards are picked), show the floating bar, and clear any overlay.
  */
-function enterCompareMode(firstEquip) {
+function enterCompareMode() {
     state.compareMode = true;
-    state.compareFirstItem = firstEquip;
-    state.compareGroupFilter = firstEquip.compare_group;
+    state.compareGroupFilter = null;
+    state.compareSelection = [];
 
     closeDetailPanel();
 
-    // Compare picks the second card from the icon grid; ensure we're in 그리드.
-    if (state.viewMode !== 'grid') {
-        state.viewMode = 'grid';
-        updateViewToggleUI();
-        setUrlParams({ view: 'grid' }, { replace: true });
-        renderEquipGrid();
-        updateFilterStats();
+    // Selection happens on the icon grid → ensure 그리드 (setViewMode re-renders + applies overlay).
+    if (state.viewMode !== 'grid') setViewMode('grid');
+    else applyCompareModeOverlay();
+
+    if (compareToggleBtn) {
+        compareToggleBtn.classList.add('is-active');
+        compareToggleBtn.setAttribute('aria-pressed', 'true');
     }
-
-    compareModeText.textContent = `"${firstEquip.name}" 과(와) 비교할 장비를 선택하세요`;
+    updateCompareBar();
     compareModeBar.style.display = 'flex';
-
-    applyCompareModeOverlay();
 }
 
 function exitCompareMode() {
     state.compareMode = false;
-    state.compareFirstItem = null;
     state.compareGroupFilter = null;
+    state.compareSelection = [];
+    if (compareToggleBtn) {
+        compareToggleBtn.classList.remove('is-active');
+        compareToggleBtn.setAttribute('aria-pressed', 'false');
+    }
     compareModeBar.style.display = 'none';
     removeCompareModeOverlay();
 }
 
-// Overlay helpers — mark cards as selected, eligible, or ineligible for comparison
-
 /**
- * Apply visual classes to all cards: highlight the first-selected card,
- * dim cards outside its compare_group so only valid targets stand out.
+ * Toggle one card into/out of the comparison set. The first pick locks the
+ * compare_group; later picks must match it. Deselecting the last card unlocks it.
  */
+function toggleCompareSelection(equipId) {
+    const id = parseInt(equipId);
+    const equip = state.equipData.find(e => e.id === id);
+    if (!equip) return;
+
+    if (equip.compare_group == null) {
+        showToast('이 장비는 비교할 수 없습니다.', 'info');
+        return;
+    }
+
+    const idx = state.compareSelection.indexOf(id);
+    if (idx !== -1) {
+        state.compareSelection.splice(idx, 1);
+        if (state.compareSelection.length === 0) state.compareGroupFilter = null;
+    } else {
+        if (state.compareGroupFilter == null) {
+            state.compareGroupFilter = equip.compare_group;
+        } else if (equip.compare_group !== state.compareGroupFilter) {
+            showToast('같은 종류의 장비만 함께 비교할 수 있습니다.', 'error');
+            return;
+        }
+        state.compareSelection.push(id);
+    }
+
+    applyCompareModeOverlay();
+    updateCompareBar();
+}
+
+/** Update the floating bar's text and enable the 비교하기 button once ≥2 are picked. */
+function updateCompareBar() {
+    const n = state.compareSelection.length;
+    if (compareModeText) {
+        compareModeText.textContent = n === 0
+            ? '비교할 장비를 선택하세요 (같은 분류끼리)'
+            : `${n}개 선택됨`;
+    }
+    if (compareModeGo) {
+        compareModeGo.disabled = n < 2;
+        compareModeGo.textContent = n >= 2 ? `비교하기 (${n})` : '비교하기';
+    }
+}
+
+// Overlay helpers — mark selected cards and dim cards outside the locked compare_group.
+
 function applyCompareModeOverlay() {
+    const selected = new Set(state.compareSelection.map(String));
     const cards = equipGrid.querySelectorAll('.equip-card');
     for (const card of cards) {
         const cardGroup = card.dataset.compareGroup;
-        const cardId = card.dataset.equipId;
-
-        if (state.compareFirstItem && String(cardId) === String(state.compareFirstItem.id)) {
-            card.classList.add('compare-selected');
-            card.classList.remove('compare-ineligible');
-        } else if (state.compareGroupFilter != null && cardGroup !== String(state.compareGroupFilter)) {
-            card.classList.add('compare-ineligible');
-            card.classList.remove('compare-selected');
-        } else {
-            card.classList.remove('compare-ineligible');
-            card.classList.remove('compare-selected');
-        }
+        const isSelected = selected.has(String(card.dataset.equipId));
+        const ineligible = state.compareGroupFilter != null
+            && cardGroup !== String(state.compareGroupFilter);
+        card.classList.toggle('compare-selected', isSelected);
+        card.classList.toggle('compare-ineligible', ineligible && !isSelected);
     }
 }
 
@@ -875,32 +917,22 @@ function removeCompareModeOverlay() {
 }
 
 /**
- * Complete the comparison by loading the second item's full data,
- * validating it belongs to the same compare_group, then opening
- * the side-by-side compare modal.
+ * Open the compare modal from the current selection: fetch full data for each
+ * picked equip, exit select-mode, sync the URL, and render the N-column table.
  */
-async function selectCompareSecondItem(equipId) {
-    const secondEquip = await getFullEquipData(parseInt(equipId));
-    if (!secondEquip) {
-        showToast('장비 데이터를 찾을 수 없습니다.', 'error');
+async function openCompareFromSelection() {
+    if (state.compareSelection.length < 2) return;
+    const ids = [...state.compareSelection];
+    const equips = await Promise.all(ids.map(id => getFullEquipData(id)));
+    const items = equips.filter(Boolean).map(equip => ({ equip, level: 0 }));
+    if (items.length < 2) {
+        showToast('장비 데이터를 불러오지 못했습니다.', 'error');
         return;
     }
-
-    if (secondEquip.compare_group !== state.compareFirstItem.compare_group) {
-        showToast('같은 종류의 장비만 비교할 수 있습니다.', 'error');
-        return;
-    }
-
-    if (secondEquip.id === state.compareFirstItem.id) {
-        showToast('같은 장비끼리는 비교할 수 없습니다.', 'info');
-        return;
-    }
-
-    const firstEquip = state.compareFirstItem;
 
     exitCompareMode();
-    setUrlParams({ compare: `${firstEquip.id},${secondEquip.id}`, equip: null }, { replace: true });
-    renderCompareModal(firstEquip, secondEquip);
+    setUrlParams({ compare: items.map(it => it.equip.id).join(','), equip: null }, { replace: true });
+    renderCompareModal(items);
 }
 
 // ===== Routing =====

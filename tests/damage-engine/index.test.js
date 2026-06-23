@@ -25,6 +25,24 @@ test('simulateAttacker composes formula→salvo→timeline', () => {
   assert.ok(approx(r.dps, r.total / 90, 1e-6));
 });
 
+test('simulateAttacker: cycleExtra lengthens the fire cycle for DPS, not the reported reloadInterval', () => {
+  const target = makeTarget('light');
+  const r = simulateAttacker(attacker, [{ ...cannon, cycleExtra: 0.4 }], target, { window: 90 });
+  const w = r.perWeapon[0];
+  // reported reloadInterval stays the PURE reload (display value), unchanged by cycleExtra
+  assert.ok(approx(w.reloadInterval, 1.30327, 1e-3));
+  // salvo count reflects the longer cycle = reloadInterval + cycleExtra
+  const cycle = 1.30327 + 0.4;
+  assert.equal(w.salvoCount, Math.floor(90 / cycle) + 1);
+});
+
+test('simulateAttacker: absent cycleExtra is unchanged (backward compatible)', () => {
+  const target = makeTarget('light');
+  const r = simulateAttacker(attacker, [cannon], target, { window: 90 });
+  const w = r.perWeapon[0];
+  assert.equal(w.salvoCount, Math.floor(90 / w.reloadInterval) + 1);
+});
+
 test('simulateFleet sums per-ship totals', () => {
   const target = makeTarget('heavy');
   const ships = [

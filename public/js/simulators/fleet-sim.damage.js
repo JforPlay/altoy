@@ -20,6 +20,7 @@
  * Node unit tests because they only depend on engine/damage/constants.js.
  */
 import { ATTR_TO_KEY } from '../engine/damage/constants.js';
+import { weaponSalvoDuration } from '../engine/damage/salvo-timing.js';
 
 // ===== Pure helpers (unit-testable, take data/lookups as params) =====
 
@@ -63,6 +64,12 @@ export function resolveWeaponDescriptor(weapon, stats, deps) {
     const mountCount = deps.mountCount ?? 1;
     const bulletsPerSalvo = barrageBulletCount(weapon.barrage_ID, deps.getBarrage) * mountCount;
 
+    // Surface fire cycle adds the salvo firing time + 발사 후 경직 to the reload (the wiki's gun
+    // cycle). Airstrike-overridden descriptors keep 0 — the air-assist ×2.2 already owns that cycle.
+    const cycleExtra = deps.reloadMaxOverride != null
+        ? 0
+        : weaponSalvoDuration(weapon.barrage_ID, deps.getBarrage) + (weapon.auto_aftercast || 0);
+
     return {
         attackAttribute,
         stat: stats[ATTR_KEY_TO_STAT[attackAttribute]] ?? 0,
@@ -74,6 +81,7 @@ export function resolveWeaponDescriptor(weapon, stats, deps) {
         damageType: bullet.damage_type,
         ammoType: bullet.ammo_type,
         reloadMax: deps.reloadMaxOverride ?? weapon.reload_max,
+        cycleExtra,
         initialDelay: 0,
         label: deps.label || '무기',
     };

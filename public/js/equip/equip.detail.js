@@ -12,8 +12,9 @@ import {
     replaceEquipCodes, getBulletTemplate, getSkillData, getWeaponName,
     getFiringPattern, formatLevel, getVisibleLevelCount, AIRCRAFT_TYPES,
     getMergedAircraftTemplate, getMergedWeaponProperties, getPrimaryWeaponProperty,
-    getHearingEntry
+    getHearingEntry, getTheoreticalSurfaceDps
 } from './equip.data.js';
+import { formatDps } from './equip.compare.logic.js';
 import { renderHearingComment } from './equip.hearing-view.js';
 
 /** Ammo type name mapping (matches equip.ammo field / equip_ammo_type_X i18n keys) */
@@ -356,12 +357,26 @@ function renderAircraftParams(equip, level) {
     `;
 }
 
+/** One combined "이론 DPS" row (경장/중형/중장) from getTheoreticalSurfaceDps, or '' when null.
+ *  A per-equip surface total (aircraft sum ordnance over the airstrike cadence × 2.2, guns
+ *  excluded; surface mounts use their own 사속) — see equip.data.js getTheoreticalSurfaceDps. */
+function renderSurfaceDpsRow(surface) {
+    if (!surface) return '';
+    const [l, m, h] = surface.dps;
+    return `<tr><th title="데미지 × 수정배율 × 탄수 × 장갑 배율 ÷ 사속, 표면 무장 합산 — 항공기는 폭장만 발진 간격×2.2로, 대공 기총 제외 (함선 스탯을 뺀 상대 지표)">이론 DPS</th>`
+        + `<td>경장 ${formatDps(l)}<br>중형 ${formatDps(m)}<br>중장 ${formatDps(h)}</td></tr>`;
+}
+
 /**
  * Build table rows for a single merged weapon property object.
  * Reads damage_type from bullet_template for armor modifiers (대갑 배율).
  * Does NOT use equip.ammo for ammo type — that's rendered separately via AMMO_TYPE_NAMES.
+ * @param wp merged weapon property
+ * @param {?{dps:number[]}} surfaceDps  combined 이론 DPS to inject directly under this weapon's
+ *        대갑 비례 row — passed ONLY for single-weapon equips (then the equip total == this
+ *        weapon). Multi-weapon (aircraft) append one combined row at the section end instead.
  */
-function renderWeaponParamsRows(wp) {
+function renderWeaponParamsRows(wp, surfaceDps = null) {
     let rows = '';
 
     // Damage
@@ -412,6 +427,11 @@ function renderWeaponParamsRows(wp) {
         const dt = bullet.damage_type;
         if (dt && dt.length >= 3) {
             rows += `<tr><th>대갑 비례(장갑 배율)</th><td>경장 ${Math.round(dt[0] * 100)}%<br>중형 ${Math.round(dt[1] * 100)}%<br>중장 ${Math.round(dt[2] * 100)}%</td></tr>`;
+            // Single-weapon equips show the 이론 DPS right under 대갑 비례 (once).
+            if (surfaceDps) {
+                rows += renderSurfaceDpsRow(surfaceDps);
+                surfaceDps = null;
+            }
         }
 
         // Hit range
@@ -444,10 +464,15 @@ function renderWeaponParams(equip, level) {
     const weapons = getMergedWeaponProperties(equip, level);
     if (!weapons.length) return '';
 
+    // Combined per-equip "이론 DPS" (sums surface weapons; aircraft = ordnance over airstrike×2.2,
+    // guns excluded). Single-weapon equips inject it under 대갑 비례; multi-weapon (aircraft) append
+    // one combined row after all blocks — a single weapon's 대갑 비례 can't host a multi-weapon sum.
+    const surface = getTheoreticalSurfaceDps(equip, level);
     const single = weapons.length === 1;
+
     let allRows = '';
     for (let i = 0; i < weapons.length; i++) {
-        const wpRows = renderWeaponParamsRows(weapons[i]);
+        const wpRows = renderWeaponParamsRows(weapons[i], single ? surface : null);
         if (!wpRows) continue;
         const wName = getWeaponName(weapons[i]._weaponId);
         const header = wName || (single ? '' : `무기 ${i + 1}`);
@@ -456,6 +481,7 @@ function renderWeaponParams(equip, level) {
         }
         allRows += wpRows;
     }
+    if (!single) allRows += renderSurfaceDpsRow(surface);
 
     if (!allRows) return '';
 

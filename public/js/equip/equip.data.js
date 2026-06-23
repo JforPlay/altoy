@@ -7,6 +7,8 @@
  */
 
 import { fetchJSON, fetchJSONWithCache, DATA_FOR_TOY_BASE } from '../utils.js';
+import { combinedSurfaceDps } from './equip.compare.logic.js';
+import { weaponSalvoDuration } from '../engine/damage/salvo-timing.js';
 
 // State reference (set via setup)
 let state;
@@ -351,6 +353,22 @@ export function getFiringPattern(weaponProperty) {
     return [...new Set(phrases)].join(' + ');
 }
 
+/**
+ * Bullets fired per reload cycle: Σ (primal_repeat+1)×(senior_repeat+1) over the
+ * weapon's barrages (min 1). The per-volley multiplier in the 이론 DPS formula —
+ * shared by the compare modal and the detail panel. Returns 1 for a plain single shot.
+ */
+export function getBulletCount(weaponProperty) {
+    const ids = weaponProperty && weaponProperty.barrage_ID;
+    if (!Array.isArray(ids)) return 1;
+    let total = 0;
+    for (const id of ids) {
+        const b = getBarrageTemplate(id);
+        if (b) total += ((b.primal_repeat || 0) + 1) * ((b.senior_repeat || 0) + 1);
+    }
+    return total || 1;
+}
+
 // ===== Enhance Levels =====
 
 /** Rarity → max enhance level index. Some equips carry synthetic max-enhance
@@ -460,6 +478,62 @@ export function getPrimaryWeaponProperty(equip, level) {
 
     const baseWid = (equip.levels[0].weapon_id || [])[0];
     return getMergedWeaponProperty(baseWid, weaponIds[0]);
+}
+
+// ===== Theoretical surface DPS (이론 DPS) =====
+
+/** weapon_property.reload_max → 사속 seconds (the viewer's baseline cadence), or null. */
+export function reloadMaxToSeconds(reloadMax) {
+    return reloadMax != null ? Math.floor((reloadMax / 150) * 100) / 100 : null;
+}
+
+/** Aircraft strafing/AA autocannon weapon type — excluded from surface 이론 DPS (it's anti-air). */
+const AIRCRAFT_GUN_WEAPON_TYPE = 4;
+
+/** First bullet's armor-mod triple [경장,중형,중장] for a weapon, or null. */
+function weaponArmorMods(wp) {
+    for (const bid of (wp.bullet_ID || [])) {
+        const bullet = getBulletTemplate(bid);
+        if (bullet && bullet.damage_type && bullet.damage_type.length >= 3) return bullet.damage_type;
+    }
+    return null;
+}
+
+/**
+ * Combined "이론 DPS" for an equip at a level → `{ dps:[경장,중형,중장], mods }` or null.
+ * Sums every surface weapon via the pure `combinedSurfaceDps`: AIRCRAFT drop ordnance only (the
+ * strafing gun, weapon type 4, is excluded) over the airstrike cadence × 2.2 — matching the AL
+ * wiki's Surface DPS (verified vs 와이번 / 시제형 스피어피쉬); surface mounts divide by the full fire
+ * cycle = 사속 + 일제사 발사시간(salvo) + 발사 후 경직(auto_aftercast), also verified to the cent vs the
+ * wiki (100mm 98식改 / 127mm 5식 / 138.6mm Mle1934). `mods` carries the lone ordnance weapon's armor triple when exactly one weapon contributes
+ * (drives the compare cell's sub-label), else null (a multi-weapon sum has no single mod). A
+ * RELATIVE figure — excludes ship firepower/reload stats. See getDpsCell / renderWeaponParams.
+ */
+export function getTheoreticalSurfaceDps(equip, level) {
+    const weapons = getMergedWeaponProperties(equip, level);
+    if (!weapons.length) return null;
+
+    const isAircraft = AIRCRAFT_TYPES.has(equip.type);
+    // Aircraft volley rate is the launcher's 사속 (the airstrike cadence), NOT each ordnance's reload.
+    const airstrikeReload = isAircraft ? reloadMaxToSeconds(getPrimaryWeaponProperty(equip, level)?.reload_max) : null;
+
+    const descriptors = weapons.map(wp => ({
+        damage: wp.damage,
+        coefficient: wp.corrected,
+        bullets: getBulletCount(wp),
+        mods: weaponArmorMods(wp),
+        reloadSeconds: reloadMaxToSeconds(wp.reload_max),
+        // Surface fire cycle adds the salvo firing time + 발사 후 경직 to the reload (the wiki's
+        // gun cycle); aircraft ignore this (combinedSurfaceDps divides ordnance by airstrike ×2.2).
+        cycleExtra: weaponSalvoDuration(wp.barrage_ID, getBarrageTemplate) + (wp.auto_aftercast || 0),
+        isGun: wp.type === AIRCRAFT_GUN_WEAPON_TYPE,
+    }));
+
+    const dps = combinedSurfaceDps(descriptors, { isAircraft, airstrikeReload });
+    if (!dps) return null;
+
+    const contributing = descriptors.filter(d => d.mods && !(isAircraft && d.isGun));
+    return { dps, mods: contributing.length === 1 ? contributing[0].mods : null };
 }
 
 /** Load weapon name data (maps weapon_property IDs to Korean names) */
