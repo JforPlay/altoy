@@ -284,7 +284,9 @@ function buildMapBrowserData() {
                         mapNumber: mapInfo.map,
                         mapId: mapId,
                         mapName: mapId,
-                        type: mapInfo.type,
+                        // Drop type (일반/보스) is per-ship, NOT per-map: a single stage can
+                        // drop some ships on normal clears and others only on the boss. Each
+                        // ship carries its own `dropType` below — see renderMapBrowserContent.
                         ships: []
                     };
                 }
@@ -374,11 +376,11 @@ function renderMapBrowserContent() {
             // Filter by map
             if (map !== 'all' && String(mapData.mapNumber) !== map) return;
 
-            // Filter by type
-            if (type !== 'all' && String(mapData.type) !== type) return;
-
-            // Filter ships
+            // Filter ships. Drop type (일반/보스) is filtered per-ship here — a stage can
+            // drop some ships on normal clears and others only on the boss, so a per-map
+            // type check would hide the 보스 drops on any mixed stage (the old bug).
             const filteredShips = mapData.ships.filter(ship => {
+                if (type !== 'all' && String(ship.dropType) !== type) return false;
                 if (rarity !== 'all' && ship.rarity !== rarity) return false;
                 if (shipType !== 'all' && String(ship.type) !== shipType) return false;
                 if (nationality !== 'all' && String(ship.nationality) !== nationality) return false;
@@ -387,13 +389,15 @@ function renderMapBrowserContent() {
             });
 
             if (filteredShips.length > 0) {
+                // Distinct drop types among the shown ships → one badge each (mixed stages show both).
+                const dropTypes = [...new Set(filteredShips.map(ship => ship.dropType))].sort((a, b) => a - b);
                 filteredData.push({
                     area: areaData.area,
                     areaName: areaData.areaName,
                     mapNumber: mapData.mapNumber,
                     mapId: mapData.mapId,
                     mapName: mapData.mapName,
-                    type: mapData.type,
+                    dropTypes,
                     ships: filteredShips
                 });
             }
@@ -421,7 +425,7 @@ function renderMapBrowserContent() {
         <div class="map-browser-section">
             <div class="map-browser-header">
                 <span class="map-browser-map-name">${data.mapName}</span>
-                <span class="badge map-type-badge ${getMapTypeClass(data.type)}">${getMapTypeName(data.type)}</span>
+                ${data.dropTypes.map(t => `<span class="badge map-type-badge ${getMapTypeClass(t)}">${getMapTypeName(t)}</span>`).join('')}
                 <span class="map-browser-count">${data.ships.length}척</span>
             </div>
             <div class="map-browser-ships card-grid">
