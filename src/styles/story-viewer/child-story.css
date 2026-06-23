@@ -16,9 +16,9 @@
 :root {
   /* Child-story brand palette — purple gradient identity, same in light & dark.
      The -rgb form lets rgba() consumers vary alpha. */
-  --child-story-primary: var(--child-story-primary);
+  --child-story-primary: #667eea;
   --child-story-primary-rgb: 102, 126, 234;
-  --child-story-secondary: var(--child-story-secondary);
+  --child-story-secondary: #764ba2;
 }
 
 /* ========================================
