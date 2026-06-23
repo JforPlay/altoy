@@ -9,6 +9,19 @@ import '../styles/mainpage/mainpage.navbar.css';
 import '../styles/mainpage/mainpage.carousel.css';
 import '../styles/mainpage/mainpage.bento.css';
 import '../styles/mainpage/mainpage.responsive.css';
+import updatesRaw from '../data/updates.txt?raw';
+import utilsSource from '../../public/js/utils.js?raw';
+
+// 안내사항 card: the ONLY hand-maintained part is src/data/updates.txt (one Korean
+// bullet per line, '#' lines ignored). Version + date are derived at build time so a
+// release never touches this — version regexed from utils.js DATA_VERSION (imported as
+// raw source, no execution), date = deploy day (KST).
+const updateItems = updatesRaw
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith('#'));
+const dataVersion = utilsSource.match(/const\s+DATA_VERSION\s*=\s*['"]([^'"]+)['"]/)?.[1] ?? '';
+const deployDate = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' });
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const path = (value: string) => `${base}/${value}`;
@@ -230,13 +243,14 @@ const hrefs = {
                 </div>
                 <div class="bento-card patch-notes-card">
                     <div class="patch-notes-content">
-                        <ul>
-                            <li><strong>스토리뷰어 찐빠 수정</strong></li>
-                            <li><strong>기타 최적화</strong></li>
-                        </ul>
+                        {updateItems.length > 0 && (
+                            <ul>
+                                {updateItems.map((item) => <li><strong>{item}</strong></li>)}
+                            </ul>
+                        )}
                     </div>
                     <div class="card-footer">
-                        <span class="card-meta">최신 업데이트: 2026-6-11</span>
+                        <span class="card-meta">최신 업데이트: {deployDate} · v{dataVersion}</span>
                     </div>
                 </div>
             </div>
