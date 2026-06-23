@@ -924,7 +924,7 @@ async function openCompareFromSelection() {
     if (state.compareSelection.length < 2) return;
     const ids = [...state.compareSelection];
     const equips = await Promise.all(ids.map(id => getFullEquipData(id)));
-    const items = equips.filter(Boolean).map(equip => ({ equip, level: 0 }));
+    const items = equips.filter(Boolean).map(equip => ({ equip })); // level ⇒ max (renderCompareModal default)
     if (items.length < 2) {
         showToast('장비 데이터를 불러오지 못했습니다.', 'error');
         return;

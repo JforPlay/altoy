@@ -44,13 +44,19 @@ export function setupCompareModal() {
 
 /**
  * Populate and open the compare modal for a list of equips.
- * @param {{equip:object, level?:number}[]} items  full equip data + start level per column.
+ * @param {{equip:object, level?:number}[]} items  full equip data + start level per
+ *   column; `level` omitted ⇒ defaults to the equip's max enhance level.
  */
 export function renderCompareModal(items) {
     const modalBody = document.getElementById('compareModalBody');
     if (!modalBody) return;
 
-    state.compareItems = items.map(it => ({ equip: it.equip, level: it.level || 0 }));
+    // Default each column to the equip's MAX enhance level (last selectable slider
+    // index); an explicit caller `level` still wins (0 honored via ??).
+    state.compareItems = items.map(it => ({
+        equip: it.equip,
+        level: it.level ?? Math.max(0, getVisibleLevelCount(it.equip) - 1),
+    }));
     state.compareColumns = freezeColumns(state.compareItems);
 
     modalBody.innerHTML = renderCompareTable();
@@ -69,7 +75,7 @@ export async function loadCompareFromUrl(compareParam) {
     if (ids.length < 2) return;
 
     const equips = await Promise.all(ids.map(id => getFullEquipData(id)));
-    const items = equips.filter(Boolean).map(equip => ({ equip, level: 0 }));
+    const items = equips.filter(Boolean).map(equip => ({ equip })); // level ⇒ max (renderCompareModal default)
 
     if (items.length >= 2) renderCompareModal(items);
 }
