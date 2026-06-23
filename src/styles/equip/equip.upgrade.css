@@ -448,7 +448,14 @@ body.dark-mode .tree-arrow {
     gap: 0.5rem;
 }
 
-/* 재료 목록 = canonical .btn.btn-secondary (button.css); no local shape needed. */
+/* 재료 목록 = canonical .btn.btn-secondary (button.css); no local shape needed.
+   Only adopt the accent-blue icon splash of the shipgirl-info .map-browser-btn it
+   mirrors. The .upgrade-header descendant outranks the header's generic 1.75rem
+   icon rule (line ~43), so the button icon keeps the button's own 1.2em size. */
+.upgrade-header .mat-browse-btn .material-symbols-outlined {
+    font-size: 1.2em;
+    color: var(--accent-blue);
+}
 
 /* ===== Material Modal ===== */
 .mat-modal-overlay {

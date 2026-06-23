@@ -236,6 +236,17 @@ body {
 body {
   --card-lift: -2px;
   --card-hover-shadow: var(--shadow-lg);
+
+  /* Elevated- + input-surface tokens for the DEFAULT theme. These were defined
+     ONLY under body[data-theme="accent"], so on default-theme pages the canonical
+     .btn-secondary / .btn-icon (background: var(--bg-elevated)) had no value and
+     fell back to transparent → near-invisible (e.g. equip-upgrade's 재료 목록
+     button in light mode). Aliased to the default theme's existing equivalents,
+     on `body` (NOT :root) so dark mode re-resolves them (same rationale as the
+     two aliases above); accent pages still override them directly so are
+     unaffected. */
+  --bg-elevated: var(--card-bg);
+  --bg-input: var(--input-bg);
 }
 
 /* --- Dark Mode --- */

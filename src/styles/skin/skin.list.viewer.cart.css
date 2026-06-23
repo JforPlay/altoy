@@ -33,9 +33,9 @@
   box-shadow: 0 0.75rem 2rem var(--overlay-strong);
 }
 
-/* Shape + accent-blue fill come from the canonical .badge.badge--count
-   (components/badge.css); only the FAB corner placement + show/hide animation
-   + the FAB outline ring stay local. */
+/* Shape (round bubble) comes from the canonical .badge.badge--count
+   (components/badge.css); the FAB corner placement + show/hide animation + the
+   FAB outline ring stay local. The fill is overridden to red below. */
 .cart-badge {
   position: absolute;
   top: -0.3rem;
@@ -45,6 +45,12 @@
   transform: scale(0);
   transition: opacity var(--transition-fast), transform var(--transition-fast);
 }
+
+/* Red fill — a cart / 옷장 tally reads as a notification count, not the
+   informational filter-count that .badge--count paints accent-blue. Kept local
+   (not in badge.css) so the global count badge stays blue. .badge--count.cart-badge
+   outranks the global .badge--count, so red wins regardless of stylesheet load order. */
+.badge--count.cart-badge { background: var(--danger-color); }
 
 .cart-fab.has-items .cart-badge {
   opacity: 1;
