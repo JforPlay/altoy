@@ -681,7 +681,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const characterName = encodeURIComponent(normalizeRomanNumerals(skin['함순이 이름']));
             const skinDisplayName = encodeURIComponent(skin['한글 함순이 + 스킨 이름']);
-            DOM.popup.detailLink.href = resolveUrl(`skin/skin-detail-viewer/?character=${characterName}&skin=${skinDisplayName}`);
+            // Link by stable gid (clientId = shipGroup*10 + skinIndex → gid = ⌊clientId/10⌋)
+            // so the viewer resolves the exact ship even when the name has drifted across
+            // data sources (the Admiral Hipper 럴/랄 bug). See skin.gid.js / reference_gid_linking.
+            const gid = Math.floor(Number(skinId) / 10);
+            const gidParam = Number.isFinite(gid) ? `&gid=${encodeURIComponent(gid)}` : '';
+            DOM.popup.detailLink.href = resolveUrl(`skin/skin-detail-viewer/?character=${characterName}&skin=${skinDisplayName}${gidParam}`);
 
             DOM.popup.overlay.classList.add('visible');
             DOM.popup.overlay.setAttribute('aria-hidden', 'false');

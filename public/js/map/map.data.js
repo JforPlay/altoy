@@ -122,6 +122,7 @@ export async function loadShipInfo() {
         gidToId = {};
         for (const ship of data) {
             state.shipInfo[ship.id] = {
+                gid: ship.gid,
                 name: ship.name,
                 rarity: ship.rarity,
                 shipyard: ship.shipyard || '',
@@ -170,6 +171,7 @@ export function getShipDropsForChapter(chapterId) {
             if (drop.map === stageNum) {
                 result.push({
                     id: parseInt(id),
+                    gid: ship.gid,
                     name: ship.name,
                     rarity: ship.rarity,
                     shipyard: ship.shipyard,

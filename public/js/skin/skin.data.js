@@ -6,14 +6,16 @@
  */
 import { fetchJSONWithCache, normalizeRomanNumerals, createSearchIndex, ensureFuse } from '../utils.js';
 import { mergeReleaseDates, formatReleaseDate } from './skin.dates.js';
+import { buildGidMap, resolveCharByGid } from './skin.gid.js';
 
-// @type {{skinIndex: Object, skinDataCache: Object<string, Array>, expressionManifest: Object, characterFuse: Fuse|null, allCharacterNames: string[], releaseDates: Object|null}}
+// @type {{skinIndex: Object, skinDataCache: Object<string, Array>, expressionManifest: Object, characterFuse: Fuse|null, allCharacterNames: string[], gidMap: Map<number,string>|null, releaseDates: Object|null}}
 const state = {
     skinIndex: null,         // Lightweight index: character names, skin names, file hashes
     skinDataCache: {},       // Cached per-character full data: charName -> skin[]
     expressionManifest: {},
     characterFuse: null,
     allCharacterNames: [],
+    gidMap: null,            // ship-group id -> character name (stable cross-page link key)
     releaseDates: null       // skinId (string) -> date string
 };
 
@@ -68,6 +70,10 @@ async function init() {
             .filter(Boolean);
         state.allCharacterNames = [...new Set(state.allCharacterNames)]
             .sort(customSort);
+
+        // Stable ship-group id → character name, so cross-page links resolve by id
+        // (immune to name spelling drift across data sources) before any name match.
+        state.gidMap = buildGidMap(skinIndex.characters);
 
         const fuseList = state.allCharacterNames.map(name => ({ name }));
         await ensureFuse();
@@ -263,6 +269,16 @@ function getAllCharacterNames() {
     return state.allCharacterNames;
 }
 
+/**
+ * Resolve a ship-group id (ship_info `gid`) to its skin character name.
+ * Exact, id-based — returns '' when unknown so callers can fall back to name matching.
+ * @param {number|string} gid
+ * @returns {string}
+ */
+function getCharacterNameByGid(gid) {
+    return resolveCharByGid(state.gidMap, gid);
+}
+
 // Backwards-compatible global access
 window.SkinData = {
     init,
@@ -272,6 +288,7 @@ window.SkinData = {
     loadCharacterData,
     getManifest,
     getAllCharacterNames,
+    getCharacterNameByGid,
     getReleaseDate,
     getSkinFilterData
 };
@@ -284,6 +301,7 @@ export {
     loadCharacterData,
     getManifest,
     getAllCharacterNames,
+    getCharacterNameByGid,
     getReleaseDate,
     loadReleaseDates,
     getSkinFilterData

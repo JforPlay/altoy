@@ -20,6 +20,7 @@ import {
 import { showMapsModal } from './shipgirl-info.maps.js';
 import { renderRetrofitMap } from './shipgirl-info.retrofit.js';
 import { renderEquipSlotSection } from './shipgirl-info.equip-slots.js';
+import { resolveShip } from './shipgirl-info.resolve.js';
 
 'use strict';
 
@@ -84,7 +85,7 @@ export function setup(stateRef) {
  * Waits for full data to load if needed, sets initial state (level 100, love affinity, max LB),
  * then delegates to renderDetailView.
  */
-export async function showDetailView(shipName) {
+export async function showDetailView(shipName, gid) {
     // If full data isn't loaded yet, wait for it
     if (!state.fullShipData) {
         state.elements.loading.style.display = 'block';
@@ -105,7 +106,10 @@ export async function showDetailView(shipName) {
          return;
     }
 
-    const ship = state.fullShipData.find(s => s.name === shipName);
+    // Prefer the stable gid (exact); fall back to the name (exact → roman-numeral
+    // normalized, never fuzzy). Links across pages carry ?gid= so spelling drift
+    // can't dead-end or mis-target. See shipgirl-info.resolve.js / reference_gid_linking.
+    const ship = resolveShip(state.fullShipData, { gid, name: shipName });
 
     if (!ship) {
         showToast('함순이를 찾을 수 없습니다', 'error');
@@ -193,6 +197,13 @@ function renderDetailHeader(ship, nationalityInfo) {
 
     const buildTime = formatBuildTime(ship.timer);
 
+    // Link by stable ship-group id (name kept for readable/shareable URLs). The skin
+    // viewer resolves gid first, so spelling drift across data sources (e.g. base
+    // 아드미럴 히퍼 vs canonical 아드미랄 히퍼) can't redirect to the wrong ·META unit.
+    const skinViewerHref = resolveUrl(
+        `skin/skin-detail-viewer/?character=${encodeURIComponent(ship.name)}&skin=${encodeURIComponent(ship.name)}${ship.gid != null ? `&gid=${encodeURIComponent(ship.gid)}` : ''}`
+    );
+
     return `
         <div class="detail-header">
             <div class="detail-image">
@@ -205,7 +216,7 @@ function renderDetailHeader(ship, nationalityInfo) {
                         <span class="rarity-badge rarity-${ship.rarity}">${ship.rarity}</span>
                         ${hasRetrofit ? '<span class="retrofit-available-badge badge badge--success">개조 가능</span>' : ''}
                     </h2>
-                    <a href="${resolveUrl(`skin/skin-detail-viewer/?character=${encodeURIComponent(ship.name)}&skin=${encodeURIComponent(ship.name)}`)}" class="skin-viewer-button">
+                    <a href="${skinViewerHref}" class="skin-viewer-button">
                         <i class="fas fa-palette" aria-hidden="true"></i> 스킨/대사 보러가기
                     </a>
                 </div>

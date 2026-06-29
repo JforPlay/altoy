@@ -5,7 +5,7 @@
  * Part of the skin module group.
  */
 import { debounce, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl, normalizeRomanNumerals, createIcon, createGemIconImg, renderStatus, setupModal, openModal, closeModal } from '../utils.js';
-import { init as initSkinData, searchCharacters, getSkinsForCharacter, getSkinByName, getManifest, getAllCharacterNames, getReleaseDate, getSkinFilterData } from './skin.data.js';
+import { init as initSkinData, searchCharacters, getSkinsForCharacter, getSkinByName, getManifest, getAllCharacterNames, getCharacterNameByGid, getReleaseDate, getSkinFilterData } from './skin.data.js';
 import { init as initSkinAudio, stopCurrentAudio, handlePlayClick, createVolumeControlElement, attachVolumeListeners } from './skin.audio.js';
 import { init as initSkinExpression, setManifest, renderImageGallery } from './skin.expression.js';
 
@@ -595,9 +595,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         isApplyingURLState = true;
         try {
             const char = getUrlParam('character');
+            const gid = getUrlParam('gid');
             const skin = getUrlParam('skin');
 
-            if (!char) {
+            // Stable ship-group id wins: it's immune to the name spelling drift
+            // across data sources (e.g. canonical 아드미랄 히퍼 vs the skin index's
+            // upstream-typo 아드미럴 히퍼) that made name matching fuzzy-fall-through
+            // to the wrong same-prefix ·META/variant entry.
+            let matchedName = gid ? getCharacterNameByGid(gid) : '';
+
+            if (!matchedName && !char) {
                 elements.charInput.value = '';
                 elements.skinInput.value = '';
                 elements.skinInput.placeholder = '함순이를 먼저 선택해주세요...';
@@ -606,15 +613,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
 
-            // Normalize and find exact or fuzzy match
-            const normalizedChar = char.trim();
-            const allNames = getAllCharacterNames();
-            let matchedName = allNames.includes(normalizedChar) ? normalizedChar : '';
-
+            // Fall back to name: exact match, then fuzzy.
             if (!matchedName) {
-                const results = searchCharacters(normalizedChar);
-                if (results.length > 0 && (results[0].score ?? 1) < 0.3) {
-                    matchedName = results[0].item.name;
+                const normalizedChar = char.trim();
+                const allNames = getAllCharacterNames();
+                matchedName = allNames.includes(normalizedChar) ? normalizedChar : '';
+
+                if (!matchedName) {
+                    const results = searchCharacters(normalizedChar);
+                    if (results.length > 0 && (results[0].score ?? 1) < 0.3) {
+                        matchedName = results[0].item.name;
+                    }
                 }
             }
 

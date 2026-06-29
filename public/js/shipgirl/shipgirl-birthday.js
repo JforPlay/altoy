@@ -340,7 +340,7 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
             clone.querySelector('.upcoming-name').textContent = ev.name;
 
             item.addEventListener('click', () => {
-                window.location.href = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(ev.name)}`);
+                window.location.href = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(ev.name)}${ev.groupId != null ? `&gid=${encodeURIComponent(ev.groupId)}` : ''}`);
             });
             item.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); item.click(); } });
 
@@ -470,7 +470,7 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
                     eventsContainer.className = 'events';
                     evs.slice(0, maxIcons).forEach(ev => {
                         const link = document.createElement('a');
-                        link.href = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(ev.name)}`);
+                        link.href = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(ev.name)}${ev.groupId != null ? `&gid=${encodeURIComponent(ev.groupId)}` : ''}`);
                         if (ev.rarity) {
                             link.classList.add(`rarity-${sanitizeClassToken(ev.rarity).toLowerCase()}`);
                         }
@@ -697,7 +697,7 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
                 const card = clone.querySelector('.event-card');
 
                 card.addEventListener('click', () => {
-                    window.location.href = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(ev.name)}`);
+                    window.location.href = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(ev.name)}${ev.groupId != null ? `&gid=${encodeURIComponent(ev.groupId)}` : ''}`);
                 });
                 card.style.cursor = 'pointer';
 

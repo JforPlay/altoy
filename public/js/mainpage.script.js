@@ -567,7 +567,7 @@ const BirthdaySection = (function () {
 
         const a = document.createElement('a');
         a.className = 'birthday-item';
-        a.href = `${base}/shipgirl/shipgirl-info/?ship=${encodeURIComponent(name)}`;
+        a.href = `${base}/shipgirl/shipgirl-info/?ship=${encodeURIComponent(name)}${item.group_id != null ? `&gid=${encodeURIComponent(item.group_id)}` : ''}`;
 
         const img = document.createElement('img');
         img.className = 'birthday-item-icon';

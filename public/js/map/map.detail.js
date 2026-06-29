@@ -342,7 +342,7 @@ export function renderMapInfo(chapter, targetEl) {
         html += '<div class="info-card-body">';
         html += '<div class="ship-drop-grid card-grid">';
         for (const ship of shipDrops) {
-            const infoUrl = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(ship.name)}`);
+            const infoUrl = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(ship.name)}${ship.gid != null ? `&gid=${encodeURIComponent(ship.gid)}` : ''}`);
             html += `<a href="${infoUrl}" class="ship-drop-card rarity-${ship.rarity}" title="${ship.name}${ship.bossOnly ? ' (보스 한정)' : ''}">`;
             const iconSrc = ship.shipyard ? ship.shipyard.replace('shipyard.png', 'icon.png') : '';
             if (iconSrc) {
@@ -472,7 +472,7 @@ export function renderArchiveInfo(chapter, targetEl) {
         if (isShip) {
             const ship = getShipInfoByGid(sd.id) || getShipInfo(sd.id);
             if (ship) {
-                const infoUrl = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(ship.name)}`);
+                const infoUrl = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(ship.name)}${ship.gid != null ? `&gid=${encodeURIComponent(ship.gid)}` : ''}`);
                 const iconSrc = ship.shipyard ? ship.shipyard.replace('shipyard.png', 'icon.png') : '';
                 extra += '<div style="display:flex;align-items:center;gap:0.75rem">';
                 if (iconSrc) extra += `<a href="${infoUrl}"><img style="width:3rem;height:3rem;border-radius:0.5rem;object-fit:cover" src="${iconSrc}" alt="${ship.name}" loading="lazy" data-onfail="hide"></a>`;
@@ -506,7 +506,7 @@ export function renderArchiveInfo(chapter, targetEl) {
         for (const drop of archiveDrops) {
             const ship = getShipInfo(drop.id);
             if (!ship) continue;
-            const infoUrl = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(ship.name)}`);
+            const infoUrl = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(ship.name)}${ship.gid != null ? `&gid=${encodeURIComponent(ship.gid)}` : ''}`);
             const iconSrc = ship.shipyard ? ship.shipyard.replace('shipyard.png', 'icon.png') : '';
             const title = ship.name + (drop.type === 1 ? ' (보스 한정)' : '') + (drop.pity ? ' (확정)' : '');
             extra += `<a href="${infoUrl}" class="ship-drop-card rarity-${ship.rarity}" title="${title}">`;

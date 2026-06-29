@@ -443,7 +443,7 @@ function renderShipSearchResults(query, body) {
         });
 
         if (mapList.length > 0) {
-            results.push({ id: parseInt(id), name: ship.name, rarity: ship.rarity, shipyard: ship.shipyard, maps: mapList });
+            results.push({ id: parseInt(id), gid: ship.gid, name: ship.name, rarity: ship.rarity, shipyard: ship.shipyard, maps: mapList });
         }
     }
 
@@ -457,7 +457,7 @@ function renderShipSearchResults(query, body) {
 
     const fragment = document.createDocumentFragment();
     for (const ship of results) {
-        const infoUrl = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(ship.name)}`);
+        const infoUrl = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(ship.name)}${ship.gid != null ? `&gid=${encodeURIComponent(ship.gid)}` : ''}`);
         const item = document.createElement('div');
         item.className = 'search-result-item';
         const header = document.createElement('div');

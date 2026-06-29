@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         shipTd.className = 'cf-ship';
         if (r.ship_icon) shipTd.appendChild(createImgElement(r.ship_icon, '', { className: 'cf-ship-icon' }));
         const shipName = document.createElement('a');
-        shipName.href = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(r.ship_name)}`);
+        shipName.href = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(r.ship_name)}${r.ship_gid != null ? `&gid=${encodeURIComponent(r.ship_gid)}` : ''}`);
         shipName.textContent = r.ship_name;
         shipTd.appendChild(shipName);
 
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             actTd.appendChild(btn);
         } else {
             const link = document.createElement('a');
-            link.href = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(r.ship_name)}`);
+            link.href = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(r.ship_name)}${r.ship_gid != null ? `&gid=${encodeURIComponent(r.ship_gid)}` : ''}`);
             link.className = 'cf-info-link';
             link.textContent = '정보 →';
             actTd.appendChild(link);

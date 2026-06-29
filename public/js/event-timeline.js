@@ -74,19 +74,18 @@ async function loadData() {
         eventData = eventsData;
         shipgirlNameMap = new Map();
 
-        // ship_group_data can be an array (some scripts output it that way) or an object keyed by ID
+        // ship_group_data can be an array (some scripts output it that way) or an object
+        // keyed by group id. Capture that key as the stable gid so the shipgirl-info link
+        // resolves by id, not by the (drift-prone) name. See reference_gid_linking.
+        const indexShipgirl = (shipgirl, key) => {
+            if (!shipgirl?.name) return;
+            const gid = shipgirl.gid ?? shipgirl.id ?? shipgirl.group_id ?? key;
+            shipgirlNameMap.set(normalizeRomanNumerals(shipgirl.name.trim()), { ...shipgirl, gid });
+        };
         if (Array.isArray(shipgirlRawData)) {
-            shipgirlRawData.forEach(shipgirl => {
-                if (shipgirl?.name) {
-                    shipgirlNameMap.set(normalizeRomanNumerals(shipgirl.name.trim()), shipgirl);
-                }
-            });
+            shipgirlRawData.forEach(shipgirl => indexShipgirl(shipgirl, undefined));
         } else if (shipgirlRawData && typeof shipgirlRawData === 'object') {
-            Object.values(shipgirlRawData).forEach(shipgirl => {
-                if (shipgirl?.name) {
-                    shipgirlNameMap.set(normalizeRomanNumerals(shipgirl.name.trim()), shipgirl);
-                }
-            });
+            Object.entries(shipgirlRawData).forEach(([key, shipgirl]) => indexShipgirl(shipgirl, key));
         }
 
         eventData = eventData.filter(event => String(event?.ID || '').trim() !== '');
@@ -371,7 +370,10 @@ function createEventLink(rawUrl) {
 function createShipgirlIconLink(sourceName, shipgirl) {
     const displayName = shipgirl?.name || sourceName;
     const linkName = shipgirl?.name || normalizeRomanNumerals(sourceName.trim());
-    const shipgirlUrl = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(linkName)}`);
+    const gid = shipgirl?.gid;
+    const shipgirlUrl = resolveUrl(
+        `shipgirl/shipgirl-info/?ship=${encodeURIComponent(linkName)}${gid != null ? `&gid=${encodeURIComponent(gid)}` : ''}`
+    );
 
     const link = document.createElement('a');
     link.href = shipgirlUrl;

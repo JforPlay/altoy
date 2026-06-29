@@ -540,16 +540,20 @@ function updateFilterStats() {
 // ===== Navigation & Routing =====
 
 
-function navigateToDetail(shipName) {
-    history.pushState({ shipName }, '', resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(shipName)}`));
+function navigateToDetail(shipName, gid) {
+    // Carry the stable gid in the URL when known (name kept for readable/shareable
+    // links). The detail view resolves gid first — see shipgirl-info.resolve.js.
+    const query = `?ship=${encodeURIComponent(shipName)}${gid != null ? `&gid=${encodeURIComponent(gid)}` : ''}`;
+    history.pushState({ shipName, gid }, '', resolveUrl(`shipgirl/shipgirl-info/${query}`));
     handleRoute();
 }
 
 function handleRoute() {
     const shipName = getUrlParam('ship');
+    const gid = getUrlParam('gid');
 
-    if (shipName) {
-        showDetailView(shipName);
+    if (shipName || gid) {
+        showDetailView(shipName, gid);
     } else {
         showMainView();
     }
@@ -587,7 +591,8 @@ function navigatePrevNext(direction) {
     const newIndex = index + direction;
     if (newIndex < 0 || newIndex >= state.filteredData.length) return;
 
-    navigateToDetail(state.filteredData[newIndex].name);
+    const target = state.filteredData[newIndex];
+    navigateToDetail(target.name, target.gid);
 }
 
 function updateNavButtons() {
