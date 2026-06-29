@@ -16,9 +16,20 @@ import { buildGidMap, resolveCharByGid } from '../../public/js/skin/skin.gid.js'
 import { normalizeRomanNumerals } from '../../public/js/utils.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const skinIndex = JSON.parse(
-    readFileSync(join(here, '../../public/data/skin/skin_voiceline_index.json'), 'utf8')
-);
+
+// Build the same character index the runtime loads, but from the COMMITTED master
+// (skin_voiceline_data.json) instead of the git-ignored skin_voiceline_index.json —
+// CI runs `npm test` BEFORE `npm run build`'s data:split, so the index doesn't exist
+// yet in a fresh checkout. Mirrors split_skin_data.mjs exactly: group by 함순이 이름,
+// collect 클뜯 id as clientId (the only field buildGidMap / ownerKeyOf read).
+const master = Object.values(JSON.parse(
+    readFileSync(join(here, '../../public/data/skin/skin_voiceline_data.json'), 'utf8')
+));
+const skinIndex = { characters: {} };
+for (const skin of master) {
+    const charName = skin['함순이 이름'] || 'Unknown';
+    (skinIndex.characters[charName] ??= { skins: [] }).skins.push({ clientId: skin['클뜯 id'] || '' });
+}
 
 // Which character key owns the skin with this clientId? (raw key, normalized to
 // match buildGidMap's output — robust to the upstream 럴→랄 spelling correction.)
