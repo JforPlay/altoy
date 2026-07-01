@@ -259,6 +259,7 @@ export function openBossPicker() {
     bossFilters = { category: null, query: '' };
     if (bossSearchInput) bossSearchInput.value = '';
 
+    _populateBossCategoryChips();
     _renderBossGrid();
     openModal('bossPickerModal');
     if (bossSearchInput) requestAnimationFrame(() => bossSearchInput.focus());
@@ -840,7 +841,6 @@ function _populateBossCategoryChips() {
 /** Render the boss/preset picker grid with active search + category filters. */
 function _renderBossGrid() {
     if (!bossGrid) return;
-    _populateBossCategoryChips();
 
     let list = currentBossList;
     if (bossFilters.query) {
