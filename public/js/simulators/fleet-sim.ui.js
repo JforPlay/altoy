@@ -5,7 +5,7 @@
  */
 
 import { showElement, hideElement, IMG_FALLBACKS, resolveUrl, escapeHtml, renderStatus } from '../utils.js';
-import { getShipByGid, getEquipById, getEquipIconUrl, getRarityBgUrl, getShipPortraitUrl, getSlotName, getSPWeaponIconUrl, getDedicatedSPWeapon } from './fleet-sim.data.js';
+import { getShipByGid, getEquipById, getEquipIconUrl, getRarityBgUrl, getShipPortraitUrl, getSlotName, getSPWeaponIconUrl, getDedicatedSPWeapon, getMetaBoss } from './fleet-sim.data.js';
 import {
     DISPLAY_STATS,
     calculateShipStats,
@@ -814,11 +814,9 @@ export async function renderDamagePanel(container) {
     let result, compareResults;
     try {
         [result, ...compareResults] = await Promise.all([
-            simulateFleetDamage(state.ships, {
-                presetKey: tgt.presetKey,
-                overrides: { ...tgt.overrides, adapt: tgt.adapt },
-                window: tgt.window,
-            }),
+            simulateFleetDamage(state.ships, tgt.kind === 'meta'
+                ? { kind: 'meta', bossId: tgt.bossId, tier: tgt.tier, overrides: tgt.overrides, window: tgt.window }
+                : { presetKey: tgt.presetKey, overrides: { ...tgt.overrides, adapt: tgt.adapt }, window: tgt.window }),
             ...['light', 'medium', 'heavy'].map((k) =>
                 simulateFleetDamage(state.ships, {
                     presetKey: k,
@@ -839,18 +837,45 @@ export async function renderDamagePanel(container) {
     // Store for next renderFleet card pass (per-weapon breakdown)
     _lastDamageResult = result;
 
-    // Armor chips
-    const chips = ['light', 'medium', 'heavy'].map((k) => {
-        const preset = ARMOR_PRESETS[k];
-        const active = k === tgt.presetKey ? ' active' : '';
-        return `<button class="chip${active}" data-action="dmg-armor" data-armor="${k}">${escapeHtml(preset.name)}<span class="dmg-armor-class">${escapeHtml(preset.shipClass)}</span></button>`;
-    }).join('');
+    // Target selector: current target name + 변경 button, and (META only) a tier <select>.
+    const isMeta = tgt.kind === 'meta';
+    const targetName = result.target?.name
+        || (isMeta ? '' : (ARMOR_PRESETS[tgt.presetKey]?.name || ''));
+    let tierSelect = '';
+    if (isMeta && tgt.bossId != null) {
+        const boss = getMetaBoss(tgt.bossId);
+        if (boss && Array.isArray(boss.tiers) && boss.tiers.length > 1) {
+            const activeTier = result.target?.tier ?? tgt.tier;
+            const opts = boss.tiers.map((t) =>
+                `<option value="${t.tier}"${t.tier === activeTier ? ' selected' : ''}>Tier ${t.tier}</option>`
+            ).join('');
+            tierSelect = `<select class="dmg-tier-select" data-action="dmg-tier" aria-label="난이도 티어">${opts}</select>`;
+        }
+    }
+    const targetSelectRow =
+        `<div class="dmg-target-select">
+            <span class="dmg-target-name">${escapeHtml(targetName)}</span>
+            ${tierSelect}
+            <button class="btn btn-sm btn-outline" data-action="dmg-open-picker">변경</button>
+        </div>`;
 
-    // Adapt buttons — segmented .btn-group (single-active mode switch)
+    // Clear-check row (uses the boss/preset HP the engine carried on the result).
+    const cc = result.clearCheck;
+    let clearCheckRow = '';
+    if (cc) {
+        const ttk = Number.isFinite(cc.ttkSeconds) ? `${cc.ttkSeconds.toFixed(1)}초` : '—';
+        const verdict = cc.clears
+            ? `<span class="dmg-clear-ok">${escapeHtml(String(tgt.window))}초 내 클리어 ✓</span>`
+            : `<span class="dmg-clear-no">시간 내 미클리어 ✗ · 잔여 ${_fmt(cc.hpRemaining)}</span>`;
+        clearCheckRow = `<div class="dmg-clearcheck"><span class="dmg-clear-ttk">격파 예상 ${ttk}</span>${verdict}</div>`;
+    }
+
+    // Adapt buttons — presets only (META has no 적응 tier)
     const adaptLabels = { base: '기본', noAdapt: '무적응', full: '완전적응' };
-    const adaptBtns = ['base', 'noAdapt', 'full'].map((a) =>
+    const adaptBtns = isMeta ? '' : ['base', 'noAdapt', 'full'].map((a) =>
         `<button class="btn btn-secondary btn-sm dmg-adapt-btn${a === tgt.adapt ? ' is-active' : ''}" data-action="dmg-adapt" data-adapt="${a}">${adaptLabels[a] || a}</button>`
     ).join('');
+    const adaptRow = isMeta ? '' : `<div class="dmg-adapt-row btn-group">${adaptBtns}</div>`;
 
     // Editable enemy overrides
     const ov = tgt.overrides || {};
@@ -886,18 +911,19 @@ export async function renderDamagePanel(container) {
     container.innerHTML = `
         <div class="dmg-panel">
             <div class="dmg-panel-header">
-                <span class="dmg-panel-title">피해 계산 (90초)</span>
+                <span class="dmg-panel-title">피해 계산 (${escapeHtml(String(tgt.window))}초)</span>
             </div>
-            <div class="dmg-target-row">${chips}</div>
-            <div class="dmg-adapt-row btn-group">${adaptBtns}</div>
+            ${targetSelectRow}
+            ${adaptRow}
             <div class="dmg-edit-row">${editRow}</div>
             <div class="dmg-ship-list">${perShipRows}</div>
             <div class="dmg-fleet-total">
-                <span class="dmg-total-label">함대 90초 누적</span>
+                <span class="dmg-total-label">함대 ${escapeHtml(String(tgt.window))}초 누적</span>
                 <strong class="dmg-total-val">${_fmt(result.total)}</strong>
                 <span class="dmg-total-label">함대 DPS</span>
                 <strong class="dmg-total-val">${_fmt(result.dps)}</strong>
             </div>
+            ${clearCheckRow}
             <div class="dmg-compare">${compareStrip}</div>
         </div>`;
 
