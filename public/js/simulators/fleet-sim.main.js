@@ -71,12 +71,12 @@ const state = {
  * (function declaration) so the state initializer above can call it.
  */
 function _loadDamageTarget() {
-    const fallback = { presetKey: 'heavy', adapt: 'base', overrides: {}, window: 90 };
+    const fallback = { kind: 'preset', presetKey: 'heavy', adapt: 'base', bossId: null, tier: null, overrides: {}, window: 90 };
     const raw = getStorageItem('fleetSimDamageTarget', null);
     if (raw) {
         try {
             const t = JSON.parse(raw);
-            if (t && t.presetKey) return { ...fallback, ...t, overrides: { ...(t.overrides || {}) } };
+            if (t && (t.presetKey || t.bossId)) return { ...fallback, ...t, overrides: { ...(t.overrides || {}) } };
         } catch { /* malformed — fall through to defaults */ }
     }
     return fallback;
@@ -246,6 +246,12 @@ function setupEventListeners() {
                 slotConfig.retrofit = actionEl.checked;
                 renderFleet();
             }
+        }
+
+        // Damage target: META tier select
+        if (action === 'dmg-tier') {
+            const tier = Number(actionEl.value);
+            if (!Number.isNaN(tier)) setDamageTarget({ tier });
         }
     });
 
@@ -842,6 +848,15 @@ function handleShare() {
         }),
     };
 
+    const dt = state.damageTarget;
+    if (dt) {
+        config.t = dt.kind === 'meta'
+            ? { k: 'meta', b: dt.bossId, ti: dt.tier }
+            : { k: 'preset', p: dt.presetKey, ad: dt.adapt };
+        if (dt.overrides && Object.keys(dt.overrides).length) config.t.o = dt.overrides;
+        if (dt.window && dt.window !== 90) config.t.w = dt.window;
+    }
+
     const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(config))));
     setUrlParams({ fleet: encoded }, { replace: true });
 
@@ -870,6 +885,16 @@ function restoreFromUrl(encoded) {
             if (s.r !== undefined) slot.retrofit = s.r === 1;
             return slot;
         });
+
+        if (config.t) {
+            const t = config.t;
+            const patch = t.k === 'meta'
+                ? { kind: 'meta', bossId: t.b ?? null, tier: t.ti ?? null }
+                : { kind: 'preset', presetKey: t.p || 'heavy', adapt: t.ad || 'base' };
+            patch.overrides = (t.o && typeof t.o === 'object') ? t.o : {};
+            patch.window = t.w || 90;
+            setDamageTarget(patch);
+        }
 
         // Ensure exactly 6 slots
         while (state.ships.length < 6) state.ships.push(null);
