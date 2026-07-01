@@ -53,7 +53,7 @@ export async function loadAllData() {
 
     // Phase 2: Extended data (parallel, all cached — non-fatal failures)
     const [equipFullData, weaponPropertyData, passiveSkillData, fleetTechData, shipGroupData, spWeaponData,
-           barrageData, bulletData, aircraftData] = await Promise.all([
+           barrageData, bulletData, aircraftData, metaBossData] = await Promise.all([
         _loadCached('data/equip/equip_data_full.json'),
         _loadCached('data/sim/weapon_property.json'),
         _loadCached('data/sim/fleet_sim_passive_skills.json'),
@@ -63,6 +63,7 @@ export async function loadAllData() {
         _loadCached('data/sim/barrage_template.json'),
         _loadCached('data/sim/bullet_template.json'),
         _loadCached('data/sim/aircraft_template.json'),
+        _loadCached('data/meta_bosses.json'),
     ]);
 
     state.equipFullData = equipFullData;
@@ -74,6 +75,7 @@ export async function loadAllData() {
     state.barrageData = barrageData;
     state.bulletData = bulletData;
     state.aircraftData = aircraftData;
+    state.metaBossData = metaBossData;
 
     // Build SP weapon lookup indexes
     _buildSPWeaponIndex(spWeaponData);
@@ -183,6 +185,18 @@ export function getBullet(bulletId) {
 export function getAircraftTemplate(weaponId) {
     if (!state.aircraftData) return null;
     return state.aircraftData[String(weaponId)] || null;
+}
+
+/** Get a META boss record by boss id (meta_id). */
+export function getMetaBoss(bossId) {
+    if (!state.metaBossData) return null;
+    return state.metaBossData[String(bossId)] || null;
+}
+
+/** Get all META boss records as an array (empty if the data is absent). */
+export function getAllMetaBosses() {
+    if (!state.metaBossData) return [];
+    return Object.values(state.metaBossData);
 }
 
 /** Get passive skill by skill ID */
