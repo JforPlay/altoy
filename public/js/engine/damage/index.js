@@ -14,6 +14,7 @@ export { countSalvos, rollUpWeapon } from './timeline.js';
 export { calculateReloadTime, calculateAirAssistReloadMax } from './reload.js';
 export { salvoFiringDuration, weaponSalvoDuration } from './salvo-timing.js';
 export { ARMOR_PRESETS, makeTarget, DEFAULT_ADAPT, DEFAULT_ARMOR_REDUCE } from './targets.js';
+export { computeClearCheck } from './clear-check.js';
 
 /**
  * Simulate one attacker (ship) firing all its weapons at a target over a window.
