@@ -331,20 +331,34 @@ export function resolveShipWeapons(slotConfig, ship, stats) {
 }
 
 /**
- * Compute fleet damage vs a target preset. Reuses fleet-sim.calc.js for
+ * Build the engine TargetProfile from targetOpts. META kind resolves the boss
+ * record from loaded data and defers to makeMetaTarget; anything else (or a
+ * missing boss) falls back to the generic armor preset. Must run after _ensureImports().
+ */
+function _buildTarget(targetOpts) {
+    if (targetOpts.kind === 'meta' && targetOpts.bossId != null) {
+        const boss = _data.getMetaBoss(targetOpts.bossId);
+        if (boss) return _engine.makeMetaTarget(boss, targetOpts.tier ?? null, targetOpts.overrides || {});
+        // boss data absent → graceful fallback to a preset
+    }
+    return _engine.makeTarget(targetOpts.presetKey || 'heavy', targetOpts.overrides || {});
+}
+
+/**
+ * Compute fleet damage vs a target preset or META boss. Reuses fleet-sim.calc.js for
  * buffed stats (so equips/tech/affinity/passives are already applied).
  *
  * resolvePassiveBuffs(targetShip, allFleetShips) expects SHIP DATA OBJECTS
  * (from getShipByGid), NOT slot configs. Verified from fleet-sim.calc.js:384.
  *
  * @param {Array} ships state.ships (6 slots, each { gid, level, ... } or null)
- * @param {{presetKey:string, overrides?:object, window?:number}} targetOpts
- * @returns {Promise<object>} simulateFleet result { perShip, total, dps }
+ * @param {{kind?:string, presetKey?:string, bossId?:number, tier?:number, overrides?:object, window?:number}} targetOpts
+ * @returns {Promise<object>} { perShip, total, dps, target, clearCheck }
  */
 export async function simulateFleetDamage(ships, targetOpts) {
     if (!await _ensureImports()) throw new Error('fleet-sim.damage: failed to load dependencies');
 
-    const target = _engine.makeTarget(targetOpts.presetKey, targetOpts.overrides || {});
+    const target = _buildTarget(targetOpts);
     const techBonuses = _calc.calculateFleetTechBonuses();
     const present = (ships || []).filter(Boolean);
 
@@ -366,7 +380,10 @@ export async function simulateFleetDamage(ships, targetOpts) {
         });
     }
 
-    return _engine.simulateFleet(engineShips, target, { window: targetOpts.window ?? 90 });
+    const window = targetOpts.window ?? 90;
+    const sim = _engine.simulateFleet(engineShips, target, { window });
+    const clearCheck = _engine.computeClearCheck({ fleetDps: sim.dps, bossHp: target.hp, timeLimit: window });
+    return { ...sim, target, clearCheck };
 }
 
 /**
