@@ -886,7 +886,7 @@ export async function renderDamagePanel(container) {
         ['armorReduce', '경감'],
     ];
     const editRow = editFields.map(([k, lab]) =>
-        `<label class="dmg-edit-label">${escapeHtml(lab)}<input class="dmg-edit-input" type="number" data-action="dmg-edit" data-field="${k}" value="${ov[k] != null ? ov[k] : ''}" placeholder="기본" /></label>`
+        `<label class="dmg-edit-label">${escapeHtml(lab)}<input class="dmg-edit-input" type="number" data-action="dmg-edit" data-field="${k}" value="${escapeHtml(String(ov[k] != null ? ov[k] : ''))}" placeholder="기본" /></label>`
     ).join('');
 
     // Per-ship rows

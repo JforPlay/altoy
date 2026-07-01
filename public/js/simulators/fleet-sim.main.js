@@ -900,8 +900,17 @@ function restoreFromUrl(encoded) {
             const patch = t.k === 'meta'
                 ? { kind: 'meta', bossId: t.b ?? null, tier: t.ti ?? null }
                 : { kind: 'preset', presetKey: t.p || 'heavy', adapt: t.ad || 'base' };
-            patch.overrides = (t.o && typeof t.o === 'object') ? t.o : {};
-            patch.window = t.w || 90;
+            // The share URL is untrusted — coerce restored overrides to finite numbers
+            // (matching the live Number() edit path); drops non-numeric values (XSS/NaN guard).
+            patch.overrides = {};
+            if (t.o && typeof t.o === 'object') {
+                for (const [k, v] of Object.entries(t.o)) {
+                    const n = Number(v);
+                    if (Number.isFinite(n)) patch.overrides[k] = n;
+                }
+            }
+            const w = Number(t.w);
+            patch.window = Number.isFinite(w) ? w : 90;
             setDamageTarget(patch);
         }
 
