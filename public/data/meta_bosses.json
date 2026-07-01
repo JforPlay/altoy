@@ -1,0 +1,11 @@
+{
+  "970112": {
+    "id": 970112,
+    "name": "브리스톨·META",
+    "prefab": "bulisituoer_alter",
+    "tiers": [
+      { "tier": 1, "hp": 54000, "armorType": 1, "level": 0, "evasion": 25, "luck": 50, "antiAir": 105, "firepower": 74, "torpedo": 124, "reload": 150 },
+      { "tier": 2, "hp": 58000, "armorType": 1, "level": 0, "evasion": 28, "luck": 50, "antiAir": 120, "firepower": 84, "torpedo": 141, "reload": 150 }
+    ]
+  }
+}
