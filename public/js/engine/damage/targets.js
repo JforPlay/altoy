@@ -44,3 +44,35 @@ export function makeTarget(presetKey, overrides = {}) {
     adapt: adaptKey,
   };
 }
+
+/**
+ * Build a TargetProfile from a META boss record + tier number. Same shape as
+ * makeTarget so the damage formula is unchanged. META bosses have no adapt tier.
+ * Unknown/null tier → highest tier. Boss level is unreliable in the source
+ * (fixed-stat tiers, no growth), so level<=0 defaults to 125 (neutral advantage
+ * vs a maxed fleet); the 레벨 override can adjust it.
+ * @param {object} boss meta_bosses.json record { id, name, tiers:[...] }
+ * @param {number|null} tier tier number to select
+ * @param {object} overrides optional TargetProfile field overrides
+ */
+export function makeMetaTarget(boss, tier, overrides = {}) {
+  if (!boss || !Array.isArray(boss.tiers) || boss.tiers.length === 0) {
+    throw new Error(`makeMetaTarget: boss ${boss && boss.id} has no tiers`);
+  }
+  const rec = boss.tiers.find((t) => t.tier === tier) || boss.tiers[boss.tiers.length - 1];
+  return {
+    bossId: boss.id,
+    tier: rec.tier,
+    name: boss.name,
+    armorType: rec.armorType,
+    evasion: overrides.evasion ?? rec.evasion,
+    antiAir: overrides.antiAir ?? rec.antiAir,
+    level: overrides.level ?? (rec.level > 0 ? rec.level : 125),
+    luck: overrides.luck ?? rec.luck,
+    hp: overrides.hp ?? rec.hp,
+    armorReduce: overrides.armorReduce ?? DEFAULT_ARMOR_REDUCE,
+    injureRatio: overrides.injureRatio ?? 0,
+    ammoReduce: overrides.ammoReduce ?? 0,
+    adapt: null,
+  };
+}
