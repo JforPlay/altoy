@@ -200,10 +200,6 @@ function setupEventListeners() {
                 if (slot !== -1) toggleStats(slot);
                 break;
             }
-            case 'dmg-armor': {
-                setDamageTarget({ presetKey: actionEl.dataset.armor });
-                break;
-            }
             case 'dmg-adapt': {
                 setDamageTarget({ adapt: actionEl.dataset.adapt });
                 break;

@@ -48,19 +48,7 @@
 
 /* ===== Armor preset chips — use canonical .chip (chip.css) ===== */
 
-.dmg-target-row {
-  display: flex;
-  gap: var(--spacing-xs);
-  flex-wrap: wrap;
-}
-
 /* .dmg-armor-chip removed; emitter now uses .chip (canonical active = --accent-blue fill). */
-
-.dmg-armor-class {
-  font-size: 0.75em;
-  opacity: 0.7;
-  font-variant: small-caps;
-}
 
 /* ===== Adapt buttons → canonical .btn-group + .is-active (button.css) ===== */
 /* .dmg-adapt-row carries .btn-group in markup, which owns layout + segment joins. */

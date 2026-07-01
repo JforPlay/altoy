@@ -1,3 +1,4 @@
+// public/js/engine/damage/clear-check.js
 /**
  * Boss clear-check: given fleet DPS, boss HP, and a battle time limit, estimate
  * time-to-kill and whether the fleet kills the boss in time. Pure — no wall-clock,
