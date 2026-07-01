@@ -2,11 +2,6 @@
 .vscode/
 .DS_Store
 
-# Jekyll (legacy)
-_site/
-.jekyll-cache/
-_config.yml
-
 # Astro build output
 dist/
 .astro/
