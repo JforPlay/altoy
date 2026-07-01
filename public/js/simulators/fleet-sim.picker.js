@@ -18,6 +18,8 @@ import {
     getSlotAllowedTypes,
     getEffectiveShipType,
 } from './fleet-sim.data.js';
+import { getAllMetaBosses } from './fleet-sim.data.js';
+import { ARMOR_PRESETS } from '../engine/damage/index.js';
 
 // ===== State =====
 let state;
@@ -38,6 +40,12 @@ let currentEquipList = [];
 // ===== Active Filters =====
 let shipFilters = { type: null, rarity: null, nation: null, query: '' };
 let equipFilters = { rarity: null, query: '' };
+let bossFilters = { category: null, query: '' };
+let bossSearchIndex = null;
+let currentBossList = [];
+let bossSearchInput = null;
+let bossCategoryChips = null;
+let bossGrid = null;
 
 // ===== DOM Cache =====
 let shipSearchInput = null;
@@ -230,6 +238,32 @@ export function openSPWeaponPicker(slotIndex) {
     }
 }
 
+/**
+ * Open the target (boss/preset) picker. Lists the 3 generic armor presets plus
+ * all META bosses; selecting one fires callbacks.onTargetSelected.
+ */
+export function openBossPicker() {
+    const presets = Object.entries(ARMOR_PRESETS).map(([key, p]) => ({
+        _kind: 'preset', presetKey: key, name: p.name, sub: p.shipClass,
+    }));
+    const bosses = getAllMetaBosses().map((b) => ({
+        _kind: 'meta', bossId: b.id, name: b.name, sub: 'META',
+        tier: Array.isArray(b.tiers) && b.tiers.length ? b.tiers[b.tiers.length - 1].tier : null,
+    }));
+    currentBossList = [...presets, ...bosses];
+
+    bossSearchIndex = currentBossList.length > 0
+        ? createSearchIndex(currentBossList, { keys: ['name'], threshold: 0.3 })
+        : null;
+
+    bossFilters = { category: null, query: '' };
+    if (bossSearchInput) bossSearchInput.value = '';
+
+    _renderBossGrid();
+    openModal('bossPickerModal');
+    if (bossSearchInput) requestAnimationFrame(() => bossSearchInput.focus());
+}
+
 /** Reverse rarity map for SP weapons (shifted by 1 vs regular equip: 2=R, 3=SR, 4=SSR) */
 const SP_RARITY_REVERSE = { 2: 'R', 3: 'SR', 4: 'SSR', 5: 'UR' };
 
@@ -245,6 +279,10 @@ function _cacheDOM() {
     equipSearchInput = document.getElementById('equip-picker-search');
     equipRarityChips = document.getElementById('equip-rarity-filters');
     equipGrid = document.getElementById('equip-picker-grid');
+
+    bossSearchInput = document.getElementById('boss-picker-search');
+    bossCategoryChips = document.getElementById('boss-category-filters');
+    bossGrid = document.getElementById('boss-picker-grid');
 }
 
 // ===== Internal: Modal Setup =====
@@ -254,6 +292,7 @@ function _setupModals() {
     // and .modal-backdrop clicks; ESC/backdrop close default to enabled.
     setupModal('shipPickerModal', { restoreFocus: true });
     setupModal('equipPickerModal', { restoreFocus: true });
+    setupModal('bossPickerModal', { restoreFocus: true });
 }
 
 // ===== Internal: Event Listeners =====
@@ -273,6 +312,43 @@ function _setupEventListeners() {
             equipFilters.query = equipSearchInput.value.trim();
             _renderEquipGrid();
         }, 200));
+    }
+
+    // Boss search (debounced)
+    if (bossSearchInput) {
+        bossSearchInput.addEventListener('input', debounce(() => {
+            bossFilters.query = bossSearchInput.value.trim();
+            _renderBossGrid();
+        }, 200));
+    }
+
+    // Boss category chips (일반 / META)
+    if (bossCategoryChips) {
+        bossCategoryChips.addEventListener('click', (e) => {
+            const chip = e.target.closest('.filter-chip');
+            if (!chip) return;
+            const val = chip.dataset.category;
+            bossFilters.category = bossFilters.category === val ? null : val;
+            _updateChipStates(bossCategoryChips, bossFilters.category, 'category');
+            _renderBossGrid();
+        });
+    }
+
+    // Boss grid click → onTargetSelected
+    if (bossGrid) {
+        bossGrid.addEventListener('click', (e) => {
+            const item = e.target.closest('.picker-item');
+            if (!item) return;
+            const kind = item.dataset.kind;
+            if (kind === 'meta') {
+                const bossId = Number(item.dataset.bossId);
+                const tier = item.dataset.tier ? Number(item.dataset.tier) : null;
+                callbacks?.onTargetSelected?.({ kind: 'meta', bossId, tier });
+            } else {
+                callbacks?.onTargetSelected?.({ kind: 'preset', presetKey: item.dataset.presetKey });
+            }
+            closeModal('bossPickerModal');
+        });
     }
 
     // Ship type chip clicks (event delegation)
@@ -737,6 +813,76 @@ function _renderEquipGrid() {
 
     equipGrid.innerHTML = '';
     equipGrid.appendChild(frag);
+}
+
+// ===== Internal: Boss/Target Grid Rendering =====
+
+/** Populate the boss category chips (only categories present in the list). */
+function _populateBossCategoryChips() {
+    if (!bossCategoryChips) return;
+    const cats = [];
+    if (currentBossList.some((x) => x._kind === 'preset')) cats.push(['preset', '일반 프리셋']);
+    if (currentBossList.some((x) => x._kind === 'meta')) cats.push(['meta', 'META 보스']);
+    const frag = document.createDocumentFragment();
+    for (const [val, label] of cats) {
+        const btn = document.createElement('button');
+        btn.className = 'filter-chip';
+        btn.type = 'button';
+        btn.setAttribute('aria-pressed', 'false');
+        btn.dataset.category = val;
+        btn.textContent = label;
+        frag.appendChild(btn);
+    }
+    bossCategoryChips.innerHTML = '';
+    bossCategoryChips.appendChild(frag);
+}
+
+/** Render the boss/preset picker grid with active search + category filters. */
+function _renderBossGrid() {
+    if (!bossGrid) return;
+    _populateBossCategoryChips();
+
+    let list = currentBossList;
+    if (bossFilters.query) {
+        list = bossSearchIndex
+            ? bossSearchIndex.search(bossFilters.query).map((r) => r.item)
+            : _filterByQuery(list, bossFilters.query);
+    }
+    if (bossFilters.category) list = list.filter((x) => x._kind === bossFilters.category);
+
+    if (list.length === 0) {
+        _renderEmptyState(bossGrid, '검색 결과가 없습니다.');
+        return;
+    }
+
+    const activeBossId = state.damageTarget?.kind === 'meta' ? state.damageTarget.bossId : null;
+    const activePreset = state.damageTarget?.kind !== 'meta' ? state.damageTarget?.presetKey : null;
+
+    const frag = document.createDocumentFragment();
+    for (const item of list) {
+        const btn = document.createElement('button');
+        btn.className = 'picker-item boss-picker-item';
+        btn.type = 'button';
+        btn.dataset.kind = item._kind;
+        if (item._kind === 'meta') {
+            btn.dataset.bossId = String(item.bossId);
+            if (item.tier != null) btn.dataset.tier = String(item.tier);
+            if (item.bossId === activeBossId) btn.classList.add('assigned');
+        } else {
+            btn.dataset.presetKey = item.presetKey;
+            if (item.presetKey === activePreset) btn.classList.add('assigned');
+        }
+        const name = document.createElement('span');
+        name.className = 'picker-item-name';
+        name.textContent = item.name;
+        const sub = document.createElement('span');
+        sub.className = 'boss-picker-sub';
+        sub.textContent = item.sub;
+        btn.append(name, sub);
+        frag.appendChild(btn);
+    }
+    bossGrid.innerHTML = '';
+    bossGrid.appendChild(frag);
 }
 
 // ===== Internal: Helpers =====

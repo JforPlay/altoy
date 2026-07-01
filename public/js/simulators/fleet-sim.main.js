@@ -27,7 +27,7 @@ import {
 
 import { setup as setupCalc } from './fleet-sim.calc.js';
 import { setup as setupUI, renderFleet, toggleStats } from './fleet-sim.ui.js';
-import { setup as setupPicker, openShipPicker, openEquipPicker, openSPWeaponPicker } from './fleet-sim.picker.js';
+import { setup as setupPicker, openShipPicker, openEquipPicker, openSPWeaponPicker, openBossPicker } from './fleet-sim.picker.js';
 
 // ===== Constants =====
 
@@ -103,6 +103,7 @@ async function init() {
         onShipSelected: handleShipSelected,
         onEquipSelected: handleEquipSelected,
         onSPWeaponSelected: handleSPWeaponSelected,
+        onTargetSelected: handleTargetSelected,
     });
 
     // 2. Load all data
@@ -205,6 +206,10 @@ function setupEventListeners() {
             }
             case 'dmg-adapt': {
                 setDamageTarget({ adapt: actionEl.dataset.adapt });
+                break;
+            }
+            case 'dmg-open-picker': {
+                openBossPicker();
                 break;
             }
         }
@@ -397,6 +402,14 @@ function handleSPWeaponSelected(slotIndex, spWeaponId, maxLevel) {
     if (!slotConfig) return;
     slotConfig.spWeapon = spWeaponId ? { id: spWeaponId, level: _clampLevel(maxLevel, 0, 10) } : null;
     renderFleet();
+}
+
+function handleTargetSelected(sel) {
+    if (sel.kind === 'meta') {
+        setDamageTarget({ kind: 'meta', bossId: sel.bossId, tier: sel.tier ?? null });
+    } else {
+        setDamageTarget({ kind: 'preset', presetKey: sel.presetKey });
+    }
 }
 
 // ===== Level Stepper (Task 3) =====

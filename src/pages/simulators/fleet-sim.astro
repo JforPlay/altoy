@@ -156,6 +156,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div id="equip-picker-grid" class="picker-grid card-grid scroll-styled"></div>
     </Modal>
 
+    <!-- Boss / Target Picker Modal -->
+    <Modal id="bossPickerModal" title="타겟 선택">
+        <input type="text" id="boss-picker-search" class="picker-search-input" placeholder="타겟 이름 검색..." autocomplete="off" />
+        <div class="picker-filters">
+            <div class="filter-bar filter-row">
+                <label class="filter-label">분류</label>
+                <div id="boss-category-filters" class="filter-chips"></div>
+            </div>
+        </div>
+        <div id="boss-picker-grid" class="picker-grid card-grid scroll-styled"></div>
+    </Modal>
+
     <!-- Save/Load Modal -->
     <Modal id="saveLoadModal" title="편성 저장/불러오기">
         <div class="save-load-content">
