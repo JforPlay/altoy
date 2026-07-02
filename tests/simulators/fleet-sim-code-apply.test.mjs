@@ -84,3 +84,21 @@ test('sp: generic + type-allowed applies; unique-to-other or wrong type skips', 
     const wrongType = planImport(decoded, ctxWith({ spInfo: () => ({ unique: 0, type: 9 }) }));
     assert.equal(wrongType.sp, null);
 });
+
+test('unknown-sp decode errors become a 특수 장비 notice', () => {
+    const decoded = decodedWith({ equips: [null, null, null, null, null], errors: [{ kind: 'unknown-sp', slot: 'sp', tierId: 999999 }] });
+    const plan = planImport(decoded, ctxWith());
+    assert.ok(plan.notices.some(n => n.includes('특수 장비') && n.includes('알 수 없는')));
+});
+
+test('token error on a numeric slot becomes a 1-based slot notice', () => {
+    const decoded = decodedWith({ errors: [{ kind: 'token', slot: 2 }] });
+    const plan = planImport(decoded, ctxWith());
+    assert.ok(plan.notices.some(n => n.includes('슬롯 3') && n.includes('잘못된 코드 토큰')));
+});
+
+test('token error on the sp slot becomes a 특수 장비 notice', () => {
+    const decoded = decodedWith({ errors: [{ kind: 'token', slot: 'sp' }] });
+    const plan = planImport(decoded, ctxWith());
+    assert.ok(plan.notices.some(n => n.includes('특수 장비') && n.includes('잘못된 코드 토큰')));
+});

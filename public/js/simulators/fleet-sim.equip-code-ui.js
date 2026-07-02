@@ -43,12 +43,7 @@ export function openEquipCodeModal(slotIndex) {
     const title = document.getElementById('equipCodeModal-title');
     if (title) title.textContent = ship ? `장비 코드 — ${ship.name}` : '장비 코드';
 
-    const maps = getEquipCodeMaps();
-    const exportInput = document.getElementById('equip-code-export');
-    const copyBtn = document.getElementById('equip-code-copy');
-    const code = maps ? encodeEquipCode(_buildEntries(slotConfig, ship), maps) : null;
-    if (exportInput) exportInput.value = code || '';
-    if (copyBtn) copyBtn.disabled = !code;
+    _refreshExport(slotConfig, ship);
 
     const importInput = document.getElementById('equip-code-import');
     if (importInput) importInput.value = '';
@@ -57,7 +52,19 @@ export function openEquipCodeModal(slotIndex) {
     pending = null;
 
     openModal('equipCodeModal');
+    const exportInput = document.getElementById('equip-code-export');
+    const code = exportInput ? exportInput.value : '';
     if (code && exportInput) requestAnimationFrame(() => exportInput.select());
+}
+
+/** Rebuild the export input + copy state for a slot (no notices/pending reset). */
+function _refreshExport(slotConfig, ship) {
+    const maps = getEquipCodeMaps();
+    const exportInput = document.getElementById('equip-code-export');
+    const copyBtn = document.getElementById('equip-code-copy');
+    const code = maps ? encodeEquipCode(_buildEntries(slotConfig, ship), maps) : null;
+    if (exportInput) exportInput.value = code || '';
+    if (copyBtn) copyBtn.disabled = !code;
 }
 
 /** Current slot config → codec entries. Dedicated augments encode at max level
@@ -150,13 +157,17 @@ function _buildCtx(slotConfig, ship) {
 }
 
 function _handleApplyClick() {
+    pending = null;
+    _hideGidActions();
+
     const importInput = document.getElementById('equip-code-import');
     const text = importInput ? importInput.value : '';
     const maps = getEquipCodeMaps();
     if (!maps) { showToast('데이터 로딩 후 다시 시도하세요', 'error'); return; }
 
     const decoded = decodeEquipCode(text, maps);
-    if (!decoded.ok) {
+    const fatal = decoded.errors.some(e => e.kind === 'empty' || e.kind === 'format');
+    if (fatal) {
         const empty = decoded.errors.some(e => e.kind === 'empty');
         showToast(empty ? '코드를 입력하세요' : '잘못된 코드 형식입니다', 'error');
         _renderNotices([]);
@@ -221,9 +232,15 @@ function _applyPlan(plan) {
     if (plan.sp) {
         slotConfig.spWeapon = { id: plan.sp.baseId, level: Math.max(0, Math.min(plan.sp.level, 10)) };
     }
+    // refresh the export string to reflect the newly applied loadout, and clear
+    // the import input so the modal doesn't invite double-applying — do this
+    // BEFORE painting notices so a plain openEquipCodeModal() refresh (which
+    // resets notices) can't wipe the per-slot notices we're about to render.
+    const slotCfg = state.ships[activeSlot];
+    _refreshExport(slotCfg, slotCfg ? getShipByGid(slotCfg.gid) : null);
+    const importInput = document.getElementById('equip-code-import');
+    if (importInput) importInput.value = '';
     _renderNotices(plan.notices);
     callbacks.onApplied();
     showToast(`장비 ${plan.apply.length}개 적용 완료`, 'success');
-    // refresh the export string to reflect the newly applied loadout
-    openEquipCodeModal(activeSlot);
 }
