@@ -39194,6 +39194,24 @@
             180007
         ],
         "skin_id": 108030,
+        "sp_weapon": {
+            "icon": "15380",
+            "name": "블랙 트레발리 잠수경",
+            "skill_upgrade": [
+                [
+                    0,
+                    1012470
+                ]
+            ],
+            "attribute_1": "torpedo",
+            "attribute_2": "hit",
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 1012471
+                }
+            ]
+        },
         "class_name": "가토급",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/108030.webp",
         "equip_1": [
@@ -73286,6 +73304,29 @@
             180005
         ],
         "skin_id": 299040,
+        "sp_weapon": {
+            "icon": "15360",
+            "name": "해적 영웅의 검과 총",
+            "skill_upgrade": [
+                [
+                    0,
+                    1019300
+                ],
+                [
+                    0,
+                    1018300
+                ]
+            ],
+            "attribute_1": "dodge",
+            "attribute_2": "cannon",
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 1019301,
+                    "time": 10
+                }
+            ]
+        },
         "class_name": "드레이크 ",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/299040.webp",
         "equip_1": [
@@ -80892,6 +80933,19 @@
             180007
         ],
         "skin_id": 301330,
+        "sp_weapon": {
+            "icon": "15420",
+            "name": "리본 방울 경보기",
+            "skill_upgrade": [
+                [
+                    0,
+                    1090470
+                ]
+            ],
+            "attribute_1": "durability",
+            "attribute_2": "cannon",
+            "weapon_true": false
+        },
         "class_name": "무츠키급",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/301330.webp",
         "equip_1": [
@@ -108042,6 +108096,25 @@
             180006
         ],
         "skin_id": 307060,
+        "sp_weapon": {
+            "icon": "15400",
+            "name": "상서로운 학의 우치가타나",
+            "skill_upgrade": [
+                [
+                    0,
+                    1010800
+                ]
+            ],
+            "attribute_1": "air",
+            "attribute_2": "reload",
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 1010801,
+                    "time": 20
+                }
+            ]
+        },
         "class_name": "쇼카쿠급",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/307060.webp",
         "equip_1": [
@@ -120369,7 +120442,8 @@
             ]
         },
         "description": [
-            "한정 이벤트: 오엽각 교차점"
+            "이벤트: 오엽각 교차점",
+            "소형함 건조"
         ],
         "name": "오토 폰 알벤슬레벤",
         "gift_dislike": [
@@ -123053,7 +123127,8 @@
             ]
         },
         "description": [
-            "한정 이벤트: 오엽각 교차점"
+            "이벤트: 오엽각 교차점",
+            "소형함 건조"
         ],
         "name": "레겐스부르크",
         "gift_dislike": [
@@ -124300,6 +124375,25 @@
             180009
         ],
         "skin_id": 403040,
+        "sp_weapon": {
+            "icon": "15440",
+            "name": "공주님의 명령",
+            "skill_upgrade": [
+                [
+                    0,
+                    1090480
+                ]
+            ],
+            "attribute_1": "cannon",
+            "attribute_2": "torpedo",
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 1090484,
+                    "time": 15
+                }
+            ]
+        },
         "class_name": "도이칠란트급",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/403040.webp",
         "equip_1": [
@@ -129742,7 +129836,9 @@
             ]
         },
         "description": [
-            "한정 이벤트: 오엽각 교차점"
+            "이벤트: 오엽각 교차점",
+            "대형함 건조, 특형함 건조",
+            "상설 UR 함선 교환"
         ],
         "name": "비스마르크 Zwei",
         "gift_dislike": [
@@ -130841,7 +130937,8 @@
             ]
         },
         "description": [
-            "한정 이벤트: 오엽각 교차점"
+            "이벤트: 오엽각 교차점",
+            "연습 상점(랜덤 출현)"
         ],
         "name": "야드",
         "gift_dislike": [
@@ -179385,7 +179482,7 @@
             ]
         },
         "description": [
-            "한정 이벤트: 월드투어"
+            "META상점 교환"
         ],
         "name": "헌터·META",
         "gift_dislike": [
@@ -179636,7 +179733,7 @@
             ]
         },
         "description": [
-            "한정 이벤트: 월드투어"
+            "META상점 교환"
         ],
         "name": "포춘·META",
         "gift_dislike": [
@@ -179865,7 +179962,7 @@
             ]
         },
         "description": [
-            "한정 이벤트: 월드 투어"
+            "META상점 교환"
         ],
         "name": "하타카제·META",
         "gift_dislike": [
@@ -182504,7 +182601,7 @@
             ]
         },
         "description": [
-            "한정 이벤트: 월드 투어"
+            "META상점 교환"
         ],
         "name": "멤피스·META",
         "gift_dislike": [
@@ -182736,7 +182833,7 @@
             ]
         },
         "description": [
-            "한정 이벤트: 월드 투어"
+            "META상점 교환"
         ],
         "name": "셰필드·META",
         "gift_dislike": [
@@ -182968,7 +183065,7 @@
             ]
         },
         "description": [
-            "한정 이벤트: 월드 투어"
+            "META상점 교환"
         ],
         "name": "라 갈리소니에르·META",
         "gift_dislike": [
@@ -185155,7 +185252,7 @@
             ]
         },
         "description": [
-            "한정 이벤트: 월드투어"
+            "META상점 교환"
         ],
         "name": "트렌토·META",
         "gift_dislike": [
@@ -188041,7 +188138,7 @@
             ]
         },
         "description": [
-            "한정 이벤트: 월드 투어"
+            "META상점 교환"
         ],
         "name": "후소·META",
         "gift_dislike": [
@@ -188284,7 +188381,7 @@
             ]
         },
         "description": [
-            "한정 이벤트: 월드 투어"
+            "META상점 교환"
         ],
         "name": "야마시로·META",
         "gift_dislike": [
@@ -190452,7 +190549,7 @@
             ]
         },
         "description": [
-            "한정 이벤트: 월드 투어"
+            "META상점 교환"
         ],
         "name": "히요·META",
         "gift_dislike": [
@@ -190689,7 +190786,7 @@
             ]
         },
         "description": [
-            "한정 이벤트: 월드 투어"
+            "META상점 교환"
         ],
         "name": "준요·META",
         "gift_dislike": [
@@ -193621,7 +193718,8 @@
             ]
         },
         "description": [
-            "한정 이벤트: 오엽각 교차점"
+            "이벤트: 오엽각 교차점",
+            "특형함 건조"
         ],
         "name": "U-556·META",
         "gift_dislike": [
@@ -193872,7 +193970,7 @@
             ]
         },
         "description": [
-            "한정 이벤트: 월드 투어"
+            "META상점 교환"
         ],
         "name": "베스탈·META",
         "gift_dislike": [

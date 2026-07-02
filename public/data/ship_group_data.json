@@ -13407,7 +13407,8 @@
         "nationality": 4,
         "type": 1,
         "description": [
-            "한정 이벤트: 오엽각 교차점"
+            "이벤트: 오엽각 교차점",
+            "소형함 건조"
         ],
         "rarity": "SSR"
     },
@@ -13650,7 +13651,8 @@
         "nationality": 4,
         "type": 2,
         "description": [
-            "한정 이벤트: 오엽각 교차점"
+            "이벤트: 오엽각 교차점",
+            "소형함 건조"
         ],
         "rarity": "SSR"
     },
@@ -14412,7 +14414,9 @@
         "nationality": 4,
         "type": 5,
         "description": [
-            "한정 이벤트: 오엽각 교차점"
+            "이벤트: 오엽각 교차점",
+            "대형함 건조, 특형함 건조",
+            "상설 UR 함선 교환"
         ],
         "rarity": "UR"
     },
@@ -14531,7 +14535,8 @@
         "nationality": 4,
         "type": 6,
         "description": [
-            "한정 이벤트: 오엽각 교차점"
+            "이벤트: 오엽각 교차점",
+            "연습 상점(랜덤 출현)"
         ],
         "rarity": "SR"
     },
@@ -20335,7 +20340,7 @@
         "nationality": 97,
         "type": 1,
         "description": [
-            "한정 이벤트: 월드투어"
+            "META상점 교환"
         ],
         "rarity": "SR"
     },
@@ -20365,7 +20370,7 @@
         "nationality": 97,
         "type": 1,
         "description": [
-            "한정 이벤트: 월드투어"
+            "META상점 교환"
         ],
         "rarity": "SR"
     },
@@ -20395,7 +20400,7 @@
         "nationality": 97,
         "type": 1,
         "description": [
-            "한정 이벤트: 월드 투어"
+            "META상점 교환"
         ],
         "rarity": "SR"
     },
@@ -20717,7 +20722,7 @@
         "nationality": 97,
         "type": 2,
         "description": [
-            "한정 이벤트: 월드 투어"
+            "META상점 교환"
         ],
         "rarity": "SR"
     },
@@ -20743,7 +20748,7 @@
         "nationality": 97,
         "type": 2,
         "description": [
-            "한정 이벤트: 월드 투어"
+            "META상점 교환"
         ],
         "rarity": "SR"
     },
@@ -20769,7 +20774,7 @@
         "nationality": 97,
         "type": 2,
         "description": [
-            "한정 이벤트: 월드 투어"
+            "META상점 교환"
         ],
         "rarity": "SR"
     },
@@ -21007,7 +21012,7 @@
         "nationality": 97,
         "type": 3,
         "description": [
-            "한정 이벤트: 월드투어"
+            "META상점 교환"
         ],
         "rarity": "SR"
     },
@@ -21355,7 +21360,7 @@
         "nationality": 97,
         "type": 5,
         "description": [
-            "한정 이벤트: 월드 투어"
+            "META상점 교환"
         ],
         "rarity": "SR"
     },
@@ -21385,7 +21390,7 @@
         "nationality": 97,
         "type": 5,
         "description": [
-            "한정 이벤트: 월드 투어"
+            "META상점 교환"
         ],
         "rarity": "SR"
     },
@@ -21652,7 +21657,7 @@
         "nationality": 97,
         "type": 6,
         "description": [
-            "한정 이벤트: 월드 투어"
+            "META상점 교환"
         ],
         "rarity": "SR"
     },
@@ -21679,7 +21684,7 @@
         "nationality": 97,
         "type": 6,
         "description": [
-            "한정 이벤트: 월드 투어"
+            "META상점 교환"
         ],
         "rarity": "SR"
     },
@@ -22011,7 +22016,8 @@
         "nationality": 97,
         "type": 8,
         "description": [
-            "한정 이벤트: 오엽각 교차점"
+            "이벤트: 오엽각 교차점",
+            "특형함 건조"
         ],
         "rarity": "SSR"
     },
@@ -22037,7 +22043,7 @@
         "nationality": 97,
         "type": 12,
         "description": [
-            "한정 이벤트: 월드 투어"
+            "META상점 교환"
         ],
         "rarity": "SR"
     },
