@@ -87,3 +87,53 @@ test('decode: junk and empty inputs fail safely', () => {
     assert.equal(junk.ok, false);
     assert.ok(junk.errors.some(e => e.kind === 'format'));
 });
+
+test('sp round-trip: dedicated augment at max level (10000 = 용감한 꿈의 베개)', () => {
+    const tiers = maps.spBaseToTiers.get(10000);
+    assert.ok(tiers && tiers.length >= 11, 'fixture: weapon 10000 must have level_ids');
+    const sp = { baseId: 10000, level: tiers.length - 1 };
+    const decoded = decodeEquipCode(encodeEquipCode({ equips: [null, null, null, null, null], sp }, maps), maps);
+    assert.equal(decoded.ok, true);
+    assert.deepEqual(decoded.sp, sp);
+    assert.deepEqual(decoded.equips, [null, null, null, null, null]);
+});
+
+test('sp: succession weapon (1010120, awakened 듀얼 소드) resolves as its OWN base — not predecessor+12', () => {
+    // 1010110 (듀얼 소드 +10, base 1010100) has next=1010120, but 1010120 is a
+    // SEPARATE named base weapon (level=1 chain of its own). A game code
+    // carrying 1010120 must decode as {baseId:1010120, level:0}; predecessor
+    // base+level arithmetic would misresolve it as 1010100 "+12".
+    // (F3-UPDATE correction 2026-07-01 — succession links, not intra-chain jumps.)
+    assert.deepEqual(maps.spTierToBase.get(1010120), { baseId: 1010120, level: 0 });
+    assert.deepEqual(maps.spTierToBase.get(1010110), { baseId: 1010100, level: 10 });
+    const sp = { baseId: 1010120, level: 0 };
+    const decoded = decodeEquipCode(encodeEquipCode({ equips: [null, null, null, null, null], sp }, maps), maps);
+    assert.deepEqual(decoded.sp, sp);
+});
+
+test('sp: tier maps cover every level_ids entry exactly once (no dup tier ids)', () => {
+    let total = 0;
+    for (const w of Object.values(spData.weapons)) {
+        total += Array.isArray(w.level_ids) ? w.level_ids.length : 0;
+    }
+    assert.ok(total > 2000, `fixture sanity: expected thousands of sp tier ids, got ${total}`);
+    // Map size == sum of chain lengths ⇒ no id appeared in two chains.
+    assert.equal(maps.spTierToBase.size, total);
+});
+
+test('sp: unknown sp tier id degrades to error, equips still apply', () => {
+    const payload = `${(500).toString(32)}/0/0/0/0\\${(499999999).toString(32)}`.toUpperCase();
+    const decoded = decodeEquipCode(btoa(payload), maps);
+    assert.deepEqual(decoded.equips[0], { baseId: 500, level: 0 });
+    assert.equal(decoded.sp, null);
+    assert.ok(decoded.errors.some(e => e.kind === 'unknown-sp'));
+});
+
+test('sp: invalid characters in the sp token produce a token error on slot sp', () => {
+    // 'z' is outside base-32 digits [0-9a-v]
+    const payload = `${(500).toString(32)}/0/0/0/0\\zz!`.toUpperCase();
+    const decoded = decodeEquipCode(btoa(payload), maps);
+    assert.equal(decoded.sp, null);
+    assert.ok(decoded.errors.some(e => e.kind === 'token' && e.slot === 'sp'));
+    assert.deepEqual(decoded.equips[0], { baseId: 500, level: 0 });
+});
