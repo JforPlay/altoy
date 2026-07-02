@@ -111,7 +111,9 @@ document.addEventListener('DOMContentLoaded', () => {
         getEventMemories: (eventData) => eventData?.memory_id,
         findMemory: (eventData, storyId) => eventData?.memory_id?.find(m => m.id == storyId),
         getMemoryStory: (memoryData) => memoryData?.story,
-        getEventIconPath: () => `${window.StoryViewer.BASE_URL}memorystoryline/`,
+        // Event icons are BASE_URL-relative paths WITH folder (deeplink majors:
+        // memorystoryline/<banner>; inline: a distinctive bg/<mask>; '' -> placeholder).
+        getEventIconPath: () => window.StoryViewer.BASE_URL,
         getEventLink: (eventData) => {
             if (eventData?.route !== 'deeplink') return null;
             // resolveUrl → site base (/altoy/…), NOT StoryViewer.BASE_URL (asset CDN).
