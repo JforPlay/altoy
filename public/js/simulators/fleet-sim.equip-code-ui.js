@@ -9,12 +9,22 @@ import {
     getShipByGid,
     getDedicatedSPWeapon,
     getEquipCodeMaps,
+    getEquipById,
+    getMaxEnhanceLevel,
+    getSlotAllowedTypes,
+    getEffectiveShipType,
+    getEquipsByAllowedTypes,
+    getSPWeaponById,
+    getShipsByPosition,
+    getGenericSPWeapons,
 } from './fleet-sim.data.js';
 import { encodeEquipCode, decodeEquipCode } from '../equip/equip-code.js';
+import { planImport } from './fleet-sim.code-apply.js';
 
 let state = null;
 let callbacks = null;
 let activeSlot = -1;
+let pending = null;
 
 export function setup(stateRef, cbs) {
     state = stateRef;
@@ -44,6 +54,7 @@ export function openEquipCodeModal(slotIndex) {
     if (importInput) importInput.value = '';
     _renderNotices([]);
     _hideGidActions();
+    pending = null;
 
     openModal('equipCodeModal');
     if (code && exportInput) requestAnimationFrame(() => exportInput.select());
@@ -83,7 +94,7 @@ function _wireEvents() {
             });
         });
     }
-    // 가져오기 wiring lands in Task 8 (_handleApplyClick).
+    // 가져오기: decode → planImport → apply/gid-choice (see _handleApplyClick).
     const applyBtn = document.getElementById('equip-code-apply');
     if (applyBtn) applyBtn.addEventListener('click', _handleApplyClick);
     const switchBtn = document.getElementById('equip-code-apply-switch');
@@ -108,6 +119,111 @@ function _hideGidActions() {
     hideElement('equip-code-gid-actions'); // hub rule: never classList.add('hidden')
 }
 
-// Task 8 fills these in:
-function _handleApplyClick() {}
-function _applyPending(_switchShip) {}
+/** Build the injected-predicate ctx for planImport from the live slot. */
+function _buildCtx(slotConfig, ship) {
+    const isRetrofit = slotConfig.retrofit !== false && !!ship?.retrofit;
+    const effectiveType = ship ? getEffectiveShipType(ship, isRetrofit) : null;
+    // allowed SP types for this ship type = types of its generic SP list
+    const allowedSPTypes = new Set(
+        ship ? getGenericSPWeapons(effectiveType).map(w => w.type) : []
+    );
+    return {
+        shipGid: ship ? ship.gid : null,
+        hasDedicatedSP: !!(ship && getDedicatedSPWeapon(ship.gid)),
+        isEquipAllowed(baseId, slotIndex) {
+            if (!ship) return false;
+            const allowed = getSlotAllowedTypes(ship, slotIndex, isRetrofit);
+            if (!allowed.length) return false;
+            // reuses the picker's own filter (type + ship_type_forbidden)
+            return getEquipsByAllowedTypes(allowed, effectiveType)
+                .some(e => e.id === baseId);
+        },
+        maxEnhance(baseId) {
+            return getMaxEnhanceLevel(getEquipById(baseId));
+        },
+        spInfo(baseId) {
+            const w = getSPWeaponById(baseId);
+            return w ? { unique: w.unique, type: w.type } : null;
+        },
+        allowedSPTypes,
+    };
+}
+
+function _handleApplyClick() {
+    const importInput = document.getElementById('equip-code-import');
+    const text = importInput ? importInput.value : '';
+    const maps = getEquipCodeMaps();
+    if (!maps) { showToast('데이터 로딩 후 다시 시도하세요', 'error'); return; }
+
+    const decoded = decodeEquipCode(text, maps);
+    if (!decoded.ok) {
+        const empty = decoded.errors.some(e => e.kind === 'empty');
+        showToast(empty ? '코드를 입력하세요' : '잘못된 코드 형식입니다', 'error');
+        _renderNotices([]);
+        return;
+    }
+
+    const slotConfig = state.ships[activeSlot];
+    if (!slotConfig) return;
+    const ship = getShipByGid(slotConfig.gid);
+    const plan = planImport(decoded, _buildCtx(slotConfig, ship));
+
+    if (plan.gidMismatch) {
+        // Full game code for a different 함순이 — let the user choose.
+        pending = { decoded, plan };
+        const msgEl = document.getElementById('equip-code-gid-msg');
+        const other = getShipByGid(decoded.gid);
+        if (msgEl) {
+            msgEl.textContent = other
+                ? `이 코드는 다른 함순이(${other.name})의 코드입니다.`
+                : '이 코드는 다른 함순이의 코드입니다.';
+        }
+        showElement('equip-code-gid-actions');
+        // hide the switch option when the ship is unknown or on the wrong row
+        const row = activeSlot < 3 ? '후열' : '전열';
+        const canSwitch = !!other && getShipsByPosition(row).some(s => s.gid === decoded.gid);
+        toggleElement('equip-code-apply-switch', canSwitch);
+        return;
+    }
+
+    _applyPlan(plan);
+}
+
+/** gid-mismatch resolution buttons. switchShip=true → change 함순이 first. */
+function _applyPending(switchShip) {
+    if (!pending) return;
+    const { decoded } = pending;
+    _hideGidActions();
+    if (switchShip) {
+        callbacks.onShipSelected(activeSlot, decoded.gid);
+        // re-plan against the NEW ship (slot config was replaced)
+        const slotConfig = state.ships[activeSlot];
+        const ship = getShipByGid(slotConfig.gid);
+        _applyPlan(planImport(decoded, _buildCtx(slotConfig, ship)));
+    } else {
+        _applyPlan(pending.plan);
+    }
+    pending = null;
+}
+
+function _applyPlan(plan) {
+    const slotConfig = state.ships[activeSlot];
+    if (!slotConfig) return;
+    if (!plan.apply.length && !plan.sp) {
+        _renderNotices(plan.notices);
+        showToast('적용할 수 있는 장비가 없습니다', 'error');
+        return;
+    }
+    if (!slotConfig.equips) slotConfig.equips = new Array(5).fill(null);
+    for (const item of plan.apply) {
+        slotConfig.equips[item.slot] = { id: item.baseId, level: item.level };
+    }
+    if (plan.sp) {
+        slotConfig.spWeapon = { id: plan.sp.baseId, level: Math.max(0, Math.min(plan.sp.level, 10)) };
+    }
+    _renderNotices(plan.notices);
+    callbacks.onApplied();
+    showToast(`장비 ${plan.apply.length}개 적용 완료`, 'success');
+    // refresh the export string to reflect the newly applied loadout
+    openEquipCodeModal(activeSlot);
+}
