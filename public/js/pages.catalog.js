@@ -59,6 +59,7 @@ export const PAGE_CATALOG = [
     // ===== Story =====
     { key: 'MAIN_STORY',      path: 'story-viewer/main-story/',      name: '메인스토리',          description: '메인스토리 뷰어',                       icon: 'menu_book',     category: '스토리' },
     { key: 'MAIN_STORYLINE',  path: 'story-viewer/main-storyline/',  name: '메인스토리 타임라인', description: '타임라인으로 스토리 흐름보기',          icon: 'timeline',      category: '스토리' },
+    { key: 'EVENT_STORY',     path: 'story-viewer/event-story/',     name: '이벤트 스토리',       description: '룽섭 이벤트 스토리 아카이브',           icon: 'celebration',   category: '스토리' },
     { key: 'WORLD_STORY',     path: 'story-viewer/world-story/',     name: '대작전스토리',        description: '대작전스토리 뷰어',                     icon: 'public',        category: '스토리' },
     { key: 'WORLD_FILE',      path: 'story-viewer/world-file/',      name: '대작전 파일',         description: '파일해역에서 해금되는 파일들 모아보기', icon: 'folder',        category: '스토리' },
     { key: 'TB_STORY',        path: 'story-viewer/tb-story/',        name: 'TB 키우기',           description: '통베 회상/수집/엔딩 보기',              icon: 'woman',         category: '스토리' },
@@ -126,7 +127,7 @@ export const NAV_STRUCTURE = [
     {
         label: '스토리보기',
         columns: [
-            { title: '주요 스토리', keys: ['MAIN_STORY', 'MAIN_STORYLINE', 'WORLD_STORY', 'WORLD_FILE'] },
+            { title: '주요 스토리', keys: ['MAIN_STORY', 'MAIN_STORYLINE', 'EVENT_STORY', 'WORLD_STORY', 'WORLD_FILE'] },
             { title: '딸내미 키우기', keys: ['TB_STORY', 'NAVI_STORY', 'LORA_STORY'] },
             { title: '기타 스토리 컨텐츠', keys: ['SECRETARY_STORY', 'HOF'] },
         ],

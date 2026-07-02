@@ -1,0 +1,47 @@
+/**
+ * event-story.css
+ * Event-archive-specific layout on top of the shared story-viewer + global
+ * component primitives (.card-grid / .chip / .filter-bar / .section-title /
+ * .badge). Chip active fill + filter-bar flex come from the components —
+ * only the hooks and page layout live here.
+ */
+.event-filter-bar {
+    --filter-bar-gap: 0.75rem;
+    margin: 0 auto 1rem;
+    max-width: 1200px;
+    padding: 0 1rem;
+}
+
+.event-subtype-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.event-year-section {
+    margin: 0 auto 2rem;
+    max-width: 1200px;
+    padding: 0 1rem;
+}
+.event-year-section .section-title {
+    margin-bottom: 0.75rem;
+}
+
+/* Subtype badge sits under the card title. */
+.event-subtype-badge {
+    margin-top: 0.35rem;
+    align-self: flex-start;
+}
+
+.event-faction-select {
+    padding: 0.4rem 0.6rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    color: var(--text-color);
+}
+
+/* Deep-link (→메인스토리) cards read as reference, not inline-playable. */
+.grid-card.event-deeplink {
+    opacity: 0.92;
+}
