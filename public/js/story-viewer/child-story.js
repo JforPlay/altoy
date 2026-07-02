@@ -662,7 +662,7 @@ function createTabStoryViewer(config) {
                     lastIndex: -1
                 };
                 window.StoryViewer.scriptNavCache = null;
-                window.StoryViewer.cachedFullScript = null;
+                window.StoryViewer.cachedTranscript = null;
 
                 if (memory.story.mask) {
                     window.StoryViewer.currentStoryDefaultBgUrl = `${window.StoryViewer.BASE_URL}${memory.story.mask}.webp`;

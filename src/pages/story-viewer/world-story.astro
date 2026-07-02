@@ -34,6 +34,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <header class="viewer-header">
             <button id="back-to-event-selection" class="btn btn-secondary nav-button">&#x2190; 뒤로 돌아가기</button>
             <h1 id="memory-view-title" class="header-title"></h1>
+            <button id="group-script-btn" class="btn btn-secondary nav-button hidden" type="button">
+                <span class="material-symbols-outlined">menu_book</span>
+                전체 대사 모아보기
+            </button>
         </header>
         <div class="flavor-text-box">
             <p>스토리 재생시 브금 자동재생에 주의하세요</p>
@@ -99,7 +103,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div id="script-modal-overlay" class="modal-overlay hidden">
         <div class="modal-content">
             <button id="close-modal-btn" class="btn btn-close close-modal-btn" title="Close"><span class="material-symbols-outlined">close</span></button>
-            <div id="full-script-content" class="full-script-content"></div>
+            <div class="script-modal-toolbar">
+                <h2 id="script-modal-title" class="script-modal-title"></h2>
+                <button id="copy-script-btn" class="btn btn-secondary btn-sm" type="button">
+                    <span class="material-symbols-outlined">content_copy</span>
+                    <span class="copy-script-label">전체 복사</span>
+                </button>
+            </div>
+            <div id="full-script-content" class="full-script-content scroll-styled"></div>
         </div>
     </div>
 

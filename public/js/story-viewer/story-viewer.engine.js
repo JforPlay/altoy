@@ -14,6 +14,7 @@ import { debounce, fetchJSONWithCache, getUrlParam, setUrlParams, hideElement, s
 import { getExpressionData, updatePaintings, clearPaintings, resolvePortraitFaceUrl } from './story.painting.js';
 import { clearLineEffects, handleLineShake, handleLineDialogShake, handleLinePaintingShake, handleLineFlashN, handleLineSoundEffect, clearFlashOverlay, handleLineFlash, playFlashoutCover } from './story.effects.js';
 import { correctKrNameColor } from './story.text.js';
+import { collectTranscriptLines, transcriptToPlainText, buildTranscriptFragment, extractSequenceLines, formatSequenceLine } from './story.transcript.js';
 import { resolveAudioCueUrl } from './story.bgm.js';
 document.addEventListener('DOMContentLoaded', () => {
     window.StoryViewer = {
@@ -42,8 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Navigation cache for fast lookups (precomputed on story start)
         scriptNavCache: null,
 
-        // Performance cache for full script modal
-        cachedFullScript: null,
+        // Transcript cache for the full-script modal (per-story AND group
+        // views share it; key = 'story:<memoryId>' / 'group:<eventId>')
+        cachedTranscript: null,
 
         // Performance cache for background state
         cachedBackground: {
@@ -81,8 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
             memoryViewTitle: document.getElementById('memory-view-title'),
             themeToggles: document.querySelectorAll('.theme-toggle'),
             viewScriptBtn: document.getElementById('view-script-btn'),
+            groupScriptBtn: document.getElementById('group-script-btn'),
             scriptModalOverlay: document.getElementById('script-modal-overlay'),
             closeModalBtn: document.getElementById('close-modal-btn'),
+            scriptModalTitle: document.getElementById('script-modal-title'),
+            copyScriptBtn: document.getElementById('copy-script-btn'),
             fullScriptContent: document.getElementById('full-script-content'),
             infoScreen: document.getElementById('info-screen'),
             infoScreenText: document.getElementById('info-screen-text'),
@@ -210,6 +215,8 @@ document.addEventListener('DOMContentLoaded', () => {
             el.returnBtn?.addEventListener('click', (e) => { e.stopPropagation(); this.returnToMemorySelection(); });
 
             el.viewScriptBtn?.addEventListener('click', () => this.showFullScript());
+            el.groupScriptBtn?.addEventListener('click', () => this.showGroupScript());
+            el.copyScriptBtn?.addEventListener('click', (e) => { e.stopPropagation(); this.copyTranscript(); });
             el.closeModalBtn?.addEventListener('click', () => this.hideFullScript());
             el.scriptModalOverlay?.addEventListener('click', (e) => { if (e.target === el.scriptModalOverlay) this.hideFullScript(); });
             el.closeSummaryModalBtn?.addEventListener('click', () => this.hideSummaryModal());
@@ -642,6 +649,7 @@ document.addEventListener('DOMContentLoaded', () => {
          */
         async selectEvent(eventId, updateUrl = true) {
             this.currentEventId = eventId;
+            this.cachedTranscript = null;
 
             const eventData = await this.loadChapterData(eventId);
             this.elements.memoryViewTitle.textContent = eventData.name;
@@ -664,6 +672,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     );
                     this.elements.memoryGrid.appendChild(card);
                 });
+            }
+
+            // Group transcript button (markup opt-in per page): show only when
+            // at least one entry actually carries a sync script — deeplink /
+            // index-only events and Promise-based getMemoryStory pages don't.
+            if (this.elements.groupScriptBtn) {
+                const hasScripts = Array.isArray(memories) && memories.some(m => {
+                    const s = this.config.getMemoryStory(m);
+                    return !!(s && typeof s === 'object' && Array.isArray(s.scripts) && s.scripts.length);
+                });
+                toggleElement(this.elements.groupScriptBtn, hasScripts);
             }
 
             if (updateUrl) {
@@ -846,7 +865,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 lastIndex: -1
             };
             this.scriptNavCache = null;
-            this.cachedFullScript = null;
+            this.cachedTranscript = null;
 
             if (memory.mask) {
                 this.currentStoryDefaultBgUrl = `${this.BASE_URL}${memory.mask}.webp`;
@@ -1245,31 +1264,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return true;
         },
 
-        /**
-         * Extract formatted text entries from a line's sequence or signDate field.
-         * Returns an array of {text, scale} objects for renderSequenceContent.
-         */
-        extractSequenceLines(line) {
-            if (!line) return [];
-
-            const collected = [];
-
-            if (Array.isArray(line.sequence) && line.sequence.length > 0) {
-                line.sequence.forEach(entry => {
-                    const rawText = Array.isArray(entry) ? entry[0] : entry;
-                    const formatted = this.formatSequenceLine(rawText);
-                    if (formatted.text) collected.push(formatted);
-                });
-            } else if (typeof line.sequence === 'string') {
-                const formatted = this.formatSequenceLine(line.sequence);
-                if (formatted.text) collected.push(formatted);
-            } else if (Array.isArray(line.signDate) && line.signDate[0]) {
-                const formatted = this.formatSequenceLine(line.signDate[0]);
-                if (formatted.text) collected.push(formatted);
-            }
-
-            return collected;
-        },
+        // Sequence/title-card parsing is implemented in ./story.transcript.js
+        // (pure, node-tested — shared with the transcript modal); these thin
+        // wrappers keep the engine entry points stable.
+        extractSequenceLines(line) { return extractSequenceLines(line); },
 
         /**
          * Render the speaker name plus the optional faction tag suffix
@@ -1325,31 +1323,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
 
-        /**
-         * Parse a raw sequence text entry — strip HTML tags and map any `<size=N>`
-         * tags to a CSS scale factor clamped to [0.7, 1.6].
-         */
-        formatSequenceLine(rawText) {
-            if (!rawText || typeof rawText !== 'string') return { text: '', scale: 1 };
-
-            const sizeMatch = rawText.match(/<size=([0-9]+)>/i);
-            let scale = 1;
-            if (sizeMatch) {
-                const sizeValue = parseFloat(sizeMatch[1]);
-                if (Number.isFinite(sizeValue) && sizeValue > 0) {
-                    const normalized = sizeValue / 50;
-                    scale = Math.min(Math.max(normalized, 0.7), 1.6);
-                }
-            }
-
-            const cleanedText = rawText
-                .replace(/<size=\d+>/gi, '')
-                .replace(/<\/size>/gi, '')
-                .replace(/<\/?[^>]+>/g, '')
-                .trim();
-
-            return { text: cleanedText, scale };
-        },
+        formatSequenceLine(rawText) { return formatSequenceLine(rawText); },
 
 
         // ===== Helpers: Visual & Audio =====
@@ -1788,35 +1762,107 @@ document.addEventListener('DOMContentLoaded', () => {
         // ===== Modals =====
 
         /**
-         * Open the full-script modal. The dialogue DOM is built once per story
-         * (cachedFullScript) and cloned on subsequent opens to avoid rebuilding it.
+         * Open the full-script modal for the CURRENT story. Transcript DOM +
+         * copy text are built once per story (cachedTranscript) and cloned on
+         * subsequent opens.
          */
         showFullScript() {
             if (!this.currentStoryScript || this.currentStoryScript.length === 0) return;
 
-            // Build the full-script DOM once per story, then clone-mount on subsequent opens.
-            if (!this.cachedFullScript) {
-                const frag = document.createDocumentFragment();
-                this.currentStoryScript.forEach(line => {
-                    if (!line.say || line.say.trim() === '') return;
-                    const actorInfo = this.getActorInfo(line);
-                    const p = document.createElement('p');
-                    const strong = document.createElement('strong');
-                    strong.textContent = `${actorInfo.name || 'Narrator'}:`;
-                    p.appendChild(strong);
-                    p.appendChild(document.createTextNode(
-                        ' ' + line.say.replace(/<.*?>/g, '')
-                    ));
-                    frag.appendChild(p);
-                });
-                this.cachedFullScript = frag;
+            const key = `story:${this.currentEventId}:${this.currentMemoryId}`;
+            if (this.cachedTranscript?.key !== key) {
+                const sections = [{
+                    title: null,
+                    lines: collectTranscriptLines(this.currentStoryScript, (line) => this.getActorInfo(line).name),
+                }];
+                const title = this.elements.storyTitle?.textContent || '';
+                this.cachedTranscript = {
+                    key,
+                    title,
+                    frag: buildTranscriptFragment(sections),
+                    text: transcriptToPlainText(title, sections),
+                };
             }
+            this.openTranscriptModal();
+        },
 
-            this.elements.fullScriptContent.textContent = '';
-            this.elements.fullScriptContent.appendChild(this.cachedFullScript.cloneNode(true));
-            showElement(this.elements.scriptModalOverlay);
+        /**
+         * Open the full-script modal for EVERY entry of the current event/
+         * chapter, concatenated in entry order ("전체 대사 모아보기"). Entries
+         * whose story data is missing (e.g. pruned dungeon configs) render a
+         * muted marker instead of being silently dropped.
+         */
+        showGroupScript() {
+            const event = this.storylineData[this.currentEventId];
+            const memories = this.config.getEventMemories(event);
+            if (!Array.isArray(memories) || memories.length === 0) return;
+
+            const key = `group:${this.currentEventId}`;
+            if (this.cachedTranscript?.key !== key) {
+                const sections = memories.map(memory => {
+                    const story = this.config.getMemoryStory(memory);
+                    const scripts = (story && typeof story === 'object' && Array.isArray(story.scripts))
+                        ? story.scripts : null;
+                    return {
+                        title: memory.title || memory.name || '',
+                        lines: scripts
+                            ? collectTranscriptLines(scripts, (line) => this.getActorInfo(line).name)
+                            : null,
+                    };
+                });
+                const title = `${event.name || ''} — 전체 대사`.trim();
+                this.cachedTranscript = {
+                    key,
+                    title,
+                    frag: buildTranscriptFragment(sections),
+                    text: transcriptToPlainText(title, sections),
+                };
+            }
+            this.openTranscriptModal();
+        },
+
+        /** Mount the cached transcript into the modal and show it. */
+        openTranscriptModal() {
+            const el = this.elements;
+            if (el.scriptModalTitle) el.scriptModalTitle.textContent = this.cachedTranscript.title;
+            this.resetCopyButton();
+            el.fullScriptContent.textContent = '';
+            el.fullScriptContent.appendChild(this.cachedTranscript.frag.cloneNode(true));
+            el.fullScriptContent.scrollTop = 0;
+            showElement(el.scriptModalOverlay);
         },
         hideFullScript() { hideElement(this.elements.scriptModalOverlay); },
+
+        /** Copy the open transcript as plain text (deterministic 화자: 대사 grammar). */
+        copyTranscript() {
+            if (!this.cachedTranscript) return;
+            navigator.clipboard.writeText(this.cachedTranscript.text)
+                .then(() => this.flashCopyButton('복사됨!'))
+                .catch(() => this.flashCopyButton('복사 실패'));
+        },
+
+        /** Swap the copy button label for ~1.5s as click feedback. */
+        flashCopyButton(message) {
+            const label = this.elements.copyScriptBtn?.querySelector('.copy-script-label');
+            if (!label) return;
+            if (this._copyLabelDefault == null) this._copyLabelDefault = label.textContent;
+            if (this._copyResetTimer) clearTimeout(this._copyResetTimer);
+            label.textContent = message;
+            this._copyResetTimer = setTimeout(() => {
+                this._copyResetTimer = null;
+                label.textContent = this._copyLabelDefault;
+            }, 1500);
+        },
+
+        /** Restore the copy button label immediately (modal re-open). */
+        resetCopyButton() {
+            if (this._copyResetTimer) {
+                clearTimeout(this._copyResetTimer);
+                this._copyResetTimer = null;
+            }
+            const label = this.elements.copyScriptBtn?.querySelector('.copy-script-label');
+            if (label && this._copyLabelDefault != null) label.textContent = this._copyLabelDefault;
+        },
 
         /**
          * Open the world-story summary modal for the given event ID.

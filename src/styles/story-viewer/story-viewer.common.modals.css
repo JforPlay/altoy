@@ -95,3 +95,67 @@
   gap: 0.5em;
 }
 
+/* --- Full-script transcript (per-story modal + group 전체 대사 모아보기) --- */
+
+/* Title + copy button row; padding-right clears the absolute corner close button. */
+.script-modal-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 2.5rem 0.75rem 0;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.script-modal-title {
+  font-size: 1.2rem;
+  margin: 0;
+  color: var(--text-color);
+  overflow-wrap: anywhere;
+}
+
+#copy-script-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  flex-shrink: 0;
+}
+
+.transcript-section-title {
+  font-size: 1.05rem;
+  color: var(--accent-color);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.4rem;
+  margin: 1.75rem 0 1rem;
+}
+
+.transcript-section:first-child .transcript-section-title {
+  margin-top: 0;
+}
+
+/* Game dialogue keeps its own line breaks. */
+.full-script-content .transcript-say {
+  white-space: pre-line;
+}
+
+.full-script-content .transcript-narration {
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.full-script-content .transcript-scene {
+  text-align: center;
+  opacity: 0.75;
+  margin: 1.25rem 0;
+}
+
+.full-script-content .transcript-choice {
+  color: var(--accent-color);
+}
+
+.full-script-content .transcript-missing {
+  font-style: italic;
+  opacity: 0.6;
+}
+
