@@ -1,10 +1,15 @@
-/* CSS Variables for Theme Support */
+/* CSS Variables for Theme Support.
+   --timeline-card-bg is deliberately page-scoped: the timeline cards sit on
+   artwork and stay dark navy in BOTH themes. Never publish it as --card-bg —
+   that global token feeds --bg-elevated (.btn-secondary) and Modal.astro, and
+   shadowing it made every button/modal on this page drift off-theme. */
 :root {
   --bg-color: #f4f7fa;
   --text-color: #2c3e50;
-  --card-bg: rgba(44, 62, 80, 0.75);
+  --timeline-card-bg: rgba(44, 62, 80, 0.75);
   --header-bg: rgba(255, 255, 255, 0.85);
   --border-color: #d1d9e6;
+  --input-bg: #ffffff;
   --accent-color: #4a90e2;
   --shadow-color: rgba(44, 62, 80, 0.2);
   --line-color: #5c677d;
@@ -13,17 +18,17 @@
 body.dark-mode {
   --bg-color: #1a1a2e;
   --text-color: #e0e0e0;
-  --card-bg: rgba(30, 30, 40, 0.85);
+  --timeline-card-bg: rgba(30, 30, 40, 0.85);
   --header-bg: rgba(28, 28, 28, 0.9);
   --border-color: #444444;
+  --input-bg: #2a2a2a;
   --accent-color: #4dabf7;
   --shadow-color: rgba(0, 0, 0, 0.4);
   --line-color: #7c87a3;
 }
 
-/* General Body Styles */
+/* General Body Styles (font-family comes from global.base.css) */
 body {
-  font-family: "Noto Sans KR", "Roboto", sans-serif;
   background: var(--bg-color);
   color: var(--text-color);
   margin: 0;
@@ -61,13 +66,15 @@ body::before {
   overflow: hidden;
 }
 
-/* Header Styles */
+/* Header Styles — metrics mirror the story pages' .viewer-header
+   (story-viewer.common.selection.css) so the title bars read identically. */
 .timeline-header {
   flex-shrink: 0;
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 0.625rem 1.25rem;
+  padding: 1rem 2rem;
+  line-height: 1.6;
   background-color: var(--header-bg);
   backdrop-filter: blur(4px);
   border-bottom: 1px solid var(--border-color);
@@ -85,22 +92,21 @@ body::before {
   white-space: nowrap;
 }
 
-/* Search Container */
+/* Search Container — sized/styled like the story pages' #search-bar. */
 .search-container {
   position: relative;
-  width: 250px;
+  flex: 0 1 25rem;
   margin-left: auto;
 }
 
 .search-container input {
   width: 100%;
-  padding: 0.6rem 1rem 0.6rem 2.5rem;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
   border: 1px solid var(--border-color);
-  border-radius: 0.3125rem;
-  background-color: var(--bg-color);
+  border-radius: 0.5rem;
+  background-color: var(--input-bg);
   color: var(--text-color);
   font-size: 1rem;
-  line-height: 1.5;
   transition: border-color 0.2s;
   box-sizing: border-box;
 }
@@ -120,26 +126,9 @@ body::before {
   pointer-events: none;
 }
 
-.nav-button {
-  background: none;
-  border: 1px solid var(--border-color);
-  color: var(--text-color);
-  font-size: 1rem;
-  cursor: pointer;
-  padding: 0.6rem 1rem;
-  border-radius: 0.3125rem;
-  transition: background-color 0.3s;
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  text-decoration: none;
-}
-
-.nav-button:hover {
-  background-color: var(--border-color);
-}
+/* .nav-button carries no local styling — header buttons are the global
+   .btn/.btn-secondary component, same as every other story page (the old
+   local block forced 1rem/flat/5px-radius buttons that drifted off). */
 
 /* 진영 필터 dropdown (container/panel/options/count badge) →
    story-viewer.faction-filter.css (shared with main-story / event-story). */
@@ -198,7 +187,7 @@ body::before {
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease,
     opacity 0.4s ease, filter 0.4s ease;
-  background-color: var(--card-bg);
+  background-color: var(--timeline-card-bg);
   backdrop-filter: blur(8px);
   border: 1px solid var(--border-color);
   border-radius: 0.5rem;
@@ -402,7 +391,7 @@ body::before {
   }
 
   .timeline-header h1 {
-    font-size: 1.1rem;
+    font-size: 1.3rem; /* matches .header-title's mobile size */
     order: -1;
     margin: 0;
   }
@@ -413,17 +402,6 @@ body::before {
     max-width: 100%;
     order: 1;
     box-sizing: border-box;
-  }
-
-  .search-container input {
-    font-size: 0.85rem;
-    padding: 0.4rem 0.75rem 0.4rem 2rem;
-    box-sizing: border-box;
-  }
-
-  .search-icon {
-    left: 0.5rem;
-    font-size: 1rem;
   }
 
   #story-viewer-nav-button {
@@ -443,12 +421,6 @@ body::before {
     width: 100%;
     max-width: 100%;
     justify-content: center;
-    font-size: 0.9rem;
-    padding: 0.4rem 0.75rem;
-    box-sizing: border-box;
-  }
-
-  .nav-button {
     box-sizing: border-box;
   }
 
