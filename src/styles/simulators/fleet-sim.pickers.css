@@ -321,4 +321,64 @@
   color: #fff;
 }
 
+/* 장비 코드 modal */
+.equip-code-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.equip-code-heading {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+.equip-code-row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.equip-code-row .picker-search-input {
+    flex: 1;
+    min-width: 0;
+}
+
+.equip-code-hint {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.equip-code-notices {
+    margin: 0;
+    padding-left: 1.1rem;
+    font-size: 0.85rem;
+    color: var(--warning-color);
+}
+
+.equip-code-notices:empty {
+    display: none;
+}
+
+.equip-code-gid-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.625rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--highlight-subtle);
+}
+
+.equip-code-gid-msg {
+    margin: 0;
+    font-size: 0.85rem;
+}
+
+.equip-code-gid-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
 

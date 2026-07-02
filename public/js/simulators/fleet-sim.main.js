@@ -36,6 +36,7 @@ import {
 import { setup as setupCalc } from './fleet-sim.calc.js';
 import { setup as setupUI, renderFleet, toggleStats } from './fleet-sim.ui.js';
 import { setup as setupPicker, openShipPicker, openEquipPicker, openSPWeaponPicker, openBossPicker } from './fleet-sim.picker.js';
+import { setup as setupEquipCodeUI, openEquipCodeModal } from './fleet-sim.equip-code-ui.js';
 
 // ===== Constants =====
 
@@ -127,6 +128,10 @@ async function init() {
         onSPWeaponSelected: handleSPWeaponSelected,
         onTargetSelected: handleTargetSelected,
     });
+    setupEquipCodeUI(state, {
+        onApplied: () => renderFleet(),
+        onShipSelected: handleShipSelected,
+    });
 
     // 2. Load all data
     await loadAllData();
@@ -205,6 +210,10 @@ function setupEventListeners() {
             }
             case 'change-sp-level': {
                 if (slot !== -1) _showSPLevelPopover(actionEl, slot);
+                break;
+            }
+            case 'equip-code': {
+                if (slot !== -1 && state.ships[slot]) openEquipCodeModal(slot);
                 break;
             }
             case 'step-level': {
