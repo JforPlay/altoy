@@ -530,6 +530,13 @@ document.addEventListener('DOMContentLoaded', () => {
          * page's filter logic after it re-renders via renderEventEntries.
          */
         populateEventGrid(searchTerm = '') {
+            // Page-supplied index renderer (e.g. the event archive's year-grid).
+            // Absent on all other story pages → unchanged flat-grid behavior below.
+            if (this.config.renderEventGrid) {
+                this.config.renderEventGrid(this, searchTerm);
+                return;
+            }
+
             this.elements.eventGrid.textContent = '';
             const filteredEvents = Object.entries(this.storylineData)
                 .filter(([key, event]) => event.name.toLowerCase().includes((searchTerm || '').toLowerCase()));
