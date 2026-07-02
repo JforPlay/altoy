@@ -59,3 +59,38 @@ console.log(`Total chapter files: ${(totalChapterSize / 1024 / 1024).toFixed(2)}
 console.log(`Original file: ${(rawData.length / 1024 / 1024).toFixed(2)} MB`);
 console.log(`\nFiles written to: ${OUTPUT_DIR}/`);
 console.log(`Index written to: ${INDEX_FILE}`);
+
+// ===== Event story archive: same split, event-specific index fields =====
+const EVENT_INPUT = 'public/data/story-viewer/event_story_data.json';
+const EVENT_OUTPUT_DIR = 'public/data/story-viewer/event_story_chunks';
+const EVENT_INDEX_FILE = 'public/data/story-viewer/event_story_index.json';
+
+if (fs.existsSync(EVENT_INPUT)) {
+    const eventData = JSON.parse(fs.readFileSync(EVENT_INPUT, 'utf-8'));
+    if (!fs.existsSync(EVENT_OUTPUT_DIR)) fs.mkdirSync(EVENT_OUTPUT_DIR, { recursive: true });
+
+    const eventIndex = {};
+    for (const [id, entry] of Object.entries(eventData)) {
+        const rec = {
+            id: entry.id || Number(id),
+            name: entry.name || '',
+            description: entry.description || '',
+            icon: entry.icon || '',
+            subtype: entry.subtype ?? null,
+            year: entry.year ?? null,
+            dateRange: entry.dateRange || '',
+            faction: entry.faction || '',
+            ships: entry.ships || [],
+            memoryCount: entry.memory_id ? entry.memory_id.length : 0,
+            route: entry.route || 'inline',
+        };
+        if (rec.route === 'deeplink') {
+            rec.deeplinkPath = entry.deeplinkPath || 'story-viewer/main-story/';
+            rec.deeplinkEventId = entry.deeplinkEventId ?? null;
+        }
+        eventIndex[id] = rec;
+        fs.writeFileSync(path.join(EVENT_OUTPUT_DIR, `chunk_${id}.json`), JSON.stringify(entry));
+    }
+    fs.writeFileSync(EVENT_INDEX_FILE, JSON.stringify(eventIndex));
+    console.log(`\n[event-story] ${Object.keys(eventData).length} events → index + chunks`);
+}
