@@ -5,8 +5,9 @@
  * faction filter, a scrollable progress bar, and a details modal with BGM preview.
  * Data is loaded from main_story_meta.json on init.
  */
-import { debounce, fetchJSON, hideElement, showElement, resolveUrl, openModal, closeModal as utilsCloseModal, setupModal, makeKeyboardActivatable, DATA_FOR_TOY_BASE } from '../utils.js';
+import { debounce, fetchJSON, hideElement, resolveUrl, openModal, closeModal as utilsCloseModal, setupModal, makeKeyboardActivatable, DATA_FOR_TOY_BASE } from '../utils.js';
 import { resolveAudioCueUrl } from './story.bgm.js';
+import { setupFactionFilter, FACTION_NAMES } from './faction-filter.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // ===== DOM Elements =====
@@ -35,25 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const ctx = elements.canvas.getContext('2d');
 
-    const factionMap = {
-        1: "이글 유니온",
-        2: "로열 네이비",
-        3: "사쿠라 엠파이어",
-        4: "메탈 블러드",
-        5: "이스트 글림",
-        6: "사르데냐 엠파이어",
-        7: "노스 유니온",
-        8: "아이리스 리브레",
-        9: "비시아 성좌",
-        10: "아이리스 연합",
-        96: "템페스타",
-        97: "META"
-    };
-
     // ===== State =====
     let allData = {};
     let allDataArray = []; // Cache Object.values result
     let domElementsCache = new Map(); // Cache for DOM queries
+    let activeNations = []; // 진영 필터 selection ([] = 전체), set by the shared dropdown
 
     // ===== Data Loading =====
     fetchJSON('data/story-viewer/main_story_meta.json')
@@ -63,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             renderTimeline(allDataArray);
             populateFilters(allDataArray);
-            setupFilterListeners();
             setupSearchListener();
             setupKeyboardNavigation();
             setupProgressBarClick();
@@ -223,147 +209,57 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Build the faction filter checkboxes from the unique nation IDs found
-     * across all timeline items. Nations are sorted by ID before rendering.
+     * Build the shared faction dropdown from the unique nation IDs found
+     * across all timeline items (sorted by ID). Selection dims/highlights
+     * cards; drag-panning is disabled while the panel is open to avoid
+     * accidental pans.
      */
     function populateFilters(items) {
         const uniqueNations = new Map();
         items.forEach(item => {
-            if (item.shipnation) {
-                const nations = item.shipnation;
-                nations.forEach(nationId => {
-                    if (!uniqueNations.has(nationId) && factionMap[nationId]) {
-                        uniqueNations.set(nationId, factionMap[nationId]);
-                    }
-                });
-            }
+            (item.shipnation || []).forEach(nationId => {
+                if (!uniqueNations.has(nationId) && FACTION_NAMES[nationId]) {
+                    uniqueNations.set(nationId, FACTION_NAMES[nationId]);
+                }
+            });
         });
 
-        elements.filterPanel.textContent = '';
-
-        const appendFilterOption = (id, value, labelText, checked = false) => {
-            const option = document.createElement('div');
-            option.className = 'filter-option';
-            const input = document.createElement('input');
-            input.type = 'checkbox';
-            input.id = id;
-            input.value = value;
-            input.checked = checked;
-            const label = document.createElement('label');
-            label.htmlFor = id;
-            label.textContent = labelText;
-            option.append(input, label);
-            elements.filterPanel.appendChild(option);
-        };
-
-        appendFilterOption('nation-all', 'all', '전체', true);
-
-        const sortedNations = [...uniqueNations.entries()].sort((a, b) => a[0] - b[0]);
-
-        sortedNations.forEach(([id, name]) => {
-            appendFilterOption(`nation-${id}`, String(id), name);
+        setupFactionFilter({
+            button: elements.filterButton,
+            panel: elements.filterPanel,
+            badge: elements.filterBadge,
+            options: [...uniqueNations.entries()].sort((a, b) => a[0] - b[0])
+                .map(([id, name]) => ({ value: String(id), label: name })),
+            onChange: (selected) => {
+                activeNations = selected;
+                applyFilter();
+            },
+            onToggle: (open) => {
+                elements.timelineWrapper.style.pointerEvents = open ? 'none' : 'auto';
+                elements.timelineWrapper.style.cursor = open ? 'default' : 'grab';
+            },
         });
     }
 
     /**
-     * Wire filter panel open/close and checkbox change logic.
-     * The "전체" (all) checkbox is mutually exclusive with faction checkboxes;
-     * dragging is disabled while the panel is open to avoid accidental panning.
-     */
-    function setupFilterListeners() {
-        elements.filterButton.setAttribute('aria-expanded', 'false');
-        elements.filterButton.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const isHidden = elements.filterPanel.classList.toggle('hidden');
-            elements.filterButton.setAttribute('aria-expanded', String(!isHidden));
-
-            // Disable dragging when the filter panel is open
-            if (!isHidden) {
-                elements.timelineWrapper.style.pointerEvents = 'none';
-                elements.timelineWrapper.style.cursor = 'default';
-            } else {
-                elements.timelineWrapper.style.pointerEvents = 'auto';
-                elements.timelineWrapper.style.cursor = 'grab';
-            }
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!elements.filterPanel.contains(e.target) && !elements.filterButton.contains(e.target)) {
-                if (!elements.filterPanel.classList.contains('hidden')) {
-                    hideElement(elements.filterPanel);
-                    elements.filterButton.setAttribute('aria-expanded', 'false');
-                    // Re-enable dragging when the panel is closed
-                    elements.timelineWrapper.style.pointerEvents = 'auto';
-                    elements.timelineWrapper.style.cursor = 'grab';
-                }
-            }
-        });
-
-        elements.filterPanel.addEventListener('change', (e) => {
-            const allCheckbox = document.getElementById('nation-all');
-            const otherCheckboxes = [...elements.filterPanel.querySelectorAll('input[type="checkbox"]')]
-                .filter(cb => cb.id !== 'nation-all');
-
-            if (e.target.id === 'nation-all') {
-                if (allCheckbox.checked) {
-                    otherCheckboxes.forEach(cb => cb.checked = false);
-                }
-            } else {
-                if (otherCheckboxes.some(cb => cb.checked)) {
-                    allCheckbox.checked = false;
-                }
-            }
-
-            const allCheckboxes = [...elements.filterPanel.querySelectorAll('input[type="checkbox"]')];
-            if (allCheckboxes.every(cb => !cb.checked)) {
-                allCheckbox.checked = true;
-            }
-
-            applyFilter();
-            updateFilterBadge();
-        });
-    }
-
-    function updateFilterBadge() {
-        const selectedCount = [...elements.filterPanel.querySelectorAll('input[type="checkbox"]:checked')]
-            .filter(cb => cb.id !== 'nation-all').length;
-
-        if (selectedCount > 0) {
-            elements.filterBadge.textContent = selectedCount;
-            showElement(elements.filterBadge);
-        } else {
-            hideElement(elements.filterBadge);
-        }
-    }
-
-    /**
-     * Dim or highlight timeline items based on the active faction checkboxes.
-     * When "전체" is checked, all dimming/highlighting is cleared.
+     * Dim or highlight timeline items based on the active faction selection.
+     * An empty selection (전체) clears all dimming/highlighting.
      */
     function applyFilter() {
-        const allCheckbox = document.getElementById('nation-all');
         const timelineItems = document.querySelectorAll('.timeline-item');
 
-        if (allCheckbox.checked) {
+        if (activeNations.length === 0) {
             timelineItems.forEach(item => {
                 item.classList.remove('dimmed', 'highlighted');
             });
             return;
         }
 
-        const selectedNationIds = [...elements.filterPanel.querySelectorAll('input:checked')].map(cb => cb.value);
-
         timelineItems.forEach(item => {
             const itemNationIds = JSON.parse(item.dataset.shipnation || '[]');
-            const isMatch = itemNationIds.some(id => selectedNationIds.includes(String(id)));
-
-            if (isMatch) {
-                item.classList.add('highlighted');
-                item.classList.remove('dimmed');
-            } else {
-                item.classList.add('dimmed');
-                item.classList.remove('highlighted');
-            }
+            const isMatch = itemNationIds.some(id => activeNations.includes(String(id)));
+            item.classList.toggle('highlighted', isMatch);
+            item.classList.toggle('dimmed', !isMatch);
         });
     }
 
@@ -435,7 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (_) {
             parsedNations = [];
         }
-        const nations = parsedNations.map(id => factionMap[id] || `진영 ${id}`).join(', ');
+        const nations = parsedNations.map(id => FACTION_NAMES[id] || `진영 ${id}`).join(', ');
         elements.modalShipNation.textContent = nations;
 
         // Reuse the button element across modal openings to avoid appending duplicates.

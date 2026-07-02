@@ -1,0 +1,74 @@
+/* =============================================================================
+   story-viewer.faction-filter.css
+   Shared 진영 필터 dropdown for story index pages (main-storyline / main-story
+   / event-story). Behavior: public/js/story-viewer/faction-filter.js. Markup
+   contract: .filter-container > button + .filter-panel(.filter-bar), with an
+   optional .filter-count-badge (.badge--count) pinned to the button corner.
+============================================================================= */
+.filter-container {
+  position: relative;
+}
+
+.filter-container .filter-count-badge {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+}
+
+/* Theme-aware panel: --header-bg / --text-color flip with dark mode on every
+   importer (the old hardcoded near-white bg was unreadable in dark mode). */
+.filter-panel {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  right: 0;
+  width: 30rem;
+  max-width: min(90vw, calc(100vw - 2rem));
+  z-index: var(--z-dropdown);
+  background-color: var(--header-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: 0 0.5rem 1.5rem var(--shadow-color);
+  padding: 1rem;
+  gap: 0.5rem 1rem; /* two-value gap: row 0.5rem, col 1rem — not expressible via --filter-bar-gap */
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  flex-basis: calc(25% - 1rem);
+}
+
+.filter-option label {
+  margin-left: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text-color);
+  white-space: nowrap;
+}
+
+.filter-option input[type="checkbox"] {
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  /* The common responsive header orders title(1)/nav(2)/search(3); slot the
+     filter button after the search box instead of defaulting to order 0. */
+  .viewer-header .filter-container {
+    order: 4;
+  }
+
+  .filter-panel {
+    padding: 0.75rem;
+    box-sizing: border-box;
+  }
+
+  .filter-option {
+    flex-basis: calc(50% - 0.5rem);
+    box-sizing: border-box;
+  }
+
+  .filter-option label {
+    font-size: 0.8rem;
+  }
+}

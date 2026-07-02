@@ -71,6 +71,11 @@ body::before {
   background-color: var(--header-bg);
   backdrop-filter: blur(4px);
   border-bottom: 1px solid var(--border-color);
+  /* backdrop-filter makes the header an atomic stacking context; without an
+     explicit level the positioned .timeline-wrapper paints OVER it, burying
+     the filter dropdown under the timeline cards. */
+  position: relative;
+  z-index: var(--z-sticky);
 }
 
 .timeline-header h1 {
@@ -136,62 +141,8 @@ body::before {
   background-color: var(--border-color);
 }
 
-.filter-container {
-  position: relative;
-}
-
-/* Filter count bubble migrated to the canonical .badge--count component
-   (components/badge.css) — the round red number bubble. Only the corner
-   placement over the filter button is page-specific. Visibility is toggled via
-   the global .hidden utility (showElement/hideElement), so no local rule needed. */
-#filter-badge {
-  position: absolute;
-  top: -0.5rem;
-  right: -0.5rem;
-}
-
-.filter-panel {
-  position: absolute;
-  top: 120%;
-  right: 0;
-  width: 30rem;
-  max-width: 90vw;
-  z-index: 1000;
-  background-color: rgba(250, 252, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--border-color);
-  border-radius: 0.5rem;
-  box-shadow: 0 0.5rem 1.5rem rgba(44, 62, 80, 0.2);
-  padding: 1rem;
-  gap: 0.5rem 1rem; /* two-value gap: row 0.5rem, col 1rem — not expressible via --filter-bar-gap */
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.filter-panel.hidden {
-  opacity: 0;
-  transform: translateY(-10px);
-  pointer-events: none;
-}
-
-.filter-option {
-  display: flex;
-  align-items: center;
-  flex-basis: calc(25% - 1rem);
-}
-
-.filter-option label {
-  margin-left: 0.5rem;
-  cursor: pointer;
-  font-size: 0.9rem;
-  color: var(--text-color);
-  white-space: nowrap;
-}
-
-.filter-option input[type="checkbox"] {
-  cursor: pointer;
-}
+/* 진영 필터 dropdown (container/panel/options/count badge) →
+   story-viewer.faction-filter.css (shared with main-story / event-story). */
 
 /* Timeline Container Styles */
 .timeline-wrapper {
@@ -569,23 +520,14 @@ body::before {
     font-size: 0.9rem;
   }
 
+  /* Center the panel on the (full-width) filter button; the shared
+     faction-filter mobile rules cover option sizing. */
   .filter-panel {
     width: 95vw;
     max-width: 95vw;
-    padding: 0.75rem;
-    box-sizing: border-box;
     left: 50%;
     right: auto;
     transform: translateX(-50%);
-  }
-
-  .filter-option {
-    flex-basis: calc(50% - 0.5rem);
-    box-sizing: border-box;
-  }
-
-  .filter-option label {
-    font-size: 0.8rem;
   }
 }
 
