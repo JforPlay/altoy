@@ -30,10 +30,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             </div>
         </header>
         <div class="filter-bar event-filter-bar" id="event-filter-bar">
+            {/* subtype names are the game's own labels (gametip memory_actiivty_*) */}
             <div class="event-subtype-chips" role="group" aria-label="이벤트 유형 필터">
-                <button type="button" class="chip" data-subtype-chip="1" aria-pressed="false">대형</button>
-                <button type="button" class="chip" data-subtype-chip="2" aria-pressed="false">콜라보·특수</button>
-                <button type="button" class="chip" data-subtype-chip="3" aria-pressed="false">미니·시즌</button>
+                <button type="button" class="chip" data-subtype-chip="1" aria-pressed="false">E.X.</button>
+                <button type="button" class="chip" data-subtype-chip="2" aria-pressed="false">S.P.</button>
+                <button type="button" class="chip" data-subtype-chip="3" aria-pressed="false">데일리</button>
             </div>
             <select id="faction-filter" class="event-faction-select">
                 <option value="">전체 진영</option>

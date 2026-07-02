@@ -7,7 +7,8 @@
 import { resolveUrl } from '../utils.js';
 import { groupAndFilterEvents } from './event-story.filter.js';
 
-const SUBTYPE_LABEL = { 1: '대형', 2: '콜라보·특수', 3: '미니·시즌' };
+// The game's own subtype labels (gametip memory_actiivty_ex / _sp / _daily).
+const SUBTYPE_LABEL = { 1: 'E.X.', 2: 'S.P.', 3: '데일리' };
 const filterState = { subtypes: [], faction: '' };
 
 function subtitleFor(ev) {
