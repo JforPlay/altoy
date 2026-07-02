@@ -3,7 +3,40 @@
  * Page entry for the Main Story viewer.
  * Configures the shared StoryViewer engine with main-story-specific data sources and wires DOMContentLoaded.
  */
+import { setupFactionFilter, FACTION_NAMES } from './faction-filter.js';
+
 document.addEventListener('DOMContentLoaded', () => {
+
+    // 진영 필터 selection ([] = 전체); read by config.filterEvent below.
+    let activeNations = [];
+
+    /** Build the shared 진영 필터 dropdown from the loaded index's nation IDs. */
+    function setupNationFilter(storylineData) {
+        const button = document.getElementById('filter-button');
+        const panel = document.getElementById('filter-panel');
+        if (!button || !panel) return;
+
+        const uniqueNations = new Map();
+        Object.values(storylineData).forEach(event => {
+            (event.shipnation || []).forEach(nationId => {
+                if (!uniqueNations.has(nationId) && FACTION_NAMES[nationId]) {
+                    uniqueNations.set(nationId, FACTION_NAMES[nationId]);
+                }
+            });
+        });
+
+        setupFactionFilter({
+            button,
+            panel,
+            badge: document.getElementById('filter-badge'),
+            options: [...uniqueNations.entries()].sort((a, b) => a[0] - b[0])
+                .map(([id, name]) => ({ value: String(id), label: name })),
+            onChange: (selected) => {
+                activeNations = selected;
+                window.StoryViewer.populateEventGrid(document.getElementById('search-bar')?.value || '');
+            },
+        });
+    }
 
     const mainStoryConfig = {
         viewerType: 'main',
@@ -23,7 +56,12 @@ document.addEventListener('DOMContentLoaded', () => {
         processLoadedData: (viewer, dataArray) => {
             viewer.storylineData = dataArray[0];
             viewer.shipgirlData = dataArray[1];
+            setupNationFilter(viewer.storylineData);
         },
+
+        // 진영 필터 predicate for the engine's default index grid.
+        filterEvent: (event) => activeNations.length === 0
+            || (event.shipnation || []).some(id => activeNations.includes(String(id))),
 
         getEventMemories: (eventData) => eventData?.memory_id,
 

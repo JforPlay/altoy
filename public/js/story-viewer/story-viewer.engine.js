@@ -538,8 +538,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             this.elements.eventGrid.textContent = '';
+            // Optional page-supplied predicate (e.g. main-story's 진영 필터)
+            // composes with the name search; absent → search-only as before.
+            const extraFilter = this.config.filterEvent || (() => true);
             const filteredEvents = Object.entries(this.storylineData)
-                .filter(([key, event]) => event.name.toLowerCase().includes((searchTerm || '').toLowerCase()));
+                .filter(([key, event]) => event.name.toLowerCase().includes((searchTerm || '').toLowerCase())
+                    && extraFilter(event));
 
             if (filteredEvents.length === 0 && Object.keys(this.storylineData).length === 0) {
                 for (let i = 0; i < 6; i++) {
