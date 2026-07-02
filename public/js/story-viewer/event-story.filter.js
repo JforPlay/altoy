@@ -7,18 +7,19 @@
 /**
  * Filter event index records by subtype/faction/search, then group by year.
  * @param {Array<object>} records  event index records (id, name, subtype, year, faction)
- * @param {{search?: string, subtypes?: number[], faction?: string}} [opts]
+ * @param {{search?: string, subtypes?: number[], factions?: string[]}} [opts]
  * @returns {Array<{year: number|null, label: string, events: object[]}>}
  *   groups sorted by year descending, the null-year bucket ('연도 미상') last,
  *   events within each group sorted by id ascending.
  */
-export function groupAndFilterEvents(records, { search = '', subtypes = [], faction = '' } = {}) {
+export function groupAndFilterEvents(records, { search = '', subtypes = [], factions = [] } = {}) {
   const term = String(search || '').trim().toLowerCase();
   const subSet = new Set(subtypes || []);
+  const facSet = new Set(factions || []);
 
   const filtered = (records || []).filter((r) => {
     if (subSet.size && !subSet.has(r.subtype)) return false;
-    if (faction && r.faction !== faction) return false;
+    if (facSet.size && !facSet.has(r.faction)) return false;
     if (term && !String(r.name || '').toLowerCase().includes(term)) return false;
     return true;
   });

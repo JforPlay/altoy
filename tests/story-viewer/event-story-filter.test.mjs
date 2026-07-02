@@ -25,8 +25,9 @@ test('search is case-insensitive substring on name', () => {
   assert.equal(g[0].events[0].id, 148);
 });
 
-test('faction filter matches exact faction', () => {
-  assert.equal(groupAndFilterEvents(FIX, { faction: '사쿠라' }).flatMap(x => x.events).length, 1);
+test('faction filter matches any selected faction', () => {
+  assert.equal(groupAndFilterEvents(FIX, { factions: ['사쿠라'] }).flatMap(x => x.events).length, 1);
+  assert.equal(groupAndFilterEvents(FIX, { factions: ['사쿠라', '없는진영'] }).flatMap(x => x.events).length, 1);
 });
 
 test('events within a year sorted by id ascending', () => {
@@ -37,6 +38,6 @@ test('events within a year sorted by id ascending', () => {
   assert.deepEqual(g[0].events.map(e => e.id), [2, 5]);
 });
 
-test('empty subtypes/faction/search returns everything', () => {
+test('empty subtypes/factions/search returns everything', () => {
   assert.equal(groupAndFilterEvents(FIX, {}).flatMap(x => x.events).length, 4);
 });

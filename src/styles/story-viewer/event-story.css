@@ -1,17 +1,13 @@
 /**
  * event-story.css
  * Event-archive-specific layout on top of the shared story-viewer + global
- * component primitives (.card-grid / .chip / .filter-bar / .section-title /
- * .badge). Chip active fill + filter-bar flex come from the components —
- * only the hooks and page layout live here.
+ * component primitives (.card-grid / .chip / .section-title / .badge) and the
+ * shared faction-filter dropdown (story-viewer.faction-filter.css). Chip
+ * active fill comes from the components — only the hooks and page layout
+ * live here.
  */
-.event-filter-bar {
-    --filter-bar-gap: 0.75rem;
-    margin: 0 auto 1rem;
-    max-width: 1200px;
-    padding: 0 1rem;
-}
 
+/* Subtype chips + search + 진영 필터 share the sticky title bar. */
 .event-subtype-chips {
     display: flex;
     flex-wrap: wrap;
@@ -33,15 +29,17 @@
     align-self: flex-start;
 }
 
-.event-faction-select {
-    padding: 0.4rem 0.6rem;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border-color);
-    background: var(--card-bg);
-    color: var(--text-color);
-}
-
 /* Deep-link (→메인스토리) cards read as reference, not inline-playable. */
 .grid-card.event-deeplink {
     opacity: 0.92;
+}
+
+@media (max-width: 768px) {
+    /* Wrapped header order: title(1) → chips(2) → search(3) + filter(4) row
+       (filter order comes from the shared faction-filter css). */
+    .viewer-header .event-subtype-chips {
+        order: 2;
+        width: 100%;
+        justify-content: center;
+    }
 }

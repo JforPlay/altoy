@@ -6,10 +6,14 @@
  */
 import { resolveUrl } from '../utils.js';
 import { groupAndFilterEvents } from './event-story.filter.js';
+import { setupFactionFilter } from './faction-filter.js';
 
 // The game's own subtype labels (gametip memory_actiivty_ex / _sp / _daily).
 const SUBTYPE_LABEL = { 1: 'E.X.', 2: 'S.P.', 3: '데일리' };
-const filterState = { subtypes: [], faction: '' };
+const filterState = { subtypes: [], factions: [] };
+
+const rerender = () =>
+    window.StoryViewer.populateEventGrid(document.getElementById('search-bar')?.value || '');
 
 function subtitleFor(ev) {
     return ev.dateRange || ev.description || '';
@@ -29,7 +33,7 @@ function renderEventGrid(viewer, searchTerm) {
     const groups = groupAndFilterEvents(records, {
         search: searchTerm,
         subtypes: filterState.subtypes,
-        faction: filterState.faction,
+        factions: filterState.factions,
     });
 
     if (groups.length === 0) {
@@ -79,22 +83,29 @@ function renderEventGrid(viewer, searchTerm) {
         grid.appendChild(section);
     }
 
-    populateFactionOptions(records);
+    ensureFactionFilter(records);
 }
 
-/** One-time fill of the faction <select> from the loaded records. */
-let factionFilled = false;
-function populateFactionOptions(records) {
-    if (factionFilled) return;
-    const sel = document.getElementById('faction-filter');
-    if (!sel) return;
-    const factions = [...new Set(records.map(r => r.faction).filter(Boolean))].sort();
-    for (const f of factions) {
-        const opt = document.createElement('option');
-        opt.value = f; opt.textContent = f;
-        sel.appendChild(opt);
-    }
-    factionFilled = true;
+/** One-time wiring of the shared 진영 필터 dropdown from the loaded records. */
+let factionFilterReady = false;
+function ensureFactionFilter(records) {
+    if (factionFilterReady) return;
+    const button = document.getElementById('filter-button');
+    const panel = document.getElementById('filter-panel');
+    if (!button || !panel) return;
+    // 'X' is the timeline curator's no-faction placeholder — not a real 진영.
+    const factions = [...new Set(records.map(r => r.faction).filter(f => f && f !== 'X'))].sort();
+    setupFactionFilter({
+        button,
+        panel,
+        badge: document.getElementById('filter-badge'),
+        options: factions.map(f => ({ value: f, label: f })),
+        onChange: (selected) => {
+            filterState.factions = selected;
+            rerender();
+        },
+    });
+    factionFilterReady = true;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -127,9 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.StoryViewer.init(config);
 
-    // Filter chips + faction select re-render through the same engine entry point.
-    const rerender = () => window.StoryViewer.populateEventGrid(document.getElementById('search-bar')?.value || '');
-
+    // Filter chips + 진영 필터 re-render through the same engine entry point.
     document.querySelectorAll('[data-subtype-chip]').forEach((chip) => {
         chip.addEventListener('click', () => {
             const st = Number(chip.dataset.subtypeChip);
@@ -140,7 +149,4 @@ document.addEventListener('DOMContentLoaded', () => {
             rerender();
         });
     });
-
-    const factionSel = document.getElementById('faction-filter');
-    factionSel?.addEventListener('change', () => { filterState.faction = factionSel.value; rerender(); });
 });
