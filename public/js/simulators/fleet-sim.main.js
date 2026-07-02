@@ -16,6 +16,7 @@ import {
     createMaterialIcon,
     renderStatus,
     syncedStorage,
+    IMG_FALLBACKS,
 } from '../utils.js';
 import {
     MAX_SAVE_SLOTS, SAVES_VERSION, parseSaves, migrateSaves,
@@ -28,6 +29,8 @@ import {
     getShipByGid,
     getEquipById,
     getMaxEnhanceLevel,
+    getMetaBoss,
+    getShipPortraitUrl,
 } from './fleet-sim.data.js';
 
 import { setup as setupCalc } from './fleet-sim.calc.js';
@@ -601,12 +604,18 @@ function handleSave() {
         return;
     }
 
-    saves.push({
+    const record = {
         name,
         timestamp: Date.now(),
         ships: serializeFleet(state.ships),
-    });
-
+    };
+    // Boss metadata is display-only (portrait/tier on the save row) — loading
+    // a preset never restores the damage target (user decision, spec §2.4).
+    const dt = state.damageTarget;
+    if (dt && dt.kind === 'meta' && dt.bossId != null) {
+        record.target = { bossId: dt.bossId, tier: dt.tier ?? null };
+    }
+    saves.push(record);
     savesStore.save(saves);
 
     // Clear input and re-render list
@@ -724,7 +733,36 @@ function _renderSaveSlotList() {
             _createSaveActionButton('save-slot-delete', i, 'delete', '삭제')
         );
 
-        slot.append(info, actions);
+        // Boss metadata badge (display-only). bossId == the playable META
+        // ship's gid, so the portrait rides the existing ship-portrait pipeline.
+        let bossBadge = null;
+        if (save.target && save.target.bossId != null) {
+            const boss = getMetaBoss(save.target.bossId);
+            const bossShip = getShipByGid(save.target.bossId);
+            if (boss || bossShip) {
+                bossBadge = document.createElement('div');
+                bossBadge.className = 'save-slot-boss';
+                bossBadge.title = boss ? boss.name : '';
+                if (bossShip && bossShip.skin_id) {
+                    const img = document.createElement('img');
+                    img.className = 'save-slot-boss-portrait';
+                    img.src = getShipPortraitUrl(bossShip.skin_id);
+                    img.alt = boss ? boss.name : '';
+                    img.loading = 'lazy';
+                    img.dataset.fallback = IMG_FALLBACKS.DEFAULT;
+                    bossBadge.appendChild(img);
+                }
+                if (save.target.tier != null) {
+                    const tierChip = document.createElement('span');
+                    tierChip.className = 'save-slot-boss-tier';
+                    tierChip.textContent = `T${save.target.tier}`;
+                    bossBadge.appendChild(tierChip);
+                }
+            }
+        }
+
+        if (bossBadge) slot.append(info, bossBadge, actions);
+        else slot.append(info, actions);
 
         frag.appendChild(slot);
     }

@@ -296,4 +296,29 @@
 
 /* Loading overlay → canonical .page-status--overlay (components/status.css) */
 
+/* Boss metadata badge on save rows (portrait + tier; display-only) */
+.save-slot-boss {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-shrink: 0;
+}
+
+.save-slot-boss-portrait {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  border: 1px solid var(--border-color);
+}
+
+.save-slot-boss-tier {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.1rem 0.3rem;
+  border-radius: var(--radius-sm);
+  background: var(--accent-blue);
+  color: #fff;
+}
+
 
