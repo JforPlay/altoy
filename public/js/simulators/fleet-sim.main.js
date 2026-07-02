@@ -15,7 +15,12 @@ import {
     setStorageItem,
     createMaterialIcon,
     renderStatus,
+    syncedStorage,
 } from '../utils.js';
+import {
+    MAX_SAVE_SLOTS, SAVES_VERSION, parseSaves, migrateSaves,
+    serializeFleet, deserializeFleet, clampLevel,
+} from './fleet-sim.saves.js';
 
 import {
     setup as setupData,
@@ -32,7 +37,21 @@ import { setup as setupPicker, openShipPicker, openEquipPicker, openSPWeaponPick
 // ===== Constants =====
 
 const STORAGE_KEY = 'fleetSimSaves';
-const MAX_SAVE_SLOTS = 5;
+
+/**
+ * Saves store: {v:1, d: Save[]} envelope; legacy bare arrays migrate on read.
+ * onRemoteChange keeps the save list live when another tab writes saves.
+ */
+const savesStore = syncedStorage(STORAGE_KEY, {
+    version: SAVES_VERSION,
+    parse: parseSaves,
+    migrate: migrateSaves,
+    onRemoteChange: () => {
+        const modal = document.getElementById('saveLoadModal');
+        // openModal sets inline display:flex; closed = 'none' or initial hidden
+        if (modal && modal.style.display === 'flex') _renderSaveSlotList();
+    },
+});
 
 // ===== Shared State =====
 
@@ -389,14 +408,14 @@ function handleEquipSelected(slotIndex, equipIndex, equipId, level) {
     const slotConfig = state.ships[slotIndex];
     if (!slotConfig) return;
     if (!slotConfig.equips) slotConfig.equips = new Array(5).fill(null);
-    slotConfig.equips[equipIndex] = equipId ? { id: equipId, level: _clampLevel(level, 0, 13) } : null;
+    slotConfig.equips[equipIndex] = equipId ? { id: equipId, level: clampLevel(level, 0, 13) } : null;
     renderFleet();
 }
 
 function handleSPWeaponSelected(slotIndex, spWeaponId, maxLevel) {
     const slotConfig = state.ships[slotIndex];
     if (!slotConfig) return;
-    slotConfig.spWeapon = spWeaponId ? { id: spWeaponId, level: _clampLevel(maxLevel, 0, 10) } : null;
+    slotConfig.spWeapon = spWeaponId ? { id: spWeaponId, level: clampLevel(maxLevel, 0, 10) } : null;
     renderFleet();
 }
 
@@ -585,10 +604,10 @@ function handleSave() {
     saves.push({
         name,
         timestamp: Date.now(),
-        ships: _serializeFleet(),
+        ships: serializeFleet(state.ships),
     });
 
-    setStorageItem(STORAGE_KEY, JSON.stringify(saves));
+    savesStore.save(saves);
 
     // Clear input and re-render list
     if (nameInput) nameInput.value = '';
@@ -605,7 +624,7 @@ function _handleLoad(saveIndex) {
     const save = saves[saveIndex];
     if (!save) return;
 
-    _deserializeFleet(save.ships);
+    state.ships = deserializeFleet(save.ships);
     closeModal('saveLoadModal');
     renderFleet();
     showToast('불러오기 완료', 'success');
@@ -619,7 +638,7 @@ function _handleDelete(saveIndex) {
     if (saveIndex < 0 || saveIndex >= saves.length) return;
 
     saves.splice(saveIndex, 1);
-    setStorageItem(STORAGE_KEY, JSON.stringify(saves));
+    savesStore.save(saves);
     _renderSaveSlotList();
     showToast('삭제 완료', 'info');
 }
@@ -628,13 +647,7 @@ function _handleDelete(saveIndex) {
  * Get saved fleet data from localStorage.
  */
 function _getSaves() {
-    const raw = getStorageItem(STORAGE_KEY, '[]');
-    try {
-        const parsed = JSON.parse(raw);
-        return Array.isArray(parsed) ? parsed : [];
-    } catch {
-        return [];
-    }
+    return savesStore.load();
 }
 
 /**
@@ -643,59 +656,6 @@ function _getSaves() {
 function _getNextSlotNumber() {
     const saves = _getSaves();
     return saves.length + 1;
-}
-
-/**
- * Serialize current fleet state for saving.
- */
-function _serializeFleet() {
-    return state.ships.map(s => {
-        if (!s) return null;
-        const out = {
-            gid: s.gid,
-            level: s.level,
-            affinity: s.affinity,
-            equips: (s.equips || []).map(eq => eq ? { id: eq.id, level: eq.level } : null),
-        };
-        if (s.spWeapon) out.spWeapon = { id: s.spWeapon.id, level: s.spWeapon.level };
-        if (s.retrofit !== undefined) out.retrofit = s.retrofit;
-        return out;
-    });
-}
-
-/**
- * Deserialize saved fleet data into state.
- */
-function _deserializeFleet(savedShips) {
-    if (!Array.isArray(savedShips)) {
-        state.ships = [null, null, null, null, null, null];
-        return;
-    }
-
-    state.ships = savedShips.map(s => {
-        if (!s || !s.gid) return null;
-        const slot = {
-            gid: s.gid,
-            level: _clampLevel(s.level, 1, 125, 125),
-            affinity: s.affinity || 'love',
-            equips: Array.isArray(s.equips)
-                ? s.equips.slice(0, 5).map(eq => eq ? { id: eq.id, level: _clampLevel(eq.level, 0, 13, 0) } : null)
-                : new Array(5).fill(null),
-            spWeapon: s.spWeapon ? { id: s.spWeapon.id, level: _clampLevel(s.spWeapon.level, 0, 10, 0) } : null,
-        };
-        if (s.retrofit !== undefined) slot.retrofit = s.retrofit;
-        return slot;
-    });
-
-    // Ensure exactly 6 slots
-    while (state.ships.length < 6) state.ships.push(null);
-    if (state.ships.length > 6) state.ships.length = 6;
-}
-
-function _clampLevel(value, min, max, fallback = max) {
-    const parsed = parseInt(value, 10);
-    if (isNaN(parsed)) return fallback;
-    return Math.max(min, Math.min(max, parsed));
 }
 
 /**
@@ -886,10 +846,10 @@ function restoreFromUrl(encoded) {
             if (!s) return null;
             const slot = {
                 gid: s.g,
-                level: _clampLevel(s.l, 1, 125, 125),
+                level: clampLevel(s.l, 1, 125, 125),
                 affinity: s.a || 'love',
-                equips: (s.e || []).slice(0, 5).map(eq => eq ? { id: eq[0], level: _clampLevel(eq[1], 0, 13, 0) } : null),
-                spWeapon: s.sp ? { id: s.sp[0], level: _clampLevel(s.sp[1], 0, 10, 0) } : null,
+                equips: (s.e || []).slice(0, 5).map(eq => eq ? { id: eq[0], level: clampLevel(eq[1], 0, 13, 0) } : null),
+                spWeapon: s.sp ? { id: s.sp[0], level: clampLevel(s.sp[1], 0, 10, 0) } : null,
             };
             if (s.r !== undefined) slot.retrofit = s.r === 1;
             return slot;

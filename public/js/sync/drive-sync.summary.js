@@ -94,7 +94,10 @@ function countTechCompletion(raw) {
 function countFleetSim(raw) {
     const obj = tryParse(raw);
     if (!obj) return '';
-    const saves = Array.isArray(obj) ? obj : (obj.saves || []);
+    // three known shapes: legacy bare array, {v:1, d:[...]} envelope, {saves:[...]}
+    const saves = Array.isArray(obj) ? obj
+        : Array.isArray(obj.d) ? obj.d
+        : (obj.saves || []);
     return saves.length > 0 ? `함대 저장 ${saves.length}개` : '';
 }
 
