@@ -23,6 +23,13 @@
     margin-bottom: 0.75rem;
 }
 
+/* Coverless events get a chibi placeholder — letterboxed on the engine's
+   .is-placeholder backdrop, never cropped/stretched (square art in a wide box). */
+.card-thumbnail.cover-placeholder {
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
 /* Subtype badge sits under the card title. */
 .event-subtype-badge {
     margin-top: 0.35rem;

@@ -30,12 +30,32 @@ test('faction filter matches any selected faction', () => {
   assert.equal(groupAndFilterEvents(FIX, { factions: ['사쿠라', '없는진영'] }).flatMap(x => x.events).length, 1);
 });
 
-test('events within a year sorted by id ascending', () => {
+test('events within a year sorted by start date descending', () => {
   const g = groupAndFilterEvents([
-    { id: 5, name: 'b', subtype: 3, year: 2020 },
-    { id: 2, name: 'a', subtype: 3, year: 2020 },
+    { id: 2, name: 'a', subtype: 3, year: 2020, dateRange: '2020/03/05' },
+    { id: 5, name: 'b', subtype: 3, year: 2020, dateRange: '2020/11/19' },
+    { id: 9, name: 'c', subtype: 3, year: 2020, dateRange: '2020/07/01' },
   ]);
-  assert.deepEqual(g[0].events.map(e => e.id), [2, 5]);
+  assert.deepEqual(g[0].events.map(e => e.id), [5, 9, 2]);
+});
+
+test('date sort parses range start and dotted curator format', () => {
+  const g = groupAndFilterEvents([
+    { id: 1, name: 'range', subtype: 3, year: 2019, dateRange: '2019/02/14 ~ 2019/02/28' },
+    { id: 2, name: 'dotted', subtype: 3, year: 2019, dateRange: '2019. 9. 5' },
+    { id: 3, name: 'plain', subtype: 3, year: 2019, dateRange: '2019/05/30' },
+  ]);
+  assert.deepEqual(g[0].events.map(e => e.id), [2, 3, 1]);
+});
+
+test('undated events go last within their year, ties break by id ascending', () => {
+  const g = groupAndFilterEvents([
+    { id: 8, name: 'undated', subtype: 3, year: 2023 },
+    { id: 4, name: 'same-day-b', subtype: 3, year: 2023, dateRange: '2023/01/18' },
+    { id: 3, name: 'same-day-a', subtype: 3, year: 2023, dateRange: '2023/01/18' },
+    { id: 6, name: 'newer', subtype: 3, year: 2023, dateRange: '2023/06/08' },
+  ]);
+  assert.deepEqual(g[0].events.map(e => e.id), [6, 3, 4, 8]);
 });
 
 test('empty subtypes/factions/search returns everything', () => {

@@ -10,6 +10,12 @@ import { setupFactionFilter } from './faction-filter.js';
 
 // The game's own subtype labels (gametip memory_actiivty_ex / _sp / _daily).
 const SUBTYPE_LABEL = { 1: 'E.X.', 2: 'S.P.', 3: '데일리' };
+// Chibi covers for events without banner art. Every E.X. event has real art,
+// so only S.P./데일리 need one (unknown subtypes default to the S.P. cover).
+const PLACEHOLDER_COVER = {
+    2: 'assets/img/story_cover_placeholder1.webp', // S.P.
+    3: 'assets/img/story_cover_placeholder2.webp', // 데일리
+};
 const filterState = { subtypes: [], factions: [] };
 
 const rerender = () =>
@@ -68,6 +74,15 @@ function renderEventGrid(viewer, searchTerm) {
                 },
                 ev.id
             );
+
+            if (!ev.icon) {
+                const thumb = card.querySelector('.card-thumbnail');
+                if (thumb) {
+                    thumb.classList.add('cover-placeholder');
+                    const cover = PLACEHOLDER_COVER[ev.subtype] || PLACEHOLDER_COVER[2];
+                    thumb.style.backgroundImage = `url("${resolveUrl(cover)}")`;
+                }
+            }
 
             const badge = document.createElement('span');
             badge.className = 'badge badge-info event-subtype-badge';
