@@ -8,7 +8,7 @@
  * computed on open via getBoundingClientRect().
  */
 
-import { openModal, closeModal, setupModal, showToast, getStorageItem } from '../utils.js';
+import { openModal, closeModal, setupModal, showToast, getStorageItem, escapeHtml } from '../utils.js';
 import { STORAGE_KEYS, COOLDOWN_MS } from './drive-sync.config.js';
 import { hasToken, requestToken, unlink } from './drive-sync.auth.js';
 import { runSync, resolveConflict, exportPayload, importPayload, hasLocalData, SYNC_OUTCOMES } from './drive-sync.engine.js';
@@ -154,12 +154,12 @@ function renderConflictModal(localData, cloudData, cloudModifiedTime) {
             <div class="sync-conflict-side">
                 <h4>이 기기</h4>
                 <div class="sync-conflict-time">${localEdited} 수정됨</div>
-                <ul>${localLabels.length ? localLabels.map(l => `<li>${l}</li>`).join('') : '<li>(요약 가능한 데이터 없음)</li>'}</ul>
+                <ul>${localLabels.length ? localLabels.map(l => `<li>${escapeHtml(l)}</li>`).join('') : '<li>(요약 가능한 데이터 없음)</li>'}</ul>
             </div>
             <div class="sync-conflict-side">
                 <h4>Google Drive</h4>
                 <div class="sync-conflict-time">${cloudEdited} 수정됨</div>
-                <ul>${cloudLabels.length ? cloudLabels.map(l => `<li>${l}</li>`).join('') : '<li>(요약 가능한 데이터 없음)</li>'}</ul>
+                <ul>${cloudLabels.length ? cloudLabels.map(l => `<li>${escapeHtml(l)}</li>`).join('') : '<li>(요약 가능한 데이터 없음)</li>'}</ul>
             </div>
         </div>
         <div class="sync-conflict-actions">
