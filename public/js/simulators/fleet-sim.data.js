@@ -6,6 +6,7 @@
  */
 
 import { fetchJSON, fetchJSONWithCache, DATA_FOR_TOY_BASE } from '../utils.js';
+import { buildTierMaps } from '../equip/equip-code.js';
 
 // State reference (set via setup)
 let state;
@@ -389,6 +390,22 @@ export function getGenericSPWeapons(shipType) {
     return Object.entries(spWeaponById)
         .filter(([, w]) => w.unique === 0 && spTypeSet.has(w.type))
         .map(([id, w]) => ({ id, ...w }));
+}
+
+// ===== Equip Code Tier Maps =====
+
+let equipCodeMaps = null;
+
+/**
+ * Lazy tier-id maps for the 장비 코드 codec. Built once from loaded data;
+ * null until loadAllData has populated equipFullData/spWeaponData (both are
+ * non-fatal loads — callers must handle null).
+ */
+export function getEquipCodeMaps() {
+    if (!equipCodeMaps && state.equipFullData && state.spWeaponData) {
+        equipCodeMaps = buildTierMaps(state.equipFullData, state.spWeaponData.weapons);
+    }
+    return equipCodeMaps;
 }
 
 /**

@@ -190,6 +190,40 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
     </Modal>
 
+    <!-- Equip Code Modal (장비 코드 내보내기/가져오기) -->
+    <Modal id="equipCodeModal" title="장비 코드">
+        <div class="equip-code-section">
+            <h3 class="equip-code-heading">내보내기</h3>
+            <div class="equip-code-row">
+                <input type="text" id="equip-code-export" class="picker-search-input" readonly aria-label="내보내기 코드" />
+                <button id="equip-code-copy" class="btn btn-primary" type="button">
+                    <span class="material-symbols-outlined">content_copy</span>
+                    복사
+                </button>
+            </div>
+            <p class="equip-code-hint">인게임 도크의 '장비 코드' 기능에 붙여넣어 사용할 수 있습니다.</p>
+        </div>
+        <div class="save-divider"></div>
+        <div class="equip-code-section">
+            <h3 class="equip-code-heading">가져오기</h3>
+            <div class="equip-code-row">
+                <input type="text" id="equip-code-import" class="picker-search-input" placeholder="코드 붙여넣기..." autocomplete="off" aria-label="가져오기 코드" />
+                <button id="equip-code-apply" class="btn btn-primary" type="button">
+                    <span class="material-symbols-outlined">download</span>
+                    적용
+                </button>
+            </div>
+            <ul id="equip-code-notices" class="equip-code-notices"></ul>
+            <div id="equip-code-gid-actions" class="equip-code-gid-actions hidden">
+                <p id="equip-code-gid-msg" class="equip-code-gid-msg"></p>
+                <div class="equip-code-gid-buttons">
+                    <button id="equip-code-apply-switch" class="btn btn-sm btn-primary" type="button">함순이 변경 + 적용</button>
+                    <button id="equip-code-apply-only" class="btn btn-sm btn-secondary" type="button">장비만 적용</button>
+                </div>
+            </div>
+        </div>
+    </Modal>
+
     <!-- Loading Overlay -->
     <div id="loading-overlay" class="page-status page-status-loading page-status--overlay">
         <div class="spinner"></div>

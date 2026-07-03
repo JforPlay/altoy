@@ -314,6 +314,9 @@ function _buildIdentityHTML(slotIndex, ship, slotConfig) {
                 </div>
             </div>
             <div class="ship-card-actions">
+                <button class="btn btn-icon btn-sm" data-action="equip-code" data-slot="${slotIndex}" title="장비 코드">
+                    <span class="material-symbols-outlined">code</span>
+                </button>
                 <button class="btn btn-close" data-action="remove-ship" data-slot="${slotIndex}" title="제거">
                     <span class="material-symbols-outlined">close</span>
                 </button>
@@ -892,7 +895,7 @@ export async function renderDamagePanel(container) {
     // Per-ship rows
     const perShipRows = result.perShip.map((s) => {
         const ship = getShipByGid(s.ref);
-        const name = ship ? escapeHtml(ship.name) : String(s.ref);
+        const name = ship ? escapeHtml(ship.name) : escapeHtml(String(s.ref));
         return `<div class="dmg-ship-row">
             <span class="dmg-ship-name">${name}</span>
             <span class="dmg-oneshot">일격 ${_fmt(s.oneShotExpected)}</span>
