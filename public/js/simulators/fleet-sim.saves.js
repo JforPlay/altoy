@@ -43,19 +43,31 @@ export function serializeFleet(ships) {
     });
 }
 
-/** Deserialize saved ships into exactly 6 clamped slot configs. */
+/** Deserialize saved ships into exactly 6 clamped slot configs.
+ *  ids coerce to finite positive Numbers — poisoned saves degrade to empty slots. */
 export function deserializeFleet(savedShips) {
     const ships = (Array.isArray(savedShips) ? savedShips : []).map(s => {
-        if (!s || !s.gid) return null;
+        if (!s) return null;
+        const gid = Number(s.gid);
+        if (!Number.isFinite(gid) || gid <= 0) return null;
         const slot = {
-            gid: s.gid,
+            gid,
             level: clampLevel(s.level, 1, 125, 125),
             affinity: s.affinity || 'love',
             equips: Array.isArray(s.equips)
-                ? s.equips.slice(0, 5).map(eq => eq ? { id: eq.id, level: clampLevel(eq.level, 0, 13, 0) } : null)
+                ? s.equips.slice(0, 5).map(eq => {
+                    const id = eq ? Number(eq.id) : NaN;
+                    return Number.isFinite(id) && id > 0
+                        ? { id, level: clampLevel(eq.level, 0, 13, 0) }
+                        : null;
+                })
                 : new Array(5).fill(null),
-            spWeapon: s.spWeapon ? { id: s.spWeapon.id, level: clampLevel(s.spWeapon.level, 0, 10, 0) } : null,
+            spWeapon: null,
         };
+        const spId = s.spWeapon ? Number(s.spWeapon.id) : NaN;
+        if (Number.isFinite(spId) && spId > 0) {
+            slot.spWeapon = { id: spId, level: clampLevel(s.spWeapon.level, 0, 10, 0) };
+        }
         if (s.retrofit !== undefined) slot.retrofit = s.retrofit;
         return slot;
     });

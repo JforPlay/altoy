@@ -60,3 +60,15 @@ test('clampLevel: parses, clamps, falls back', () => {
     assert.equal(clampLevel(999, 1, 125), 125);
     assert.equal(clampLevel('x', 0, 13, 0), 0);
 });
+
+test('deserializeFleet: non-numeric ids are dropped, not passed through', () => {
+    const out = deserializeFleet([
+        { gid: '__proto__', level: 100, equips: [] },
+        { gid: 20516, level: 100, equips: [{ id: 'x', level: 3 }, { id: 500, level: 3 }], spWeapon: { id: {}, level: 5 } },
+    ]);
+    assert.equal(out[0], null);
+    assert.equal(out[1].gid, 20516);
+    assert.equal(out[1].equips[0], null);
+    assert.deepEqual(out[1].equips[1], { id: 500, level: 3 });
+    assert.equal(out[1].spWeapon, null);
+});

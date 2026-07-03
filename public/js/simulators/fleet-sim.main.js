@@ -891,13 +891,24 @@ function restoreFromUrl(encoded) {
 
         state.ships = (config.s || []).map(s => {
             if (!s) return null;
+            const gid = Number(s.g);
+            if (!Number.isFinite(gid) || gid <= 0) return null;
             const slot = {
-                gid: s.g,
+                gid,
                 level: clampLevel(s.l, 1, 125, 125),
                 affinity: s.a || 'love',
-                equips: (s.e || []).slice(0, 5).map(eq => eq ? { id: eq[0], level: clampLevel(eq[1], 0, 13, 0) } : null),
-                spWeapon: s.sp ? { id: s.sp[0], level: clampLevel(s.sp[1], 0, 10, 0) } : null,
+                equips: (s.e || []).slice(0, 5).map(eq => {
+                    const id = eq ? Number(eq[0]) : NaN;
+                    return Number.isFinite(id) && id > 0
+                        ? { id, level: clampLevel(eq[1], 0, 13, 0) }
+                        : null;
+                }),
+                spWeapon: null,
             };
+            const spId = s.sp ? Number(s.sp[0]) : NaN;
+            if (Number.isFinite(spId) && spId > 0) {
+                slot.spWeapon = { id: spId, level: clampLevel(s.sp[1], 0, 10, 0) };
+            }
             if (s.r !== undefined) slot.retrofit = s.r === 1;
             return slot;
         });
