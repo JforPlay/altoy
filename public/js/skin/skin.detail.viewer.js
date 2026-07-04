@@ -8,6 +8,7 @@ import { debounce, getUrlParam, setUrlParams, hideElement, showElement, toggleEl
 import { init as initSkinData, searchCharacters, getSkinsForCharacter, getSkinByName, getManifest, getAllCharacterNames, getCharacterNameByGid, getReleaseDate, getSkinFilterData } from './skin.data.js';
 import { init as initSkinAudio, stopCurrentAudio, handlePlayClick, createVolumeControlElement, attachVolumeListeners } from './skin.audio.js';
 import { init as initSkinExpression, setManifest, renderImageGallery } from './skin.expression.js';
+import { VOICE_MODE_DEFAULT, VOICE_MODE_ALT, voiceToggleLabels, effectiveVoiceMode, resolveVoiceSrc } from './skin.voice-alt.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -27,6 +28,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
     let skinRenderToken = 0;
     let isApplyingURLState = false;
+    // Alternate voice bank (JP/CN or 기본/대체 CV) — sticky across skins,
+    // clamped per-skin via effectiveVoiceMode.
+    let voiceMode = VOICE_MODE_DEFAULT;
+    let currentVoiceSkin = null;
 
     // Initialize Modules
     initSkinAudio();
@@ -269,14 +274,29 @@ document.addEventListener('DOMContentLoaded', async () => {
      * Attaches delegated play-click and volume listeners via skin.audio.js exports.
      */
     function renderVoiceLines(skin) {
+        currentVoiceSkin = skin;
+        renderVoiceTables(skin);
+        renderAsmrSection(skin);
+        attachVolumeListeners();
+    }
+
+    /**
+     * Render the normal + oath tables for the current voice mode. Split from
+     * renderVoiceLines so the bank toggle can re-render without collapsing the
+     * ASMR illustration state (the ASMR bank has no alt recordings anyway).
+     */
+    function renderVoiceTables(skin) {
+        const altKind = skin['voice_alt_kind'] || '';
+        const mode = effectiveVoiceMode(altKind, voiceMode);
         const { normal, oath } = collectVoiceLines(skin);
+        const toggle = altKind ? createVoiceToggle(altKind) : null;
 
         // Render Normal
         elements.textContent.replaceChildren();
-        const descriptions = renderDescriptions(skin);
+        const descriptions = renderDescriptions(skin, mode);
         if (descriptions) elements.textContent.appendChild(descriptions);
         if (normal.length > 0) {
-            elements.textContent.appendChild(createVoiceTable('대사 모음', normal));
+            elements.textContent.appendChild(createVoiceTable('대사 모음', normal, mode, toggle));
         }
         if (elements.textContent.childElementCount > 0) {
             showElement(elements.textContent);
@@ -284,28 +304,53 @@ document.addEventListener('DOMContentLoaded', async () => {
             hideElement(elements.textContent);
         }
 
-        // Render Oath
+        // Render Oath — hosts the toggle only when the normal table is absent
         elements.oathTable.replaceChildren();
         if (oath.length > 0 && skin['ex_chat_status'] === 1) {
-            elements.oathTable.appendChild(createVoiceTable('서약 대사', oath));
+            elements.oathTable.appendChild(
+                createVoiceTable('서약 대사', oath, mode, normal.length === 0 ? toggle : null)
+            );
             showElement(elements.oathTable);
         } else {
             hideElement(elements.oathTable);
         }
-
-        // Render ASMR
-        renderAsmrSection(skin);
-
-        attachVolumeListeners();
     }
 
-    function renderDescriptions(skin) {
+    /** Segmented control switching between the default and alternate voice bank. */
+    function createVoiceToggle(kind) {
+        const labels = voiceToggleLabels(kind);
+        const group = document.createElement('div');
+        group.className = 'btn-group voice-bank-toggle';
+        group.setAttribute('role', 'group');
+        group.setAttribute('aria-label', '음성 선택');
+
+        [[VOICE_MODE_DEFAULT, labels.default], [VOICE_MODE_ALT, labels.alt]].forEach(([mode, label]) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'btn btn-secondary btn-sm' + (voiceMode === mode ? ' is-active' : '');
+            button.textContent = label;
+            button.addEventListener('click', () => {
+                if (voiceMode === mode) return;
+                voiceMode = mode;
+                stopCurrentAudio();
+                renderVoiceTables(currentVoiceSkin);
+                attachVolumeListeners();
+            });
+            group.appendChild(button);
+        });
+        return group;
+    }
+
+    function renderDescriptions(skin, mode = VOICE_MODE_DEFAULT) {
         const items = [];
         if (skin['설명']) {
             items.push(createDescriptionItem('설명', skin['설명']));
         }
         if (skin['자기소개'] && skin['자기소개'].voiceline) {
-            const selfIntro = createDescriptionItem('자기소개', skin['자기소개'].voiceline, skin['자기소개'].voicelink);
+            const selfIntroSrc = skin['자기소개'].voicelink
+                ? resolveVoiceSrc({ src: skin['자기소개'].voicelink, altSrc: skin['자기소개'].voicelink_alt || '' }, mode)
+                : '';
+            const selfIntro = createDescriptionItem('자기소개', skin['자기소개'].voiceline, selfIntroSrc);
             selfIntro.classList.add('self-intro');
             items.push(selfIntro);
         }
@@ -345,7 +390,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const addLine = (target, key, label) => {
             const val = skin[key];
             if (!val || !val.voiceline) return;
-            target.push({ label, text: val.voiceline, src: val.voicelink || '' });
+            target.push({ label, text: val.voiceline, src: val.voicelink || '', altSrc: val.voicelink_alt || '' });
         };
 
         // Priority keys
@@ -358,7 +403,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const val = skin[k];
             if (!val) return;
             if (val.voicelink || val.voiceline) {
-                normal.push({ label: k, text: val.voiceline || '', src: val.voicelink || '' });
+                normal.push({ label: k, text: val.voiceline || '', src: val.voicelink || '', altSrc: val.voicelink_alt || '' });
             }
         });
 
@@ -377,7 +422,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (skin['함대 특수대사']) {
             skin['함대 특수대사'].forEach(l => {
                 if (l.voiceline) {
-                    normal.push({ label: '함대 특수대사', text: l.voiceline, src: l.voicelink || '' });
+                    normal.push({ label: '함대 특수대사', text: l.voiceline, src: l.voicelink || '', altSrc: l.voicelink_alt || '' });
                 }
             });
         }
@@ -385,7 +430,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return { normal, oath };
     }
 
-    function createVoiceTable(titleText, lines) {
+    function createVoiceTable(titleText, lines, mode = VOICE_MODE_DEFAULT, toggleEl = null) {
         const table = document.createElement('table');
         table.className = 'voice-line-table';
 
@@ -393,54 +438,63 @@ document.addEventListener('DOMContentLoaded', async () => {
         const headerRow = document.createElement('tr');
         const headerCell = document.createElement('th');
         headerCell.colSpan = 2;
-        headerCell.appendChild(createTableHeader(titleText));
+        headerCell.appendChild(createTableHeader(titleText, toggleEl));
         headerRow.appendChild(headerCell);
         thead.appendChild(headerRow);
 
         const tbody = document.createElement('tbody');
-        lines.forEach(line => tbody.appendChild(createVoiceRow(line)));
+        lines.forEach(line => tbody.appendChild(createVoiceRow(line, mode)));
 
         table.append(thead, tbody);
         return table;
     }
 
-    function createTableHeader(titleText) {
+    function createTableHeader(titleText, toggleEl = null) {
         const header = document.createElement('div');
         header.className = 'table-header-with-volume';
 
         const title = document.createElement('span');
         title.textContent = titleText;
-        header.append(title, createVolumeControlElement());
+        if (toggleEl) {
+            header.append(title, toggleEl, createVolumeControlElement());
+        } else {
+            header.append(title, createVolumeControlElement());
+        }
         return header;
     }
 
-    function createVoiceRow({ label, text, src }) {
+    function createVoiceRow(line, mode = VOICE_MODE_DEFAULT) {
         const row = document.createElement('tr');
 
         const labelCell = document.createElement('td');
-        labelCell.textContent = label;
+        labelCell.textContent = line.label;
 
         const textCell = document.createElement('td');
         const wrapper = document.createElement('div');
         const lineText = document.createElement('span');
-        lineText.textContent = text;
+        lineText.textContent = line.text;
         wrapper.appendChild(lineText);
-        wrapper.appendChild(createPlayButton(src));
+        const src = resolveVoiceSrc(line, mode);
+        // Partial alt packs: a line the alt bank never recorded stays visible
+        // but disabled — never silently plays the other bank.
+        const missingAlt = mode === VOICE_MODE_ALT && !src && !!line.src;
+        wrapper.appendChild(createPlayButton(src, missingAlt ? '대체 음성이 없는 대사입니다' : ''));
         textCell.appendChild(wrapper);
 
         row.append(labelCell, textCell);
         return row;
     }
 
-    function createPlayButton(src) {
+    function createPlayButton(src, missingTitle = '') {
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'btn btn-icon play-voice-btn';
-        button.setAttribute('aria-label', src ? '대사 재생' : '대사 음성 없음');
+        button.setAttribute('aria-label', src ? '대사 재생' : (missingTitle || '대사 음성 없음'));
         if (src) {
             button.dataset.src = src;
         } else {
             button.disabled = true;
+            if (missingTitle) button.title = missingTitle;
         }
 
         button.appendChild(createIcon('fas fa-play'));
