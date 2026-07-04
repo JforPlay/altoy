@@ -19379,7 +19379,8 @@
         "nationality": 9,
         "type": 1,
         "description": [
-            "이벤트: 환몽 간주곡"
+            "이벤트: 환몽 간주곡",
+            "소형함 건조"
         ],
         "rarity": "SSR"
     },
@@ -19525,7 +19526,8 @@
         "nationality": 9,
         "type": 3,
         "description": [
-            "이벤트: 환몽 간주곡"
+            "이벤트: 환몽 간주곡",
+            "중형함 건조"
         ],
         "rarity": "SR"
     },
@@ -19582,7 +19584,8 @@
         "nationality": 9,
         "type": 4,
         "description": [
-            "이벤트: 환몽 간주곡"
+            "이벤트: 환몽 간주곡",
+            "중형함 건조"
         ],
         "rarity": "SSR"
     },

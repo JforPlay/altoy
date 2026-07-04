@@ -5,29 +5,29 @@
             "build_name": "기간 한정",
             "banner_type": 2,
             "shipgirls": {
-                "40507": {
-                    "name": "괴츠 폰 베를리힝겐",
+                "80503": {
+                    "name": "알자스",
                     "rarity": "UR",
-                    "nationality": 4,
-                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/405070.webp"
+                    "nationality": 8,
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/805030.webp"
                 },
-                "40317": {
-                    "name": "프린츠 모리츠",
+                "80302": {
+                    "name": "브렌누스",
                     "rarity": "SSR",
-                    "nationality": 4,
-                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/403170.webp"
+                    "nationality": 8,
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/803020.webp"
                 },
-                "970605": {
-                    "name": "엘베·META",
+                "970704": {
+                    "name": "베아른·META",
                     "rarity": "SSR",
                     "nationality": 97,
-                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9706050.webp"
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9707040.webp"
                 },
-                "40115": {
-                    "name": "Z15",
+                "90105": {
+                    "name": "플뢰레",
                     "rarity": "SR",
-                    "nationality": 4,
-                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/401150.webp"
+                    "nationality": 9,
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/901050.webp"
                 }
             }
         },
