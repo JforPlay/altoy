@@ -26,7 +26,8 @@ import {
 import {
     setup as setupDetail,
     showDetailView,
-    downloadEquipIcon
+    downloadEquipIcon,
+    setDetailPanelTitle
 } from './equip.detail.js';
 import {
     setup as setupCompare,
@@ -782,6 +783,7 @@ function openSPWeaponDetail(spId) {
     `;
 
     panelContent.innerHTML = html;
+    setDetailPanelTitle(spWeapon.name);
 
     // SP weapons don't participate in the upgrade tree system
     const researchLink = document.getElementById('detailResearchLink');

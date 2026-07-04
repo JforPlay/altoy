@@ -41,6 +41,30 @@ export function setup(stateRef) {
     state = stateRef;
 }
 
+// ===== Panel Header Title =====
+
+/**
+ * Set the pinned panel-header bar to the equipment name (+ optional 별명 badge).
+ * The header is the always-reachable close bar on mobile (the drawer fills the
+ * viewport there), so it carries the identity of what's open. textContent only —
+ * names/aliases are data values.
+ */
+export function setDetailPanelTitle(name, alias = null) {
+    const titleEl = document.getElementById('detailPanelTitle');
+    if (!titleEl) return;
+    titleEl.textContent = '';
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'panel-title-name';
+    nameSpan.textContent = name;
+    titleEl.appendChild(nameSpan);
+    if (alias) {
+        const aliasSpan = document.createElement('span');
+        aliasSpan.className = 'panel-detail-alias';
+        aliasSpan.textContent = alias;
+        titleEl.appendChild(aliasSpan);
+    }
+}
+
 // ===== Show Detail View =====
 
 /**
@@ -82,6 +106,8 @@ function renderDetail(equip) {
     const iconUrl = getEquipIconUrl(equip.icon);
     const maxLevel = getVisibleLevelCount(equip);
     const hearingEntry = getHearingEntry(equip.id);
+
+    setDetailPanelTitle(equip.name, hearingEntry?.alias || null);
 
     let html = `
         <div class="panel-detail-top">

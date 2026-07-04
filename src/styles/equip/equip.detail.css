@@ -7,16 +7,22 @@
 
 /* ===== Backdrop ===== canonical .drawer-backdrop owns the shell (drawer.css) */
 
-/* ===== Side Panel ===== canonical .drawer owns the shell; only width is per-page */
+/* ===== Side Panel ===== canonical .drawer owns the shell; only width is per-page.
+   Sits BELOW the navbar (navbar z-1000 paints over drawers z-998, so a top:0
+   drawer's header — where the close button lives — is buried under it; on
+   mobile the drawer is 100% wide, leaving no backdrop to tap either). */
 .equip-detail-panel {
     --drawer-width: 28.125rem;   /* 450px */
+    --drawer-top: var(--navbar-height, 64px);
+    --drawer-height: calc(100% - var(--navbar-height, 64px));
 }
 
-/* ===== Panel Header ===== */
+/* ===== Panel Header (pinned bar: name + nickname + close) ===== */
 .equip-detail-panel-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 0.5rem;
     padding: 0.75rem 1rem;
     border-bottom: 1px solid var(--border-color);
     background: var(--card-bg);
@@ -24,9 +30,30 @@
 }
 
 .panel-title {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex: 1;
+    min-width: 0;
     font-size: 1rem;
     font-weight: 600;
     color: var(--text-primary);
+}
+
+.panel-title-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Header copy of the nickname badge (shared .panel-detail-alias look from
+   equip.hearing.css) must stay one line and truncate — it's a bar, not body copy. */
+.panel-title .panel-detail-alias {
+    margin-left: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow-wrap: normal;
 }
 
 /* Header close = canonical .btn.btn-close (button.css). Only the fixed square
@@ -35,6 +62,7 @@
     width: 2rem;
     height: 2rem;
     padding: 0;
+    flex-shrink: 0;
 }
 
 /* ===== Panel Body (Scrollable) ===== */

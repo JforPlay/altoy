@@ -68,6 +68,11 @@ document.addEventListener('DOMContentLoaded', function () {
     setupThemeToggles();
     setupMegaMenuToggles();
     updateNavbarHeight();
+    // Before the icon font loads, nav icons render as ligature text and can wrap
+    // the bar taller on narrow screens — re-measure once fonts settle so
+    // --navbar-height consumers (drawers, sticky offsets) don't inherit the
+    // inflated pre-load height.
+    if (document.fonts?.ready) document.fonts.ready.then(updateNavbarHeight);
 
     const navbar = document.querySelector('.navbar');
     if (navbar) {

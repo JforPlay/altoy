@@ -75,6 +75,16 @@
   pointer-events: none; /* prevents clicks while hidden */
 }
 
+/* While a slide-in drawer is open the page behind is scrim-dimmed and modal,
+   but the button (z-999) sits one above the drawer band (z-998) and would paint
+   over the drawer's own footer. Slide it away for the duration. */
+body:has(.drawer.open) .scroll-to-top {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(100px);
+  pointer-events: none;
+}
+
 /* Optional: respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .scroll-to-top {
