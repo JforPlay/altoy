@@ -104,8 +104,15 @@ export function createVirtualScroll({ container, renderCard, buffer = 10 }) {
 
     /**
      * Remove all rendered cards (not spacers) from the container.
+     * Blurs any focused element inside first: Chromium's scroll anchoring
+     * treats the focused element as a priority anchor candidate, and removing
+     * it mid-render yanks the viewport up by thousands of px (the
+     * "vote a star then scroll → page jumps to top" bug).
      */
     function clearCards() {
+        if (container.contains(document.activeElement)) {
+            document.activeElement.blur();
+        }
         const children = Array.from(container.children);
         for (const child of children) {
             if (child !== topSpacer && child !== bottomSpacer &&
