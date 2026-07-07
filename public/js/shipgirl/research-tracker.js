@@ -1,8 +1,9 @@
 /**
  * research-tracker.js
  * Fleet tech point tracker for research ship unlock requirements.
- * Displays permanent-acquisition ships by faction, tracks get/level/upgrade progress,
- * and shows research ship unlock progress bars.
+ * Displays permanent-acquisition ships by faction, grouped by acquisition source —
+ * a ship appears in every source group it qualifies for — tracks get/level/upgrade
+ * progress, and shows research ship unlock progress bars.
  * Shares progress with shipgirl-tracker.js via localStorage (SAVE_KEY = 'shipgirlTrackerProgress').
  * The storage event keeps both pages in sync across tabs without circular triggering.
  */
@@ -115,9 +116,12 @@ document.addEventListener('DOMContentLoaded', () => {
         '노스 유니온': 'SN',
     };
 
-    // Single-assignment priority order: map drops → archive drops → build → shop → other.
-    // Ships are grouped in this order; the first matching group wins, so a ship that drops in
-    // a map stage is never also shown under build/shop even if its description mentions them.
+    // Right-pane group display order: map drops → archive drops → build → shop → other.
+    // Grouping is multi-assignment: a ship joins EVERY group whose test passes, so all of
+    // its permanent acquisition routes are visible at once (a map-drop ship that is also in
+    // the permanent build pool renders under both 해역 드랍 and 상시 건조). Duplicate rows of
+    // the same ship stay in sync via the shared rightPane change handler. The order also
+    // sets the location-label fallback priority in getRowLocation (map > archive > shop).
     const SOURCE_GROUPS = [
         {
             key: 'map',
@@ -313,8 +317,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Shop labels are derived from each ship's description strings (no map data needed).
-            // We compute them for every ship, but they're only displayed by createShipRow when
-            // the ship doesn't have a higher-priority map or archive label.
+            // We compute them for every ship; getRowLocation shows them on shop-group rows and
+            // as the last fallback on rows of groups without their own label kind.
             for (const [gid, ship] of Object.entries(shipData)) {
                 const label = getShopLabelForShip(ship);
                 if (label) shopDropLabel.set(gid, label);
@@ -838,15 +842,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const grouped = {};
         for (const sg of SOURCE_GROUPS) grouped[sg.key] = [];
-        // Single-assignment: first matching group wins. SOURCE_GROUPS is ordered
-        // map → archive → build → shop → other, so drops take priority over
-        // build/shop/other when a ship has multiple acquisition paths.
+        // Multi-assignment: a ship joins every group whose test passes so each of its
+        // acquisition routes shows up in its own group. Group counts/pts therefore
+        // overlap across groups by design; faction totals stay duplicate-free because
+        // getFactionTotalPoints sums the roster, not the groups.
         for (const ship of ships) {
             for (const sg of SOURCE_GROUPS) {
-                if (sg.test(ship)) {
-                    grouped[sg.key].push(ship);
-                    break;
-                }
+                if (sg.test(ship)) grouped[sg.key].push(ship);
             }
         }
 
@@ -921,7 +923,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const grid = document.createElement('div');
         grid.className = 'rt-ship-grid card-grid';
         for (const ship of groupShips) {
-            grid.appendChild(createShipRow(ship));
+            grid.appendChild(createShipRow(ship, sg.key));
         }
         body.appendChild(grid);
 
@@ -987,12 +989,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
+     * Pick the location hint (kind + text) for a ship row's second line.
+     * A ship can render in several source groups, so each row prefers the label kind
+     * matching its own group — map stages under 해역 드랍, event names under 작전문서 드랍,
+     * shop names under 상점 교환. Groups without a label kind of their own
+     * (build/other/manual) fall back to SOURCE_GROUPS priority: map > archive > shop.
+     */
+    function getRowLocation(ship, groupKey) {
+        const byKind = {
+            map: () => (mapDropGids.has(ship.gid) ? { kind: 'map', label: mapDropLabel.get(ship.gid) || '' } : null),
+            archive: () => (archiveDropGids.has(ship.gid) ? { kind: 'archive', label: archiveDropLabel.get(ship.gid) || '' } : null),
+            shop: () => (shopDropLabel.has(ship.gid) ? { kind: 'shop', label: shopDropLabel.get(ship.gid) } : null),
+        };
+        const candidates = byKind[groupKey]
+            ? [byKind[groupKey], byKind.map, byKind.archive, byKind.shop]
+            : [byKind.map, byKind.archive, byKind.shop];
+        for (const candidate of candidates) {
+            const hit = candidate();
+            if (hit && hit.label) return hit;
+        }
+        return { kind: '', label: '' };
+    }
+
+    /**
      * Build a single dense ship row for the right-pane grid.
      * Layout: [icon] [name + type + rarity  /  drop location] [3 toggles] [pts]
      * Name, type badge, and rarity badge share a header line inside the main column;
-     * map/archive ships get a small second-line drop label ("1-4, 3-2" or event name).
+     * the second line is the getRowLocation hint ("1-4, 3-2", event name, or shop name).
      */
-    function createShipRow(ship) {
+    function createShipRow(ship, groupKey) {
         const row = document.createElement('div');
         row.className = `rt-ship-row rarity-border-${ship.rarity.toLowerCase()}`;
         row.dataset.shipId = ship.gid;
@@ -1009,20 +1034,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const earnedNow = getShipTechPoints(ship.gid).earned;
 
-        // Priority matches SOURCE_GROUPS order: map > archive > shop.
         // Each kind picks its own icon and color in the CSS via .rt-row-location-{kind}.
-        let dropLabel = '';
-        let dropLabelKind = '';
-        if (mapDropGids.has(ship.gid)) {
-            dropLabel = mapDropLabel.get(ship.gid) || '';
-            dropLabelKind = 'map';
-        } else if (archiveDropGids.has(ship.gid)) {
-            dropLabel = archiveDropLabel.get(ship.gid) || '';
-            dropLabelKind = 'archive';
-        } else if (shopDropLabel.has(ship.gid)) {
-            dropLabel = shopDropLabel.get(ship.gid);
-            dropLabelKind = 'shop';
-        }
+        const { kind: dropLabelKind, label: dropLabel } = getRowLocation(ship, groupKey);
 
         const LOCATION_ICONS = { map: 'sailing', archive: 'menu_book', shop: 'shopping_cart' };
         const dropLabelHtml = dropLabel
