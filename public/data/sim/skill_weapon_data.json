@@ -73578,6 +73578,76 @@
             ]
         }
     },
+    "152480": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "attached_weapon_skill_id": [
+            {
+                "id": 152481,
+                "time": 15
+            }
+        ],
+        "name": "랑트레피드",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/801060.webp",
+        "class_name": "랑트레피드급",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/152480.webp",
+        "skill_id": 152480,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 152481
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184141
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire",
+                    "time": 15
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 152481
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184150
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire",
+                    "time": 15
+                }
+            ]
+        }
+    },
     "14930": {
         "requirement": "Default",
         "weapon_true": true,
@@ -77113,6 +77183,74 @@
             ]
         }
     },
+    "152420": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "attached_weapon_skill_id": [
+            {
+                "id": 152421
+            }
+        ],
+        "trigger_cd": 3,
+        "name": "아로망슈",
+        "position": "후열",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/806020.webp",
+        "class_name": "아로망슈",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/152420.webp",
+        "skill_id": 152420,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 183991
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandom",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 183991
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandom",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 184000
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandom",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184000
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandom",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
     "13340": {
         "requirement": "Default",
         "weapon_true": true,
@@ -77417,6 +77555,98 @@
                     "casterAniEffect": "",
                     "targetAniEffect": "",
                     "target_choise": "TargetHarmNearest",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "30621": {
+        "requirement": "Limit Break 1",
+        "weapon_true": true,
+        "name": "셰르부르",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/818010.webp",
+        "class_name": "셰르부르",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/30620.webp",
+        "skill_id": 30621,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 171041
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 171041
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "30622": {
+        "requirement": "Limit Break 3",
+        "weapon_true": true,
+        "name": "셰르부르",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/818010.webp",
+        "class_name": "셰르부르",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/30620.webp",
+        "skill_id": 30622,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 171042
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 171042
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
                     "type": "BattleSkillFire"
                 }
             ]

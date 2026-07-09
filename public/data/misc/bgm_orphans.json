@@ -3539,6 +3539,18 @@
             }
         ]
     },
+    "story-magicalnight-pv": {
+        "name": "story-magicalnight-pv",
+        "cues": [
+            "少女们的Show Time！_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "少女们的Show Time！_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-magicalnight-pv/%E5%B0%91%E5%A5%B3%E4%BB%AC%E7%9A%84Show%20Time%EF%BC%81_AL.opus"
+            }
+        ]
+    },
     "story-marcopolo-dream": {
         "name": "story-marcopolo-dream",
         "cues": [
@@ -4127,6 +4139,18 @@
             }
         ]
     },
+    "story-room-nakhimov": {
+        "name": "story-room-nakhimov",
+        "cues": [
+            "猫耳充能中_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "猫耳充能中_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-room-nakhimov/%E7%8C%AB%E8%80%B3%E5%85%85%E8%83%BD%E4%B8%AD_AL.opus"
+            }
+        ]
+    },
     "story-room-newjersey": {
         "name": "story-room-newjersey",
         "cues": [
@@ -4148,6 +4172,18 @@
             {
                 "cue": "story-room-noshiro",
                 "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-room-noshiro/story-room-noshiro.opus"
+            }
+        ]
+    },
+    "story-room-pit": {
+        "name": "story-room-pit",
+        "cues": [
+            "疾速待机_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "疾速待机_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-room-pit/%E7%96%BE%E9%80%9F%E5%BE%85%E6%9C%BA_AL.opus"
             }
         ]
     },
@@ -4940,6 +4976,18 @@
             {
                 "cue": "theme-longgong-loop",
                 "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-longgong-loop/theme-longgong-loop.opus"
+            }
+        ]
+    },
+    "theme-magicalnight-mystic": {
+        "name": "theme-magicalnight-mystic",
+        "cues": [
+            "美梦巡演奇妙夜_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "美梦巡演奇妙夜_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-magicalnight-mystic/%E7%BE%8E%E6%A2%A6%E5%B7%A1%E6%BC%94%E5%A5%87%E5%A6%99%E5%A4%9C_AL.opus"
             }
         ]
     },

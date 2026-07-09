@@ -29103,6 +29103,54 @@
         "op_reply2": "",
         "reply2_shipgirl": null
     },
+    "655": {
+        "id": 655,
+        "ship_group": 81801,
+        "message": "",
+        "name": "Cherbourg",
+        "picture_persist": "",
+        "shipgirl_names": [
+            81801
+        ],
+        "op_option1": "",
+        "op_reply1": "",
+        "reply1_shipgirl": null,
+        "op_option2": "",
+        "op_reply2": "",
+        "reply2_shipgirl": null
+    },
+    "656": {
+        "id": 656,
+        "ship_group": 80602,
+        "message": "",
+        "name": "Arromanches",
+        "picture_persist": "",
+        "shipgirl_names": [
+            80602
+        ],
+        "op_option1": "",
+        "op_reply1": "",
+        "reply1_shipgirl": null,
+        "op_option2": "",
+        "op_reply2": "",
+        "reply2_shipgirl": null
+    },
+    "657": {
+        "id": 657,
+        "ship_group": 80106,
+        "message": "",
+        "name": "L'Intrépide",
+        "picture_persist": "",
+        "shipgirl_names": [
+            80106
+        ],
+        "op_option1": "",
+        "op_reply1": "",
+        "reply1_shipgirl": null,
+        "op_option2": "",
+        "op_reply2": "",
+        "reply2_shipgirl": null
+    },
     "66": {
         "id": 66,
         "ship_group": 80101,

@@ -63319,6 +63319,558 @@
                     "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/905020.webp"
                 }
             ]
+        },
+        "337": {
+            "id": 337,
+            "type": null,
+            "unlock_desc": "특정 시간에 오픈",
+            "ship_group": 106,
+            "name": "우아한 기사 이야기",
+            "trigger_type": 3,
+            "trigger_param": [
+                [
+                    [
+                        2026,
+                        7,
+                        9
+                    ],
+                    [
+                        13,
+                        0,
+                        0
+                    ]
+                ]
+            ],
+            "kr_name": "아이리스 채팅방",
+            "ship_name": "그룹 채팅방",
+            "icon": null,
+            "scripts": [
+                {
+                    "flag": 0,
+                    "id": 10046,
+                    "option": "",
+                    "param": "조금 전에 기사와 공주님의 연애 영화를 보았는데, 무척 로맨틱했답니다.",
+                    "ship_group": 80101,
+                    "type": 1,
+                    "kr_name": "르 트리옹팡",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10047,
+                    "option": "",
+                    "param": "제법 마음에 들었나 보네?",
+                    "ship_group": 90402,
+                    "type": 1,
+                    "kr_name": "스트라스부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/904020.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10048,
+                    "option": "",
+                    "param": "외람된 말씀입니다만, 연애보다는 기사로서 신앙과 책임에 전념해야 하지 않을까요?",
+                    "ship_group": 80202,
+                    "type": 1,
+                    "kr_name": "잔 다르크",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/802020.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10049,
+                    "option": "",
+                    "param": "그럴지도 모르지만, 그러면 사랑에 빠진 공주님이 너무 가엾잖아?",
+                    "ship_group": 80105,
+                    "type": 1,
+                    "kr_name": "르 아르디",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801050.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10050,
+                    "option": "",
+                    "param": "신앙을 지키면서, 사랑하는 사람을 지킬 방법이 분명 있을 거야.",
+                    "ship_group": 90302,
+                    "type": 1,
+                    "kr_name": "알제리",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/903020.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10051,
+                    "option": "",
+                    "param": "맞아요. 게다가 누군가를 지키기 위해 싸울 수 있는 기사라면, 마음속에 숭고한 신앙을 품고 있음에 틀림없어요!",
+                    "ship_group": 80101,
+                    "type": 1,
+                    "kr_name": "르 트리옹팡",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10052,
+                    "option": "",
+                    "param": "정말로 그랬으면 좋겠네요……",
+                    "ship_group": 80702,
+                    "type": 1,
+                    "kr_name": "팽르베",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/807020.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10053,
+                    "option": "",
+                    "param": "정말이지, 다들 너무 진지하다니까.",
+                    "ship_group": 90103,
+                    "type": 1,
+                    "kr_name": "보클랭",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/901030.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10054,
+                    "option": "",
+                    "param": "그렇다면 기사와 공주님 이야기로 연극을 해보는 건 어떨까요? 이야기로 만들면 자연스럽게 답이 나오지 않을까요?",
+                    "ship_group": 90102,
+                    "type": 1,
+                    "kr_name": "타르투",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/901020.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10055,
+                    "option": "",
+                    "param": "왜 갑자기 연극 이야기가……",
+                    "ship_group": 80701,
+                    "type": 1,
+                    "kr_name": "베아른",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/807010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10056,
+                    "option": "",
+                    "param": "애초에 연극 대본은 어떻게 하려고요?",
+                    "ship_group": 80701,
+                    "type": 1,
+                    "kr_name": "베아른",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/807010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10057,
+                    "option": "",
+                    "param": "그러게요. 여기에는 각본가도 없고, 모티브로 삼을 만한 이야기마저……",
+                    "ship_group": 80202,
+                    "type": 1,
+                    "kr_name": "잔 다르크",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/802020.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10058,
+                    "option": "",
+                    "param": "이야기 말씀인가요? 기사의 전설이라면 오래된 시 구절 속에 참고할 만한 에피소드가 가득할 거랍니다.",
+                    "ship_group": 89903,
+                    "type": 1,
+                    "kr_name": "브레스트",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/899030.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10059,
+                    "option": "",
+                    "param": "그래! 여러 이야기를 하나로 섞는 것도 좋겠어! 예를 들면 기사가 공주님의 소원을 지키기 위해 홀로 어둠의 숲으로 향한다든가……",
+                    "ship_group": 80108,
+                    "type": 1,
+                    "kr_name": "마이예 브레제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801080.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10060,
+                    "option": "",
+                    "param": "그럼 그 숲에 사는 수수께끼의 생물은 제가 연기하게 해 주세요.",
+                    "ship_group": 80107,
+                    "type": 1,
+                    "kr_name": "르 테리블",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801070.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10061,
+                    "option": "",
+                    "param": "그런 역할이 취향이신가요……?",
+                    "ship_group": 80101,
+                    "type": 1,
+                    "kr_name": "르 트리옹팡",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10062,
+                    "option": "",
+                    "param": "네, 기사를 깜짝 놀라게 해줄 수 있으니까요.",
+                    "ship_group": 80107,
+                    "type": 1,
+                    "kr_name": "르 테리블",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801070.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10063,
+                    "option": "",
+                    "param": "그럼 세트도 확실하게 준비해야겠네! 조명은 어둡게 하고, 연기 연출도 넣어서……",
+                    "ship_group": 80801,
+                    "type": 1,
+                    "kr_name": "쉬르쿠프",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/808010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10064,
+                    "option": "",
+                    "param": "숲이 있으면 피크닉을 할 수 있는 잔디밭이 있어도 좋겠지? 기사가 싸우다 지치면, 뭔가를 먹고 체력을 회복하는 식으로 말이야……",
+                    "ship_group": 80401,
+                    "type": 1,
+                    "kr_name": "마세나",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/804010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10065,
+                    "option": "",
+                    "param": "어둠의 숲이라고 하지 않았어? 피크닉을 갈 만한 곳은 아니라고 보는데……",
+                    "ship_group": 80601,
+                    "type": 1,
+                    "kr_name": "부아 벨루",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10066,
+                    "option": "",
+                    "param": "그래도 먹으면서 연기하면 재밌지 않을까?",
+                    "ship_group": 80401,
+                    "type": 1,
+                    "kr_name": "마세나",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/804010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10067,
+                    "option": "",
+                    "param": "그것보다 가장 중요한 건 누가 기사를 연기하느냐 아닐까?",
+                    "ship_group": 80201,
+                    "type": 1,
+                    "kr_name": "에밀 베르탱",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/802010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10068,
+                    "option": "",
+                    "param": "기사라면 역시 멋져야지.",
+                    "ship_group": 80104,
+                    "type": 1,
+                    "kr_name": "로피니아트르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801040.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10069,
+                    "option": "",
+                    "param": "그리고 엄청나게 강해야 해! 사악한 드래곤을 쓰러뜨릴 수 있을 정도로!",
+                    "ship_group": 80103,
+                    "type": 1,
+                    "kr_name": "르 테메레르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801030.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10070,
+                    "option": "",
+                    "param": "그러고 보니 공주님 캐스팅도 아직이네요……?",
+                    "ship_group": 80502,
+                    "type": 1,
+                    "kr_name": "리옹",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/805020.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10071,
+                    "option": "",
+                    "param": "공주님이 제일 편할 것 같네요. 그냥 누워서 기사가 구하러 와주길 기다리기만 하면 되는 것 같으니, 저한테 시켜주세요.",
+                    "ship_group": 90111,
+                    "type": 1,
+                    "kr_name": "르 말랭",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/901110.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10072,
+                    "option": [
+                        [
+                            1,
+                            "나도 참여하고 싶어"
+                        ]
+                    ],
+                    "param": "공주님은 우아하고 기품이 넘쳐서, 아이리스의 이미지를 나타낼 수 있는 사람이어야 하지 않을까?",
+                    "ship_group": 80301,
+                    "type": 1,
+                    "kr_name": "쉬프랑",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/803010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 10073,
+                    "option": "",
+                    "param": "그냥 서 있는 엑스트라도 필요하면, 나도 참여하고 싶은데.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 1,
+                    "id": 10074,
+                    "option": "",
+                    "param": "지휘관이 엑스트라를?",
+                    "ship_group": 80303,
+                    "type": 1,
+                    "kr_name": "뒤켄",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/803030.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 10075,
+                    "option": "",
+                    "param": "우후후, 이거 점점 재밌어지는걸……?",
+                    "ship_group": 90502,
+                    "type": 1,
+                    "kr_name": "클레망소",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/905020.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 10076,
+                    "option": "",
+                    "param": "지휘관은 엑스트라를 맡기에는 아까워!",
+                    "ship_group": 80503,
+                    "type": 1,
+                    "kr_name": "알자스",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/805030.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 10077,
+                    "option": "",
+                    "param": "영웅님께서는 당연히 주연을 맡으셔야지요~",
+                    "ship_group": 89903,
+                    "type": 1,
+                    "kr_name": "브레스트",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/899030.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 10078,
+                    "option": "",
+                    "param": "기사…… 지휘관한테 딱 어울릴 것 같아!",
+                    "ship_group": 80103,
+                    "type": 1,
+                    "kr_name": "르 테메레르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801030.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 10079,
+                    "option": "",
+                    "param": "지휘관이 기사라면, 공주 역할은……",
+                    "ship_group": 89901,
+                    "type": 1,
+                    "kr_name": "생 루이",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/899010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 10080,
+                    "option": "",
+                    "param": "공정하게 공개 오디션을 열고, 엄격한 카메라 테스트와 콘테스트를 실시할 수밖에 없겠군요.",
+                    "ship_group": 80701,
+                    "type": 1,
+                    "kr_name": "베아른",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/807010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 10081,
+                    "option": [
+                        [
+                            2,
+                            "음… 지금 뭐가 어떻게 돌아가는 거지?"
+                        ]
+                    ],
+                    "param": "다들 왜인지 갑자기 의욕이 넘치시네요.",
+                    "ship_group": 80501,
+                    "type": 1,
+                    "kr_name": "리슐리외",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/805010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 10082,
+                    "option": "",
+                    "param": "음… 지금 뭐가 어떻게 돌아가는 거지?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 10083,
+                    "option": "",
+                    "param": "지휘관이 「엑스트라」에서 「기사」로 승격한 참이야~",
+                    "ship_group": 80203,
+                    "type": 1,
+                    "kr_name": "기샹",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/802030.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 10084,
+                    "option": "",
+                    "param": "공주님 대사 연습, 시작해도 되는 거 맞지?",
+                    "ship_group": 90105,
+                    "type": 1,
+                    "kr_name": "플뢰레",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/901050.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 10085,
+                    "option": "",
+                    "param": "대사만 연습하는 걸로는 부족해. 공주님으로서의 기품과 교양도 중요하잖아?",
+                    "ship_group": 90402,
+                    "type": 1,
+                    "kr_name": "스트라스부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/904020.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 10086,
+                    "option": "",
+                    "param": "이 이야기를 연극으로 꾸민다면, 저 역시 공주 역할을 훌륭히 소화할 수 있도록 노력할 생각입니다.",
+                    "ship_group": 80202,
+                    "type": 1,
+                    "kr_name": "잔 다르크",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/802020.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 10087,
+                    "option": "",
+                    "param": "잔까지 그렇게 말하니, 나도 실력을 발휘해야겠는걸~",
+                    "ship_group": 90302,
+                    "type": 1,
+                    "kr_name": "알제리",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/903020.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 10088,
+                    "option": [
+                        [
+                            3,
+                            "잠깐만?"
+                        ]
+                    ],
+                    "param": "그럼 지휘관에게 지키고 싶은 공주님이 누구인지 선택해 달라고 하는 건 어떤가?",
+                    "ship_group": 89901,
+                    "type": 1,
+                    "kr_name": "생 루이",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/899010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 10089,
+                    "option": "",
+                    "param": "잠깐만? 왜 갑자기 나한테 공주님을 선택하라는 거야?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 3,
+                    "id": 10090,
+                    "option": "",
+                    "param": "지휘관님, 이제 와서 도망치려 해도 이미 늦었어요~ 다들 당신의 선택을 기다리고 있답니다~",
+                    "ship_group": 80204,
+                    "type": 1,
+                    "kr_name": "뒤게 트루앵",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/802040.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 10091,
+                    "option": "",
+                    "param": "갈수록 흥미진진해지네. 그럼 기사님, 진지하게 고민하고 선택해 줘~",
+                    "ship_group": 90502,
+                    "type": 1,
+                    "kr_name": "클레망소",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/905020.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 10092,
+                    "option": "",
+                    "param": "질문. 각본은 누가 담당하지?",
+                    "ship_group": 99901,
+                    "type": 1,
+                    "kr_name": "가스코뉴",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/999010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 10093,
+                    "option": "",
+                    "param": "다들 배역을 노리느라 정신이 없어서, 각본 담당은 아직 정해지지 않았네요……",
+                    "ship_group": 80702,
+                    "type": 1,
+                    "kr_name": "팽르베",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/807020.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 10094,
+                    "option": "",
+                    "param": "그렇다면 리허설을 진행하면서 각본을 짜보는 건 어떨까요?",
+                    "ship_group": 80101,
+                    "type": 1,
+                    "kr_name": "르 트리옹팡",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 10095,
+                    "option": "",
+                    "param": "왠지 모르게 불길한 예감이……",
+                    "ship_group": 80108,
+                    "type": 1,
+                    "kr_name": "마이예 브레제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801080.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 10096,
+                    "option": "",
+                    "param": "아무래도 연극이 상상 이상으로 흥미로워질 것 같네요♪",
+                    "ship_group": 80501,
+                    "type": 1,
+                    "kr_name": "리슐리외",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/805010.webp"
+                }
+            ]
         }
     },
     "장우": {
@@ -85964,6 +86516,2505 @@
                     "type": 4,
                     "kr_name": "르 말랭",
                     "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/901110.webp"
+                }
+            ]
+        }
+    },
+    "셰르부르": {
+        "328": {
+            "id": 328,
+            "type": null,
+            "unlock_desc": "캐릭터 획득",
+            "ship_group": 81801,
+            "name": "기쁨의 서",
+            "trigger_type": 1,
+            "trigger_param": "",
+            "kr_name": "셰르부르",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp",
+            "ship_name": "Cherbourg ",
+            "scripts": [
+                {
+                    "flag": 0,
+                    "id": 9825,
+                    "option": "",
+                    "param": "지휘관, 지금 한가해~?",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9826,
+                    "option": "",
+                    "param": "조금 지루하던 참이라, 뭔가 재미있는 거 없나 찾았거든~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9827,
+                    "option": "",
+                    "param": "그러다가 『기쁨의 서』라는 책을 만들어 봤어~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9828,
+                    "option": "",
+                    "param": "모든 페이지에 내가 생각해 낸 재미있는 아이디어를 적어뒀으니까, 분명 읽는 재미가 쏠쏠할 거야~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9829,
+                    "option": "",
+                    "param": "그래서 말인데 지휘관, 숫자를 하나 말해봐. 아무 거나 상관없어.",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9830,
+                    "option": [
+                        [
+                            1,
+                            "9"
+                        ],
+                        [
+                            2,
+                            "99"
+                        ],
+                        [
+                            3,
+                            "999"
+                        ]
+                    ],
+                    "param": "그 숫자에 해당하는 페이지에 적힌 아이디어를 실현할 방법을 생각해 낼 거야~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9831,
+                    "option": "",
+                    "param": "9",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 1,
+                    "id": 9832,
+                    "option": "",
+                    "param": "이 페이지는 「인형 옷을 입고, 캐치볼을 하면서 모항 안을 돌아다니기」!",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9833,
+                    "option": "",
+                    "param": "99",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 9834,
+                    "option": "",
+                    "param": "이 페이지는 「외발자전거를 타고, 망가지기 쉬운 배달 음식을 배달하기」!",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9835,
+                    "option": "",
+                    "param": "999",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 3,
+                    "id": 9836,
+                    "option": "",
+                    "param": "이 페이지는 「뒷걸음질로 걸으면서 하루 업무를 끝마치기」!",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9837,
+                    "option": "",
+                    "param": "역시 지휘관, 내가 기대하던 아이디어를 골라줬네~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9838,
+                    "option": [
+                        [
+                            4,
+                            "조심해……"
+                        ]
+                    ],
+                    "param": "그럼, 바로 준비해 올게~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 9839,
+                    "option": "",
+                    "param": "실제로 할 거면 조심해……",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 4,
+                    "id": 9840,
+                    "option": "",
+                    "param": "어머나? 지휘관도 참, 걱정해 주는 거야?",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 9841,
+                    "option": "",
+                    "param": "하지만 걱정 마. 이 즐거운 일을 직접 하는 건 내가 아니니까!",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 9842,
+                    "option": "",
+                    "param": "이런 건 원래 다른 사람이 하는 걸 구경하는 게 더 즐거운 법이거든!",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 9843,
+                    "option": "",
+                    "param": "그래서 「자원봉사자」를 모집해 올 거야.",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 9844,
+                    "option": "",
+                    "param": "모든 준비가 끝나면 지휘관도 꼭 같이 보러 와야 해.",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 9845,
+                    "option": "",
+                    "param": "물론, 지휘관이 직접 참여해 준다면……",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 9846,
+                    "option": "",
+                    "param": "최고겠지만 말이야~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                }
+            ]
+        },
+        "329": {
+            "id": 329,
+            "type": null,
+            "unlock_desc": "호감도 사랑 달성",
+            "ship_group": 81801,
+            "name": "환술의 올바른 사용법",
+            "trigger_type": 2,
+            "trigger_param": "100",
+            "kr_name": "셰르부르",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp",
+            "ship_name": "Cherbourg ",
+            "scripts": [
+                {
+                    "flag": 0,
+                    "id": 9847,
+                    "option": "",
+                    "param": "지휘관, 야근하느라 고생이 많아. 슬슬 쉬어야지~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9848,
+                    "option": [
+                        [
+                            1,
+                            "고마워, 방금 받았어"
+                        ]
+                    ],
+                    "param": "지휘관을 위해 진귀한 디저트를 준비했어. 집무실 밖에 뒀으니까, 얼른 가지러 와.",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9849,
+                    "option": "",
+                    "param": "고마워, 방금 받았어.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 1,
+                    "id": 9850,
+                    "option": "",
+                    "param": "367",
+                    "ship_group": 81801,
+                    "type": 4,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9851,
+                    "option": "",
+                    "param": "받았다는 건, 지휘관이 집무실 밖으로 나왔다는 뜻이겠지~?",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9852,
+                    "option": "",
+                    "param": "다시 돌아가서 야근을 하고 싶다면, 가는 길에 수많은 난관을 헤쳐 나가야만 할 거야~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9853,
+                    "option": "",
+                    "param": "자, 뒤를 돌아봐 봐~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9854,
+                    "option": "",
+                    "param": "용암이 들끓는 화산 통로…",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9855,
+                    "option": "",
+                    "param": "다음은 고도 1만 미터의 절벽 계단…",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9856,
+                    "option": [
+                        [
+                            2,
+                            "이미 보고 있어……"
+                        ]
+                    ],
+                    "param": "마지막으로 끝없는 바다에 걸쳐진 외나무다리를 건너야만 해. 이 모든 걸 이겨내야 겨우 책상에 도달할 수 있는 거지~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9857,
+                    "option": "",
+                    "param": "이미 보고 있어……",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 9858,
+                    "option": "",
+                    "param": "이것도 전부 환술이야? 다른 사람들한테는 영향 없는 거지?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 9859,
+                    "option": "",
+                    "param": "안심해~ 이건 지휘관 전용으로 맞춤 제작한 거라 지휘관 눈에만 보여~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9860,
+                    "option": [
+                        [
+                            3,
+                            "셰르부르의 환술은 대단하네"
+                        ]
+                    ],
+                    "param": "다른 아이들 걱정은 접어두고, 안심하고 집중해♪",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9861,
+                    "option": "",
+                    "param": "셰르부르의 환술은 대단하네.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 3,
+                    "id": 9862,
+                    "option": "",
+                    "param": "내 영역 안에 있는 한, 내 환술은 무적이야.",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9863,
+                    "option": "",
+                    "param": "물론 영역의 범위에 제한이 있긴 하지만 말이지.",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9864,
+                    "option": "",
+                    "param": "지휘관에게는 또 하나 매력적인 선택지가 준비되어 있어.",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9865,
+                    "option": "",
+                    "param": "디저트를 들고 뒤도 돌아보지 않은 채로 집무실을 떠나는 것…… 현관에서 기다리고 있을 테니까, 같이 퇴근하자~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9866,
+                    "option": "",
+                    "param": "내 방을 지휘관 취향에 맞춰서 환술로 꾸며줄게♡",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9867,
+                    "option": "",
+                    "param": "지휘관이 뭘 좋아하는지 알려주면……",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9868,
+                    "option": "",
+                    "param": "기대 이상으로 방을 멋지게 꾸며줄 수 있어~ 집에 가기 싫어질 정도로 말이야♡",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9869,
+                    "option": "",
+                    "param": "자, 같이 돌아가서 이 맛있는 디저트를 즐기자구~!",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9870,
+                    "option": "",
+                    "param": "367",
+                    "ship_group": 81801,
+                    "type": 4,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                }
+            ]
+        },
+        "330": {
+            "id": 330,
+            "type": null,
+            "unlock_desc": "서약 완료",
+            "ship_group": 81801,
+            "name": "랜덤 데이트",
+            "trigger_type": 2,
+            "trigger_param": "150",
+            "kr_name": "셰르부르",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp",
+            "ship_name": "Cherbourg ",
+            "scripts": [
+                {
+                    "flag": 0,
+                    "id": 9871,
+                    "option": [
+                        [
+                            1,
+                            "오늘 데이트 약속을 했던가?"
+                        ]
+                    ],
+                    "param": "지휘관, 데이트할 시간이야~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9872,
+                    "option": "",
+                    "param": "오늘 데이트 약속을 했던가?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 1,
+                    "id": 9873,
+                    "option": [
+                        [
+                            2,
+                            "곧 한가해지기는 해"
+                        ]
+                    ],
+                    "param": "당연히 없지~ 그러고 싶어진 것뿐이야. 그게 더 재미있잖아?",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9874,
+                    "option": "",
+                    "param": "오늘 처리할 서류도 곧 끝나니까, 마침 한가해지려던 참이었어.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 9875,
+                    "option": "",
+                    "param": "그나저나 데이트를 어디서 하려고?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 9876,
+                    "option": "",
+                    "param": "그런 건 딱히 없어~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9877,
+                    "option": "",
+                    "param": "정확히 말하면, 어떤 장소든 우리 둘의 데이트 장소가 될 수 있다는 뜻이지!",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9878,
+                    "option": "",
+                    "param": "오늘 데이트는 평범한 데이트가 아니라 완전히 무작위로 진행되는 랜덤 데이트거든♪",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9879,
+                    "option": "",
+                    "param": "사실 럭키 룰렛을 준비해 왔는데…",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9880,
+                    "option": "",
+                    "param": "이 룰렛 결과에 맞춰서 내가 환술로 랜덤 데이트 장소를 만들어 낼 거야. 물론 내 의상도 거기에 맞출 거고~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9881,
+                    "option": [
+                        [
+                            3,
+                            "……옷은 제대로 입어"
+                        ]
+                    ],
+                    "param": "참신한 데이트니까 분명 색다른 놀라움을 맛볼 수 있을 거야~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9882,
+                    "option": "",
+                    "param": "……그래도 옷은 제대로 입어. 감기 걸리면 안 되니까.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 3,
+                    "id": 9883,
+                    "option": "",
+                    "param": "걱정하지 마.",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9884,
+                    "option": "",
+                    "param": "요즘은 계속 환술로 만든 옷을 입고 있거든. 너무 쾌적해서 진짜 옷의 감촉이 어떤지 잊어버릴 것 같을 정도야~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9885,
+                    "option": "",
+                    "param": "게다가 옷을 순식간에 갈아입을 수 있어서 정말 편리해~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9886,
+                    "option": [
+                        [
+                            4,
+                            "스톱"
+                        ]
+                    ],
+                    "param": "더는 못 기다리겠어! 빨리 룰렛을 돌리게 해줘~! 지휘관이 스톱이라고 말하면 멈출게~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 9887,
+                    "option": "",
+                    "param": "스톱!",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 4,
+                    "id": 9888,
+                    "option": "",
+                    "param": "운명의 바늘이 가리킨 곳은 36번!",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 9889,
+                    "option": "",
+                    "param": "로맨틱한 우주 유영일까? 아니면 스릴 만점인 분화구 근처……? 과연 뭐가 나오려나~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 9890,
+                    "option": "",
+                    "param": "36번의 결과는 놀랍게도 공백! 그냥 하얀 백지가 두 장!",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 9891,
+                    "option": [
+                        [
+                            5,
+                            "그런 칸은 왜 있는 거야?"
+                        ]
+                    ],
+                    "param": "역시 지휘관, 언제나 예상을 뛰어넘는단 말이지~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 5,
+                    "id": 9892,
+                    "option": "",
+                    "param": "그런 칸은 왜 있는 거야?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 5,
+                    "id": 9893,
+                    "option": "",
+                    "param": "랜덤 데이트니까 그렇지~ 무슨 일이 일어날지 알 수 없어야 진정한 무작위라고 할 수 있으니까~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 5,
+                    "id": 9894,
+                    "option": "",
+                    "param": "공백이 나왔으니 난 아무런 환술도 쓰지 않고, 이 모습 이대로 지휘관을 만나러 갈게~",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 5,
+                    "id": 9895,
+                    "option": "",
+                    "param": "이제 곧 내 있는 그대로의 모습을 지휘관에게 보여줄 수 있겠네…",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                },
+                {
+                    "flag": 5,
+                    "id": 9896,
+                    "option": "",
+                    "param": "이것도 나름 또 색다른 느낌을 줄 수 있을 것 같아♪",
+                    "ship_group": 81801,
+                    "type": 1,
+                    "kr_name": "셰르부르",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+                }
+            ]
+        }
+    },
+    "아로망슈": {
+        "331": {
+            "id": 331,
+            "type": null,
+            "unlock_desc": "캐릭터 획득",
+            "ship_group": 80602,
+            "name": "완력의 기적",
+            "trigger_type": 1,
+            "trigger_param": "",
+            "kr_name": "아로망슈",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp",
+            "ship_name": "Arromanches ",
+            "scripts": [
+                {
+                    "flag": 0,
+                    "id": 9897,
+                    "option": "",
+                    "param": "지휘관! 지휘관! 운동장에서 뭘 봤게?",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9898,
+                    "option": "",
+                    "param": "「현대판 엑스칼리버 챌린지」라면서, 돌에 박힌 검을 뽑아내면 호화 커플 온천권을 준다는 거 있지?!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9899,
+                    "option": "",
+                    "param": "마침 체조로 워밍업도 끝낸 참이라, 지금 컨디션도 최고야!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9900,
+                    "option": "",
+                    "param": "검은 돌로 된 받침대에 박혀 있어서 그럴싸해 보이긴 하는데, 그렇게 튼튼해 보이지는 않더라고~",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9901,
+                    "option": "",
+                    "param": "어쨌든 지금 당장 도전해 보고 올게!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9902,
+                    "option": "",
+                    "param": "…………",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9903,
+                    "option": "",
+                    "param": "좋은 소식이야! 뽑았어!!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9904,
+                    "option": [
+                        [
+                            1,
+                            "왜?"
+                        ]
+                    ],
+                    "param": "나쁜 소식도 있어! 실격당했어!!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9905,
+                    "option": "",
+                    "param": "왜?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 1,
+                    "id": 9906,
+                    "option": "",
+                    "param": "내가 뽑은 건 받침대였거든!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9907,
+                    "option": "",
+                    "param": "생각보다 쉽게 안 뽑히길래 아주 조금만 힘을 줘봤더니……",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9908,
+                    "option": "",
+                    "param": "그대로 받침대째로 뽑아버렸지 뭐야!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9909,
+                    "option": "",
+                    "param": "수리가 끝나면 다시 한번 도전해 보려고!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9910,
+                    "option": "",
+                    "param": "…………",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9911,
+                    "option": "",
+                    "param": "좋은 소식이야! 뽑았어! 이번엔 제대로 검만!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9912,
+                    "option": "",
+                    "param": "나쁜 소식도 있어! 검을 부러뜨렸어!!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9913,
+                    "option": "",
+                    "param": "검이 그렇게 약해 빠졌을 줄 누가 알았겠어……",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9914,
+                    "option": "",
+                    "param": "어떻게든 검을 고쳐놓을 테니까 잠깐만 기다려줘……",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9915,
+                    "option": "",
+                    "param": "…………",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9916,
+                    "option": [
+                        [
+                            2,
+                            "왠지 불길한 예감이……"
+                        ]
+                    ],
+                    "param": "…………",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9917,
+                    "option": "",
+                    "param": "왠지 불길한 예감이……",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 9918,
+                    "option": "",
+                    "param": "지휘관, 도와줘~!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9919,
+                    "option": "",
+                    "param": "「마르텔」로 받침대를 부숴서, 그 안에 끼인 검을 꺼내려고 했는데……",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9920,
+                    "option": "",
+                    "param": "영업을 방해한다는 오해를 받아 버렸어!!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9921,
+                    "option": "",
+                    "param": "아무리 설명해도 안 믿어주는데, 지휘관이 대신 와서 설명 좀 해주면 안 될까?!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9922,
+                    "option": "",
+                    "param": "도와주라~!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                }
+            ]
+        },
+        "332": {
+            "id": 332,
+            "type": null,
+            "unlock_desc": "호감도 사랑 달성",
+            "ship_group": 80602,
+            "name": "우아함 배우기",
+            "trigger_type": 2,
+            "trigger_param": "100",
+            "kr_name": "아로망슈",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp",
+            "ship_name": "Arromanches ",
+            "scripts": [
+                {
+                    "flag": 0,
+                    "id": 9923,
+                    "option": "",
+                    "param": "지휘관! 엄청난 소식이 있어!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9924,
+                    "option": "",
+                    "param": "매너 레슨을 복습했더니, 완전히 마스터한 것 같아!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9925,
+                    "option": "",
+                    "param": "평소에 걸을 때도 여기저기 안 뛰어다니고, 커트시도 완벽하게 선보일 수 있게 됐고, 새로운 체조도 배웠거든!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9926,
+                    "option": "",
+                    "param": "체조의 전체적인 리듬이 느릿느릿하니까, 이걸로 한층 우아해졌을 게 분명해!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9927,
+                    "option": [
+                        [
+                            1,
+                            "효과가 엄청난걸"
+                        ]
+                    ],
+                    "param": "16",
+                    "ship_group": 80602,
+                    "type": 4,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9928,
+                    "option": "",
+                    "param": "효과가 엄청난걸.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 1,
+                    "id": 9929,
+                    "option": "",
+                    "param": "그야 일주일이나 연습했는걸! 효과가 없으면 이상하지!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9930,
+                    "option": [
+                        [
+                            2,
+                            "혹시나 해서 묻는데"
+                        ]
+                    ],
+                    "param": "게다가 평가도 엄청나게 좋았어! 내 몸짓을 보고 다들 박수갈채를 보내주더라고!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9931,
+                    "option": "",
+                    "param": "혹시나 해서 묻는데, 구체적으로 어떻게 바꾼 거야?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 9932,
+                    "option": "",
+                    "param": "간단해~ 뛰어다니는 게 문제라면, 못 움직이게 만들면 그만이잖아?",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9933,
+                    "option": "",
+                    "param": "손목이랑 발목에 모래주머니를 달아놔서, 달리고 싶어도 지금은 못 달려~",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9934,
+                    "option": "",
+                    "param": "단점이라고 한다면, 바닥이 튼튼하지 않은 곳에는 못 가게 됐다는 것 정도? 무너져 내릴지도 모르니까.",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9935,
+                    "option": [
+                        [
+                            3,
+                            "그럼 체조는?"
+                        ]
+                    ],
+                    "param": "그래도 전체적으로 보면 도움은 되는 것 같아~",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9936,
+                    "option": "",
+                    "param": "체조도 그거랑 비슷한 느낌인 거야?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 3,
+                    "id": 9937,
+                    "option": "",
+                    "param": "아니, 전혀. 체조는 공연을 보여줘야 하잖아~",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9938,
+                    "option": "",
+                    "param": "모래주머니를 달면 움직일 때 덜컹덜컹 부딪치는데, 누가 그걸 우아하다고 보겠어?",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9939,
+                    "option": "",
+                    "param": "그래서 「마르텔」을 축으로 삼아 회전하는 새로운 체조를 배웠지!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9940,
+                    "option": [
+                        [
+                            4,
+                            "커트시는……"
+                        ]
+                    ],
+                    "param": "그랬더니 동작의 제한이 늘어난 덕분에 리듬도 느려졌어! 그렇게 자연스레 우아해졌지~",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 9941,
+                    "option": "",
+                    "param": "커트시는 평범한 거지…?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 4,
+                    "id": 9942,
+                    "option": "",
+                    "param": "당연하지, 흔히 볼 수 있는 평범한 커트시야! 얼마 전에도 보여줬잖아?",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 9943,
+                    "option": "",
+                    "param": "이번엔 진짜 열심히 연습해서 실력이 엄청 늘었어!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 9944,
+                    "option": "",
+                    "param": "못 믿겠으면, 집무실에서 직접 보여줄 수도 있어~",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 9945,
+                    "option": "",
+                    "param": "지금 앞치마 가져올게! 지휘관은 기대하면서 기다려줘!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                }
+            ]
+        },
+        "333": {
+            "id": 333,
+            "type": null,
+            "unlock_desc": "서약 완료",
+            "ship_group": 80602,
+            "name": "커플 댄스",
+            "trigger_type": 2,
+            "trigger_param": "150",
+            "kr_name": "아로망슈",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp",
+            "ship_name": "Arromanches ",
+            "scripts": [
+                {
+                    "flag": 0,
+                    "id": 9946,
+                    "option": "",
+                    "param": "지휘관! 요즘 아주아주 중요한 체조를 연습하고 있어!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9947,
+                    "option": [
+                        [
+                            1,
+                            "왠지……"
+                        ]
+                    ],
+                    "param": "아마 완벽하게 마스터할 수 있을 거야! 그러니까 기쁜 소식을 기다려줘!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9948,
+                    "option": "",
+                    "param": "왠지 자신 없어 보이는데? 아로망슈답지 않네.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 1,
+                    "id": 9949,
+                    "option": "",
+                    "param": "역시 지휘관이야! 실은 최근에 고민이 좀 있는데……",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9950,
+                    "option": "",
+                    "param": "체조 연습에 관한 건데, 지휘관이랑도 관계가 있거든……",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9951,
+                    "option": [
+                        [
+                            2,
+                            "나랑 체조에 무슨 관계가…?"
+                        ]
+                    ],
+                    "param": "어떻게 고민을 털어놓아야 할지 몰라서…! 정말이지 너무 어려운 문제야!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9952,
+                    "option": "",
+                    "param": "나랑 체조에 무슨 관계가…?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 9953,
+                    "option": "",
+                    "param": "설마, 같이 커플 체조를 하고 싶다거나 그런 거야?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 9954,
+                    "option": "",
+                    "param": "???",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9955,
+                    "option": "",
+                    "param": "지휘관, 무슨 초능력이라도 가지고 있는 거야?!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9956,
+                    "option": "",
+                    "param": "멀리서도 마음을 읽는다거나 그런 거야?! 생각하고 있는 걸 다 간파해버렸어!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9957,
+                    "option": "",
+                    "param": "사실은 지휘관이랑 같이 호흡이 척척 맞는 멋진 커플 체조를 하고 싶었거든!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9958,
+                    "option": "",
+                    "param": "그렇지만 내 스타일은 지휘관한테 안 맞을 것 같아서……",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9959,
+                    "option": "",
+                    "param": "다치게 만들까 무서워서 속도를 늦추고 일반적인 커플 체조 영상을 본보기로 삼아 연습해 보긴 했는데……",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9960,
+                    "option": "",
+                    "param": "동작이 너무 굼떠서 어딘가 위화감이 들고, 힘을 써야 할 타이밍도 전혀 모르겠더라고.",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9961,
+                    "option": "",
+                    "param": "움직임도 매끄럽지가 않아. 이래선 연계는커녕 혼자서 마지막까지 다 소화해 내는 것조차 힘들어……",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9962,
+                    "option": "",
+                    "param": "매일 연습해 봐도 전혀 진전이 없어……",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 9963,
+                    "option": [
+                        [
+                            3,
+                            "그렇다면……"
+                        ]
+                    ],
+                    "param": "62",
+                    "ship_group": 80602,
+                    "type": 4,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9964,
+                    "option": "",
+                    "param": "그렇다면 굳이 체조가 아니어도 괜찮지 않을까?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 3,
+                    "id": 9965,
+                    "option": "",
+                    "param": "커플 댄스라든가, 그런 것도 한번 고려해 보는 건 어때?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 3,
+                    "id": 9966,
+                    "option": "",
+                    "param": "그게 그러니까……",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9967,
+                    "option": "",
+                    "param": "지휘관이 말하고 싶은 건, 기술에 치중하지 않고, 규칙도 신경 쓰지 않으면서……",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9968,
+                    "option": "",
+                    "param": "그냥 둘이서 손을 맞잡고 기분과 리듬에 맞춰 출 수 있는 커플 댄스를 추면 된다는 뜻이지?",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9969,
+                    "option": "",
+                    "param": "의외로 괜찮을 것 같아!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9970,
+                    "option": "",
+                    "param": "결정했어! 지휘관, 같이 커플 댄스 추자!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9971,
+                    "option": "",
+                    "param": "아! 아직 커플 댄스를 어떻게 추는지는 모르니까, 지휘관이 나한테 가르쳐줘야 해!!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9972,
+                    "option": "",
+                    "param": "지금 바로 지휘관이 있는 곳으로 갈게!!",
+                    "ship_group": 80602,
+                    "type": 1,
+                    "kr_name": "아로망슈",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+                }
+            ]
+        }
+    },
+    "랑트레피드": {
+        "334": {
+            "id": 334,
+            "type": null,
+            "unlock_desc": "캐릭터 획득",
+            "ship_group": 80106,
+            "name": "고기 나눠주기",
+            "trigger_type": 1,
+            "trigger_param": "",
+            "kr_name": "랑트레피드",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp",
+            "ship_name": "L'Intrépide ",
+            "scripts": [
+                {
+                    "flag": 0,
+                    "id": 9973,
+                    "option": "",
+                    "param": "지휘관, 새로 오픈한 노점이 위기에 몰렸어요.",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9974,
+                    "option": "",
+                    "param": "곧 파산해도 이상하지 않을 정도예요……",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9975,
+                    "option": "",
+                    "param": "이러다간 모두에게 맛있는 고기를 대접할 수 없게 되어버려요!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9976,
+                    "option": [
+                        [
+                            1,
+                            "장사가 잘 안돼서 그래?"
+                        ],
+                        [
+                            2,
+                            "아이돌이 되어서 노점을 살리는 건?"
+                        ]
+                    ],
+                    "param": "지휘관님, 도와주세요~",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9977,
+                    "option": "",
+                    "param": "장사가 잘 안돼서 그래?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 9978,
+                    "option": "",
+                    "param": "아이돌이 되어서 노점을 살리는 건?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 0,
+                    "id": 9979,
+                    "option": "",
+                    "param": "아니에요!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9980,
+                    "option": "",
+                    "param": "원인은 저 자신에게 있어요.",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9981,
+                    "option": "",
+                    "param": "고기를 굽고 있으면, 냄새에 이끌려 수많은 동료들이 모여들고…",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9982,
+                    "option": "",
+                    "param": "다들 너무 먹고 싶다는 눈빛으로 쳐다보는데……",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9983,
+                    "option": [
+                        [
+                            3,
+                            "혼자 다 먹어버렸어?"
+                        ]
+                    ],
+                    "param": "다 구워지면 참을 수가 없게 돼서……",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9984,
+                    "option": "",
+                    "param": "혼자 다 먹어버렸어?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 3,
+                    "id": 9985,
+                    "option": "",
+                    "param": "역시 지휘관님, 정확하세요!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9986,
+                    "option": "",
+                    "param": "고기 굽는 냄새를 맡으면…… 아무리 먹어도 부족해져서……",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9987,
+                    "option": "",
+                    "param": "그렇다고 마스크를 쓰고 고기를 구우면, 냄새를 정확하게 파악할 수 없게 되니까……",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 9988,
+                    "option": [
+                        [
+                            4,
+                            "고기를 함께 나누고 싶으면……"
+                        ]
+                    ],
+                    "param": "그건 고기를 향한 제 신념을 거스르는 행위예요……",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 9989,
+                    "option": "",
+                    "param": "고기를 함께 나누고 싶으면, 고기 굽기 교실을 열어보는 건 어때?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 4,
+                    "id": 9990,
+                    "option": "",
+                    "param": "고기 굽기 교실이요? 음……",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 9991,
+                    "option": "",
+                    "param": "확실히 고기 굽는 법을 가르쳐주면, 이 맛을 널리 알릴 수 있겠어요!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 9992,
+                    "option": "",
+                    "param": "게다가 수업 중에 제가 구운 고기는 물론이고, 모두가 구운 고기도 먹을 수 있겠죠~",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 9993,
+                    "option": "",
+                    "param": "감사합니다! 지금 당장 준비하러 가볼게요!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 9994,
+                    "option": "",
+                    "param": "321",
+                    "ship_group": 80106,
+                    "type": 4,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                }
+            ]
+        },
+        "335": {
+            "id": 335,
+            "type": null,
+            "unlock_desc": "호감도 사랑 달성",
+            "ship_group": 80106,
+            "name": "고기 투어 마라톤!",
+            "trigger_type": 2,
+            "trigger_param": "100",
+            "kr_name": "랑트레피드",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp",
+            "ship_name": "L'Intrépide ",
+            "scripts": [
+                {
+                    "flag": 0,
+                    "id": 9995,
+                    "option": "",
+                    "param": "최근에야 모항에 대해 전혀 모르고 있다는 걸 깨달았어요!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9996,
+                    "option": "",
+                    "param": "세상이 이렇게나 다채로웠다니~",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9997,
+                    "option": "",
+                    "param": "쥬스타그램을 보니까 모항에는 지금까지 본 적도 없는 맛있는 고기가 잔뜩 있는 모양이에요!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 9998,
+                    "option": [
+                        [
+                            1,
+                            "여러 가게를 돌아다니자고?"
+                        ]
+                    ],
+                    "param": "지휘관님, 저랑 같이 고기 투어를 다니는 건 어때요?",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 9999,
+                    "option": "",
+                    "param": "여러 가게를 돌아다니자고? 어디 갈지는 정해뒀어?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 1,
+                    "id": 10000,
+                    "option": "",
+                    "param": "물론이죠!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 10001,
+                    "option": "",
+                    "param": "처음은 이스트 글림 스타일 꼬치구이 전문점으로 하죠!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 10002,
+                    "option": "",
+                    "param": "식재료 종류도 풍부하고 향신료도 일품이라고 해서 꼭 가보고 싶었거든요!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 10003,
+                    "option": "",
+                    "param": "다음은 로열 네이비 레스토랑으로 가요!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 10004,
+                    "option": "",
+                    "param": "전통적인 선데이 로스트를 꼭 먹으러 가고 싶어요!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 10005,
+                    "option": "",
+                    "param": "감자와 고기의 궁합은 그야말로 최고라고 해요!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 10006,
+                    "option": "",
+                    "param": "그 뒤에는 이글 유니온 명물인 바비큐로 하죠! 훈제 풍미가 나는 고기로 유명하다네요!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 10007,
+                    "option": "",
+                    "param": "밑간 작업을 마친 고기는 풍미가 한층 더 살아나는데…",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 10008,
+                    "option": [
+                        [
+                            2,
+                            "듣고만 있어도 배가……"
+                        ]
+                    ],
+                    "param": "훈연하는 과정에서 다양한 칩을 조합해 더욱 독특한 풍미를 더할 수 있다고 해요!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 10009,
+                    "option": "",
+                    "param": "잠깐 멈춰봐. 듣기만 해도 배가 고파지네……",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 10010,
+                    "option": "",
+                    "param": "그래서 언제 출발하려고?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 10011,
+                    "option": "",
+                    "param": "지휘관님이 편하신 때면 언제든 좋아요.",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 10012,
+                    "option": "",
+                    "param": "안내는 저에게 맡겨주세요.",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 10013,
+                    "option": "",
+                    "param": "먹고 나서 배를 좀 쉬게 하고, 다음 목적지를 향해 달릴 거예요!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 10014,
+                    "option": [
+                        [
+                            3,
+                            "꼭 달려야 하는 거야?"
+                        ]
+                    ],
+                    "param": "그러면 다음 가게에 도착할 때쯤엔 전부 소화되어 있겠죠~",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 10015,
+                    "option": "",
+                    "param": "꼭 달려야 하는 거야?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 3,
+                    "id": 10016,
+                    "option": "",
+                    "param": "물론이죠!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 10017,
+                    "option": "",
+                    "param": "고기를 즐기는 것도 좋지만 운동도 게을리하면 안 돼요.",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 10018,
+                    "option": "",
+                    "param": "그게 바로 고기 투어 마라톤의 매력이죠!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 10019,
+                    "option": "",
+                    "param": "달리다 지치시면 제가 업어드릴게요",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 10020,
+                    "option": "",
+                    "param": "그럼 출발해요~",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 10021,
+                    "option": "",
+                    "param": "358",
+                    "ship_group": 80106,
+                    "type": 4,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                }
+            ]
+        },
+        "336": {
+            "id": 336,
+            "type": null,
+            "unlock_desc": "서약 완료",
+            "ship_group": 80106,
+            "name": "고기 무한 리필!",
+            "trigger_type": 2,
+            "trigger_param": "150",
+            "kr_name": "랑트레피드",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp",
+            "ship_name": "L'Intrépide ",
+            "scripts": [
+                {
+                    "flag": 0,
+                    "id": 10022,
+                    "option": "",
+                    "param": "지휘관님! 지휘관님!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10023,
+                    "option": "",
+                    "param": "지휘관님께 지원 요청을 드리는 바입니다!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 10024,
+                    "option": [
+                        [
+                            1,
+                            "메시지 수신 완료!"
+                        ]
+                    ],
+                    "param": "수신하셨다면 즉시 응답 바랍니다!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 10025,
+                    "option": "",
+                    "param": "메시지 수신 완료! 여기는 지휘관.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 1,
+                    "id": 10026,
+                    "option": "",
+                    "param": "일단 진정하고, 현재 위치와 직면한 상황에 대해 자세히 설명해 줘.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 1,
+                    "id": 10027,
+                    "option": "",
+                    "param": "네!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 10028,
+                    "option": "",
+                    "param": "지금 산책로에 있는데, 아주 좋아하는 고깃집에 들어가려던 참이에요.",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 10029,
+                    "option": "",
+                    "param": "그런데 여기서 지금 무려 커플 대식가 챌린지가 열리고 있어요!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 10030,
+                    "option": "",
+                    "param": "행사장은 벌써 인산인해를 이루고 있고요.",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 10031,
+                    "option": "",
+                    "param": "게다가 상품은 무려…!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 10032,
+                    "option": [
+                        [
+                            2,
+                            "매력적인 상품이네"
+                        ]
+                    ],
+                    "param": "1년간 고기 무한 리필 커플 이용권!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 10033,
+                    "option": "",
+                    "param": "매력적인 상품이네.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 10034,
+                    "option": "",
+                    "param": "그렇죠!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 10035,
+                    "option": "",
+                    "param": "군침이 흘러내릴 것만 같아요……",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 10036,
+                    "option": "",
+                    "param": "하지만 함께 도전해 줄 동료가 없어서……",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 10037,
+                    "option": [
+                        [
+                            3,
+                            "가는 건 좋은데……"
+                        ]
+                    ],
+                    "param": "그래서 지휘관님께 이렇게 지원 요청을 드렸어요!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 10038,
+                    "option": "",
+                    "param": "가는 건 좋은데, 전력에 도움이 되진 못할 것 같아.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 3,
+                    "id": 10039,
+                    "option": "",
+                    "param": "괜찮아요, 그 부분은 저에게 맡겨주세요.",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 10040,
+                    "option": "",
+                    "param": "지휘관님은 맛있는 고기를 즐기기만 하시면 돼요!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 10041,
+                    "option": [
+                        [
+                            4,
+                            "알았어, 지금 갈게"
+                        ]
+                    ],
+                    "param": "제가 우승까지 이끌어 드릴 테니까요!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 10042,
+                    "option": "",
+                    "param": "알았어, 지금 갈게.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 4,
+                    "id": 10043,
+                    "option": "",
+                    "param": "여기서 지휘관님을 기다리고 있을게요!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 10044,
+                    "option": "",
+                    "param": "아, 조금 서두르시는 편이 좋을지도 몰라요! 이제 곧 참가 접수가 마감될 것 같아서요!",
+                    "ship_group": 80106,
+                    "type": 1,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 10045,
+                    "option": "",
+                    "param": "313",
+                    "ship_group": 80106,
+                    "type": 4,
+                    "kr_name": "랑트레피드",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
                 }
             ]
         }

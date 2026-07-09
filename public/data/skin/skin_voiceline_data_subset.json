@@ -22680,6 +22680,21 @@
         "isNew":false
     },
     {
+        "클뜯 id":403103,
+        "함순이 이름":"프린츠 아달베르트",
+        "한글 함순이 + 스킨 이름":"흑백 마술사",
+        "스킨 타입 - 한글":"동화 속 세계",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/403103.webp",
+        "ASMR 일러":null,
+        "스킨 태그":"쁘띠모션, 배경",
+        "진영":"KMS",
+        "레어도":"SSR",
+        "재화":980.0,
+        "기간":"한정 (2026\/07\/22)",
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
         "클뜯 id":403110,
         "함순이 이름":"요르크",
         "한글 함순이 + 스킨 이름":"요르크",
@@ -27555,6 +27570,21 @@
         "isNew":false
     },
     {
+        "클뜯 id":605082,
+        "함순이 이름":"라파엘로",
+        "한글 함순이 + 스킨 이름":"콤비 아트 매직",
+        "스킨 타입 - 한글":"동화 속 세계",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/605082.webp",
+        "ASMR 일러":null,
+        "스킨 태그":"쁘띠모션, 배경",
+        "진영":"RN",
+        "레어도":"UR",
+        "재화":980.0,
+        "기간":"한정 (2026\/07\/22)",
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
         "클뜯 id":605090,
         "함순이 이름":"프란체스코 카라치올로",
         "한글 함순이 + 스킨 이름":"프란체스코 카라치올로",
@@ -27735,6 +27765,21 @@
         "isNew":false
     },
     {
+        "클뜯 id":608022,
+        "함순이 이름":"레오나르도 다 빈치",
+        "한글 함순이 + 스킨 이름":"요술과 흔들흔들 발명소녀",
+        "스킨 타입 - 한글":"동화 속 세계",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/608022.webp",
+        "ASMR 일러":null,
+        "스킨 태그":"배경",
+        "진영":"RN",
+        "레어도":"SSR",
+        "재화":880.0,
+        "기간":"한정 (2026\/07\/22)",
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
         "클뜯 id":608030,
         "함순이 이름":"마조레 바라카",
         "한글 함순이 + 스킨 이름":"마조레 바라카",
@@ -27776,7 +27821,7 @@
         "레어도":"SSR",
         "재화":null,
         "기간":null,
-        "ex_chat_status":0,
+        "ex_chat_status":1,
         "isNew":false
     },
     {
@@ -27791,6 +27836,21 @@
         "레어도":"SSR",
         "재화":880.0,
         "기간":"상시",
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
+        "클뜯 id":699012,
+        "함순이 이름":"마르코 폴로",
+        "한글 함순이 + 스킨 이름":"앰비셔스 쇼다운",
+        "스킨 타입 - 한글":"동화 속 세계",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/699012.webp",
+        "ASMR 일러":null,
+        "스킨 태그":"쁘띠모션, 배경",
+        "진영":"RN",
+        "레어도":"SSR",
+        "재화":980.0,
+        "기간":"한정 (2026\/07\/22)",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -29715,6 +29775,36 @@
         "isNew":false
     },
     {
+        "클뜯 id":801060,
+        "함순이 이름":"랑트레피드",
+        "한글 함순이 + 스킨 이름":"랑트레피드",
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/801060.webp",
+        "ASMR 일러":null,
+        "스킨 태그":"X",
+        "진영":"FFNF (FF, iris libre)",
+        "레어도":"SR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":1,
+        "isNew":false
+    },
+    {
+        "클뜯 id":801061,
+        "함순이 이름":"랑트레피드",
+        "한글 함순이 + 스킨 이름":"프레임 로드 대시!",
+        "스킨 타입 - 한글":"동화 속 세계",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/801061.webp",
+        "ASMR 일러":null,
+        "스킨 태그":"쁘띠모션, 특수배경 (움짤)",
+        "진영":"FFNF (FF, iris libre)",
+        "레어도":"SR",
+        "재화":900.0,
+        "기간":"한정 (2026\/07\/22)",
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
         "클뜯 id":801070,
         "함순이 이름":"르 테리블",
         "한글 함순이 + 스킨 이름":"르 테리블",
@@ -30315,6 +30405,36 @@
         "isNew":false
     },
     {
+        "클뜯 id":806020,
+        "함순이 이름":"아로망슈",
+        "한글 함순이 + 스킨 이름":"아로망슈",
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/806020.webp",
+        "ASMR 일러":null,
+        "스킨 태그":"X",
+        "진영":"FFNF (FF, iris libre)",
+        "레어도":"SSR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":1,
+        "isNew":false
+    },
+    {
+        "클뜯 id":806021,
+        "함순이 이름":"아로망슈",
+        "한글 함순이 + 스킨 이름":"다이나믹 아처리",
+        "스킨 타입 - 한글":"동화 속 세계",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/806021.webp",
+        "ASMR 일러":null,
+        "스킨 태그":"중파 일러, 특수배경 (움짤)",
+        "진영":"FFNF (FF, iris libre)",
+        "레어도":"SSR",
+        "재화":1050.0,
+        "기간":"한정 (2026\/07\/22)",
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
         "클뜯 id":807010,
         "함순이 이름":"베아른",
         "한글 함순이 + 스킨 이름":"베아른",
@@ -30431,6 +30551,36 @@
         "레어도":"SR",
         "재화":1080.0,
         "기간":"상시",
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
+        "클뜯 id":818010,
+        "함순이 이름":"셰르부르",
+        "한글 함순이 + 스킨 이름":"셰르부르",
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/818010.webp",
+        "ASMR 일러":null,
+        "스킨 태그":"X",
+        "진영":"FFNF (FF, iris libre)",
+        "레어도":"SSR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":1,
+        "isNew":false
+    },
+    {
+        "클뜯 id":818011,
+        "함순이 이름":"셰르부르",
+        "한글 함순이 + 스킨 이름":"인형 옷 속은……?",
+        "스킨 타입 - 한글":"동화 속 세계",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/818011.webp",
+        "ASMR 일러":null,
+        "스킨 태그":"L2D+, 특수배경 (움짤)",
+        "진영":"FFNF (FF, iris libre)",
+        "레어도":"SSR",
+        "재화":1280.0,
+        "기간":"한정 (2026\/07\/22)",
         "ex_chat_status":0,
         "isNew":false
     },

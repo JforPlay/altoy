@@ -6803,6 +6803,10 @@
         "name": "욕실에서 일어난 사고",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/403102.webp"
     },
+    "403103": {
+        "name": "흑백 마술사",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/403103.webp"
+    },
     "403110": {
         "name": "요르크",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/403110.webp"
@@ -8115,6 +8119,10 @@
         "name": "사랑과 미의 비밀 소장품",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/605081.webp"
     },
+    "605082": {
+        "name": "콤비 아트 매직",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/605082.webp"
+    },
     "605090": {
         "name": "프란체스코 카라치올로",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/605090.webp"
@@ -8163,6 +8171,10 @@
         "name": "호숫가의 어린 백조",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/608021.webp"
     },
+    "608022": {
+        "name": "요술과 흔들흔들 발명소녀",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/608022.webp"
+    },
     "608030": {
         "name": "마조레 바라카",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/608030.webp"
@@ -8178,6 +8190,10 @@
     "699011": {
         "name": "Lovely Million",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/699011.webp"
+    },
+    "699012": {
+        "name": "앰비셔스 쇼다운",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/699012.webp"
     },
     "699020": {
         "name": "나폴리",
@@ -8691,6 +8707,14 @@
         "name": "끈적끈적한 시츄에이션",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801051.webp"
     },
+    "801060": {
+        "name": "랑트레피드",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+    },
+    "801061": {
+        "name": "프레임 로드 대시!",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801061.webp"
+    },
     "801070": {
         "name": "르 테리블",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801070.webp"
@@ -8855,6 +8879,14 @@
         "name": "증기 테라피",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806011.webp"
     },
+    "806020": {
+        "name": "아로망슈",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+    },
+    "806021": {
+        "name": "다이나믹 아처리",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806021.webp"
+    },
     "807010": {
         "name": "베아른 ",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/807010.webp"
@@ -8886,6 +8918,14 @@
     "808012": {
         "name": "Loisirs balnéaires",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/808012.webp"
+    },
+    "818010": {
+        "name": "셰르부르",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp"
+    },
+    "818011": {
+        "name": "인형 옷 속은……?",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818011.webp"
     },
     "899010": {
         "name": "생 루이",

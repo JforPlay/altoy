@@ -33403,5 +33403,40 @@
             }
         ],
         "compare_group": 5
+    },
+    {
+        "id": 151180,
+        "name": "개그 담당",
+        "icon": "151180",
+        "rarity": 4,
+        "rarity_name": "SR",
+        "type": 10,
+        "type_name": "기타",
+        "type_name2": "기타",
+        "nationality": 10,
+        "nation_name": "아이리스 연합",
+        "nation_code": "FR",
+        "speciality": "<[NA]>",
+        "label": [
+            "FFNF",
+            "DEV"
+        ],
+        "tech": 0,
+        "level_count": 12,
+        "attrs": [
+            {
+                "key": "durability",
+                "name": "내구",
+                "value": "200"
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "durability",
+                "name": "내구",
+                "value": "530"
+            }
+        ],
+        "compare_group": 5
     }
 ]

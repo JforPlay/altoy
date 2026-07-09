@@ -18451,6 +18451,36 @@
         ],
         "rarity": "SSR"
     },
+    "80106": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp",
+        "name": "랑트레피드",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 9,
+        "add_level_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_level_value": 1,
+        "class": 80102,
+        "id": 80106,
+        "max_star": 5,
+        "pt_get": 14,
+        "pt_level": 20,
+        "pt_upgrage": 28,
+        "nationality": 8,
+        "type": 1,
+        "description": [
+            "이벤트: 환몽의 카발카드"
+        ],
+        "rarity": "SR"
+    },
     "80107": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801070.webp",
         "name": "르 테리블",
@@ -18864,6 +18894,32 @@
         ],
         "rarity": "SSR"
     },
+    "80602": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp",
+        "name": "아로망슈",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            6
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 5,
+        "add_level_shiptype": [
+            6
+        ],
+        "add_level_value": 2,
+        "class": 80602,
+        "id": 80602,
+        "max_star": 6,
+        "pt_get": 18,
+        "pt_level": 28,
+        "pt_upgrage": 38,
+        "nationality": 8,
+        "type": 6,
+        "description": [
+            "이벤트: 환몽의 카발카드"
+        ],
+        "rarity": "SSR"
+    },
     "80701": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/807010.webp",
         "name": "베아른",
@@ -18949,6 +19005,36 @@
             "특형함 건조"
         ],
         "rarity": "SR"
+    },
+    "81801": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/818010.webp",
+        "name": "셰르부르",
+        "add_get_attr": 2,
+        "add_get_shiptype": [
+            3,
+            13,
+            18
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 1,
+        "add_level_shiptype": [
+            3,
+            13,
+            18
+        ],
+        "add_level_value": 2,
+        "class": 81802,
+        "id": 81801,
+        "max_star": 6,
+        "pt_get": 22,
+        "pt_level": 32,
+        "pt_upgrage": 44,
+        "nationality": 8,
+        "type": 18,
+        "description": [
+            "이벤트: 환몽의 카발카드"
+        ],
+        "rarity": "SSR"
     },
     "89901": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/899010.webp",
