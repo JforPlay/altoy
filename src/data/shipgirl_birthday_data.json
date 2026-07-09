@@ -7381,5 +7381,29 @@
         "일": "26",
         "group_id": "40115",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401150.webp"
+    },
+    {
+        "ID": "741",
+        "룽섭 이름": "아로망슈",
+        "레어도": "SSR",
+        "함종": "경항모",
+        "진영": "아이리스",
+        "연": "1943",
+        "월": "9",
+        "일": "30",
+        "group_id": "80602",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/806020.webp"
+    },
+    {
+        "ID": "742",
+        "룽섭 이름": "랑트레피드",
+        "레어도": "SR",
+        "함종": "구축",
+        "진영": "아이리스",
+        "연": "1941",
+        "월": "6",
+        "일": "26",
+        "group_id": "80106",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
     }
 ]
