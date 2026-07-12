@@ -154,12 +154,31 @@
   width: 100%;
   padding: 0 1.5rem;
   margin-bottom: 1rem;
+  /* The viewer box is sized 100dvh-minus-navbar, so whenever its bottom lands
+     below the visible viewport (imperfect dvh during mobile URL-bar
+     transitions, stale --navbar-height, content overflow, anything injected
+     above the layout) these controls would be clipped off-screen with no way
+     to reach them. sticky pins the bar inside the visual viewport in exactly
+     those states and is a layout no-op when everything fits. The z-index also
+     lifts it above the positioned painting/background layers (z 0/1), which
+     otherwise out-paint a statically-positioned bar. */
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
 }
 
 .story-nav-arrows {
   display: flex;
   justify-content: center;
   gap: 2rem;
+  /* Same translucent-blur treatment as the audio pill above: the buttons sit
+     directly on arbitrary artwork, and dark buttons on dark art are otherwise
+     unreadable. */
+  background-color: var(--dialogue-bg);
+  backdrop-filter: blur(5px);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 15px var(--shadow-color);
 }
 
 /* Nav / story-nav / auto-play buttons now use the canonical `.btn .btn-secondary`

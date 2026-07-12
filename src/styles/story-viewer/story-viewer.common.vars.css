@@ -22,7 +22,7 @@
    - 0: Background images
    - 5: Info screen overlays
    - 10: Story header, dialogue boxes
-   - 20: Audio player
+   - 20: Audio player, bottom nav-button bar (sticky, guaranteed-visible)
    - 999: Sticky headers (selection view)
    - 2000: Modals and notifications
    - 9998-9999: Full-screen effects (fade, flash)
