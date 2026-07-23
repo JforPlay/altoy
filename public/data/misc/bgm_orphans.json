@@ -2051,7 +2051,7 @@
             },
             {
                 "kind": "event",
-                "label": "EP4-3 만남과 대화"
+                "label": "EP5-2 이른 아침의 잔해"
             }
         ],
         "year": 2024
@@ -2547,6 +2547,14 @@
             {
                 "kind": "main",
                 "label": "성인 전의 동맹"
+            },
+            {
+                "kind": "event",
+                "label": "EP5-3 세계 연결 의식"
+            },
+            {
+                "kind": "event",
+                "label": "EP7-7 신의 이름으로"
             }
         ],
         "year": null
@@ -2841,11 +2849,11 @@
             },
             {
                 "kind": "event",
-                "label": "EPS-3 마음과 생각"
+                "label": "한 줄기 붉은 빛"
             },
             {
                 "kind": "event",
-                "label": "한 줄기 붉은 빛"
+                "label": "EPS-3 마음과 생각"
             }
         ],
         "year": null
@@ -9922,6 +9930,10 @@
             {
                 "kind": "scene",
                 "label": "ChongYingLoginRePage"
+            },
+            {
+                "kind": "scene",
+                "label": "LittleYunXianPage"
             }
         ],
         "year": null
@@ -10457,6 +10469,10 @@
             }
         ],
         "usage": [
+            {
+                "kind": "scene",
+                "label": "ActivityShop50430"
+            },
             {
                 "kind": "scene",
                 "label": "MedalAlbumMoskvaView"
@@ -11245,6 +11261,26 @@
             {
                 "kind": "main",
                 "label": "성인 전의 동맹"
+            },
+            {
+                "kind": "event",
+                "label": "EP1-3 용병의 정보"
+            },
+            {
+                "kind": "event",
+                "label": "EP3-1 신의 수로"
+            },
+            {
+                "kind": "event",
+                "label": "EP3-3 랭스 시의 방어전"
+            },
+            {
+                "kind": "event",
+                "label": "EP7-5 내일을 위해"
+            },
+            {
+                "kind": "scene",
+                "label": "GeZiURMainPage"
             }
         ],
         "year": null
@@ -11264,6 +11300,18 @@
             {
                 "kind": "main",
                 "label": "성인 전의 동맹"
+            },
+            {
+                "kind": "event",
+                "label": "EP6-3 합주"
+            },
+            {
+                "kind": "event",
+                "label": "EP7-4 하늘을 나는 빛"
+            },
+            {
+                "kind": "event",
+                "label": "EP7-6 황제의 독주곡"
             }
         ],
         "year": null
@@ -11547,6 +11595,18 @@
                 "kind": "event",
                 "label": "환몽의 카발카드",
                 "year": 2026
+            },
+            {
+                "kind": "scene",
+                "label": "ActivityShop50655"
+            },
+            {
+                "kind": "scene",
+                "label": "DreamTourMedalAlbumView"
+            },
+            {
+                "kind": "scene",
+                "label": "DreamTourPtPage"
             }
         ],
         "year": 2026
@@ -11851,6 +11911,14 @@
             {
                 "kind": "event",
                 "label": "EP5-4 매지션의 점술"
+            },
+            {
+                "kind": "event",
+                "label": "EP4-6 계획적"
+            },
+            {
+                "kind": "event",
+                "label": "EP5-2 긴급 기동"
             }
         ],
         "year": 2024
@@ -12036,15 +12104,15 @@
             },
             {
                 "kind": "event",
+                "label": "EX-1 빙산의 일각"
+            },
+            {
+                "kind": "event",
                 "label": "EP3-1 유로파의 전장"
             },
             {
                 "kind": "event",
                 "label": "EP8-3 위기일발"
-            },
-            {
-                "kind": "event",
-                "label": "EX-1 빙산의 일각"
             },
             {
                 "kind": "scene",
@@ -12056,15 +12124,15 @@
             },
             {
                 "kind": "scene",
+                "label": "LittleMusashiPage"
+            },
+            {
+                "kind": "scene",
                 "label": "RuiFengSpPage"
             },
             {
                 "kind": "scene",
                 "label": "TianYuTianYuanLoginPage"
-            },
-            {
-                "kind": "scene",
-                "label": "WorldMediaCollectionAlbumGroupLayer"
             }
         ],
         "year": null
@@ -12333,6 +12401,10 @@
             {
                 "kind": "scene",
                 "label": "XiaoXinNongPtPage"
+            },
+            {
+                "kind": "scene",
+                "label": "XiaoXinNongPtPage2"
             },
             {
                 "kind": "island",
@@ -13107,6 +13179,10 @@
             },
             {
                 "kind": "scene",
+                "label": "ConsumeGemSignInPage"
+            },
+            {
+                "kind": "scene",
                 "label": "SkinMagazinePage7"
             },
             {
@@ -13334,6 +13410,10 @@
                 "kind": "event",
                 "label": "럭셔리! 드림! 골든 베이",
                 "year": 2026
+            },
+            {
+                "kind": "scene",
+                "label": "AnniversaryNineGamePage"
             }
         ],
         "year": 2026
@@ -13421,6 +13501,10 @@
                 "kind": "event",
                 "label": "럭셔리! 드림! 골든 베이",
                 "year": 2026
+            },
+            {
+                "kind": "scene",
+                "label": "MallScene"
             }
         ],
         "year": 2026
@@ -13655,7 +13739,12 @@
                 "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-room-nakhimov/%E7%8C%AB%E8%80%B3%E5%85%85%E8%83%BD%E4%B8%AD_AL.opus"
             }
         ],
-        "usage": [],
+        "usage": [
+            {
+                "kind": "scene",
+                "label": "DormTaskPage"
+            }
+        ],
         "year": null
     },
     "story-room-newjersey": {
@@ -13702,7 +13791,12 @@
                 "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-room-pit/%E7%96%BE%E9%80%9F%E5%BE%85%E6%9C%BA_AL.opus"
             }
         ],
-        "usage": [],
+        "usage": [
+            {
+                "kind": "scene",
+                "label": "DormSignThirdPage"
+            }
+        ],
         "year": null
     },
     "story-room-sirius": {
@@ -13810,8 +13904,20 @@
                 "label": "EP3-3 대담한 계획"
             },
             {
+                "kind": "event",
+                "label": "EP-6 준비"
+            },
+            {
+                "kind": "event",
+                "label": "EP4-1 추기경의 판단"
+            },
+            {
                 "kind": "scene",
                 "label": "RaphaelSPPtPage"
+            },
+            {
+                "kind": "scene",
+                "label": "YidaliV5FramePage"
             }
         ],
         "year": null
@@ -13969,11 +14075,11 @@
             },
             {
                 "kind": "event",
-                "label": "EP5-3 돌아온 나침반"
+                "label": "EP4-1 대등대 조사"
             },
             {
                 "kind": "event",
-                "label": "EP4-1 대등대 조사"
+                "label": "EP5-3 돌아온 나침반"
             }
         ],
         "year": 2023
@@ -14178,6 +14284,10 @@
             {
                 "kind": "opsi",
                 "label": "적 기함"
+            },
+            {
+                "kind": "event",
+                "label": "EP4-3 분담"
             }
         ],
         "year": null
@@ -14331,6 +14441,14 @@
             },
             {
                 "kind": "scene",
+                "label": "ActivityShop50829"
+            },
+            {
+                "kind": "scene",
+                "label": "AnniversaryNineEvertsenSkinPage"
+            },
+            {
+                "kind": "scene",
                 "label": "ForestVacationSkinPage"
             },
             {
@@ -14364,6 +14482,10 @@
                 "kind": "event",
                 "label": "심연 아래의 비밀",
                 "year": 2025
+            },
+            {
+                "kind": "scene",
+                "label": "HeLanLoginRePage"
             },
             {
                 "kind": "scene",
@@ -14946,6 +15068,10 @@
             },
             {
                 "kind": "event",
+                "label": "EPS4-1 마음"
+            },
+            {
+                "kind": "event",
                 "label": "EP6-3 정화"
             },
             {
@@ -14955,10 +15081,6 @@
             {
                 "kind": "event",
                 "label": "EX-5 세계의 환영"
-            },
-            {
-                "kind": "event",
-                "label": "EPS4-1 마음"
             },
             {
                 "kind": "scene",
@@ -14994,6 +15116,10 @@
             },
             {
                 "kind": "event",
+                "label": "EPS1-1 아득한 대국"
+            },
+            {
+                "kind": "event",
                 "label": "EP5-2 재회"
             },
             {
@@ -15011,10 +15137,6 @@
             {
                 "kind": "event",
                 "label": "EP8-1 나락 제압전"
-            },
-            {
-                "kind": "event",
-                "label": "EPS1-1 아득한 대국"
             },
             {
                 "kind": "scene",
@@ -15670,6 +15792,10 @@
             },
             {
                 "kind": "scene",
+                "label": "HaerfudeTecCatchupPage"
+            },
+            {
+                "kind": "scene",
                 "label": "HakuryuuTecCatchupPage"
             },
             {
@@ -15687,10 +15813,6 @@
             {
                 "kind": "scene",
                 "label": "RupprechtTecCatchupPage"
-            },
-            {
-                "kind": "scene",
-                "label": "ShimantoTecCatchupPage"
             }
         ],
         "year": null
@@ -15967,18 +16089,6 @@
             },
             {
                 "kind": "event",
-                "label": "EP4-4 템페스타의 선택"
-            },
-            {
-                "kind": "event",
-                "label": "EP5-1 어두운 비바람"
-            },
-            {
-                "kind": "event",
-                "label": "EX-2 템페스타의 메시지"
-            },
-            {
-                "kind": "event",
                 "label": "EP4-3 상 마르티뉴의 걱정"
             },
             {
@@ -15992,6 +16102,18 @@
             {
                 "kind": "event",
                 "label": "EP7-5 프리덤폴리스"
+            },
+            {
+                "kind": "event",
+                "label": "EP4-4 템페스타의 선택"
+            },
+            {
+                "kind": "event",
+                "label": "EP5-1 어두운 비바람"
+            },
+            {
+                "kind": "event",
+                "label": "EX-2 템페스타의 메시지"
             }
         ],
         "year": 2024
@@ -16075,6 +16197,18 @@
                 "kind": "event",
                 "label": "럭셔리! 드림! 골든 베이",
                 "year": 2026
+            },
+            {
+                "kind": "scene",
+                "label": "AnniversaryNineMainPage"
+            },
+            {
+                "kind": "scene",
+                "label": "FujinBayMedalAlbumView"
+            },
+            {
+                "kind": "scene",
+                "label": "MallMapScene"
             }
         ],
         "year": 2026
@@ -16401,6 +16535,14 @@
             },
             {
                 "kind": "scene",
+                "label": "LuminousMainPage"
+            },
+            {
+                "kind": "scene",
+                "label": "LuminousPtPage"
+            },
+            {
+                "kind": "scene",
                 "label": "SeventhAnniversaryMainPage"
             }
         ],
@@ -16688,6 +16830,10 @@
             {
                 "kind": "opsi",
                 "label": "적 기함"
+            },
+            {
+                "kind": "scene",
+                "label": "ActivityShop50464"
             },
             {
                 "kind": "scene",
@@ -17454,6 +17600,10 @@
             {
                 "kind": "scene",
                 "label": "FaxiV4FramePage"
+            },
+            {
+                "kind": "scene",
+                "label": "LuminousFramePage"
             },
             {
                 "kind": "scene",
@@ -18245,10 +18395,6 @@
             },
             {
                 "kind": "event",
-                "label": "EX-4 나는 옵저버"
-            },
-            {
-                "kind": "event",
                 "label": "EPS1-2 사쿠라 엠파이어의 파빌리온"
             },
             {
@@ -18262,6 +18408,10 @@
             {
                 "kind": "event",
                 "label": "EP5-3 나란히 서서"
+            },
+            {
+                "kind": "event",
+                "label": "EX-4 나는 옵저버"
             }
         ],
         "year": null
@@ -18313,6 +18463,10 @@
             {
                 "kind": "opsi",
                 "label": "적 기함"
+            },
+            {
+                "kind": "scene",
+                "label": "OutPostOmenPage"
             }
         ],
         "year": null
