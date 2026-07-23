@@ -35,7 +35,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                                     • 복각/상시 현황으로 분류 가능<br>
                                     • 모든 이벤트는 신규/복각/상시 전부 각각 구현되어있습니다<br>
                                     ex) 뱅가드 이벤트 -> 신규 / 복각 / 상시 모두 존재<br>
-                                    복각 or 상시편입된 이벤트만 보려면 필터링을 사용해주세요</p>
+                                    복각 or 상시편입된 이벤트만 보려면 필터링을 사용해주세요
+                                    <br>• 타임라인/이벤트별 보기 전환 가능 — 이벤트별 보기는 같은 이벤트의 신규/복각/상시를 한 카드로 모아줍니다<br>
+                                    • 타임라인에서 복각/상시 카드를 클릭하면 같은 이벤트의 런들이 연결되어 표시됩니다</p>
                             </div>
                         </div>
                         <div class="info-step">
@@ -87,8 +89,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             </div>
         </header>
 
-        <div class="stats" role="status" aria-live="polite">
-            <span id="eventCount">총 0개 이벤트</span>
+        <div class="stats">
+            <span id="eventCount" role="status" aria-live="polite">총 0개 이벤트</span>
+            <div class="btn-group" role="group" aria-label="보기 방식 선택">
+                <button type="button" id="viewTimelineBtn" class="btn btn-secondary btn-sm">타임라인</button>
+                <button type="button" id="viewGroupsBtn" class="btn btn-secondary btn-sm">이벤트별</button>
+            </div>
         </div>
 
         <div id="eventList" class="event-list" role="region" aria-label="이벤트 목록" aria-busy="true">
