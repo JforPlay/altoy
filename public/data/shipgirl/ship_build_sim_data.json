@@ -695,6 +695,11 @@
             "rarity": "SR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/702060.webp"
         },
+        "702071": {
+            "name": "보로실로프",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/702070.webp"
+        },
         "801021": {
             "name": "포르뱅",
             "rarity": "R",
@@ -1177,6 +1182,11 @@
             "rarity": "SSR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/703010.webp"
         },
+        "703021": {
+            "name": "쿠르스크",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/703020.webp"
+        },
         "705041": {
             "name": "소비에츠카야 벨로루시아",
             "rarity": "SSR",
@@ -1191,6 +1201,11 @@
             "name": "아르한겔스크",
             "rarity": "SR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/705060.webp"
+        },
+        "705071": {
+            "name": "세바스토폴",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/705070.webp"
         },
         "718011": {
             "name": "크론시타트",

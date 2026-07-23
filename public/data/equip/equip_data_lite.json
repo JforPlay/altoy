@@ -6028,6 +6028,44 @@
         "compare_group": 2
     },
     {
+        "id": 5680,
+        "name": "시제형 550mm 3연장 어뢰改 (탄약 조정)",
+        "icon": "5680",
+        "rarity": 5,
+        "rarity_name": "SSR",
+        "type": 5,
+        "type_name": "어뢰",
+        "type_name2": "어뢰",
+        "nationality": 8,
+        "nation_name": "아이리스 리브레",
+        "nation_code": "FFNF",
+        "speciality": "<[TRP]>",
+        "label": [
+            "FFNF",
+            "ST",
+            "TP",
+            "TRI",
+            "FTP"
+        ],
+        "tech": 0,
+        "level_count": 14,
+        "attrs": [
+            {
+                "key": "torpedo",
+                "name": "뇌장",
+                "value": 45
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "torpedo",
+                "name": "뇌장",
+                "value": 45
+            }
+        ],
+        "compare_group": 2
+    },
+    {
         "id": 6020,
         "name": "12.7mm 대공 기관총",
         "icon": "6000",
@@ -6958,10 +6996,57 @@
             "USS",
             "DD",
             "MG",
-            "HE"
+            "AP"
         ],
         "tech": 0,
         "level_count": 15,
+        "attrs": [
+            {
+                "key": "cannon",
+                "name": "포격",
+                "value": 35
+            },
+            {
+                "key": "antiaircraft",
+                "name": "대공",
+                "value": 10
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "cannon",
+                "name": "포격",
+                "value": 35
+            },
+            {
+                "key": "antiaircraft",
+                "name": "대공",
+                "value": 10
+            }
+        ],
+        "compare_group": 1
+    },
+    {
+        "id": 11280,
+        "name": "시제형 127mm 연장고각포 Mk16",
+        "icon": "11280",
+        "rarity": 5,
+        "rarity_name": "SSR",
+        "type": 1,
+        "type_name": "함포",
+        "type_name2": "함포(구축)",
+        "nationality": 1,
+        "nation_name": "이글 유니온",
+        "nation_code": "USS",
+        "speciality": "<[LOCK]>",
+        "label": [
+            "USS",
+            "DD",
+            "MG",
+            "HE"
+        ],
+        "tech": 0,
+        "level_count": 14,
         "attrs": [
             {
                 "key": "cannon",
@@ -13130,6 +13215,43 @@
         "compare_group": 1
     },
     {
+        "id": 24420,
+        "name": "시제형 419mm 3연장포 Mk.I",
+        "icon": "24420",
+        "rarity": 5,
+        "rarity_name": "SSR",
+        "type": 4,
+        "type_name": "함포",
+        "type_name2": "함포(전함)",
+        "nationality": 2,
+        "nation_name": "로열 네이비",
+        "nation_code": "HMS",
+        "speciality": "<[VOL]>",
+        "label": [
+            "HMS",
+            "BB",
+            "MG",
+            "HE"
+        ],
+        "tech": 0,
+        "level_count": 14,
+        "attrs": [
+            {
+                "key": "cannon",
+                "name": "포격",
+                "value": 45
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "cannon",
+                "name": "포격",
+                "value": 45
+            }
+        ],
+        "compare_group": 1
+    },
+    {
         "id": 25000,
         "name": "3연장 533mm 어뢰 Mark IX",
         "icon": "25000",
@@ -17993,6 +18115,43 @@
         "nation_name": "사쿠라 엠파이어",
         "nation_code": "IJN",
         "speciality": "뇌격",
+        "label": [
+            "IJN",
+            "ST",
+            "TP",
+            "QUAD"
+        ],
+        "tech": 0,
+        "level_count": 14,
+        "attrs": [
+            {
+                "key": "torpedo",
+                "name": "뇌장",
+                "value": 45
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "torpedo",
+                "name": "뇌장",
+                "value": 45
+            }
+        ],
+        "compare_group": 2
+    },
+    {
+        "id": 35280,
+        "name": "시제형 610mm 4연장 어뢰 (순양함용)",
+        "icon": "35280",
+        "rarity": 5,
+        "rarity_name": "SSR",
+        "type": 5,
+        "type_name": "어뢰",
+        "type_name2": "어뢰",
+        "nationality": 3,
+        "nation_name": "사쿠라 엠파이어",
+        "nation_code": "IJN",
+        "speciality": "<[TRP]>",
         "label": [
             "IJN",
             "ST",
@@ -24371,6 +24530,42 @@
         "compare_group": 4
     },
     {
+        "id": 49080,
+        "name": "시제 함재형 Ta 152 C-1/R14",
+        "icon": "49080",
+        "rarity": 6,
+        "rarity_name": "UR",
+        "type": 9,
+        "type_name": "폭격기",
+        "type_name2": "폭격기",
+        "nationality": 4,
+        "nation_name": "메탈 블러드",
+        "nation_code": "KMS",
+        "speciality": "<[BOMB]>",
+        "label": [
+            "KMS",
+            "CV",
+            "DB"
+        ],
+        "tech": 0,
+        "level_count": 14,
+        "attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 65
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 65
+            }
+        ],
+        "compare_group": 4
+    },
+    {
         "id": 85000,
         "name": "B-13 연장 130mm 주포 B-2LM",
         "icon": "85000",
@@ -29342,6 +29537,53 @@
             }
         ],
         "compare_group": 4
+    },
+    {
+        "id": 91400,
+        "name": "시제형 127mm 연장포 Mle1948",
+        "icon": "51400",
+        "rarity": 5,
+        "rarity_name": "SSR",
+        "type": 1,
+        "type_name": "함포",
+        "type_name2": "함포(구축)",
+        "nationality": 8,
+        "nation_name": "아이리스 리브레",
+        "nation_code": "FFNF",
+        "speciality": "<[LOCK]>",
+        "label": [
+            "FFNF",
+            "DD",
+            "MG",
+            "CM"
+        ],
+        "tech": 0,
+        "level_count": 14,
+        "attrs": [
+            {
+                "key": "cannon",
+                "name": "포격",
+                "value": 35
+            },
+            {
+                "key": "antiaircraft",
+                "name": "대공",
+                "value": 10
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "cannon",
+                "name": "포격",
+                "value": 35
+            },
+            {
+                "key": "antiaircraft",
+                "name": "대공",
+                "value": 10
+            }
+        ],
+        "compare_group": 1
     },
     {
         "id": 95000,

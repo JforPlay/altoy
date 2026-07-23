@@ -149,6 +149,7 @@ id,name,rarity,type,nation,icon_url
 5620,550mm 4연장 어뢰 (탄약 조정),SR,어뢰,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5620.webp
 5640,550mm 4연장 어뢰改 (탄약 조정),SSR,어뢰,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5640.webp
 5660,550mm 어뢰 세트 (3연장+2연장),SSR,어뢰,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5660.webp
+5680,시제형 550mm 3연장 어뢰改 (탄약 조정),SSR,어뢰,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5680.webp
 6020,12.7mm 대공 기관총,N,대공포,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/6000.webp
 6040,12.7mm 대공 기관총,R,대공포,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/6000.webp
 6120,100mm 연장 고사포,N,대공포,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/6100.webp
@@ -174,6 +175,7 @@ id,name,rarity,type,nation,icon_url
 11220,127mm 연장 양용포 Mk12,SR,함포(구축),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/11200.webp
 11240,127mm 연장 양용포 Mk12,SSR,함포(구축),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/11200.webp
 11260,시제형 137mm 연장 양용포 Mk1,SSR,함포(구축),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/11260.webp
+11280,시제형 127mm 연장고각포 Mk16,SSR,함포(구축),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/11280.webp
 12020,152mm 연장포,N,함포(경순),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/12000.webp
 12040,152mm 연장포,R,함포(경순),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/12000.webp
 12060,연장 152mm 주포 Mk15,R,함포(경순),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/12060.webp
@@ -339,6 +341,7 @@ id,name,rarity,type,nation,icon_url
 24320,381mm 연장포·改,SR,함포(전함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/24300.webp
 24340,381mm 연장포·改,SSR,함포(전함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/24300.webp
 24400,시제형 406mm 3연장포 Mk.II,UR,함포(전함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/24400.webp
+24420,시제형 419mm 3연장포 Mk.I,SSR,함포(전함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/24420.webp
 25000,3연장 533mm 어뢰 Mark IX,R,어뢰,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/25000.webp
 25020,4연장 533mm 어뢰 Mark IX,SR,어뢰,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/25020.webp
 25040,5연장 533mm 어뢰 Mark IX,SSR,어뢰,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/25040.webp
@@ -469,6 +472,7 @@ id,name,rarity,type,nation,icon_url
 35220,610mm 4연장 어뢰,SR,어뢰,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35200.webp
 35240,610mm 4연장 어뢰,SSR,어뢰,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35200.webp
 35260,4연장 610mm 어뢰改,SSR,어뢰,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35260.webp
+35280,시제형 610mm 4연장 어뢰 (순양함용),SSR,어뢰,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35280.webp
 35300,610mm 5연장 어뢰,SR,어뢰,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35300.webp
 35320,610mm 5연장 어뢰,SSR,어뢰,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35300.webp
 35340,610mm 5연장 어뢰,UR,어뢰,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35300.webp
@@ -643,6 +647,7 @@ id,name,rarity,type,nation,icon_url
 49020,Ju-87C 급강하폭격기,R,폭격기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/49000.webp
 49040,Ju-87C 급강하폭격기,SR,폭격기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/49000.webp
 49060,He-50b 함상폭격기,R,폭격기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/49060.webp
+49080,시제 함재형 Ta 152 C-1/R14,UR,폭격기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/49080.webp
 85000,B-13 연장 130mm 주포 B-2LM,R,함포(구축),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85000.webp
 85040,B-13 연장 130mm 주포 B-2LM,SSR,함포(구축),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85000.webp
 85060,연장 100mm대공포 SM-5-1s,R,대공포,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85060.webp
@@ -775,6 +780,7 @@ id,name,rarity,type,nation,icon_url
 91340,LN.401,SSR,폭격기,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/51340.webp
 91360,Late.299,SR,뇌격기,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/51360.webp
 91380,LGL.32,R,전투기,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/51380.webp
+91400,시제형 127mm 연장포 Mle1948,SSR,함포(구축),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/51400.webp
 95000,381mm 3연장포 Model1934,R,함포(전함),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55000.webp
 95020,381mm 3연장포 Model1934,SR,함포(전함),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55000.webp
 95040,381mm 3연장포 Model1934,SSR,함포(전함),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55000.webp

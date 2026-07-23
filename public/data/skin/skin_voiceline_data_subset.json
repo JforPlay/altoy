@@ -12645,6 +12645,21 @@
         "isNew":false
     },
     {
+        "클뜯 id":299060,
+        "함순이 이름":"던컨",
+        "한글 함순이 + 스킨 이름":"던컨",
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/299060.webp",
+        "ASMR 일러":null,
+        "스킨 태그":"X",
+        "진영":"HMS",
+        "레어도":"SSR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":1,
+        "isNew":false
+    },
+    {
         "클뜯 id":301010,
         "함순이 이름":"후부키",
         "한글 함순이 + 스킨 이름":"후부키",
@@ -20745,6 +20760,21 @@
         "isNew":false
     },
     {
+        "클뜯 id":399080,
+        "함순이 이름":"타카하시",
+        "한글 함순이 + 스킨 이름":"타카하시",
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/399080.webp",
+        "ASMR 일러":null,
+        "스킨 태그":"X",
+        "진영":"IJN",
+        "레어도":"SSR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":1,
+        "isNew":false
+    },
+    {
         "클뜯 id":401010,
         "함순이 이름":"Z1",
         "한글 함순이 + 스킨 이름":"Z1",
@@ -24730,7 +24760,7 @@
         "진영":"KMS",
         "레어도":"SSR",
         "재화":880.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -25047,6 +25077,21 @@
         "재화":1260.0,
         "기간":"한정 (2026\/01\/21)",
         "ex_chat_status":0,
+        "isNew":false
+    },
+    {
+        "클뜯 id":499110,
+        "함순이 이름":"막스 임멜만",
+        "한글 함순이 + 스킨 이름":"막스 임멜만",
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/499110.webp",
+        "ASMR 일러":null,
+        "스킨 태그":"X",
+        "진영":"KMS",
+        "레어도":"UR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":1,
         "isNew":false
     },
     {
@@ -27160,7 +27205,7 @@
         "진영":"RN",
         "레어도":"SR",
         "재화":880.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -28000,7 +28045,7 @@
         "진영":"SN",
         "레어도":"SR",
         "재화":1080.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -28795,7 +28840,7 @@
         "진영":"SN",
         "레어도":"SSR",
         "재화":980.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -28990,7 +29035,7 @@
         "진영":"SN",
         "레어도":"SSR",
         "재화":1180.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -29290,7 +29335,7 @@
         "진영":"SN",
         "레어도":"SR",
         "재화":880.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -30765,6 +30810,21 @@
         "isNew":false
     },
     {
+        "클뜯 id":899050,
+        "함순이 이름":"오라주",
+        "한글 함순이 + 스킨 이름":"오라주",
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/899050.webp",
+        "ASMR 일러":null,
+        "스킨 태그":"X",
+        "진영":"FFNF (FF, iris libre)",
+        "레어도":"SSR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":1,
+        "isNew":false
+    },
+    {
         "클뜯 id":901010,
         "함순이 이름":"르 마르스",
         "한글 함순이 + 스킨 이름":"르 마르스",
@@ -31720,7 +31780,7 @@
         "진영":"MNF",
         "레어도":"SSR",
         "재화":980.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -31917,6 +31977,21 @@
         "재화":1260.0,
         "기간":"한정 (2026\/01\/21)",
         "ex_chat_status":0,
+        "isNew":false
+    },
+    {
+        "클뜯 id":1299010,
+        "함순이 이름":"발파라이소",
+        "한글 함순이 + 스킨 이름":"발파라이소",
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/1299010.webp",
+        "ASMR 일러":null,
+        "스킨 태그":"X",
+        "진영":12,
+        "레어도":"UR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":1,
         "isNew":false
     },
     {

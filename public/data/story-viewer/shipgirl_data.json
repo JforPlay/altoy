@@ -2499,6 +2499,10 @@
         "name": "자애로운 씻겨주기",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/1199011.webp"
     },
+    "1299010": {
+        "name": "발파라이소",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/1299010.webp"
+    },
     "131170": {
         "name": "치킨랩, 그리고 졸음…",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/131170.webp"
@@ -4122,6 +4126,10 @@
     "299051": {
         "name": "상쾌한 이노센트 돌",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/299051.webp"
+    },
+    "299060": {
+        "name": "던컨",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/299060.webp"
     },
     "301010": {
         "name": "후부키",
@@ -6283,6 +6291,10 @@
         "name": "기도하는 토끼 무녀",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/399071.webp"
     },
+    "399080": {
+        "name": "타카하시",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/399080.webp"
+    },
     "401010": {
         "name": "Z1",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401010.webp"
@@ -7434,6 +7446,10 @@
     "499101": {
         "name": "낙인의 헥세라이",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/499101.webp"
+    },
+    "499110": {
+        "name": "막스 임멜만",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/499110.webp"
     },
     "501010": {
         "name": "안샨 ",
@@ -8974,6 +8990,10 @@
     "899041": {
         "name": "보팔 퀘스트",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/899041.webp"
+    },
+    "899050": {
+        "name": "오라주",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/899050.webp"
     },
     "900001": {
         "name": "쾨니히스베르크",
