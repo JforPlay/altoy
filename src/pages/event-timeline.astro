@@ -37,7 +37,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                                     ex) 뱅가드 이벤트 -> 신규 / 복각 / 상시 모두 존재<br>
                                     복각 or 상시편입된 이벤트만 보려면 필터링을 사용해주세요
                                     <br>• 타임라인/이벤트별 보기 전환 가능 — 이벤트별 보기는 같은 이벤트의 신규/복각/상시를 한 카드로 모아줍니다<br>
-                                    • 타임라인에서 복각/상시 카드를 클릭하면 같은 이벤트의 런들이 연결되어 표시됩니다</p>
+                                    • 타임라인에서 복각/상시 카드를 클릭하면 같은 이벤트의 런들이 연결되어 표시됩니다<br>• 무딱 타임라인 보기는 무딱 이벤트만 모아 월 단위 차트로 신규→복각→상시 흐름을 보여줍니다 (복각주기 보기 모드로 복각 주기 비교 가능)</p>
                             </div>
                         </div>
                         <div class="info-step">
@@ -94,6 +94,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <div class="btn-group" role="group" aria-label="보기 방식 선택">
                 <button type="button" id="viewTimelineBtn" class="btn btn-secondary btn-sm">타임라인</button>
                 <button type="button" id="viewGroupsBtn" class="btn btn-secondary btn-sm">이벤트별</button>
+                <button type="button" id="viewMudakBtn" class="btn btn-secondary btn-sm">무딱 타임라인</button>
             </div>
         </div>
 

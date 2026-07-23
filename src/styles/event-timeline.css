@@ -625,3 +625,229 @@ select:focus {
   margin-bottom: 0.9375rem;
 }
 
+/* ===== 무딱 차트 view ===== */
+/* JS toggles this on main.container while the 차트 view is active — the chart
+   wants the whole viewport, other views keep the 1000px reading column. */
+.container--wide {
+  max-width: calc(100% - 2.5rem);
+}
+
+/* Light-mode phase colors are darker for contrast; body.dark-mode brightens
+   them back to the page's badge palette (신규 green / 복각 blue / 상시 pink). */
+.mudak-chart {
+  --mudak-new: #2cb865;
+  --mudak-rerun: #2b8ede;
+  --mudak-permanent: #e05585;
+  background: var(--card-bg);
+  border-radius: 0.9375rem;
+  box-shadow: 0 0.3125rem 1.25rem var(--shadow-color);
+  padding: 1rem 0 1rem 1rem;
+  /* #eventList is a grid; grid items default to min-width:auto, which grows
+     to the item's min-content (the wide .mudak-inner track) instead of
+     shrinking to the grid track. min-width:0 lets .mudak-scroll's own
+     overflow-x:auto own the horizontal scroll instead of the whole page. */
+  min-width: 0;
+}
+
+body.dark-mode .mudak-chart {
+  --mudak-new: #43e97b;
+  --mudak-rerun: #4facfe;
+  --mudak-permanent: #fa709a;
+}
+
+.mudak-toolbar { margin-bottom: 0.625rem; }
+
+.mudak-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem 0.875rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.625rem;
+}
+
+.mudak-legend-swatch {
+  display: inline-block;
+  width: 16px;
+  height: 8px;
+  border-radius: 2px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.mudak-legend-swatch--wait {
+  height: 0;
+  border-top: 2px dashed;
+  border-radius: 0;
+}
+
+.mudak-legend-swatch.mudak-wait--new { border-color: var(--mudak-new); }
+.mudak-legend-swatch.mudak-wait--rerun { border-color: var(--mudak-rerun); }
+
+.mudak-scroll { overflow-x: auto; }
+.mudak-inner { width: max-content; }
+
+.mudak-row {
+  --row-bg: var(--card-bg);
+  display: flex;
+  height: 38px;
+  align-items: stretch;
+  background: var(--row-bg);
+}
+
+.mudak-row:not(.mudak-head):hover {
+  --row-bg: color-mix(in srgb, var(--card-bg) 94%, var(--text-color));
+}
+
+.mudak-head {
+  height: 20px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.mudak-name {
+  flex: none;
+  width: 250px;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--row-bg);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-right: 8px;
+  border-right: 1px solid var(--border-color);
+  font-size: 0.875rem;
+}
+
+.mudak-portrait-link { flex: none; display: flex; }
+
+.mudak-portrait {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border-color);
+  display: block;
+}
+
+.mudak-name-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.mudak-collab-chip {
+  flex: none;
+  font-size: 0.5625rem;
+  color: #8e5bc4;
+  border: 1px solid currentColor;
+  border-radius: var(--radius-sm);
+  padding: 0 3px;
+}
+
+.mudak-start-year {
+  flex: none;
+  color: var(--text-secondary);
+  font-size: 0.6875rem;
+}
+
+.mudak-track {
+  flex: none;
+  position: relative;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--border-color) 0 1px,
+    transparent 1px calc(var(--mudak-month-w) * 12)
+  );
+}
+
+.mudak-track--rel {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--border-color) 0 1px,
+    transparent 1px calc(var(--mudak-month-w) * 6)
+  );
+}
+
+.mudak-track--head { background: none; }
+
+.mudak-year { position: absolute; top: 0; }
+
+.mudak-today-tag {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  color: #e6785a;
+}
+
+.mudak-today {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px dashed #e6785a;
+}
+
+.mudak-dot {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.mudak-dot--new { background: var(--mudak-new); }
+.mudak-dot--rerun { background: var(--mudak-rerun); }
+.mudak-dot--permanent { background: var(--mudak-permanent); border-radius: 3px; }
+.mudak-dot--other { background: var(--text-secondary); }
+
+.mudak-span {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 10px;
+  border-radius: 2px;
+}
+
+.mudak-span--new { background: color-mix(in srgb, var(--mudak-new) 22%, transparent); }
+.mudak-span--rerun { background: color-mix(in srgb, var(--mudak-rerun) 22%, transparent); }
+.mudak-span--permanent { background: color-mix(in srgb, var(--mudak-permanent) 40%, transparent); }
+
+.mudak-gap-label {
+  position: absolute;
+  top: 2px;
+  transform: translateX(-50%);
+  font-size: 0.625rem;
+  white-space: nowrap;
+}
+
+.mudak-gap-label--new { color: var(--mudak-new); }
+.mudak-gap-label--rerun { color: var(--mudak-rerun); }
+
+.mudak-wait {
+  position: absolute;
+  top: 50%;
+  border-top: 2px dashed;
+  opacity: 0.7;
+}
+
+.mudak-wait--new { border-color: var(--mudak-new); }
+.mudak-wait--rerun { border-color: var(--mudak-rerun); }
+
+.mudak-wait-label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.625rem;
+  white-space: nowrap;
+  transform-origin: left center;
+}
+
+@media (max-width: 768px) {
+  .mudak-name { width: 170px; }
+}
+

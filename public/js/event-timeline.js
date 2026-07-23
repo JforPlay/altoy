@@ -16,6 +16,7 @@ import {
     setStorageItem
 } from './utils.js';
 import { buildGroups, daysBetween, gapLabel, parseEventDate } from './event-timeline.groups.js';
+import { buildMudakChart, toRelativeRows } from './event-timeline.chart.js';
 
 // ===== State =====
 let eventData = [];
@@ -25,8 +26,10 @@ let controlsReady = false;
 let groups = new Map();   // group key → group (event-timeline.groups.js buildGroups)
 let groupOf = new Map();  // event row object → its group
 let selectedGroupKey = null; // 타임라인 view: group whose runs are highlighted
-// 'timeline' | 'groups' — plain UI pref (getStorageItem, not synced)
-let currentView = getStorageItem('eventTimelineView', 'timeline') === 'groups' ? 'groups' : 'timeline';
+// 'timeline' | 'groups' | 'mudak' — plain UI pref (getStorageItem, not synced)
+const storedView = getStorageItem('eventTimelineView', 'timeline');
+let currentView = ['timeline', 'groups', 'mudak'].includes(storedView) ? storedView : 'timeline';
+let mudakMode = 'absolute'; // 무딱 차트 sub-mode; not persisted, resets on view entry
 
 // ===== DOM References =====
 const searchInput = document.getElementById('searchInput');
@@ -40,6 +43,7 @@ const eventList = document.getElementById('eventList');
 const eventCount = document.getElementById('eventCount');
 const viewTimelineBtn = document.getElementById('viewTimelineBtn');
 const viewGroupsBtn = document.getElementById('viewGroupsBtn');
+const viewMudakBtn = document.getElementById('viewMudakBtn');
 const filterControls = [
     searchInput,
     clearBtn,
@@ -49,7 +53,8 @@ const filterControls = [
     rerunStatusFilter,
     showJpDatesFilter,
     viewTimelineBtn,
-    viewGroupsBtn
+    viewGroupsBtn,
+    viewMudakBtn
 ].filter(Boolean);
 
 // ===== Data Loading =====
@@ -57,7 +62,7 @@ const filterControls = [
 document.addEventListener('DOMContentLoaded', async () => {
     if (!searchInput || !clearBtn || !categoryFilter || !factionFilter || !mudakFilter ||
         !rerunStatusFilter || !showJpDatesFilter || !eventList || !eventCount ||
-        !viewTimelineBtn || !viewGroupsBtn) {
+        !viewTimelineBtn || !viewGroupsBtn || !viewMudakBtn) {
         console.warn('[Event Timeline] Required elements not found');
         return;
     }
@@ -146,6 +151,7 @@ function setupEventListeners() {
 
     viewTimelineBtn.addEventListener('click', () => setView('timeline'));
     viewGroupsBtn.addEventListener('click', () => setView('groups'));
+    viewMudakBtn.addEventListener('click', () => setView('mudak'));
 
     // Group selection: delegate on the list; links/buttons keep their behavior
     eventList.addEventListener('click', e => {
@@ -269,6 +275,7 @@ function displayEvents() {
     clearGroupSelection();
     eventList.setAttribute('aria-busy', 'false');
     if (currentView === 'groups') renderGroupView();
+    else if (currentView === 'mudak') renderMudakView();
     else renderTimelineView();
 }
 
@@ -302,11 +309,15 @@ function renderTimelineView() {
 function syncViewButtons() {
     viewTimelineBtn.classList.toggle('is-active', currentView === 'timeline');
     viewGroupsBtn.classList.toggle('is-active', currentView === 'groups');
+    viewMudakBtn.classList.toggle('is-active', currentView === 'mudak');
+    // 차트 gets the full viewport width; other views keep the 1000px column
+    document.querySelector('main.container')?.classList.toggle('container--wide', currentView === 'mudak');
 }
 
 function setView(view) {
     if (view === currentView) return;
     currentView = view;
+    if (view === 'mudak') mudakMode = 'absolute'; // 차트 always opens on 기본 보기
     setStorageItem('eventTimelineView', view);
     syncViewButtons();
     displayEvents();
@@ -506,6 +517,245 @@ function formatRunDate(run) {
     return (run.event.날짜 || '').trim() || '날짜 미상';
 }
 
+// ===== 무딱 차트 view =====
+// Horizontal month-granularity swimlane of 무딱 groups (any run O). Pure
+// model from event-timeline.chart.js; this section only maps months → px.
+
+const MUDAK_MONTH_W = 11;      // px per month, 기본 보기 (absolute axis)
+const MUDAK_MONTH_W_REL = 18;  // px per month, 복각주기 보기 (shorter axis)
+const MUDAK_TRACK_PAD = 70;    // px past the axis for trailing wait labels
+
+function renderMudakView() {
+    const seen = new Set();
+    const visibleGroups = [];
+    filteredEvents.forEach(event => {
+        const g = groupOf.get(event);
+        if (g && !seen.has(g.key)) {
+            seen.add(g.key);
+            visibleGroups.push(g);
+        }
+    });
+    const chart = buildMudakChart(visibleGroups, { now: new Date() });
+
+    if (chart.rows.length === 0) {
+        eventCount.textContent = '총 0개 무딱 이벤트 그룹';
+        renderState('검색 결과가 없습니다', '다른 검색어나 필터를 시도해보세요.', 'empty');
+        return;
+    }
+
+    const relative = mudakMode === 'relative';
+    const rel = relative ? toRelativeRows(chart.rows) : null;
+    const rows = relative ? rel.rows : chart.rows;
+    eventCount.textContent = relative
+        ? `무딱 이벤트 그룹 ${rows.length}개`
+        : `총 ${chart.rows.length}개 무딱 이벤트 그룹`;
+
+    const mw = relative ? MUDAK_MONTH_W_REL : MUDAK_MONTH_W;
+    const axisMonths = relative ? rel.maxMi + 4 : chart.end - chart.start + 1;
+    const trackW = axisMonths * mw + MUDAK_TRACK_PAD;
+
+    const container = document.createElement('div');
+    container.className = 'mudak-chart';
+    container.style.setProperty('--mudak-month-w', `${mw}px`);
+    container.appendChild(createMudakToolbar());
+    container.appendChild(createMudakLegend(relative));
+
+    const scroll = document.createElement('div');
+    scroll.className = 'mudak-scroll scroll-styled';
+    const inner = document.createElement('div');
+    inner.className = 'mudak-inner';
+    inner.appendChild(createMudakHeader(chart, relative, rel, mw, trackW));
+    rows.forEach(row => inner.appendChild(createMudakRow(row, chart, relative, mw, trackW)));
+    scroll.appendChild(inner);
+    container.appendChild(scroll);
+    eventList.replaceChildren(container);
+}
+
+function createMudakToolbar() {
+    const bar = document.createElement('div');
+    bar.className = 'mudak-toolbar btn-group';
+    bar.setAttribute('role', 'group');
+    bar.setAttribute('aria-label', '차트 모드 선택');
+    const modeBtn = (label, mode) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = `btn btn-secondary btn-sm${mudakMode === mode ? ' is-active' : ''}`;
+        b.textContent = label;
+        b.addEventListener('click', () => {
+            if (mudakMode === mode) return;
+            mudakMode = mode;
+            renderMudakView();
+        });
+        return b;
+    };
+    bar.appendChild(modeBtn('기본 보기', 'absolute'));
+    bar.appendChild(modeBtn('복각주기 보기', 'relative'));
+    return bar;
+}
+
+function createMudakLegend(relative) {
+    const legend = document.createElement('div');
+    legend.className = 'mudak-legend';
+    const item = (cls, label) => {
+        const wrap = document.createElement('span');
+        const swatch = document.createElement('span');
+        swatch.className = `mudak-legend-swatch ${cls}`;
+        wrap.appendChild(swatch);
+        wrap.append(label);
+        return wrap;
+    };
+    legend.appendChild(item('mudak-span--new', '복각 대기'));
+    legend.appendChild(item('mudak-span--rerun', '상시 대기'));
+    if (!relative) {
+        legend.appendChild(item('mudak-span--permanent', '상시 플레이 가능'));
+        legend.appendChild(item('mudak-legend-swatch--wait mudak-wait--new', '복각 안 옴 — 대기 중'));
+        legend.appendChild(item('mudak-legend-swatch--wait mudak-wait--rerun', '복각 후 상시 대기 중'));
+    }
+    return legend;
+}
+
+function createMudakHeader(chart, relative, rel, mw, trackW) {
+    const head = document.createElement('div');
+    head.className = 'mudak-row mudak-head';
+    const spacer = document.createElement('div');
+    spacer.className = 'mudak-name';
+    head.appendChild(spacer);
+
+    const track = document.createElement('div');
+    track.className = 'mudak-track mudak-track--head';
+    track.style.width = `${trackW}px`;
+    const tick = (left, text, cls = 'mudak-year') => {
+        const el = document.createElement('span');
+        el.className = cls;
+        el.style.left = `${left}px`;
+        el.textContent = text;
+        track.appendChild(el);
+    };
+    if (relative) {
+        for (let t = 0; t <= rel.maxMi + 3; t += 6) tick(t * mw, `${t}개월`);
+    } else {
+        for (let y = Math.floor(chart.start / 12); y <= Math.floor(chart.end / 12); y++) {
+            tick((y * 12 - chart.start) * mw + 4, String(y));
+        }
+        tick((chart.end - chart.start + 0.5) * mw, '오늘', 'mudak-today-tag');
+    }
+    head.appendChild(track);
+    return head;
+}
+
+function createMudakRow(row, chart, relative, mw, trackW) {
+    const x = mi => ((relative ? mi : mi - chart.start) + 0.5) * mw;
+    const rowEl = document.createElement('div');
+    rowEl.className = 'mudak-row';
+    rowEl.appendChild(createMudakNameCell(row, relative));
+
+    const track = document.createElement('div');
+    track.className = `mudak-track${relative ? ' mudak-track--rel' : ''}`;
+    track.style.width = `${trackW}px`;
+
+    if (!relative) {
+        const today = document.createElement('div');
+        today.className = 'mudak-today';
+        today.style.left = `${x(chart.end)}px`;
+        track.appendChild(today);
+    }
+
+    row.spans.forEach(span => {
+        const el = document.createElement('div');
+        el.className = `mudak-span mudak-span--${span.phase}`;
+        el.style.left = `${x(span.from)}px`;
+        el.style.width = `${x(span.to) - x(span.from)}px`;
+        track.appendChild(el);
+        if (span.months > 0) {
+            const label = document.createElement('span');
+            label.className = `mudak-gap-label mudak-gap-label--${span.phase}`;
+            label.style.left = `${(x(span.from) + x(span.to)) / 2}px`;
+            label.textContent = `+${span.months}개월`;
+            track.appendChild(label);
+        }
+    });
+
+    if (!relative && row.tail) {
+        if (row.tail.kind === 'permanent') {
+            const bar = document.createElement('div');
+            bar.className = 'mudak-span mudak-span--permanent';
+            bar.style.left = `${x(row.tail.from)}px`;
+            bar.style.width = `${x(chart.end) - x(row.tail.from)}px`;
+            track.appendChild(bar);
+        } else {
+            // wait-rerun (after 신규) reuses the green family; wait-permanent
+            // (after 복각) the blue family — same mapping as the spans.
+            const phase = row.tail.kind === 'wait-rerun' ? 'new' : 'rerun';
+            const wait = document.createElement('div');
+            wait.className = `mudak-wait mudak-wait--${phase}`;
+            wait.style.left = `${x(row.tail.from)}px`;
+            wait.style.width = `${x(chart.end) - x(row.tail.from)}px`;
+            track.appendChild(wait);
+            const label = document.createElement('span');
+            label.className = `mudak-wait-label mudak-gap-label--${phase}`;
+            label.style.left = `${x(chart.end) + 6}px`;
+            label.textContent = `${row.tail.months}개월`;
+            track.appendChild(label);
+        }
+    }
+
+    row.runs.forEach(run => {
+        const meta = STATUS_META[run.status];
+        const dot = document.createElement('div');
+        dot.className = `mudak-dot mudak-dot--${meta ? meta.cls : 'other'}`;
+        dot.style.left = `${x(run.mi)}px`;
+        dot.title = `${meta ? meta.label : '개최'} ${(run.event.날짜 || '').trim()}`;
+        track.appendChild(dot);
+    });
+
+    rowEl.appendChild(track);
+    return rowEl;
+}
+
+function createMudakNameCell(row, relative) {
+    const cell = document.createElement('div');
+    cell.className = 'mudak-name';
+    const anchor = row.anchor;
+
+    const names = String(anchor.함순이 || '').split(',').map(s => s.trim()).filter(Boolean);
+    const urs = names
+        .map(findShipgirlByName)
+        .filter(s => s && s.rarity === 'UR' && s.icon)
+        .slice(0, 2);
+    urs.forEach(s => {
+        const link = document.createElement('a');
+        link.href = shipgirlInfoUrl(s.name, s.gid);
+        link.className = 'mudak-portrait-link';
+        link.setAttribute('aria-label', `${s.name} 상세 정보 보기`);
+        const img = createImgElement(s.icon, s.name);
+        img.className = 'mudak-portrait';
+        img.title = `${s.name} (UR)`;
+        img.setAttribute('data-onfail', 'hide');
+        link.appendChild(img);
+        cell.appendChild(link);
+    });
+
+    const name = document.createElement('span');
+    name.className = 'mudak-name-text';
+    name.textContent = anchor.이벤트명 || '제목 없음';
+    name.title = anchor.이벤트명 || '';
+    cell.appendChild(name);
+
+    if (anchor.분류 === '콜라보') {
+        const chip = document.createElement('span');
+        chip.className = 'mudak-collab-chip';
+        chip.textContent = '콜라보';
+        cell.appendChild(chip);
+    }
+    if (relative) {
+        const yr = document.createElement('span');
+        yr.className = 'mudak-start-year';
+        yr.textContent = `'${String(row.startYear).slice(2)}`;
+        cell.appendChild(yr);
+    }
+    return cell;
+}
+
 /**
  * Build the DOM card for a single event entry.
  * Includes badges (category, faction, rerun status) and optional shipgirl icon row.
@@ -645,9 +895,7 @@ function createShipgirlIconLink(sourceName, shipgirl) {
     const displayName = shipgirl?.name || sourceName;
     const linkName = shipgirl?.name || normalizeRomanNumerals(sourceName.trim());
     const gid = shipgirl?.gid;
-    const shipgirlUrl = resolveUrl(
-        `shipgirl/shipgirl-info/?ship=${encodeURIComponent(linkName)}${gid != null ? `&gid=${encodeURIComponent(gid)}` : ''}`
-    );
+    const shipgirlUrl = shipgirlInfoUrl(linkName, gid);
 
     const link = document.createElement('a');
     link.href = shipgirlUrl;
@@ -700,6 +948,12 @@ function getRarityClass(rarity) {
 function findShipgirlByName(name) {
     const normalizedName = normalizeRomanNumerals(name.trim());
     return shipgirlNameMap.get(normalizedName) || null;
+}
+
+function shipgirlInfoUrl(name, gid) {
+    return resolveUrl(
+        `shipgirl/shipgirl-info/?ship=${encodeURIComponent(name)}${gid != null ? `&gid=${encodeURIComponent(gid)}` : ''}`
+    );
 }
 
 function getSafeExternalUrl(rawUrl) {
