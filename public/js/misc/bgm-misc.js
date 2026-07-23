@@ -9,6 +9,23 @@ import { createVisualizer } from './bgm-misc.visualizer.js';
 
 const STORAGE_KEY = 'bgm-misc-player';
 
+// Section grouping by the stem's most meaningful usage kind (pipeline-supplied
+// `usage[]`); order doubles as pick precedence — 'scene' labels are raw class
+// names so they rank last among real usages.
+const KIND_ORDER = ['event', 'main', 'map', 'opsi', 'skin', 'island', 'furniture', 'login', 'scene', 'none'];
+const KIND_LABELS = {
+    event: '이벤트',
+    main: '메인 스토리',
+    map: '해역',
+    opsi: '작전 시렌',
+    skin: '스킨',
+    island: '아일랜드',
+    furniture: '기숙사 가구',
+    login: '로그인 화면',
+    scene: 'UI · 미니게임 화면',
+    none: '기타',
+};
+
 const PREVIEW_BTN_ICONS = `
     <svg class="bgm-misc-icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <polygon points="6 4 20 12 6 20 6 4"></polygon>
@@ -102,17 +119,75 @@ document.addEventListener('DOMContentLoaded', async () => {
         barEl.removeAttribute('hidden');
     }
 
-    // ---- Row rendering ----
-    const rows = stems.map(stem => {
-        const album = orphans[stem];
-        const el = makeStemRow(stem, album);
-        const needle = [stem, ...(album.cues || [])].join(' ').toLowerCase();
-        return { stem, el, needle };
-    });
+    // ---- Row rendering (grouped into usage-kind sections) ----
+    // Undated stems sort last in both year orders; name breaks ties.
+    const SORTS = {
+        recent: (a, b) => (orphans[b].year || 0) - (orphans[a].year || 0) || a.localeCompare(b),
+        oldest: (a, b) => (orphans[a].year || 9999) - (orphans[b].year || 9999) || a.localeCompare(b),
+        name: (a, b) => a.localeCompare(b),
+    };
+    const primaryKind = album =>
+        KIND_ORDER.find(k => (album.usage || []).some(u => u.kind === k)) || 'none';
+    const groups = new Map(KIND_ORDER.map(k => [k, []]));
+    for (const stem of stems) groups.get(primaryKind(orphans[stem])).push(stem);
+    for (const list of groups.values()) list.sort(SORTS.recent);
+
+    const rows = [];
+    const sections = [];
     const frag = document.createDocumentFragment();
-    for (const r of rows) frag.appendChild(r.el);
+    for (const [kind, groupStems] of groups) {
+        if (groupStems.length === 0) continue;
+        const headerLi = document.createElement('li');
+        headerLi.className = 'bgm-misc-section';
+        const h2 = document.createElement('h2');
+        h2.className = 'section-title section-title--sm';
+        const marker = document.createElement('span');
+        marker.className = 'bgm-misc-section-marker';
+        marker.textContent = '▾';
+        h2.append(marker, `${KIND_LABELS[kind]} (${groupStems.length})`);
+        headerLi.appendChild(h2);
+        frag.appendChild(headerLi);
+
+        const section = { el: headerLi, marker, rows: [], collapsed: false };
+        sections.push(section);
+        makeKeyboardActivatable(headerLi, () => {
+            section.collapsed = !section.collapsed;
+            refreshVisibility();
+        });
+        headerLi.setAttribute('role', 'button');
+        headerLi.setAttribute('aria-expanded', 'true');
+        headerLi.tabIndex = 0;
+
+        for (const stem of groupStems) {
+            const album = orphans[stem];
+            const el = makeStemRow(stem, album);
+            const needle = [
+                stem,
+                ...(album.cues || []),
+                ...(album.usage || []).map(u => u.label),
+                album.year || '',
+            ].join(' ').toLowerCase();
+            const row = { stem, el, needle, match: true };
+            rows.push(row);
+            section.rows.push(row);
+            frag.appendChild(el);
+        }
+    }
     listEl.appendChild(frag);
     updateCount(rows.length, rows.length);
+
+    // ---- Sort control ----
+    const sortBtns = document.querySelectorAll('.bgm-misc-sort .btn');
+    sortBtns.forEach(btn => btn.addEventListener('click', () => {
+        sortBtns.forEach(b => b.classList.toggle('is-active', b === btn));
+        const cmp = SORTS[btn.dataset.sort] || SORTS.recent;
+        for (const s of sections) {
+            s.rows.sort((r1, r2) => cmp(r1.stem, r2.stem));
+            // appendChild moves the existing nodes — rebuilds list order in place.
+            listEl.appendChild(s.el);
+            for (const r of s.rows) listEl.appendChild(r.el);
+        }
+    }));
 
     // ---- Search ----
     let searchTimer = 0;
@@ -124,11 +199,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         const q = searchEl.value.trim().toLowerCase();
         let shown = 0;
         for (const r of rows) {
-            const match = !q || r.needle.includes(q);
-            r.el.hidden = !match;
-            if (match) shown++;
+            r.match = !q || r.needle.includes(q);
+            if (r.match) shown++;
         }
+        refreshVisibility();
         updateCount(shown, rows.length);
+    }
+
+    // Single visibility renderer: search match × section collapse. An active
+    // search overrides collapse so matches are never invisibly hidden.
+    function refreshVisibility() {
+        const searching = searchEl.value.trim() !== '';
+        for (const s of sections) {
+            const collapsed = s.collapsed && !searching;
+            for (const r of s.rows) r.el.hidden = !r.match || collapsed;
+            s.el.hidden = s.rows.every(r => !r.match);
+            s.el.setAttribute('aria-expanded', String(!collapsed));
+            s.marker.textContent = collapsed ? '▸' : '▾';
+        }
     }
     function updateCount(shown, total) {
         countEl.textContent = shown === total ? `${total}` : `${shown} / ${total}`;
@@ -377,6 +465,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             cueLine.className = 'bgm-misc-cue-line';
             cueLine.textContent = album.cues[0];
             titles.appendChild(cueLine);
+        }
+        const usage = album.usage || [];
+        if (usage.length > 0) {
+            const usageLine = document.createElement('span');
+            usageLine.className = 'bgm-misc-usage';
+            const labels = usage.slice(0, 2).map(u => u.label);
+            if (usage.length > 2) labels.push(`외 ${usage.length - 2}곳`);
+            usageLine.textContent = [album.year, ...labels].filter(Boolean).join(' · ');
+            titles.appendChild(usageLine);
         }
 
         const trackCount = document.createElement('span');

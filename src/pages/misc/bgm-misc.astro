@@ -24,6 +24,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 autocomplete="off"
             />
             <span id="bgm-misc-search-count" class="bgm-misc-search-count" aria-live="polite"></span>
+            <div class="btn-group bgm-misc-sort" role="group" aria-label="정렬 방식">
+                <button type="button" class="btn btn-secondary btn-sm is-active" data-sort="recent">최신순</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-sort="oldest">오래된순</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-sort="name">이름순</button>
+            </div>
         </div>
         <ul id="bgm-misc-list" class="bgm-misc-list" aria-live="polite"></ul>
         <audio id="bgm-misc-audio" preload="none"></audio>

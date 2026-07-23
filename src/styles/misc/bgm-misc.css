@@ -29,12 +29,18 @@ body {
 .bgm-misc-search-row {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: var(--spacing-md, 1rem);
     margin: 0 0 1.25rem;
 }
 
+.bgm-misc-sort {
+    flex-shrink: 0;
+}
+
 .bgm-misc-search {
     flex: 1;
+    min-width: 12rem;
     padding: 0.55rem 0.85rem;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg, 0.75rem);
@@ -130,6 +136,33 @@ body {
     color: var(--text-secondary);
     font-size: 0.8125rem;
     flex-shrink: 0;
+}
+
+.bgm-misc-section {
+    margin-top: var(--spacing-lg, 1.5rem);
+    cursor: pointer;
+    user-select: none;
+}
+
+.bgm-misc-section:first-child {
+    margin-top: 0;
+}
+
+.bgm-misc-section:focus-visible {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 2px;
+}
+
+.bgm-misc-section-marker {
+    font-size: 0.8em;
+    color: var(--text-secondary);
+}
+
+.bgm-misc-usage {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    word-break: break-word;
+    line-height: 1.4;
 }
 
 .bgm-misc-tracks {
