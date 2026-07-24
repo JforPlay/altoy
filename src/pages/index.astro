@@ -50,16 +50,19 @@ const hrefs = {
 ---
 
 <Layout title="ALtoy - 벽람 장난감" bodyClass="mainpage" {base}>
+    <Fragment slot="head">
+        <link rel="preload" as="image" href={`${base}/assets/img/islandplanner.webp`} fetchpriority="high">
+    </Fragment>
     <main class="home-container">
         <!-- Hero Carousel Section -->
         <section class="hero-carousel">
-            <div class="carousel-track">
+            <div class="carousel-track" style="--initial-slide-index: 3;">
 
                 <!-- Slide 1: Skin Gallery -->
                 <div class="carousel-slide" data-slide="2">
                     <div class="slide-background">
                         <img src={`${base}/assets/img/main_page_skin.webp`} alt="Gallery Background"
-                            loading="lazy">
+                            width="1920" height="1080" loading="lazy" decoding="async" fetchpriority="low">
                         <div class="slide-overlay"></div>
                     </div>
                     <div class="slide-content">
@@ -81,7 +84,7 @@ const hrefs = {
                 <div class="carousel-slide" data-slide="3">
                     <div class="slide-background">
                         <img src={`${base}/assets/img/equip_page_skin.webp`} alt="Equip DB Background"
-                            loading="lazy">
+                            width="1920" height="1080" loading="lazy" decoding="async" fetchpriority="low">
                         <div class="slide-overlay"></div>
                     </div>
                     <div class="slide-content">
@@ -101,7 +104,7 @@ const hrefs = {
                 <div class="carousel-slide" data-slide="4">
                     <div class="slide-background">
                         <img src={`${base}/assets/img/research_tracker.webp`} alt="Research Tracker Background"
-                            loading="lazy">
+                            width="1920" height="1080" loading="lazy" decoding="async" fetchpriority="low">
                         <div class="slide-overlay"></div>
                     </div>
                     <div class="slide-content">
@@ -121,7 +124,8 @@ const hrefs = {
                 <div class="carousel-slide active" data-slide="0">
                     <div class="slide-background">
                         <img src={`${base}/assets/img/islandplanner.webp`}
-                            alt="Island Planner Background" loading="lazy">
+                            alt="Island Planner Background" width="1819" height="968" loading="eager"
+                            decoding="async" fetchpriority="high">
                         <div class="slide-overlay"></div>
                     </div>
                     <div class="slide-content">
@@ -141,7 +145,7 @@ const hrefs = {
                 <div class="carousel-slide" data-slide="1">
                     <div class="slide-background">
                         <img src="https://line3-patch-blhx.bilibiligame.net/pic/251218_boteB8R5oh3g1KImYkrV.png" alt="Juustagram Background"
-                            loading="lazy">
+                            loading="lazy" decoding="async" fetchpriority="low">
                         <div class="slide-overlay"></div>
                     </div>
                     <div class="slide-content">
@@ -345,13 +349,13 @@ const hrefs = {
                     <span class="badge badge--info external-badge">외부</span>
                     <div class="dual-links-container">
                         <a href={hrefs.EXTERNAL_ARCA_AZUR} target="_blank" rel="noopener noreferrer" class="dual-link-item">
-                            <img src={`${base}/assets/icon/arca.svg`} alt="Arca" class="dual-link-svg-icon">
+                            <img src={`${base}/assets/icon/arca.svg`} alt="Arca" class="dual-link-svg-icon" width="1000" height="1000" loading="lazy" decoding="async">
                             <div class="dual-link-content">
                                 <div class="dual-link-label">벽챈 바로가기</div>
                             </div>
                         </a>
                         <a href={hrefs.EXTERNAL_ARCA_MANJUU} target="_blank" rel="noopener noreferrer" class="dual-link-item">
-                            <img src={`${base}/assets/icon/arca.svg`} alt="Arca" class="dual-link-svg-icon">
+                            <img src={`${base}/assets/icon/arca.svg`} alt="Arca" class="dual-link-svg-icon" width="1000" height="1000" loading="lazy" decoding="async">
                             <div class="dual-link-content">
                                 <div class="dual-link-label">맍챈 바로가기</div>
                             </div>

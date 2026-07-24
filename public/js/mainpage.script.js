@@ -269,6 +269,9 @@ const EventCarousel = (function () {
         const img = createImgElement(`${IMAGE_BASE_URL}${pic}.webp`, `Event Banner ${banner.id || ''}`, {
             fallback: FALLBACK_SVG
         });
+        img.width = 800;
+        img.height = 200;
+        img.decoding = 'async';
 
         const overlay = document.createElement('div');
         overlay.className = 'event-banner-overlay';
@@ -573,7 +576,10 @@ const BirthdaySection = (function () {
         img.className = 'birthday-item-icon';
         img.src = icon;
         img.alt = name;
+        img.width = 36;
+        img.height = 36;
         img.loading = 'lazy';
+        img.decoding = 'async';
         img.onerror = function () {
             this.onerror = null;
             this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36"%3E%3Crect width="36" height="36" fill="%23ddd" rx="18"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="10" fill="%23999"%3E?%3C/text%3E%3C/svg%3E';
