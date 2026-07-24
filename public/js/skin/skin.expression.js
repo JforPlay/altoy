@@ -8,14 +8,21 @@
  * the face sits, so it must never be shown alone. The inline preview is a <canvas>
  * with base + face composited onto it (the lightbox snapshots that canvas) —
  * compositing into ONE element instead of CSS-stacking a base <img> + face <img>
- * means no border or sub-pixel offset between layers can reopen the hole. The
- * decoded base is cached per container so an expression switch only redraws.
+ * means no border or sub-pixel offset between layers can reopen the hole. When
+ * the composite runs below native resolution (MAX_COMPOSITE_DIM cap), the face
+ * goes through the shared native-res patch (expression-composite.js) so
+ * resampling can't reopen the hole edge either. The decoded base (+ patch) is
+ * cached per container so an expression switch only redraws.
  */
 import { hideElement, showElement, createImgElement, createIcon, lockBodyScroll, unlockBodyScroll, downloadImage, sanitizeFilename, DATA_VERSION, DATA_FOR_TOY_BASE } from '../utils.js';
 // Canonical, game-faithful no-expression face picker (manifest `default` → '0' →
 // numerically-smallest). Single source of truth shared with the story viewer; do
 // NOT reintroduce a local `faces[0]` heuristic — the faces array is in atlas order.
 import { pickFaceCandidates } from '../expression-face.js';
+// Seam-free face compositing: when the base is downscaled (composite cap), the
+// face must be composited at native res in a patch BEFORE resampling, or a
+// faint square outline appears around the face box. See expression-composite.js.
+import { cutFacePatchBase, drawFaceComposite } from '../expression-composite.js';
 
 // Cap the composite canvas — some paintings are 100+ megapixels (e.g. 이404
 // 317020 is 11830×10224). A canvas that large overflows browser decode/canvas
@@ -439,10 +446,13 @@ function loadImage(url) {
  * Expression switches then redraw from this canvas, never touching the (possibly
  * 100+ MP) source again — so a switch costs only a small face load + two draws.
  * Capped at MAX_COMPOSITE_DIM: a canvas past browser limits composites to blank.
+ * Also cuts the native-res face-box patch (while the decoded image is in hand)
+ * that drawFaceComposite needs for seam-free face draws on a downscaled base.
  * @param {string} url - base painting URL
- * @returns {Promise<HTMLCanvasElement>}
+ * @param {number[]} [box] - face box in native px (from the manifest)
+ * @returns {Promise<{canvas: HTMLCanvasElement, facePatch: object|null}>}
  */
-async function buildBaseCanvas(url) {
+async function buildBaseCanvas(url, box) {
     const base = await loadImage(url);
     const nw = base.naturalWidth;
     const nh = base.naturalHeight;
@@ -455,7 +465,8 @@ async function buildBaseCanvas(url) {
     const ctx = canvas.getContext('2d');
     ctx.imageSmoothingQuality = 'high';
     ctx.drawImage(base, 0, 0, canvas.width, canvas.height);
-    return canvas; // the decoded source Image falls out of scope and can be freed
+    const facePatch = cutFacePatchBase(base, box, scale);
+    return { canvas, facePatch }; // the decoded source Image falls out of scope and can be freed
 }
 
 /**
@@ -477,8 +488,8 @@ async function composeOverlay(wrapper) {
     const gen = ++wrapper._gen;
 
     try {
-        if (!wrapper._baseCanvasPromise) wrapper._baseCanvasPromise = buildBaseCanvas(ov.baseUrl);
-        const [baseCanvas, face] = await Promise.all([
+        if (!wrapper._baseCanvasPromise) wrapper._baseCanvasPromise = buildBaseCanvas(ov.baseUrl, ov.manifest && ov.manifest.box);
+        const [{ canvas: baseCanvas, facePatch }, face] = await Promise.all([
             wrapper._baseCanvasPromise,
             loadImage(ov.faceUrl).catch(() => null)
         ]);
@@ -492,13 +503,7 @@ async function composeOverlay(wrapper) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(baseCanvas, 0, 0);
         if (face && ov.manifest && ov.manifest.box && ov.manifest.size) {
-            const [bx, by, bw, bh] = ov.manifest.box;
-            const [sw, sh] = ov.manifest.size;
-            // box is in manifest-size space; scale it into the (capped) canvas.
-            const sx = canvas.width / sw;
-            const sy = canvas.height / sh;
-            ctx.imageSmoothingQuality = 'high';
-            ctx.drawImage(face, bx * sx, by * sy, bw * sx, bh * sy);
+            drawFaceComposite(ctx, face, ov.manifest.box, ov.manifest.size, facePatch);
         }
         wrapper._composed = true;
     } catch (e) {
@@ -531,7 +536,8 @@ async function composeDefaultPainting(skinId, manifestEntry) {
     const baseDir = `${DATA_FOR_TOY_BASE}/output_expressions/${skinId}`;
 
     try {
-        const baseCanvas = await buildBaseCanvas(expUrl(`${baseDir}/painting.png`));
+        const { box, size } = manifestEntry;
+        const { canvas: baseCanvas, facePatch } = await buildBaseCanvas(expUrl(`${baseDir}/painting.png`), box);
 
         // Resolve the face, falling through the candidate chain until one loads
         // (a candidate can 404 against a stale manifest).
@@ -549,15 +555,8 @@ async function composeDefaultPainting(skinId, manifestEntry) {
         const ctx = canvas.getContext('2d');
         ctx.drawImage(baseCanvas, 0, 0);
 
-        const { box, size } = manifestEntry;
         if (face && box && size) {
-            const [bx, by, bw, bh] = box;
-            const [sw, sh] = size;
-            // box is in manifest-size space; scale it into the (capped) canvas.
-            const sx = canvas.width / sw;
-            const sy = canvas.height / sh;
-            ctx.imageSmoothingQuality = 'high';
-            ctx.drawImage(face, bx * sx, by * sy, bw * sx, bh * sy);
+            drawFaceComposite(ctx, face, box, size, facePatch);
         }
         return canvas.toDataURL('image/png');
     } catch (e) {

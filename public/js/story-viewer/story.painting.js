@@ -8,11 +8,13 @@
  * every render so Back/Resume navigation always produces the correct visual
  * state without "undoing" transitions.
  *
- * Rendering composites base painting + face onto a single <canvas> at native
- * resolution (same approach as skin.expression.js): the extracted base has a
- * transparent face hole, and stacking two separately-scaled <img>s leaves a
- * semi-transparent seam where their downscaled edges meet. One canvas draw,
- * scaled once by CSS, can't reopen it.
+ * Rendering composites base painting + face onto a single <canvas> (same
+ * approach as skin.expression.js): the extracted base has a transparent face
+ * hole, and stacking two separately-scaled <img>s leaves a semi-transparent
+ * seam where their downscaled edges meet. When the composite runs below
+ * native resolution (MAX_COMPOSITE_DIM cap), the face is composited via the
+ * shared native-res patch (expression-composite.js) so resampling can't
+ * reopen the hole edge either.
  *
  * Every function takes the StoryViewer engine instance as an explicit `ctx`
  * argument (state lives on `ctx`: elements, paintingsBySide, currentStoryScript,
@@ -24,6 +26,9 @@
  */
 
 import { pickFaceCandidates } from '../expression-face.js';
+// Seam-free face compositing on a downscaled base (see expression-composite.js:
+// the face must be composited at native res in a patch BEFORE resampling).
+import { cutFacePatchBase, drawFaceComposite } from '../expression-composite.js';
 
 // =========================================================================
 // Expression manifest lookup
@@ -229,7 +234,7 @@ const MAX_COMPOSITE_DIM = 4096;
 // navigation evicts/recreates containers constantly, so caching by URL is
 // what makes Back/expression swaps cheap.
 const BASE_CANVAS_CACHE_MAX = 4;
-const baseCanvasCache = new Map(); // baseUrl -> Promise<HTMLCanvasElement>
+const baseCanvasCache = new Map(); // baseUrl -> Promise<{canvas, facePatch}>
 
 /**
  * Load an image cross-origin. crossOrigin is set before src so the response
@@ -245,8 +250,12 @@ function loadImage(url) {
     });
 }
 
-/** Decode the base painting once into an offscreen canvas at composite resolution. */
-async function buildBaseCanvas(url) {
+/**
+ * Decode the base painting once into an offscreen canvas at composite
+ * resolution, plus the native-res face-box patch drawFaceComposite needs for
+ * seam-free face draws when the base was downscaled.
+ */
+async function buildBaseCanvas(url, box) {
     const base = await loadImage(url);
     const nw = base.naturalWidth;
     const nh = base.naturalHeight;
@@ -259,11 +268,12 @@ async function buildBaseCanvas(url) {
     const c2d = canvas.getContext('2d');
     c2d.imageSmoothingQuality = 'high';
     c2d.drawImage(base, 0, 0, canvas.width, canvas.height);
-    return canvas;
+    const facePatch = cutFacePatchBase(base, box, scale);
+    return { canvas, facePatch };
 }
 
-/** Get (or build) the cached base canvas for a painting URL. LRU on access. */
-function getBaseCanvas(url) {
+/** Get (or build) the cached base canvas entry for a painting URL. LRU on access. */
+function getBaseCanvas(url, box) {
     let promise = baseCanvasCache.get(url);
     if (promise) {
         // Refresh recency (Map iteration order doubles as the LRU order).
@@ -271,7 +281,7 @@ function getBaseCanvas(url) {
         baseCanvasCache.set(url, promise);
         return promise;
     }
-    promise = buildBaseCanvas(url);
+    promise = buildBaseCanvas(url, box);
     promise.catch(() => baseCanvasCache.delete(url)); // don't cache failures
     baseCanvasCache.set(url, promise);
     if (baseCanvasCache.size > BASE_CANVAS_CACHE_MAX) {
@@ -312,9 +322,9 @@ async function composePainting(container, expressionData, expression) {
     if (!canvas) return;
     const gen = (canvas._gen = (canvas._gen || 0) + 1);
 
-    let baseCanvas;
+    let baseCanvas, facePatch;
     try {
-        baseCanvas = await getBaseCanvas(expressionData.baseUrl);
+        ({ canvas: baseCanvas, facePatch } = await getBaseCanvas(expressionData.baseUrl, expressionData.box));
     } catch (e) {
         console.warn('Painting base load failed', e);
         return;
@@ -343,13 +353,7 @@ async function composePainting(container, expressionData, expression) {
     c2d.drawImage(baseCanvas, 0, 0);
 
     if (face && expressionData.box && expressionData.size) {
-        const [bx, by, bw, bh] = expressionData.box;
-        const [sw, sh] = expressionData.size;
-        // box is in manifest-size space; scale it into the (capped) canvas.
-        const sx = canvas.width / sw;
-        const sy = canvas.height / sh;
-        c2d.imageSmoothingQuality = 'high';
-        c2d.drawImage(face, bx * sx, by * sy, bw * sx, bh * sy);
+        drawFaceComposite(c2d, face, expressionData.box, expressionData.size, facePatch);
     }
 }
 
