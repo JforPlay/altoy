@@ -5,7 +5,15 @@
  * that provides the data URL, timing, group chat icons, and optional type-4 handler.
  * Renders a character selector grid, story dropdown, and auto-advancing message bubbles.
  */
-import { fetchJSON, showElement, createImgElement, renderStatus, DATA_FOR_TOY_BASE } from '../utils.js';
+import {
+    fetchJSONWithCache,
+    showElement,
+    createImgElement,
+    renderStatus,
+    requireElements,
+    loadPageData,
+    DATA_FOR_TOY_BASE,
+} from '../utils.js';
 
 const PLACEHOLDER_ICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
 
@@ -16,6 +24,10 @@ function clearElement(element) {
 function appendLoadingMessage(container, message, isError = false) {
     // Canonical .page-status state (status.css): error vs empty.
     renderStatus(container, message, isError ? 'error' : 'empty');
+}
+
+function isRecord(value) {
+    return value !== null && typeof value === 'object' && !Array.isArray(value);
 }
 
 export class ChatViewerEngine {
@@ -47,21 +59,36 @@ export class ChatViewerEngine {
         this.optionsContainer = document.getElementById('options-container');
         this.restartButton = document.getElementById('restart-button');
 
+        if (!requireElements({
+            characterGrid: this.characterGrid,
+            characterSelectionSection: this.characterSelectionSection,
+            selectedCharacterNameDisplay: this.selectedCharacterNameDisplay,
+            storyDisplaySection: this.storyDisplaySection,
+            storyDropdown: this.storyDropdown,
+            unlockDescText: this.unlockDescText,
+            storyContainer: this.storyContainer,
+            optionsContainer: this.optionsContainer,
+            restartButton: this.restartButton,
+        }, 'ChatViewer')) {
+            return;
+        }
+
         this.allData = {};
         this.shipGroupIdData = {};
         this.selectedCharacterName = null;
         this.currentStoryScripts = [];
         this.currentScriptIndex = 0;
 
-        // NodeList cached after grid population for faster per-click queries
-        this.characterCards = null;
+        // Card lookup and currently selected card avoid per-selection full-grid scans.
+        this.characterCardByName = new Map();
+        this.selectedCharacterCard = null;
 
         // All setTimeout IDs tracked here so clearTimers() can cancel them atomically
         this.activeTimers = [];
 
         this.customHandlers = config.customHandlers || {};
 
-        // Bind so removeEventListener gets the same reference
+        // Bind once so `this` resolves inside the handlers when fired via addEventListener
         this.handleStoryChange = this.loadSelectedStory.bind(this);
         this.handleRestart = this.initializeStory.bind(this);
         this.handleSectionToggle = () => {
@@ -73,6 +100,8 @@ export class ChatViewerEngine {
             event.preventDefault();
             this.handleSectionToggle();
         };
+        this.handleCharacterGridClick = this.handleCharacterGridClick.bind(this);
+        this.handleCharacterGridKeydown = this.handleCharacterGridKeydown.bind(this);
 
         this.initialize();
     }
@@ -85,16 +114,33 @@ export class ChatViewerEngine {
      */
     async initialize() {
         try {
-            const fetchPromises = [fetchJSON(this.dataUrl)];
+            const shipGroupIdPromise = this.shipGroupIdUrl
+                ? fetchJSONWithCache(this.shipGroupIdUrl)
+                    .catch((error) => {
+                        console.warn('ChatViewer: ship group ID data failed to load:', error);
+                        return null;
+                    })
+                : Promise.resolve(null);
 
-            if (this.shipGroupIdUrl) {
-                fetchPromises.push(fetchJSON(this.shipGroupIdUrl));
+            const data = await loadPageData(
+                () => fetchJSONWithCache(this.dataUrl),
+                this.characterGrid,
+                {
+                    contextLabel: 'ChatViewer',
+                    errorMessage: '스토리 정보를 불러오는데 실패했어요.',
+                },
+            );
+
+            if (data === null) return;
+            if (!isRecord(data)) {
+                appendLoadingMessage(this.characterGrid, '표시할 채팅 데이터가 없습니다.');
+                return;
             }
-            
-            const results = await Promise.all(fetchPromises);
-            this.allData = results[0];
-            if (results[1]) {
-                this.shipGroupIdData = results[1];
+
+            this.allData = data;
+            const shipGroupIdData = await shipGroupIdPromise;
+            if (isRecord(shipGroupIdData)) {
+                this.shipGroupIdData = shipGroupIdData;
             }
             
             this.populateCharacterSelector();
@@ -111,10 +157,13 @@ export class ChatViewerEngine {
 
     /**
      * Build and insert character cards into the grid.
-     * Uses a DocumentFragment for a single DOM insertion, then caches the NodeList.
+     * Uses a DocumentFragment for a single DOM insertion, then keeps a lookup
+     * for O(1) selected-card updates.
      */
     populateCharacterSelector() {
         clearElement(this.characterGrid);
+        this.characterCardByName.clear();
+        this.selectedCharacterCard = null;
         const fragment = document.createDocumentFragment();
 
         for (const characterName in this.allData) {
@@ -154,15 +203,7 @@ export class ChatViewerEngine {
             card.appendChild(img);
             card.appendChild(charNameP);
             card.appendChild(shipNameP);
-
-            const activate = (event) => {
-                event.preventDefault();
-                this.handleCharacterClick(characterName);
-            };
-            card.addEventListener('click', activate);
-            card.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter' || event.key === ' ') activate(event);
-            });
+            this.characterCardByName.set(characterName, card);
             fragment.appendChild(card);
         }
 
@@ -172,22 +213,24 @@ export class ChatViewerEngine {
         }
 
         this.characterGrid.appendChild(fragment);
-        this.characterCards = this.characterGrid.querySelectorAll('.character-card');
     }
     
     /**
      * Select a character: highlight their card, collapse the selector,
      * reveal the story section, and load their first story.
      */
-    handleCharacterClick(characterName) {
+    handleCharacterClick(characterName, selectedCard = this.characterCardByName.get(characterName)) {
         this.selectedCharacterName = characterName;
 
-        if (this.characterCards) {
-            this.characterCards.forEach(card => {
-                const selected = card.dataset.characterName === characterName;
-                card.classList.toggle('selected', selected);
-                card.setAttribute('aria-pressed', String(selected));
-            });
+        if (this.selectedCharacterCard && this.selectedCharacterCard !== selectedCard) {
+            this.selectedCharacterCard.classList.remove('selected');
+            this.selectedCharacterCard.setAttribute('aria-pressed', 'false');
+        }
+
+        if (selectedCard) {
+            selectedCard.classList.add('selected');
+            selectedCard.setAttribute('aria-pressed', 'true');
+            this.selectedCharacterCard = selectedCard;
         }
 
         const characterData = this.allData[characterName];
@@ -543,6 +586,28 @@ export class ChatViewerEngine {
         this.currentScriptIndex = (foundIndex !== -1) ? foundIndex : this.currentScriptIndex + 1;
         this.showNextLineAfterDelay();
     }
+
+    handleCharacterGridClick(event) {
+        const card = this.getCharacterCardFromEvent(event);
+        if (!card) return;
+        event.preventDefault();
+        this.handleCharacterClick(card.dataset.characterName, card);
+    }
+
+    handleCharacterGridKeydown(event) {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        const card = this.getCharacterCardFromEvent(event);
+        if (!card) return;
+        event.preventDefault();
+        this.handleCharacterClick(card.dataset.characterName, card);
+    }
+
+    getCharacterCardFromEvent(event) {
+        if (!(event.target instanceof Element)) return null;
+        const card = event.target.closest('.character-card');
+        if (!card || !this.characterGrid.contains(card)) return null;
+        return card;
+    }
     
     /** Render the chosen option as a player bubble so the choice appears in the chat history. */
     displaySelectedChoice(chosenText) {
@@ -569,6 +634,8 @@ export class ChatViewerEngine {
     
     /** Wire dropdown change, restart button, and collapsible section header. */
     attachEventListeners() {
+        this.characterGrid.addEventListener('click', this.handleCharacterGridClick);
+        this.characterGrid.addEventListener('keydown', this.handleCharacterGridKeydown);
         this.storyDropdown.addEventListener('change', this.handleStoryChange);
         this.restartButton.addEventListener('click', this.handleRestart);
 
@@ -600,37 +667,5 @@ export class ChatViewerEngine {
     clearTimers() {
         this.activeTimers.forEach(timer => clearTimeout(timer));
         this.activeTimers = [];
-    }
-
-    /**
-     * Full teardown: cancel timers, remove all event listeners, and clear cached data.
-     * Call when navigating away or before re-initializing the viewer.
-     */
-    destroy() {
-        this.clearTimers();
-
-        if (this.storyDropdown) {
-            this.storyDropdown.removeEventListener('change', this.handleStoryChange);
-        }
-
-        if (this.restartButton) {
-            this.restartButton.removeEventListener('click', this.handleRestart);
-        }
-
-        if (this.sectionHeader) {
-            this.sectionHeader.removeEventListener('click', this.handleSectionToggle);
-            this.sectionHeader.removeEventListener('keydown', this.handleSectionToggleKeydown);
-        }
-
-        // Replace card nodes to strip their per-card click listeners without tracking each one
-        if (this.characterCards) {
-            this.characterCards.forEach(card => {
-                card.replaceWith(card.cloneNode(true));
-            });
-        }
-
-        this.characterCards = null;
-        this.allData = {};
-        this.shipGroupIdData = {};
     }
 }
