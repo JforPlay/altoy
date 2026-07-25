@@ -16,6 +16,12 @@ test('parseEventDate: JP range uses the start date', () => {
     assert.equal(parseEventDate('2017/09/21 ~ 2017/09/30').getTime(), new Date(2017, 8, 21).getTime());
 });
 
+test('parseEventDate: rejects rollover dates', () => {
+    assert.equal(parseEventDate('2018. 13. 5'), null);
+    assert.equal(parseEventDate('2018. 2. 29'), null);
+    assert.equal(parseEventDate('2020. 2. 29').getTime(), new Date(2020, 1, 29).getTime());
+});
+
 test('parseEventDate: garbage → null', () => {
     assert.equal(parseEventDate(''), null);
     assert.equal(parseEventDate('-'), null);
@@ -25,6 +31,7 @@ test('parseEventDate: garbage → null', () => {
 
 test('daysBetween: whole days, null-safe', () => {
     assert.equal(daysBetween(new Date(2018, 4, 15), new Date(2019, 5, 27)), 408);
+    assert.equal(daysBetween(new Date(2018, 4, 15), new Date(2018, 4, 15, 23, 59)), 0);
     assert.equal(daysBetween(null, new Date()), null);
 });
 

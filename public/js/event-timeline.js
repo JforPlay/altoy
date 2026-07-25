@@ -157,16 +157,16 @@ function setupEventListeners() {
     eventList.addEventListener('click', e => {
         if (e.target.closest('a, button')) return;
         const card = e.target.closest('.event-card');
-        const group = card ? groups.get(card.dataset.groupKey) : null;
-        const visibleSiblings = group
-            ? eventList.querySelectorAll(`.event-card[data-group-key="${group.key}"]`).length
-            : 0;
-        if (!group || visibleSiblings < 2) {
-            clearGroupSelection();
-            return;
-        }
-        if (selectedGroupKey === group.key) clearGroupSelection();
-        else selectGroup(group.key);
+        toggleGroupFromCard(card);
+    });
+
+    eventList.addEventListener('keydown', e => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        if (e.target.closest('a, button, input, select, textarea')) return;
+        const card = e.target.closest('.event-card--grouped');
+        if (!card) return;
+        e.preventDefault();
+        toggleGroupFromCard(card);
     });
     // Card heights shift on resize / late image loads → keep the rail aligned
     window.addEventListener('resize', redrawRail);
@@ -327,10 +327,29 @@ function setView(view) {
 // Click a multi-run card → highlight its sibling runs, dim the rest, draw an
 // on-demand SVG rail connecting them (only ever ONE group's rail — never all).
 
+function getEventCardsForGroup(key) {
+    const keyText = String(key);
+    return [...eventList.querySelectorAll('.event-card')].filter(card => card.dataset.groupKey === keyText);
+}
+
+function toggleGroupFromCard(card) {
+    const group = card ? groups.get(card.dataset.groupKey) : null;
+    const visibleCards = group ? getEventCardsForGroup(group.key) : [];
+    if (!group || visibleCards.length < 2) {
+        clearGroupSelection();
+        return;
+    }
+    if (selectedGroupKey === group.key) clearGroupSelection();
+    else selectGroup(group.key);
+}
+
 function clearGroupSelection() {
     selectedGroupKey = null;
     eventList.classList.remove('group-dimmed');
-    eventList.querySelectorAll('.event-card.group-selected').forEach(c => c.classList.remove('group-selected'));
+    eventList.querySelectorAll('.event-card.group-selected').forEach(c => {
+        c.classList.remove('group-selected');
+        c.setAttribute('aria-pressed', 'false');
+    });
     eventList.querySelectorAll('.group-jump').forEach(el => el.remove());
     eventList.querySelector('.group-rail')?.remove();
 }
@@ -340,9 +359,10 @@ function selectGroup(key) {
     selectedGroupKey = key;
     eventList.classList.add('group-dimmed');
     // DOM order = newest first (ID desc); runs read bottom-up chronologically
-    const cards = [...eventList.querySelectorAll(`.event-card[data-group-key="${key}"]`)];
+    const cards = getEventCardsForGroup(key);
     cards.forEach((card, idx) => {
         card.classList.add('group-selected');
+        card.setAttribute('aria-pressed', 'true');
         card.appendChild(createJumpRow(cards, idx));
     });
     drawGroupRail(cards);
@@ -415,10 +435,10 @@ const STATUS_META = {
 // irregularly kept by the curator, so a days-since counter is noise there.
 const COUNTER_CATEGORIES = new Set(['대형', '중형', '소형', '한정 임무']);
 
-function renderGroupView() {
+function collectVisibleGroups(events = filteredEvents) {
     const seen = new Set();
     const visible = [];
-    filteredEvents.forEach(event => {
+    events.forEach(event => {
         const g = groupOf.get(event);
         if (g && !seen.has(g.key)) {
             seen.add(g.key);
@@ -426,6 +446,11 @@ function renderGroupView() {
         }
     });
     visible.sort((a, b) => (b.latestDate?.getTime() ?? 0) - (a.latestDate?.getTime() ?? 0));
+    return visible;
+}
+
+function renderGroupView() {
+    const visible = collectVisibleGroups();
 
     eventCount.textContent = `총 ${visible.length}개 이벤트 그룹`;
     if (visible.length === 0) {
@@ -526,15 +551,7 @@ const MUDAK_MONTH_W_REL = 18;  // px per month, 복각주기 보기 (shorter axi
 const MUDAK_TRACK_PAD = 70;    // px past the axis for trailing wait labels
 
 function renderMudakView() {
-    const seen = new Set();
-    const visibleGroups = [];
-    filteredEvents.forEach(event => {
-        const g = groupOf.get(event);
-        if (g && !seen.has(g.key)) {
-            seen.add(g.key);
-            visibleGroups.push(g);
-        }
-    });
+    const visibleGroups = collectVisibleGroups();
     const chart = buildMudakChart(visibleGroups, { now: new Date() });
 
     if (chart.rows.length === 0) {
@@ -546,6 +563,11 @@ function renderMudakView() {
     const relative = mudakMode === 'relative';
     const rel = relative ? toRelativeRows(chart.rows) : null;
     const rows = relative ? rel.rows : chart.rows;
+    if (rows.length === 0) {
+        eventCount.textContent = '무딱 이벤트 그룹 0개';
+        renderState('검색 결과가 없습니다', '복각주기 보기는 복각 또는 상시화 이력이 있는 무딱 이벤트만 표시합니다.', 'empty');
+        return;
+    }
     eventCount.textContent = relative
         ? `무딱 이벤트 그룹 ${rows.length}개`
         : `총 ${chart.rows.length}개 무딱 이벤트 그룹`;
@@ -786,6 +808,9 @@ function createEventCard(event) {
         card.dataset.groupKey = group.key;
         if (group.runs.length > 1) {
             card.classList.add('event-card--grouped');
+            card.tabIndex = 0;
+            card.setAttribute('role', 'button');
+            card.setAttribute('aria-pressed', 'false');
             const runIndex = group.runs.findIndex(r => r.event === event);
             const label = gapLabel(group, runIndex);
             if (label) badges.appendChild(createBadge(label, 'badge-gap'));

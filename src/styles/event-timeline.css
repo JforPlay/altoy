@@ -563,6 +563,11 @@ select:focus {
   cursor: pointer;
 }
 
+.event-card--grouped:focus-visible {
+  outline: 3px solid var(--input-focus);
+  outline-offset: 3px;
+}
+
 .event-card.group-selected {
   box-shadow: 0 0 0 2px var(--accent-blue), 0 0.3125rem 1.25rem var(--shadow-color);
 }
@@ -681,9 +686,6 @@ body.dark-mode .mudak-chart {
   border-radius: 0;
 }
 
-.mudak-legend-swatch.mudak-wait--new { border-color: var(--mudak-new); }
-.mudak-legend-swatch.mudak-wait--rerun { border-color: var(--mudak-rerun); }
-
 .mudak-scroll { overflow-x: auto; }
 .mudak-inner { width: max-content; }
 
@@ -742,7 +744,7 @@ body.dark-mode .mudak-chart {
 .mudak-collab-chip {
   flex: none;
   font-size: 0.5625rem;
-  color: #8e5bc4;
+  color: var(--accent-purple);
   border: 1px solid currentColor;
   border-radius: var(--radius-sm);
   padding: 0 3px;
@@ -780,14 +782,14 @@ body.dark-mode .mudak-chart {
   position: absolute;
   top: 0;
   transform: translateX(-50%);
-  color: #e6785a;
+  color: var(--accent-coral);
 }
 
 .mudak-today {
   position: absolute;
   top: 0;
   bottom: 0;
-  border-left: 1px dashed #e6785a;
+  border-left: 1px dashed var(--accent-coral);
 }
 
 .mudak-dot {
@@ -844,7 +846,6 @@ body.dark-mode .mudak-chart {
   transform: translateY(-50%);
   font-size: 0.625rem;
   white-space: nowrap;
-  transform-origin: left center;
 }
 
 @media (max-width: 768px) {

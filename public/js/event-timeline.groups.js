@@ -20,14 +20,19 @@ export function parseEventDate(str) {
     const head = str.split('~')[0];
     const m = head.match(/(\d{4})\s*[./]\s*(\d{1,2})\s*[./]\s*(\d{1,2})/);
     if (!m) return null;
-    const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
-    return Number.isNaN(d.getTime()) ? null : d;
+    const year = Number(m[1]);
+    const month = Number(m[2]);
+    const day = Number(m[3]);
+    if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+    const d = new Date(year, month - 1, day);
+    if (Number.isNaN(d.getTime())) return null;
+    return d.getFullYear() === year && d.getMonth() === month - 1 && d.getDate() === day ? d : null;
 }
 
 /** Whole days from a to b (positive when b is later); null if either is missing. */
 export function daysBetween(a, b) {
     if (!a || !b) return null;
-    return Math.round((b - a) / MS_PER_DAY);
+    return Math.floor((b - a) / MS_PER_DAY);
 }
 
 /**
