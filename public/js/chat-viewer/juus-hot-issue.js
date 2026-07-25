@@ -28,22 +28,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let shipgirlDataMap = {};        // ship_group → { name, icon }
 
+    let postsRendered = false;
+    let hasShipgirlData = false;
+
     init();
 
     async function init() {
-        const [data] = await Promise.all([
-            loadPageData(
-                () => fetchJSONWithCache('data/chat-viewer/juus_hot_issue_data.json'),
-                grid,
-                { contextLabel: 'JuusHotIssue' },
-            ),
-            // Shipgirl name/icon map is best-effort: comments still render (icon +
-            // "ID NNNNN") if it fails, so don't let it block the page. The @username
-            // handle is baked into the post data, so no external fetch is needed.
-            fetchJSONWithCache('data/ship_group_data.json')
-                .then((map) => { if (isRecord(map)) shipgirlDataMap = map; })
-                .catch((err) => console.warn('Hot issue: shipgirl data failed to load:', err)),
-        ]);
+        void loadShipgirlData();
+
+        const data = await loadPageData(
+            () => fetchJSONWithCache('data/chat-viewer/juus_hot_issue_data.json'),
+            grid,
+            { contextLabel: 'JuusHotIssue' },
+        );
 
         if (data === null) return;          // container missing — loadPageData rendered the error
         if (!Array.isArray(data) || data.length === 0) {
@@ -51,9 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const fragment = document.createDocumentFragment();
-        data.forEach((post) => fragment.appendChild(createPostCard(post)));
-        grid.replaceChildren(fragment);
+        renderPosts(data);
     }
 
     // ===== Helpers =====
@@ -64,6 +59,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderEmpty(message) {
         renderStatus(grid, message, 'empty');
+    }
+
+    async function loadShipgirlData() {
+        try {
+            const map = await fetchJSONWithCache('data/ship_group_data.json');
+            if (isRecord(map)) {
+                shipgirlDataMap = map;
+                hasShipgirlData = true;
+                hydrateRenderedAuthors();
+            }
+        } catch (err) {
+            console.warn('Hot issue: shipgirl data failed to load:', err);
+        }
+    }
+
+    function renderPosts(data) {
+        const fragment = document.createDocumentFragment();
+        data.forEach((post) => fragment.appendChild(createPostCard(post)));
+        grid.replaceChildren(fragment);
+        postsRendered = true;
+        if (hasShipgirlData) hydrateRenderedAuthors();
+    }
+
+    function hydrateRenderedAuthors() {
+        if (!postsRendered || !hasShipgirlData) return;
+
+        grid.querySelectorAll('.hi-comment[data-author]').forEach((commentEl) => {
+            const data = getAuthor(commentEl.dataset.author);
+            const avatar = commentEl.querySelector('.hi-comment-icon');
+            const name = commentEl.querySelector('.hi-comment-name');
+
+            if (avatar) {
+                avatar.src = data.icon;
+                avatar.alt = data.name;
+            }
+
+            if (name) {
+                name.textContent = data.name;
+            }
+        });
     }
 
     /**
@@ -88,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function createAvatar(src, alt, className) {
         return createImgElement(src || placeholderIcon, alt, {
             className,
-            eager: true,
             fallback: placeholderIcon,
         });
     }
@@ -210,6 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = getAuthor(comment.author);
         const el = document.createElement('div');
         el.className = isReply ? 'hi-comment hi-comment-reply' : 'hi-comment';
+        if (comment.author != null) el.dataset.author = String(comment.author);
         el.appendChild(createAvatar(data.icon, data.name, 'hi-comment-icon'));
 
         const body = document.createElement('div');

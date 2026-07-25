@@ -212,6 +212,17 @@
 /* Empty state uses the canonical .page-status component (status.css). */
 
 /* --- Responsive --- */
+@media (max-width: 768px) {
+  body.chat-viewer {
+    padding: 0.3125rem;
+  }
+
+  .main-header h1 {
+    font-size: 1.3em;
+    margin-bottom: 0.625rem;
+  }
+}
+
 @media (max-width: 640px) {
   .hot-issue-grid {
     padding: var(--spacing-sm, 0.75rem);
