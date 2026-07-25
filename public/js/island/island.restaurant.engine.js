@@ -308,10 +308,11 @@ function navigateToMenu(formulaId, restaurantId) {
     setTimeout(() => focusMenuCard(formulaId), 150);
 }
 
-function viewRecipe(formulaId) {
-    if (!window.ResourceModule || !ResourceModule.selectRecipe) return;
-    window.IslandEngine.activateTab('resources');
-    ResourceModule.selectRecipe(formulaId);
+async function viewRecipe(formulaId) {
+    if (!window.IslandEngine?.activateTab) return;
+
+    await window.IslandEngine.activateTab('resources');
+    window.ResourceModule?.selectRecipe?.(formulaId);
 }
 
 function focusMenuCard(formulaId) {

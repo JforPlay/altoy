@@ -635,7 +635,7 @@ function setupEventListeners() {
 
 // ===== Navigation =====
 
-function viewItemInResources(itemId) {
+async function viewItemInResources(itemId) {
     // Find recipe that produces this item
     const dependencyGraph = window.ResourceModule.getDependencyGraph();
     const producerRecipeIds = dependencyGraph.producedBy[itemId] || [];
@@ -645,16 +645,8 @@ function viewItemInResources(itemId) {
         return;
     }
 
-    // Switch to resources tab
-    const resourcesTabBtn = document.querySelector('.tab-button[data-tab="resources"]');
-    if (resourcesTabBtn) {
-        resourcesTabBtn.click();
-    }
-
-    // Select the recipe after a short delay to ensure tab is loaded
-    setTimeout(() => {
-        window.ResourceModule.selectRecipe(producerRecipeIds[0]);
-    }, 100);
+    await window.IslandEngine.activateTab('resources');
+    window.ResourceModule.selectRecipe(producerRecipeIds[0]);
 }
 
 // ===== Public API =====

@@ -1,9 +1,9 @@
 /**
  * island.engine.js
- * Core coordinator for the island module. Manages tab-based lazy loading of sub-modules
- * (character, technology, quest, resource, restaurant, season-calc) and provides shared
- * utilities (recipe tree building, dependency graphs, item lookups) used by all sub-engines.
- * Exposes itself as window.IslandEngine for cross-module access.
+ * Core coordinator for the island module. Imports and initializes tab sub-modules
+ * (character, technology, quest, resource, restaurant, season-calc) on demand, and
+ * provides shared utilities (recipe tree building, dependency graphs, item lookups)
+ * used by all sub-engines. Exposes itself as window.IslandEngine for cross-module access.
  */
 import { fetchJSON, showToast, setStorageItem, createSearchIndex, ensureFuse } from '../utils.js';
 import { initSeasonMap } from './island.season-map.js';
@@ -29,12 +29,36 @@ const moduleLoadPromises = {};
 let sharedDataPromise = null;
 
 const TAB_MODULE_MAP = {
-    'characters': { key: 'character', module: () => window.CharacterModule },
-    'technology': { key: 'technology', module: () => window.TechnologyModule },
-    'quests': { key: 'quest', module: () => window.QuestModule },
-    'resources': { key: 'resource', module: () => window.ResourceModule },
-    'restaurant': { key: 'restaurant', module: () => window.RestaurantModule },
-    'season-calc': { key: 'seasonCalc', module: () => window.SeasonCalcModule }
+    'characters': {
+        key: 'character',
+        load: () => import('./island.character.engine.js'),
+        module: () => window.CharacterModule
+    },
+    'technology': {
+        key: 'technology',
+        load: () => import('./island.technology.engine.js'),
+        module: () => window.TechnologyModule
+    },
+    'quests': {
+        key: 'quest',
+        load: () => import('./island.quest.engine.js'),
+        module: () => window.QuestModule
+    },
+    'resources': {
+        key: 'resource',
+        load: () => import('./island.resource.engine.js'),
+        module: () => window.ResourceModule
+    },
+    'restaurant': {
+        key: 'restaurant',
+        load: () => import('./island.restaurant.engine.js'),
+        module: () => window.RestaurantModule
+    },
+    'season-calc': {
+        key: 'seasonCalc',
+        load: () => import('./island.season-calc.engine.js'),
+        module: () => window.SeasonCalcModule
+    }
 };
 const DEFAULT_TAB = 'characters';
 const VALID_TAB_NAMES = Object.freeze(Object.keys(TAB_MODULE_MAP));
@@ -105,8 +129,12 @@ function loadModule(tabName) {
     if (moduleLoadPromises[key]) return moduleLoadPromises[key];
 
     moduleLoadPromises[key] = (async () => {
-        const module = getModule();
+        let module = getModule();
         if (!module) {
+            await config.load();
+            module = getModule();
+        }
+        if (!module?.init) {
             console.warn(`[Island] Module for ${safeTabName} not found`);
             return;
         }

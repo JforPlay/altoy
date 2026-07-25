@@ -1132,19 +1132,11 @@ function renderResourceTotals(techs) {
 /**
  * Navigate to quest tab and select a specific quest
  */
-function navigateToQuest(questId) {
-    // Switch to quest tab
-    const questTabButton = document.querySelector('.tab-button[data-tab="quests"]');
-    if (questTabButton) {
-        questTabButton.click();
-    }
+async function navigateToQuest(questId) {
+    if (!window.IslandEngine?.activateTab) return;
 
-    // Small delay to ensure tab is switched and quest module is ready
-    setTimeout(() => {
-        if (window.QuestModule && window.QuestModule.selectQuest) {
-            window.QuestModule.selectQuest(questId);
-        }
-    }, 100);
+    await window.IslandEngine.activateTab('quests');
+    window.QuestModule?.selectQuest?.(questId);
 }
 
 // ===== Public API =====

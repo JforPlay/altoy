@@ -43,7 +43,11 @@
 }
 
 .category-filter-btn .material-symbols-outlined {
+    flex: 0 0 1.25rem;
+    width: 1.25rem;
+    overflow: hidden;
     font-size: 1.25rem;
+    line-height: 1;
 }
 
 .category-filter-btn:hover {

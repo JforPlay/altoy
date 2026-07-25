@@ -348,10 +348,12 @@ function selectRecipeFromTree(recipeId) {
     selectRecipe(recipeId);
 }
 
-function viewInRestaurant(recipeId) {
-    if (!window.RestaurantModule || !window.RestaurantModule.navigateToMenu) return;
+async function viewInRestaurant(recipeId) {
+    if (!window.IslandEngine?.loadModule) return;
 
-    const restaurants = window.RestaurantModule.getRestaurantsForRecipe(recipeId);
+    await window.IslandEngine.loadModule('restaurant');
+
+    const restaurants = window.RestaurantModule?.getRestaurantsForRecipe?.(recipeId) || [];
     if (restaurants.length > 0) {
         window.RestaurantModule.navigateToMenu(recipeId);
     }
