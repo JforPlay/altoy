@@ -12,7 +12,7 @@
  */
 
 import { openModal, setupModal, setUrlParams, escapeHtml } from '../utils.js';
-import { getEquipIconUrl, getRarityBgUrl, getFullEquipData, getLevelStatistics, replaceEquipCodes, getFiringPattern, getVisibleLevelCount, formatLevel, getMergedWeaponProperties, getPrimaryWeaponProperty, getTheoreticalSurfaceDps } from './equip.data.js';
+import { getEquipIconUrl, getRarityBgUrl, getFullEquipData, getLevelStatistics, replaceEquipCodes, getFiringPattern, getVisibleLevelCount, formatLevel, getMergedWeaponProperties, getPrimaryWeaponProperty, getTheoreticalSurfaceDps, ensureCompareData } from './equip.data.js';
 import { buildComparisonRows, compareRowFlags, formatDps } from './equip.compare.logic.js';
 
 let state;
@@ -74,6 +74,7 @@ export async function loadCompareFromUrl(compareParam) {
     const ids = compareParam.split(',').map(id => parseInt(id.trim())).filter(id => !Number.isNaN(id));
     if (ids.length < 2) return;
 
+    await ensureCompareData();
     const equips = await Promise.all(ids.map(id => getFullEquipData(id)));
     const items = equips.filter(Boolean).map(equip => ({ equip })); // level ⇒ max (renderCompareModal default)
 

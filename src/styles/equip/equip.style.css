@@ -443,12 +443,25 @@ body {
         gap: 0.5rem;
     }
 
-    /* stats + toggle stay on one row (full-width), toggle pinned to the right */
+    /* Stats get their own row when narrow; controls wrap instead of widening the page. */
     .header-controls {
         width: 100%;
-        justify-content: space-between;
+        justify-content: flex-start;
         gap: 0.5rem;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
+    }
+
+    .stats-container {
+        flex: 1 1 100%;
+    }
+
+    .view-toggle {
+        flex: 1 1 11rem;
+        min-width: 0;
+    }
+
+    .compare-toggle-btn {
+        flex: 0 0 auto;
     }
 
     .search-filter-container {

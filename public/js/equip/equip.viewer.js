@@ -13,14 +13,10 @@ import {
 } from '../utils.js';
 import {
     setup as setupData,
-    loadLiteData, loadFullData, loadStatisticsData, loadEquipTypeData,
-    loadNationalityData, loadShipTypeData, loadEquipCodeData,
-    loadWeaponPropertyData, loadBulletTemplateData, loadSkillData, loadWeaponNameData, loadAircraftTemplateData,
-    loadBarrageTemplateData,
-    loadUpgradeTemplateData, isInUpgradeTree,
+    loadLiteData, loadSkillData, isInUpgradeTree,
     getEquipIconUrl, getRarityBgUrl, getSPWeaponIconUrl, getUniqueTypes, getUniqueNationalities, getUniqueLabels,
     getFullEquipData, getSkillData, loadSPWeaponData, normalizeSPWeapons, getSPWeaponRawData,
-    enrichEquipDataWithReload, SP_RARITY_NAMES,
+    ensureCompareData, ensureReloadData, SP_RARITY_NAMES,
     loadHearingData, getHearingEntry
 } from './equip.data.js';
 import {
@@ -132,14 +128,13 @@ state.elements = {
 setupData(state);
 setupDetail(state);
 setupCompare(state);
-setupHearingView(state, { onCardClick, sortEquips: sortEquipsInGroup });
+setupHearingView(state, { sortEquips: sortEquipsInGroup });
 
 // ===== Initialization =====
 
 /**
- * Bootstrap the viewer: load blocking data (lite + mappings + SP weapons),
- * kick off background loads (full data, weapon/bullet/skill refs), then
- * wire up filters, event listeners, compare modal, and URL routing.
+ * Bootstrap the viewer: load list/hearing data, then wire filters, listeners,
+ * compare modal, and URL routing. Detail/compare-only datasets are lazy-loaded.
  */
 async function init() {
     try {
@@ -151,10 +146,6 @@ async function init() {
 
         await Promise.all([
             loadLiteData(),
-            loadEquipTypeData(),
-            loadNationalityData(),
-            loadShipTypeData(),
-            loadEquipCodeData(),
             loadSPWeaponData(),
             loadHearingData(),
         ]);
@@ -165,23 +156,6 @@ async function init() {
             state.equipData.push(...spWeapons);
             state.filteredData = [...state.equipData];
         }
-
-        // Non-blocking: detail/compare views need these but the list renders without them
-        state.fullEquipDataPromise = loadFullData();
-        loadStatisticsData();
-        const wpPromise = loadWeaponPropertyData();
-        loadBulletTemplateData();
-        loadBarrageTemplateData();
-        loadSkillData();
-        loadWeaponNameData();
-        loadAircraftTemplateData();
-        loadUpgradeTemplateData();
-
-        // Enrich lite entries with reload time once both full data and weapon_property are ready
-        Promise.all([state.fullEquipDataPromise, wpPromise]).then(() => {
-            enrichEquipDataWithReload();
-            renderCurrentView();
-        });
 
         loading.style.display = 'none';
 
@@ -216,6 +190,13 @@ async function init() {
         handleRoute();
         window.addEventListener('popstate', handleRoute);
 
+        // Eager background enrich: reload times fill into the grid once the heavy
+        // full/weapon-property data arrives, without blocking first paint. The rest
+        // of the detail/compare datasets stay lazy (ensureDetailData/ensureCompareData).
+        ensureReloadData().then((loaded) => {
+            if (loaded) renderCurrentView();
+        });
+
     } catch (error) {
         loading.style.display = 'none';
         showToast(error.message || '초기화 오류', 'error');
@@ -246,6 +227,18 @@ function populateFilters() {
     updateFilterStats();
 }
 
+function refreshSortedView() {
+    renderCurrentView();
+
+    if (state.sortStat !== '_reload' || state.reloadEnriched) return;
+
+    ensureReloadData().then((loaded) => {
+        if (!loaded || state.sortStat !== '_reload') return;
+        renderCurrentView();
+        updateFilterStats();
+    });
+}
+
 // ===== Event Listeners =====
 
 /**
@@ -259,6 +252,7 @@ function setupEventListeners() {
     searchInput.addEventListener('input', debouncedFilter);
     typeFilter.addEventListener('change', filterEquipment);
     nationalityFilter.addEventListener('change', filterEquipment);
+    equipGrid.addEventListener('click', handleEquipGridClick);
 
     // Rarity chip toggles
     rarityChips.addEventListener('click', (e) => {
@@ -304,12 +298,12 @@ function setupEventListeners() {
     // Sort controls
     sortStat.addEventListener('change', () => {
         state.sortStat = sortStat.value;
-        renderCurrentView();
+        refreshSortedView();
     });
     sortDirection.addEventListener('click', () => {
         state.sortDirection = state.sortDirection === 'desc' ? 'asc' : 'desc';
         sortDirection.textContent = state.sortDirection === 'desc' ? '내림차순' : '오름차순';
-        if (state.sortStat) renderCurrentView();
+        if (state.sortStat) refreshSortedView();
     });
 
     // Detail panel close
@@ -365,6 +359,22 @@ function setupEventListeners() {
             }
         });
     }
+}
+
+function handleEquipGridClick(e) {
+    const card = e.target.closest('.equip-card, .hearing-card');
+    if (!card || !equipGrid.contains(card)) return;
+
+    if (card.dataset.spWeapon === '1') {
+        if (state.compareMode) {
+            showToast('특수 장비는 비교할 수 없습니다.', 'info');
+        } else {
+            openSPWeaponDetail(card.dataset.spId);
+        }
+        return;
+    }
+
+    onCardClick(card.dataset.equipId);
 }
 
 // ===== Filtering =====
@@ -551,7 +561,10 @@ function renderEquipGrid() {
             const card = document.createElement('div');
             card.className = `equip-card rarity-${equip.rarity}`;
             card.dataset.equipId = equip.id;
-            if (equip._isSPWeapon) card.dataset.spWeapon = '1';
+            if (equip._isSPWeapon) {
+                card.dataset.spWeapon = '1';
+                card.dataset.spId = equip._spId;
+            }
             if (equip.compare_group != null) {
                 card.dataset.compareGroup = equip.compare_group;
             }
@@ -590,15 +603,6 @@ function renderEquipGrid() {
                 ${hasHearing ? '<span class="equip-hearing-dot material-symbols-outlined" title="한줄평 있음">chat_bubble</span>' : ''}
             `;
 
-            card.addEventListener('click', () => {
-                if (equip._isSPWeapon) {
-                    // SP weapons have no compare_group → not comparable; say so in select mode.
-                    if (state.compareMode) showToast('특수 장비는 비교할 수 없습니다.', 'info');
-                    else openSPWeaponDetail(equip._spId);
-                } else {
-                    onCardClick(equip.id);
-                }
-            });
             grid.appendChild(card);
         }
 
@@ -680,12 +684,14 @@ async function openDetailPanel(equipId) {
  * data shape (attr pairs, level progression, skill upgrades) than
  * standard equipment handled by equip.detail.js.
  */
-function openSPWeaponDetail(spId) {
+async function openSPWeaponDetail(spId) {
     const spWeapon = getSPWeaponRawData(spId);
     if (!spWeapon) return;
 
     const panelContent = document.getElementById('detailPanelContent');
     if (!panelContent) return;
+
+    await loadSkillData();
 
     const SP_ATTR_NAMES = {
         cannon: '포격', torpedo: '뇌장', antiaircraft: '대공', air: '항공',
@@ -924,6 +930,7 @@ function removeCompareModeOverlay() {
  */
 async function openCompareFromSelection() {
     if (state.compareSelection.length < 2) return;
+    await ensureCompareData();
     const ids = [...state.compareSelection];
     const equips = await Promise.all(ids.map(id => getFullEquipData(id)));
     const items = equips.filter(Boolean).map(equip => ({ equip })); // level ⇒ max (renderCompareModal default)

@@ -12,7 +12,7 @@ import {
     replaceEquipCodes, getBulletTemplate, getSkillData, getWeaponName,
     getFiringPattern, formatLevel, getVisibleLevelCount, AIRCRAFT_TYPES,
     getMergedAircraftTemplate, getMergedWeaponProperties, getPrimaryWeaponProperty,
-    getHearingEntry, getTheoreticalSurfaceDps
+    getHearingEntry, getTheoreticalSurfaceDps, ensureDetailData
 } from './equip.data.js';
 import { formatDps } from './equip.compare.logic.js';
 import { renderHearingComment } from './equip.hearing-view.js';
@@ -76,6 +76,7 @@ export async function showDetailView(equipId) {
     const panelContent = document.getElementById('detailPanelContent');
     if (!panelContent) return;
 
+    await ensureDetailData();
     const equip = await getFullEquipData(equipId);
 
     if (!equip) {

@@ -7,7 +7,7 @@
  */
 
 import {
-    fetchJSON, fetchJSONWithCache, debounce, getUrlParam, setUrlParams,
+    fetchJSONWithCache, debounce, getUrlParam, setUrlParams,
     getStorageItem, setStorageItem, setupScrollToTop,
     openModal, closeModal, setupModal, resolveUrl,
     getItemIconUrl, escapeHtml, renderStatus
@@ -29,6 +29,11 @@ let matIndex = null;
 
 // ===== Category Structure =====
 let categories = {};
+
+const DATA_CACHE_MAX_AGE = 24 * 60 * 60 * 1000;
+const TREE_RENDER_CACHE_LIMIT = 24;
+const treeLinkMarkupCache = new Map();
+const treeRenderCache = new Map();
 
 const CAT1_NAMES = {
     1: '이글 유니온', 2: '로열 네이비', 3: '사쿠라 엠파이어',
@@ -55,20 +60,18 @@ async function init() {
     const loadingEl = document.getElementById('loading');
 
     try {
-        const [templates, upgrades, liteData] = await Promise.all([
-            fetchJSON('data/equip/equip_upgrade_template.json'),
-            fetchJSON('data/equip/equip_upgrade_data.json'),
-            fetchJSON('data/equip/equip_data_lite.json')
+        const [templates, upgrades, liteData, items] = await Promise.all([
+            fetchJSONWithCache('data/equip/equip_upgrade_template.json', { maxAge: DATA_CACHE_MAX_AGE }),
+            fetchJSONWithCache('data/equip/equip_upgrade_data.json', { maxAge: DATA_CACHE_MAX_AGE }),
+            fetchJSONWithCache('data/equip/equip_data_lite.json', { maxAge: DATA_CACHE_MAX_AGE }),
+            fetchJSONWithCache('data/equip/item_data_lite.json', { maxAge: DATA_CACHE_MAX_AGE }).catch(() => ({}))
         ]);
 
         // item_data_lite is optional — page works without it (names fallback to IDs)
-        const items = await fetchJSONWithCache('data/equip/item_data_lite.json', { maxAge: 86400000 })
-            .catch(() => ({}));
-
         templateData = templates;
         upgradeData = upgrades;
         itemData = items || {};
-        for (const e of liteData) liteMap[e.id] = e;
+        liteMap = buildLiteMap(liteData, buildRequiredEquipIds(templates, upgrades));
 
         buildCategories();
         setupListeners();
@@ -96,11 +99,56 @@ async function init() {
 
 // ===== Build Categories =====
 
+function buildRequiredEquipIds(templates, upgrades) {
+    const ids = new Set();
+
+    for (const tmpl of Object.values(templates)) {
+        for (const equip of tmpl.equipments || []) {
+            ids.add(Number(equip[2]));
+        }
+    }
+
+    for (const [equipId, upgrade] of Object.entries(upgrades)) {
+        ids.add(Number(equipId));
+        if (upgrade?.upgrade_from != null) {
+            ids.add(Number(upgrade.upgrade_from));
+        }
+    }
+
+    return ids;
+}
+
+function buildLiteMap(liteData, requiredEquipIds) {
+    const map = {};
+
+    for (const equip of liteData) {
+        const id = Number(equip.id);
+        if (!requiredEquipIds.has(id)) continue;
+
+        map[id] = {
+            id,
+            name: equip.name,
+            icon: equip.icon,
+            rarity: equip.rarity,
+            rarity_name: equip.rarity_name,
+            type_name: equip.type_name,
+            type_name2: equip.type_name2
+        };
+    }
+
+    return map;
+}
+
 /**
  * Index all templates into a two-level category structure (cat1=nationality, cat2=equip type).
  * Sorts cat2 entries by ID within each cat1.
  */
 function buildCategories() {
+    categories = {};
+    matIndex = null;
+    treeLinkMarkupCache.clear();
+    treeRenderCache.clear();
+
     for (const [id, tmpl] of Object.entries(templateData)) {
         if (tmpl.category1 == null || tmpl.category2 == null) continue;
 
@@ -166,6 +214,10 @@ function selectCategory1(cat1, autoSelectCat2 = true) {
 }
 
 function selectCategory2(cat2) {
+    if (currentCat2 === cat2 && currentTemplate?.category1 === currentCat1 && currentTemplate?.category2 === cat2) {
+        return;
+    }
+
     currentCat2 = cat2;
 
     document.querySelectorAll('.cat2-tab').forEach(btn => {
@@ -184,6 +236,46 @@ function selectCategory2(cat2) {
 
 // ===== Tree Rendering =====
 
+function getTreeLinkMarkup(template) {
+    const cacheKey = template.id;
+    const cached = treeLinkMarkupCache.get(cacheKey);
+    if (cached) return cached;
+
+    let svgContent = '';
+    for (const points of template.links) {
+        const pointsStr = points.map(p => p.join(',')).join(' ');
+        svgContent += `<polyline points="${pointsStr}" class="tree-link-line"/>`;
+
+        if (points.length >= 2) {
+            svgContent += renderArrow(points[points.length - 2], points[points.length - 1]);
+        }
+    }
+
+    treeLinkMarkupCache.set(cacheKey, svgContent);
+    return svgContent;
+}
+
+function getTreeRenderCacheKey(template, containerW, nodeIconSize) {
+    return `${template.id}:${containerW}:${nodeIconSize}`;
+}
+
+function getTreeRenderCache(cacheKey) {
+    const cached = treeRenderCache.get(cacheKey);
+    if (!cached) return null;
+
+    treeRenderCache.delete(cacheKey);
+    treeRenderCache.set(cacheKey, cached);
+    return cached;
+}
+
+function setTreeRenderCache(cacheKey, markup) {
+    if (!treeRenderCache.has(cacheKey) && treeRenderCache.size >= TREE_RENDER_CACHE_LIMIT) {
+        const oldestKey = treeRenderCache.keys().next().value;
+        treeRenderCache.delete(oldestKey);
+    }
+    treeRenderCache.set(cacheKey, markup);
+}
+
 /**
  * Render the research tree into #treeContainer at a responsive scale.
  * SVG polylines with arrowhead polygons show upgrade connections.
@@ -198,18 +290,15 @@ function renderTree(template) {
     const scale = Math.min(containerW / canvasW, 1);
     const scaledH = canvasH * scale;
     const nodeIconSize = Math.max(Math.round(48 * (containerW / 1000)), 36);
-
-    // SVG for connection lines
-    let svgContent = '';
-    for (const points of template.links) {
-        const pointsStr = points.map(p => p.join(',')).join(' ');
-        svgContent += `<polyline points="${pointsStr}" class="tree-link-line"/>`;
-
-        // Arrow at endpoint
-        if (points.length >= 2) {
-            svgContent += renderArrow(points[points.length - 2], points[points.length - 1]);
-        }
+    const cacheKey = getTreeRenderCacheKey(template, containerW, nodeIconSize);
+    const cached = getTreeRenderCache(cacheKey);
+    if (cached) {
+        container.innerHTML = cached;
+        container.style.height = `${scaledH}px`;
+        return;
     }
+
+    const svgContent = getTreeLinkMarkup(template);
 
     // Equipment nodes
     let nodesHtml = '';
@@ -236,7 +325,7 @@ function renderTree(template) {
         `;
     }
 
-    container.innerHTML = `
+    const markup = `
         <svg class="tree-links-svg" width="${containerW}" height="${scaledH}"
              viewBox="0 0 ${canvasW} ${canvasH}" preserveAspectRatio="xMinYMin meet">
             ${svgContent}
@@ -244,7 +333,9 @@ function renderTree(template) {
         ${nodesHtml}
     `;
 
+    container.innerHTML = markup;
     container.style.height = `${scaledH}px`;
+    setTreeRenderCache(cacheKey, markup);
 }
 
 /** Render an SVG arrowhead polygon at the endpoint of a link, pointing toward `to`. */

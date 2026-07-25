@@ -6,12 +6,16 @@
  * Exports all data-layer functions used by detail, compare, and upgrade modules.
  */
 
-import { fetchJSON, fetchJSONWithCache, DATA_FOR_TOY_BASE } from '../utils.js';
+import { fetchJSONWithCache, DATA_FOR_TOY_BASE } from '../utils.js';
 import { combinedSurfaceDps } from './equip.compare.logic.js';
 import { weaponSalvoDuration } from '../engine/damage/salvo-timing.js';
 
 // State reference (set via setup)
 let state;
+let reloadEnrichPromise = null;
+let upgradeTemplatePromise = null;
+
+const DATA_CACHE_MAX_AGE = 24 * 60 * 60 * 1000;
 
 /** Receive shared state from equip.viewer.js. */
 export function setup(stateRef) {
@@ -20,34 +24,51 @@ export function setup(stateRef) {
 
 // ===== Data Loading =====
 
-// Lite/full/statistics data — lite is blocking at init; full and statistics are background-cached
+// Lite data is blocking at init. Detail/compare data is fetched lazily on demand.
 
 /** Load the lite equipment list (blocking at init). Populates state.equipData and state.filteredData. */
+function loadJsonState(stateKey, promiseKey, url, warningMessage, onLoad = null) {
+    if (state[stateKey]) return Promise.resolve(state[stateKey]);
+    if (state[promiseKey]) return state[promiseKey];
+
+    state[promiseKey] = fetchJSONWithCache(url, { maxAge: DATA_CACHE_MAX_AGE })
+        .then(data => {
+            state[stateKey] = data;
+            if (typeof onLoad === 'function') onLoad(data);
+            return data;
+        })
+        .catch(error => {
+            console.warn(warningMessage, error);
+            state[promiseKey] = null;
+            return null;
+        });
+
+    return state[promiseKey];
+}
+
 export async function loadLiteData() {
-    state.equipData = await fetchJSON('data/equip/equip_data_lite.json');
+    state.equipData = await fetchJSONWithCache('data/equip/equip_data_lite.json', { maxAge: DATA_CACHE_MAX_AGE });
     state.filteredData = [...state.equipData];
 }
 
 /** Load the full equipment detail JSON (cached 24h). Returns null on failure. */
 export async function loadFullData() {
-    try {
-        state.fullEquipData = await fetchJSONWithCache('data/equip/equip_data_full.json', { maxAge: 86400000 });
-        return state.fullEquipData;
-    } catch (error) {
-        console.warn('Failed to load full equipment data:', error);
-    }
-    return null;
+    return loadJsonState(
+        'fullEquipData',
+        'fullEquipDataPromise',
+        'data/equip/equip_data_full.json',
+        'Failed to load full equipment data:'
+    );
 }
 
 /** Load anti-siren statistics keyed by level ID (cached 24h). Returns null on failure. */
 export async function loadStatisticsData() {
-    try {
-        state.statisticsData = await fetchJSONWithCache('data/equip/equip_data_statistics.json', { maxAge: 86400000 });
-        return state.statisticsData;
-    } catch (error) {
-        console.warn('Failed to load statistics data:', error);
-    }
-    return null;
+    return loadJsonState(
+        'statisticsData',
+        'statisticsDataPromise',
+        'data/equip/equip_data_statistics.json',
+        'Failed to load statistics data:'
+    );
 }
 
 /**
@@ -55,13 +76,23 @@ export async function loadStatisticsData() {
  * state.hearing. Soft-fail: missing commentary must never blank the equip list.
  */
 export async function loadHearingData() {
-    try {
-        const data = await fetchJSONWithCache('data/equip/equip_hearing.json', { maxAge: 86400000 });
-        state.hearing = data?.entries || {};
-    } catch (error) {
-        console.warn('Failed to load hearing data:', error);
-        state.hearing = {};
-    }
+    if (state.hearingLoaded) return state.hearing;
+    if (state.hearingPromise) return state.hearingPromise;
+
+    state.hearingPromise = fetchJSONWithCache('data/equip/equip_hearing.json', { maxAge: DATA_CACHE_MAX_AGE })
+        .then(data => {
+            state.hearing = data?.entries || {};
+            state.hearingLoaded = true;
+            return state.hearing;
+        })
+        .catch(error => {
+            console.warn('Failed to load hearing data:', error);
+            state.hearing = {};
+            state.hearingPromise = null;
+            return state.hearing;
+        });
+
+    return state.hearingPromise;
 }
 
 /** Commentary entry { alias, reviews:string[] } for an equip id, or null. */
@@ -69,73 +100,48 @@ export function getHearingEntry(id) {
     return state.hearing?.[String(id)] || null;
 }
 
-// Mapping data — blocking at init (small files, needed for initial render)
+// Mapping data is available to detail/compare paths but is not needed for first render.
 
 export async function loadEquipTypeData() {
-    state.equipTypeData = await fetchJSON('data/mapping/equip_data_by_type.json');
+    return loadJsonState('equipTypeData', 'equipTypeDataPromise', 'data/mapping/equip_data_by_type.json', 'Failed to load equipment type data:');
 }
 
 export async function loadNationalityData() {
-    state.nationalityData = await fetchJSON('data/mapping/nationality_mapping.json');
+    return loadJsonState('nationalityData', 'nationalityDataPromise', 'data/mapping/nationality_mapping.json', 'Failed to load nationality data:');
 }
 
 export async function loadShipTypeData() {
-    state.shipTypeData = await fetchJSON('data/mapping/ship_type_mapping.json');
+    return loadJsonState('shipTypeData', 'shipTypeDataPromise', 'data/mapping/ship_type_mapping.json', 'Failed to load ship type data:');
 }
 
 export async function loadEquipCodeData() {
-    state.equipCodeData = await fetchJSON('data/mapping/equip_data_code.json');
+    return loadJsonState('equipCodeData', 'equipCodeDataPromise', 'data/mapping/equip_data_code.json', 'Failed to load equipment code data:');
 }
 
 export async function loadWeaponPropertyData() {
-    try {
-        state.weaponPropertyData = await fetchJSONWithCache('data/sim/weapon_property.json', { maxAge: 86400000 });
-        resolvedWeaponPropertyCache.clear();
-        return state.weaponPropertyData;
-    } catch (error) {
-        console.warn('Failed to load weapon property data:', error);
-    }
-    return null;
+    return loadJsonState(
+        'weaponPropertyData',
+        'weaponPropertyDataPromise',
+        'data/sim/weapon_property.json',
+        'Failed to load weapon property data:',
+        () => resolvedWeaponPropertyCache.clear()
+    );
 }
 
 export async function loadBulletTemplateData() {
-    try {
-        state.bulletTemplateData = await fetchJSONWithCache('data/sim/bullet_template.json', { maxAge: 86400000 });
-        return state.bulletTemplateData;
-    } catch (error) {
-        console.warn('Failed to load bullet template data:', error);
-    }
-    return null;
+    return loadJsonState('bulletTemplateData', 'bulletTemplateDataPromise', 'data/sim/bullet_template.json', 'Failed to load bullet template data:');
 }
 
 export async function loadAircraftTemplateData() {
-    try {
-        state.aircraftTemplateData = await fetchJSONWithCache('data/sim/aircraft_template.json', { maxAge: 86400000 });
-        return state.aircraftTemplateData;
-    } catch (error) {
-        console.warn('Failed to load aircraft template data:', error);
-    }
-    return null;
+    return loadJsonState('aircraftTemplateData', 'aircraftTemplateDataPromise', 'data/sim/aircraft_template.json', 'Failed to load aircraft template data:');
 }
 
 export async function loadBarrageTemplateData() {
-    try {
-        state.barrageTemplateData = await fetchJSONWithCache('data/sim/barrage_template.json', { maxAge: 86400000 });
-        return state.barrageTemplateData;
-    } catch (error) {
-        console.warn('Failed to load barrage template data:', error);
-    }
-    return null;
+    return loadJsonState('barrageTemplateData', 'barrageTemplateDataPromise', 'data/sim/barrage_template.json', 'Failed to load barrage template data:');
 }
 
 export async function loadSkillData() {
-    try {
-        state.skillData = await fetchJSONWithCache('data/sim/skill_data_template.json', { maxAge: 86400000 });
-        return state.skillData;
-    } catch (error) {
-        console.warn('Failed to load skill data:', error);
-    }
-    return null;
+    return loadJsonState('skillData', 'skillDataPromise', 'data/sim/skill_data_template.json', 'Failed to load skill data:');
 }
 
 let upgradeEquipIds = null;
@@ -145,24 +151,73 @@ let upgradeEquipIds = null;
  * Used by the card grid to show a "in research tree" badge without loading full upgrade data.
  */
 export async function loadUpgradeTemplateData() {
-    try {
-        const templates = await fetchJSONWithCache('data/equip/equip_upgrade_template.json', { maxAge: 86400000 });
-        upgradeEquipIds = new Set();
-        for (const tmpl of Object.values(templates)) {
-            if (tmpl.equipments) {
-                for (const [, , equipId] of tmpl.equipments) {
-                    upgradeEquipIds.add(equipId);
+    if (upgradeEquipIds) return upgradeEquipIds;
+    if (upgradeTemplatePromise) return upgradeTemplatePromise;
+
+    upgradeTemplatePromise = fetchJSONWithCache('data/equip/equip_upgrade_template.json', { maxAge: DATA_CACHE_MAX_AGE })
+        .then(templates => {
+            upgradeEquipIds = new Set();
+            for (const tmpl of Object.values(templates)) {
+                if (tmpl.equipments) {
+                    for (const [, , equipId] of tmpl.equipments) {
+                        upgradeEquipIds.add(equipId);
+                    }
                 }
             }
-        }
-    } catch (error) {
-        console.warn('Failed to load upgrade template data:', error);
-    }
+            return upgradeEquipIds;
+        })
+        .catch(error => {
+            console.warn('Failed to load upgrade template data:', error);
+            upgradeTemplatePromise = null;
+            return null;
+        });
+
+    return upgradeTemplatePromise;
 }
 
 /** Check if equipment appears in any research tree */
 export function isInUpgradeTree(equipId) {
     return upgradeEquipIds ? upgradeEquipIds.has(equipId) : false;
+}
+
+export async function ensureCompareData() {
+    await Promise.all([
+        ensureReloadData(),
+        loadStatisticsData(),
+        loadEquipCodeData(),
+        loadBulletTemplateData(),
+        loadAircraftTemplateData(),
+        loadBarrageTemplateData(),
+    ]);
+}
+
+export async function ensureDetailData() {
+    await Promise.all([
+        ensureCompareData(),
+        loadSkillData(),
+        loadWeaponNameData(),
+        loadUpgradeTemplateData(),
+    ]);
+}
+
+export async function ensureReloadData() {
+    if (state.reloadEnriched) return true;
+    if (reloadEnrichPromise) return reloadEnrichPromise;
+
+    reloadEnrichPromise = Promise.all([
+        loadFullData(),
+        loadWeaponPropertyData(),
+    ]).then(([fullData, weaponPropertyData]) => {
+        if (fullData && weaponPropertyData) {
+            enrichEquipDataWithReload();
+            state.reloadEnriched = true;
+        }
+        return !!state.reloadEnriched;
+    }).finally(() => {
+        reloadEnrichPromise = null;
+    });
+
+    return reloadEnrichPromise;
 }
 
 // ===== URL Helpers =====
@@ -236,7 +291,7 @@ export function getUniqueLabels() {
 /** Get full equipment data by ID, with async loading fallback */
 export async function getFullEquipData(equipId) {
     if (!state.fullEquipData) {
-        await state.fullEquipDataPromise;
+        await loadFullData();
     }
     if (!state.fullEquipData) return null;
     return state.fullEquipData[String(equipId)] || null;
@@ -538,13 +593,7 @@ export function getTheoreticalSurfaceDps(equip, level) {
 
 /** Load weapon name data (maps weapon_property IDs to Korean names) */
 export async function loadWeaponNameData() {
-    try {
-        state.weaponNameData = await fetchJSONWithCache('data/equip/weapon_name.json', { maxAge: 86400000 });
-        return state.weaponNameData;
-    } catch (error) {
-        console.warn('Failed to load weapon name data:', error);
-    }
-    return null;
+    return loadJsonState('weaponNameData', 'weaponNameDataPromise', 'data/equip/weapon_name.json', 'Failed to load weapon name data:');
 }
 
 /** Get weapon name by weapon ID (resolves base references) */
@@ -590,13 +639,7 @@ const SP_ATTR_NAMES = {
 
 /** Load the SP weapon dataset (cached 24h). Returns null on failure. */
 export async function loadSPWeaponData() {
-    try {
-        state.spWeaponData = await fetchJSONWithCache('data/sim/spweapon_data.json', { maxAge: 86400000 });
-        return state.spWeaponData;
-    } catch (error) {
-        console.warn('Failed to load SP weapon data:', error);
-    }
-    return null;
+    return loadJsonState('spWeaponData', 'spWeaponDataPromise', 'data/sim/spweapon_data.json', 'Failed to load SP weapon data:');
 }
 
 /**

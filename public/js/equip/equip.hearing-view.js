@@ -14,7 +14,7 @@ import { getEquipIconUrl, getRarityBgUrl, getHearingEntry } from './equip.data.j
 let state;
 let ctx;
 
-/** Receive shared state + viewer callbacks ({ onCardClick, sortEquips }). */
+/** Receive shared state + viewer callbacks ({ sortEquips }). */
 export function setup(stateRef, context) {
     state = stateRef;
     ctx = context || {};
@@ -123,8 +123,5 @@ function buildHearingCard(equip) {
             ${moreCount > 0 ? `<div class="hearing-more">+${moreCount} 한줄평 더 ▸</div>` : ''}
         </div>`;
 
-    card.addEventListener('click', () => {
-        if (ctx.onCardClick) ctx.onCardClick(equip.id);
-    });
     return card;
 }
