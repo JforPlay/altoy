@@ -124,6 +124,10 @@ body {
   padding: 0 var(--island-spacing-lg) var(--island-spacing-lg);
 }
 
+.island-misc-gallery > .page-status {
+  grid-column: 1 / -1;
+}
+
 .island-misc-item {
   position: relative;
   overflow: hidden;
