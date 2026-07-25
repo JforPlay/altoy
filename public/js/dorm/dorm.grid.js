@@ -32,6 +32,7 @@ let dragPlacedOffset = null; // Offset from item origin to grab point
 let pendingDrag = null;      // Click on placed item, becomes drag on mouse move
 
 // ===== Sprite Cache =====
+const SPRITE_CACHE_LIMIT = 160;
 const spriteCache = new Map();
 const spriteLoading = new Set();
 
@@ -303,21 +304,62 @@ function placeFurnitureAt(furnitureId, gx, gy, rotated) {
  */
 function getSprite(picture) {
     if (!picture) return null;
-    if (spriteCache.has(picture)) return spriteCache.get(picture);
+    if (spriteCache.has(picture)) return touchSpriteCache(picture);
     if (spriteLoading.has(picture)) return null;
 
     spriteLoading.add(picture);
     const img = new Image();
     img.src = getFurnitureSpriteUrl(picture);
     img.onload = () => {
-        spriteCache.set(picture, img);
+        cacheSprite(picture, img);
         spriteLoading.delete(picture);
     };
     img.onerror = () => {
-        spriteCache.set(picture, null); // Mark as missing
+        cacheSprite(picture, null); // Mark as missing
         spriteLoading.delete(picture);
     };
     return null;
+}
+
+function touchSpriteCache(picture) {
+    const cached = spriteCache.get(picture);
+    spriteCache.delete(picture);
+    spriteCache.set(picture, cached);
+    return cached;
+}
+
+function cacheSprite(picture, sprite) {
+    spriteCache.set(picture, sprite);
+    pruneSpriteCache();
+}
+
+function pruneSpriteCache() {
+    if (spriteCache.size <= SPRITE_CACHE_LIMIT) return;
+
+    const activePictures = getActiveSpritePictures();
+    for (const picture of spriteCache.keys()) {
+        if (spriteCache.size <= SPRITE_CACHE_LIMIT) break;
+        if (activePictures.has(picture)) continue;
+        spriteCache.delete(picture);
+    }
+}
+
+function getActiveSpritePictures() {
+    const activePictures = new Set();
+
+    for (const item of state.grid.placed) {
+        if (item) addSpritePicture(activePictures, item.furnitureId);
+    }
+
+    if (dragFurnitureId !== null) addSpritePicture(activePictures, dragFurnitureId);
+    if (dragPlacedItem) addSpritePicture(activePictures, dragPlacedItem.furnitureId);
+
+    return activePictures;
+}
+
+function addSpritePicture(pictures, furnitureId) {
+    const furniture = getFurniture(furnitureId);
+    if (furniture?.picture) pictures.add(furniture.picture);
 }
 
 // ===== Rendering =====

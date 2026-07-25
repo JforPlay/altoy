@@ -8,6 +8,7 @@ import { debounce, hideElement, showElement } from '../utils.js';
 import { getFurniture, getThemesSorted, searchFurniture, getFurnitureIconUrl, getThemeIconUrl } from './dorm.data.js';
 
 let state;
+const themeBySection = new WeakMap();
 const HOVER_PLACEHOLDER = '가구에 마우스를 올려보세요';
 
 /** Receive the shared state reference from dorm.viewer.js. */
@@ -36,6 +37,13 @@ function countPlaceableFurniture(theme) {
     return theme.furnitureIds.filter(fid => isPlaceable(getFurniture(fid))).length;
 }
 
+function countMatchingPlaceableFurniture(theme, matchIds) {
+    return theme.furnitureIds.filter(fid => {
+        const furniture = getFurniture(fid);
+        return isPlaceable(furniture) && (matchIds === null || matchIds.has(Number(fid)));
+    }).length;
+}
+
 function renderThemes() {
     const container = state.elements.themeList;
     const fragment = document.createDocumentFragment();
@@ -54,6 +62,7 @@ function createThemeSection(theme) {
     const section = document.createElement('div');
     section.className = 'theme-section' + (theme.id === 0 ? ' no-theme' : '');
     section.dataset.themeId = theme.id;
+    themeBySection.set(section, theme);
 
     const gridId = `dorm-theme-${theme.id}-grid`;
 
@@ -101,19 +110,29 @@ function createThemeSection(theme) {
     grid.className = 'furniture-grid';
     grid.id = gridId;
     grid.hidden = true;
-
-    for (const fid of theme.furnitureIds) {
-        const furniture = getFurniture(fid);
-        if (!furniture) continue;
-        // Skip wallpaper (1) and floorpaper (4) — not placeable on grid
-        if (furniture.type === 1 || furniture.type === 4) continue;
-        // Skip furniture with no valid size
-        if (!Array.isArray(furniture.size) || furniture.size.length < 2) continue;
-        grid.appendChild(createFurnitureIcon(furniture));
-    }
+    grid.dataset.rendered = 'false';
 
     section.appendChild(grid);
     return section;
+}
+
+function ensureThemeGridRendered(section) {
+    const grid = section.querySelector('.furniture-grid');
+    if (!grid || grid.dataset.rendered === 'true') return grid;
+
+    const theme = themeBySection.get(section);
+    if (!theme) return grid;
+
+    const fragment = document.createDocumentFragment();
+    for (const fid of theme.furnitureIds) {
+        const furniture = getFurniture(fid);
+        if (!isPlaceable(furniture)) continue;
+        fragment.appendChild(createFurnitureIcon(furniture));
+    }
+
+    grid.replaceChildren(fragment);
+    grid.dataset.rendered = 'true';
+    return grid;
 }
 
 function createFurnitureIcon(furniture) {
@@ -182,7 +201,9 @@ function toggleTheme(section) {
 function setThemeExpanded(section, expanded) {
     section.classList.toggle('expanded', expanded);
     const header = section.querySelector('.theme-header');
-    const grid = section.querySelector('.furniture-grid');
+    const grid = expanded
+        ? ensureThemeGridRendered(section)
+        : section.querySelector('.furniture-grid');
     header?.setAttribute('aria-expanded', expanded ? 'true' : 'false');
     if (grid) grid.hidden = !expanded;
 }
@@ -224,22 +245,29 @@ function filterBySearch(query) {
     let visibleSections = 0;
 
     for (const section of sections) {
-        const icons = section.querySelectorAll('.furniture-icon-wrapper');
-        let visibleCount = 0;
+        const theme = themeBySection.get(section);
+        if (!theme) continue;
 
-        for (const icon of icons) {
-            const fid = Number(icon.dataset.furnitureId);
-            const visible = matchIds === null || matchIds.has(fid);
-            icon.style.display = visible ? '' : 'none';
-            if (visible) visibleCount++;
+        const visibleCount = countMatchingPlaceableFurniture(theme, matchIds);
+        const shouldShow = visibleCount > 0;
+        section.style.display = shouldShow ? '' : 'none';
+
+        const grid = shouldShow && matchIds !== null
+            ? ensureThemeGridRendered(section)
+            : section.querySelector('.furniture-grid');
+
+        if (grid?.dataset.rendered === 'true') {
+            for (const icon of grid.querySelectorAll('.furniture-icon-wrapper')) {
+                const fid = Number(icon.dataset.furnitureId);
+                icon.style.display = matchIds === null || matchIds.has(fid) ? '' : 'none';
+            }
         }
 
         // Hide empty themes, expand themes with matches
-        section.style.display = visibleCount === 0 ? 'none' : '';
-        if (matchIds !== null && visibleCount > 0) {
+        if (matchIds !== null && shouldShow) {
             visibleSections++;
             setThemeExpanded(section, true);
-        } else if (matchIds === null && visibleCount > 0) {
+        } else if (matchIds === null && shouldShow) {
             visibleSections++;
         }
     }
