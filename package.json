@@ -15,7 +15,7 @@
     "check:data": "node scripts/check-data-shape.mjs",
     "check:orphans": "node scripts/check-orphans.mjs",
     "check:structure": "node scripts/check-structure.mjs",
-    "lint": "eslint scripts/check-structure.mjs scripts/report-route-boot.mjs scripts/route-boot-targets.mjs tests/infra/route-boot-report.test.mjs tests/infra/structure-check.test.mjs",
+    "lint": "eslint .",
     "report:route-boot": "node scripts/report-route-boot.mjs",
     "test": "node --test",
     "test:smoke": "playwright test",
