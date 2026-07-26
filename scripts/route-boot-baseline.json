@@ -2121,9 +2121,9 @@
         },
         {
           "path": "/altoy/js/map/map.viewer.js",
-          "raw": 28243,
-          "gzip": 7123,
-          "brotli": 6864
+          "raw": 30333,
+          "gzip": 7733,
+          "brotli": 7455
         },
         {
           "path": "/altoy/js/pages.catalog.js",
@@ -2202,12 +2202,6 @@
       ],
       "json": [
         {
-          "path": "/altoy/data/maps/map_data_full.json",
-          "raw": 10348422,
-          "gzip": 916039,
-          "brotli": 428731
-        },
-        {
           "path": "/altoy/data/maps/map_data_lite.json",
           "raw": 266907,
           "gzip": 29613,
@@ -2218,18 +2212,6 @@
           "raw": 95218,
           "gzip": 7428,
           "brotli": 5142
-        },
-        {
-          "path": "/altoy/data/maps/world_target_data.json",
-          "raw": 82256,
-          "gzip": 6198,
-          "brotli": 4576
-        },
-        {
-          "path": "/altoy/data/ship_info_lite.json",
-          "raw": 273062,
-          "gzip": 21496,
-          "brotli": 18855
         }
       ],
       "bytesAtReady": {
@@ -2241,9 +2223,9 @@
         },
         "js": {
           "count": 19,
-          "raw": 244471,
-          "gzip": 73766,
-          "brotli": 69989
+          "raw": 246561,
+          "gzip": 74376,
+          "brotli": 70580
         },
         "css": {
           "count": 2,
@@ -2259,9 +2241,9 @@
         },
         "total": {
           "count": 24,
-          "raw": 701005,
-          "gzip": 130497,
-          "brotli": 116127
+          "raw": 703095,
+          "gzip": 131107,
+          "brotli": 116718
         }
       },
       "bytes": {
@@ -2273,9 +2255,9 @@
         },
         "js": {
           "count": 19,
-          "raw": 244471,
-          "gzip": 73766,
-          "brotli": 69989
+          "raw": 246561,
+          "gzip": 74376,
+          "brotli": 70580
         },
         "css": {
           "count": 2,
@@ -2284,16 +2266,16 @@
           "brotli": 13105
         },
         "json": {
-          "count": 5,
-          "raw": 11065865,
-          "gzip": 980774,
-          "brotli": 479494
+          "count": 2,
+          "raw": 362125,
+          "gzip": 37041,
+          "brotli": 27332
         },
         "total": {
-          "count": 27,
-          "raw": 11404745,
-          "gzip": 1074230,
-          "brotli": 568289
+          "count": 24,
+          "raw": 703095,
+          "gzip": 131107,
+          "brotli": 116718
         }
       },
       "problems": []

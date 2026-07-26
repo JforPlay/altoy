@@ -40,6 +40,42 @@ let mobileMapSelect;
 let searchModalBody, searchModalInput;
 let mapSelectionToken = 0;
 
+/**
+ * Cache an optional data load while it is in flight or has succeeded.
+ * Empty/failed results clear the promise so the next user action can retry.
+ */
+function ensureDataPromise(promiseKey, getLoadedValue, loader) {
+    const loadedValue = getLoadedValue();
+    if (loadedValue) return Promise.resolve(loadedValue);
+    if (state[promiseKey]) return state[promiseKey];
+
+    const promise = Promise.resolve()
+        .then(loader)
+        .catch((error) => {
+            console.error(`Failed optional map data load (${promiseKey}):`, error);
+            return null;
+        });
+    state[promiseKey] = promise;
+    promise.then((result) => {
+        if (!result && state[promiseKey] === promise) {
+            state[promiseKey] = null;
+        }
+    });
+    return promise;
+}
+
+function ensureFullData() {
+    return ensureDataPromise('fullDataPromise', () => state.fullData, loadFullData);
+}
+
+function ensureShipInfo() {
+    return ensureDataPromise('shipInfoPromise', () => state.shipInfo, loadShipInfo);
+}
+
+function ensureWorldTargetData() {
+    return ensureDataPromise('worldTargetPromise', () => null, loadWorldTargetData);
+}
+
 function cacheDom() {
     mapTabs = document.getElementById('mapTabs');
     mapSidebar = document.getElementById('mapSidebar');
@@ -220,6 +256,9 @@ function renderSidebar(category) {
 async function selectMap(mapId) {
     const selectionToken = ++mapSelectionToken;
     state.currentMapId = mapId;
+    const hadFullData = Boolean(state.fullData);
+    const fullDataPromise = ensureFullData();
+    const shipInfoPromise = state.currentTab === 'world' ? null : ensureShipInfo();
 
     // Update sidebar active state
     setSidebarActive(mapId);
@@ -242,13 +281,20 @@ async function selectMap(mapId) {
     if (mobileMapSelect) mobileMapSelect.value = mapId;
 
     // Wait for full data if needed
-    if (!state.fullData) {
+    if (!hadFullData) {
         hideElement(mapEmpty);
         hideElement(mapContent);
         showElement(mapLoading);
-        await state.fullDataPromise;
-        if (selectionToken !== mapSelectionToken) return;
-        hideElement(mapLoading);
+    }
+    const fullData = await fullDataPromise;
+    if (selectionToken !== mapSelectionToken) return;
+    hideElement(mapLoading);
+
+    if (!fullData) {
+        renderStatus(mapEmpty, '해역 데이터를 불러오지 못했습니다. 다시 선택해 주세요.', 'error');
+        showElement(mapEmpty);
+        hideElement(mapContent);
+        return;
     }
 
     const chapter = state.fullData?.[mapId];
@@ -259,15 +305,15 @@ async function selectMap(mapId) {
         return;
     }
 
-    const needsWorldTargets = chapter.category === 'world' && chapter.randomId && state.worldTargetPromise;
-    const needsShipInfo = chapter.category !== 'world' && !state.shipInfo && state.shipInfoPromise;
+    const needsWorldTargets = chapter.category === 'world' && chapter.randomId;
+    const needsShipInfo = chapter.category !== 'world' && !state.shipInfo;
     if (needsWorldTargets || needsShipInfo) {
         hideElement(mapEmpty);
         hideElement(mapContent);
         showElement(mapLoading);
         await Promise.all([
-            needsWorldTargets ? state.worldTargetPromise : null,
-            needsShipInfo ? state.shipInfoPromise : null,
+            needsWorldTargets ? ensureWorldTargetData() : null,
+            needsShipInfo ? (shipInfoPromise || ensureShipInfo()) : null,
         ].filter(Boolean));
         if (selectionToken !== mapSelectionToken) return;
         hideElement(mapLoading);
@@ -393,10 +439,18 @@ function openSearchModal(mode) {
     openModal('searchModal', { onOpen: modal => modal.setAttribute('aria-hidden', 'false') });
     setTimeout(() => input.focus(), 100);
 
-    const pending = mode === 'ship' ? state.shipInfoPromise : state.fullDataPromise;
-    pending?.then(() => {
+    const pending = mode === 'ship' ? ensureShipInfo() : ensureFullData();
+    pending.then((data) => {
+        if (searchMode !== mode) return;
+        if (!data) {
+            renderMessage(searchModalBody, '검색 데이터를 불러오지 못했습니다. 다시 시도해 주세요.', 'error');
+            return;
+        }
+        renderSearchResults(input.value);
+    }).catch((error) => {
+        console.error('Failed to load map search data:', error);
         if (searchMode === mode) {
-            renderSearchResults(input.value);
+            renderMessage(searchModalBody, '검색 데이터를 불러오지 못했습니다. 다시 시도해 주세요.', 'error');
         }
     });
 }
@@ -609,8 +663,7 @@ function navigateToSearchMap(mapId, category) {
 
 /**
  * Initialize the map viewer: cache DOM, wire sub-modules, load lite data, restore URL state.
- * Full data and ship info load in the background; full data is awaited only if a specific map
- * is requested via URL param or when a sidebar item is clicked before it resolves.
+ * Optional detail data starts only for a deep link or the first interaction that needs it.
  */
 async function init() {
     cacheDom();
@@ -646,10 +699,9 @@ async function init() {
 
     switchTab(urlTab);
 
-    // Load full data and ship info in background
-    state.fullDataPromise = loadFullData();
-    state.shipInfoPromise = loadShipInfo();
-    state.worldTargetPromise = loadWorldTargetData();
+    // A map/compare deep link needs full chapter data during restoration. The
+    // default no-selection route leaves all optional detail data untouched.
+    const deepLinkFullDataPromise = urlMap || compareParam ? ensureFullData() : null;
 
     // Node overlay close button
     if (nodeOverlayClose) {
@@ -729,7 +781,7 @@ async function init() {
     // Restore map selection from URL (captured before switchTab wiped the params)
     if (urlMap) {
         // Auto-detect tab from map ID
-        await state.fullDataPromise;
+        await deepLinkFullDataPromise;
         const chapter = state.fullData?.[urlMap];
         if (chapter && chapter.category !== state.currentTab) {
             switchTab(chapter.category);
@@ -741,8 +793,13 @@ async function init() {
     if (compareParam) {
         const [id1, id2] = compareParam.split(',');
         if (id1 && id2) {
-            await state.fullDataPromise;
-            renderCompareModal(id1, id2);
+            await deepLinkFullDataPromise;
+            if (state.fullData) {
+                renderCompareModal(id1, id2);
+            } else {
+                renderStatus(mapEmpty, '비교 데이터를 불러오지 못했습니다. 해역을 선택해 다시 시도해 주세요.', 'error');
+                showElement(mapEmpty);
+            }
         }
     }
 }
