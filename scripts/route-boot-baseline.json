@@ -1,0 +1,1432 @@
+{
+  "schemaVersion": 1,
+  "basePath": "/altoy/",
+  "targets": {
+    "FLEET_SIM": {
+      "path": "simulators/fleet-sim/",
+      "ready": "initial loading overlay hidden",
+      "pageEntries": [
+        "/altoy/js/simulators/fleet-sim.calc.js",
+        "/altoy/js/simulators/fleet-sim.data.js",
+        "/altoy/js/simulators/fleet-sim.main.js",
+        "/altoy/js/simulators/fleet-sim.picker.js",
+        "/altoy/js/simulators/fleet-sim.ui.js"
+      ],
+      "js": [
+        {
+          "path": "/altoy/js/cache.db.js",
+          "raw": 8384,
+          "gzip": 2435,
+          "brotli": 2297
+        },
+        {
+          "path": "/altoy/js/engine/damage/clear-check.js",
+          "raw": 737,
+          "gzip": 428,
+          "brotli": 382
+        },
+        {
+          "path": "/altoy/js/engine/damage/constants.js",
+          "raw": 1625,
+          "gzip": 782,
+          "brotli": 738
+        },
+        {
+          "path": "/altoy/js/engine/damage/formula.js",
+          "raw": 2636,
+          "gzip": 1165,
+          "brotli": 1102
+        },
+        {
+          "path": "/altoy/js/engine/damage/index.js",
+          "raw": 3018,
+          "gzip": 1126,
+          "brotli": 1078
+        },
+        {
+          "path": "/altoy/js/engine/damage/reload.js",
+          "raw": 1013,
+          "gzip": 547,
+          "brotli": 491
+        },
+        {
+          "path": "/altoy/js/engine/damage/salvo-timing.js",
+          "raw": 2076,
+          "gzip": 1051,
+          "brotli": 987
+        },
+        {
+          "path": "/altoy/js/engine/damage/salvo.js",
+          "raw": 473,
+          "gzip": 275,
+          "brotli": 246
+        },
+        {
+          "path": "/altoy/js/engine/damage/targets.js",
+          "raw": 3458,
+          "gzip": 1348,
+          "brotli": 1273
+        },
+        {
+          "path": "/altoy/js/engine/damage/timeline.js",
+          "raw": 892,
+          "gzip": 446,
+          "brotli": 392
+        },
+        {
+          "path": "/altoy/js/equip/equip-code.js",
+          "raw": 6052,
+          "gzip": 2122,
+          "brotli": 2015
+        },
+        {
+          "path": "/altoy/js/global-search.js",
+          "raw": 14675,
+          "gzip": 4694,
+          "brotli": 4419
+        },
+        {
+          "path": "/altoy/js/global.init.js",
+          "raw": 779,
+          "gzip": 495,
+          "brotli": 427
+        },
+        {
+          "path": "/altoy/js/global.script.js",
+          "raw": 11809,
+          "gzip": 3766,
+          "brotli": 3557
+        },
+        {
+          "path": "/altoy/js/pages.catalog.js",
+          "raw": 13591,
+          "gzip": 4459,
+          "brotli": 4258
+        },
+        {
+          "path": "/altoy/js/simulators/fleet-sim.calc.js",
+          "raw": 27680,
+          "gzip": 7679,
+          "brotli": 7469
+        },
+        {
+          "path": "/altoy/js/simulators/fleet-sim.code-apply.js",
+          "raw": 2882,
+          "gzip": 1124,
+          "brotli": 1050
+        },
+        {
+          "path": "/altoy/js/simulators/fleet-sim.damage.js",
+          "raw": 18952,
+          "gzip": 6243,
+          "brotli": 6020
+        },
+        {
+          "path": "/altoy/js/simulators/fleet-sim.data.js",
+          "raw": 14836,
+          "gzip": 4300,
+          "brotli": 4141
+        },
+        {
+          "path": "/altoy/js/simulators/fleet-sim.equip-code-ui.js",
+          "raw": 10315,
+          "gzip": 3313,
+          "brotli": 3152
+        },
+        {
+          "path": "/altoy/js/simulators/fleet-sim.main.js",
+          "raw": 32129,
+          "gzip": 8762,
+          "brotli": 8464
+        },
+        {
+          "path": "/altoy/js/simulators/fleet-sim.picker.js",
+          "raw": 33063,
+          "gzip": 7160,
+          "brotli": 6885
+        },
+        {
+          "path": "/altoy/js/simulators/fleet-sim.saves.js",
+          "raw": 3094,
+          "gzip": 1197,
+          "brotli": 1142
+        },
+        {
+          "path": "/altoy/js/simulators/fleet-sim.ui.js",
+          "raw": 37674,
+          "gzip": 9969,
+          "brotli": 9619
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.api.js",
+          "raw": 3445,
+          "gzip": 1129,
+          "brotli": 1032
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.auth.js",
+          "raw": 4768,
+          "gzip": 1609,
+          "brotli": 1470
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.config.js",
+          "raw": 1099,
+          "gzip": 575,
+          "brotli": 540
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.engine.js",
+          "raw": 8650,
+          "gzip": 2943,
+          "brotli": 2800
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.summary.js",
+          "raw": 4888,
+          "gzip": 1746,
+          "brotli": 1635
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.ui.js",
+          "raw": 15571,
+          "gzip": 4771,
+          "brotli": 4490
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.validate.js",
+          "raw": 3567,
+          "gzip": 1483,
+          "brotli": 1364
+        },
+        {
+          "path": "/altoy/js/synced-storage.js",
+          "raw": 5206,
+          "gzip": 1895,
+          "brotli": 1783
+        },
+        {
+          "path": "/altoy/js/utils.js",
+          "raw": 61337,
+          "gzip": 19141,
+          "brotli": 18316
+        }
+      ],
+      "css": [
+        {
+          "path": "/altoy/_assets/common.Dag1OkpD.css",
+          "raw": 8753,
+          "gzip": 2240,
+          "brotli": 2061
+        },
+        {
+          "path": "/altoy/_assets/fleet-sim.CZjvFw7h.css",
+          "raw": 23484,
+          "gzip": 4422,
+          "brotli": 4215
+        },
+        {
+          "path": "/altoy/_assets/Layout.CfkVEPXb.css",
+          "raw": 47614,
+          "gzip": 9129,
+          "brotli": 8842
+        },
+        {
+          "path": "/altoy/_assets/sim.common.Cbv8nCqk.css",
+          "raw": 15970,
+          "gzip": 3870,
+          "brotli": 3633
+        }
+      ],
+      "json": [
+        {
+          "path": "/altoy/data/equip/equip_data_full.json",
+          "raw": 10356133,
+          "gzip": 336250,
+          "brotli": 139990
+        },
+        {
+          "path": "/altoy/data/equip/equip_data_lite.json",
+          "raw": 787800,
+          "gzip": 31788,
+          "brotli": 22911
+        },
+        {
+          "path": "/altoy/data/mapping/attr_type_mapping.json",
+          "raw": 2631,
+          "gzip": 492,
+          "brotli": 438
+        },
+        {
+          "path": "/altoy/data/mapping/equip_data_by_type.json",
+          "raw": 3571,
+          "gzip": 570,
+          "brotli": 497
+        },
+        {
+          "path": "/altoy/data/mapping/nationality_mapping.json",
+          "raw": 6467,
+          "gzip": 975,
+          "brotli": 864
+        },
+        {
+          "path": "/altoy/data/mapping/ship_type_mapping.json",
+          "raw": 4307,
+          "gzip": 529,
+          "brotli": 436
+        },
+        {
+          "path": "/altoy/data/meta_bosses.json",
+          "raw": 45343,
+          "gzip": 5016,
+          "brotli": 3969
+        },
+        {
+          "path": "/altoy/data/ship_group_data.json",
+          "raw": 596561,
+          "gzip": 35485,
+          "brotli": 27285
+        },
+        {
+          "path": "/altoy/data/ship_info_data.json",
+          "raw": 5531480,
+          "gzip": 314715,
+          "brotli": 197683
+        },
+        {
+          "path": "/altoy/data/shipgirl/fleet_tech_template.json",
+          "raw": 10144,
+          "gzip": 1072,
+          "brotli": 890
+        },
+        {
+          "path": "/altoy/data/sim/aircraft_template.json",
+          "raw": 2226672,
+          "gzip": 179165,
+          "brotli": 122848
+        },
+        {
+          "path": "/altoy/data/sim/barrage_template.json",
+          "raw": 7555940,
+          "gzip": 389766,
+          "brotli": 312579
+        },
+        {
+          "path": "/altoy/data/sim/bullet_template.json",
+          "raw": 11648850,
+          "gzip": 545492,
+          "brotli": 339702
+        },
+        {
+          "path": "/altoy/data/sim/fleet_sim_passive_skills.json",
+          "raw": 718309,
+          "gzip": 45958,
+          "brotli": 39172
+        },
+        {
+          "path": "/altoy/data/sim/spweapon_data.json",
+          "raw": 112824,
+          "gzip": 20457,
+          "brotli": 15259
+        },
+        {
+          "path": "/altoy/data/sim/weapon_property.json",
+          "raw": 14355767,
+          "gzip": 933092,
+          "brotli": 594763
+        }
+      ],
+      "bytes": {
+        "html": {
+          "count": 1,
+          "raw": 29463,
+          "gzip": 6814,
+          "brotli": 6290
+        },
+        "js": {
+          "count": 33,
+          "raw": 360374,
+          "gzip": 110178,
+          "brotli": 105034
+        },
+        "css": {
+          "count": 4,
+          "raw": 95821,
+          "gzip": 19661,
+          "brotli": 18751
+        },
+        "json": {
+          "count": 16,
+          "raw": 53962799,
+          "gzip": 2840822,
+          "brotli": 1819286
+        },
+        "total": {
+          "count": 54,
+          "raw": 54448457,
+          "gzip": 2977475,
+          "brotli": 1949361
+        }
+      },
+      "problems": []
+    },
+    "SHIPGIRL_INFO": {
+      "path": "shipgirl/shipgirl-info/",
+      "ready": "first ship card rendered",
+      "pageEntries": [
+        "/altoy/js/shipgirl/shipgirl-info.data.js",
+        "/altoy/js/shipgirl/shipgirl-info.detail.js",
+        "/altoy/js/shipgirl/shipgirl-info.js",
+        "/altoy/js/shipgirl/shipgirl-info.maps.js",
+        "/altoy/js/shipgirl/shipgirl-info.retrofit.js",
+        "/altoy/js/shipgirl/shipgirl-info.skill-search.js"
+      ],
+      "js": [
+        {
+          "path": "/altoy/js/cache.db.js",
+          "raw": 8384,
+          "gzip": 2435,
+          "brotli": 2297
+        },
+        {
+          "path": "/altoy/js/global-search.js",
+          "raw": 14675,
+          "gzip": 4694,
+          "brotli": 4419
+        },
+        {
+          "path": "/altoy/js/global.init.js",
+          "raw": 779,
+          "gzip": 495,
+          "brotli": 427
+        },
+        {
+          "path": "/altoy/js/global.script.js",
+          "raw": 11809,
+          "gzip": 3766,
+          "brotli": 3557
+        },
+        {
+          "path": "/altoy/js/pages.catalog.js",
+          "raw": 13591,
+          "gzip": 4459,
+          "brotli": 4258
+        },
+        {
+          "path": "/altoy/js/shipgirl/shipgirl-info.data.js",
+          "raw": 10483,
+          "gzip": 3454,
+          "brotli": 3256
+        },
+        {
+          "path": "/altoy/js/shipgirl/shipgirl-info.detail.js",
+          "raw": 31443,
+          "gzip": 8089,
+          "brotli": 7677
+        },
+        {
+          "path": "/altoy/js/shipgirl/shipgirl-info.equip-slots.js",
+          "raw": 6745,
+          "gzip": 2648,
+          "brotli": 2480
+        },
+        {
+          "path": "/altoy/js/shipgirl/shipgirl-info.js",
+          "raw": 24972,
+          "gzip": 6849,
+          "brotli": 6495
+        },
+        {
+          "path": "/altoy/js/shipgirl/shipgirl-info.maps.js",
+          "raw": 20523,
+          "gzip": 4645,
+          "brotli": 4377
+        },
+        {
+          "path": "/altoy/js/shipgirl/shipgirl-info.resolve.js",
+          "raw": 2029,
+          "gzip": 1019,
+          "brotli": 947
+        },
+        {
+          "path": "/altoy/js/shipgirl/shipgirl-info.retrofit.js",
+          "raw": 7879,
+          "gzip": 2960,
+          "brotli": 2787
+        },
+        {
+          "path": "/altoy/js/shipgirl/shipgirl-info.skill-search.js",
+          "raw": 25078,
+          "gzip": 7359,
+          "brotli": 7021
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.api.js",
+          "raw": 3445,
+          "gzip": 1129,
+          "brotli": 1032
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.auth.js",
+          "raw": 4768,
+          "gzip": 1609,
+          "brotli": 1470
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.config.js",
+          "raw": 1099,
+          "gzip": 575,
+          "brotli": 540
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.engine.js",
+          "raw": 8650,
+          "gzip": 2943,
+          "brotli": 2800
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.summary.js",
+          "raw": 4888,
+          "gzip": 1746,
+          "brotli": 1635
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.ui.js",
+          "raw": 15571,
+          "gzip": 4771,
+          "brotli": 4490
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.validate.js",
+          "raw": 3567,
+          "gzip": 1483,
+          "brotli": 1364
+        },
+        {
+          "path": "/altoy/js/synced-storage.js",
+          "raw": 5206,
+          "gzip": 1895,
+          "brotli": 1783
+        },
+        {
+          "path": "/altoy/js/utils.js",
+          "raw": 61337,
+          "gzip": 19141,
+          "brotli": 18316
+        }
+      ],
+      "css": [
+        {
+          "path": "/altoy/_assets/Layout.CfkVEPXb.css",
+          "raw": 47614,
+          "gzip": 9129,
+          "brotli": 8842
+        },
+        {
+          "path": "/altoy/_assets/shipgirl-info.rNwx3LQE.css",
+          "raw": 48149,
+          "gzip": 9330,
+          "brotli": 9080
+        }
+      ],
+      "json": [
+        {
+          "path": "/altoy/data/mapping/attr_type_mapping.json",
+          "raw": 2631,
+          "gzip": 492,
+          "brotli": 438
+        },
+        {
+          "path": "/altoy/data/mapping/equip_data_by_type.json",
+          "raw": 3571,
+          "gzip": 570,
+          "brotli": 497
+        },
+        {
+          "path": "/altoy/data/mapping/nationality_mapping.json",
+          "raw": 6467,
+          "gzip": 975,
+          "brotli": 864
+        },
+        {
+          "path": "/altoy/data/mapping/ship_type_mapping.json",
+          "raw": 4307,
+          "gzip": 529,
+          "brotli": 436
+        },
+        {
+          "path": "/altoy/data/ship_info_lite.json",
+          "raw": 273062,
+          "gzip": 21496,
+          "brotli": 18855
+        }
+      ],
+      "bytes": {
+        "html": {
+          "count": 1,
+          "raw": 27262,
+          "gzip": 6824,
+          "brotli": 6372
+        },
+        "js": {
+          "count": 22,
+          "raw": 286921,
+          "gzip": 88164,
+          "brotli": 83428
+        },
+        "css": {
+          "count": 2,
+          "raw": 95763,
+          "gzip": 18459,
+          "brotli": 17922
+        },
+        "json": {
+          "count": 5,
+          "raw": 290038,
+          "gzip": 24062,
+          "brotli": 21090
+        },
+        "total": {
+          "count": 30,
+          "raw": 699984,
+          "gzip": 137509,
+          "brotli": 128812
+        }
+      },
+      "problems": []
+    },
+    "ISLAND": {
+      "path": "island/",
+      "ready": "default character list rendered",
+      "pageEntries": [
+        "/altoy/js/island/island.script.js"
+      ],
+      "js": [
+        {
+          "path": "/altoy/js/cache.db.js",
+          "raw": 8384,
+          "gzip": 2435,
+          "brotli": 2297
+        },
+        {
+          "path": "/altoy/js/global-search.js",
+          "raw": 14675,
+          "gzip": 4694,
+          "brotli": 4419
+        },
+        {
+          "path": "/altoy/js/global.init.js",
+          "raw": 779,
+          "gzip": 495,
+          "brotli": 427
+        },
+        {
+          "path": "/altoy/js/global.script.js",
+          "raw": 11809,
+          "gzip": 3766,
+          "brotli": 3557
+        },
+        {
+          "path": "/altoy/js/island/island.character.engine.js",
+          "raw": 34235,
+          "gzip": 8093,
+          "brotli": 7706
+        },
+        {
+          "path": "/altoy/js/island/island.engine.js",
+          "raw": 29849,
+          "gzip": 7617,
+          "brotli": 7335
+        },
+        {
+          "path": "/altoy/js/island/island.script.js",
+          "raw": 3485,
+          "gzip": 1297,
+          "brotli": 1154
+        },
+        {
+          "path": "/altoy/js/island/island.season-map.js",
+          "raw": 7297,
+          "gzip": 3009,
+          "brotli": 2847
+        },
+        {
+          "path": "/altoy/js/pages.catalog.js",
+          "raw": 13591,
+          "gzip": 4459,
+          "brotli": 4258
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.api.js",
+          "raw": 3445,
+          "gzip": 1129,
+          "brotli": 1032
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.auth.js",
+          "raw": 4768,
+          "gzip": 1609,
+          "brotli": 1470
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.config.js",
+          "raw": 1099,
+          "gzip": 575,
+          "brotli": 540
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.engine.js",
+          "raw": 8650,
+          "gzip": 2943,
+          "brotli": 2800
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.summary.js",
+          "raw": 4888,
+          "gzip": 1746,
+          "brotli": 1635
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.ui.js",
+          "raw": 15571,
+          "gzip": 4771,
+          "brotli": 4490
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.validate.js",
+          "raw": 3567,
+          "gzip": 1483,
+          "brotli": 1364
+        },
+        {
+          "path": "/altoy/js/synced-storage.js",
+          "raw": 5206,
+          "gzip": 1895,
+          "brotli": 1783
+        },
+        {
+          "path": "/altoy/js/utils.js",
+          "raw": 61337,
+          "gzip": 19141,
+          "brotli": 18316
+        }
+      ],
+      "css": [
+        {
+          "path": "/altoy/_assets/island.-wV-PfSY.css",
+          "raw": 123655,
+          "gzip": 17703,
+          "brotli": 17204
+        },
+        {
+          "path": "/altoy/_assets/island.vqQE5wek.css",
+          "raw": 14027,
+          "gzip": 3483,
+          "brotli": 3218
+        },
+        {
+          "path": "/altoy/_assets/Layout.CfkVEPXb.css",
+          "raw": 47614,
+          "gzip": 9129,
+          "brotli": 8842
+        }
+      ],
+      "json": [
+        {
+          "path": "/altoy/data/island/characters.json",
+          "raw": 208038,
+          "gzip": 11055,
+          "brotli": 7834
+        },
+        {
+          "path": "/altoy/data/island/island_chara_att.json",
+          "raw": 738,
+          "gzip": 237,
+          "brotli": 190
+        },
+        {
+          "path": "/altoy/data/island/island_chara_level.json",
+          "raw": 1881,
+          "gzip": 378,
+          "brotli": 270
+        },
+        {
+          "path": "/altoy/data/island/island_item_data_template.json",
+          "raw": 151743,
+          "gzip": 19823,
+          "brotli": 17027
+        },
+        {
+          "path": "/altoy/data/island/island_season.json",
+          "raw": 5056,
+          "gzip": 858,
+          "brotli": 667
+        }
+      ],
+      "bytes": {
+        "html": {
+          "count": 1,
+          "raw": 27326,
+          "gzip": 6145,
+          "brotli": 5710
+        },
+        "js": {
+          "count": 18,
+          "raw": 232635,
+          "gzip": 71157,
+          "brotli": 67430
+        },
+        "css": {
+          "count": 3,
+          "raw": 185296,
+          "gzip": 30315,
+          "brotli": 29264
+        },
+        "json": {
+          "count": 5,
+          "raw": 367456,
+          "gzip": 32351,
+          "brotli": 25988
+        },
+        "total": {
+          "count": 27,
+          "raw": 812713,
+          "gzip": 139968,
+          "brotli": 128392
+        }
+      },
+      "problems": []
+    },
+    "EVENT_STORY": {
+      "path": "story-viewer/event-story/",
+      "ready": "event archive sections rendered",
+      "pageEntries": [
+        "/altoy/js/story-viewer/event-story.js",
+        "/altoy/js/story-viewer/story-viewer.engine.js"
+      ],
+      "js": [
+        {
+          "path": "/altoy/js/cache.db.js",
+          "raw": 8384,
+          "gzip": 2435,
+          "brotli": 2297
+        },
+        {
+          "path": "/altoy/js/expression-composite.js",
+          "raw": 4656,
+          "gzip": 1902,
+          "brotli": 1761
+        },
+        {
+          "path": "/altoy/js/expression-face.js",
+          "raw": 2975,
+          "gzip": 1371,
+          "brotli": 1268
+        },
+        {
+          "path": "/altoy/js/global-search.js",
+          "raw": 14675,
+          "gzip": 4694,
+          "brotli": 4419
+        },
+        {
+          "path": "/altoy/js/global.init.js",
+          "raw": 779,
+          "gzip": 495,
+          "brotli": 427
+        },
+        {
+          "path": "/altoy/js/global.script.js",
+          "raw": 11809,
+          "gzip": 3766,
+          "brotli": 3557
+        },
+        {
+          "path": "/altoy/js/pages.catalog.js",
+          "raw": 13591,
+          "gzip": 4459,
+          "brotli": 4258
+        },
+        {
+          "path": "/altoy/js/story-viewer/event-story.filter.js",
+          "raw": 2541,
+          "gzip": 1179,
+          "brotli": 1098
+        },
+        {
+          "path": "/altoy/js/story-viewer/event-story.js",
+          "raw": 6741,
+          "gzip": 2563,
+          "brotli": 2347
+        },
+        {
+          "path": "/altoy/js/story-viewer/faction-filter.js",
+          "raw": 4028,
+          "gzip": 1687,
+          "brotli": 1545
+        },
+        {
+          "path": "/altoy/js/story-viewer/story-viewer.engine.js",
+          "raw": 91107,
+          "gzip": 22755,
+          "brotli": 21766
+        },
+        {
+          "path": "/altoy/js/story-viewer/story.bgm.js",
+          "raw": 2336,
+          "gzip": 1184,
+          "brotli": 1093
+        },
+        {
+          "path": "/altoy/js/story-viewer/story.effects.js",
+          "raw": 23247,
+          "gzip": 6491,
+          "brotli": 6244
+        },
+        {
+          "path": "/altoy/js/story-viewer/story.painting.js",
+          "raw": 21743,
+          "gzip": 6894,
+          "brotli": 6600
+        },
+        {
+          "path": "/altoy/js/story-viewer/story.text.js",
+          "raw": 1100,
+          "gzip": 634,
+          "brotli": 563
+        },
+        {
+          "path": "/altoy/js/story-viewer/story.transcript.js",
+          "raw": 6830,
+          "gzip": 2180,
+          "brotli": 2029
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.api.js",
+          "raw": 3445,
+          "gzip": 1129,
+          "brotli": 1032
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.auth.js",
+          "raw": 4768,
+          "gzip": 1609,
+          "brotli": 1470
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.config.js",
+          "raw": 1099,
+          "gzip": 575,
+          "brotli": 540
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.engine.js",
+          "raw": 8650,
+          "gzip": 2943,
+          "brotli": 2800
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.summary.js",
+          "raw": 4888,
+          "gzip": 1746,
+          "brotli": 1635
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.ui.js",
+          "raw": 15571,
+          "gzip": 4771,
+          "brotli": 4490
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.validate.js",
+          "raw": 3567,
+          "gzip": 1483,
+          "brotli": 1364
+        },
+        {
+          "path": "/altoy/js/synced-storage.js",
+          "raw": 5206,
+          "gzip": 1895,
+          "brotli": 1783
+        },
+        {
+          "path": "/altoy/js/utils.js",
+          "raw": 61337,
+          "gzip": 19141,
+          "brotli": 18316
+        }
+      ],
+      "css": [
+        {
+          "path": "/altoy/_assets/Layout.CfkVEPXb.css",
+          "raw": 47614,
+          "gzip": 9129,
+          "brotli": 8842
+        },
+        {
+          "path": "/altoy/_assets/story-viewer.common.SZXVi6Vx.css",
+          "raw": 28365,
+          "gzip": 6643,
+          "brotli": 6279
+        }
+      ],
+      "json": [
+        {
+          "path": "/altoy/data/skin/expression_manifest.json",
+          "raw": 1375017,
+          "gzip": 102758,
+          "brotli": 84767
+        },
+        {
+          "path": "/altoy/data/story-viewer/event_story_index.json",
+          "raw": 70003,
+          "gzip": 11327,
+          "brotli": 9961
+        },
+        {
+          "path": "/altoy/data/story-viewer/shipgirl_data.json",
+          "raw": 422219,
+          "gzip": 49153,
+          "brotli": 43205
+        }
+      ],
+      "bytes": {
+        "html": {
+          "count": 1,
+          "raw": 24013,
+          "gzip": 6455,
+          "brotli": 5772
+        },
+        "js": {
+          "count": 25,
+          "raw": 325073,
+          "gzip": 99981,
+          "brotli": 94702
+        },
+        "css": {
+          "count": 2,
+          "raw": 75979,
+          "gzip": 15772,
+          "brotli": 15121
+        },
+        "json": {
+          "count": 3,
+          "raw": 1867239,
+          "gzip": 163238,
+          "brotli": 137933
+        },
+        "total": {
+          "count": 31,
+          "raw": 2292304,
+          "gzip": 285446,
+          "brotli": 253528
+        }
+      },
+      "problems": []
+    },
+    "SKIN_LIST": {
+      "path": "skin/skin-list-viewer/",
+      "ready": "first skin-list chunk appended",
+      "pageEntries": [
+        "/altoy/js/skin/skin.list.viewer.js"
+      ],
+      "js": [
+        {
+          "path": "/altoy/js/cache.db.js",
+          "raw": 8384,
+          "gzip": 2435,
+          "brotli": 2297
+        },
+        {
+          "path": "/altoy/js/expression-composite.js",
+          "raw": 4656,
+          "gzip": 1902,
+          "brotli": 1761
+        },
+        {
+          "path": "/altoy/js/expression-face.js",
+          "raw": 2975,
+          "gzip": 1371,
+          "brotli": 1268
+        },
+        {
+          "path": "/altoy/js/global-search.js",
+          "raw": 14675,
+          "gzip": 4694,
+          "brotli": 4419
+        },
+        {
+          "path": "/altoy/js/global.init.js",
+          "raw": 779,
+          "gzip": 495,
+          "brotli": 427
+        },
+        {
+          "path": "/altoy/js/global.script.js",
+          "raw": 11809,
+          "gzip": 3766,
+          "brotli": 3557
+        },
+        {
+          "path": "/altoy/js/pages.catalog.js",
+          "raw": 13591,
+          "gzip": 4459,
+          "brotli": 4258
+        },
+        {
+          "path": "/altoy/js/skin/skin.data.js",
+          "raw": 11052,
+          "gzip": 3368,
+          "brotli": 3227
+        },
+        {
+          "path": "/altoy/js/skin/skin.dates.js",
+          "raw": 2727,
+          "gzip": 1169,
+          "brotli": 1082
+        },
+        {
+          "path": "/altoy/js/skin/skin.expression.js",
+          "raw": 26272,
+          "gzip": 7694,
+          "brotli": 7358
+        },
+        {
+          "path": "/altoy/js/skin/skin.gid.js",
+          "raw": 2647,
+          "gzip": 1253,
+          "brotli": 1167
+        },
+        {
+          "path": "/altoy/js/skin/skin.list.viewer.js",
+          "raw": 65465,
+          "gzip": 14297,
+          "brotli": 13561
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.api.js",
+          "raw": 3445,
+          "gzip": 1129,
+          "brotli": 1032
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.auth.js",
+          "raw": 4768,
+          "gzip": 1609,
+          "brotli": 1470
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.config.js",
+          "raw": 1099,
+          "gzip": 575,
+          "brotli": 540
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.engine.js",
+          "raw": 8650,
+          "gzip": 2943,
+          "brotli": 2800
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.summary.js",
+          "raw": 4888,
+          "gzip": 1746,
+          "brotli": 1635
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.ui.js",
+          "raw": 15571,
+          "gzip": 4771,
+          "brotli": 4490
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.validate.js",
+          "raw": 3567,
+          "gzip": 1483,
+          "brotli": 1364
+        },
+        {
+          "path": "/altoy/js/synced-storage.js",
+          "raw": 5206,
+          "gzip": 1895,
+          "brotli": 1783
+        },
+        {
+          "path": "/altoy/js/utils.js",
+          "raw": 61337,
+          "gzip": 19141,
+          "brotli": 18316
+        }
+      ],
+      "css": [
+        {
+          "path": "/altoy/_assets/common.Dag1OkpD.css",
+          "raw": 8753,
+          "gzip": 2240,
+          "brotli": 2061
+        },
+        {
+          "path": "/altoy/_assets/Layout.CfkVEPXb.css",
+          "raw": 47614,
+          "gzip": 9129,
+          "brotli": 8842
+        },
+        {
+          "path": "/altoy/_assets/skin-list-viewer.DFnR3Mm2.css",
+          "raw": 17189,
+          "gzip": 3529,
+          "brotli": 3361
+        },
+        {
+          "path": "/altoy/_assets/skin.C4mmq2ti.css",
+          "raw": 5813,
+          "gzip": 1362,
+          "brotli": 1230
+        }
+      ],
+      "json": [
+        {
+          "path": "/altoy/data/skin/skin_release_dates_legacy.json",
+          "raw": 29710,
+          "gzip": 4832,
+          "brotli": 4181
+        },
+        {
+          "path": "/altoy/data/skin/skin_release_dates.json",
+          "raw": 73118,
+          "gzip": 10482,
+          "brotli": 8168
+        },
+        {
+          "path": "/altoy/data/skin/skin_voiceline_data_subset.json",
+          "raw": 1282883,
+          "gzip": 72877,
+          "brotli": 58209
+        }
+      ],
+      "bytes": {
+        "html": {
+          "count": 1,
+          "raw": 29601,
+          "gzip": 7759,
+          "brotli": 7324
+        },
+        "js": {
+          "count": 21,
+          "raw": 273563,
+          "gzip": 82195,
+          "brotli": 77812
+        },
+        "css": {
+          "count": 4,
+          "raw": 79369,
+          "gzip": 16260,
+          "brotli": 15494
+        },
+        "json": {
+          "count": 3,
+          "raw": 1385711,
+          "gzip": 88191,
+          "brotli": 70558
+        },
+        "total": {
+          "count": 29,
+          "raw": 1768244,
+          "gzip": 194405,
+          "brotli": 171188
+        }
+      },
+      "problems": []
+    },
+    "RESEARCH_TRACKER": {
+      "path": "shipgirl/research-tracker/",
+      "ready": "first faction panel rendered",
+      "pageEntries": [
+        "/altoy/js/shipgirl/research-tracker.js"
+      ],
+      "js": [
+        {
+          "path": "/altoy/js/cache.db.js",
+          "raw": 8384,
+          "gzip": 2435,
+          "brotli": 2297
+        },
+        {
+          "path": "/altoy/js/global-search.js",
+          "raw": 14675,
+          "gzip": 4694,
+          "brotli": 4419
+        },
+        {
+          "path": "/altoy/js/global.init.js",
+          "raw": 779,
+          "gzip": 495,
+          "brotli": 427
+        },
+        {
+          "path": "/altoy/js/global.script.js",
+          "raw": 11809,
+          "gzip": 3766,
+          "brotli": 3557
+        },
+        {
+          "path": "/altoy/js/pages.catalog.js",
+          "raw": 13591,
+          "gzip": 4459,
+          "brotli": 4258
+        },
+        {
+          "path": "/altoy/js/shipgirl/research-tracker.js",
+          "raw": 55435,
+          "gzip": 14635,
+          "brotli": 14029
+        },
+        {
+          "path": "/altoy/js/shipgirl/shipgirl-tracker-utils.js",
+          "raw": 4042,
+          "gzip": 1492,
+          "brotli": 1361
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.api.js",
+          "raw": 3445,
+          "gzip": 1129,
+          "brotli": 1032
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.auth.js",
+          "raw": 4768,
+          "gzip": 1609,
+          "brotli": 1470
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.config.js",
+          "raw": 1099,
+          "gzip": 575,
+          "brotli": 540
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.engine.js",
+          "raw": 8650,
+          "gzip": 2943,
+          "brotli": 2800
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.summary.js",
+          "raw": 4888,
+          "gzip": 1746,
+          "brotli": 1635
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.ui.js",
+          "raw": 15571,
+          "gzip": 4771,
+          "brotli": 4490
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.validate.js",
+          "raw": 3567,
+          "gzip": 1483,
+          "brotli": 1364
+        },
+        {
+          "path": "/altoy/js/synced-storage.js",
+          "raw": 5206,
+          "gzip": 1895,
+          "brotli": 1783
+        },
+        {
+          "path": "/altoy/js/utils.js",
+          "raw": 61337,
+          "gzip": 19141,
+          "brotli": 18316
+        }
+      ],
+      "css": [
+        {
+          "path": "/altoy/_assets/Layout.CfkVEPXb.css",
+          "raw": 47614,
+          "gzip": 9129,
+          "brotli": 8842
+        },
+        {
+          "path": "/altoy/_assets/research-tracker.DmQlfqTA.css",
+          "raw": 22343,
+          "gzip": 4813,
+          "brotli": 4548
+        }
+      ],
+      "json": [
+        {
+          "path": "/altoy/data/mapping/nationality_mapping.json",
+          "raw": 6467,
+          "gzip": 975,
+          "brotli": 864
+        },
+        {
+          "path": "/altoy/data/mapping/ship_type_mapping.json",
+          "raw": 4307,
+          "gzip": 529,
+          "brotli": 436
+        },
+        {
+          "path": "/altoy/data/maps/map_data_full.json",
+          "raw": 10348422,
+          "gzip": 916039,
+          "brotli": 428731
+        },
+        {
+          "path": "/altoy/data/ship_group_data.json",
+          "raw": 596561,
+          "gzip": 35485,
+          "brotli": 27285
+        },
+        {
+          "path": "/altoy/data/ship_info_lite.json",
+          "raw": 273062,
+          "gzip": 21496,
+          "brotli": 18855
+        },
+        {
+          "path": "/altoy/data/shipgirl/fleet_tech_goal.json",
+          "raw": 18674,
+          "gzip": 1223,
+          "brotli": 1117
+        }
+      ],
+      "bytes": {
+        "html": {
+          "count": 1,
+          "raw": 20704,
+          "gzip": 5501,
+          "brotli": 5159
+        },
+        "js": {
+          "count": 16,
+          "raw": 217246,
+          "gzip": 67268,
+          "brotli": 63778
+        },
+        "css": {
+          "count": 2,
+          "raw": 69957,
+          "gzip": 13942,
+          "brotli": 13390
+        },
+        "json": {
+          "count": 6,
+          "raw": 11247493,
+          "gzip": 975747,
+          "brotli": 477288
+        },
+        "total": {
+          "count": 25,
+          "raw": 11555400,
+          "gzip": 1062458,
+          "brotli": 559615
+        }
+      },
+      "problems": []
+    }
+  }
+}

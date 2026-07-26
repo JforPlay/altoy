@@ -14,6 +14,7 @@
     "check:versions": "node scripts/check-versions.mjs",
     "check:data": "node scripts/check-data-shape.mjs",
     "check:orphans": "node scripts/check-orphans.mjs",
+    "report:route-boot": "node scripts/report-route-boot.mjs",
     "test": "node --test",
     "test:smoke": "playwright test",
     "build": "npm run data:sync && npm run check:versions && npm run check:data && npm run data:split && astro build && node scripts/minify.mjs",
