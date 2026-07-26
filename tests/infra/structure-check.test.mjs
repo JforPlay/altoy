@@ -10,8 +10,10 @@ import {
     extractPageModulePaths,
     extractStaticModuleSpecifiers,
     featureDirectory,
+    isCrossFeatureEdge,
     isLegacyGlobalPath,
     scanStructure,
+    stripJsComments,
 } from '../../scripts/check-structure.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -72,6 +74,58 @@ test('static import extraction covers imports, re-exports, and literal dynamic i
         './other.mjs',
         './setup.js',
     ]);
+});
+
+// Documentation must not register as structure: the drift gate below fails a
+// build on any unrecorded finding, and a JSDoc `@type {import('...')}` pointing
+// across features already exists in this tree.
+test('comments are stripped without eating code inside string literals', () => {
+    const source = `
+        // window.Commented = 1;
+        /** @type {import('../skin/skin.dates.js').Dates} */
+        const url = 'https://example.com/js/a.js';
+        window.Real = 1;
+        import { thing } from '../equip/equip-code.js';
+    `;
+
+    assert.deepEqual(extractGlobalAssignments(source), ['window.Real']);
+    assert.deepEqual(extractStaticModuleSpecifiers(source), ['../equip/equip-code.js']);
+    assert.ok(stripJsComments(source).includes('https://example.com/js/a.js'));
+});
+
+test('commented-out script tags are not page entries', () => {
+    const source = `
+        <!-- <script type="module" src="/altoy/js/old.js"></script> -->
+        <script type="module" src="/altoy/js/live.js"></script>
+    `;
+
+    assert.deepEqual(extractPageModulePaths(source), ['/js/live.js']);
+});
+
+// A shared root module reaching into a feature's private tree couples every page
+// that loads it to that feature, so being a shared TARGET must not exempt it as
+// a SOURCE.
+test('cross-feature edges include shared root-level sources', () => {
+    assert.equal(
+        isCrossFeatureEdge('public/js/global.script.js', 'public/js/sync/drive-sync.ui.js'),
+        true
+    );
+    assert.equal(
+        isCrossFeatureEdge('public/js/skin/skin.data.js', 'public/js/equip/equip-code.js'),
+        true
+    );
+    assert.equal(
+        isCrossFeatureEdge('public/js/skin/skin.data.js', 'public/js/skin/skin.dates.js'),
+        false
+    );
+    assert.equal(
+        isCrossFeatureEdge('public/js/skin/skin.data.js', 'public/js/utils.js'),
+        false
+    );
+    assert.equal(
+        isCrossFeatureEdge('public/js/skin/skin.data.js', 'public/js/engine/damage/index.js'),
+        false
+    );
 });
 
 test('feature and legacy-global classification follows top-level ownership', () => {

@@ -240,6 +240,13 @@
     ],
     "crossFeatureImports": [
       {
+        "id": "cross-feature-import:public/js/global.script.js->public/js/sync/drive-sync.ui.js",
+        "from": "public/js/global.script.js",
+        "to": "public/js/sync/drive-sync.ui.js",
+        "sourceFeature": null,
+        "targetFeature": "sync"
+      },
+      {
         "id": "cross-feature-import:public/js/shipgirl/shipgirl-stats.dashboard.js->public/js/skin/skin.dates.js",
         "from": "public/js/shipgirl/shipgirl-stats.dashboard.js",
         "to": "public/js/skin/skin.dates.js",

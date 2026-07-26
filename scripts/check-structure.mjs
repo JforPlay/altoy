@@ -6,10 +6,12 @@
  *   - new window/globalThis assignments outside legacy story/island surfaces;
  *   - window/globalThis assignments inside those frozen legacy surfaces, kept as
  *     their own baselined kind so an 11th one is still visible;
- *   - imports from one feature directory into another feature's private tree.
+ *   - imports into another feature's private tree, from a sibling feature or
+ *     from a shared root-level module.
  *
  * Only `src/pages` is walked, so the shared Layout module tag present on every
- * route is not counted against a route's page-level entry budget.
+ * route is not counted against a route's page-level entry budget. Comments are
+ * stripped before extraction so documentation cannot register as structure.
  *
  * Findings are advisory. A baseline match is explicitly grandfathered; new,
  * changed, and resolved findings are separated so later page work cannot hide
@@ -47,8 +49,10 @@ const LEGACY_GLOBAL_PREFIXES = Object.freeze([
     'public/js/story-viewer/',
 ]);
 
-// Root-level modules are shared facades. engine/ is the current explicit shared
-// model tree; imports into other top-level directories cross a feature boundary.
+// Root-level modules and engine/ are shared TARGETS: importing them is not a
+// boundary crossing. Being shared does not exempt them as a SOURCE — a root
+// facade reaching into one feature's private tree couples every page that loads
+// it to that feature, so those edges are reported with a null sourceFeature.
 const SHARED_TARGET_DIRECTORIES = new Set(['engine']);
 
 function toPosix(value) {
@@ -71,9 +75,61 @@ function walk(directory, extensions, output = []) {
     return output;
 }
 
+/**
+ * Comments are documentation, not structure, and the drift gate in
+ * `tests/infra/structure-check.test.mjs` fails a build on any unrecorded
+ * finding. A commented-out import or a JSDoc `@type {import('...')}`
+ * annotation must therefore not read as a real edge.
+ *
+ * String and template state is tracked so a `//` inside a URL literal is not
+ * mistaken for a comment. An unterminated quote resynchronizes at the newline,
+ * which caps the blast radius of an ambiguous regex literal at one line.
+ */
+export function stripJsComments(text) {
+    let output = '';
+    let index = 0;
+    while (index < text.length) {
+        const char = text[index];
+        const next = text[index + 1];
+        if (char === '/' && next === '/') {
+            while (index < text.length && text[index] !== '\n') index += 1;
+            continue;
+        }
+        if (char === '/' && next === '*') {
+            const end = text.indexOf('*/', index + 2);
+            index = end === -1 ? text.length : end + 2;
+            continue;
+        }
+        if (char === '"' || char === "'" || char === '`') {
+            output += char;
+            index += 1;
+            while (index < text.length) {
+                const inner = text[index];
+                if (inner === '\\') {
+                    output += text.slice(index, index + 2);
+                    index += 2;
+                    continue;
+                }
+                output += inner;
+                index += 1;
+                if (inner === char) break;
+                if (char !== '`' && inner === '\n') break;
+            }
+            continue;
+        }
+        output += char;
+        index += 1;
+    }
+    return output;
+}
+
+export function stripHtmlComments(text) {
+    return text.replace(/<!--[\s\S]*?-->/g, '');
+}
+
 export function extractPageModulePaths(text) {
     const modules = [];
-    for (const match of text.matchAll(/<script\b[^>]*>/gims)) {
+    for (const match of stripHtmlComments(text).matchAll(/<script\b[^>]*>/gims)) {
         const tag = match[0];
         if (!/\btype\s*=\s*["']module["']/i.test(tag)) continue;
         if (/\bsrc\s*=\s*["'](?:https?:)?\/\//i.test(tag)) continue;
@@ -86,7 +142,7 @@ export function extractPageModulePaths(text) {
 export function extractGlobalAssignments(text) {
     const assignments = new Set();
     const pattern = /\b(window|globalThis)\.([A-Za-z_$][\w$]*)\s*(?:\|\|=|&&=|\?\?=|[+\-*/%]?=(?!=|>))/g;
-    for (const match of text.matchAll(pattern)) {
+    for (const match of stripJsComments(text).matchAll(pattern)) {
         assignments.add(`${match[1]}.${match[2]}`);
     }
     return [...assignments].sort();
@@ -95,7 +151,7 @@ export function extractGlobalAssignments(text) {
 export function extractStaticModuleSpecifiers(text) {
     const specifiers = new Set();
     const pattern = /(?:\bfrom\s*|\bimport\s*|\bimport\(\s*)["']([^"']+\.m?js)["']/g;
-    for (const match of text.matchAll(pattern)) {
+    for (const match of stripJsComments(text).matchAll(pattern)) {
         specifiers.add(match[1]);
     }
     return [...specifiers].sort();
@@ -112,6 +168,13 @@ export function isLegacyGlobalPath(path) {
 
 function isPublicBrowserModule(path) {
     return path.startsWith('public/js/') && /\.m?js$/.test(path);
+}
+
+export function isCrossFeatureEdge(fromPath, toPath) {
+    if (!isPublicBrowserModule(toPath)) return false;
+    const targetFeature = featureDirectory(toPath);
+    if (!targetFeature || SHARED_TARGET_DIRECTORIES.has(targetFeature)) return false;
+    return targetFeature !== featureDirectory(fromPath);
 }
 
 function emptyFindings() {
@@ -157,25 +220,16 @@ export function scanStructure(root = ROOT) {
         }
 
         const sourceFeature = featureDirectory(path);
-        if (!sourceFeature) continue;
         for (const specifier of extractStaticModuleSpecifiers(text)) {
             if (!specifier.startsWith('.')) continue;
             const targetPath = toRelative(root, resolve(dirname(browserFile), specifier));
-            if (!isPublicBrowserModule(targetPath)) continue;
-            const targetFeature = featureDirectory(targetPath);
-            if (
-                !targetFeature
-                || targetFeature === sourceFeature
-                || SHARED_TARGET_DIRECTORIES.has(targetFeature)
-            ) {
-                continue;
-            }
+            if (!isCrossFeatureEdge(path, targetPath)) continue;
             findings.crossFeatureImports.push({
                 id: `cross-feature-import:${path}->${targetPath}`,
                 from: path,
                 to: targetPath,
                 sourceFeature,
-                targetFeature,
+                targetFeature: featureDirectory(targetPath),
             });
         }
     }
