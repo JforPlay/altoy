@@ -4,7 +4,12 @@
  * The reviewed baseline records existing legacy debt. The command reports:
  *   - Astro routes with more than one local page-level module script;
  *   - new window/globalThis assignments outside legacy story/island surfaces;
+ *   - window/globalThis assignments inside those frozen legacy surfaces, kept as
+ *     their own baselined kind so an 11th one is still visible;
  *   - imports from one feature directory into another feature's private tree.
+ *
+ * Only `src/pages` is walked, so the shared Layout module tag present on every
+ * route is not counted against a route's page-level entry budget.
  *
  * Findings are advisory. A baseline match is explicitly grandfathered; new,
  * changed, and resolved findings are separated so later page work cannot hide
@@ -29,10 +34,11 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(SCRIPT_DIR, '..');
 const BASELINE_PATH = join(SCRIPT_DIR, 'structure-baseline.json');
-const SCHEMA_VERSION = 1;
+const SCHEMA_VERSION = 2;
 const FINDING_KINDS = Object.freeze([
     'multiModuleRoutes',
     'globalAssignments',
+    'legacyGlobals',
     'crossFeatureImports',
 ]);
 
@@ -121,7 +127,6 @@ function sortFindings(findings) {
 
 export function scanStructure(root = ROOT) {
     const findings = emptyFindings();
-    const allowlistedLegacyGlobals = [];
     const pagesDirectory = join(root, 'src', 'pages');
     const browserDirectory = join(root, 'public', 'js');
     const pageFiles = existsSync(pagesDirectory) ? walk(pagesDirectory, ['.astro']) : [];
@@ -147,11 +152,8 @@ export function scanStructure(root = ROOT) {
                 path,
                 global: globalName,
             };
-            if (isLegacyGlobalPath(path)) {
-                allowlistedLegacyGlobals.push(finding);
-            } else {
-                findings.globalAssignments.push(finding);
-            }
+            const kind = isLegacyGlobalPath(path) ? 'legacyGlobals' : 'globalAssignments';
+            findings[kind].push(finding);
         }
 
         const sourceFeature = featureDirectory(path);
@@ -178,11 +180,9 @@ export function scanStructure(root = ROOT) {
         }
     }
 
-    allowlistedLegacyGlobals.sort((left, right) => left.id.localeCompare(right.id));
     return {
         schemaVersion: SCHEMA_VERSION,
         findings: sortFindings(findings),
-        allowlistedLegacyGlobals,
     };
 }
 
@@ -230,7 +230,7 @@ function findingLabel(kind, finding) {
     if (kind === 'multiModuleRoutes') {
         return `${finding.path} (${finding.modules.length}: ${finding.modules.join(', ')})`;
     }
-    if (kind === 'globalAssignments') {
+    if (kind === 'globalAssignments' || kind === 'legacyGlobals') {
         return `${finding.path} (${finding.global})`;
     }
     return `${finding.from} -> ${finding.to}`;
@@ -241,6 +241,7 @@ function printComparison(report, baseline) {
     const labels = {
         multiModuleRoutes: 'routes with multiple page modules',
         globalAssignments: 'non-legacy browser global assignments',
+        legacyGlobals: 'allowlisted story/island global assignments (frozen surface)',
         crossFeatureImports: 'cross-feature private imports',
     };
 
@@ -272,10 +273,6 @@ function printComparison(report, baseline) {
             console.log(`  [resolved] ${findingLabel(kind, finding)}`);
         }
     }
-    console.log(
-        `\nLegacy story/island global assignments allowlisted: `
-        + report.allowlistedLegacyGlobals.length
-    );
     if (!baseline?.findings) {
         console.log('No reviewed baseline found. Review the findings before --update-baseline.');
     }
@@ -292,15 +289,17 @@ function parseArgs(argv) {
         if (argument === '--help' || argument === '-h') {
             options.help = true;
         } else if (argument === '--json') {
-            options.jsonPath = argv[++index];
+            const value = argv[index + 1];
+            if (!value || value.startsWith('--')) {
+                throw new Error('--json requires a value.');
+            }
+            options.jsonPath = value;
+            index += 1;
         } else if (argument === '--update-baseline') {
             options.updateBaseline = true;
         } else {
             throw new Error(`Unknown argument: ${argument}`);
         }
-    }
-    if (options.jsonPath === undefined) {
-        throw new Error('--json requires a value.');
     }
     return options;
 }
@@ -329,14 +328,21 @@ function run() {
     }
 
     const report = scanStructure();
-    const baseline = existsSync(BASELINE_PATH)
+    let baseline = existsSync(BASELINE_PATH)
         ? JSON.parse(readFileSync(BASELINE_PATH, 'utf8'))
         : null;
     if (baseline && baseline.schemaVersion !== report.schemaVersion) {
-        throw new Error(
-            `Structure baseline schema ${baseline.schemaVersion} does not match `
-            + `report schema ${report.schemaVersion}.`
+        if (!options.updateBaseline) {
+            throw new Error(
+                `Structure baseline schema ${baseline.schemaVersion} does not match `
+                + `report schema ${report.schemaVersion}.`
+            );
+        }
+        console.log(
+            `Baseline schema ${baseline.schemaVersion} superseded by `
+            + `${report.schemaVersion}; every finding is reported as new.`
         );
+        baseline = null;
     }
     printComparison(report, baseline);
 

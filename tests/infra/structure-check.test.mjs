@@ -1,5 +1,8 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import test from 'node:test';
+import { fileURLToPath } from 'node:url';
 
 import {
     compareStructureFindings,
@@ -8,7 +11,10 @@ import {
     extractStaticModuleSpecifiers,
     featureDirectory,
     isLegacyGlobalPath,
+    scanStructure,
 } from '../../scripts/check-structure.mjs';
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 test('page module extraction keeps local application modules only', () => {
     const source = `
@@ -94,10 +100,16 @@ test('baseline comparison separates new, changed, grandfathered, and resolved de
         sourceFeature: 'a',
         targetFeature: 'b',
     };
+    const legacyGlobal = {
+        id: 'global-assignment:public/js/island/island.engine.js:window.IslandEngine',
+        path: 'public/js/island/island.engine.js',
+        global: 'window.IslandEngine',
+    };
     const current = {
         findings: {
             multiModuleRoutes: [route(['/js/a.js', '/js/b.js', '/js/c.js'])],
             globalAssignments: [global],
+            legacyGlobals: [legacyGlobal],
             crossFeatureImports: [],
         },
     };
@@ -105,6 +117,7 @@ test('baseline comparison separates new, changed, grandfathered, and resolved de
         findings: {
             multiModuleRoutes: [route(['/js/a.js', '/js/b.js'])],
             globalAssignments: [],
+            legacyGlobals: [legacyGlobal],
             crossFeatureImports: [removedImport],
         },
     };
@@ -112,6 +125,39 @@ test('baseline comparison separates new, changed, grandfathered, and resolved de
     const comparison = compareStructureFindings(current, baseline);
     assert.equal(comparison.multiModuleRoutes.changed.length, 1);
     assert.deepEqual(comparison.globalAssignments.added, [global]);
+    assert.deepEqual(comparison.legacyGlobals.grandfathered, [legacyGlobal]);
     assert.deepEqual(comparison.crossFeatureImports.resolved, [removedImport]);
     assert.equal(comparison.globalAssignments.grandfathered.length, 0);
+});
+
+// The advisory command runs with continue-on-error in CI, so only this test can
+// fail a build when structural debt grows. Existing debt stays grandfathered;
+// resolved and shrinking findings stay green so cleanup never needs a baseline
+// update to pass.
+test('committed baseline still covers the current tree', () => {
+    const report = scanStructure(ROOT);
+    const baseline = JSON.parse(
+        readFileSync(join(ROOT, 'scripts', 'structure-baseline.json'), 'utf8')
+    );
+
+    assert.equal(
+        baseline.schemaVersion,
+        report.schemaVersion,
+        'regenerate scripts/structure-baseline.json: npm run check:structure -- --update-baseline'
+    );
+
+    const comparison = compareStructureFindings(report, baseline);
+    for (const [kind, section] of Object.entries(comparison)) {
+        assert.deepEqual(
+            section.added.map((entry) => entry.id),
+            [],
+            `new ${kind} debt; fix it or record it with --update-baseline`
+        );
+    }
+    for (const { before, after } of comparison.multiModuleRoutes.changed) {
+        assert.ok(
+            after.modules.length <= before.modules.length,
+            `${after.path} gained page module tags: ${after.modules.join(', ')}`
+        );
+    }
 });

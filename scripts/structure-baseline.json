@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "findings": {
     "multiModuleRoutes": [
       {
@@ -184,6 +184,58 @@
         "id": "global-assignment:public/js/skin/skin.poll.js:window.skinPollCleanup",
         "path": "public/js/skin/skin.poll.js",
         "global": "window.skinPollCleanup"
+      }
+    ],
+    "legacyGlobals": [
+      {
+        "id": "global-assignment:public/js/island/island.character.engine.js:window.CharacterModule",
+        "path": "public/js/island/island.character.engine.js",
+        "global": "window.CharacterModule"
+      },
+      {
+        "id": "global-assignment:public/js/island/island.engine.js:window.IslandEngine",
+        "path": "public/js/island/island.engine.js",
+        "global": "window.IslandEngine"
+      },
+      {
+        "id": "global-assignment:public/js/island/island.quest.engine.js:window.QuestModule",
+        "path": "public/js/island/island.quest.engine.js",
+        "global": "window.QuestModule"
+      },
+      {
+        "id": "global-assignment:public/js/island/island.resource.engine.js:window.ResourceModule",
+        "path": "public/js/island/island.resource.engine.js",
+        "global": "window.ResourceModule"
+      },
+      {
+        "id": "global-assignment:public/js/island/island.restaurant.engine.js:window.RestaurantModule",
+        "path": "public/js/island/island.restaurant.engine.js",
+        "global": "window.RestaurantModule"
+      },
+      {
+        "id": "global-assignment:public/js/island/island.season-calc.engine.js:window.SeasonCalcModule",
+        "path": "public/js/island/island.season-calc.engine.js",
+        "global": "window.SeasonCalcModule"
+      },
+      {
+        "id": "global-assignment:public/js/island/island.season-map.js:window.IslandSeasonMap",
+        "path": "public/js/island/island.season-map.js",
+        "global": "window.IslandSeasonMap"
+      },
+      {
+        "id": "global-assignment:public/js/island/island.technology.engine.js:window.TechnologyModule",
+        "path": "public/js/island/island.technology.engine.js",
+        "global": "window.TechnologyModule"
+      },
+      {
+        "id": "global-assignment:public/js/story-viewer/child-story.js:window.createTabStoryViewer",
+        "path": "public/js/story-viewer/child-story.js",
+        "global": "window.createTabStoryViewer"
+      },
+      {
+        "id": "global-assignment:public/js/story-viewer/story-viewer.engine.js:window.StoryViewer",
+        "path": "public/js/story-viewer/story-viewer.engine.js",
+        "global": "window.StoryViewer"
       }
     ],
     "crossFeatureImports": [
