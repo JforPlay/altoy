@@ -1,16 +1,19 @@
 /**
  * Routes covered by the route-boot baseline.
  *
- * A ready signal must represent the first useful default view. Keep these
- * selectors tied to durable page structure rather than transient text.
+ * A ready signal must prove that the default route initialized successfully.
+ * Keep selectors tied to durable page structure rather than transient text.
  *
  * Ready kinds:
- *   count  — N matching elements exist (a list/grid rendered)
- *   hidden — the named element became hidden (a loading overlay cleared)
- *   settle — no DOM signal exists because a successful default boot renders
- *            nothing; fall back to network idle. Only use when the page's
- *            success path genuinely leaves the document unchanged, as on
- *            skin-detail-viewer, whose default view only enables a search box.
+ *   count       - N matching elements exist (a list/grid rendered)
+ *   hidden      - the named element became hidden (a loading overlay cleared)
+ *   event-count - repeatedly dispatch an event until N matching elements exist;
+ *                 use only when successful initialization otherwise leaves the
+ *                 document unchanged.
+ *
+ * The optional cutoff controls measurement independently:
+ *   ready       - stop at the semantic ready signal (default)
+ *   networkidle - keep collecting after ready until the network settles
  */
 export const ROUTE_BOOT_TARGETS = Object.freeze([
     {
@@ -31,6 +34,10 @@ export const ROUTE_BOOT_TARGETS = Object.freeze([
             minimum: 1,
             description: 'first ship card rendered',
         },
+        // R11's 5.28 MB ship_info_data.json is started fire-and-forget during
+        // loadData(), so it lands on either side of the first card render. A
+        // `ready` cutoff makes this route's byte total a coin flip.
+        cutoff: 'networkidle',
     },
     {
         key: 'ISLAND',
@@ -73,37 +80,48 @@ export const ROUTE_BOOT_TARGETS = Object.freeze([
         },
     },
     // Package B routes (R1, R7, R13), measured before their deferral work so the
-    // before/after request sets are comparable.
+    // before/after request sets are comparable. Same cutoff rationale as R11
+    // above.
     //
-    // All three use 'settle' deliberately. Each R-item targets an unconditional
-    // load that races the first render instead of blocking it, so a render signal
-    // measures the wrong thing: the map sidebar paints from map_data_lite.json
-    // while the 9.87 MB full map is still in flight, and a theme-list signal cuts
-    // off part of the equip-skin warmup. Network idle on the default route is the
-    // number these fixes actually move.
+    // All three keep a semantic ready signal, then collect until network idle.
+    // Each R-item targets an unconditional load that races the first render
+    // instead of blocking it: the map sidebar paints from map_data_lite.json
+    // while the 9.87 MB full map is still in flight, and a theme-list signal
+    // cuts off part of the equip-skin warmup.
     {
         key: 'EQUIP_SKIN',
         path: 'skin/equip-skin-viewer/',
         ready: {
-            kind: 'settle',
-            description: 'network idle on the no-selection default view',
+            kind: 'count',
+            selector: '#theme-list .esv-theme-item',
+            minimum: 1,
+            description: 'first equipment-skin theme rendered',
         },
+        cutoff: 'networkidle',
     },
     {
         key: 'MAP_VIEWER',
         path: 'map/map-viewer/',
         ready: {
-            kind: 'settle',
-            description: 'network idle on the no-map-selected default view',
+            kind: 'count',
+            selector: '#mapSidebar .sidebar-item',
+            minimum: 1,
+            description: 'default map sidebar rendered',
         },
+        cutoff: 'networkidle',
     },
     {
         key: 'SKIN_DETAIL',
         path: 'skin/skin-detail-viewer/',
         ready: {
-            kind: 'settle',
-            description: 'network idle on the no-selection default view',
+            kind: 'event-count',
+            trigger: '#character-search-input',
+            event: 'focus',
+            selector: '#character-dropdown-content [role="option"]',
+            minimum: 1,
+            description: 'initialized character search renders options',
         },
+        cutoff: 'networkidle',
     },
 ]);
 

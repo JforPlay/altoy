@@ -1,16 +1,25 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 3,
   "basePath": "/altoy/",
   "targets": {
     "FLEET_SIM": {
       "path": "simulators/fleet-sim/",
       "ready": "initial loading overlay hidden",
+      "cutoff": "ready",
       "pageEntries": [
         "/altoy/js/simulators/fleet-sim.calc.js",
         "/altoy/js/simulators/fleet-sim.data.js",
         "/altoy/js/simulators/fleet-sim.main.js",
         "/altoy/js/simulators/fleet-sim.picker.js",
         "/altoy/js/simulators/fleet-sim.ui.js"
+      ],
+      "html": [
+        {
+          "path": "/altoy/simulators/fleet-sim/",
+          "raw": 29463,
+          "gzip": 6814,
+          "brotli": 6290
+        }
       ],
       "js": [
         {
@@ -336,6 +345,38 @@
           "brotli": 594763
         }
       ],
+      "bytesAtReady": {
+        "html": {
+          "count": 1,
+          "raw": 29463,
+          "gzip": 6814,
+          "brotli": 6290
+        },
+        "js": {
+          "count": 33,
+          "raw": 360374,
+          "gzip": 110178,
+          "brotli": 105034
+        },
+        "css": {
+          "count": 4,
+          "raw": 95821,
+          "gzip": 19661,
+          "brotli": 18751
+        },
+        "json": {
+          "count": 16,
+          "raw": 53962799,
+          "gzip": 2840822,
+          "brotli": 1819286
+        },
+        "total": {
+          "count": 54,
+          "raw": 54448457,
+          "gzip": 2977475,
+          "brotli": 1949361
+        }
+      },
       "bytes": {
         "html": {
           "count": 1,
@@ -373,6 +414,7 @@
     "SHIPGIRL_INFO": {
       "path": "shipgirl/shipgirl-info/",
       "ready": "first ship card rendered",
+      "cutoff": "networkidle",
       "pageEntries": [
         "/altoy/js/shipgirl/shipgirl-info.data.js",
         "/altoy/js/shipgirl/shipgirl-info.detail.js",
@@ -380,6 +422,14 @@
         "/altoy/js/shipgirl/shipgirl-info.maps.js",
         "/altoy/js/shipgirl/shipgirl-info.retrofit.js",
         "/altoy/js/shipgirl/shipgirl-info.skill-search.js"
+      ],
+      "html": [
+        {
+          "path": "/altoy/shipgirl/shipgirl-info/",
+          "raw": 27262,
+          "gzip": 6824,
+          "brotli": 6372
+        }
       ],
       "js": [
         {
@@ -555,13 +605,37 @@
           "brotli": 436
         },
         {
+          "path": "/altoy/data/ship_info_data.json",
+          "raw": 5531480,
+          "gzip": 314715,
+          "brotli": 197683
+        },
+        {
           "path": "/altoy/data/ship_info_lite.json",
           "raw": 273062,
           "gzip": 21496,
           "brotli": 18855
+        },
+        {
+          "path": "/altoy/data/sim/skill_data_template.json",
+          "raw": 1928621,
+          "gzip": 254203,
+          "brotli": 197103
+        },
+        {
+          "path": "/altoy/data/skill_icon_mapping.json",
+          "raw": 172154,
+          "gzip": 9986,
+          "brotli": 5165
+        },
+        {
+          "path": "/altoy/data/skill_to_icon_id.json",
+          "raw": 151723,
+          "gzip": 23156,
+          "brotli": 14491
         }
       ],
-      "bytes": {
+      "bytesAtReady": {
         "html": {
           "count": 1,
           "raw": 27262,
@@ -593,13 +667,54 @@
           "brotli": 128812
         }
       },
+      "bytes": {
+        "html": {
+          "count": 1,
+          "raw": 27262,
+          "gzip": 6824,
+          "brotli": 6372
+        },
+        "js": {
+          "count": 22,
+          "raw": 286921,
+          "gzip": 88164,
+          "brotli": 83428
+        },
+        "css": {
+          "count": 2,
+          "raw": 95763,
+          "gzip": 18459,
+          "brotli": 17922
+        },
+        "json": {
+          "count": 9,
+          "raw": 8074016,
+          "gzip": 626122,
+          "brotli": 435532
+        },
+        "total": {
+          "count": 34,
+          "raw": 8483962,
+          "gzip": 739569,
+          "brotli": 543254
+        }
+      },
       "problems": []
     },
     "ISLAND": {
       "path": "island/",
       "ready": "default character list rendered",
+      "cutoff": "ready",
       "pageEntries": [
         "/altoy/js/island/island.script.js"
+      ],
+      "html": [
+        {
+          "path": "/altoy/island/",
+          "raw": 27326,
+          "gzip": 6145,
+          "brotli": 5710
+        }
       ],
       "js": [
         {
@@ -763,6 +878,38 @@
           "brotli": 667
         }
       ],
+      "bytesAtReady": {
+        "html": {
+          "count": 1,
+          "raw": 27326,
+          "gzip": 6145,
+          "brotli": 5710
+        },
+        "js": {
+          "count": 18,
+          "raw": 232635,
+          "gzip": 71157,
+          "brotli": 67430
+        },
+        "css": {
+          "count": 3,
+          "raw": 185296,
+          "gzip": 30315,
+          "brotli": 29264
+        },
+        "json": {
+          "count": 5,
+          "raw": 367456,
+          "gzip": 32351,
+          "brotli": 25988
+        },
+        "total": {
+          "count": 27,
+          "raw": 812713,
+          "gzip": 139968,
+          "brotli": 128392
+        }
+      },
       "bytes": {
         "html": {
           "count": 1,
@@ -800,9 +947,18 @@
     "EVENT_STORY": {
       "path": "story-viewer/event-story/",
       "ready": "event archive sections rendered",
+      "cutoff": "ready",
       "pageEntries": [
         "/altoy/js/story-viewer/event-story.js",
         "/altoy/js/story-viewer/story-viewer.engine.js"
+      ],
+      "html": [
+        {
+          "path": "/altoy/story-viewer/event-story/",
+          "raw": 24013,
+          "gzip": 6455,
+          "brotli": 5772
+        }
       ],
       "js": [
         {
@@ -990,6 +1146,38 @@
           "brotli": 43205
         }
       ],
+      "bytesAtReady": {
+        "html": {
+          "count": 1,
+          "raw": 24013,
+          "gzip": 6455,
+          "brotli": 5772
+        },
+        "js": {
+          "count": 25,
+          "raw": 325073,
+          "gzip": 99981,
+          "brotli": 94702
+        },
+        "css": {
+          "count": 2,
+          "raw": 75979,
+          "gzip": 15772,
+          "brotli": 15121
+        },
+        "json": {
+          "count": 3,
+          "raw": 1867239,
+          "gzip": 163238,
+          "brotli": 137933
+        },
+        "total": {
+          "count": 31,
+          "raw": 2292304,
+          "gzip": 285446,
+          "brotli": 253528
+        }
+      },
       "bytes": {
         "html": {
           "count": 1,
@@ -1027,8 +1215,17 @@
     "SKIN_LIST": {
       "path": "skin/skin-list-viewer/",
       "ready": "first skin-list chunk appended",
+      "cutoff": "ready",
       "pageEntries": [
         "/altoy/js/skin/skin.list.viewer.js"
+      ],
+      "html": [
+        {
+          "path": "/altoy/skin/skin-list-viewer/",
+          "raw": 29601,
+          "gzip": 7759,
+          "brotli": 7324
+        }
       ],
       "js": [
         {
@@ -1204,6 +1401,38 @@
           "brotli": 58209
         }
       ],
+      "bytesAtReady": {
+        "html": {
+          "count": 1,
+          "raw": 29601,
+          "gzip": 7759,
+          "brotli": 7324
+        },
+        "js": {
+          "count": 21,
+          "raw": 273563,
+          "gzip": 82195,
+          "brotli": 77812
+        },
+        "css": {
+          "count": 4,
+          "raw": 79369,
+          "gzip": 16260,
+          "brotli": 15494
+        },
+        "json": {
+          "count": 3,
+          "raw": 1385711,
+          "gzip": 88191,
+          "brotli": 70558
+        },
+        "total": {
+          "count": 29,
+          "raw": 1768244,
+          "gzip": 194405,
+          "brotli": 171188
+        }
+      },
       "bytes": {
         "html": {
           "count": 1,
@@ -1241,8 +1470,17 @@
     "RESEARCH_TRACKER": {
       "path": "shipgirl/research-tracker/",
       "ready": "first faction panel rendered",
+      "cutoff": "ready",
       "pageEntries": [
         "/altoy/js/shipgirl/research-tracker.js"
+      ],
+      "html": [
+        {
+          "path": "/altoy/shipgirl/research-tracker/",
+          "raw": 20704,
+          "gzip": 5501,
+          "brotli": 5159
+        }
       ],
       "js": [
         {
@@ -1394,6 +1632,38 @@
           "brotli": 1117
         }
       ],
+      "bytesAtReady": {
+        "html": {
+          "count": 1,
+          "raw": 20704,
+          "gzip": 5501,
+          "brotli": 5159
+        },
+        "js": {
+          "count": 16,
+          "raw": 217246,
+          "gzip": 67268,
+          "brotli": 63778
+        },
+        "css": {
+          "count": 2,
+          "raw": 69957,
+          "gzip": 13942,
+          "brotli": 13390
+        },
+        "json": {
+          "count": 6,
+          "raw": 11247493,
+          "gzip": 975747,
+          "brotli": 477288
+        },
+        "total": {
+          "count": 25,
+          "raw": 11555400,
+          "gzip": 1062458,
+          "brotli": 559615
+        }
+      },
       "bytes": {
         "html": {
           "count": 1,
@@ -1430,9 +1700,18 @@
     },
     "EQUIP_SKIN": {
       "path": "skin/equip-skin-viewer/",
-      "ready": "network idle on the no-selection default view",
+      "ready": "first equipment-skin theme rendered",
+      "cutoff": "networkidle",
       "pageEntries": [
         "/altoy/js/skin/equip-skin-viewer.js"
+      ],
+      "html": [
+        {
+          "path": "/altoy/skin/equip-skin-viewer/",
+          "raw": 20870,
+          "gzip": 5533,
+          "brotli": 5183
+        }
       ],
       "js": [
         {
@@ -1728,6 +2007,38 @@
           "brotli": 594763
         }
       ],
+      "bytesAtReady": {
+        "html": {
+          "count": 1,
+          "raw": 20870,
+          "gzip": 5533,
+          "brotli": 5183
+        },
+        "js": {
+          "count": 39,
+          "raw": 330571,
+          "gzip": 106991,
+          "brotli": 101486
+        },
+        "css": {
+          "count": 4,
+          "raw": 76573,
+          "gzip": 16402,
+          "brotli": 15582
+        },
+        "json": {
+          "count": 4,
+          "raw": 20612046,
+          "gzip": 1031889,
+          "brotli": 725120
+        },
+        "total": {
+          "count": 48,
+          "raw": 21040060,
+          "gzip": 1160815,
+          "brotli": 847371
+        }
+      },
       "bytes": {
         "html": {
           "count": 1,
@@ -1764,9 +2075,18 @@
     },
     "MAP_VIEWER": {
       "path": "map/map-viewer/",
-      "ready": "network idle on the no-map-selected default view",
+      "ready": "default map sidebar rendered",
+      "cutoff": "networkidle",
       "pageEntries": [
         "/altoy/js/map/map.viewer.js"
+      ],
+      "html": [
+        {
+          "path": "/altoy/map/map-viewer/",
+          "raw": 24094,
+          "gzip": 6112,
+          "brotli": 5701
+        }
       ],
       "js": [
         {
@@ -1930,6 +2250,38 @@
           "brotli": 18855
         }
       ],
+      "bytesAtReady": {
+        "html": {
+          "count": 1,
+          "raw": 24094,
+          "gzip": 6112,
+          "brotli": 5701
+        },
+        "js": {
+          "count": 19,
+          "raw": 244471,
+          "gzip": 73766,
+          "brotli": 69989
+        },
+        "css": {
+          "count": 2,
+          "raw": 70315,
+          "gzip": 13578,
+          "brotli": 13105
+        },
+        "json": {
+          "count": 2,
+          "raw": 362125,
+          "gzip": 37041,
+          "brotli": 27332
+        },
+        "total": {
+          "count": 24,
+          "raw": 701005,
+          "gzip": 130497,
+          "brotli": 116127
+        }
+      },
       "bytes": {
         "html": {
           "count": 1,
@@ -1966,12 +2318,21 @@
     },
     "SKIN_DETAIL": {
       "path": "skin/skin-detail-viewer/",
-      "ready": "network idle on the no-selection default view",
+      "ready": "initialized character search renders options",
+      "cutoff": "networkidle",
       "pageEntries": [
         "/altoy/js/skin/skin.audio.js",
         "/altoy/js/skin/skin.data.js",
         "/altoy/js/skin/skin.detail.viewer.js",
         "/altoy/js/skin/skin.expression.js"
+      ],
+      "html": [
+        {
+          "path": "/altoy/skin/skin-detail-viewer/",
+          "raw": 25394,
+          "gzip": 6631,
+          "brotli": 5886
+        }
       ],
       "js": [
         {
@@ -2165,6 +2526,38 @@
           "brotli": 48809
         }
       ],
+      "bytesAtReady": {
+        "html": {
+          "count": 1,
+          "raw": 25394,
+          "gzip": 6631,
+          "brotli": 5886
+        },
+        "js": {
+          "count": 23,
+          "raw": 244535,
+          "gzip": 77880,
+          "brotli": 73734
+        },
+        "css": {
+          "count": 4,
+          "raw": 77374,
+          "gzip": 15891,
+          "brotli": 15139
+        },
+        "json": {
+          "count": 4,
+          "raw": 1797541,
+          "gzip": 172928,
+          "brotli": 145925
+        },
+        "total": {
+          "count": 32,
+          "raw": 2144844,
+          "gzip": 273330,
+          "brotli": 240684
+        }
+      },
       "bytes": {
         "html": {
           "count": 1,

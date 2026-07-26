@@ -6,6 +6,7 @@ import test from 'node:test';
 
 import { ROUTE_BOOT_TARGETS } from '../../scripts/route-boot-targets.mjs';
 import {
+    classifyPath,
     compareSnapshots,
     distFileForPathname,
     formatBytes,
@@ -18,10 +19,18 @@ test('route boot targets have unique keys, paths, and durable ready signals', ()
     for (const target of ROUTE_BOOT_TARGETS) {
         assert.match(target.key, /^[A-Z0-9_]+$/);
         assert.ok(target.path.endsWith('/'));
-        assert.ok(['count', 'hidden', 'settle'].includes(target.ready.kind));
-        // 'settle' has no selector by definition; every DOM signal must name one.
-        assert.equal(Boolean(target.ready.selector), target.ready.kind !== 'settle');
+        assert.ok(['count', 'hidden', 'event-count'].includes(target.ready.kind));
+        assert.ok(target.ready.selector);
         assert.ok(target.ready.description);
+        assert.ok(['ready', 'networkidle'].includes(target.cutoff || 'ready'));
+        if (target.ready.kind === 'event-count') {
+            assert.ok(target.ready.trigger);
+            assert.ok(target.ready.event);
+        }
+    }
+    const targetsByKey = new Map(ROUTE_BOOT_TARGETS.map((target) => [target.key, target]));
+    for (const key of ['SHIPGIRL_INFO', 'EQUIP_SKIN', 'MAP_VIEWER', 'SKIN_DETAIL']) {
+        assert.equal(targetsByKey.get(key)?.cutoff, 'networkidle');
     }
 });
 
@@ -38,23 +47,153 @@ test('dist path resolution stays inside dist and maps route directories to index
     assert.equal(distFileForPathname('/altoy/../../outside.js', root), null);
 });
 
-test('snapshot comparison reports byte and JSON request changes without enforcing them', () => {
-    const route = (raw, jsonPaths) => ({
-        json: jsonPaths.map((path) => ({ path })),
-        bytes: { total: { raw, gzip: raw - 10, brotli: raw - 20 } },
-    });
-    const baseline = { targets: { FLEET_SIM: route(100, ['/altoy/data/a.json']) } };
-    const current = { targets: { FLEET_SIM: route(140, ['/altoy/data/b.json']) } };
+test('resource classification never promotes an intentionally skipped request to HTML', () => {
+    assert.equal(classifyPath('/altoy/assets/extensionless-image', 'image'), null);
+    assert.equal(classifyPath('/altoy/assets/extensionless-font', 'font'), null);
+    assert.equal(classifyPath('/altoy/assets/extensionless-media', 'media'), null);
+    assert.equal(classifyPath('/altoy/api/status', 'fetch'), null);
+    assert.equal(classifyPath('/altoy/shipgirl/shipgirl-info/', 'document'), 'html');
+});
 
-    assert.deepEqual(compareSnapshots(current, baseline), [{
-        key: 'FLEET_SIM',
-        kind: 'changed',
-        rawDelta: 40,
-        gzipDelta: 40,
-        brotliDelta: 40,
-        addedJson: ['/altoy/data/b.json'],
-        removedJson: ['/altoy/data/a.json'],
+function resource(path, raw = 20) {
+    return {
+        path,
+        raw,
+        gzip: raw - 5,
+        brotli: raw - 10,
+    };
+}
+
+function route({
+    raw = 100,
+    readyRaw = raw,
+    path = 'test/',
+    ready = 'test ready',
+    cutoff = 'ready',
+    pageEntries = ['/altoy/js/test-entry.js'],
+    html = ['/altoy/test/'],
+    js = ['/altoy/js/test.js'],
+    css = ['/altoy/test.css'],
+    json = ['/altoy/data/test.json'],
+} = {}) {
+    return {
+        path,
+        ready,
+        cutoff,
+        pageEntries,
+        html: html.map((entry) => resource(entry)),
+        js: js.map((entry) => resource(entry)),
+        css: css.map((entry) => resource(entry)),
+        json: json.map((entry) => resource(entry)),
+        bytesAtReady: {
+            total: {
+                raw: readyRaw,
+                gzip: readyRaw - 10,
+                brotli: readyRaw - 20,
+            },
+        },
+        bytes: {
+            total: {
+                raw,
+                gzip: raw - 10,
+                brotli: raw - 20,
+            },
+        },
+    };
+}
+
+test('snapshot comparison reports aggregate bytes and every resource request set', () => {
+    const baseline = {
+        schemaVersion: 3,
+        targets: {
+            TEST: route({
+                raw: 100,
+                pageEntries: ['/altoy/js/old-entry.js'],
+                html: ['/altoy/old/'],
+                js: ['/altoy/js/old.js'],
+                css: ['/altoy/old.css'],
+                json: ['/altoy/data/old.json'],
+            }),
+        },
+    };
+    const current = {
+        schemaVersion: 3,
+        targets: {
+            TEST: route({
+                raw: 140,
+                pageEntries: ['/altoy/js/new-entry.js'],
+                html: ['/altoy/new/'],
+                js: ['/altoy/js/new.js'],
+                css: ['/altoy/new.css'],
+                json: ['/altoy/data/new.json'],
+            }),
+        },
+    };
+
+    const [delta] = compareSnapshots(current, baseline);
+    assert.equal(delta.key, 'TEST');
+    assert.equal(delta.kind, 'changed');
+    assert.equal(delta.rawDelta, 40);
+    assert.equal(delta.gzipDelta, 40);
+    assert.equal(delta.brotliDelta, 40);
+    assert.equal(delta.readyRawDelta, 40);
+    assert.equal(delta.readyGzipDelta, 40);
+    assert.equal(delta.readyBrotliDelta, 40);
+    assert.deepEqual(delta.entryChanges, {
+        added: ['/altoy/js/new-entry.js'],
+        removed: ['/altoy/js/old-entry.js'],
+    });
+    assert.deepEqual(delta.resourceChanges.html.added, ['/altoy/new/']);
+    assert.deepEqual(delta.resourceChanges.js.added, ['/altoy/js/new.js']);
+    assert.deepEqual(delta.resourceChanges.css.added, ['/altoy/new.css']);
+    assert.deepEqual(delta.resourceChanges.json.added, ['/altoy/data/new.json']);
+});
+
+test('snapshot comparison catches equal-byte replacements, metadata, and resized resources', () => {
+    const baselineRoute = route({ readyRaw: 80 });
+    const currentRoute = route({
+        readyRaw: 60,
+        ready: 'new ready signal',
+        cutoff: 'networkidle',
+        pageEntries: ['/altoy/js/new-entry.js'],
+        js: ['/altoy/js/new.js'],
+    });
+    currentRoute.css[0] = resource('/altoy/test.css', 25);
+
+    const [delta] = compareSnapshots(
+        { schemaVersion: 3, targets: { TEST: currentRoute } },
+        { schemaVersion: 3, targets: { TEST: baselineRoute } }
+    );
+
+    assert.equal(delta.rawDelta, 0);
+    assert.equal(delta.readyRawDelta, -20);
+    assert.equal(delta.readyGzipDelta, -20);
+    assert.equal(delta.readyBrotliDelta, -20);
+    assert.deepEqual(delta.metadataChanges, [
+        { field: 'ready', before: 'test ready', after: 'new ready signal' },
+        { field: 'cutoff', before: 'ready', after: 'networkidle' },
+    ]);
+    assert.deepEqual(delta.resourceChanges.js.added, ['/altoy/js/new.js']);
+    assert.deepEqual(delta.resourceChanges.js.removed, ['/altoy/js/test.js']);
+    assert.deepEqual(delta.resourceChanges.css.resized, [{
+        path: '/altoy/test.css',
+        rawDelta: 5,
+        gzipDelta: 5,
+        brotliDelta: 5,
     }]);
+});
+
+test('snapshot comparison reports schema changes and removed routes', () => {
+    assert.deepEqual(
+        compareSnapshots(
+            { schemaVersion: 3, targets: {} },
+            { schemaVersion: 2, targets: { REMOVED: route() } }
+        ),
+        [
+            { kind: 'schema-changed', before: 2, after: 3 },
+            { key: 'REMOVED', kind: 'removed-route' },
+        ]
+    );
 });
 
 test('formatBytes keeps report output compact', () => {
