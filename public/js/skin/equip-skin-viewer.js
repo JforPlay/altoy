@@ -65,11 +65,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         skinGridContainer.setAttribute('aria-busy', 'false');
     }
 
-    // Load sim data in background
-    data.loadSimData().catch(e => {
-        console.error('Failed to load sim data:', e);
-    });
-
     // --- Init Engine ---
     preview.init();
 

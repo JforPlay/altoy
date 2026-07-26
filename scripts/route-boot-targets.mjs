@@ -79,15 +79,15 @@ export const ROUTE_BOOT_TARGETS = Object.freeze([
             description: 'first faction panel rendered',
         },
     },
-    // Package B routes (R1, R7, R13), measured before their deferral work so the
-    // before/after request sets are comparable. Same cutoff rationale as R11
+    // Package B routes (R1, R7, R13), added before their deferral work so the
+    // before/after request sets stay comparable. Same cutoff rationale as R11
     // above.
     //
     // All three keep a semantic ready signal, then collect until network idle.
-    // Each R-item targets an unconditional load that races the first render
-    // instead of blocking it: the map sidebar paints from map_data_lite.json
-    // while the 9.87 MB full map is still in flight, and a theme-list signal
-    // cuts off part of the equip-skin warmup.
+    // R1 is complete; retaining the network-idle cutoff proves the removed
+    // equip-skin warmup was not merely delayed past readiness. R7 still targets
+    // full map data that races the map_data_lite.json sidebar, and R13 still
+    // targets expression data that initializes before a skin is selected.
     {
         key: 'EQUIP_SKIN',
         path: 'skin/equip-skin-viewer/',
