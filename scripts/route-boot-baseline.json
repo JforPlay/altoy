@@ -1427,6 +1427,777 @@
         }
       },
       "problems": []
+    },
+    "EQUIP_SKIN": {
+      "path": "skin/equip-skin-viewer/",
+      "ready": "network idle on the no-selection default view",
+      "pageEntries": [
+        "/altoy/js/skin/equip-skin-viewer.js"
+      ],
+      "js": [
+        {
+          "path": "/altoy/js/cache.db.js",
+          "raw": 8384,
+          "gzip": 2435,
+          "brotli": 2297
+        },
+        {
+          "path": "/altoy/js/global-search.js",
+          "raw": 14675,
+          "gzip": 4694,
+          "brotli": 4419
+        },
+        {
+          "path": "/altoy/js/global.init.js",
+          "raw": 779,
+          "gzip": 495,
+          "brotli": 427
+        },
+        {
+          "path": "/altoy/js/global.script.js",
+          "raw": 11809,
+          "gzip": 3766,
+          "brotli": 3557
+        },
+        {
+          "path": "/altoy/js/pages.catalog.js",
+          "raw": 13591,
+          "gzip": 4459,
+          "brotli": 4258
+        },
+        {
+          "path": "/altoy/js/simulators/physics/acc-table.js",
+          "raw": 2941,
+          "gzip": 1208,
+          "brotli": 1138
+        },
+        {
+          "path": "/altoy/js/simulators/physics/accumulator.js",
+          "raw": 1811,
+          "gzip": 891,
+          "brotli": 828
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullet-registry.js",
+          "raw": 1724,
+          "gzip": 806,
+          "brotli": 753
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullet-unit.js",
+          "raw": 16488,
+          "gzip": 5469,
+          "brotli": 5282
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullets/bomb.js",
+          "raw": 6492,
+          "gzip": 2362,
+          "brotli": 2249
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullets/cannon.js",
+          "raw": 421,
+          "gzip": 282,
+          "brotli": 243
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullets/effect.js",
+          "raw": 1723,
+          "gzip": 830,
+          "brotli": 764
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullets/gravitation.js",
+          "raw": 3580,
+          "gzip": 1615,
+          "brotli": 1525
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullets/shrapnel.js",
+          "raw": 15804,
+          "gzip": 5429,
+          "brotli": 5223
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullets/torpedo.js",
+          "raw": 1010,
+          "gzip": 546,
+          "brotli": 497
+        },
+        {
+          "path": "/altoy/js/simulators/physics/constants.js",
+          "raw": 1147,
+          "gzip": 594,
+          "brotli": 545
+        },
+        {
+          "path": "/altoy/js/simulators/physics/vec.js",
+          "raw": 1729,
+          "gzip": 795,
+          "brotli": 739
+        },
+        {
+          "path": "/altoy/js/simulators/physics/weapons/beam-unit.js",
+          "raw": 4199,
+          "gzip": 1582,
+          "brotli": 1516
+        },
+        {
+          "path": "/altoy/js/simulators/physics/weapons/laser-unit.js",
+          "raw": 3660,
+          "gzip": 1450,
+          "brotli": 1387
+        },
+        {
+          "path": "/altoy/js/simulators/physics/weapons/space-laser-unit.js",
+          "raw": 4030,
+          "gzip": 1622,
+          "brotli": 1546
+        },
+        {
+          "path": "/altoy/js/simulators/physics/weapons/weapon-registry.js",
+          "raw": 1975,
+          "gzip": 931,
+          "brotli": 863
+        },
+        {
+          "path": "/altoy/js/simulators/physics/weapons/weapon-unit.js",
+          "raw": 2211,
+          "gzip": 1066,
+          "brotli": 996
+        },
+        {
+          "path": "/altoy/js/simulators/physics/world.js",
+          "raw": 5630,
+          "gzip": 2046,
+          "brotli": 1920
+        },
+        {
+          "path": "/altoy/js/simulators/sim.engine.aircraft.js",
+          "raw": 8284,
+          "gzip": 2417,
+          "brotli": 2305
+        },
+        {
+          "path": "/altoy/js/simulators/sim.engine.bullet.js",
+          "raw": 29427,
+          "gzip": 8203,
+          "brotli": 7900
+        },
+        {
+          "path": "/altoy/js/simulators/sim.engine.common.js",
+          "raw": 10276,
+          "gzip": 2835,
+          "brotli": 2683
+        },
+        {
+          "path": "/altoy/js/simulators/sim.engine.oceanbg.js",
+          "raw": 12719,
+          "gzip": 2885,
+          "brotli": 2671
+        },
+        {
+          "path": "/altoy/js/skin/equip-skin-viewer.js",
+          "raw": 15108,
+          "gzip": 3877,
+          "brotli": 3698
+        },
+        {
+          "path": "/altoy/js/skin/equip-skin.data.js",
+          "raw": 4752,
+          "gzip": 1674,
+          "brotli": 1595
+        },
+        {
+          "path": "/altoy/js/skin/equip-skin.preview.js",
+          "raw": 15661,
+          "gzip": 4435,
+          "brotli": 4232
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.api.js",
+          "raw": 3445,
+          "gzip": 1129,
+          "brotli": 1032
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.auth.js",
+          "raw": 4768,
+          "gzip": 1609,
+          "brotli": 1470
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.config.js",
+          "raw": 1099,
+          "gzip": 575,
+          "brotli": 540
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.engine.js",
+          "raw": 8650,
+          "gzip": 2943,
+          "brotli": 2800
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.summary.js",
+          "raw": 4888,
+          "gzip": 1746,
+          "brotli": 1635
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.ui.js",
+          "raw": 15571,
+          "gzip": 4771,
+          "brotli": 4490
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.validate.js",
+          "raw": 3567,
+          "gzip": 1483,
+          "brotli": 1364
+        },
+        {
+          "path": "/altoy/js/synced-storage.js",
+          "raw": 5206,
+          "gzip": 1895,
+          "brotli": 1783
+        },
+        {
+          "path": "/altoy/js/utils.js",
+          "raw": 61337,
+          "gzip": 19141,
+          "brotli": 18316
+        }
+      ],
+      "css": [
+        {
+          "path": "/altoy/_assets/common.Dag1OkpD.css",
+          "raw": 8753,
+          "gzip": 2240,
+          "brotli": 2061
+        },
+        {
+          "path": "/altoy/_assets/equip-skin-viewer.Bf1Jd5z8.css",
+          "raw": 4236,
+          "gzip": 1163,
+          "brotli": 1046
+        },
+        {
+          "path": "/altoy/_assets/Layout.CfkVEPXb.css",
+          "raw": 47614,
+          "gzip": 9129,
+          "brotli": 8842
+        },
+        {
+          "path": "/altoy/_assets/sim.common.Cbv8nCqk.css",
+          "raw": 15970,
+          "gzip": 3870,
+          "brotli": 3633
+        }
+      ],
+      "json": [
+        {
+          "path": "/altoy/data/equip/equip_skin_template.json",
+          "raw": 1381967,
+          "gzip": 90399,
+          "brotli": 68804
+        },
+        {
+          "path": "/altoy/data/equip/equip_skin_theme_template.json",
+          "raw": 25289,
+          "gzip": 6232,
+          "brotli": 4035
+        },
+        {
+          "path": "/altoy/data/sim/barrage_template.json",
+          "raw": 7555940,
+          "gzip": 389766,
+          "brotli": 312579
+        },
+        {
+          "path": "/altoy/data/sim/bullet_template.json",
+          "raw": 11648850,
+          "gzip": 545492,
+          "brotli": 339702
+        },
+        {
+          "path": "/altoy/data/sim/weapon_property.json",
+          "raw": 14355767,
+          "gzip": 933092,
+          "brotli": 594763
+        }
+      ],
+      "bytes": {
+        "html": {
+          "count": 1,
+          "raw": 20870,
+          "gzip": 5533,
+          "brotli": 5183
+        },
+        "js": {
+          "count": 39,
+          "raw": 330571,
+          "gzip": 106991,
+          "brotli": 101486
+        },
+        "css": {
+          "count": 4,
+          "raw": 76573,
+          "gzip": 16402,
+          "brotli": 15582
+        },
+        "json": {
+          "count": 5,
+          "raw": 34967813,
+          "gzip": 1964981,
+          "brotli": 1319883
+        },
+        "total": {
+          "count": 49,
+          "raw": 35395827,
+          "gzip": 2093907,
+          "brotli": 1442134
+        }
+      },
+      "problems": []
+    },
+    "MAP_VIEWER": {
+      "path": "map/map-viewer/",
+      "ready": "network idle on the no-map-selected default view",
+      "pageEntries": [
+        "/altoy/js/map/map.viewer.js"
+      ],
+      "js": [
+        {
+          "path": "/altoy/js/cache.db.js",
+          "raw": 8384,
+          "gzip": 2435,
+          "brotli": 2297
+        },
+        {
+          "path": "/altoy/js/global-search.js",
+          "raw": 14675,
+          "gzip": 4694,
+          "brotli": 4419
+        },
+        {
+          "path": "/altoy/js/global.init.js",
+          "raw": 779,
+          "gzip": 495,
+          "brotli": 427
+        },
+        {
+          "path": "/altoy/js/global.script.js",
+          "raw": 11809,
+          "gzip": 3766,
+          "brotli": 3557
+        },
+        {
+          "path": "/altoy/js/map/map.compare.js",
+          "raw": 7447,
+          "gzip": 2223,
+          "brotli": 2073
+        },
+        {
+          "path": "/altoy/js/map/map.data.js",
+          "raw": 9855,
+          "gzip": 3060,
+          "brotli": 2925
+        },
+        {
+          "path": "/altoy/js/map/map.detail.js",
+          "raw": 31979,
+          "gzip": 7647,
+          "brotli": 7342
+        },
+        {
+          "path": "/altoy/js/map/map.grid.js",
+          "raw": 9178,
+          "gzip": 2572,
+          "brotli": 2397
+        },
+        {
+          "path": "/altoy/js/map/map.viewer.js",
+          "raw": 28243,
+          "gzip": 7123,
+          "brotli": 6864
+        },
+        {
+          "path": "/altoy/js/pages.catalog.js",
+          "raw": 13591,
+          "gzip": 4459,
+          "brotli": 4258
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.api.js",
+          "raw": 3445,
+          "gzip": 1129,
+          "brotli": 1032
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.auth.js",
+          "raw": 4768,
+          "gzip": 1609,
+          "brotli": 1470
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.config.js",
+          "raw": 1099,
+          "gzip": 575,
+          "brotli": 540
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.engine.js",
+          "raw": 8650,
+          "gzip": 2943,
+          "brotli": 2800
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.summary.js",
+          "raw": 4888,
+          "gzip": 1746,
+          "brotli": 1635
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.ui.js",
+          "raw": 15571,
+          "gzip": 4771,
+          "brotli": 4490
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.validate.js",
+          "raw": 3567,
+          "gzip": 1483,
+          "brotli": 1364
+        },
+        {
+          "path": "/altoy/js/synced-storage.js",
+          "raw": 5206,
+          "gzip": 1895,
+          "brotli": 1783
+        },
+        {
+          "path": "/altoy/js/utils.js",
+          "raw": 61337,
+          "gzip": 19141,
+          "brotli": 18316
+        }
+      ],
+      "css": [
+        {
+          "path": "/altoy/_assets/Layout.CfkVEPXb.css",
+          "raw": 47614,
+          "gzip": 9129,
+          "brotli": 8842
+        },
+        {
+          "path": "/altoy/_assets/map-viewer.DVCOBHfu.css",
+          "raw": 22701,
+          "gzip": 4449,
+          "brotli": 4263
+        }
+      ],
+      "json": [
+        {
+          "path": "/altoy/data/maps/map_data_full.json",
+          "raw": 10348422,
+          "gzip": 916039,
+          "brotli": 428731
+        },
+        {
+          "path": "/altoy/data/maps/map_data_lite.json",
+          "raw": 266907,
+          "gzip": 29613,
+          "brotli": 22190
+        },
+        {
+          "path": "/altoy/data/maps/world_chapter_random.json",
+          "raw": 95218,
+          "gzip": 7428,
+          "brotli": 5142
+        },
+        {
+          "path": "/altoy/data/maps/world_target_data.json",
+          "raw": 82256,
+          "gzip": 6198,
+          "brotli": 4576
+        },
+        {
+          "path": "/altoy/data/ship_info_lite.json",
+          "raw": 273062,
+          "gzip": 21496,
+          "brotli": 18855
+        }
+      ],
+      "bytes": {
+        "html": {
+          "count": 1,
+          "raw": 24094,
+          "gzip": 6112,
+          "brotli": 5701
+        },
+        "js": {
+          "count": 19,
+          "raw": 244471,
+          "gzip": 73766,
+          "brotli": 69989
+        },
+        "css": {
+          "count": 2,
+          "raw": 70315,
+          "gzip": 13578,
+          "brotli": 13105
+        },
+        "json": {
+          "count": 5,
+          "raw": 11065865,
+          "gzip": 980774,
+          "brotli": 479494
+        },
+        "total": {
+          "count": 27,
+          "raw": 11404745,
+          "gzip": 1074230,
+          "brotli": 568289
+        }
+      },
+      "problems": []
+    },
+    "SKIN_DETAIL": {
+      "path": "skin/skin-detail-viewer/",
+      "ready": "network idle on the no-selection default view",
+      "pageEntries": [
+        "/altoy/js/skin/skin.audio.js",
+        "/altoy/js/skin/skin.data.js",
+        "/altoy/js/skin/skin.detail.viewer.js",
+        "/altoy/js/skin/skin.expression.js"
+      ],
+      "js": [
+        {
+          "path": "/altoy/js/cache.db.js",
+          "raw": 8384,
+          "gzip": 2435,
+          "brotli": 2297
+        },
+        {
+          "path": "/altoy/js/expression-composite.js",
+          "raw": 4656,
+          "gzip": 1902,
+          "brotli": 1761
+        },
+        {
+          "path": "/altoy/js/expression-face.js",
+          "raw": 2975,
+          "gzip": 1371,
+          "brotli": 1268
+        },
+        {
+          "path": "/altoy/js/global-search.js",
+          "raw": 14675,
+          "gzip": 4694,
+          "brotli": 4419
+        },
+        {
+          "path": "/altoy/js/global.init.js",
+          "raw": 779,
+          "gzip": 495,
+          "brotli": 427
+        },
+        {
+          "path": "/altoy/js/global.script.js",
+          "raw": 11809,
+          "gzip": 3766,
+          "brotli": 3557
+        },
+        {
+          "path": "/altoy/js/pages.catalog.js",
+          "raw": 13591,
+          "gzip": 4459,
+          "brotli": 4258
+        },
+        {
+          "path": "/altoy/js/skin/skin.audio.js",
+          "raw": 6216,
+          "gzip": 1967,
+          "brotli": 1830
+        },
+        {
+          "path": "/altoy/js/skin/skin.data.js",
+          "raw": 11052,
+          "gzip": 3368,
+          "brotli": 3227
+        },
+        {
+          "path": "/altoy/js/skin/skin.dates.js",
+          "raw": 2727,
+          "gzip": 1169,
+          "brotli": 1082
+        },
+        {
+          "path": "/altoy/js/skin/skin.detail.viewer.js",
+          "raw": 28566,
+          "gzip": 7095,
+          "brotli": 6813
+        },
+        {
+          "path": "/altoy/js/skin/skin.expression.js",
+          "raw": 26272,
+          "gzip": 7694,
+          "brotli": 7358
+        },
+        {
+          "path": "/altoy/js/skin/skin.gid.js",
+          "raw": 2647,
+          "gzip": 1253,
+          "brotli": 1167
+        },
+        {
+          "path": "/altoy/js/skin/skin.voice-alt.js",
+          "raw": 1655,
+          "gzip": 920,
+          "brotli": 840
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.api.js",
+          "raw": 3445,
+          "gzip": 1129,
+          "brotli": 1032
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.auth.js",
+          "raw": 4768,
+          "gzip": 1609,
+          "brotli": 1470
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.config.js",
+          "raw": 1099,
+          "gzip": 575,
+          "brotli": 540
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.engine.js",
+          "raw": 8650,
+          "gzip": 2943,
+          "brotli": 2800
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.summary.js",
+          "raw": 4888,
+          "gzip": 1746,
+          "brotli": 1635
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.ui.js",
+          "raw": 15571,
+          "gzip": 4771,
+          "brotli": 4490
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.validate.js",
+          "raw": 3567,
+          "gzip": 1483,
+          "brotli": 1364
+        },
+        {
+          "path": "/altoy/js/synced-storage.js",
+          "raw": 5206,
+          "gzip": 1895,
+          "brotli": 1783
+        },
+        {
+          "path": "/altoy/js/utils.js",
+          "raw": 61337,
+          "gzip": 19141,
+          "brotli": 18316
+        }
+      ],
+      "css": [
+        {
+          "path": "/altoy/_assets/common.Dag1OkpD.css",
+          "raw": 8753,
+          "gzip": 2240,
+          "brotli": 2061
+        },
+        {
+          "path": "/altoy/_assets/Layout.CfkVEPXb.css",
+          "raw": 47614,
+          "gzip": 9129,
+          "brotli": 8842
+        },
+        {
+          "path": "/altoy/_assets/skin-detail-viewer.9ck3aZDh.css",
+          "raw": 15194,
+          "gzip": 3160,
+          "brotli": 3006
+        },
+        {
+          "path": "/altoy/_assets/skin.C4mmq2ti.css",
+          "raw": 5813,
+          "gzip": 1362,
+          "brotli": 1230
+        }
+      ],
+      "json": [
+        {
+          "path": "/altoy/data/skin/expression_manifest.json",
+          "raw": 1375017,
+          "gzip": 102758,
+          "brotli": 84767
+        },
+        {
+          "path": "/altoy/data/skin/skin_release_dates_legacy.json",
+          "raw": 29710,
+          "gzip": 4832,
+          "brotli": 4181
+        },
+        {
+          "path": "/altoy/data/skin/skin_release_dates.json",
+          "raw": 73118,
+          "gzip": 10482,
+          "brotli": 8168
+        },
+        {
+          "path": "/altoy/data/skin/skin_voiceline_index.json",
+          "raw": 319696,
+          "gzip": 54856,
+          "brotli": 48809
+        }
+      ],
+      "bytes": {
+        "html": {
+          "count": 1,
+          "raw": 25394,
+          "gzip": 6631,
+          "brotli": 5886
+        },
+        "js": {
+          "count": 23,
+          "raw": 244535,
+          "gzip": 77880,
+          "brotli": 73734
+        },
+        "css": {
+          "count": 4,
+          "raw": 77374,
+          "gzip": 15891,
+          "brotli": 15139
+        },
+        "json": {
+          "count": 4,
+          "raw": 1797541,
+          "gzip": 172928,
+          "brotli": 145925
+        },
+        "total": {
+          "count": 32,
+          "raw": 2144844,
+          "gzip": 273330,
+          "brotli": 240684
+        }
+      },
+      "problems": []
     }
   }
 }

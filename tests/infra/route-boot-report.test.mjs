@@ -12,14 +12,15 @@ import {
 } from '../../scripts/report-route-boot.mjs';
 
 test('route boot targets have unique keys, paths, and durable ready signals', () => {
-    assert.equal(ROUTE_BOOT_TARGETS.length, 6);
+    assert.equal(ROUTE_BOOT_TARGETS.length, 9);
     assert.equal(new Set(ROUTE_BOOT_TARGETS.map(({ key }) => key)).size, ROUTE_BOOT_TARGETS.length);
     assert.equal(new Set(ROUTE_BOOT_TARGETS.map(({ path }) => path)).size, ROUTE_BOOT_TARGETS.length);
     for (const target of ROUTE_BOOT_TARGETS) {
         assert.match(target.key, /^[A-Z0-9_]+$/);
         assert.ok(target.path.endsWith('/'));
-        assert.ok(['count', 'hidden'].includes(target.ready.kind));
-        assert.ok(target.ready.selector);
+        assert.ok(['count', 'hidden', 'settle'].includes(target.ready.kind));
+        // 'settle' has no selector by definition; every DOM signal must name one.
+        assert.equal(Boolean(target.ready.selector), target.ready.kind !== 'settle');
         assert.ok(target.ready.description);
     }
 });

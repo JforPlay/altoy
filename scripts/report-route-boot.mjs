@@ -8,9 +8,14 @@
  *
  * The report serves dist/ from an isolated local server and opens every target
  * in a fresh browser context. It records same-origin HTML, JavaScript, CSS, and
- * JSON requests that start before the route-specific first-useful-view signal.
- * Image, font, media, and remote requests are excluded to keep the result
- * deterministic and focused on application boot dependencies.
+ * JSON requests up to that route's ready signal. Image, font, media, and remote
+ * requests are excluded to keep the result deterministic and focused on
+ * application boot dependencies.
+ *
+ * Two cutoffs exist, chosen per route in route-boot-targets.mjs: a DOM signal for
+ * the first useful view, or network idle for routes whose finding is an
+ * unconditional load that races the first render rather than blocking it. Each
+ * row prints its own signal, so read the two kinds separately.
  */
 
 import {
@@ -24,7 +29,6 @@ import { createServer } from 'node:http';
 import { brotliCompressSync, constants as zlibConstants, gzipSync } from 'node:zlib';
 import { dirname, extname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { chromium } from '@playwright/test';
 import { GLOBAL_DOCUMENT_MODULES, ROUTE_BOOT_TARGETS } from './route-boot-targets.mjs';
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
@@ -34,7 +38,6 @@ const BASE_PATH = '/altoy/';
 const BASELINE_PATH = join(SCRIPT_DIR, 'route-boot-baseline.json');
 const REPORT_SCHEMA_VERSION = 1;
 const READY_TIMEOUT_MS = 45_000;
-const MEASURED_EXTENSIONS = new Set(['.html', '.js', '.css', '.json']);
 const SKIPPED_RESOURCE_TYPES = new Set(['image', 'font', 'media']);
 const sizeCache = new Map();
 
@@ -152,7 +155,6 @@ function installReadyObserver(ready) {
         if (marked || !matches()) return;
         marked = true;
         globalThis.__routeBootReady = true;
-        globalThis.__routeBootReadyAt = performance.now();
         globalThis.__reportRouteBootReady();
         observer.disconnect();
     };
@@ -243,10 +245,16 @@ async function measureTarget(browser, origin, target) {
     let sequence = 0;
     let readySequence = null;
 
-    await page.exposeFunction('__reportRouteBootReady', () => {
-        if (readySequence === null) readySequence = sequence;
-    });
-    await page.addInitScript(installReadyObserver, target.ready);
+    // A 'settle' target has no DOM signal, so every request up to network idle
+    // counts as boot work; readySequence stays null and the cutoff below is the
+    // full request list.
+    const usesDomSignal = target.ready.kind !== 'settle';
+    if (usesDomSignal) {
+        await page.exposeFunction('__reportRouteBootReady', () => {
+            if (readySequence === null) readySequence = sequence;
+        });
+        await page.addInitScript(installReadyObserver, target.ready);
+    }
 
     await page.route('**/*', async (route) => {
         const request = route.request();
@@ -301,9 +309,13 @@ async function measureTarget(browser, origin, target) {
         if (!navigation?.ok()) {
             problems.push(`navigation returned HTTP ${navigation?.status() ?? 'unknown'}`);
         }
-        await page.waitForFunction(() => globalThis.__routeBootReady === true, null, {
-            timeout: READY_TIMEOUT_MS,
-        });
+        if (usesDomSignal) {
+            await page.waitForFunction(() => globalThis.__routeBootReady === true, null, {
+                timeout: READY_TIMEOUT_MS,
+            });
+        } else {
+            await page.waitForLoadState('networkidle', { timeout: READY_TIMEOUT_MS });
+        }
     } catch (error) {
         problems.push(`ready signal timed out or navigation failed: ${error.message}`);
     }
@@ -409,7 +421,7 @@ function formatSignedBytes(value) {
 }
 
 function printReport(report, baseline) {
-    console.log('\nRoute boot report (requests started before first useful view)');
+    console.log('\nRoute boot report (cutoff is per-row; see each route\'s ready signal)');
     console.log('Route'.padEnd(20)
         + 'Entries'.padStart(9)
         + 'JS'.padStart(6)
@@ -520,6 +532,10 @@ async function run() {
         ? ROUTE_BOOT_TARGETS.filter((target) => options.targetKeys.includes(target.key))
         : ROUTE_BOOT_TARGETS;
 
+    // Imported here, not at module scope, so `npm test` can load this file's pure
+    // helpers without pulling in Playwright.
+    const { chromium } = await import('@playwright/test');
+
     const server = createDistServer();
     const origin = await listen(server);
     let browser;
@@ -546,6 +562,14 @@ async function run() {
             : null;
         printReport(report, baseline);
 
+        // Validate before writing: an incomplete measurement must never be stored
+        // as the reviewed baseline.
+        const routeProblems = Object.entries(targets)
+            .flatMap(([key, route]) => route.problems.map((problem) => `${key}: ${problem}`));
+        if (routeProblems.length) {
+            throw new Error(`Route boot measurement was incomplete:\n${routeProblems.join('\n')}`);
+        }
+
         if (options.jsonPath) {
             const outputPath = resolve(ROOT, options.jsonPath);
             writeFileSync(outputPath, `${JSON.stringify(report, null, 2)}\n`);
@@ -554,12 +578,6 @@ async function run() {
         if (options.updateBaseline) {
             writeFileSync(BASELINE_PATH, `${JSON.stringify(report, null, 2)}\n`);
             console.log(`\nUpdated baseline: ${toPosix(relative(ROOT, BASELINE_PATH))}`);
-        }
-
-        const routeProblems = Object.entries(targets)
-            .flatMap(([key, route]) => route.problems.map((problem) => `${key}: ${problem}`));
-        if (routeProblems.length) {
-            throw new Error(`Route boot measurement was incomplete:\n${routeProblems.join('\n')}`);
         }
     } finally {
         if (browser) await browser.close();
