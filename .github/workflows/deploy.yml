@@ -38,9 +38,13 @@ jobs:
       - name: Run tests
         run: npm test
 
-      # Advisory by design (see scripts/check-orphans.mjs) — surfaced in logs, never blocks deploy
+      # Advisory import/structure checks are surfaced in logs and do not block deploy.
       - name: Check orphans (advisory)
         run: npm run check:orphans
+        continue-on-error: true
+
+      - name: Check structure (advisory)
+        run: npm run check:structure
         continue-on-error: true
 
       - name: Build Astro site

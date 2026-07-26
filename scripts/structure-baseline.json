@@ -1,0 +1,234 @@
+{
+  "schemaVersion": 1,
+  "findings": {
+    "multiModuleRoutes": [
+      {
+        "id": "multi-module-route:src/pages/shipgirl/shipgirl-info.astro",
+        "path": "src/pages/shipgirl/shipgirl-info.astro",
+        "modules": [
+          "/js/shipgirl/shipgirl-info.data.js",
+          "/js/shipgirl/shipgirl-info.detail.js",
+          "/js/shipgirl/shipgirl-info.js",
+          "/js/shipgirl/shipgirl-info.maps.js",
+          "/js/shipgirl/shipgirl-info.retrofit.js",
+          "/js/shipgirl/shipgirl-info.skill-search.js"
+        ]
+      },
+      {
+        "id": "multi-module-route:src/pages/shipgirl/shipgirl-stats.astro",
+        "path": "src/pages/shipgirl/shipgirl-stats.astro",
+        "modules": [
+          "/js/shipgirl/shipgirl-stats.compare.js",
+          "/js/shipgirl/shipgirl-stats.dashboard.js",
+          "/js/shipgirl/shipgirl-stats.data.js",
+          "/js/shipgirl/shipgirl-stats.js",
+          "/js/shipgirl/shipgirl-stats.table.js"
+        ]
+      },
+      {
+        "id": "multi-module-route:src/pages/shipgirl/shipgirl-tracker.astro",
+        "path": "src/pages/shipgirl/shipgirl-tracker.astro",
+        "modules": [
+          "/js/shipgirl/shipgirl-tracker-utils.js",
+          "/js/shipgirl/shipgirl-tracker.js"
+        ]
+      },
+      {
+        "id": "multi-module-route:src/pages/simulators/cross-fleet-barrages.astro",
+        "path": "src/pages/simulators/cross-fleet-barrages.astro",
+        "modules": [
+          "/js/simulators/cross-fleet.main.js",
+          "/js/simulators/sim.engine.bullet.js",
+          "/js/simulators/sim.engine.common.js",
+          "/js/simulators/sim.engine.oceanbg.js"
+        ]
+      },
+      {
+        "id": "multi-module-route:src/pages/simulators/fleet-sim.astro",
+        "path": "src/pages/simulators/fleet-sim.astro",
+        "modules": [
+          "/js/simulators/fleet-sim.calc.js",
+          "/js/simulators/fleet-sim.data.js",
+          "/js/simulators/fleet-sim.main.js",
+          "/js/simulators/fleet-sim.picker.js",
+          "/js/simulators/fleet-sim.ui.js"
+        ]
+      },
+      {
+        "id": "multi-module-route:src/pages/simulators/sim-aircraft.astro",
+        "path": "src/pages/simulators/sim-aircraft.astro",
+        "modules": [
+          "/js/simulators/sim.aircraft.data.js",
+          "/js/simulators/sim.aircraft.main.js",
+          "/js/simulators/sim.engine.bullet.js",
+          "/js/simulators/sim.engine.common.js",
+          "/js/simulators/sim.engine.oceanbg.js"
+        ]
+      },
+      {
+        "id": "multi-module-route:src/pages/simulators/sim-weapon.astro",
+        "path": "src/pages/simulators/sim-weapon.astro",
+        "modules": [
+          "/js/simulators/sim.engine.bullet.js",
+          "/js/simulators/sim.engine.common.js",
+          "/js/simulators/sim.engine.oceanbg.js",
+          "/js/simulators/sim.weapon.data.js",
+          "/js/simulators/sim.weapon.main.js"
+        ]
+      },
+      {
+        "id": "multi-module-route:src/pages/skin/skin-detail-viewer.astro",
+        "path": "src/pages/skin/skin-detail-viewer.astro",
+        "modules": [
+          "/js/skin/skin.audio.js",
+          "/js/skin/skin.data.js",
+          "/js/skin/skin.detail.viewer.js",
+          "/js/skin/skin.expression.js"
+        ]
+      },
+      {
+        "id": "multi-module-route:src/pages/story-viewer/event-story.astro",
+        "path": "src/pages/story-viewer/event-story.astro",
+        "modules": [
+          "/js/story-viewer/event-story.js",
+          "/js/story-viewer/story-viewer.engine.js"
+        ]
+      },
+      {
+        "id": "multi-module-route:src/pages/story-viewer/hof.astro",
+        "path": "src/pages/story-viewer/hof.astro",
+        "modules": [
+          "/js/story-viewer/hof.js",
+          "/js/story-viewer/story-viewer.engine.js"
+        ]
+      },
+      {
+        "id": "multi-module-route:src/pages/story-viewer/lora-story.astro",
+        "path": "src/pages/story-viewer/lora-story.astro",
+        "modules": [
+          "/js/story-viewer/child-lora-init.js",
+          "/js/story-viewer/child-story.js",
+          "/js/story-viewer/story-viewer.engine.js"
+        ]
+      },
+      {
+        "id": "multi-module-route:src/pages/story-viewer/main-story.astro",
+        "path": "src/pages/story-viewer/main-story.astro",
+        "modules": [
+          "/js/story-viewer/main-story.js",
+          "/js/story-viewer/story-viewer.engine.js"
+        ]
+      },
+      {
+        "id": "multi-module-route:src/pages/story-viewer/navi-story.astro",
+        "path": "src/pages/story-viewer/navi-story.astro",
+        "modules": [
+          "/js/story-viewer/child-navi-init.js",
+          "/js/story-viewer/child-story.js",
+          "/js/story-viewer/story-viewer.engine.js"
+        ]
+      },
+      {
+        "id": "multi-module-route:src/pages/story-viewer/secretary-story.astro",
+        "path": "src/pages/story-viewer/secretary-story.astro",
+        "modules": [
+          "/js/story-viewer/secretary-story.js",
+          "/js/story-viewer/story-viewer.engine.js"
+        ]
+      },
+      {
+        "id": "multi-module-route:src/pages/story-viewer/tb-story.astro",
+        "path": "src/pages/story-viewer/tb-story.astro",
+        "modules": [
+          "/js/story-viewer/child-story.js",
+          "/js/story-viewer/child-tb-init.js",
+          "/js/story-viewer/story-viewer.engine.js"
+        ]
+      },
+      {
+        "id": "multi-module-route:src/pages/story-viewer/world-story.astro",
+        "path": "src/pages/story-viewer/world-story.astro",
+        "modules": [
+          "/js/story-viewer/story-viewer.engine.js",
+          "/js/story-viewer/world-story.js"
+        ]
+      }
+    ],
+    "globalAssignments": [
+      {
+        "id": "global-assignment:public/js/shipgirl/shipgirl-info.js:window.showMapsModal",
+        "path": "public/js/shipgirl/shipgirl-info.js",
+        "global": "window.showMapsModal"
+      },
+      {
+        "id": "global-assignment:public/js/skin/skin.audio.js:window.SkinAudio",
+        "path": "public/js/skin/skin.audio.js",
+        "global": "window.SkinAudio"
+      },
+      {
+        "id": "global-assignment:public/js/skin/skin.data.js:window.SkinData",
+        "path": "public/js/skin/skin.data.js",
+        "global": "window.SkinData"
+      },
+      {
+        "id": "global-assignment:public/js/skin/skin.expression.js:window.SkinExpression",
+        "path": "public/js/skin/skin.expression.js",
+        "global": "window.SkinExpression"
+      },
+      {
+        "id": "global-assignment:public/js/skin/skin.list.viewer.js:window.skinListViewerCleanup",
+        "path": "public/js/skin/skin.list.viewer.js",
+        "global": "window.skinListViewerCleanup"
+      },
+      {
+        "id": "global-assignment:public/js/skin/skin.poll.js:window.skinPollCleanup",
+        "path": "public/js/skin/skin.poll.js",
+        "global": "window.skinPollCleanup"
+      }
+    ],
+    "crossFeatureImports": [
+      {
+        "id": "cross-feature-import:public/js/shipgirl/shipgirl-stats.dashboard.js->public/js/skin/skin.dates.js",
+        "from": "public/js/shipgirl/shipgirl-stats.dashboard.js",
+        "to": "public/js/skin/skin.dates.js",
+        "sourceFeature": "shipgirl",
+        "targetFeature": "skin"
+      },
+      {
+        "id": "cross-feature-import:public/js/shipgirl/shipgirl-stats.data.js->public/js/skin/skin.dates.js",
+        "from": "public/js/shipgirl/shipgirl-stats.data.js",
+        "to": "public/js/skin/skin.dates.js",
+        "sourceFeature": "shipgirl",
+        "targetFeature": "skin"
+      },
+      {
+        "id": "cross-feature-import:public/js/simulators/fleet-sim.data.js->public/js/equip/equip-code.js",
+        "from": "public/js/simulators/fleet-sim.data.js",
+        "to": "public/js/equip/equip-code.js",
+        "sourceFeature": "simulators",
+        "targetFeature": "equip"
+      },
+      {
+        "id": "cross-feature-import:public/js/simulators/fleet-sim.equip-code-ui.js->public/js/equip/equip-code.js",
+        "from": "public/js/simulators/fleet-sim.equip-code-ui.js",
+        "to": "public/js/equip/equip-code.js",
+        "sourceFeature": "simulators",
+        "targetFeature": "equip"
+      },
+      {
+        "id": "cross-feature-import:public/js/skin/equip-skin.preview.js->public/js/simulators/sim.engine.aircraft.js",
+        "from": "public/js/skin/equip-skin.preview.js",
+        "to": "public/js/simulators/sim.engine.aircraft.js",
+        "sourceFeature": "skin",
+        "targetFeature": "simulators"
+      },
+      {
+        "id": "cross-feature-import:public/js/skin/equip-skin.preview.js->public/js/simulators/sim.engine.common.js",
+        "from": "public/js/skin/equip-skin.preview.js",
+        "to": "public/js/simulators/sim.engine.common.js",
+        "sourceFeature": "skin",
+        "targetFeature": "simulators"
+      }
+    ]
+  }
+}
