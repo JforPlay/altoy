@@ -38,6 +38,9 @@ jobs:
       - name: Run tests
         run: npm test
 
+      - name: Lint infrastructure pilot
+        run: npm run lint
+
       # Advisory import/structure checks are surfaced in logs and do not block deploy.
       - name: Check orphans (advisory)
         run: npm run check:orphans

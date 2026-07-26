@@ -15,6 +15,7 @@
     "check:data": "node scripts/check-data-shape.mjs",
     "check:orphans": "node scripts/check-orphans.mjs",
     "check:structure": "node scripts/check-structure.mjs",
+    "lint": "eslint scripts/check-structure.mjs scripts/report-route-boot.mjs scripts/route-boot-targets.mjs tests/infra/route-boot-report.test.mjs tests/infra/structure-check.test.mjs",
     "report:route-boot": "node scripts/report-route-boot.mjs",
     "test": "node --test",
     "test:smoke": "playwright test",
@@ -30,6 +31,8 @@
     "@astrojs/compiler": "^4.0.0",
     "@playwright/test": "^1.60.0",
     "acorn": "^8.15.0",
+    "eslint": "^10.6.0",
+    "globals": "^17.7.0",
     "sharp": "^0.34.5",
     "terser": "^5.46.0"
   }
