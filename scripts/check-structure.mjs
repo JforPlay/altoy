@@ -10,8 +10,9 @@
  *     from a shared root-level module.
  *
  * Only `src/pages` is walked, so the shared Layout module tag present on every
- * route is not counted against a route's page-level entry budget. Comments are
- * stripped before extraction so documentation cannot register as structure.
+ * route is not counted against a route's page-level entry budget. Astro and
+ * JavaScript syntax trees keep comments, strings, templates, and regular
+ * expressions from registering as executable structure.
  *
  * Findings are advisory. A baseline match is explicitly grandfathered; new,
  * changed, and resolved findings are separated so later page work cannot hide
@@ -32,6 +33,9 @@ import {
 } from 'node:fs';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+
+import { parse as parseAstro } from '@astrojs/compiler/sync';
+import { parse as parseJavaScript } from 'acorn';
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(SCRIPT_DIR, '..');
@@ -75,86 +79,95 @@ function walk(directory, extensions, output = []) {
     return output;
 }
 
-/**
- * Comments are documentation, not structure, and the drift gate in
- * `tests/infra/structure-check.test.mjs` fails a build on any unrecorded
- * finding. A commented-out import or a JSDoc `@type {import('...')}`
- * annotation must therefore not read as a real edge.
- *
- * String and template state is tracked so a `//` inside a URL literal is not
- * mistaken for a comment. An unterminated quote resynchronizes at the newline,
- * which caps the blast radius of an ambiguous regex literal at one line.
- */
-export function stripJsComments(text) {
-    let output = '';
-    let index = 0;
-    while (index < text.length) {
-        const char = text[index];
-        const next = text[index + 1];
-        if (char === '/' && next === '/') {
-            while (index < text.length && text[index] !== '\n') index += 1;
-            continue;
+function visitSyntaxTree(node, visitor) {
+    if (!node || typeof node !== 'object' || typeof node.type !== 'string') return;
+    visitor(node);
+    for (const value of Object.values(node)) {
+        if (Array.isArray(value)) {
+            for (const child of value) visitSyntaxTree(child, visitor);
+        } else {
+            visitSyntaxTree(value, visitor);
         }
-        if (char === '/' && next === '*') {
-            const end = text.indexOf('*/', index + 2);
-            index = end === -1 ? text.length : end + 2;
-            continue;
-        }
-        if (char === '"' || char === "'" || char === '`') {
-            output += char;
-            index += 1;
-            while (index < text.length) {
-                const inner = text[index];
-                if (inner === '\\') {
-                    output += text.slice(index, index + 2);
-                    index += 2;
-                    continue;
-                }
-                output += inner;
-                index += 1;
-                if (inner === char) break;
-                if (char !== '`' && inner === '\n') break;
-            }
-            continue;
-        }
-        output += char;
-        index += 1;
     }
-    return output;
-}
-
-export function stripHtmlComments(text) {
-    return text.replace(/<!--[\s\S]*?-->/g, '');
 }
 
 export function extractPageModulePaths(text) {
     const modules = [];
-    for (const match of stripHtmlComments(text).matchAll(/<script\b[^>]*>/gims)) {
-        const tag = match[0];
-        if (!/\btype\s*=\s*["']module["']/i.test(tag)) continue;
-        if (/\bsrc\s*=\s*["'](?:https?:)?\/\//i.test(tag)) continue;
-        const source = tag.match(/\/js\/[A-Za-z0-9_./-]+\.m?js\b/i);
+    const { ast } = parseAstro(text, {});
+    visitSyntaxTree(ast, (node) => {
+        if (node.type !== 'element' || node.name.toLowerCase() !== 'script') return;
+        const type = node.attributes.find((attribute) => attribute.name === 'type');
+        const sourceAttribute = node.attributes.find((attribute) => attribute.name === 'src');
+        if (type?.value.toLowerCase() !== 'module' || !sourceAttribute) return;
+        if (/^(?:https?:)?\/\//i.test(sourceAttribute.value)) return;
+        const source = sourceAttribute.value.match(/\/js\/[A-Za-z0-9_./-]+\.m?js\b/i);
         if (source) modules.push(source[0]);
-    }
+    });
     return modules.sort();
 }
 
-export function extractGlobalAssignments(text) {
-    const assignments = new Set();
-    const pattern = /\b(window|globalThis)\.([A-Za-z_$][\w$]*)\s*(?:\|\|=|&&=|\?\?=|[+\-*/%]?=(?!=|>))/g;
-    for (const match of stripJsComments(text).matchAll(pattern)) {
-        assignments.add(`${match[1]}.${match[2]}`);
+function staticStringValue(node) {
+    if (node?.type === 'Literal' && typeof node.value === 'string') return node.value;
+    if (node?.type === 'TemplateLiteral' && node.expressions.length === 0) {
+        return node.quasis[0]?.value.cooked ?? node.quasis[0]?.value.raw ?? null;
     }
-    return [...assignments].sort();
+    return null;
+}
+
+function assignedGlobalName(node) {
+    if (node?.type !== 'MemberExpression') return null;
+    if (node.object?.type !== 'Identifier') return null;
+    if (node.object.name !== 'window' && node.object.name !== 'globalThis') return null;
+    const property = node.computed
+        ? staticStringValue(node.property)
+        : node.property?.type === 'Identifier'
+            ? node.property.name
+            : null;
+    return property && /^[A-Za-z_$][\w$]*$/.test(property)
+        ? `${node.object.name}.${property}`
+        : null;
+}
+
+function analyzeBrowserModule(text) {
+    const assignments = new Set();
+    const specifiers = new Set();
+    const ast = parseJavaScript(text, {
+        allowHashBang: true,
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+    });
+    visitSyntaxTree(ast, (node) => {
+        if (node.type === 'AssignmentExpression' || node.type === 'UpdateExpression') {
+            const globalName = assignedGlobalName(node.type === 'AssignmentExpression'
+                ? node.left
+                : node.argument);
+            if (globalName) assignments.add(globalName);
+        }
+
+        let source = null;
+        if (
+            node.type === 'ImportDeclaration'
+            || node.type === 'ExportNamedDeclaration'
+            || node.type === 'ExportAllDeclaration'
+        ) {
+            source = staticStringValue(node.source);
+        } else if (node.type === 'ImportExpression') {
+            source = staticStringValue(node.source);
+        }
+        if (source && /\.m?js$/.test(source)) specifiers.add(source);
+    });
+    return {
+        assignments: [...assignments].sort(),
+        specifiers: [...specifiers].sort(),
+    };
+}
+
+export function extractGlobalAssignments(text) {
+    return analyzeBrowserModule(text).assignments;
 }
 
 export function extractStaticModuleSpecifiers(text) {
-    const specifiers = new Set();
-    const pattern = /(?:\bfrom\s*|\bimport\s*|\bimport\(\s*)["']([^"']+\.m?js)["']/g;
-    for (const match of stripJsComments(text).matchAll(pattern)) {
-        specifiers.add(match[1]);
-    }
-    return [...specifiers].sort();
+    return analyzeBrowserModule(text).specifiers;
 }
 
 export function featureDirectory(path) {
@@ -209,7 +222,15 @@ export function scanStructure(root = ROOT) {
     for (const browserFile of browserFiles) {
         const path = toRelative(root, browserFile);
         const text = readFileSync(browserFile, 'utf8');
-        for (const globalName of extractGlobalAssignments(text)) {
+        // Acorn reports a line and column but no file, and this scan runs inside a
+        // blocking test over every browser module, so the failure has to name itself.
+        let analysis;
+        try {
+            analysis = analyzeBrowserModule(text);
+        } catch (error) {
+            throw new Error(`${path}: ${error.message}`);
+        }
+        for (const globalName of analysis.assignments) {
             const finding = {
                 id: `global-assignment:${path}:${globalName}`,
                 path,
@@ -220,7 +241,7 @@ export function scanStructure(root = ROOT) {
         }
 
         const sourceFeature = featureDirectory(path);
-        for (const specifier of extractStaticModuleSpecifiers(text)) {
+        for (const specifier of analysis.specifiers) {
             if (!specifier.startsWith('.')) continue;
             const targetPath = toRelative(root, resolve(dirname(browserFile), specifier));
             if (!isCrossFeatureEdge(path, targetPath)) continue;

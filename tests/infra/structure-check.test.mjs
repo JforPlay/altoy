@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
@@ -13,7 +14,6 @@ import {
     isCrossFeatureEdge,
     isLegacyGlobalPath,
     scanStructure,
-    stripJsComments,
 } from '../../scripts/check-structure.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -49,12 +49,16 @@ test('global assignment extraction ignores reads and comparisons', () => {
     const source = `
         window.Legacy = {};
         globalThis.value ||= createValue();
+        window['Bracketed'] = {};
+        globalThis.counter++;
         if (window.Legacy === expected) use(window.Legacy);
         const check = globalThis.value == null;
     `;
 
     assert.deepEqual(extractGlobalAssignments(source), [
+        'globalThis.counter',
         'globalThis.value',
+        'window.Bracketed',
         'window.Legacy',
     ]);
 });
@@ -64,38 +68,56 @@ test('static import extraction covers imports, re-exports, and literal dynamic i
         import './setup.js';
         import { value } from "../feature/value.js";
         export { other } from './other.mjs';
+        export * from './all.js';
         const lazy = import('./lazy.js');
+        const literalTemplate = import(\`./literal-template.js\`);
         import(\`./computed/\${name}.js\`);
     `;
 
     assert.deepEqual(extractStaticModuleSpecifiers(source), [
         '../feature/value.js',
+        './all.js',
         './lazy.js',
+        './literal-template.js',
         './other.mjs',
         './setup.js',
     ]);
 });
 
-// Documentation must not register as structure: the drift gate below fails a
-// build on any unrecorded finding, and a JSDoc `@type {import('...')}` pointing
-// across features already exists in this tree.
-test('comments are stripped without eating code inside string literals', () => {
-    const source = `
-        // window.Commented = 1;
-        /** @type {import('../skin/skin.dates.js').Dates} */
-        const url = 'https://example.com/js/a.js';
-        window.Real = 1;
-        import { thing } from '../equip/equip-code.js';
-    `;
+// Documentation and literal data must not register as structure: the drift gate
+// below fails a build on any unrecorded finding, and JSDoc import types already
+// exist in this tree.
+test('JavaScript extraction follows syntax through comments, literals, and regexes', () => {
+    const source = [
+        '// window.Commented = 1;',
+        "/** @type {import('../skin/skin.dates.js').Dates} */",
+        `const prose = "window.StringExample = 1; import('../skin/private.js')";`,
+        'const template = `globalThis.TemplateExample = 1; import("../equip/private.js")`;',
+        String.raw`const urlPattern = /https?:\/\//; window.AfterRegex = 1; import './after-regex.js';`,
+        "const dynamic = `${import('./template-expression.js')}`;",
+        'window.Real = 1;',
+        "import { thing } from '../equip/equip-code.js';",
+    ].join('\n');
 
-    assert.deepEqual(extractGlobalAssignments(source), ['window.Real']);
-    assert.deepEqual(extractStaticModuleSpecifiers(source), ['../equip/equip-code.js']);
-    assert.ok(stripJsComments(source).includes('https://example.com/js/a.js'));
+    assert.deepEqual(extractGlobalAssignments(source), [
+        'window.AfterRegex',
+        'window.Real',
+    ]);
+    assert.deepEqual(extractStaticModuleSpecifiers(source), [
+        '../equip/equip-code.js',
+        './after-regex.js',
+        './template-expression.js',
+    ]);
 });
 
-test('commented-out script tags are not page entries', () => {
+test('Astro extraction ignores module tags in comments and expression strings', () => {
     const source = `
+        ---
+        const frontmatterExample =
+            '<script type="module" src="/altoy/js/frontmatter-example.js"></script>';
+        ---
         <!-- <script type="module" src="/altoy/js/old.js"></script> -->
+        {\`<script type="module" src="/altoy/js/expression-example.js"></script>\`}
         <script type="module" src="/altoy/js/live.js"></script>
     `;
 
@@ -182,6 +204,20 @@ test('baseline comparison separates new, changed, grandfathered, and resolved de
     assert.deepEqual(comparison.legacyGlobals.grandfathered, [legacyGlobal]);
     assert.deepEqual(comparison.crossFeatureImports.resolved, [removedImport]);
     assert.equal(comparison.globalAssignments.grandfathered.length, 0);
+});
+
+// A parser reports a line and column but no file. The scan covers every browser
+// module and runs inside the blocking test below, so an unparseable one that does
+// not name itself leaves nothing to search for.
+test('an unparseable browser module names itself', () => {
+    const root = mkdtempSync(join(tmpdir(), 'structure-check-'));
+    try {
+        mkdirSync(join(root, 'public', 'js'), { recursive: true });
+        writeFileSync(join(root, 'public', 'js', 'broken.js'), 'const broken = (\n');
+        assert.throws(() => scanStructure(root), /^Error: public\/js\/broken\.js: /);
+    } finally {
+        rmSync(root, { recursive: true, force: true });
+    }
 });
 
 // The advisory command runs with continue-on-error in CI, so only this test can
