@@ -116,17 +116,39 @@ export function parseAttributeCell(attr, raw) {
 }
 
 /**
+ * Resolve attribute keys to their ATTRIBUTES entries, in ATTRIBUTES order so a
+ * subset can never reorder the CSV. An unknown key throws: a typo in a re-label
+ * flag must fail loudly, not quietly label nothing.
+ * @param {string[]} [keys] - defaults to every attribute
+ * @returns {typeof ATTRIBUTES}
+ */
+export function selectAttributes(keys) {
+    if (!keys?.length) return ATTRIBUTES;
+    for (const key of keys) {
+        if (!ATTRIBUTES.some((a) => a.key === key)) {
+            throw new Error(`unknown attribute "${key}" — known: ${ATTRIBUTES.map((a) => a.key).join(', ')}`);
+        }
+    }
+    return ATTRIBUTES.filter((a) => keys.includes(a.key));
+}
+
+/**
  * JSON Schema for the vision model's structured output, derived from ATTRIBUTES
  * so the model can never emit a value the sync would then reject.
  *
  * Every attribute is `anyOf [<enum>, null]` — an abstaining model is worth far
  * more than a guessing one, and nulls become the review worklist. `anyOf` rather
  * than a union `type` array because that is what structured outputs support.
+ *
+ * `keys` narrows the schema to a subset, so a pass that fixes one axis need not
+ * pay the model to re-derive — and possibly churn — the other seven.
+ * @param {string[]} [keys] - defaults to every attribute
  * @returns {object}
  */
-export function buildLabelSchema() {
+export function buildLabelSchema(keys) {
+    const attrs = selectAttributes(keys);
     const properties = {};
-    for (const attr of ATTRIBUTES) {
+    for (const attr of attrs) {
         properties[attr.key] = {
             anyOf: [
                 attr.multi
@@ -139,7 +161,7 @@ export function buildLabelSchema() {
     return {
         type: 'object',
         properties,
-        required: ATTRIBUTES.map((a) => a.key),
+        required: attrs.map((a) => a.key),
         additionalProperties: false,
     };
 }

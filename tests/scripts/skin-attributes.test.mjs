@@ -6,7 +6,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
     ATTRIBUTES, ID_HEADER, CHECKED_HEADER, CHARACTER_TRAIT_KEYS,
-    parseAttributeCell, buildLabelSchema,
+    parseAttributeCell, buildLabelSchema, selectAttributes,
 } from '../../scripts/skin-attributes.mjs';
 
 const byKey = (k) => ATTRIBUTES.find((a) => a.key === k);
@@ -128,4 +128,28 @@ test('buildLabelSchema constrains single attributes to their enum', () => {
 test('buildLabelSchema models a multi attribute as an array of its enum', () => {
     const branch = buildLabelSchema().properties.beastFeatures.anyOf.find((b) => b.type === 'array');
     assert.deepEqual(branch.items.enum, byKey('beastFeatures').values);
+});
+
+test('buildLabelSchema narrows to the requested attributes only', () => {
+    const schema = buildLabelSchema(['posture', 'facing']);
+    assert.deepEqual(Object.keys(schema.properties), ['posture', 'facing']);
+    assert.deepEqual(schema.required, ['posture', 'facing']);
+});
+
+// --- selectAttributes ---
+
+test('selectAttributes returns ATTRIBUTES order, not the caller argument order', () => {
+    // The CSV columns follow this order, so a shuffled --only must not shuffle them.
+    assert.deepEqual(selectAttributes(['facing', 'eyewear']).map((a) => a.key), ['eyewear', 'facing']);
+});
+
+test('selectAttributes defaults to every attribute', () => {
+    for (const arg of [undefined, []]) {
+        assert.equal(selectAttributes(arg).length, ATTRIBUTES.length);
+    }
+});
+
+test('selectAttributes throws on an unknown key', () => {
+    // A typo'd --only that silently labelled nothing would waste a paid batch run.
+    assert.throws(() => selectAttributes(['postures']), /unknown attribute "postures"/);
 });
