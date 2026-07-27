@@ -118,20 +118,28 @@ export async function loadShipInfo() {
     if (state.shipInfo) return state.shipInfo;
     try {
         const data = await fetchJSON('data/ship_info_lite.json');
-        state.shipInfo = {};
-        gidToId = {};
+        if (!Array.isArray(data) || !data.length) {
+            throw new Error('ship_info_lite.json is empty or not an array');
+        }
+        // Build into locals and publish only once the whole file is parsed. A
+        // partially-built state.shipInfo satisfies the cache guard above, so
+        // every later attempt would return the wreckage instead of retrying.
+        const info = {};
+        const gids = {};
         for (const ship of data) {
-            state.shipInfo[ship.id] = {
+            info[ship.id] = {
                 gid: ship.gid,
                 name: ship.name,
                 rarity: ship.rarity,
                 shipyard: ship.shipyard || '',
                 maps: ship.maps || [],
             };
-            if (ship.gid) gidToId[ship.gid] = ship.id;
+            if (ship.gid) gids[ship.gid] = ship.id;
         }
         // KR server fix: ship 236/155 map drop swap is handled in ship_info_process.py
         // (data in ship_info_lite.json is already corrected for KR)
+        state.shipInfo = info;
+        gidToId = gids;
         return state.shipInfo;
     } catch (error) {
         console.warn('Failed to load ship info:', error);

@@ -202,3 +202,33 @@ test('R7: a failed full-data load is retried by the next map activation', async 
     expect(fullDataAttempts).toBe(2);
     await expect(page.locator('#mapContent')).toBeVisible();
 });
+
+// A 200 carrying a non-array body is the case a status-code failure does NOT
+// cover: the loader used to publish its half-built lookup before iterating, and
+// that partial object satisfied its own cache guard forever after.
+test('R7: ship info served as malformed 200 is retried by the next search', async ({ page }) => {
+    let shipAttempts = 0;
+    await page.route('**/data/ship_info_lite.json', async (route) => {
+        shipAttempts += 1;
+        if (shipAttempts === 1) {
+            await route.fulfill({ status: 200, contentType: 'application/json', body: '{}' });
+            return;
+        }
+        await route.continue();
+    });
+
+    await page.goto(MAP_VIEWER_PATH, { waitUntil: 'domcontentloaded' });
+    await page.waitForSelector('#mapSidebar .sidebar-item');
+
+    await page.locator('#searchShipBtn').click();
+    await expect(page.locator('#searchModalBody .page-status-error')).toBeVisible();
+    expect(shipAttempts).toBe(1);
+
+    await page.locator('#searchModalClose').click();
+    const retryShipInfo = waitForOptionalData(page, [OPTIONAL_DATA_PATHS.ship]);
+    await page.locator('#searchShipBtn').click();
+    await retryShipInfo;
+
+    expect(shipAttempts).toBe(2);
+    await expect(page.locator('#searchModalBody .page-status-error')).toHaveCount(0);
+});
