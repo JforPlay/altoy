@@ -33,3 +33,5 @@ public/data/story-viewer/event_story_chunks/
 public/data/skin/skin_characters/
 public/data/skin/skin_voiceline_index.json
 public/data/sim/weapon_chunks/
+# Scratch output from dev/label-skins.mjs --dry-run (image prep eyeball check)
+.scratch-label-skins/
