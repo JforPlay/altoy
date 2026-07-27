@@ -19,7 +19,6 @@ const state = {
     fullData: null,
     fullDataPromise: null,
     enemyStats: null,
-    enemyStatsPromise: null,
     shipInfo: null,
     currentTab: 'main',
     currentMapId: null,
@@ -43,10 +42,9 @@ let mapSelectionToken = 0;
 /**
  * Cache an optional data load while it is in flight or has succeeded.
  * Empty/failed results clear the promise so the next user action can retry.
+ * Never rejects: callers branch on a null result instead of catching.
  */
-function ensureDataPromise(promiseKey, getLoadedValue, loader) {
-    const loadedValue = getLoadedValue();
-    if (loadedValue) return Promise.resolve(loadedValue);
+function ensureDataPromise(promiseKey, loader) {
     if (state[promiseKey]) return state[promiseKey];
 
     const promise = Promise.resolve()
@@ -65,15 +63,15 @@ function ensureDataPromise(promiseKey, getLoadedValue, loader) {
 }
 
 function ensureFullData() {
-    return ensureDataPromise('fullDataPromise', () => state.fullData, loadFullData);
+    return ensureDataPromise('fullDataPromise', loadFullData);
 }
 
 function ensureShipInfo() {
-    return ensureDataPromise('shipInfoPromise', () => state.shipInfo, loadShipInfo);
+    return ensureDataPromise('shipInfoPromise', loadShipInfo);
 }
 
 function ensureWorldTargetData() {
-    return ensureDataPromise('worldTargetPromise', () => null, loadWorldTargetData);
+    return ensureDataPromise('worldTargetPromise', loadWorldTargetData);
 }
 
 function cacheDom() {
@@ -447,11 +445,6 @@ function openSearchModal(mode) {
             return;
         }
         renderSearchResults(input.value);
-    }).catch((error) => {
-        console.error('Failed to load map search data:', error);
-        if (searchMode === mode) {
-            renderMessage(searchModalBody, '검색 데이터를 불러오지 못했습니다. 다시 시도해 주세요.', 'error');
-        }
     });
 }
 

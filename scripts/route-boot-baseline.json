@@ -2121,9 +2121,9 @@
         },
         {
           "path": "/altoy/js/map/map.viewer.js",
-          "raw": 30333,
-          "gzip": 7733,
-          "brotli": 7455
+          "raw": 30067,
+          "gzip": 7613,
+          "brotli": 7359
         },
         {
           "path": "/altoy/js/pages.catalog.js",
@@ -2223,9 +2223,9 @@
         },
         "js": {
           "count": 19,
-          "raw": 246561,
-          "gzip": 74376,
-          "brotli": 70580
+          "raw": 246295,
+          "gzip": 74256,
+          "brotli": 70484
         },
         "css": {
           "count": 2,
@@ -2241,9 +2241,9 @@
         },
         "total": {
           "count": 24,
-          "raw": 703095,
-          "gzip": 131107,
-          "brotli": 116718
+          "raw": 702829,
+          "gzip": 130987,
+          "brotli": 116622
         }
       },
       "bytes": {
@@ -2255,9 +2255,9 @@
         },
         "js": {
           "count": 19,
-          "raw": 246561,
-          "gzip": 74376,
-          "brotli": 70580
+          "raw": 246295,
+          "gzip": 74256,
+          "brotli": 70484
         },
         "css": {
           "count": 2,
@@ -2273,9 +2273,9 @@
         },
         "total": {
           "count": 24,
-          "raw": 703095,
-          "gzip": 131107,
-          "brotli": 116718
+          "raw": 702829,
+          "gzip": 130987,
+          "brotli": 116622
         }
       },
       "problems": []
