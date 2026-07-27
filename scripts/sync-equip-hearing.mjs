@@ -21,6 +21,11 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import { DATA_FOR_TOY_BASE } from '../public/js/utils.js';
 
+// CSV primitives live in csv.mjs (shared with sync-skin-labels); re-exported
+// here so this module's public surface — and its tests — are unchanged.
+import { parseCsv, csvField, headerIndex } from './csv.mjs';
+export { parseCsv, csvField };
+
 // Curator config: fill in after creating the sheet (File → Share → anyone
 // with link = viewer). HEARING_GID = the gid= URL param of the hearing tab.
 const SHEET_ID = '1iglCHXqF-HCD8euPDoHsyr0jk_WY7jfnmarH8ryvYT8';
@@ -31,50 +36,6 @@ const ROOT = resolve(SCRIPT_DIR, '..');
 const LITE_PATH = join(ROOT, 'public', 'data', 'equip', 'equip_data_lite.json');
 const CATALOG_PATH = join(ROOT, 'public', 'data', 'equip', 'hearing_catalog.csv');
 const OUT_PATH = join(ROOT, 'public', 'data', 'equip', 'equip_hearing.json');
-
-// ===== CSV primitives =====
-
-/**
- * Minimal RFC4180 parser (quoted fields, doubled quotes, embedded newlines).
- * Returns rows of string fields. CR outside quotes is ignored (CRLF input);
- * CR inside quotes is content.
- * @param {string} text @returns {string[][]}
- */
-export function parseCsv(text) {
-    if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
-    const rows = [];
-    let row = [];
-    let field = '';
-    let inQuotes = false;
-    for (let i = 0; i < text.length; i++) {
-        const ch = text[i];
-        if (inQuotes) {
-            if (ch === '"') {
-                if (text[i + 1] === '"') { field += '"'; i++; continue; }
-                inQuotes = false;
-                continue;
-            }
-            field += ch;
-            continue;
-        }
-        if (ch === '"') { inQuotes = true; continue; }
-        if (ch === ',') { row.push(field); field = ''; continue; }
-        if (ch === '\r') continue;
-        if (ch === '\n') { row.push(field); rows.push(row); row = []; field = ''; continue; }
-        field += ch;
-    }
-    if (field !== '' || row.length > 0) { row.push(field); rows.push(row); }
-    return rows;
-}
-
-/**
- * Serialize one CSV field — quoted only when it contains a delimiter,
- * quote, or newline. @param {*} value @returns {string}
- */
-export function csvField(value) {
-    const s = String(value ?? '');
-    return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
-}
 
 // ===== Channel 1: catalog CSV for the sheet's IMPORTDATA tab =====
 
@@ -120,8 +81,8 @@ const REVIEW_HEADER_RE = /^한줄평(\d+)$/;
 export function mapRows(rows) {
     if (!rows.length) throw new Error('hearing CSV is empty (no header row)');
     const header = rows[0].map((h) => h.trim());
-    const idIdx = header.indexOf(ID_HEADER);
-    const aliasIdx = header.indexOf(ALIAS_HEADER);
+    const idIdx = headerIndex(header, ID_HEADER);
+    const aliasIdx = headerIndex(header, ALIAS_HEADER);
     const reviewIdxs = header
         .map((h, i) => { const m = h.match(REVIEW_HEADER_RE); return m ? { n: Number(m[1]), i } : null; })
         .filter(Boolean)
