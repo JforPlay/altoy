@@ -273,6 +273,17 @@ async function main() {
     console.log(`skin_labels.json written: ${next._meta.count} skins `
         + `(${next._meta.checked} 검수, +${d.added} added, ~${d.changed} changed, -${d.removed} removed)`);
 
+    // The 라벨 tab does not grow itself: its per-row VLOOKUP formulas are laid
+    // down once, so a skin added to the catalog later has no row and would drop
+    // out of the JSON with nothing said. Report the gap rather than hard-fail —
+    // mid-labelling, genuinely unlabelled skins are the normal state.
+    const missing = [...validIds].filter((id) => !(id in entries));
+    if (missing.length) {
+        console.log(`\n${missing.length} catalog skin(s) produced no entry — either no row in the`
+            + ' 라벨 tab (append one, dragging the formulas down) or a wholly blank row:');
+        console.log('  ' + missing.slice(0, 20).join(', ') + (missing.length > 20 ? ' …' : ''));
+    }
+
     const conflicts = siblingConflicts(entries);
     if (conflicts.length) {
         console.log(`\n${conflicts.length} sibling conflict(s) — same shipgirl, disagreeing character trait:`);
