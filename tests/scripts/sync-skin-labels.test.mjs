@@ -12,6 +12,7 @@ const POLL = {
         '함순이 이름': '범용형 부린',
         '한글 함순이 + 스킨 이름': '변신! 마법소녀 ★ 부린!',
         '깔끔한 일러': 'https://example.test/skin_shipyard/100002.webp',
+        '전체 일러': 'https://example.test/output_expressions/100002/painting.png',
         '스킨 태그': '배경',
         '스킨 타입 - 한글': '동화 속 세계',
     },
@@ -27,15 +28,17 @@ const POLL = {
 
 test('buildCatalogCsv emits the contract header and sorts by numeric id', () => {
     const lines = buildCatalogCsv(POLL).trimEnd().split('\n');
-    assert.equal(lines[0], 'id,shipgirl,skin,tag,category,shipyard_url');
+    assert.equal(lines[0], 'id,shipgirl,skin,tag,category,shipyard_url,painting_url');
     assert.equal(lines.length, 3);
     assert.ok(lines[1].startsWith('100000,'));
     assert.ok(lines[2].startsWith('100002,'));
 });
 
-test('buildCatalogCsv renders a null category as an empty field', () => {
+// The 100000 fixture deliberately omits 전체 일러 — a missing painting must render
+// as a trailing empty field, not shorten the row and shift every later column.
+test('buildCatalogCsv renders a null category and a missing painting as empty fields', () => {
     const row = buildCatalogCsv(POLL).trimEnd().split('\n')[1];
-    assert.equal(row, '100000,범용형 부린,범용형 부린,X,,https://example.test/skin_shipyard/100000.webp');
+    assert.equal(row, '100000,범용형 부린,범용형 부린,X,,https://example.test/skin_shipyard/100000.webp,');
 });
 
 test('buildCatalogCsv quotes fields containing a comma', () => {

@@ -49,7 +49,7 @@ const OUT_PATH = join(ROOT, 'public', 'data', 'skin', 'skin_labels.json');
  * @param {Record<string, object>} pollData @returns {string}
  */
 export function buildCatalogCsv(pollData) {
-    const header = 'id,shipgirl,skin,tag,category,shipyard_url';
+    const header = 'id,shipgirl,skin,tag,category,shipyard_url,painting_url';
     const lines = Object.values(pollData)
         .slice()
         .sort((a, b) => Number(a['클뜯 id']) - Number(b['클뜯 id']))
@@ -60,6 +60,10 @@ export function buildCatalogCsv(pollData) {
             s['스킨 태그'],
             s['스킨 타입 - 한글'],
             s['깔끔한 일러'],
+            // The full painting — what the labeler actually saw. The shipyard
+            // crop hides the lower body, which makes correct 자세/방향 labels
+            // look wrong during review.
+            s['전체 일러'],
         ].map(csvField).join(','));
     return [header, ...lines].join('\n') + '\n';
 }
