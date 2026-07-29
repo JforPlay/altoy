@@ -249,7 +249,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 300;
+  /* Must clear --z-drawer-backdrop (997): the drawer scrim's backdrop-filter
+     blurred any modal opened from the drawer, and swallowed its clicks. */
+  z-index: var(--z-modal);
   padding: var(--spacing-md);
 }
 

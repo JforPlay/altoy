@@ -71,6 +71,12 @@
         "name": "튤리퍼 왕국",
         "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/11.png"
     },
+    "12": {
+        "id": 12,
+        "code": "LDP",
+        "name": "페드레리아",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/12.png"
+    },
     "96": {
         "id": 96,
         "code": "MOT",
@@ -196,6 +202,13 @@
         "id": 115,
         "code": "DateALiveV",
         "name": "데어라",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
+        "prefix": []
+    },
+    "116": {
+        "id": 116,
+        "code": "Nier",
+        "name": "니어 오토마타",
         "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
         "prefix": []
     }

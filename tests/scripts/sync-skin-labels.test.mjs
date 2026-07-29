@@ -4,7 +4,6 @@
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildCatalogCsv } from '../../scripts/sync-skin-labels.mjs';
 
 const POLL = {
     1: {
@@ -25,35 +24,6 @@ const POLL = {
         '스킨 타입 - 한글': null,
     },
 };
-
-test('buildCatalogCsv emits the contract header and sorts by numeric id', () => {
-    const lines = buildCatalogCsv(POLL).trimEnd().split('\n');
-    assert.equal(lines[0], 'id,shipgirl,skin,tag,category,shipyard_url,painting_url');
-    assert.equal(lines.length, 3);
-    assert.ok(lines[1].startsWith('100000,'));
-    assert.ok(lines[2].startsWith('100002,'));
-});
-
-// The 100000 fixture deliberately omits 전체 일러 — a missing painting must render
-// as a trailing empty field, not shorten the row and shift every later column.
-test('buildCatalogCsv renders a null category and a missing painting as empty fields', () => {
-    const row = buildCatalogCsv(POLL).trimEnd().split('\n')[1];
-    assert.equal(row, '100000,범용형 부린,범용형 부린,X,,https://example.test/skin_shipyard/100000.webp,');
-});
-
-test('buildCatalogCsv quotes fields containing a comma', () => {
-    const csv = buildCatalogCsv({
-        0: {
-            '클뜯 id': 1, '함순이 이름': 'A', '한글 함순이 + 스킨 이름': 'B',
-            '깔끔한 일러': 'u', '스킨 태그': 'L2D, 배경', '스킨 타입 - 한글': 'C',
-        },
-    });
-    assert.ok(csv.includes('"L2D, 배경"'));
-});
-
-test('buildCatalogCsv ends with a trailing newline', () => {
-    assert.ok(buildCatalogCsv(POLL).endsWith('\n'));
-});
 
 import { mapRows, validateRows } from '../../scripts/sync-skin-labels.mjs';
 import { parseCsv } from '../../scripts/csv.mjs';
@@ -155,7 +125,7 @@ test('validateRows rejects an id absent from the catalog, unless allowUnknown', 
 
 import {
     buildLabelsJson, diffSummary, siblingConflicts, parseAutoCsv, mergeLayers, inheritSiblingTraits,
-    buildWorklist,
+    buildWorklist, buildWorklistCsv, WORKLIST_FEED_HEADER,
 } from '../../scripts/sync-skin-labels.mjs';
 
 // --- parseAutoCsv / mergeLayers ---
@@ -269,6 +239,56 @@ test('buildWorklist sorts numerically, not lexicographically', () => {
     const work = buildWorklist(entries, new Set(['9600081', '100000']), []);
     assert.deepEqual(work.all, []);
     assert.deepEqual(buildWorklist({}, new Set(['9600081', '100000']), []).all, ['100000', '9600081']);
+});
+
+test('buildWorklist drops a checked entry from the blank and conflict queues', () => {
+    // A human already looked — 검수 is the whole meaning of "done", even when a
+    // blank or a genuine sibling difference remains.
+    const entries = {
+        100000: full({ hairColor: '분홍', posture: null, checked: true }),
+        100002: full({ hairColor: '금발' }),
+    };
+    const work = buildWorklist(entries, new Set(['100000', '100002']), siblingConflicts(entries));
+    assert.deepEqual(work.incomplete, []);
+    assert.deepEqual(work.conflicted, ['100002']);
+});
+
+// --- buildWorklistCsv ---
+
+const WORK_IDS = new Set(['100000', '100002']);
+
+test('buildWorklistCsv emits the header contract mirrored by skin-label-sheet.gs', () => {
+    const csv = buildWorklistCsv(buildWorklist({}, new Set(), []), {}, POLL);
+    assert.equal(csv, WORKLIST_FEED_HEADER.join(',') + '\n');
+    assert.equal(WORKLIST_FEED_HEADER.slice(0, 4).join(','), 'id,reason,name,image_url');
+});
+
+test('buildWorklistCsv joins name, wsrv-wrapped painting url and prefill values per id', () => {
+    const entries = { 100002: full({ posture: null, beastFeatures: ['동물귀', '꼬리'] }) };
+    const work = buildWorklist(entries, WORK_IDS, []);
+    const [, unlabelledRow, incompleteRow] = buildWorklistCsv(work, entries, POLL).trimEnd().split('\n');
+
+    // 100000: unlabelled — 신규, name/image from poll, every prefill blank.
+    assert.ok(unlabelledRow.startsWith('100000,신규,범용형 부린,'));
+    assert.ok(unlabelledRow.includes('https://wsrv.nl/?w=400&output=jpg&bg=white&url='
+        + encodeURIComponent('https://example.test/skin_shipyard/100000.webp')));
+    assert.ok(unlabelledRow.endsWith(',,,,,,,,'));
+
+    // 100002: blank posture — 공란, painting preferred over the shipyard crop,
+    // multi values comma-joined (and therefore quoted).
+    assert.ok(incompleteRow.startsWith('100002,공란,'));
+    assert.ok(incompleteRow.includes(encodeURIComponent('painting.png')));
+    assert.ok(incompleteRow.includes('"동물귀, 꼬리"'));
+});
+
+test('buildWorklistCsv combines queue reasons with ·', () => {
+    const entries = {
+        100000: full({ hairColor: '분홍' }),
+        100002: full({ hairColor: '금발', posture: null }), // incomplete AND conflicted
+    };
+    const work = buildWorklist(entries, WORK_IDS, siblingConflicts(entries));
+    const rows = buildWorklistCsv(work, entries, POLL).trimEnd().split('\n');
+    assert.ok(rows.some((r) => r.startsWith('100002,공란·충돌,')));
 });
 
 test('inheritSiblingTraits ignores skin-only attributes', () => {

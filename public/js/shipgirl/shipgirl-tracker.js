@@ -299,6 +299,12 @@ document.addEventListener('DOMContentLoaded', () => {
         shipCards.forEach(card => {
             const data = card.dataset;
             const nationId = data.nationality;
+            // A ship can carry a nationality absent from nationality_mapping.json
+            // (발파라이소 = 12). Without this seed the three `+=` below land on
+            // undefined and NaN the whole total. renderFleetTechTable already
+            // skips unmapped ids, so the points only count toward the total —
+            // which is right, since maxFleetTech counts them too.
+            if (fleetTech[nationId] === undefined) fleetTech[nationId] = 0;
             const nationalityName = nationalityData[nationId]?.name;
             const typeId = data.type;
             const position = shipTypeData[typeId]?.position;

@@ -2,20 +2,22 @@
  * sync-skin-labels.mjs
  * 스킨 특성 DB pipeline — three one-way channels joined by 클뜯 id:
  *
- *   1. ALWAYS: regenerate public/data/skin/skin_label_catalog.csv from
- *      skin_poll_data.json. The curators' Google Sheet IMPORTDATAs this file
- *      (after deploy) so its catalog tab self-refreshes.
- *   2. Machine-fed: skin_labels_attributes.csv is written by dev/label-skins.mjs
+ *   1. Machine-fed: skin_labels_attributes.csv is written by dev/label-skins.mjs
  *      (kept out of the repo on purpose) and read here as the BASE label layer.
  *      This script never writes it.
- *   3. WHEN SHEET_ID IS SET: fetch the sheet's 라벨 tab as CSV — a SPARSE sheet of
- *      human overrides — and layer it on top.
+ *   2. WHEN SHEET_ID IS SET: fetch the sheet's 라벨 tab as CSV — human
+ *      corrections — and layer it on top.
+ *   3. ALWAYS: write public/data/skin/skin_label_worklist.csv — the pre-joined
+ *      feed (id, reason, name, image, current best values) that the sheet's
+ *      bound Apps Script (scripts/skin-label-sheet.gs) appends rows from after
+ *      deploy. All join logic lives HERE, node-tested; the sheet script only
+ *      appends ids it does not have yet.
  *
- * Layering (most-trusted last) is what keeps per-skin upkeep near zero: a skin
- * the model already labelled needs no row anywhere, so the 라벨 tab only ever
- * holds rows a human actually touched, and a blank cell means "no opinion",
- * never "erase this". The 라벨 tab is still the ONLY human-edited surface, and
- * nothing but this script writes skin_labels.json.
+ * The sheet's rows arrive pre-filled with the model's values, so a curator
+ * only retypes cells that are WRONG; a blank cell still means "no opinion"
+ * and falls through to the model layer, never erasing it. The 라벨 tab is the
+ * ONLY human-edited surface, and nothing but this script writes
+ * skin_labels.json.
  *
  * Run: `npm run data:skin-labels` [--allow-unknown]
  * Spec: dev/active/2026-07-26-skin-attribute-db-design.md
@@ -38,40 +40,11 @@ const LABEL_GID = '';
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(SCRIPT_DIR, '..');
 const POLL_PATH = join(ROOT, 'public', 'data', 'skin', 'skin_poll_data.json');
-const CATALOG_PATH = join(ROOT, 'public', 'data', 'skin', 'skin_label_catalog.csv');
 const AUTO_PATH = join(ROOT, 'public', 'data', 'skin', 'skin_labels_attributes.csv');
+const WORKLIST_PATH = join(ROOT, 'public', 'data', 'skin', 'skin_label_worklist.csv');
 const OUT_PATH = join(ROOT, 'public', 'data', 'skin', 'skin_labels.json');
 
-// ===== Channel 1: catalog CSV for the sheet's IMPORTDATA tab =====
-
-/**
- * Build skin_label_catalog.csv text from skin_poll_data.json entries.
- * COLUMN ORDER IS A CONTRACT — the sheet's VLOOKUP/IMAGE formulas index into
- * it. Append-only; never reorder. Rows are sorted by numeric id so the file is
- * stable across regenerations and its diffs stay readable.
- * @param {Record<string, object>} pollData @returns {string}
- */
-export function buildCatalogCsv(pollData) {
-    const header = 'id,shipgirl,skin,tag,category,shipyard_url,painting_url';
-    const lines = Object.values(pollData)
-        .slice()
-        .sort((a, b) => Number(a['클뜯 id']) - Number(b['클뜯 id']))
-        .map((s) => [
-            s['클뜯 id'],
-            s['함순이 이름'],
-            s['한글 함순이 + 스킨 이름'],
-            s['스킨 태그'],
-            s['스킨 타입 - 한글'],
-            s['깔끔한 일러'],
-            // The full painting — what the labeler actually saw. The shipyard
-            // crop hides the lower body, which makes correct 자세/방향 labels
-            // look wrong during review.
-            s['전체 일러'],
-        ].map(csvField).join(','));
-    return [header, ...lines].join('\n') + '\n';
-}
-
-// ===== Channel 3: 라벨 tab → skin_labels.json =====
+// ===== Channel 2: 라벨 tab → skin_labels.json =====
 
 /**
  * Map raw CSV rows to row objects BY HEADER NAME, not position — so curators may
@@ -161,7 +134,7 @@ export function validateRows(rows, validIds, { allowUnknown = false } = {}) {
     return { errors, entries };
 }
 
-// ===== Channel 2 → the base layer =====
+// ===== Channel 1 → the base layer =====
 
 /**
  * Parse the labeler's CSV into the base entries map.
@@ -344,37 +317,79 @@ async function fetchLabelTab() {
 
 /**
  * Ids worth a human's time, most urgent first: no labels at all → the model left
- * a blank → the model contradicted itself across one shipgirl. Deduped, so a
- * skin in two queues is pasted once.
+ * a blank → the model contradicted itself across one shipgirl. A 검수-ticked
+ * entry leaves the queues even when a blank or conflict remains — a human
+ * already looked, and that is the whole meaning of the flag.
  * @returns {{unlabelled: string[], incomplete: string[], conflicted: string[], all: string[]}}
  */
 export function buildWorklist(entries, validIds, conflicts) {
     const num = (a, b) => Number(a) - Number(b);
+    const unchecked = (id) => !entries[id]?.checked;
     const unlabelled = [...validIds].filter((id) => !(id in entries)).sort(num);
     const incomplete = Object.keys(entries)
-        .filter((id) => ATTRIBUTES.some((a) => entries[id][a.key] === null)).sort(num);
-    const conflicted = [...new Set(conflicts.flatMap((c) => Object.values(c.byValue).flat()))].sort(num);
+        .filter((id) => unchecked(id) && ATTRIBUTES.some((a) => entries[id][a.key] === null)).sort(num);
+    const conflicted = [...new Set(conflicts.flatMap((c) => Object.values(c.byValue).flat()))]
+        .filter(unchecked).sort(num);
     const all = [...new Set([...unlabelled, ...incomplete, ...conflicted])].sort(num);
     return { unlabelled, incomplete, conflicted, all };
 }
 
+/** Feed column order — mirrored by FEED_HEADER in scripts/skin-label-sheet.gs. */
+export const WORKLIST_FEED_HEADER = ['id', 'reason', 'name', 'image_url', ...ATTRIBUTES.map((a) => a.header)];
+
+/**
+ * Build skin_label_worklist.csv — the ONE file the sheet's Apps Script reads.
+ * Pre-joined here so the sheet script stays a dumb appender: per worklist id,
+ * why it needs a human (신규/공란/충돌, ·-joined when several), the skin name,
+ * a wsrv-wrapped painting URL sized for IMAGE(), and the current best value of
+ * every attribute (model + sibling inheritance) so the row lands pre-filled
+ * and a curator only retypes what is wrong.
+ *
+ * Changing the columns means updating skin-label-sheet.gs too and re-pasting
+ * it into the sheet — its refresh() aborts on a header mismatch by design.
+ * @param {ReturnType<typeof buildWorklist>} work
+ * @param {Record<string, object>} entries - merged, post-inheritance
+ * @param {Record<string, object>} pollData
+ * @returns {string}
+ */
+export function buildWorklistCsv(work, entries, pollData) {
+    const byId = new Map(Object.values(pollData).map((s) => [String(s['클뜯 id']), s]));
+    const queues = [
+        ['신규', new Set(work.unlabelled)],
+        ['공란', new Set(work.incomplete)],
+        ['충돌', new Set(work.conflicted)],
+    ];
+    const lines = work.all.map((id) => {
+        const skin = byId.get(id) ?? {};
+        const reason = queues.filter(([, ids]) => ids.has(id)).map(([label]) => label).join('·');
+        // The full painting — what the labeler actually saw. The shipyard crop
+        // hides the lower body, which makes correct 자세/방향 labels look wrong
+        // during review. wsrv flattens the alpha IMAGE() would render black.
+        const painting = skin['전체 일러'] || skin['깔끔한 일러'] || '';
+        const image = painting
+            ? `https://wsrv.nl/?w=400&output=jpg&bg=white&url=${encodeURIComponent(painting)}`
+            : '';
+        const entry = entries[id] ?? {};
+        const values = ATTRIBUTES.map((attr) => {
+            const v = entry[attr.key];
+            return v == null ? '' : Array.isArray(v) ? v.join(', ') : v;
+        });
+        return [id, reason, skin['한글 함순이 + 스킨 이름'] ?? '', image, ...values]
+            .map(csvField).join(',');
+    });
+    return [WORKLIST_FEED_HEADER.join(','), ...lines].join('\n') + '\n';
+}
+
 async function main() {
     const allowUnknown = process.argv.includes('--allow-unknown');
-    // --worklist puts the ids on stdout and the report on stderr, so
-    // `node scripts/sync-skin-labels.mjs --worklist | clip` yields a clean paste.
-    const worklistOnly = process.argv.includes('--worklist');
-    const log = (...args) => (worklistOnly ? console.error(...args) : console.log(...args));
     const poll = JSON.parse(readFileSync(POLL_PATH, 'utf8'));
-
-    writeFileSync(CATALOG_PATH, buildCatalogCsv(poll));
-    log(`skin_label_catalog.csv regenerated (${Object.keys(poll).length} skins)`);
 
     const validIds = new Set(Object.values(poll).map((s) => String(s['클뜯 id'])));
     const auto = parseAutoCsv(
         existsSync(AUTO_PATH) ? readFileSync(AUTO_PATH, 'utf8') : '', validIds,
     );
     const labelRows = await fetchLabelTab();
-    if (!labelRows) log('SHEET_ID not configured — publishing model labels only (no human overrides).');
+    if (!labelRows) console.log('SHEET_ID not configured — publishing model labels only (no human overrides).');
     const human = validateRows(labelRows ?? [], validIds, { allowUnknown });
 
     const errors = [
@@ -395,42 +410,33 @@ async function main() {
         : { entries: {} };
     const d = diffSummary(prev.entries ?? {}, next.entries);
     writeFileSync(OUT_PATH, JSON.stringify(next, null, 2) + '\n');
-    log(`skin_labels.json written: ${next._meta.count} skins `
+    console.log(`skin_labels.json written: ${next._meta.count} skins `
         + `(${next._meta.checked} 검수, +${d.added} added, ~${d.changed} changed, -${d.removed} removed)`);
 
     const overridden = Object.keys(human.entries)
         .filter((id) => ATTRIBUTES.some((a) => human.entries[id][a.key] !== null)).length;
-    log(`  layers: ${Object.keys(auto.entries).length} model, ${overridden} human-overridden`
+    console.log(`  layers: ${Object.keys(auto.entries).length} model, ${overridden} sheet rows with values`
         + `, ${inherited} trait(s) inherited from siblings`);
 
     const conflicts = siblingConflicts(entries);
     const work = buildWorklist(entries, validIds, conflicts);
-    log(`\nneeds a human — ${work.all.length} skin(s):`);
-    log(`  ${work.unlabelled.length} with no labels at all (hand-label these)`);
-    log(`  ${work.incomplete.length} with a blank attribute`);
-    log(`  ${work.conflicted.length} in a sibling conflict (${conflicts.length} disagreements)`);
-    log('  --worklist prints the ids: `node scripts/sync-skin-labels.mjs --worklist | clip`');
-
-    // The unlabelled queue prints unconditionally: it is the only one that can
-    // reach the site as a skin with NO attributes, and after a data refresh it
-    // is normally short enough to paste straight from here.
-    if (work.unlabelled.length) {
-        log(`\nno labels — paste into 라벨 column A, then fill the dropdowns:`);
-        log(work.unlabelled.slice(0, 50).join('\n'));
-        if (work.unlabelled.length > 50) log(`… and ${work.unlabelled.length - 50} more (use --worklist)`);
-    }
+    writeFileSync(WORKLIST_PATH, buildWorklistCsv(work, entries, poll));
+    console.log(`\nskin_label_worklist.csv written — ${work.all.length} skin(s) needing a human:`);
+    console.log(`  ${work.unlabelled.length} 신규 (no labels at all)`);
+    console.log(`  ${work.incomplete.length} 공란 (a blank attribute)`);
+    console.log(`  ${work.conflicted.length} 충돌 (sibling disagreement, ${conflicts.length} conflicts)`);
+    console.log('  after deploy, pull them into the sheet: ALtoy 메뉴 → 새로고침');
 
     // Conflicts are WARNINGS — a skin genuinely may change hair colour — so show
-    // a sample for a feel and leave the rest to the worklist.
+    // a sample for a feel and leave the rest to the sheet's 사유 column.
     for (const c of conflicts.slice(0, 10)) {
         const detail = Object.entries(c.byValue)
             .map(([v, ids]) => `${v} (${ids.join(', ')})`).join('  vs  ');
-        log(`  gid ${c.gid} ${c.key}: ${detail}`);
+        console.log(`  gid ${c.gid} ${c.key}: ${detail}`);
     }
-    if (conflicts.length > 10) log(`  … ${conflicts.length - 10} more — eyeball, never bulk-fix`);
+    if (conflicts.length > 10) console.log(`  … ${conflicts.length - 10} more — eyeball, never bulk-fix`);
 
-    if (worklistOnly) console.log(work.all.join('\n'));
-    log('\nReminder: deploying this change needs the DATA_VERSION/CACHE_VERSION dual PATCH bump.');
+    console.log('\nReminder: deploying this change needs the DATA_VERSION/CACHE_VERSION dual PATCH bump.');
 }
 
 const isMain = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
