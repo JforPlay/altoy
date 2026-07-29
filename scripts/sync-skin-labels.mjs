@@ -34,8 +34,8 @@ import {
 // Curator config: fill in after creating the sheet (File → Share → anyone with
 // link = viewer). LABEL_GID = the gid= URL param of the 라벨 tab. While these are
 // empty the script still regenerates the catalog CSV and skips the sheet fetch.
-const SHEET_ID = '';
-const LABEL_GID = '';
+const SHEET_ID = '1lMrOgkusw3PucN5Wk1IKGPYslrG9_eXgYN-xhvasWho';
+const LABEL_GID = '933499057';
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(SCRIPT_DIR, '..');
