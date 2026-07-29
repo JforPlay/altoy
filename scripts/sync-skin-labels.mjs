@@ -5,15 +5,17 @@
  *   1. ALWAYS: regenerate public/data/skin/skin_label_catalog.csv from
  *      skin_poll_data.json. The curators' Google Sheet IMPORTDATAs this file
  *      (after deploy) so its catalog tab self-refreshes.
- *   2. Machine-fed: skin_labels_attributes.csv is written by dev/label-skins.mjs (kept
- *      out of the repo on purpose) and IMPORTDATA'd into the sheet's `auto` tab.
+ *   2. Machine-fed: skin_labels_attributes.csv is written by dev/label-skins.mjs
+ *      (kept out of the repo on purpose) and read here as the BASE label layer.
  *      This script never writes it.
- *   3. WHEN SHEET_ID IS SET: fetch the sheet's 라벨 tab as CSV, validate against
- *      the vocabulary, and write public/data/skin/skin_labels.json.
+ *   3. WHEN SHEET_ID IS SET: fetch the sheet's 라벨 tab as CSV — a SPARSE sheet of
+ *      human overrides — and layer it on top.
  *
- * The 라벨 tab is the ONLY human-edited surface and the only tab this script
- * reads; nothing but this script writes skin_labels.json — so model output,
- * game data and human input can never clobber each other.
+ * Layering (most-trusted last) is what keeps per-skin upkeep near zero: a skin
+ * the model already labelled needs no row anywhere, so the 라벨 tab only ever
+ * holds rows a human actually touched, and a blank cell means "no opinion",
+ * never "erase this". The 라벨 tab is still the ONLY human-edited surface, and
+ * nothing but this script writes skin_labels.json.
  *
  * Run: `npm run data:skin-labels` [--allow-unknown]
  * Spec: dev/active/2026-07-26-skin-attribute-db-design.md
@@ -37,6 +39,7 @@ const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(SCRIPT_DIR, '..');
 const POLL_PATH = join(ROOT, 'public', 'data', 'skin', 'skin_poll_data.json');
 const CATALOG_PATH = join(ROOT, 'public', 'data', 'skin', 'skin_label_catalog.csv');
+const AUTO_PATH = join(ROOT, 'public', 'data', 'skin', 'skin_labels_attributes.csv');
 const OUT_PATH = join(ROOT, 'public', 'data', 'skin', 'skin_labels.json');
 
 // ===== Channel 1: catalog CSV for the sheet's IMPORTDATA tab =====
@@ -76,8 +79,8 @@ export function buildCatalogCsv(pollData) {
  * breaking the sync. Values are returned raw; parsing happens in validateRows.
  *
  * Rows carrying no information (no id, or no attribute values and not checked)
- * are dropped, which keeps the output JSON sparse even though the sheet has one
- * pre-populated row per skin.
+ * are dropped. That is what makes the 라벨 tab a sparse override sheet: a row
+ * left untouched contributes nothing and the model's value survives underneath.
  * @param {string[][]} rows - parseCsv output including the header row
  * @returns {Array<{skinId: string, raw: Record<string,string>, checked: boolean}>}
  */
@@ -156,6 +159,95 @@ export function validateRows(rows, validIds, { allowUnknown = false } = {}) {
             + ' (re-run with --allow-unknown to keep them)');
     }
     return { errors, entries };
+}
+
+// ===== Channel 2 → the base layer =====
+
+/**
+ * Parse the labeler's CSV into the base entries map.
+ *
+ * Deliberately reuses the 라벨 tab's own mapper and validator: the auto CSV
+ * carries the same Korean headers and the same vocabulary, so a value the model
+ * emitted that the sheet would reject must fail here too rather than slip onto
+ * the site through the back door. `allowUnknown` because a stale auto row for a
+ * skin the game later removed is not worth failing a sync over — mergeLayers
+ * drops it.
+ * @param {string} text - skin_labels_attributes.csv contents
+ * @param {Set<string>} validIds
+ */
+export function parseAutoCsv(text, validIds) {
+    if (!text.trim()) return { errors: [], entries: {} };
+    return validateRows(mapRows(parseCsv(text)), validIds, { allowUnknown: true });
+}
+
+/**
+ * Layer the label sources into one entries map, most-trusted last: model CSV →
+ * human override → 검수 flag. A human cell counts as an override ONLY when it
+ * holds a value; blank means "no opinion", which is what lets the sheet stay
+ * sparse and what makes a re-labelled column flow through untouched rows.
+ *
+ * Ids outside the catalog are dropped rather than errored — validateRows has
+ * already reported any human row pointing at a skin that no longer exists.
+ * Output is key-sorted numerically so the committed JSON diffs stay readable.
+ * @param {Record<string, object>} autoEntries
+ * @param {Record<string, object>} humanEntries
+ * @param {Set<string>} validIds
+ * @returns {Record<string, object>}
+ */
+export function mergeLayers(autoEntries, humanEntries, validIds) {
+    const ids = [...new Set([...Object.keys(autoEntries), ...Object.keys(humanEntries)])]
+        .filter((id) => validIds.has(id))
+        .sort((a, b) => Number(a) - Number(b));
+
+    const entries = {};
+    for (const id of ids) {
+        const auto = autoEntries[id] ?? {};
+        const human = humanEntries[id] ?? {};
+        const entry = {};
+        for (const attr of ATTRIBUTES) entry[attr.key] = human[attr.key] ?? auto[attr.key] ?? null;
+        entry.checked = human.checked === true;
+        entries[id] = entry;
+    }
+    return entries;
+}
+
+/**
+ * Fill still-null CHARACTER traits from the skin's siblings, in place.
+ *
+ * A new skin of an existing shipgirl shares her hair and eyes, so hand-labelling
+ * it should not mean re-typing four values the dataset already holds. Gated on
+ * the siblings agreeing UNANIMOUSLY, which is also what keeps genuinely per-skin
+ * values (a 날개 that only one skin has) from spreading: one dissenting sibling
+ * and the trait is left null for a human, and siblingConflicts reports it.
+ * @param {Record<string, object>} entries @returns {number} traits filled
+ */
+export function inheritSiblingTraits(entries) {
+    const groups = new Map();
+    for (const id of Object.keys(entries)) {
+        const gid = Math.floor(Number(id) / 10);
+        if (!groups.has(gid)) groups.set(gid, []);
+        groups.get(gid).push(id);
+    }
+
+    let filled = 0;
+    for (const ids of groups.values()) {
+        for (const key of CHARACTER_TRAIT_KEYS) {
+            const distinct = new Map();
+            for (const id of ids) {
+                const value = entries[id][key];
+                if (value === null || value === undefined) continue;
+                distinct.set(traitKey(value), value);
+            }
+            if (distinct.size !== 1) continue;
+            const [only] = distinct.values();
+            for (const id of ids) {
+                if (entries[id][key] !== null && entries[id][key] !== undefined) continue;
+                entries[id][key] = Array.isArray(only) ? [...only] : only;
+                filled++;
+            }
+        }
+    }
+    return filled;
 }
 
 /**
@@ -237,17 +329,9 @@ export function siblingConflicts(entries) {
 
 // ===== CLI =====
 
-async function main() {
-    const allowUnknown = process.argv.includes('--allow-unknown');
-    const poll = JSON.parse(readFileSync(POLL_PATH, 'utf8'));
-
-    writeFileSync(CATALOG_PATH, buildCatalogCsv(poll));
-    console.log(`skin_label_catalog.csv regenerated (${Object.keys(poll).length} skins)`);
-
-    if (!SHEET_ID) {
-        console.log('SHEET_ID not configured — skipped label sync (skin_labels.json unchanged).');
-        return;
-    }
+/** Fetch the 라벨 tab as CSV. Returns [] rows when the sheet is not configured yet. */
+async function fetchLabelTab() {
+    if (!SHEET_ID) return null;
     const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${LABEL_GID}`;
     const res = await fetch(url);
     if (!res.ok) throw new Error(`sheet fetch failed: HTTP ${res.status} ${res.statusText}`);
@@ -255,14 +339,55 @@ async function main() {
     if (text.trimStart().startsWith('<')) {
         throw new Error('sheet fetch returned HTML, not CSV — is the sheet shared as "anyone with link can view"?');
     }
+    return mapRows(parseCsv(text));
+}
 
-    const rows = mapRows(parseCsv(text));
+/**
+ * Ids worth a human's time, most urgent first: no labels at all → the model left
+ * a blank → the model contradicted itself across one shipgirl. Deduped, so a
+ * skin in two queues is pasted once.
+ * @returns {{unlabelled: string[], incomplete: string[], conflicted: string[], all: string[]}}
+ */
+export function buildWorklist(entries, validIds, conflicts) {
+    const num = (a, b) => Number(a) - Number(b);
+    const unlabelled = [...validIds].filter((id) => !(id in entries)).sort(num);
+    const incomplete = Object.keys(entries)
+        .filter((id) => ATTRIBUTES.some((a) => entries[id][a.key] === null)).sort(num);
+    const conflicted = [...new Set(conflicts.flatMap((c) => Object.values(c.byValue).flat()))].sort(num);
+    const all = [...new Set([...unlabelled, ...incomplete, ...conflicted])].sort(num);
+    return { unlabelled, incomplete, conflicted, all };
+}
+
+async function main() {
+    const allowUnknown = process.argv.includes('--allow-unknown');
+    // --worklist puts the ids on stdout and the report on stderr, so
+    // `node scripts/sync-skin-labels.mjs --worklist | clip` yields a clean paste.
+    const worklistOnly = process.argv.includes('--worklist');
+    const log = (...args) => (worklistOnly ? console.error(...args) : console.log(...args));
+    const poll = JSON.parse(readFileSync(POLL_PATH, 'utf8'));
+
+    writeFileSync(CATALOG_PATH, buildCatalogCsv(poll));
+    log(`skin_label_catalog.csv regenerated (${Object.keys(poll).length} skins)`);
+
     const validIds = new Set(Object.values(poll).map((s) => String(s['클뜯 id'])));
-    const { errors, entries } = validateRows(rows, validIds, { allowUnknown });
+    const auto = parseAutoCsv(
+        existsSync(AUTO_PATH) ? readFileSync(AUTO_PATH, 'utf8') : '', validIds,
+    );
+    const labelRows = await fetchLabelTab();
+    if (!labelRows) log('SHEET_ID not configured — publishing model labels only (no human overrides).');
+    const human = validateRows(labelRows ?? [], validIds, { allowUnknown });
+
+    const errors = [
+        ...auto.errors.map((e) => `skin_labels_attributes.csv — ${e}`),
+        ...human.errors.map((e) => `라벨 tab — ${e}`),
+    ];
     if (errors.length) {
         console.error('validation failed:\n  - ' + errors.join('\n  - '));
         process.exit(1);
     }
+
+    const entries = mergeLayers(auto.entries, human.entries, validIds);
+    const inherited = inheritSiblingTraits(entries);
 
     const next = buildLabelsJson(entries, new Date().toISOString().slice(0, 10));
     const prev = existsSync(OUT_PATH)
@@ -270,31 +395,42 @@ async function main() {
         : { entries: {} };
     const d = diffSummary(prev.entries ?? {}, next.entries);
     writeFileSync(OUT_PATH, JSON.stringify(next, null, 2) + '\n');
-    console.log(`skin_labels.json written: ${next._meta.count} skins `
+    log(`skin_labels.json written: ${next._meta.count} skins `
         + `(${next._meta.checked} 검수, +${d.added} added, ~${d.changed} changed, -${d.removed} removed)`);
 
-    // The 라벨 tab does not grow itself: its per-row VLOOKUP formulas are laid
-    // down once, so a skin added to the catalog later has no row and would drop
-    // out of the JSON with nothing said. Report the gap rather than hard-fail —
-    // mid-labelling, genuinely unlabelled skins are the normal state.
-    const missing = [...validIds].filter((id) => !(id in entries));
-    if (missing.length) {
-        console.log(`\n${missing.length} catalog skin(s) produced no entry — either no row in the`
-            + ' 라벨 tab (append one, dragging the formulas down) or a wholly blank row:');
-        console.log('  ' + missing.slice(0, 20).join(', ') + (missing.length > 20 ? ' …' : ''));
-    }
+    const overridden = Object.keys(human.entries)
+        .filter((id) => ATTRIBUTES.some((a) => human.entries[id][a.key] !== null)).length;
+    log(`  layers: ${Object.keys(auto.entries).length} model, ${overridden} human-overridden`
+        + `, ${inherited} trait(s) inherited from siblings`);
 
     const conflicts = siblingConflicts(entries);
-    if (conflicts.length) {
-        console.log(`\n${conflicts.length} sibling conflict(s) — same shipgirl, disagreeing character trait:`);
-        for (const c of conflicts) {
-            const detail = Object.entries(c.byValue)
-                .map(([v, ids]) => `${v} (${ids.join(', ')})`).join('  vs  ');
-            console.log(`  gid ${c.gid} ${c.key}: ${detail}`);
-        }
-        console.log('These are WARNINGS — a skin genuinely may change hair colour. Eyeball, do not bulk-fix.');
+    const work = buildWorklist(entries, validIds, conflicts);
+    log(`\nneeds a human — ${work.all.length} skin(s):`);
+    log(`  ${work.unlabelled.length} with no labels at all (hand-label these)`);
+    log(`  ${work.incomplete.length} with a blank attribute`);
+    log(`  ${work.conflicted.length} in a sibling conflict (${conflicts.length} disagreements)`);
+    log('  --worklist prints the ids: `node scripts/sync-skin-labels.mjs --worklist | clip`');
+
+    // The unlabelled queue prints unconditionally: it is the only one that can
+    // reach the site as a skin with NO attributes, and after a data refresh it
+    // is normally short enough to paste straight from here.
+    if (work.unlabelled.length) {
+        log(`\nno labels — paste into 라벨 column A, then fill the dropdowns:`);
+        log(work.unlabelled.slice(0, 50).join('\n'));
+        if (work.unlabelled.length > 50) log(`… and ${work.unlabelled.length - 50} more (use --worklist)`);
     }
-    console.log('\nReminder: deploying this change needs the DATA_VERSION/CACHE_VERSION dual PATCH bump.');
+
+    // Conflicts are WARNINGS — a skin genuinely may change hair colour — so show
+    // a sample for a feel and leave the rest to the worklist.
+    for (const c of conflicts.slice(0, 10)) {
+        const detail = Object.entries(c.byValue)
+            .map(([v, ids]) => `${v} (${ids.join(', ')})`).join('  vs  ');
+        log(`  gid ${c.gid} ${c.key}: ${detail}`);
+    }
+    if (conflicts.length > 10) log(`  … ${conflicts.length - 10} more — eyeball, never bulk-fix`);
+
+    if (worklistOnly) console.log(work.all.join('\n'));
+    log('\nReminder: deploying this change needs the DATA_VERSION/CACHE_VERSION dual PATCH bump.');
 }
 
 const isMain = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);

@@ -153,7 +153,129 @@ test('validateRows rejects an id absent from the catalog, unless allowUnknown', 
     assert.deepEqual(validateRows(rows, IDS, { allowUnknown: true }).errors, []);
 });
 
-import { buildLabelsJson, diffSummary, siblingConflicts } from '../../scripts/sync-skin-labels.mjs';
+import {
+    buildLabelsJson, diffSummary, siblingConflicts, parseAutoCsv, mergeLayers, inheritSiblingTraits,
+    buildWorklist,
+} from '../../scripts/sync-skin-labels.mjs';
+
+// --- parseAutoCsv / mergeLayers ---
+
+const AUTO_CSV = '클뜯 id,아이웨어,자세,방향,강조부위,머리색,머리 다중색,눈색,수인특징\n'
+    + '100002,없음,기타,정면,없음,분홍,단색,청색,없음\n';
+
+test('parseAutoCsv reads the labeler CSV through the same validator as the sheet', () => {
+    const { errors, entries } = parseAutoCsv(AUTO_CSV, IDS);
+    assert.deepEqual(errors, []);
+    assert.equal(entries['100002'].posture, '기타');
+    assert.deepEqual(entries['100002'].beastFeatures, ['없음']);
+});
+
+test('parseAutoCsv treats a missing/empty file as no base layer', () => {
+    assert.deepEqual(parseAutoCsv('', IDS), { errors: [], entries: {} });
+});
+
+test('parseAutoCsv rejects a model value outside the vocabulary', () => {
+    const bad = '클뜯 id,자세\n100002,측면\n';
+    assert.match(parseAutoCsv(bad, IDS).errors.join(), /측면/);
+});
+
+test('mergeLayers lets a human cell override one attribute and inherit the rest', () => {
+    const auto = parseAutoCsv(AUTO_CSV, IDS).entries;
+    const human = validateRows(mapRows(sheet('100002,부린,,서기,,,,,,,TRUE')), IDS).entries;
+    const merged = mergeLayers(auto, human, IDS);
+    assert.equal(merged['100002'].posture, '서기');   // human wins
+    assert.equal(merged['100002'].hairColor, '분홍');  // blank cell falls through to the model
+    assert.equal(merged['100002'].checked, true);
+});
+
+test('mergeLayers keeps a human row for a skin the labeler never covered', () => {
+    const human = validateRows(mapRows(sheet('100012,부린,안경,,,,,,,,')), IDS).entries;
+    const merged = mergeLayers({}, human, IDS);
+    assert.equal(merged['100012'].eyewear, '안경');
+    assert.equal(merged['100012'].posture, null);
+});
+
+test('mergeLayers drops ids no longer in the catalog and sorts numerically', () => {
+    const merged = mergeLayers({ 100012: { posture: '서기' }, 999999: { posture: '눕기' } }, {}, IDS);
+    assert.deepEqual(Object.keys(merged), ['100012']);
+});
+
+test('mergeLayers reports checked only from the human layer', () => {
+    const merged = mergeLayers({ 100002: { posture: '서기', checked: true } }, {}, IDS);
+    assert.equal(merged['100002'].checked, false);
+});
+
+// --- inheritSiblingTraits ---
+
+const traitRow = (over) => ({
+    hairColor: null, hairMultiTone: null, eyeColor: null, beastFeatures: null, ...over,
+});
+
+test('inheritSiblingTraits fills a null trait from unanimous siblings', () => {
+    const entries = { 100000: traitRow({ hairColor: '분홍' }), 100002: traitRow({}) };
+    assert.equal(inheritSiblingTraits(entries), 1);
+    assert.equal(entries['100002'].hairColor, '분홍');
+});
+
+test('inheritSiblingTraits leaves the trait null when siblings disagree', () => {
+    const entries = {
+        100000: traitRow({ hairColor: '분홍' }),
+        100002: traitRow({ hairColor: '금발' }),
+        100004: traitRow({}),
+    };
+    assert.equal(inheritSiblingTraits(entries), 0);
+    assert.equal(entries['100004'].hairColor, null);
+});
+
+test('inheritSiblingTraits never overwrites a value that is already there', () => {
+    const entries = { 100000: traitRow({ hairColor: '분홍' }), 100002: traitRow({ hairColor: '분홍' }) };
+    assert.equal(inheritSiblingTraits(entries), 0);
+});
+
+test('inheritSiblingTraits does not cross shipgirls', () => {
+    const entries = { 100000: traitRow({ hairColor: '분홍' }), 100010: traitRow({}) };
+    assert.equal(inheritSiblingTraits(entries), 0);
+});
+
+test('inheritSiblingTraits copies a multi-valued trait as its own array', () => {
+    const entries = { 100000: traitRow({ beastFeatures: ['동물귀'] }), 100002: traitRow({}) };
+    inheritSiblingTraits(entries);
+    assert.deepEqual(entries['100002'].beastFeatures, ['동물귀']);
+    entries['100002'].beastFeatures.push('꼬리');
+    assert.deepEqual(entries['100000'].beastFeatures, ['동물귀']);
+});
+
+// --- buildWorklist ---
+
+const full = (over) => ({
+    eyewear: '없음', posture: '서기', facing: '정면', emphasis: '없음', hairColor: '분홍',
+    hairMultiTone: '단색', eyeColor: '청색', beastFeatures: ['없음'], checked: false, ...over,
+});
+
+test('buildWorklist separates the three queues and dedupes the union', () => {
+    const entries = {
+        100000: full({ hairColor: '분홍' }),
+        100002: full({ hairColor: '금발', posture: null }),  // conflicted AND incomplete
+    };
+    const work = buildWorklist(entries, new Set(['100000', '100002', '100004']), siblingConflicts(entries));
+    assert.deepEqual(work.unlabelled, ['100004']);
+    assert.deepEqual(work.incomplete, ['100002']);
+    assert.deepEqual(work.conflicted, ['100000', '100002']);
+    assert.deepEqual(work.all, ['100000', '100002', '100004']);
+});
+
+test('buildWorklist sorts numerically, not lexicographically', () => {
+    const entries = { 9600081: full({}), 100000: full({}) };
+    const work = buildWorklist(entries, new Set(['9600081', '100000']), []);
+    assert.deepEqual(work.all, []);
+    assert.deepEqual(buildWorklist({}, new Set(['9600081', '100000']), []).all, ['100000', '9600081']);
+});
+
+test('inheritSiblingTraits ignores skin-only attributes', () => {
+    const entries = { 100000: traitRow({ posture: '서기' }), 100002: traitRow({ posture: null }) };
+    inheritSiblingTraits(entries);
+    assert.equal(entries['100002'].posture, null);
+});
 
 // --- buildLabelsJson ---
 
