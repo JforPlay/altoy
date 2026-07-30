@@ -1196,6 +1196,11 @@
                 "year": 2025
             },
             {
+                "kind": "event",
+                "label": "자동 보병 인형의 여행",
+                "year": 2026
+            },
+            {
                 "kind": "main",
                 "label": "강철의 날개와 바람"
             },
@@ -1226,10 +1231,6 @@
             {
                 "kind": "main",
                 "label": "아직 가라앉지 않은 태양"
-            },
-            {
-                "kind": "main",
-                "label": "아마하라에 바치는 춤"
             }
         ],
         "year": 2025
@@ -3645,6 +3646,11 @@
                 "year": 2023
             },
             {
+                "kind": "event",
+                "label": "자동 보병 인형의 여행",
+                "year": 2026
+            },
+            {
                 "kind": "main",
                 "label": "새벽녘에 비치는 빙화"
             },
@@ -3683,10 +3689,6 @@
             {
                 "kind": "main",
                 "label": "은빛 정상의 안개"
-            },
-            {
-                "kind": "opsi",
-                "label": "利维浦"
             }
         ],
         "year": 2023
@@ -7871,6 +7873,114 @@
             }
         ],
         "year": 2020
+    },
+    "nier-az-story": {
+        "name": "nier-az-story",
+        "cues": [
+            "白日虚像光_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "白日虚像光_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/nier-az-story/%E7%99%BD%E6%97%A5%E8%99%9A%E5%83%8F%E5%85%89_AL.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "event",
+                "label": "자동 보병 인형의 여행",
+                "year": 2026
+            },
+            {
+                "kind": "scene",
+                "label": "NieRAutomataMainPage"
+            }
+        ],
+        "year": 2026
+    },
+    "nier-ruinscity-a-1": {
+        "name": "nier-ruinscity-a-1",
+        "cues": [
+            "1.RuinsCity_A_2mix_Dynamic"
+        ],
+        "tracks": [
+            {
+                "cue": "1.RuinsCity_A_2mix_Dynamic",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/nier-ruinscity-a-1/1.RuinsCity_A_2mix_Dynamic.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "opsi",
+                "label": "보스 함대"
+            },
+            {
+                "kind": "scene",
+                "label": "LoginScene"
+            },
+            {
+                "kind": "scene",
+                "label": "NieRAutomataOmenPage"
+            }
+        ],
+        "year": null
+    },
+    "nier-ruinscity-a-2": {
+        "name": "nier-ruinscity-a-2",
+        "cues": [
+            "2.RuinsCity_A_2mix_Quiet"
+        ],
+        "tracks": [
+            {
+                "cue": "2.RuinsCity_A_2mix_Quiet",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/nier-ruinscity-a-2/2.RuinsCity_A_2mix_Quiet.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "scene",
+                "label": "NieRAutomataAwardPage"
+            }
+        ],
+        "year": null
+    },
+    "nier-ruinscity-b-1": {
+        "name": "nier-ruinscity-b-1",
+        "cues": [
+            "3.Ruinscity_B_2mix_Dynamic"
+        ],
+        "tracks": [
+            {
+                "cue": "3.Ruinscity_B_2mix_Dynamic",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/nier-ruinscity-b-1/3.Ruinscity_B_2mix_Dynamic.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "scene",
+                "label": "NieRAutomataKillPage"
+            }
+        ],
+        "year": null
+    },
+    "nier-ruinscity-b-2": {
+        "name": "nier-ruinscity-b-2",
+        "cues": [
+            "4.Ruinscity_B_2mix_Quiet"
+        ],
+        "tracks": [
+            {
+                "cue": "4.Ruinscity_B_2mix_Quiet",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/nier-ruinscity-b-2/4.Ruinscity_B_2mix_Quiet.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "scene",
+                "label": "NieRAutomataStagePage"
+            }
+        ],
+        "year": null
     },
     "qe-ova-1": {
         "name": "qe-ova-1",
@@ -13792,6 +13902,14 @@
             }
         ],
         "usage": [
+            {
+                "kind": "scene",
+                "label": "AuctionGameCoreActivityUI"
+            },
+            {
+                "kind": "scene",
+                "label": "AuctionGameEntranceScene"
+            },
             {
                 "kind": "scene",
                 "label": "DormSignThirdPage"

@@ -2479,6 +2479,22 @@
         "name": "블루 오션 랑데부",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/11500061.webp"
     },
+    "11700010": {
+        "name": "A2",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/11700010.webp"
+    },
+    "11700011": {
+        "name": "금단의 과실",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/11700011.webp"
+    },
+    "11700020": {
+        "name": "2B",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/11700020.webp"
+    },
+    "11700021": {
+        "name": "찰나의 휴식",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/11700021.webp"
+    },
     "118020": {
         "name": "괌",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/118020.webp"

@@ -870,9 +870,9 @@ id,name,rarity,type,nation,icon_url
 150800,플라미,SSR,기타,YUMIA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150800.webp
 150820,사쿠라 엠파이어의 초대장,SR,기타,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150820.webp
 150840,자유 군도 초대장,SR,기타,MOT,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150840.webp
-150860,미카엘,SSR,기타,,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150860.webp
-150880,세피라,SSR,기타,,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150880.webp
-150900,거대 주먹밥,SSR,기타,,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150900.webp
+150860,미카엘,SSR,기타,DateALiveV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150860.webp
+150880,세피라,SSR,기타,DateALiveV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150880.webp
+150900,거대 주먹밥,SSR,기타,DateALiveV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150900.webp
 150920,미스터리 아쿠아,SR,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150920.webp
 150940,감독의 각본,SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150940.webp
 150960,옥션 초대장,SR,기타,ROC,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150960.webp

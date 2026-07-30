@@ -1,0 +1,2713 @@
+{
+    "groups": [
+        {
+            "id": 1,
+            "name": "꿈을 짜는 장",
+            "icon": "achv_type_2",
+            "series": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9
+            ]
+        },
+        {
+            "id": 2,
+            "name": "번영의 길",
+            "icon": "achv_type_1",
+            "series": [
+                101,
+                102,
+                103,
+                104,
+                105,
+                106,
+                107,
+                108
+            ]
+        },
+        {
+            "id": 3,
+            "name": "상업의 길",
+            "icon": "achv_type_3",
+            "series": [
+                201,
+                202,
+                203,
+                204,
+                205
+            ]
+        },
+        {
+            "id": 4,
+            "name": "성장하는 여정",
+            "icon": "achv_type_4",
+            "series": [
+                301,
+                302,
+                303,
+                304,
+                305,
+                306,
+                307,
+                308
+            ]
+        }
+    ],
+    "series": [
+        {
+            "id": 1,
+            "group": 1,
+            "name": "제로부터",
+            "desc": "아일랜드 레벨 N 도달",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 15,
+                    "text": "아일랜드 레벨 15 도달",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "심우주 탐험가",
+                        "icon": "island/islandfurnitureicon/furniture_10421",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 30,
+                    "text": "아일랜드 레벨 30 도달",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 15000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 40,
+                    "text": "아일랜드 레벨 40 도달",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 60,
+                    "text": "아일랜드 레벨 60 도달",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "invitation",
+                        "name": "레오나르도 다 빈치",
+                        "icon": "island/islandcharicon/6080200",
+                        "count": 1,
+                        "rarity": 4
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 80,
+                    "text": "아일랜드 레벨 80 도달",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 100,
+                    "text": "아일랜드 레벨 100 도달",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 40,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "group": 1,
+            "name": "모범 도민",
+            "desc": "일일 계획 N회 완료",
+            "correction": {
+                "name": "미래를 향해",
+                "desc": "아일랜드 기술 N개 연구"
+            },
+            "note": "게임 내 표기가 다른 업적과 뒤바뀌어 있습니다. 화살표 뒤가 실제 조건입니다.",
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 60,
+                    "text": "일일 계획 60회 완료",
+                    "correct_text": "아일랜드 기술 60개 연구",
+                    "award": {
+                        "kind": "furniture",
+                        "name": "급수 장치",
+                        "icon": "island/islandfurnitureicon/furniture_10409",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 80,
+                    "text": "일일 계획 80회 완료",
+                    "correct_text": "아일랜드 기술 80개 연구",
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 15000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 100,
+                    "text": "일일 계획 100회 완료",
+                    "correct_text": "아일랜드 기술 100개 연구",
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 120,
+                    "text": "일일 계획 120회 완료",
+                    "correct_text": "아일랜드 기술 120개 연구",
+                    "award": {
+                        "kind": "invitation",
+                        "name": "르 말랭",
+                        "icon": "island/islandcharicon/9011100",
+                        "count": 1,
+                        "rarity": 4
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 150,
+                    "text": "일일 계획 150회 완료",
+                    "correct_text": "아일랜드 기술 150개 연구",
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 180,
+                    "text": "일일 계획 180회 완료",
+                    "correct_text": "아일랜드 기술 180개 연구",
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 40,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "group": 1,
+            "name": "합리적인 개발 구역",
+            "desc": "개발 자금 N 수령",
+            "correction": {
+                "name": "모범 도민",
+                "desc": "일일 계획 N회 완료"
+            },
+            "note": "게임 내 표기가 다른 업적과 뒤바뀌어 있습니다. 화살표 뒤가 실제 조건입니다.",
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 50,
+                    "text": "개발 자금 50 수령",
+                    "correct_text": "일일 계획 50회 완료",
+                    "award": {
+                        "kind": "furniture",
+                        "name": "은행나무",
+                        "icon": "island/islandfurnitureicon/furniture_4",
+                        "count": 3,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 150,
+                    "text": "개발 자금 150 수령",
+                    "correct_text": "일일 계획 150회 완료",
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 10000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 300,
+                    "text": "개발 자금 300 수령",
+                    "correct_text": "일일 계획 300회 완료",
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 5,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 500,
+                    "text": "개발 자금 500 수령",
+                    "correct_text": "일일 계획 500회 완료",
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 1000,
+                    "text": "개발 자금 1,000 수령",
+                    "correct_text": "일일 계획 1,000회 완료",
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 2000,
+                    "text": "개발 자금 2,000 수령",
+                    "correct_text": "일일 계획 2,000회 완료",
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 30,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "group": 1,
+            "name": "미래를 향해",
+            "desc": "아일랜드 기술 N개 연구",
+            "correction": {
+                "name": "합리적인 개발 구역",
+                "desc": "개발 자금 N 수령"
+            },
+            "note": "게임 내 표기가 다른 업적과 뒤바뀌어 있습니다. 화살표 뒤가 실제 조건입니다.",
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 100000,
+                    "text": "아일랜드 기술 100,000개 연구",
+                    "correct_text": "개발 자금 100,000 수령",
+                    "award": {
+                        "kind": "furniture",
+                        "name": "캠핑 욕조",
+                        "icon": "island/islandfurnitureicon/furniture_10403",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 1000000,
+                    "text": "아일랜드 기술 1,000,000개 연구",
+                    "correct_text": "개발 자금 1,000,000 수령",
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 10000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 5000000,
+                    "text": "아일랜드 기술 5,000,000개 연구",
+                    "correct_text": "개발 자금 5,000,000 수령",
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 5,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 10000000,
+                    "text": "아일랜드 기술 10,000,000개 연구",
+                    "correct_text": "개발 자금 10,000,000 수령",
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 20000000,
+                    "text": "아일랜드 기술 20,000,000개 연구",
+                    "correct_text": "개발 자금 20,000,000 수령",
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 50000000,
+                    "text": "아일랜드 기술 50,000,000개 연구",
+                    "correct_text": "개발 자금 50,000,000 수령",
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 30,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "group": 1,
+            "name": "미라클 개발 구역",
+            "desc": "지휘관 스킨(의상) N개 획득",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 3,
+                    "text": "지휘관 스킨(의상) 3개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "푸른 소나무",
+                        "icon": "island/islandfurnitureicon/furniture_10416",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 4,
+                    "text": "지휘관 스킨(의상) 4개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 10000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 6,
+                    "text": "지휘관 스킨(의상) 6개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 5,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 8,
+                    "text": "지휘관 스킨(의상) 8개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 10,
+                    "text": "지휘관 스킨(의상) 10개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 16,
+                    "text": "지휘관 스킨(의상) 16개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 30,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "group": 1,
+            "name": "변화무쌍한 뒷모습",
+            "desc": "지휘관 스킨(등) N개 획득",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 3,
+                    "text": "지휘관 스킨(등) 3개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "작은 나무통",
+                        "icon": "island/islandfurnitureicon/furniture_10418",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 4,
+                    "text": "지휘관 스킨(등) 4개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 10000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 6,
+                    "text": "지휘관 스킨(등) 6개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 5,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 8,
+                    "text": "지휘관 스킨(등) 8개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 10,
+                    "text": "지휘관 스킨(등) 10개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 16,
+                    "text": "지휘관 스킨(등) 16개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 30,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "group": 1,
+            "name": "내 발자취 밟기",
+            "desc": "지휘관 스킨(발자국) N개 획득",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 3,
+                    "text": "지휘관 스킨(발자국) 3개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "조명 포함 울타리",
+                        "icon": "island/islandfurnitureicon/furniture_10412",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 4,
+                    "text": "지휘관 스킨(발자국) 4개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 10000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 6,
+                    "text": "지휘관 스킨(발자국) 6개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 5,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 8,
+                    "text": "지휘관 스킨(발자국) 8개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 10,
+                    "text": "지휘관 스킨(발자국) 10개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 16,
+                    "text": "지휘관 스킨(발자국) 16개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 30,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "group": 1,
+            "name": "날고 있어!",
+            "desc": "지휘관 스킨(부유) N개 획득",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 3,
+                    "text": "지휘관 스킨(부유) 3개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "청록빛 묘목",
+                        "icon": "island/islandfurnitureicon/furniture_11",
+                        "count": 3,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 4,
+                    "text": "지휘관 스킨(부유) 4개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 10000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 6,
+                    "text": "지휘관 스킨(부유) 6개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 5,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 8,
+                    "text": "지휘관 스킨(부유) 8개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 10,
+                    "text": "지휘관 스킨(부유) 10개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 16,
+                    "text": "지휘관 스킨(부유) 16개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 30,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 9,
+            "group": 1,
+            "name": "비트 매니아",
+            "desc": "지휘관 액션 N개 획득",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 10,
+                    "text": "지휘관 액션 10개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "철제 울타리",
+                        "icon": "island/islandfurnitureicon/furniture_10414",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 12,
+                    "text": "지휘관 액션 12개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 10000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 15,
+                    "text": "지휘관 액션 15개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 5,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 20,
+                    "text": "지휘관 액션 20개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 25,
+                    "text": "지휘관 액션 25개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 35,
+                    "text": "지휘관 액션 35개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 30,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 101,
+            "group": 2,
+            "name": "개근상",
+            "desc": "아일랜드 경영 총 N일간 로그인",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 15,
+                    "text": "아일랜드 경영 총 15일간 로그인",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "심우주 탐험가",
+                        "icon": "island/islandfurnitureicon/furniture_10421",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 30,
+                    "text": "아일랜드 경영 총 30일간 로그인",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 15000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 60,
+                    "text": "아일랜드 경영 총 60일간 로그인",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 120,
+                    "text": "아일랜드 경영 총 120일간 로그인",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 20,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 250,
+                    "text": "아일랜드 경영 총 250일간 로그인",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 500,
+                    "text": "아일랜드 경영 총 500일간 로그인",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 40,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 102,
+            "group": 2,
+            "name": "골드 디거",
+            "desc": "광산에서 수동으로 N회 채집",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 15,
+                    "text": "광산에서 수동으로 15회 채집",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "작은 나무통",
+                        "icon": "island/islandfurnitureicon/furniture_10418",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 50,
+                    "text": "광산에서 수동으로 50회 채집",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 5000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 100,
+                    "text": "광산에서 수동으로 100회 채집",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 2,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 250,
+                    "text": "광산에서 수동으로 250회 채집",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 20000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 400,
+                    "text": "광산에서 수동으로 400회 채집",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 700,
+                    "text": "광산에서 수동으로 700회 채집",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 20,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 103,
+            "group": 2,
+            "name": "나무 베기",
+            "desc": "숲에서 수동으로 N회 채집",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 15,
+                    "text": "숲에서 수동으로 15회 채집",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "조명 포함 울타리",
+                        "icon": "island/islandfurnitureicon/furniture_10412",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 50,
+                    "text": "숲에서 수동으로 50회 채집",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 5000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 100,
+                    "text": "숲에서 수동으로 100회 채집",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 2,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 250,
+                    "text": "숲에서 수동으로 250회 채집",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 20000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 400,
+                    "text": "숲에서 수동으로 400회 채집",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 700,
+                    "text": "숲에서 수동으로 700회 채집",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 20,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 104,
+            "group": 2,
+            "name": "식량이 더 필요해!",
+            "desc": "밭에서 수동으로 N회 수확",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 15,
+                    "text": "밭에서 수동으로 15회 수확",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "목제 바리케이드",
+                        "icon": "island/islandfurnitureicon/furniture_10413",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 50,
+                    "text": "밭에서 수동으로 50회 수확",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 5000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 100,
+                    "text": "밭에서 수동으로 100회 수확",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 2,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 250,
+                    "text": "밭에서 수동으로 250회 수확",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 20000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 400,
+                    "text": "밭에서 수동으로 400회 수확",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 700,
+                    "text": "밭에서 수동으로 700회 수확",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 20,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 105,
+            "group": 2,
+            "name": "과일 성배",
+            "desc": "과수원에서 수동으로 N회 수확",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 15,
+                    "text": "과수원에서 수동으로 15회 수확",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "어린 삼나무",
+                        "icon": "island/islandfurnitureicon/furniture_10415",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 50,
+                    "text": "과수원에서 수동으로 50회 수확",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 5000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 100,
+                    "text": "과수원에서 수동으로 100회 수확",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 2,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 250,
+                    "text": "과수원에서 수동으로 250회 수확",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 20000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 400,
+                    "text": "과수원에서 수동으로 400회 수확",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 700,
+                    "text": "과수원에서 수동으로 700회 수확",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 20,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 106,
+            "group": 2,
+            "name": "숨겨진 정원",
+            "desc": "모밭에서 수동으로 N회 수확",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 15,
+                    "text": "모밭에서 수동으로 15회 수확",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "캠핑 욕조",
+                        "icon": "island/islandfurnitureicon/furniture_10403",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 50,
+                    "text": "모밭에서 수동으로 50회 수확",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 5000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 100,
+                    "text": "모밭에서 수동으로 100회 수확",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 2,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 250,
+                    "text": "모밭에서 수동으로 250회 수확",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 20000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 400,
+                    "text": "모밭에서 수동으로 400회 수확",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 700,
+                    "text": "모밭에서 수동으로 700회 수확",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 20,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 107,
+            "group": 2,
+            "name": "아르바이트하자!",
+            "desc": "캐릭터를 총 N회 배치",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 75,
+                    "text": "캐릭터를 총 75회 배치",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "가로등",
+                        "icon": "island/islandfurnitureicon/furniture_10420",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 150,
+                    "text": "캐릭터를 총 150회 배치",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 5000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 300,
+                    "text": "캐릭터를 총 300회 배치",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 2,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 600,
+                    "text": "캐릭터를 총 600회 배치",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 20000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 1000,
+                    "text": "캐릭터를 총 1,000회 배치",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 2000,
+                    "text": "캐릭터를 총 2,000회 배치",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 20,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 108,
+            "group": 2,
+            "name": "렛츠 파티!",
+            "desc": "가구를 총 N종류 수집",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 30,
+                    "text": "가구를 총 30종류 수집",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "철제 울타리",
+                        "icon": "island/islandfurnitureicon/furniture_10414",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 40,
+                    "text": "가구를 총 40종류 수집",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 5000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 50,
+                    "text": "가구를 총 50종류 수집",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 2,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 70,
+                    "text": "가구를 총 70종류 수집",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 20000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 90,
+                    "text": "가구를 총 90종류 수집",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 200,
+                    "text": "가구를 총 200종류 수집",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 20,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 201,
+            "group": 3,
+            "name": "도망칠 수 없는 분주함",
+            "desc": "아일랜드 의뢰 총 N개 완수",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 75,
+                    "text": "아일랜드 의뢰 총 75개 완수",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "경고 표지판",
+                        "icon": "island/islandfurnitureicon/furniture_10410",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 150,
+                    "text": "아일랜드 의뢰 총 150개 완수",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 15000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 300,
+                    "text": "아일랜드 의뢰 총 300개 완수",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 600,
+                    "text": "아일랜드 의뢰 총 600개 완수",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 20,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 1000,
+                    "text": "아일랜드 의뢰 총 1,000개 완수",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 2000,
+                    "text": "아일랜드 의뢰 총 2,000개 완수",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 40,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 202,
+            "group": 3,
+            "name": "운송 파트너",
+            "desc": "운송 의뢰 N개 완수",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 10,
+                    "text": "운송 의뢰 10개 완수",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "장작 패기 세트",
+                        "icon": "island/islandfurnitureicon/furniture_10411",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 50,
+                    "text": "운송 의뢰 50개 완수",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 15000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 180,
+                    "text": "운송 의뢰 180개 완수",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 350,
+                    "text": "운송 의뢰 350개 완수",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 20,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 750,
+                    "text": "운송 의뢰 750개 완수",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 1000,
+                    "text": "운송 의뢰 1,000개 완수",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 40,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 203,
+            "group": 3,
+            "name": "공짜로 해줘",
+            "desc": "상점에서 개발 자금을 N 소비",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 100000,
+                    "text": "상점에서 개발 자금을 100,000 소비",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "경고 표지판",
+                        "icon": "island/islandfurnitureicon/furniture_10410",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 500000,
+                    "text": "상점에서 개발 자금을 500,000 소비",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 15000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 2500000,
+                    "text": "상점에서 개발 자금을 2,500,000 소비",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 5000000,
+                    "text": "상점에서 개발 자금을 5,000,000 소비",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 20,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 10000000,
+                    "text": "상점에서 개발 자금을 10,000,000 소비",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 25000000,
+                    "text": "상점에서 개발 자금을 25,000,000 소비",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 40,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 204,
+            "group": 3,
+            "name": "인기 점주",
+            "desc": "아일랜드의 가게 경영 N회 실시",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 100,
+                    "text": "아일랜드의 가게 경영 100회 실시",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "급수 장치",
+                        "icon": "island/islandfurnitureicon/furniture_10409",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 200,
+                    "text": "아일랜드의 가게 경영 200회 실시",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 15000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 400,
+                    "text": "아일랜드의 가게 경영 400회 실시",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 720,
+                    "text": "아일랜드의 가게 경영 720회 실시",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 20,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 1200,
+                    "text": "아일랜드의 가게 경영 1,200회 실시",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 2000,
+                    "text": "아일랜드의 가게 경영 2,000회 실시",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 40,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 205,
+            "group": 3,
+            "name": "별빛 인생",
+            "desc": "별빛상 N회 뽑기",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 30,
+                    "text": "별빛상 30회 뽑기",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "벽개목",
+                        "icon": "island/islandfurnitureicon/furniture_9",
+                        "count": 3,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 80,
+                    "text": "별빛상 80회 뽑기",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 15000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 150,
+                    "text": "별빛상 150회 뽑기",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 300,
+                    "text": "별빛상 300회 뽑기",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 20,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 600,
+                    "text": "별빛상 600회 뽑기",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 900,
+                    "text": "별빛상 900회 뽑기",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 40,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 301,
+            "group": 4,
+            "name": "개발 구역에서의 생활",
+            "desc": "캐릭터 N명 레벨 50 도달",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 1,
+                    "text": "캐릭터 1명 레벨 50 도달",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "목제 바리케이드",
+                        "icon": "island/islandfurnitureicon/furniture_10413",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 3,
+                    "text": "캐릭터 3명 레벨 50 도달",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 10000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 5,
+                    "text": "캐릭터 5명 레벨 50 도달",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 5,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 7,
+                    "text": "캐릭터 7명 레벨 50 도달",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 10,
+                    "text": "캐릭터 10명 레벨 50 도달",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 15,
+                    "text": "캐릭터 15명 레벨 50 도달",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 30,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 302,
+            "group": 4,
+            "name": "생산력 UP!",
+            "desc": "캐릭터 N명 스킬 레벨 10 도달",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 1,
+                    "text": "캐릭터 1명 스킬 레벨 10 도달",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "조명 포함 울타리",
+                        "icon": "island/islandfurnitureicon/furniture_10412",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 2,
+                    "text": "캐릭터 2명 스킬 레벨 10 도달",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 10000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 4,
+                    "text": "캐릭터 4명 스킬 레벨 10 도달",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 5,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 6,
+                    "text": "캐릭터 6명 스킬 레벨 10 도달",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 8,
+                    "text": "캐릭터 8명 스킬 레벨 10 도달",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 10,
+                    "text": "캐릭터 10명 스킬 레벨 10 도달",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 30,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 303,
+            "group": 4,
+            "name": "통하는 마음",
+            "desc": "캐릭터와 N회 상호작용",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 10,
+                    "text": "캐릭터와 10회 상호작용",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "푸른 소나무",
+                        "icon": "island/islandfurnitureicon/furniture_10416",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 20,
+                    "text": "캐릭터와 20회 상호작용",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 10000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 50,
+                    "text": "캐릭터와 50회 상호작용",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 5,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 100,
+                    "text": "캐릭터와 100회 상호작용",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 150,
+                    "text": "캐릭터와 150회 상호작용",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 300,
+                    "text": "캐릭터와 300회 상호작용",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 30,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 304,
+            "group": 4,
+            "name": "베스트 프렌드",
+            "desc": "캐릭터에게 N회 선물하기",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 10,
+                    "text": "캐릭터에게 10회 선물하기",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "가로등",
+                        "icon": "island/islandfurnitureicon/furniture_10420",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 20,
+                    "text": "캐릭터에게 20회 선물하기",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 10000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 30,
+                    "text": "캐릭터에게 30회 선물하기",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 5,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 40,
+                    "text": "캐릭터에게 40회 선물하기",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 50,
+                    "text": "캐릭터에게 50회 선물하기",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 60,
+                    "text": "캐릭터에게 60회 선물하기",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 30,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 305,
+            "group": 4,
+            "name": "패션 어드바이저",
+            "desc": "캐릭터 스킨(의상) N개 획득",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 1,
+                    "text": "캐릭터 스킨(의상) 1개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "어린 삼나무",
+                        "icon": "island/islandfurnitureicon/furniture_10415",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 3,
+                    "text": "캐릭터 스킨(의상) 3개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 10000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 5,
+                    "text": "캐릭터 스킨(의상) 5개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 5,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 10,
+                    "text": "캐릭터 스킨(의상) 10개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 15,
+                    "text": "캐릭터 스킨(의상) 15개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 25,
+                    "text": "캐릭터 스킨(의상) 25개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 30,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 306,
+            "group": 4,
+            "name": "너희는 내 날개야",
+            "desc": "캐릭터 스킨(등) N개 획득",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 1,
+                    "text": "캐릭터 스킨(등) 1개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "목제 바리케이드",
+                        "icon": "island/islandfurnitureicon/furniture_10413",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 2,
+                    "text": "캐릭터 스킨(등) 2개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 10000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 4,
+                    "text": "캐릭터 스킨(등) 4개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 5,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 8,
+                    "text": "캐릭터 스킨(등) 8개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 10,
+                    "text": "캐릭터 스킨(등) 10개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 15,
+                    "text": "캐릭터 스킨(등) 15개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 30,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 307,
+            "group": 4,
+            "name": "부유의 미학",
+            "desc": "캐릭터 스킨(부유) N개 획득",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 1,
+                    "text": "캐릭터 스킨(부유) 1개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "철제 울타리",
+                        "icon": "island/islandfurnitureicon/furniture_10414",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 2,
+                    "text": "캐릭터 스킨(부유) 2개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 10000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 4,
+                    "text": "캐릭터 스킨(부유) 4개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 5,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 8,
+                    "text": "캐릭터 스킨(부유) 8개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 10,
+                    "text": "캐릭터 스킨(부유) 10개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 15,
+                    "text": "캐릭터 스킨(부유) 15개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 30,
+                        "rarity": 3
+                    }
+                }
+            ]
+        },
+        {
+            "id": 308,
+            "group": 4,
+            "name": "한걸음씩",
+            "desc": "캐릭터 스킨(발자국) N개 획득",
+            "correction": null,
+            "note": null,
+            "stages": [
+                {
+                    "stage": 1,
+                    "num": 1,
+                    "text": "캐릭터 스킨(발자국) 1개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "furniture",
+                        "name": "장작 패기 세트",
+                        "icon": "island/islandfurnitureicon/furniture_10411",
+                        "count": 1,
+                        "rarity": 2
+                    }
+                },
+                {
+                    "stage": 2,
+                    "num": 2,
+                    "text": "캐릭터 스킨(발자국) 2개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "개발 자금",
+                        "icon": "props/item_island_1",
+                        "count": 10000,
+                        "rarity": 1
+                    }
+                },
+                {
+                    "stage": 3,
+                    "num": 4,
+                    "text": "캐릭터 스킨(발자국) 4개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 EXP 교본 T2",
+                        "icon": "props/item_100002",
+                        "count": 5,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 4,
+                    "num": 8,
+                    "text": "캐릭터 스킨(발자국) 8개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 10,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 5,
+                    "num": 10,
+                    "text": "캐릭터 스킨(발자국) 10개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "item",
+                        "name": "아일랜드 개발 결정",
+                        "icon": "props/item_island_100201",
+                        "count": 1,
+                        "rarity": 3
+                    }
+                },
+                {
+                    "stage": 6,
+                    "num": 15,
+                    "text": "캐릭터 스킨(발자국) 15개 획득",
+                    "correct_text": null,
+                    "award": {
+                        "kind": "resource",
+                        "name": "다이아",
+                        "icon": "props/gem",
+                        "count": 30,
+                        "rarity": 3
+                    }
+                }
+            ]
+        }
+    ]
+}

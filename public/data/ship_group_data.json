@@ -23202,5 +23202,25 @@
             "이벤트: DATE A LANE"
         ],
         "rarity": "SSR"
+    },
+    "1170001": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/11700010.webp",
+        "name": "A2",
+        "nationality": 117,
+        "type": 3,
+        "description": [
+            "이벤트: 자동 보병 인형의 여행"
+        ],
+        "rarity": "SSR"
+    },
+    "1170002": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/11700020.webp",
+        "name": "2B",
+        "nationality": 117,
+        "type": 2,
+        "description": [
+            "이벤트: 자동 보병 인형의 여행"
+        ],
+        "rarity": "SSR"
     }
 }

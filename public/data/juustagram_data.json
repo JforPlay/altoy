@@ -29151,6 +29151,38 @@
         "op_reply2": "",
         "reply2_shipgirl": null
     },
+    "658": {
+        "id": 658,
+        "ship_group": 71379,
+        "message": "",
+        "name": "A2",
+        "picture_persist": "",
+        "shipgirl_names": [
+            71379
+        ],
+        "op_option1": "",
+        "op_reply1": "",
+        "reply1_shipgirl": null,
+        "op_option2": "",
+        "op_reply2": "",
+        "reply2_shipgirl": null
+    },
+    "659": {
+        "id": 659,
+        "ship_group": 71380,
+        "message": "",
+        "name": "2B",
+        "picture_persist": "",
+        "shipgirl_names": [
+            71380
+        ],
+        "op_option1": "",
+        "op_reply1": "",
+        "reply1_shipgirl": null,
+        "op_option2": "",
+        "op_reply2": "",
+        "reply2_shipgirl": null
+    },
     "66": {
         "id": 66,
         "ship_group": 80101,
