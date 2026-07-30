@@ -24,7 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
         storylineSummaryData: {}, // Only used by world viewer
         shipgirlData: {},
         shipgirlNameMap: {},
-        expressionManifest: {}, // Painting/expression data for characters
+        expressionManifest: null, // Painting/expression data, loaded on first story playback
+        _expressionManifestPromise: null,
+        _expressionManifestForceRefresh: false,
         currentEventId: null,
         currentMemoryId: null,
         currentStoryScript: [],
@@ -160,8 +162,8 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         /**
-         * Fetch all data paths declared by config, delegate to config.processLoadedData,
-         * populate the shipgirl name map, and load the expression manifest.
+         * Fetch the boot data paths declared by config, delegate to
+         * config.processLoadedData, and populate the shipgirl name map.
          */
         async loadData() {
             const fetchPromises = this.config.dataPaths.map(path => fetchJSONWithCache(path));
@@ -172,12 +174,46 @@ document.addEventListener('DOMContentLoaded', () => {
             for (const id in this.shipgirlData) {
                 this.shipgirlNameMap[this.shipgirlData[id].name] = id;
             }
+        },
 
-            try {
-                this.expressionManifest = await fetchJSONWithCache('data/skin/expression_manifest.json');
-            } catch (e) {
-                console.warn('Could not load expression manifest:', e);
+        /**
+         * Load painting/expression metadata when story playback first needs it.
+         * Concurrent callers share one promise. A failed or malformed response
+         * degrades to icon-only dialogue for that story and clears the promise
+         * so the next story activation retries without the IndexedDB entry.
+         */
+        ensureExpressionManifest() {
+            if (this.expressionManifest) {
+                return Promise.resolve(this.expressionManifest);
             }
+            if (this._expressionManifestPromise) {
+                return this._expressionManifestPromise;
+            }
+
+            const promise = fetchJSONWithCache(
+                'data/skin/expression_manifest.json',
+                { forceRefresh: this._expressionManifestForceRefresh }
+            )
+                .then((manifest) => {
+                    if (!manifest || Array.isArray(manifest) || typeof manifest !== 'object'
+                        || Object.keys(manifest).length === 0) {
+                        throw new Error('expression manifest is empty or malformed');
+                    }
+                    this.expressionManifest = manifest;
+                    this._expressionManifestForceRefresh = false;
+                    return manifest;
+                })
+                .catch((error) => {
+                    console.warn('Could not load expression manifest:', error);
+                    this._expressionManifestForceRefresh = true;
+                    if (this._expressionManifestPromise === promise) {
+                        this._expressionManifestPromise = null;
+                    }
+                    return null;
+                });
+
+            this._expressionManifestPromise = promise;
+            return promise;
         },
 
         // ===== Event Listeners =====
@@ -834,6 +870,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.showError("This story is not available.");
                 return;
             }
+
+            // The event/chapter grids do not consume painting metadata. Wait
+            // for it only at the first playback boundary so the initial line's
+            // portrait and painting render deterministically. Failure remains
+            // non-fatal and is retried by a later story activation.
+            await this.ensureExpressionManifest();
 
             hideElement(this.elements.fadeOverlay, true);
 
