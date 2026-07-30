@@ -7405,5 +7405,29 @@
         "일": "26",
         "group_id": "80106",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/801060.webp"
+    },
+    {
+        "ID": "743",
+        "룽섭 이름": "A2",
+        "레어도": "SSR",
+        "함종": "중순",
+        "진영": "니어 오토마타",
+        "연": "",
+        "월": "5",
+        "일": "20",
+        "group_id": "1170001",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/11700010.webp"
+    },
+    {
+        "ID": "744",
+        "룽섭 이름": "2B",
+        "레어도": "SSR",
+        "함종": "경순",
+        "진영": "니어 오토마타",
+        "연": "",
+        "월": "1",
+        "일": "7",
+        "group_id": "1170002",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/11700020.webp"
     }
 ]
