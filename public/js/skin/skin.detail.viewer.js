@@ -5,7 +5,7 @@
  * Part of the skin module group.
  */
 import { debounce, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl, normalizeRomanNumerals, createIcon, createGemIconImg, renderStatus, setupModal, openModal, closeModal } from '../utils.js';
-import { init as initSkinData, searchCharacters, getSkinsForCharacter, getSkinByName, getManifest, getAllCharacterNames, getCharacterNameByGid, getReleaseDate, getSkinFilterData } from './skin.data.js';
+import { init as initSkinData, searchCharacters, getSkinsForCharacter, getSkinByName, ensureExpressionManifest, getAllCharacterNames, getCharacterNameByGid, getReleaseDate, getSkinFilterData } from './skin.data.js';
 import { init as initSkinAudio, stopCurrentAudio, handlePlayClick, createVolumeControlElement, attachVolumeListeners } from './skin.audio.js';
 import { init as initSkinExpression, setManifest, renderImageGallery } from './skin.expression.js';
 import { VOICE_MODE_DEFAULT, VOICE_MODE_ALT, voiceToggleLabels, effectiveVoiceMode, resolveVoiceSrc } from './skin.voice-alt.js';
@@ -46,8 +46,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderLoadError();
         return;
     }
-
-    setManifest(getManifest());
 
     // Event Listeners
     setupDropdowns();
@@ -176,8 +174,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         showElement(elements.skeleton);
 
         let skin = null;
+        let manifest = null;
         try {
-            skin = await getSkinByName(skinName);
+            [skin, manifest] = await Promise.all([
+                getSkinByName(skinName),
+                ensureExpressionManifest()
+            ]);
         } catch (error) {
             console.error('Failed to load skin details', error);
         }
@@ -187,6 +189,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderSkinError('스킨 정보를 불러올 수 없습니다.');
             return;
         }
+
+        setManifest(manifest);
 
         requestAnimationFrame(() => {
             if (renderToken !== skinRenderToken) return;

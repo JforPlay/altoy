@@ -84,9 +84,9 @@ export const ROUTE_BOOT_TARGETS = Object.freeze([
     // above.
     //
     // All three keep a semantic ready signal, then collect until network idle.
-    // R1 and R7 are complete; retaining the network-idle cutoff proves their
-    // removed warmups were not merely delayed past readiness. R13 still targets
-    // expression data that initializes before a skin is selected.
+    // R1, R7, and R13 are complete; retaining the network-idle cutoff proves
+    // their removed warmups were not merely delayed past readiness. Skin-detail
+    // expression data must remain absent until a skin is actually selected.
     {
         key: 'EQUIP_SKIN',
         path: 'skin/equip-skin-viewer/',

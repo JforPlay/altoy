@@ -1,23 +1,27 @@
 /**
  * skin.data.js
  * Shared data layer for the skin module group (list viewer, detail viewer, poll, etc.).
- * Loads a lightweight index on init (~127KB), then lazy-fetches full per-character
- * data on demand. Exposes both ES module exports and window.SkinData for legacy access.
+ * Loads a lightweight index and release dates on init, then lazy-fetches full
+ * per-character data and expression metadata on demand. Exposes both ES module
+ * exports and window.SkinData for legacy access.
  */
 import { fetchJSONWithCache, normalizeRomanNumerals, createSearchIndex, ensureFuse } from '../utils.js';
 import { mergeReleaseDates, formatReleaseDate } from './skin.dates.js';
 import { buildGidMap, resolveCharByGid } from './skin.gid.js';
 
-// @type {{skinIndex: Object, skinDataCache: Object<string, Array>, expressionManifest: Object, characterFuse: Fuse|null, allCharacterNames: string[], gidMap: Map<number,string>|null, releaseDates: Object|null}}
+// @type {{skinIndex: Object, skinDataCache: Object<string, Array>, expressionManifest: Object|null, characterFuse: Fuse|null, allCharacterNames: string[], gidMap: Map<number,string>|null, releaseDates: Object|null}}
 const state = {
     skinIndex: null,         // Lightweight index: character names, skin names, file hashes
     skinDataCache: {},       // Cached per-character full data: charName -> skin[]
-    expressionManifest: {},
+    expressionManifest: null,
     characterFuse: null,
     allCharacterNames: [],
     gidMap: null,            // ship-group id -> character name (stable cross-page link key)
     releaseDates: null       // skinId (string) -> date string
 };
+
+let expressionManifestPromise = null;
+let expressionManifestForceRefresh = false;
 
 
 /**
@@ -45,23 +49,17 @@ async function loadReleaseDates() {
 }
 
 /**
- * Load the skin index, expression manifest, and release dates.
+ * Load the skin index and release dates.
  * Builds the character name list and Fuse.js search index. Must be called before any lookup.
  */
 async function init() {
     try {
-        // Load lightweight index + expression manifest (127KB vs 19MB)
-        const [skinIndex, manifest, releaseDates] = await Promise.all([
+        const [skinIndex, releaseDates] = await Promise.all([
             fetchJSONWithCache('data/skin/skin_voiceline_index.json'),
-            fetchJSONWithCache('data/skin/expression_manifest.json').catch(e => {
-                console.warn('Expression manifest missing', e);
-                return {};
-            }),
             loadReleaseDates()
         ]);
 
         state.skinIndex = skinIndex;
-        state.expressionManifest = manifest || {};
         state.releaseDates = releaseDates || {};
 
         // Build search index from character names in the index file
@@ -84,6 +82,44 @@ async function init() {
         console.error('SkinData init failed', e);
         return false;
     }
+}
+
+/**
+ * Load expression metadata on the first selected skin rather than page boot.
+ * Concurrent detail renders share one request, a successful result is reused,
+ * and failures stay non-fatal while leaving the next activation able to retry.
+ *
+ * @returns {Promise<Object|null>} expression manifest, or null when unavailable
+ */
+function ensureExpressionManifest() {
+    if (state.expressionManifest) {
+        return Promise.resolve(state.expressionManifest);
+    }
+
+    if (!expressionManifestPromise) {
+        expressionManifestPromise = fetchJSONWithCache(
+            'data/skin/expression_manifest.json',
+            { forceRefresh: expressionManifestForceRefresh }
+        )
+            .then(manifest => {
+                if (!manifest || typeof manifest !== 'object' || Array.isArray(manifest)
+                    || Object.keys(manifest).length === 0) {
+                    throw new TypeError('Expression manifest must be a non-empty object');
+                }
+
+                state.expressionManifest = manifest;
+                expressionManifestForceRefresh = false;
+                return manifest;
+            })
+            .catch(error => {
+                console.warn('Expression manifest missing', error);
+                expressionManifestPromise = null;
+                expressionManifestForceRefresh = true;
+                return null;
+            });
+    }
+
+    return expressionManifestPromise;
 }
 
 /**
@@ -261,7 +297,7 @@ function getSkinFilterData() {
 
 /** Return the expression manifest (skinId → face layout data). */
 function getManifest() {
-    return state.expressionManifest;
+    return state.expressionManifest || {};
 }
 
 /** Return the sorted list of all character names from the index. */
@@ -299,6 +335,7 @@ export {
     getSkinsForCharacter,
     getSkinByName,
     loadCharacterData,
+    ensureExpressionManifest,
     getManifest,
     getAllCharacterNames,
     getCharacterNameByGid,
