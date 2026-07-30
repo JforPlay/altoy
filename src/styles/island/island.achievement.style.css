@@ -1,0 +1,214 @@
+/* =========================================================================
+   island.achievement.style.css — 업적 tab.
+   Four category sections, each a column of series rows; a series row lays its
+   6 stages out in an auto-fit grid (6 across on desktop, folding to 3x2 / 2x3
+   with no horizontal scroller).
+
+   Rarity is carried on [data-rarity], NOT the global .rarity-N classes:
+   island.restaurant.menu.css defines bare .rarity-1..5 background fills that
+   are page-global here, so reusing those class names would repaint the reward
+   chips green/blue/purple.
+   ========================================================================= */
+
+/* ===== Filter bar ===== */
+
+#achievement-filter {
+    margin-bottom: var(--island-spacing-lg);
+}
+
+/* Count bubble inside a chip — inherits the chip's active text color, so it
+   stays legible on both the idle and the accent-blue filled state. */
+.achv-chip-count {
+    padding-left: 0.35rem;
+    border-left: 1px solid currentColor;
+    opacity: 0.75;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ===== Category section ===== */
+
+.achv-group[hidden] {
+    display: none;
+}
+
+.achv-group + .achv-group {
+    margin-top: var(--island-spacing-xl);
+}
+
+.achv-group-head {
+    display: flex;
+    align-items: center;
+    gap: var(--island-gap-md);
+    margin: 0 0 var(--island-spacing-md);
+    font-size: var(--island-text-lg);
+    color: var(--island-text-primary);
+}
+
+.achv-group-emblem {
+    width: 2.25rem;
+    height: 2.25rem;
+    object-fit: contain;
+}
+
+.achv-series-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--island-gap-lg);
+}
+
+/* ===== Series row ===== */
+
+.achv-series {
+    padding: var(--island-spacing-md);
+    background: var(--island-surface);
+    border: 1px solid var(--island-border);
+    border-radius: var(--island-radius-lg);
+}
+
+.achv-series-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--island-gap-sm);
+    margin-bottom: var(--island-spacing-md);
+}
+
+.achv-series-name {
+    margin: 0;
+    font-size: var(--island-text-base);
+    font-weight: 700;
+    color: var(--island-text-primary);
+}
+
+/* Own line under the name — the condition is the long part of the header. */
+.achv-series-desc {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: var(--island-text-sm);
+    color: var(--island-text-secondary);
+}
+
+.achv-note {
+    cursor: help;
+}
+
+/* ===== KR rotated-text correction: wrong → real ===== */
+
+/* The as-shipped string. Kept visible (the page mirrors the client) but marked
+   as wrong, so the arrow that follows reads as a correction and not as a
+   second, additional condition. */
+.achv-wrong {
+    color: var(--island-text-tertiary);
+    text-decoration-color: var(--warning-color);
+}
+
+.achv-arrow {
+    margin: 0 0.35rem;
+    color: var(--warning-color);
+    font-weight: 700;
+}
+
+.achv-right {
+    color: var(--island-text-primary);
+}
+
+.achv-series-desc .achv-right {
+    color: var(--island-text-secondary);
+    font-weight: 600;
+}
+
+/* ===== Stage cells ===== */
+
+.achv-stages {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
+    gap: var(--island-gap-sm);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.achv-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--island-gap-xs);
+    /* Grid items default to min-width:auto, which lets a long reward name push
+       the track wider than its share and overflow the row. */
+    min-width: 0;
+    padding: var(--island-spacing-xs);
+    background: var(--island-surface-hover);
+    border: 1px solid var(--island-border);
+    border-radius: var(--island-radius-md);
+    text-align: center;
+}
+
+.achv-stage-medal {
+    width: 1.75rem;
+    height: 1.75rem;
+    object-fit: contain;
+}
+
+.achv-stage-num {
+    font-size: var(--island-text-sm);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--island-text-primary);
+}
+
+/* ===== Reward ===== */
+
+.achv-award {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    width: 100%;
+    min-width: 0;
+    padding-top: var(--island-gap-xs);
+    border-top: 1px solid var(--island-border);
+}
+
+/* Same rarity ramp the 자원 tab uses (island.resource.recipe.css). */
+.achv-award[data-rarity="1"] { --achv-rarity: var(--rarity-n); }
+.achv-award[data-rarity="2"] { --achv-rarity: var(--island-stamina); }
+.achv-award[data-rarity="3"] { --achv-rarity: var(--island-points); }
+.achv-award[data-rarity="4"] { --achv-rarity: var(--island-warning); }
+
+.achv-award-icon {
+    width: 2rem;
+    height: 2rem;
+    object-fit: contain;
+    background: var(--island-surface);
+    border: 1px solid var(--achv-rarity, var(--island-border));
+    border-radius: var(--island-radius-sm);
+}
+
+.achv-award-name {
+    width: 100%;
+    font-size: var(--island-text-xs);
+    line-height: 1.25;
+    color: var(--island-text-secondary);
+    /* Reward names run to 9 Korean chars ("조명 포함 울타리") in an 88px cell. */
+    overflow-wrap: anywhere;
+}
+
+.achv-award-count {
+    font-size: var(--island-text-xs);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--achv-rarity, var(--island-text-primary));
+}
+
+/* ===== Responsive ===== */
+
+@media (max-width: 480px) {
+    .achv-stages {
+        grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+    }
+
+    .achv-award-icon {
+        width: 1.75rem;
+        height: 1.75rem;
+    }
+}

@@ -58,6 +58,13 @@ const TAB_MODULE_MAP = {
         key: 'seasonCalc',
         load: () => import('./island.season-calc.engine.js'),
         module: () => window.SeasonCalcModule
+    },
+    // No `module` getter: this one exports init directly, so loadModule falls
+    // back to the ES namespace instead of a window.* global (CLAUDE.md — the
+    // island window.* modules are frozen legacy, not a pattern to extend).
+    'achievements': {
+        key: 'achievement',
+        load: () => import('./island.achievement.engine.js')
     }
 };
 const DEFAULT_TAB = 'characters';
@@ -129,10 +136,13 @@ function loadModule(tabName) {
     if (moduleLoadPromises[key]) return moduleLoadPromises[key];
 
     moduleLoadPromises[key] = (async () => {
-        let module = getModule();
+        // Legacy tabs register a window.* global and read it back through
+        // getModule; newer ones just export init, so fall back to the ES
+        // module namespace the dynamic import resolves to.
+        let module = getModule?.();
         if (!module) {
-            await config.load();
-            module = getModule();
+            const namespace = await config.load();
+            module = getModule?.() || namespace;
         }
         if (!module?.init) {
             console.warn(`[Island] Module for ${safeTabName} not found`);

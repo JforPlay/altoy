@@ -1,7 +1,7 @@
 ---
 /**
  * Island Management Page
- * Multi-tab hub for characters, technology, quests, resources, restaurant, season calc.
+ * Multi-tab hub for characters, technology, quests, resources, restaurant, season calc, achievements.
  */
 import Layout from '../layouts/Layout.astro';
 
@@ -29,6 +29,7 @@ import '../styles/island/island.restaurant.responsive.css';
 import '../styles/island/island.restaurant.modal.css';
 import '../styles/island/island.restaurant.planner.css';
 import '../styles/island/island.season-calc.style.css';
+import '../styles/island/island.achievement.style.css';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
@@ -40,7 +41,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <span class="material-symbols-outlined">forest</span>
                 벽뜌땨 관리
             </h1>
-            <p class="subtitle">함순이, 기술, 퀘스트, 자원, 레스토랑, 시즌 계산 정보를 한 곳에서 확인하세요</p>
+            <p class="subtitle">함순이, 기술, 퀘스트, 자원, 레스토랑, 시즌 계산, 업적 정보를 한 곳에서 확인하세요</p>
         </header>
 
         <nav class="tab-navigation" role="tablist" aria-label="Island sections">
@@ -67,6 +68,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <button class="tab-button" type="button" data-tab="season-calc">
                 <span class="material-symbols-outlined">calculate</span>
                 시즌 계산기
+            </button>
+            <button class="tab-button" type="button" data-tab="achievements">
+                <span class="material-symbols-outlined">emoji_events</span>
+                업적
             </button>
         </nav>
 
@@ -277,6 +282,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                             <div class="spinner"></div>
                             <p class="page-status-msg">아이템을 불러오는 중...</p>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="tab-content" id="tab-achievements">
+                <div class="filter-bar" id="achievement-filter"></div>
+
+                <div id="achievement-list">
+                    <div class="page-status page-status-loading">
+                        <div class="spinner"></div>
+                        <p class="page-status-msg">업적 데이터를 불러오는 중...</p>
                     </div>
                 </div>
             </section>

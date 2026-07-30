@@ -126,11 +126,18 @@ function refresh() {
         + '받은 헤더: ' + feedHeader.join(', '));
     }
 
+    // Append after the last non-empty COLUMN A cell, not sheet.getLastRow():
+    // chip-style dropdowns / checkbox validation can make Sheets report rows
+    // far below the data as "used", which once left a 999-row gap.
     var existing = {};
+    var dataEnd = 1;
     var lastRow = sheet.getLastRow();
     if (lastRow >= 2) {
-      sheet.getRange(2, 1, lastRow - 1, 1).getValues().forEach(function (r) {
-        var m = String(r[0]).trim().match(/^\d+/);
+      sheet.getRange(2, 1, lastRow - 1, 1).getValues().forEach(function (r, i) {
+        var cell = String(r[0]).trim();
+        if (!cell) return;
+        dataEnd = i + 2;
+        var m = cell.match(/^\d+/);
         if (m) existing[m[0]] = true;
       });
     }
@@ -148,7 +155,7 @@ function refresh() {
     });
 
     if (newRows.length) {
-      var start = lastRow + 1;
+      var start = dataEnd + 1;
       var overflow = start + newRows.length - 1 - sheet.getMaxRows();
       if (overflow > 0) sheet.insertRowsAfter(sheet.getMaxRows(), overflow);
       sheet.getRange(start, 1, newRows.length, HEADERS.length).setValues(newRows);

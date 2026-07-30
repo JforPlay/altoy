@@ -25,7 +25,7 @@ const PLANNER_PRESET_COUNT = 5;
 
 /** Rarity (1–4) → menu-background image. Shared with the restaurant engine (imported there). */
 export const RARITY_BACKGROUNDS = {
-    1: dataForToyUrl('island/rarity_gray.webp'),
+    1: dataForToyUrl('island/rarity_grey.webp'),
     2: dataForToyUrl('island/rarity_blue.webp'),
     3: dataForToyUrl('island/rarity_purple.webp'),
     4: dataForToyUrl('island/rarity_orange.webp')
