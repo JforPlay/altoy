@@ -8,6 +8,7 @@
 import { readFileSync } from 'node:fs';
 import { test, expect } from '@playwright/test';
 import { PAGE_CATALOG } from '../../public/js/pages.catalog.js';
+import { seedFuse } from './helpers.mjs';
 
 test.describe.configure({ mode: 'serial' });
 test.setTimeout(60_000);
@@ -57,20 +58,6 @@ function waitForSimData(page) {
         (response) => simDataPath(response.url()) === path && response.ok(),
         { timeout: 30_000 }
     )));
-}
-
-function seedFuse(page) {
-    return page.addInitScript(() => {
-        globalThis.Fuse = class {
-            constructor(data) {
-                this.data = data;
-            }
-
-            search() {
-                return [];
-            }
-        };
-    });
 }
 
 test('R1: simulator data starts on first skin preview, not catalog boot', async ({ page }) => {

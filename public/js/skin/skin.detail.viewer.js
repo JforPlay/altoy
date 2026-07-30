@@ -5,7 +5,8 @@
  * Part of the skin module group.
  */
 import { debounce, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl, normalizeRomanNumerals, createIcon, createGemIconImg, renderStatus, setupModal, openModal, closeModal } from '../utils.js';
-import { init as initSkinData, searchCharacters, getSkinsForCharacter, getSkinByName, ensureExpressionManifest, getAllCharacterNames, getCharacterNameByGid, getReleaseDate, getSkinFilterData } from './skin.data.js';
+import { init as initSkinData, searchCharacters, getSkinsForCharacter, getSkinByName, getAllCharacterNames, getCharacterNameByGid, getReleaseDate, getSkinFilterData } from './skin.data.js';
+import { ensureExpressionManifest } from '../expression-manifest.js';
 import { init as initSkinAudio, stopCurrentAudio, handlePlayClick, createVolumeControlElement, attachVolumeListeners } from './skin.audio.js';
 import { init as initSkinExpression, setManifest, renderImageGallery } from './skin.expression.js';
 import { VOICE_MODE_DEFAULT, VOICE_MODE_ALT, voiceToggleLabels, effectiveVoiceMode, resolveVoiceSrc } from './skin.voice-alt.js';

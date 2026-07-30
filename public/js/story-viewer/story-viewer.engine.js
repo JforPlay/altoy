@@ -16,6 +16,7 @@ import { clearLineEffects, handleLineShake, handleLineDialogShake, handleLinePai
 import { correctKrNameColor } from './story.text.js';
 import { collectTranscriptLines, transcriptToPlainText, buildTranscriptFragment, extractSequenceLines, formatSequenceLine } from './story.transcript.js';
 import { resolveAudioCueUrl } from './story.bgm.js';
+import { ensureExpressionManifest as loadExpressionManifest } from '../expression-manifest.js';
 document.addEventListener('DOMContentLoaded', () => {
     window.StoryViewer = {
         // ===== State & Constants =====
@@ -25,8 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
         shipgirlData: {},
         shipgirlNameMap: {},
         expressionManifest: null, // Painting/expression data, loaded on first story playback
-        _expressionManifestPromise: null,
-        _expressionManifestForceRefresh: false,
         currentEventId: null,
         currentMemoryId: null,
         currentStoryScript: [],
@@ -177,43 +176,14 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         /**
-         * Load painting/expression metadata when story playback first needs it.
-         * Concurrent callers share one promise. A failed or malformed response
-         * degrades to icon-only dialogue for that story and clears the promise
-         * so the next story activation retries without the IndexedDB entry.
+         * Load painting/expression metadata when story playback first needs it,
+         * via the shared expression-manifest loader (one cached request; failure
+         * resolves null and the next activation retries without the IndexedDB
+         * entry). A missing manifest degrades to icon-only dialogue.
          */
-        ensureExpressionManifest() {
-            if (this.expressionManifest) {
-                return Promise.resolve(this.expressionManifest);
-            }
-            if (this._expressionManifestPromise) {
-                return this._expressionManifestPromise;
-            }
-
-            const promise = fetchJSONWithCache(
-                'data/skin/expression_manifest.json',
-                { forceRefresh: this._expressionManifestForceRefresh }
-            )
-                .then((manifest) => {
-                    if (!manifest || Array.isArray(manifest) || typeof manifest !== 'object'
-                        || Object.keys(manifest).length === 0) {
-                        throw new Error('expression manifest is empty or malformed');
-                    }
-                    this.expressionManifest = manifest;
-                    this._expressionManifestForceRefresh = false;
-                    return manifest;
-                })
-                .catch((error) => {
-                    console.warn('Could not load expression manifest:', error);
-                    this._expressionManifestForceRefresh = true;
-                    if (this._expressionManifestPromise === promise) {
-                        this._expressionManifestPromise = null;
-                    }
-                    return null;
-                });
-
-            this._expressionManifestPromise = promise;
-            return promise;
+        async ensureExpressionManifest() {
+            this.expressionManifest = await loadExpressionManifest();
+            return this.expressionManifest;
         },
 
         // ===== Event Listeners =====

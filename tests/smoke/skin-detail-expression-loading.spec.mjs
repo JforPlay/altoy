@@ -6,6 +6,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { test, expect } from '@playwright/test';
 import { PAGE_CATALOG } from '../../public/js/pages.catalog.js';
+import { seedFuse } from './helpers.mjs';
 
 test.describe.configure({ mode: 'serial' });
 test.setTimeout(60_000);
@@ -50,24 +51,7 @@ test.beforeEach(async ({ page }) => {
     await page.route('https://raw.githubusercontent.com/**', async (route) => {
         await route.abort('blockedbyclient');
     });
-    await page.addInitScript(() => {
-        globalThis.Fuse = class {
-            constructor(data) {
-                this.data = data;
-            }
-
-            getIndex() {
-                return { docs: this.data };
-            }
-
-            search(query) {
-                const normalized = String(query).toLowerCase();
-                return this.data
-                    .filter(({ name }) => name.toLowerCase().includes(normalized))
-                    .map(item => ({ item, matches: [], score: 0 }));
-            }
-        };
-    });
+    await seedFuse(page);
 });
 
 function isExpressionManifest(url) {

@@ -11,6 +11,7 @@ import { debounce, fetchJSONWithCache, getAllUrlParams, setUrlParams, resolveUrl
 import { loadReleaseDates } from './skin.data.js';
 import { formatReleaseDate, releaseSortKey } from './skin.dates.js';
 import { composeDefaultPainting } from './skin.expression.js';
+import { ensureExpressionManifest } from '../expression-manifest.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // ===== DOM Element References =====
@@ -636,20 +637,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ===== Lightbox =====
-    // Expression manifest (skinId → {faces, box, size}) is ~1MB, so it's lazy-loaded
-    // on first lightbox open rather than at page init, then IndexedDB-cached.
-    let expressionManifestPromise = null;
-    function loadExpressionManifest() {
-        if (!expressionManifestPromise) {
-            expressionManifestPromise = fetchJSONWithCache('data/skin/expression_manifest.json')
-                .catch(err => {
-                    console.warn('Expression manifest load failed', err);
-                    return {};
-                });
-        }
-        return expressionManifestPromise;
-    }
-
     const Lightbox = {
         _generation: 0,
         _errorHandler: null,
@@ -697,10 +684,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }, { once: true });
 
             // painting.png has a transparent face hole — composite the skin's default
-            // expression onto it (same machinery as the detail viewer). The manifest is
-            // lazy-loaded on first open. Falls through to the plain-URL path below when the
-            // skin has no expression entry or compositing fails.
-            const manifest = await loadExpressionManifest();
+            // expression onto it (same machinery as the detail viewer). The shared manifest
+            // loader runs on first open, never at page init. Falls through to the plain-URL
+            // path below when the skin has no expression entry or compositing fails.
+            const manifest = (await ensureExpressionManifest()) || {};
             if (gen !== this._generation) return; // superseded by a newer open()
             const manifestEntry = manifest[skinId];
             if (manifestEntry) {
