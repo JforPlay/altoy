@@ -119,6 +119,7 @@ function ensureSkinTabReady() {
         populateSkinTypeDropdown();
         toggleElement(status, false);
         toggleElement('skinTabContent', true);
+        updateSkinChrome();
         skinTab?.setAttribute('aria-busy', 'false');
 
         if (!result.treemapReady) {
@@ -133,6 +134,19 @@ function ensureSkinTabReady() {
     });
 
     return skinFeaturePromise;
+}
+
+/**
+ * Show the skin-only filter row and summary strip only once the skin tab has
+ * its data — otherwise they appear over the loading status as an empty summary
+ * and an unpopulated 스킨 타입 dropdown.
+ */
+function updateSkinChrome() {
+    const show = state.activeTab === 'skin' && state.skinDataReady;
+    document.querySelectorAll('.skin-only-filter').forEach(el => {
+        toggleElement(el, show);
+    });
+    toggleElement('skinSummaryContent', show);
 }
 
 // ===== Filter Dropdowns =====
@@ -395,14 +409,9 @@ async function switchTab(tab) {
     if (shipTab) shipTab.classList.toggle('active', tab === 'ship');
     if (skinTab) skinTab.classList.toggle('active', tab === 'skin');
 
-    // Skin-only filters are visible on the skin tab only
-    document.querySelectorAll('.skin-only-filter').forEach(el => {
-        toggleElement(el, tab === 'skin');
-    });
-
     // Summary strip swaps with the active tab
     toggleElement('shipSummaryContent', tab === 'ship');
-    toggleElement('skinSummaryContent', tab === 'skin');
+    updateSkinChrome();
 
     updateCompareBar();
     if (tab === 'skin') {

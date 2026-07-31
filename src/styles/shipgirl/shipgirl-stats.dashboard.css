@@ -15,6 +15,12 @@
 }
 
 .dashboard-card {
+    /* A grid item's automatic minimum is its min-content width. A Chart.js
+       canvas keeps the inline width of the previous (wider) layout, so without
+       this the track stays locked at the old size on a desktop -> mobile
+       resize, the container never shrinks, Chart.js never resizes it back, and
+       the page overflows horizontally until reload. */
+    min-width: 0;
     background: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);

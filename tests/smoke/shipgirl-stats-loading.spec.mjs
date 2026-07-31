@@ -24,17 +24,12 @@ const SKIN_DATA_PATHS = [
 ];
 const TREEMAP_DEPENDENCY = 'chartjs-chart-treemap@3';
 
-test.beforeEach(async ({ page }) => {
-    for (const dependency of ['chart.js@4', 'chartjs-chart-matrix@2']) {
-        await page.route(`**/${dependency}*`, async (route) => {
-            await route.fulfill({
-                status: 200,
-                contentType: 'application/javascript',
-                body: '/* deterministic base-chart smoke-test stub */',
-            });
-        });
-    }
-});
+// Only the treemap is intercepted. Chart.js itself is deliberately left on its
+// real CDN URL: stubbing it away leaves no canvas to lay out, which would make
+// the viewport-containment assertions below pass vacuously. Route with a URL
+// predicate, not a glob — a glob `*` does not cross `/`, so `**/chart.js@4*`
+// silently misses `.../chart.js@4/dist/chart.umd.min.js`.
+const isTreemapRequest = (url) => url.href.includes(TREEMAP_DEPENDENCY);
 
 function dependencyForUrl(url) {
     const parsed = new URL(url);
@@ -69,7 +64,7 @@ function waitForSkinData(page, paths = SKIN_DATA_PATHS) {
 }
 
 async function stubTreemapSuccess(page) {
-    await page.route(`**/${TREEMAP_DEPENDENCY}*`, async (route) => {
+    await page.route(isTreemapRequest, async (route) => {
         await route.fulfill({
             status: 200,
             contentType: 'application/javascript',
@@ -171,7 +166,7 @@ test('R12: failed skin data exposes the standard retry action', async ({ page })
 
 test('R12: a failed treemap request is non-fatal and retries on later activation', async ({ page }) => {
     let treemapAttempts = 0;
-    await page.route(`**/${TREEMAP_DEPENDENCY}*`, async (route) => {
+    await page.route(isTreemapRequest, async (route) => {
         treemapAttempts += 1;
         if (treemapAttempts === 1) {
             await route.abort('failed');

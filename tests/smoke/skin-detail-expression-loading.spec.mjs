@@ -76,11 +76,24 @@ function waitForExpressionManifest(page) {
 }
 
 async function waitForSearchShell(page) {
-    await expect(page.locator('#character-search-input')).toBeEnabled();
-    await page.locator('#character-search-input').focus();
-    await expect(page.locator(
-        '#character-dropdown-content [role="option"]'
-    ).first()).toBeVisible();
+    const input = page.locator('#character-search-input');
+    await expect(input).toBeEnabled();
+
+    // `charInput` is enabled in the markup and only ever disabled on load
+    // failure, so being enabled proves nothing about initialization: the focus
+    // handler is attached after initSkinData() resolves, and a focus that lands
+    // before that populates nothing and is never retried by the page. Re-focus
+    // until the options render — the 250ms gap lets the blur close-timer fire
+    // first, so the final focus leaves the dropdown open.
+    const options = page.locator('#character-dropdown-content [role="option"]');
+    await expect.poll(async () => {
+        await input.blur();
+        await page.waitForTimeout(250);
+        await input.focus();
+        return options.count();
+    }, { timeout: 30_000, intervals: [250] }).toBeGreaterThan(0);
+
+    await expect(options.first()).toBeVisible();
 }
 
 async function chooseCharacter(page) {

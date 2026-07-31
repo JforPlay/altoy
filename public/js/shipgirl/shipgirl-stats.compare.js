@@ -239,7 +239,9 @@ function createStatRow(label, cells, colClass) {
 function getGlobalMax(stat, type) {
     let max = 0;
     for (const entry of state.shipStats) {
-        const val = type === 'combat' ? (entry.combat[stat] || 0) : (entry.skin[stat] || 0);
+        // entry.skin stays null until the skin tab loads its data (see
+        // shipgirl-stats.data.js ensureSkinData).
+        const val = type === 'combat' ? (entry.combat[stat] || 0) : (entry.skin?.[stat] || 0);
         if (val > max) max = val;
     }
     return max;
