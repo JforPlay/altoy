@@ -7,9 +7,9 @@
  * ship type, nationality), threshold filters, and compare mode event wiring.
  */
 
-import { debounce, hideElement, showToast, setupScrollToTop, toggleElement, onThemeChange, renderStatus } from '../utils.js';
-import { setup as setupData, loadAllData, PRIMARY_STATS, getSkinTypeList, classifyGimmick, recomputeSkinStats } from './shipgirl-stats.data.js';
-import { setup as setupDashboard, renderShipDashboard, renderSkinDashboard, renderTopStatChart, destroyAllCharts } from './shipgirl-stats.dashboard.js';
+import { debounce, hideElement, showToast, setupScrollToTop, toggleElement, onThemeChange, renderStatus, loadPageData } from '../utils.js';
+import { setup as setupData, loadShipData, ensureSkinData, PRIMARY_STATS, getSkinTypeList, classifyGimmick, recomputeSkinStats } from './shipgirl-stats.data.js';
+import { setup as setupDashboard, ensureTreemapPlugin, renderShipDashboard, renderSkinDashboard, renderTopStatChart, destroyAllCharts } from './shipgirl-stats.dashboard.js';
 import { setup as setupTable, renderShipTable, renderSkinTable } from './shipgirl-stats.table.js';
 import { setup as setupCompare, updateCompareBar, openCompareModal } from './shipgirl-stats.compare.js';
 
@@ -26,6 +26,7 @@ const state = {
     filteredShipStats: null,
     // UI state
     activeTab: 'ship',
+    skinDataReady: false,
     compareList: [],
     // Filter state
     rarityFilter: new Set(),
@@ -38,6 +39,7 @@ const state = {
     // Threshold filters
     shipThresholds: {}, skinThresholds: {},
 };
+let skinFeaturePromise = null;
 
 // ===== Init =====
 
@@ -49,7 +51,7 @@ async function init() {
     setupCompare(state);
 
     try {
-        await loadAllData();
+        await loadShipData();
     } catch (err) {
         console.error('Failed to load stats data:', err);
         showToast('데이터를 불러오지 못했습니다.', 'error');
@@ -60,7 +62,7 @@ async function init() {
 
     hideElement(document.getElementById('loading'));
 
-    populateFilterDropdowns();
+    populateShipFilterDropdowns();
     setupEventListeners();
     setupThresholdFilters();
     applyFilters();
@@ -74,9 +76,68 @@ function showPageStatus(message) {
     renderStatus(status, message, 'error');
 }
 
+async function loadSkinTabDependencies() {
+    let treemapError = null;
+    const [skinData, treemapReady] = await Promise.all([
+        ensureSkinData(),
+        ensureTreemapPlugin().catch((error) => {
+            treemapError = error;
+            return false;
+        }),
+    ]);
+    return { skinData, treemapReady, treemapError };
+}
+
+function ensureSkinTabReady() {
+    if (skinFeaturePromise) return skinFeaturePromise;
+
+    const needsSkinData = !state.skinDataReady;
+    const status = document.getElementById('skinTabStatus');
+    const skinTab = document.getElementById('skinTab');
+
+    if (needsSkinData) {
+        toggleElement(status, true);
+        toggleElement('skinTabContent', false);
+        skinTab?.setAttribute('aria-busy', 'true');
+    }
+
+    skinFeaturePromise = (async () => {
+        const result = needsSkinData
+            ? await loadPageData(loadSkinTabDependencies, status, {
+                loadingMessage: '스킨 통계를 불러오는 중...',
+                errorMessage: '스킨 통계를 불러오지 못했습니다.',
+                retryLabel: '다시 시도',
+                contextLabel: 'Shipgirl stats skin tab',
+            })
+            : await loadSkinTabDependencies();
+
+        if (!result) {
+            skinTab?.setAttribute('aria-busy', 'false');
+            return false;
+        }
+
+        populateSkinTypeDropdown();
+        toggleElement(status, false);
+        toggleElement('skinTabContent', true);
+        skinTab?.setAttribute('aria-busy', 'false');
+
+        if (!result.treemapReady) {
+            console.warn('Shipgirl stats treemap is unavailable:', result.treemapError);
+            showToast('스킨 타입 차트를 불러오지 못했습니다.', 'error');
+        }
+
+        updateCompareBar();
+        return true;
+    })().finally(() => {
+        skinFeaturePromise = null;
+    });
+
+    return skinFeaturePromise;
+}
+
 // ===== Filter Dropdowns =====
 
-function populateFilterDropdowns() {
+function populateShipFilterDropdowns() {
     // Ship type filter
     const shipTypeSelect = document.getElementById('shipTypeFilter');
     if (shipTypeSelect) {
@@ -105,13 +166,16 @@ function populateFilterDropdowns() {
         }
     }
 
-    // Skin type filter
+}
+
+function populateSkinTypeDropdown() {
     const skinTypeSelect = document.getElementById('skinTypeFilter');
     if (skinTypeSelect) {
         skinTypeSelect.replaceChildren(createOption('', '모든 스킨 타입'));
         for (const type of getSkinTypeList()) {
             skinTypeSelect.appendChild(createOption(type, type));
         }
+        skinTypeSelect.value = state.skinTypeFilter;
     }
 }
 
@@ -309,7 +373,8 @@ const debouncedApplyFilters = debounce(() => {
 
 // ===== Tab Switching =====
 
-function switchTab(tab) {
+async function switchTab(tab) {
+    if (tab !== 'ship' && tab !== 'skin') return;
     state.activeTab = tab;
 
     // Update toggle button active states
@@ -339,6 +404,12 @@ function switchTab(tab) {
     toggleElement('shipSummaryContent', tab === 'ship');
     toggleElement('skinSummaryContent', tab === 'skin');
 
+    updateCompareBar();
+    if (tab === 'skin') {
+        const ready = await ensureSkinTabReady();
+        if (!ready || state.activeTab !== 'skin') return;
+    }
+
     applyFilters();
 }
 
@@ -348,7 +419,7 @@ function renderActiveTab() {
     if (state.activeTab === 'ship') {
         renderShipDashboard();
         renderShipTable();
-    } else {
+    } else if (state.skinDataReady) {
         renderSkinDashboard();
         renderSkinTable();
     }
@@ -359,7 +430,12 @@ function renderActiveTab() {
 function setupEventListeners() {
     // Tab toggle buttons
     document.querySelectorAll('.tab-toggle-btn').forEach(btn => {
-        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+        btn.addEventListener('click', () => {
+            void switchTab(btn.dataset.tab).catch((error) => {
+                console.error('Failed to activate stats tab:', error);
+                showToast('탭을 열지 못했습니다.', 'error');
+            });
+        });
     });
 
     // Search input

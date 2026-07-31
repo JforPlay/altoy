@@ -3,7 +3,7 @@
 /**
  * shipgirl-stats.data.js
  * Data loading and stat computation for the shipgirl stats page.
- * Loads ship_info_data, skin subset, skin release dates, and mapping tables.
+ * Loads ship_info_data and mapping tables for boot, then skin data on demand.
  * Computes per-ship Lv.120 combat stats (max LB, 사랑 affinity) and aggregates
  * skin metadata (counts, gem costs, tag counts, release dates) for each shipgirl.
  */
@@ -32,43 +32,85 @@ export const SKIN_TAG_KEYS = ['L2D+', 'L2D', '듀얼', '쁘띠모션'];
 // ===== State Reference (set via setup) =====
 
 let state;
+let skinDataPromise = null;
 
 export function setup(stateRef) {
     state = stateRef;
+    state.skinDataReady = false;
+    skinDataPromise = null;
 }
 
 // ===== Data Loading =====
 
 /**
- * Load all required data sources in parallel, then compute aggregations.
+ * Load only the data required by the default ship dashboard.
  */
-export async function loadAllData() {
+export async function loadShipData() {
     const [
         shipInfoData,
-        skinSubsetData,
-        skinReleaseDates,
-        skinReleaseDatesLegacy,
         nationalityData,
         shipTypeData,
         attrTypeData,
     ] = await Promise.all([
         fetchJSONWithCache('data/ship_info_data.json'),
-        fetchJSON('data/skin/skin_voiceline_data_subset.json'),
-        fetchJSON('data/skin/skin_release_dates.json'),
-        fetchJSON('data/skin/skin_release_dates_legacy.json').catch(() => ({})),
         fetchJSON('data/mapping/nationality_mapping.json'),
         fetchJSON('data/mapping/ship_type_mapping.json'),
         fetchJSON('data/mapping/attr_type_mapping.json'),
     ]);
 
-    state.shipInfoData      = shipInfoData;
-    state.skinSubsetData    = skinSubsetData;
-    state.skinReleaseDates  = mergeReleaseDates(skinReleaseDates, skinReleaseDatesLegacy);
-    state.nationalityData   = nationalityData;
-    state.shipTypeData      = shipTypeData;
-    state.attrTypeData      = attrTypeData;
+    state.shipInfoData    = shipInfoData;
+    state.nationalityData = nationalityData;
+    state.shipTypeData    = shipTypeData;
+    state.attrTypeData    = attrTypeData;
 
-    computeAll();
+    computeShipData();
+}
+
+/**
+ * Load and aggregate the data owned by the skin tab. The same in-flight or
+ * successful promise is shared by every caller; a failed attempt is cleared so
+ * the tab's retry action can start a fresh request set.
+ *
+ * @returns {Promise<Array<Object>>} the loaded skin subset
+ */
+export function ensureSkinData() {
+    if (state.skinDataReady) {
+        return Promise.resolve(state.skinSubsetData);
+    }
+    if (skinDataPromise) return skinDataPromise;
+
+    skinDataPromise = (async () => {
+        const [
+            skinSubsetData,
+            skinReleaseDates,
+            skinReleaseDatesLegacy,
+        ] = await Promise.all([
+            fetchJSON('data/skin/skin_voiceline_data_subset.json'),
+            fetchJSON('data/skin/skin_release_dates.json'),
+            fetchJSON('data/skin/skin_release_dates_legacy.json').catch(() => ({})),
+        ]);
+
+        if (!Array.isArray(skinSubsetData) || skinSubsetData.length === 0) {
+            throw new Error('Skin stats data is empty or malformed.');
+        }
+        if (!skinReleaseDates || typeof skinReleaseDates !== 'object' || Array.isArray(skinReleaseDates)) {
+            throw new Error('Skin release-date data is malformed.');
+        }
+
+        state.skinSubsetData = skinSubsetData;
+        state.skinReleaseDates = mergeReleaseDates(
+            skinReleaseDates,
+            skinReleaseDatesLegacy
+        );
+        computeSkinData();
+        state.skinDataReady = true;
+        return state.skinSubsetData;
+    })().catch((error) => {
+        skinDataPromise = null;
+        throw error;
+    });
+
+    return skinDataPromise;
 }
 
 // ===== Stat Calculation =====
@@ -235,13 +277,46 @@ function normalizeSkinName(rawName) {
 // ===== Main Compute Pass =====
 
 /**
- * Build all derived state:
- *   state.skinByShip      Map<normalizedName, skin[]>
+ * Build the boot-required ship state:
  *   state.shipStats       Array<{ ship, combat, skin }>
  *   state.shipStatsByName Map<name, entry>
  */
-function computeAll() {
-    // 1. Build skin lookup map keyed by normalized ship name
+function computeShipData() {
+    // skinFull is filled by computeSkinData after the skin tab first opens;
+    // skin is the current view, swapped by recomputeSkinStats.
+    state.shipStats = [];
+    for (const ship of state.shipInfoData) {
+        if (!ship.name || !ship.rarity) continue;
+
+        const entry = {
+            ship,
+            combat:   computeShipStats(ship),
+            skin:     null,
+            skinFull: null,
+        };
+        state.shipStats.push(entry);
+    }
+
+    // Build name → entry map
+    state.shipStatsByName = new Map();
+    for (const entry of state.shipStats) {
+        state.shipStatsByName.set(entry.ship.name, entry);
+    }
+
+    // Build id → entry map
+    state.shipStatsById = new Map();
+    for (const entry of state.shipStats) {
+        if (entry.ship.id != null) {
+            state.shipStatsById.set(String(entry.ship.id), entry);
+        }
+    }
+}
+
+/**
+ * Build the skin lookup and attach each ship's full skin aggregate after the
+ * optional skin sources have loaded.
+ */
+function computeSkinData() {
     state.skinByShip = new Map();
     for (const skin of state.skinSubsetData) {
         const rawName = skin['함순이 이름'];
@@ -251,34 +326,10 @@ function computeAll() {
         state.skinByShip.get(key).push(skin);
     }
 
-    // 2. Build shipStats array. skinFull is the unfiltered aggregate (never
-    //    mutated); skin is the current view, swapped by recomputeSkinStats.
-    state.shipStats = [];
-    for (const ship of state.shipInfoData) {
-        if (!ship.name || !ship.rarity) continue;
-
-        const skinFull = computeSkinStats(ship.name);
-        const entry = {
-            ship,
-            combat:   computeShipStats(ship),
-            skin:     skinFull,
-            skinFull,
-        };
-        state.shipStats.push(entry);
-    }
-
-    // 3. Build name → entry map
-    state.shipStatsByName = new Map();
     for (const entry of state.shipStats) {
-        state.shipStatsByName.set(entry.ship.name, entry);
-    }
-
-    // 4. Build id → entry map
-    state.shipStatsById = new Map();
-    for (const entry of state.shipStats) {
-        if (entry.ship.id != null) {
-            state.shipStatsById.set(String(entry.ship.id), entry);
-        }
+        const skinFull = computeSkinStats(entry.ship.name);
+        entry.skinFull = skinFull;
+        entry.skin = skinFull;
     }
 }
 
@@ -393,6 +444,7 @@ export function getSkinTypeList() {
  * @param {?Function} predicate - predicate(skin) → boolean, or null for "all skins"
  */
 export function recomputeSkinStats(predicate) {
+    if (!state.skinDataReady) return;
     for (const entry of state.shipStats) {
         entry.skin = predicate
             ? computeSkinStats(entry.ship.name, predicate)

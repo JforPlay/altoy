@@ -4,7 +4,8 @@
  * shipgirl-stats.dashboard.js
  * Chart.js dashboards for the ship info and skin info tabs.
  * Renders rarity/type/nationality breakdowns, top-stat rankings, skin timelines,
- * and L2D/dual cumulative trend charts. Chart.js is loaded via CDN (window.Chart).
+ * and L2D/dual cumulative trend charts. Chart.js is loaded via CDN (window.Chart);
+ * the skin-only treemap controller is loaded on first skin-tab activation.
  */
 
 import { normalizeRomanNumerals, RARITY_TIERS_DESC as rarityOrder } from '../utils.js';
@@ -14,9 +15,50 @@ import { releaseSortKey } from '../skin/skin.dates.js';
 // ===== State =====
 let state;
 const charts = {};
+const TREEMAP_SCRIPT_URL = 'https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@3';
+let treemapScriptPromise = null;
 
 export function setup(stateRef) {
     state = stateRef;
+}
+
+function hasTreemapController() {
+    if (typeof window === 'undefined' || !window.Chart?.registry) return false;
+    try {
+        return Boolean(window.Chart.registry.getController('treemap'));
+    } catch {
+        return false;
+    }
+}
+
+/**
+ * Load the skin-only treemap controller once. Network failures remove the
+ * failed script and clear the promise so a later tab activation can retry.
+ *
+ * @returns {Promise<boolean>}
+ */
+export function ensureTreemapPlugin() {
+    if (hasTreemapController()) return Promise.resolve(true);
+    if (treemapScriptPromise) return treemapScriptPromise;
+
+    const script = document.createElement('script');
+    script.src = TREEMAP_SCRIPT_URL;
+    script.async = true;
+    script.dataset.shipgirlStatsTreemap = 'true';
+
+    treemapScriptPromise = new Promise((resolve, reject) => {
+        script.addEventListener('load', () => resolve(true), { once: true });
+        script.addEventListener('error', () => {
+            reject(new Error('Treemap plugin failed to load.'));
+        }, { once: true });
+        document.head.appendChild(script);
+    }).catch((error) => {
+        script.remove();
+        treemapScriptPromise = null;
+        throw error;
+    });
+
+    return treemapScriptPromise;
 }
 
 // ===== Theme Colors =====
@@ -418,6 +460,12 @@ function _renderSkinTypeChart(data) {
     const canvas = document.getElementById('skinTypeChart');
     if (!canvas) return;
     destroyChart('skinType');
+
+    if (!hasTreemapController()) {
+        canvas.hidden = true;
+        canvas.closest('.chart-container')?.classList.add('chart-empty');
+        return;
+    }
 
     const typeCounts = {};
     for (const d of data) {

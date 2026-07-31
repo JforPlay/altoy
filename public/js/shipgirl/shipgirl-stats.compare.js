@@ -43,7 +43,8 @@ export function updateCompareBar() {
     }
 
     bar.classList.add('is-active');
-    btn.disabled = state.compareList.length < 2;
+    btn.disabled = state.compareList.length < 2
+        || (state.activeTab === 'skin' && !state.skinDataReady);
 
     const fragment = document.createDocumentFragment();
     for (const id of state.compareList) {
@@ -70,6 +71,7 @@ export function updateCompareBar() {
  */
 export function openCompareModal() {
     if (state.compareList.length < 2) return;
+    if (state.activeTab === 'skin' && !state.skinDataReady) return;
 
     const entries = state.compareList
         .map(id => state.shipStatsById.get(id))

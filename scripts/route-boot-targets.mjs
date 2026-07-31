@@ -40,6 +40,21 @@ export const ROUTE_BOOT_TARGETS = Object.freeze([
         cutoff: 'networkidle',
     },
     {
+        key: 'SHIPGIRL_STATS',
+        path: 'shipgirl/shipgirl-stats/',
+        ready: {
+            kind: 'count',
+            selector: '#shipTableBody tr',
+            minimum: 1,
+            description: 'first ship ranking rows rendered',
+        },
+        // R12's before-state began skin JSON in the ship-data Promise.all() and
+        // emitted the treemap plugin eagerly. Retaining network idle proves the
+        // completed boundary removes both from default boot instead of merely
+        // delaying them past the first rendered rows.
+        cutoff: 'networkidle',
+    },
+    {
         key: 'ISLAND',
         path: 'island/',
         ready: {

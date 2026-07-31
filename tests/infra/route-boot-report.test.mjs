@@ -13,7 +13,7 @@ import {
 } from '../../scripts/report-route-boot.mjs';
 
 test('route boot targets have unique keys, paths, and durable ready signals', () => {
-    assert.equal(ROUTE_BOOT_TARGETS.length, 9);
+    assert.equal(ROUTE_BOOT_TARGETS.length, 10);
     assert.equal(new Set(ROUTE_BOOT_TARGETS.map(({ key }) => key)).size, ROUTE_BOOT_TARGETS.length);
     assert.equal(new Set(ROUTE_BOOT_TARGETS.map(({ path }) => path)).size, ROUTE_BOOT_TARGETS.length);
     for (const target of ROUTE_BOOT_TARGETS) {
@@ -29,7 +29,13 @@ test('route boot targets have unique keys, paths, and durable ready signals', ()
         }
     }
     const targetsByKey = new Map(ROUTE_BOOT_TARGETS.map((target) => [target.key, target]));
-    for (const key of ['SHIPGIRL_INFO', 'EQUIP_SKIN', 'MAP_VIEWER', 'SKIN_DETAIL']) {
+    for (const key of [
+        'SHIPGIRL_INFO',
+        'SHIPGIRL_STATS',
+        'EQUIP_SKIN',
+        'MAP_VIEWER',
+        'SKIN_DETAIL',
+    ]) {
         assert.equal(targetsByKey.get(key)?.cutoff, 'networkidle');
     }
 });
