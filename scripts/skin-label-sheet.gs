@@ -5,7 +5,7 @@
  * THE COPY IN THE REPO (scripts/skin-label-sheet.gs) IS THE SOURCE OF TRUTH.
  * Install: Extensions → Apps Script → paste this whole file over Code.gs →
  * run setup() once. Everything else runs from the ALtoy menu.
- * Setup guide: dev/active/2026-07-28-skin-label-sheet-setup.md
+ * Setup guide: dev/reference/skin-label-sheet.md
  *
  * All sheet data arrives through ONE deployed file, skin_label_worklist.csv,
  * pre-joined and validated by scripts/sync-skin-labels.mjs. refresh() only
@@ -32,7 +32,7 @@ var ATTRIBUTES = [
   { header: '아이웨어', multi: false, values: ['없음', '안경', '선글라스', '고글', '안대'] },
   { header: '자세', multi: false, values: ['서기', '엎드리기', '눕기', '앉기·무릎꿇기', '거꾸로', '기타'] },
   { header: '방향', multi: false, values: ['정면', '후면'] },
-  { header: '강조부위', multi: false, values: ['없음', '다리·발', '가슴', '엉덩이', '얼굴 클로즈업'] },
+  { header: '강조부위', multi: false, values: ['없음', '발바닥', '겨드랑이'] },
   { header: '머리색', multi: false, values: ['금발', '갈색', '흑발', '은발·백발', '적발', '청발', '녹발', '분홍', '보라', '회색'] },
   { header: '머리 다중색', multi: false, values: ['단색', '브릿지', '그라데이션', '투톤', '기타'] },
   { header: '눈색', multi: false, values: ['금색', '갈색', '흑색', '은색·회색', '적색', '청색', '녹색', '분홍', '보라', '오드아이'] },

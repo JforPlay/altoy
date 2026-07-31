@@ -20,7 +20,7 @@
  * skin_labels.json.
  *
  * Run: `npm run data:skin-labels` [--allow-unknown]
- * Spec: dev/active/2026-07-26-skin-attribute-db-design.md
+ * Spec: dev/archive/skin-attribute-db/2026-07-26-skin-attribute-db-design.md
  */
 
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';

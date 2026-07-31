@@ -5,7 +5,7 @@
  * (which derives its validator from it) read, so the two cannot drift.
  *
  * JSON keys are English; values and sheet headers are the Korean the curators
- * actually type. Spec: dev/active/2026-07-26-skin-attribute-db-design.md
+ * actually type. Spec: dev/archive/skin-attribute-db/2026-07-26-skin-attribute-db-design.md
  */
 
 /** The 클뜯 id column in the sheet's 라벨 tab — the join key. */
@@ -38,10 +38,15 @@ export const ATTRIBUTES = [
         values: ['정면', '후면'],
     },
     {
-        // A FRAMING axis, not a body position — 발 강조 must be able to coexist
-        // with 정면 서기, which a single combined enum would forbid.
+        // Narrowed 2026-07-30 from a general framing axis (다리·발 / 가슴 / 엉덩이 /
+        // 얼굴 클로즈업) to two SPECIAL NOTES. The dropped values duplicated what
+        // 자세 already says — a low-angle leg shot is 서기, a lounging chest shot is
+        // 눕기 — so they were a second, fuzzier posture column. 발바닥 and 겨드랑이
+        // survive because no other axis records them and neither follows from a pose.
+        // Kept single-select, so a skin showing both takes 겨드랑이 (user's tiebreak,
+        // mirrored in the labeler prompt).
         key: 'emphasis', header: '강조부위', multi: false,
-        values: ['없음', '다리·발', '가슴', '엉덩이', '얼굴 클로즈업'],
+        values: ['없음', '발바닥', '겨드랑이'],
     },
     {
         // Always the DOMINANT colour. A "다중색" bucket here would be a pattern
