@@ -23,8 +23,8 @@ const STORAGE_KEY_PLANNER_PRESETS = 'island-restaurant-planner-presets-v2';
 const PLANNER_SLOTS_PER_RESTAURANT = 4;
 const PLANNER_PRESET_COUNT = 5;
 
-/** Rarity (1–4) → menu-background image. Shared with the restaurant engine (imported there). */
-export const RARITY_BACKGROUNDS = {
+/** Planner-local rarity (1–4) → menu-background image map. */
+const RARITY_BACKGROUNDS = {
     1: dataForToyUrl('island/rarity_grey.webp'),
     2: dataForToyUrl('island/rarity_blue.webp'),
     3: dataForToyUrl('island/rarity_purple.webp'),
@@ -90,6 +90,9 @@ function createDefaultPlannerPresets() {
 export function loadPlannerState() {
     state.plannerPlan = createDefaultPlannerPlan();
     state.plannerPresets = createDefaultPlannerPresets();
+    state.plannerDirty = true;
+    state.lastPlannerResults = null;
+    state.ui = { presetSelections: {} };
 
     try {
         const savedPlan = getStorageItem(STORAGE_KEY_PLANNER_PLAN, null);
@@ -153,12 +156,15 @@ function getPlannerEntry(restaurantId) {
  */
 
 let confirmResolve = null;
+let plannerUiReady = false;
 
 /**
  * Wire up planner modal open/close buttons and the custom confirm modal.
  * Called once during restaurant module initialization.
  */
 export function setupPlannerUI() {
+    if (plannerUiReady) return;
+
     const openBtn = document.getElementById('planner-open-btn');
     const closeBtn = document.getElementById('planner-modal-close');
     const modal = document.getElementById('planner-modal');
@@ -175,6 +181,7 @@ export function setupPlannerUI() {
     }
 
     setupConfirmModal();
+    plannerUiReady = true;
 }
 
 function setupConfirmModal() {

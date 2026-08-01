@@ -47,20 +47,25 @@
 /* Planner Main View Layout */
 .planner-layout-grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--island-spacing-lg);
+    width: 100%;
     max-width: 100%;
+    min-width: 0;
 }
 
 @media (min-width: 1000px) {
     .planner-layout-grid {
-        grid-template-columns: 1fr 420px;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
         align-items: start;
     }
 }
 
-.planner-builder-section {
+.planner-builder-section,
+.planner-results-section,
+.planner-modern-card {
     width: 100%;
+    min-width: 0;
 }
 
 /* Planner Actions Bar */
@@ -292,6 +297,10 @@
 }
 
 .preset-action-btn .material-symbols-outlined {
+    flex: 0 0 1em;
+    width: 1em;
+    max-width: 100%;
+    overflow: hidden;
     font-size: 1.2rem;
 }
 
@@ -782,6 +791,10 @@
 
     .preset-action-btn .material-symbols-outlined {
         font-size: 1rem;
+    }
+
+    .preset-action-btn::before {
+        display: none;
     }
 
     .picker-grid {

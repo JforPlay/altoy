@@ -2,11 +2,11 @@
  * island.restaurant.engine.js
  * Restaurant sub-engine for the island module. Manages restaurant tabs, rank/event/shipgirl selectors,
  * menu list rendering, preferences persistence, and cross-tab navigation with the resource module.
- * Delegates calculations to island.restaurant.calc.js and planner UI to island.restaurant.planner.js.
+ * Delegates calculations to island.restaurant.calc.js and lazy-loads the planner UI on first use.
  * Registers as window.RestaurantModule.
  */
 
-import { fetchJSON, showElement, hideElement, formatTime, getStorageItem, setStorageItem, renderStatus, DATA_FOR_TOY_BASE, dataForToyUrl } from '../utils.js';
+import { fetchJSON, showElement, hideElement, formatTime, getStorageItem, setStorageItem, renderStatus, loadPageData, DATA_FOR_TOY_BASE, dataForToyUrl } from '../utils.js';
 import {
     RANK_COEFFICIENTS, RANK_NAMES, ATTRIBUTE_NAMES, ATTRIBUTE_RANK_VALUES,
     EVENT_BONUSES,
@@ -14,16 +14,6 @@ import {
     calculateProfit,
     aggregateIngredients, groupIngredientsByLocation
 } from './island.restaurant.calc.js';
-import {
-    setup as setupPlanner,
-    loadPlannerState,
-    setupPlannerUI, renderPlannerMainView, updatePlannerUI,
-    calculateDailyPlan,
-    openMenuSelectionModal, selectMenusFromModal, selectSlotForModal,
-    closeMenuSelectionModal, adjustGlobalQty, selectPresetSlot,
-    closePlannerModal, copyPresetFrom, closeCopyPresetModal,
-    RARITY_BACKGROUNDS
-} from './island.restaurant.planner.js';
 
 'use strict';
 
@@ -41,6 +31,15 @@ const RANK_COLORS = {
     silver: '#c0c0c0',
     gold: '#ffd700',
     diamond: '#b9f2ff'
+};
+
+// Keep the normal restaurant cards independent from the optional planner
+// module. The planner owns the same four-image map inside its lazy boundary.
+const RARITY_BACKGROUNDS = {
+    1: dataForToyUrl('island/rarity_grey.webp'),
+    2: dataForToyUrl('island/rarity_blue.webp'),
+    3: dataForToyUrl('island/rarity_purple.webp'),
+    4: dataForToyUrl('island/rarity_orange.webp')
 };
 
 const STORAGE_KEY_RANK = 'island-restaurant-rank';
@@ -69,29 +68,23 @@ const state = {
     uniqueSubAttributes: [], // [1, 2, 3, 4, 5, 6] - unique sub_attribute IDs from all menus
     shipgirl1Attr: { main: 'E' },  // Main (경영) + dynamic sub-attributes added in init
     shipgirl2Attr: { main: 'E' },  // Only active when rank >= gold
-
-    // Meal Planner State
-    plannerPlan: {},      // { [restaurantId]: { globalCount: number, slots: [{ formulaId }] } }
-    plannerPresets: {},   // { [restaurantId]: { [presetIndex]: { globalCount, slots: [] } } }
-    plannerDirty: true,
-    lastPlannerResults: null,
-    masterIngredients: {}, // { location: [ { id, name, icon, rarity } ] }
-    ui: {
-        presetSelections: {} // { restaurantId: selectedPresetIndex (1-5) }
-    },
     // Caches
     costCache: {},
     salesCache: {}
 };
 
-// Initialize sub-modules with shared state reference
+// Initialize the always-needed calculation module with the shared state.
 setupCalc(state);
-setupPlanner(state);
+
+let plannerModule = null;
+let plannerModulePromise = null;
+let plannerViewPromise = null;
+let plannerImportFailures = 0;
 
 // ===== Initialization =====
 
 /**
- * Load restaurant, recipe, and shop data; build all indices; initialize UI and planner.
+ * Load restaurant, recipe, and shop data; build all normal-view indices and initialize its UI.
  * Preferences (rank, events, shipgirl attributes) are restored from localStorage.
  */
 async function init(sharedData) {
@@ -122,9 +115,6 @@ async function init(sharedData) {
         state.dependencyGraph = window.IslandEngine.buildDependencyGraph(state.recipes);
         findUniqueSubAttributes();
 
-        // Pre-calculate master ingredient list
-        buildMasterIngredientList();
-
         // Initialize default attribute values for all sub-attributes
         state.uniqueSubAttributes.forEach(attrId => {
             if (!state.shipgirl1Attr[attrId]) state.shipgirl1Attr[attrId] = 'E';
@@ -133,7 +123,6 @@ async function init(sharedData) {
 
         // Load saved preferences
         loadPreferences();
-        loadPlannerState();
 
         // Select first restaurant by default
         const restaurantIds = getRestaurantIds();
@@ -150,8 +139,6 @@ async function init(sharedData) {
         renderShipgirlSelectors();
         bindMenuListEvents();
         renderMenuList();
-        setupPlannerUI();
-        updatePlannerUI();
 
         return true;
     } catch (error) {
@@ -238,6 +225,122 @@ function buildMasterIngredientList() {
 
     // Group by location
     state.masterIngredients = groupIngredientsByLocation(allIngredients);
+}
+
+// ===== Optional Planner Boundary =====
+
+/**
+ * Load and initialize the planner once. Concurrent callers share the same
+ * promise; a failed import is not retained so the standard retry action can
+ * start a fresh request.
+ */
+function loadPlannerModule() {
+    if (plannerModule) return Promise.resolve(plannerModule);
+    if (plannerModulePromise) return plannerModulePromise;
+
+    // Browsers retain failed module-map entries by URL. Keep the normal first
+    // request canonical, then use a distinct URL only when a retry is needed.
+    const importPromise = plannerImportFailures === 0
+        ? import('./island.restaurant.planner.js')
+        : import(`./island.restaurant.planner.js?retry=${plannerImportFailures}`);
+
+    plannerModulePromise = importPromise
+        .then(module => {
+            module.setup(state);
+            module.loadPlannerState();
+            buildMasterIngredientList();
+            module.setupPlannerUI();
+            plannerModule = module;
+            return module;
+        })
+        .catch(error => {
+            plannerImportFailures += 1;
+            plannerModulePromise = null;
+            throw error;
+        });
+
+    return plannerModulePromise;
+}
+
+/**
+ * Show the standard loading/error/retry states while the planner boundary is
+ * loading. A failed attempt keeps this promise pending until the user retries,
+ * preventing duplicate loaders when the sub-tab is selected repeatedly.
+ */
+function ensurePlannerView() {
+    if (plannerModule) {
+        plannerModule.renderPlannerMainView();
+        return Promise.resolve(true);
+    }
+    if (plannerViewPromise) return plannerViewPromise;
+
+    const plannerView = document.getElementById('restaurant-planner-view');
+    if (!plannerView) return Promise.resolve(false);
+
+    plannerViewPromise = loadPageData(loadPlannerModule, plannerView, {
+        loadingMessage: '메뉴 계산기를 불러오는 중...',
+        errorMessage: '메뉴 계산기를 불러오지 못했습니다.',
+        retryLabel: '다시 시도',
+        contextLabel: 'Island restaurant planner'
+    }).then(module => {
+        if (!module) return false;
+        if (state.selectedRestaurant === 'planner') {
+            module.renderPlannerMainView();
+        }
+        return true;
+    }).finally(() => {
+        plannerViewPromise = null;
+    });
+
+    return plannerViewPromise;
+}
+
+function invokePlannerAction(action, args) {
+    return loadPlannerModule().then(module => module[action](...args));
+}
+
+function openMenuSelectionModal(...args) {
+    return invokePlannerAction('openMenuSelectionModal', args);
+}
+
+function selectMenusFromModal(...args) {
+    return invokePlannerAction('selectMenusFromModal', args);
+}
+
+function selectSlotForModal(...args) {
+    return invokePlannerAction('selectSlotForModal', args);
+}
+
+function closeMenuSelectionModal(...args) {
+    return invokePlannerAction('closeMenuSelectionModal', args);
+}
+
+function adjustGlobalQty(...args) {
+    return invokePlannerAction('adjustGlobalQty', args);
+}
+
+function selectPresetSlot(...args) {
+    return invokePlannerAction('selectPresetSlot', args);
+}
+
+function closePlannerModal(...args) {
+    if (!plannerModule) {
+        hideElement('planner-modal');
+        return Promise.resolve();
+    }
+    return plannerModule.closePlannerModal(...args);
+}
+
+function copyPresetFrom(...args) {
+    return invokePlannerAction('copyPresetFrom', args);
+}
+
+function closeCopyPresetModal(...args) {
+    if (!plannerModule) {
+        document.querySelector('.menu-selection-modal-overlay')?.remove();
+        return Promise.resolve();
+    }
+    return plannerModule.closeCopyPresetModal(...args);
 }
 
 // ===== Preferences =====
@@ -382,7 +485,7 @@ function selectRestaurant(restaurantId) {
         hideElement(controls);
         hideElement(floatingBar);
 
-        renderPlannerMainView();
+        return ensurePlannerView();
     } else {
         hideElement(plannerView);
         showElement(menuList);
@@ -391,8 +494,10 @@ function selectRestaurant(restaurantId) {
         // showElement(floatingBar); // Optional: show floating bar? Or rely on Planner tab
 
         renderMenuList();
-        updatePlannerUI();
+        plannerModule?.updatePlannerUI();
     }
+
+    return Promise.resolve(true);
 }
 
 // ===== Rank Selector =====
@@ -438,7 +543,7 @@ function selectRank(rank) {
     });
     renderShipgirlSelectors();
     renderMenuList();
-    updatePlannerUI();
+    plannerModule?.updatePlannerUI();
 }
 
 // ===== Event Toggles =====
@@ -484,7 +589,7 @@ function toggleEvent(eventKey, enabled) {
     }
     savePreferences();
     renderMenuList();
-    updatePlannerUI();
+    plannerModule?.updatePlannerUI();
 }
 
 // ===== Shipgirl Attribute Selectors =====
@@ -567,7 +672,7 @@ function updateShipgirlAttribute(shipgirlNum, attrKey, rank) {
     else if (shipgirlNum === 2) state.shipgirl2Attr[attrKey] = rank;
     savePreferences();
     renderMenuList();
-    updatePlannerUI();
+    plannerModule?.updatePlannerUI();
 }
 
 // ===== Menu List =====
