@@ -8,6 +8,7 @@ import { ROUTE_BOOT_TARGETS } from '../../scripts/route-boot-targets.mjs';
 import {
     classifyPath,
     compareSnapshots,
+    distBuildMode,
     distFileForPathname,
     formatBytes,
 } from '../../scripts/report-route-boot.mjs';
@@ -56,6 +57,38 @@ test('dist path resolution stays inside dist and maps route directories to index
     );
     assert.equal(distFileForPathname('/outside/file.js', root), null);
     assert.equal(distFileForPathname('/altoy/../../outside.js', root), null);
+});
+
+test('build mode is detected from the served copy of utils.js', () => {
+    const root = mkdtempSync(join(tmpdir(), 'altoy-build-mode-'));
+    const dist = join(root, 'dist');
+    mkdirSync(join(root, 'public', 'js'), { recursive: true });
+    mkdirSync(join(dist, 'js'), { recursive: true });
+    writeFileSync(join(root, 'public', 'js', 'utils.js'), 'export const a = 1;\n');
+
+    assert.equal(distBuildMode(dist, root), 'unknown');
+
+    writeFileSync(join(dist, 'js', 'utils.js'), 'export const a = 1;\n');
+    assert.equal(distBuildMode(dist, root), 'unminified');
+
+    writeFileSync(join(dist, 'js', 'utils.js'), 'export const a=1');
+    assert.equal(distBuildMode(dist, root), 'minified');
+});
+
+test('snapshot comparison flags a build-mode switch but grandfathers unstamped baselines', () => {
+    const snapshot = (buildMode) => ({
+        schemaVersion: 4,
+        ...(buildMode ? { buildMode } : {}),
+        targets: { TEST: route() },
+    });
+
+    assert.deepEqual(
+        compareSnapshots(snapshot('minified'), snapshot('unminified')),
+        [{ kind: 'build-mode-changed', before: 'unminified', after: 'minified' }]
+    );
+    assert.deepEqual(compareSnapshots(snapshot('unminified'), snapshot('unminified')), []);
+    // A snapshot predating the field cannot be attributed to a mode after the fact.
+    assert.deepEqual(compareSnapshots(snapshot('minified'), snapshot(null)), []);
 });
 
 test('resource classification never promotes an intentionally skipped request to HTML', () => {

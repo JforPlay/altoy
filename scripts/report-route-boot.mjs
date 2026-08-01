@@ -17,6 +17,10 @@
  * at that signal or continues to network idle when the finding is an
  * unconditional load that races the first render. Rows measured to network idle
  * also print their subtotal at readiness.
+ *
+ * Byte totals are only comparable within one build mode, so every snapshot
+ * records the mode it was measured in and the command refuses to compare or
+ * overwrite a baseline captured from the other one.
  */
 
 import {
@@ -37,7 +41,7 @@ const ROOT = resolve(SCRIPT_DIR, '..');
 const DIST_DIR = join(ROOT, 'dist');
 const BASE_PATH = '/altoy/';
 const BASELINE_PATH = join(SCRIPT_DIR, 'route-boot-baseline.json');
-const REPORT_SCHEMA_VERSION = 3;
+const REPORT_SCHEMA_VERSION = 4;
 const READY_TIMEOUT_MS = 45_000;
 const SKIPPED_RESOURCE_TYPES = new Set(['image', 'font', 'media']);
 const sizeCache = new Map();
@@ -92,6 +96,21 @@ export function distFileForPathname(pathname, distDir = DIST_DIR) {
         return join(candidate, 'index.html');
     }
     return candidate;
+}
+
+/**
+ * `npm run build` runs scripts/minify.mjs over dist/js, while build:no-minify
+ * copies public/js verbatim. The two therefore produce byte sets that cannot be
+ * compared, and a snapshot that does not record which one it came from lets an
+ * --update-baseline overwrite every reviewed before-state with numbers from the
+ * other mode. utils.js is imported by every route, so its size is a reliable
+ * probe.
+ */
+export function distBuildMode(distDir = DIST_DIR, rootDir = ROOT) {
+    const source = join(rootDir, 'public', 'js', 'utils.js');
+    const built = join(distDir, 'js', 'utils.js');
+    if (!existsSync(source) || !existsSync(built)) return 'unknown';
+    return statSync(built).size === statSync(source).size ? 'unminified' : 'minified';
 }
 
 function createDistServer() {
@@ -462,6 +481,19 @@ export function compareSnapshots(current, baseline) {
         });
     }
 
+    // Only when both are known: a snapshot predating this field cannot be
+    // retroactively attributed to a build mode.
+    if (
+        baseline.buildMode && current.buildMode
+        && baseline.buildMode !== current.buildMode
+    ) {
+        deltas.push({
+            kind: 'build-mode-changed',
+            before: baseline.buildMode,
+            after: current.buildMode,
+        });
+    }
+
     for (const [key, route] of Object.entries(current.targets)) {
         const previous = baseline.targets[key];
         if (!previous) {
@@ -546,6 +578,7 @@ function formatSignedBytes(value) {
 
 function printReport(report, baseline) {
     console.log('\nRoute boot report (semantic ready and cutoff are printed per row)');
+    console.log(`Build mode: ${report.buildMode}`);
     console.log('Route'.padEnd(20)
         + 'Entries'.padStart(9)
         + 'JS'.padStart(6)
@@ -588,6 +621,11 @@ function printReport(report, baseline) {
         for (const delta of deltas) {
             if (delta.kind === 'schema-changed') {
                 console.log(`  report schema: ${delta.before} -> ${delta.after}`);
+                continue;
+            }
+            if (delta.kind === 'build-mode-changed') {
+                console.log(`  build mode: ${delta.before} -> ${delta.after}`
+                    + ' (byte comparison below is meaningless)');
                 continue;
             }
             if (delta.kind === 'new-route') {
@@ -684,7 +722,9 @@ Options:
   --update-baseline  Replace scripts/route-boot-baseline.json
   --help, -h         Show this help
 
-Requires a current dist/ produced by npm run build or npm run build:no-minify.`);
+Requires a current dist/. The stored baseline records whether it was built with
+npm run build (minified) or npm run build:no-minify, and the command refuses to
+compare or overwrite across the two because their byte sets differ.`);
 }
 
 async function run() {
@@ -733,6 +773,7 @@ async function run() {
         const report = {
             schemaVersion: REPORT_SCHEMA_VERSION,
             basePath: BASE_PATH,
+            buildMode: distBuildMode(),
             targets,
         };
         const baseline = existsSync(BASELINE_PATH)
@@ -756,6 +797,14 @@ async function run() {
             .flatMap(([key, route]) => route.problems.map((problem) => `${key}: ${problem}`));
         if (routeProblems.length) {
             throw new Error(`Route boot measurement was incomplete:\n${routeProblems.join('\n')}`);
+        }
+        if (baseline?.buildMode && baseline.buildMode !== report.buildMode) {
+            throw new Error(
+                `Baseline build mode is ${baseline.buildMode} but this dist is `
+                + `${report.buildMode}. Minified and unminified builds emit different bytes, `
+                + 'so neither the comparison above nor an --update-baseline write is valid. '
+                + `Rebuild with ${baseline.buildMode === 'minified' ? 'npm run build' : 'npm run build:no-minify'}.`
+            );
         }
 
         if (options.jsonPath) {

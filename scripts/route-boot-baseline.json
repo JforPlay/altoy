@@ -1,6 +1,7 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "basePath": "/altoy/",
+  "buildMode": "unminified",
   "targets": {
     "FLEET_SIM": {
       "path": "simulators/fleet-sim/",
