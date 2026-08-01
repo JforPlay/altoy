@@ -136,6 +136,15 @@ async function closeServer(server) {
 }
 
 function installReadyObserver(ready) {
+    if (ready.storage) {
+        try {
+            localStorage.setItem(ready.storage.key, ready.storage.value);
+        } catch {
+            // The target's normal error/readiness checks will report a failed
+            // restoration if storage is unavailable in this browser context.
+        }
+    }
+
     const matches = () => {
         if (ready.kind === 'event-count') {
             const trigger = document.querySelector(ready.trigger);

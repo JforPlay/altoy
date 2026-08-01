@@ -11,6 +11,9 @@
  *                 use only when successful initialization otherwise leaves the
  *                 document unchanged.
  *
+ * A ready signal may include a `storage` seed for an existing persisted route
+ * state that must be present before application scripts execute.
+ *
  * The optional cutoff controls measurement independently:
  *   ready       - stop at the semantic ready signal (default)
  *   networkidle - keep collecting after ready until the network settles
@@ -63,6 +66,24 @@ export const ROUTE_BOOT_TARGETS = Object.freeze([
             minimum: 1,
             description: 'default character list rendered',
         },
+    },
+    {
+        key: 'ISLAND_RESTAURANT',
+        path: 'island/',
+        ready: {
+            kind: 'count',
+            selector: '#restaurant-tabs .restaurant-tab',
+            minimum: 1,
+            description: 'saved restaurant tab restored and controls rendered',
+            storage: {
+                key: 'island-active-tab',
+                value: 'restaurant',
+            },
+        },
+        // R21's before-state statically imports the planner with the normal
+        // restaurant view. Network idle proves the later first-use boundary
+        // removes it rather than merely delaying it past the rendered cards.
+        cutoff: 'networkidle',
     },
     {
         key: 'EVENT_STORY',

@@ -1191,6 +1191,261 @@
       },
       "problems": []
     },
+    "ISLAND_RESTAURANT": {
+      "path": "island/",
+      "ready": "saved restaurant tab restored and controls rendered",
+      "cutoff": "networkidle",
+      "pageEntries": [
+        "/altoy/js/island/island.script.js"
+      ],
+      "html": [
+        {
+          "path": "/altoy/island/",
+          "raw": 27782,
+          "gzip": 6208,
+          "brotli": 5764
+        }
+      ],
+      "js": [
+        {
+          "path": "/altoy/js/cache.db.js",
+          "raw": 8384,
+          "gzip": 2435,
+          "brotli": 2297
+        },
+        {
+          "path": "/altoy/js/global-search.js",
+          "raw": 14675,
+          "gzip": 4694,
+          "brotli": 4419
+        },
+        {
+          "path": "/altoy/js/global.init.js",
+          "raw": 779,
+          "gzip": 495,
+          "brotli": 427
+        },
+        {
+          "path": "/altoy/js/global.script.js",
+          "raw": 11809,
+          "gzip": 3766,
+          "brotli": 3557
+        },
+        {
+          "path": "/altoy/js/island/island.engine.js",
+          "raw": 30501,
+          "gzip": 7818,
+          "brotli": 7521
+        },
+        {
+          "path": "/altoy/js/island/island.restaurant.calc.js",
+          "raw": 9094,
+          "gzip": 2915,
+          "brotli": 2771
+        },
+        {
+          "path": "/altoy/js/island/island.restaurant.engine.js",
+          "raw": 32507,
+          "gzip": 7968,
+          "brotli": 7671
+        },
+        {
+          "path": "/altoy/js/island/island.restaurant.planner.js",
+          "raw": 46959,
+          "gzip": 9945,
+          "brotli": 9517
+        },
+        {
+          "path": "/altoy/js/island/island.script.js",
+          "raw": 3485,
+          "gzip": 1297,
+          "brotli": 1154
+        },
+        {
+          "path": "/altoy/js/island/island.season-map.js",
+          "raw": 7297,
+          "gzip": 3009,
+          "brotli": 2847
+        },
+        {
+          "path": "/altoy/js/pages.catalog.js",
+          "raw": 13591,
+          "gzip": 4459,
+          "brotli": 4258
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.api.js",
+          "raw": 3445,
+          "gzip": 1129,
+          "brotli": 1032
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.auth.js",
+          "raw": 4768,
+          "gzip": 1609,
+          "brotli": 1470
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.config.js",
+          "raw": 1099,
+          "gzip": 575,
+          "brotli": 540
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.engine.js",
+          "raw": 8650,
+          "gzip": 2943,
+          "brotli": 2800
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.summary.js",
+          "raw": 4888,
+          "gzip": 1746,
+          "brotli": 1635
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.ui.js",
+          "raw": 15571,
+          "gzip": 4771,
+          "brotli": 4490
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.validate.js",
+          "raw": 3567,
+          "gzip": 1483,
+          "brotli": 1364
+        },
+        {
+          "path": "/altoy/js/synced-storage.js",
+          "raw": 5206,
+          "gzip": 1895,
+          "brotli": 1783
+        },
+        {
+          "path": "/altoy/js/utils.js",
+          "raw": 61337,
+          "gzip": 19140,
+          "brotli": 18316
+        }
+      ],
+      "css": [
+        {
+          "path": "/altoy/_assets/island.lWB6yRDL.css",
+          "raw": 126714,
+          "gzip": 18209,
+          "brotli": 17691
+        },
+        {
+          "path": "/altoy/_assets/island.vqQE5wek.css",
+          "raw": 14027,
+          "gzip": 3483,
+          "brotli": 3218
+        },
+        {
+          "path": "/altoy/_assets/Layout.CfkVEPXb.css",
+          "raw": 47614,
+          "gzip": 9129,
+          "brotli": 8842
+        }
+      ],
+      "json": [
+        {
+          "path": "/altoy/data/island/island_item_data_template.json",
+          "raw": 151743,
+          "gzip": 19823,
+          "brotli": 17027
+        },
+        {
+          "path": "/altoy/data/island/island_manage_restaurant.json",
+          "raw": 2426,
+          "gzip": 792,
+          "brotli": 684
+        },
+        {
+          "path": "/altoy/data/island/island_season.json",
+          "raw": 5056,
+          "gzip": 858,
+          "brotli": 667
+        },
+        {
+          "path": "/altoy/data/island/island_shop_goods.json",
+          "raw": 183389,
+          "gzip": 12138,
+          "brotli": 8262
+        },
+        {
+          "path": "/altoy/data/island/recipes.json",
+          "raw": 129503,
+          "gzip": 7370,
+          "brotli": 5931
+        }
+      ],
+      "bytesAtReady": {
+        "html": {
+          "count": 1,
+          "raw": 27782,
+          "gzip": 6208,
+          "brotli": 5764
+        },
+        "js": {
+          "count": 20,
+          "raw": 287612,
+          "gzip": 84092,
+          "brotli": 79869
+        },
+        "css": {
+          "count": 3,
+          "raw": 188355,
+          "gzip": 30821,
+          "brotli": 29751
+        },
+        "json": {
+          "count": 5,
+          "raw": 472117,
+          "gzip": 40981,
+          "brotli": 32571
+        },
+        "total": {
+          "count": 29,
+          "raw": 975866,
+          "gzip": 162102,
+          "brotli": 147955
+        }
+      },
+      "bytes": {
+        "html": {
+          "count": 1,
+          "raw": 27782,
+          "gzip": 6208,
+          "brotli": 5764
+        },
+        "js": {
+          "count": 20,
+          "raw": 287612,
+          "gzip": 84092,
+          "brotli": 79869
+        },
+        "css": {
+          "count": 3,
+          "raw": 188355,
+          "gzip": 30821,
+          "brotli": 29751
+        },
+        "json": {
+          "count": 5,
+          "raw": 472117,
+          "gzip": 40981,
+          "brotli": 32571
+        },
+        "total": {
+          "count": 29,
+          "raw": 975866,
+          "gzip": 162102,
+          "brotli": 147955
+        }
+      },
+      "problems": []
+    },
     "EVENT_STORY": {
       "path": "story-viewer/event-story/",
       "ready": "event archive sections rendered",

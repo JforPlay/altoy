@@ -12,10 +12,9 @@ import {
     formatBytes,
 } from '../../scripts/report-route-boot.mjs';
 
-test('route boot targets have unique keys, paths, and durable ready signals', () => {
-    assert.equal(ROUTE_BOOT_TARGETS.length, 10);
+test('route boot targets have unique keys and durable ready signals', () => {
+    assert.equal(ROUTE_BOOT_TARGETS.length, 11);
     assert.equal(new Set(ROUTE_BOOT_TARGETS.map(({ key }) => key)).size, ROUTE_BOOT_TARGETS.length);
-    assert.equal(new Set(ROUTE_BOOT_TARGETS.map(({ path }) => path)).size, ROUTE_BOOT_TARGETS.length);
     for (const target of ROUTE_BOOT_TARGETS) {
         assert.match(target.key, /^[A-Z0-9_]+$/);
         assert.ok(target.path.endsWith('/'));
@@ -23,6 +22,11 @@ test('route boot targets have unique keys, paths, and durable ready signals', ()
         assert.ok(target.ready.selector);
         assert.ok(target.ready.description);
         assert.ok(['ready', 'networkidle'].includes(target.cutoff || 'ready'));
+        if (target.ready.storage) {
+            assert.equal(typeof target.ready.storage.key, 'string');
+            assert.ok(target.ready.storage.key);
+            assert.equal(typeof target.ready.storage.value, 'string');
+        }
         if (target.ready.kind === 'event-count') {
             assert.ok(target.ready.trigger);
             assert.ok(target.ready.event);
@@ -32,6 +36,7 @@ test('route boot targets have unique keys, paths, and durable ready signals', ()
     for (const key of [
         'SHIPGIRL_INFO',
         'SHIPGIRL_STATS',
+        'ISLAND_RESTAURANT',
         'EQUIP_SKIN',
         'MAP_VIEWER',
         'SKIN_DETAIL',
