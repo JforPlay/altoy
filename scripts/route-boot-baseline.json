@@ -1441,6 +1441,180 @@
       },
       "problems": []
     },
+    "PRIVACY": {
+      "path": "privacy/",
+      "ready": "static privacy content rendered",
+      "cutoff": "networkidle",
+      "pageEntries": [],
+      "html": [
+        {
+          "path": "/altoy/privacy/",
+          "raw": 22520,
+          "gzip": 6255,
+          "brotli": 5825
+        }
+      ],
+      "js": [
+        {
+          "path": "/altoy/js/cache.db.js",
+          "raw": 8384,
+          "gzip": 2435,
+          "brotli": 2297
+        },
+        {
+          "path": "/altoy/js/global-search.js",
+          "raw": 14675,
+          "gzip": 4694,
+          "brotli": 4419
+        },
+        {
+          "path": "/altoy/js/global.init.js",
+          "raw": 779,
+          "gzip": 495,
+          "brotli": 427
+        },
+        {
+          "path": "/altoy/js/global.script.js",
+          "raw": 11809,
+          "gzip": 3766,
+          "brotli": 3557
+        },
+        {
+          "path": "/altoy/js/pages.catalog.js",
+          "raw": 13591,
+          "gzip": 4459,
+          "brotli": 4258
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.api.js",
+          "raw": 3445,
+          "gzip": 1129,
+          "brotli": 1032
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.auth.js",
+          "raw": 4768,
+          "gzip": 1609,
+          "brotli": 1470
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.config.js",
+          "raw": 1099,
+          "gzip": 575,
+          "brotli": 540
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.engine.js",
+          "raw": 8650,
+          "gzip": 2943,
+          "brotli": 2800
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.summary.js",
+          "raw": 4888,
+          "gzip": 1746,
+          "brotli": 1635
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.ui.js",
+          "raw": 15571,
+          "gzip": 4771,
+          "brotli": 4490
+        },
+        {
+          "path": "/altoy/js/sync/drive-sync.validate.js",
+          "raw": 3567,
+          "gzip": 1483,
+          "brotli": 1364
+        },
+        {
+          "path": "/altoy/js/synced-storage.js",
+          "raw": 5206,
+          "gzip": 1895,
+          "brotli": 1783
+        },
+        {
+          "path": "/altoy/js/utils.js",
+          "raw": 61337,
+          "gzip": 19140,
+          "brotli": 18316
+        }
+      ],
+      "css": [
+        {
+          "path": "/altoy/_assets/Layout.CfkVEPXb.css",
+          "raw": 47614,
+          "gzip": 9129,
+          "brotli": 8842
+        }
+      ],
+      "json": [],
+      "bytesAtReady": {
+        "html": {
+          "count": 1,
+          "raw": 22520,
+          "gzip": 6255,
+          "brotli": 5825
+        },
+        "js": {
+          "count": 0,
+          "raw": 0,
+          "gzip": 0,
+          "brotli": 0
+        },
+        "css": {
+          "count": 0,
+          "raw": 0,
+          "gzip": 0,
+          "brotli": 0
+        },
+        "json": {
+          "count": 0,
+          "raw": 0,
+          "gzip": 0,
+          "brotli": 0
+        },
+        "total": {
+          "count": 1,
+          "raw": 22520,
+          "gzip": 6255,
+          "brotli": 5825
+        }
+      },
+      "bytes": {
+        "html": {
+          "count": 1,
+          "raw": 22520,
+          "gzip": 6255,
+          "brotli": 5825
+        },
+        "js": {
+          "count": 14,
+          "raw": 157769,
+          "gzip": 51140,
+          "brotli": 48388
+        },
+        "css": {
+          "count": 1,
+          "raw": 47614,
+          "gzip": 9129,
+          "brotli": 8842
+        },
+        "json": {
+          "count": 0,
+          "raw": 0,
+          "gzip": 0,
+          "brotli": 0
+        },
+        "total": {
+          "count": 16,
+          "raw": 227903,
+          "gzip": 66524,
+          "brotli": 63055
+        }
+      },
+      "problems": []
+    },
     "EVENT_STORY": {
       "path": "story-viewer/event-story/",
       "ready": "event archive sections rendered",

@@ -86,6 +86,20 @@ export const ROUTE_BOOT_TARGETS = Object.freeze([
         cutoff: 'networkidle',
     },
     {
+        key: 'PRIVACY',
+        path: 'privacy/',
+        ready: {
+            kind: 'count',
+            selector: '.privacy-page h1',
+            minimum: 1,
+            description: 'static privacy content rendered',
+        },
+        // R6's before-state imports the complete Drive Sync stack on
+        // DOMContentLoaded. Network idle captures that global work even though
+        // this route's static content is ready first.
+        cutoff: 'networkidle',
+    },
+    {
         key: 'EVENT_STORY',
         path: 'story-viewer/event-story/',
         ready: {
