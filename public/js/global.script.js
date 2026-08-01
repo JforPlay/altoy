@@ -5,7 +5,17 @@
  * Exports LINKS and setup functions so page scripts can re-invoke specific behaviors.
  */
 
-import { throttle, setupScrollToTop, getStorageItem, setStorageItem, getUrlParam, getBasePath, lockBodyScroll, unlockBodyScroll } from './utils.js';
+import {
+    throttle,
+    setupScrollToTop,
+    getStorageItem,
+    setStorageItem,
+    getUrlParam,
+    getBasePath,
+    lockBodyScroll,
+    unlockBodyScroll,
+    showToast,
+} from './utils.js';
 
 // ===== Drive Sync Feature Flag =====
 //
@@ -24,17 +34,75 @@ const SYNC_UI_ENABLED =
     syncPref === 'off' ? false :
     DEFAULT_SYNC_ENABLED;
 
-if (SYNC_UI_ENABLED) {
-    const mount = () => {
-        import('./sync/drive-sync.ui.js')
-            .then(mod => mod.mountSyncUI())
-            .catch(err => console.warn('Drive sync UI failed to mount:', err));
-    };
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', mount);
-    } else {
-        mount();
+let syncUiPromise = null;
+let syncImportFailures = 0;
+
+function setSyncLauncherState(trigger, state) {
+    const glyph = trigger.querySelector('.material-symbols-outlined');
+    trigger.classList.toggle('syncing', state === 'loading');
+    trigger.disabled = state === 'loading';
+
+    if (state === 'loading') {
+        trigger.setAttribute('aria-busy', 'true');
+        trigger.setAttribute('aria-label', 'Google Drive 동기화 불러오는 중');
+        if (glyph) glyph.textContent = 'sync';
+        return;
     }
+
+    trigger.removeAttribute('aria-busy');
+    if (state === 'error') {
+        trigger.setAttribute('aria-label', 'Google Drive 동기화 로드 실패, 다시 시도');
+        if (glyph) glyph.textContent = 'cloud_off';
+        return;
+    }
+
+    trigger.setAttribute('aria-label', 'Google Drive 동기화');
+    if (glyph) glyph.textContent = 'cloud';
+}
+
+function loadSyncUI() {
+    if (!syncUiPromise) {
+        const importPromise = syncImportFailures > 0
+            ? import(`./sync/drive-sync.ui.js?retry=${syncImportFailures}`)
+            : import('./sync/drive-sync.ui.js');
+        syncUiPromise = importPromise.catch((error) => {
+            syncUiPromise = null;
+            syncImportFailures += 1;
+            throw error;
+        });
+    }
+    return syncUiPromise;
+}
+
+function setupDriveSyncLauncher() {
+    const trigger = document.getElementById('sync-nav-icon');
+    if (!trigger) return;
+    if (!SYNC_UI_ENABLED) {
+        trigger.remove();
+        return;
+    }
+
+    let activating = false;
+    const activate = async () => {
+        if (activating) return;
+        activating = true;
+        setSyncLauncherState(trigger, 'loading');
+        try {
+            const syncUI = await loadSyncUI();
+            setSyncLauncherState(trigger, 'idle');
+            if (!syncUI.mountSyncUI({ openOnMount: true })) {
+                throw new Error('Drive sync trigger is unavailable.');
+            }
+            trigger.removeEventListener('click', activate);
+        } catch (error) {
+            setSyncLauncherState(trigger, 'error');
+            showToast('Google Drive 동기화 기능을 불러오지 못했습니다. 다시 시도해 주세요.', 'error');
+            console.warn('Drive sync UI failed to load:', error);
+        } finally {
+            activating = false;
+        }
+    };
+    trigger.addEventListener('click', activate);
 }
 
 // ===== Centralized Link Configuration =====
@@ -61,6 +129,8 @@ const LINKS = {
 
 // ===== Main Initialization =====
 document.addEventListener('DOMContentLoaded', function () {
+    setupDriveSyncLauncher();
+
     const savedTheme = getStorageItem('theme', 'dark');
     applyTheme(savedTheme);
 

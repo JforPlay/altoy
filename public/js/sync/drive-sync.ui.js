@@ -1,7 +1,8 @@
 /**
  * drive-sync.ui.js
- * Nav icon, popover panel, conflict modal, and cooldown timer for Drive sync.
- * Mount by calling mountSyncUI() — typically gated on a feature flag.
+ * Popover panel, conflict modal, and cooldown timer for Drive sync.
+ * The lightweight nav trigger is rendered globally and imports this module on
+ * first activation.
  *
  * The popover is appended to <body> (not the navbar) so the navbar's
  * backdrop-filter can't bleed through the popover's background. Position is
@@ -30,6 +31,7 @@ function loadCooldownFromSession() {
 let cooldownUntil = loadCooldownFromSession();
 let cooldownTimerId = null;
 let currentConflict = null;
+let syncUiMounted = false;
 
 /**
  * "Signed in" means either we have a live token OR the user has signed in
@@ -89,10 +91,14 @@ function setIconState(state) {
     const icon = document.getElementById('sync-nav-icon');
     if (!icon) return;
     icon.classList.remove('syncing');
+    icon.disabled = false;
+    icon.removeAttribute('aria-busy');
+    icon.setAttribute('aria-label', 'Google Drive 동기화');
     const dirty = localStorage.getItem(STORAGE_KEYS.localDirty) === '1';
     const signedIn = isSignedIn();
     const glyph = icon.querySelector('.material-symbols-outlined');
     const countdownSpan = icon.querySelector('.sync-cooldown-num');
+    if (!glyph || !countdownSpan) return;
     countdownSpan.textContent = '';
     if (state === 'syncing') {
         glyph.textContent = 'sync';
@@ -293,24 +299,37 @@ function positionPopover() {
     popover.style.top = `${rect.bottom + 8}px`;
     // Align popover's left edge with the icon's left edge, but clamp so it
     // doesn't overflow the right side of the viewport.
-    const popoverWidth = 280;
-    const maxLeft = window.innerWidth - popoverWidth - 8;
-    popover.style.left = `${Math.min(rect.left, maxLeft)}px`;
+    const viewportPadding = 8;
+    const maxLeft = Math.max(
+        viewportPadding,
+        window.innerWidth - popover.offsetWidth - viewportPadding
+    );
+    popover.style.left = `${Math.max(viewportPadding, Math.min(rect.left, maxLeft))}px`;
+}
+
+function openPopover() {
+    const popover = document.getElementById('sync-popover');
+    if (!popover) return;
+    popover.classList.add('open');
+    document.getElementById('sync-nav-icon')?.setAttribute('aria-expanded', 'true');
+    positionPopover();
+    renderPopoverBody();
 }
 
 function togglePopover() {
     const popover = document.getElementById('sync-popover');
     if (!popover) return;
-    const open = popover.classList.toggle('open');
-    if (open) {
-        positionPopover();
-        renderPopoverBody();
+    if (popover.classList.contains('open')) {
+        closePopover();
+    } else {
+        openPopover();
     }
 }
 
 function closePopover() {
     const popover = document.getElementById('sync-popover');
     popover?.classList.remove('open');
+    document.getElementById('sync-nav-icon')?.setAttribute('aria-expanded', 'false');
 }
 
 function onDocumentClick(e) {
@@ -323,54 +342,52 @@ function onDocumentClick(e) {
 }
 
 /**
- * Mount the sync nav icon + popover + conflict modal into the DOM.
- * Called from global.script.js after the feature flag check passes.
+ * Mount the popover + conflict modal onto the global sync trigger.
+ * Idempotent so a retried launcher or repeated caller cannot duplicate DOM or
+ * document/window listeners.
  */
-export function mountSyncUI() {
-    const navbar = document.querySelector('.navbar .nav-container');
-    if (!navbar) return;
+export function mountSyncUI({ openOnMount = false } = {}) {
+    const icon = document.getElementById('sync-nav-icon');
+    if (!icon) return false;
 
-    const themeToggle = navbar.querySelector('.theme-toggle');
-    // Icon goes in the navbar. Popover goes in <body> so the navbar's
-    // backdrop-filter cannot affect its background rendering.
-    const iconHTML = `
-        <button id="sync-nav-icon" class="sync-nav-icon" aria-label="Google Drive 동기화">
-            <span class="material-symbols-outlined">cloud</span>
-            <span class="sync-cooldown-num"></span>
-        </button>
-    `;
-    if (themeToggle) {
-        themeToggle.insertAdjacentHTML('beforebegin', iconHTML);
-    } else {
-        navbar.insertAdjacentHTML('beforeend', iconHTML);
+    if (!document.getElementById('sync-popover')) {
+        document.body.insertAdjacentHTML('beforeend', `
+            <div id="sync-popover" class="sync-popover" role="dialog" aria-label="Google Drive 동기화"></div>
+        `);
     }
-
-    document.body.insertAdjacentHTML('beforeend', `
-        <div id="sync-popover" class="sync-popover" role="dialog" aria-label="Google Drive 동기화"></div>
-        <div id="sync-conflict-modal" class="modal" style="display:none;" role="dialog" aria-label="동기화 충돌">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>동기화 충돌</h2>
-                    <button class="btn btn-close modal-close" aria-label="닫기">&times;</button>
+    if (!document.getElementById('sync-conflict-modal')) {
+        document.body.insertAdjacentHTML('beforeend', `
+            <div id="sync-conflict-modal" class="modal" style="display:none;" role="dialog" aria-label="동기화 충돌">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>동기화 충돌</h2>
+                        <button class="btn btn-close modal-close" aria-label="닫기">&times;</button>
+                    </div>
+                    <div class="modal-body"></div>
                 </div>
-                <div class="modal-body"></div>
             </div>
-        </div>
-    `);
-    setupModal('sync-conflict-modal', { closeOnEscape: true, closeOnBackdrop: true, restoreFocus: true });
-
-    document.getElementById('sync-nav-icon').addEventListener('click', togglePopover);
-    document.addEventListener('click', onDocumentClick);
-    // Close popover on scroll/resize — the fixed position would otherwise
-    // disconnect from the icon.
-    window.addEventListener('scroll', closePopover, { passive: true });
-    window.addEventListener('resize', closePopover);
-
-    // Resume cooldown from a prior page if still active
-    if (cooldownUntil > Date.now()) {
-        startCooldownInterval();
-        setIconState('cooldown');
-    } else {
-        setIconState('idle');
+        `);
     }
+
+    if (!syncUiMounted) {
+        setupModal('sync-conflict-modal', { closeOnEscape: true, closeOnBackdrop: true, restoreFocus: true });
+        icon.addEventListener('click', togglePopover);
+        document.addEventListener('click', onDocumentClick);
+        // Close popover on scroll/resize — the fixed position would otherwise
+        // disconnect from the icon.
+        window.addEventListener('scroll', closePopover, { passive: true });
+        window.addEventListener('resize', closePopover);
+        syncUiMounted = true;
+
+        // Resume cooldown from a prior page if still active.
+        if (cooldownUntil > Date.now()) {
+            startCooldownInterval();
+            setIconState('cooldown');
+        } else {
+            setIconState('idle');
+        }
+    }
+
+    if (openOnMount) openPopover();
+    return true;
 }

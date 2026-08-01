@@ -117,6 +117,13 @@ const csp = `default-src 'self'; script-src ${scriptSrc}; worker-src 'self' blob
                     <span class="material-symbols-outlined">home</span>
                 </a>
 
+                <button type="button" id="sync-nav-icon" class="sync-nav-icon"
+                        aria-label="Google Drive 동기화" aria-haspopup="dialog"
+                        aria-controls="sync-popover" aria-expanded="false">
+                    <span class="material-symbols-outlined">cloud</span>
+                    <span class="sync-cooldown-num"></span>
+                </button>
+
                 <button class="theme-toggle" aria-label="Toggle theme">
                     <span class="material-symbols-outlined theme-icon-sun">light_mode</span>
                     <span class="material-symbols-outlined theme-icon-moon">dark_mode</span>

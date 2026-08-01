@@ -10,7 +10,11 @@
     color: var(--text-primary);
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 4px;
+    min-width: 40px;
+    min-height: 40px;
+    order: 2;
     transition: background var(--transition-fast);
 }
 .sync-nav-icon:hover { background: var(--highlight-subtle); }
@@ -20,22 +24,23 @@
     font-variant-numeric: tabular-nums;
 }
 .sync-nav-icon.syncing .material-symbols-outlined {
-    animation: sync-spin 1s linear infinite;
+    animation: spin 1s linear infinite;
 }
-@keyframes sync-spin { to { transform: rotate(360deg); } }
 
 /* Popover panel — rendered as a child of <body> (NOT inside the navbar) so
    the navbar's backdrop-filter can't affect its background. Position is
    computed in JS on open (top/left inline styles). */
 .sync-popover {
     position: fixed;
-    min-width: 280px;
+    box-sizing: border-box;
+    width: 280px;
+    max-width: calc(100vw - 2 * var(--spacing-sm));
     background-color: var(--popover-bg);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
     padding: var(--spacing-md);
-    z-index: 1100;
+    z-index: var(--z-popover);
     color: var(--text-primary);
     display: none;
 }
@@ -152,5 +157,4 @@
 
 @media (max-width: 600px) {
     .sync-conflict-grid { grid-template-columns: 1fr; }
-    .sync-popover { min-width: 0; max-width: calc(100vw - 2 * var(--spacing-sm)); }
 }
