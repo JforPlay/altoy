@@ -117,9 +117,11 @@ const csp = `default-src 'self'; script-src ${scriptSrc}; worker-src 'self' blob
                     <span class="material-symbols-outlined">home</span>
                 </a>
 
+                {/* aria-controls is set by mountSyncUI once the popover exists;
+                    the panel is imported on first activation (R6). */}
                 <button type="button" id="sync-nav-icon" class="sync-nav-icon"
                         aria-label="Google Drive 동기화" aria-haspopup="dialog"
-                        aria-controls="sync-popover" aria-expanded="false">
+                        aria-expanded="false">
                     <span class="material-symbols-outlined">cloud</span>
                     <span class="sync-cooldown-num"></span>
                 </button>

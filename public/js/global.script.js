@@ -37,6 +37,15 @@ const SYNC_UI_ENABLED =
 let syncUiPromise = null;
 let syncImportFailures = 0;
 
+// Passive icon state without importing the sync stack. Key strings mirror
+// STORAGE_KEYS in sync/drive-sync.config.js on purpose — importing that module
+// would put a sync request back in every route's boot graph (R6).
+// drive-sync.ui.js#setIconState owns the icon once mounted.
+function idleSyncGlyph() {
+    if (getStorageItem('altoy:sync:everSignedIn', '') !== '1') return 'cloud';
+    return getStorageItem('altoy:sync:localDirty', '') === '1' ? 'cloud_upload' : 'cloud_done';
+}
+
 function setSyncLauncherState(trigger, state) {
     const glyph = trigger.querySelector('.material-symbols-outlined');
     trigger.classList.toggle('syncing', state === 'loading');
@@ -57,7 +66,7 @@ function setSyncLauncherState(trigger, state) {
     }
 
     trigger.setAttribute('aria-label', 'Google Drive 동기화');
-    if (glyph) glyph.textContent = 'cloud';
+    if (glyph) glyph.textContent = idleSyncGlyph();
 }
 
 function loadSyncUI() {
@@ -81,6 +90,8 @@ function setupDriveSyncLauncher() {
         trigger.remove();
         return;
     }
+
+    setSyncLauncherState(trigger, 'idle');
 
     let activating = false;
     const activate = async () => {

@@ -355,6 +355,7 @@ export function mountSyncUI({ openOnMount = false } = {}) {
             <div id="sync-popover" class="sync-popover" role="dialog" aria-label="Google Drive 동기화"></div>
         `);
     }
+    icon.setAttribute('aria-controls', 'sync-popover');
     if (!document.getElementById('sync-conflict-modal')) {
         document.body.insertAdjacentHTML('beforeend', `
             <div id="sync-conflict-modal" class="modal" style="display:none;" role="dialog" aria-label="동기화 충돌">

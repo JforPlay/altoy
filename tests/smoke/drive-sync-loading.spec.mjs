@@ -137,6 +137,19 @@ test('R6: failed Drive Sync import exposes click-to-retry and succeeds', async (
     expect(uiRequests[1].searchParams.get('retry')).toBe('1');
 });
 
+test('R6: launcher shows unsynced local state without loading the stack', async ({ page }) => {
+    const requested = collectSyncRequests(page);
+    await page.addInitScript(() => {
+        localStorage.setItem('altoy:sync:everSignedIn', '1');
+        localStorage.setItem('altoy:sync:localDirty', '1');
+    });
+
+    await openPrivacy(page);
+    await expect(page.locator('#sync-nav-icon .material-symbols-outlined')).toHaveText('cloud_upload');
+    await page.waitForTimeout(150);
+    expect(requested, 'passive state must not fetch Drive Sync modules').toEqual([]);
+});
+
 test('R6: sync query preference keeps the shell click-lazy or removes it', async ({ page }) => {
     const requested = collectSyncRequests(page);
     await page.addInitScript(() => {
