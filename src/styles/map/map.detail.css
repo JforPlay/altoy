@@ -426,3 +426,27 @@
 .ship-drop-card.rarity-SSR .ship-drop-name,
 .ship-drop-card.rarity-SR .ship-drop-name,
 .ship-drop-card.rarity-UR .ship-drop-name { color: var(--r-fg); }
+
+/* 보스 card — crosslink row into /map/boss-viewer. Portraits come from three
+   bundle families at different sizes (one is a 360x80 banner), so never assume
+   a square aspect ratio. */
+.map-boss-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+.map-boss-portrait {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+.map-boss-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    overflow-wrap: anywhere;
+}
+.map-boss-row .btn {
+    margin-left: auto;
+    flex-shrink: 0;
+}

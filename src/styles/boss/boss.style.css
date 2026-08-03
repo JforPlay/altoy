@@ -1,0 +1,132 @@
+/* =========================================================================
+   boss.style.css — /map/boss-viewer grid, cards, and filter chips.
+   Drawer body styling lives in boss.detail.css.
+   Reuses the global primitives: .page-header, .filter-bar--card, .card-grid,
+   .chip, .badge, .card-hover. Only what differs is declared here.
+   ========================================================================= */
+
+/* Base typography is deliberately NOT global (see CLAUDE.md), and common.css is
+   a per-page import this page doesn't take — so the page root supplies its own
+   text color and line height, the way map.style.css does for map-viewer.
+   Without the color, the h1 and card names inherit the UA black and vanish
+   against the dark background. */
+.boss-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--spacing-lg, 1.5rem);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* ===== Controls ===== */
+
+.boss-controls {
+  margin-bottom: var(--spacing-md, 1rem);
+}
+
+.boss-search-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1 1 16rem;
+  padding: 0.4rem 0.75rem;
+  background: var(--input-bg, var(--card-bg));
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+}
+.boss-search-label .material-symbols-outlined {
+  color: var(--text-secondary);
+  font-size: 1.25rem;
+}
+.boss-search-label input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+.boss-search-label input:focus {
+  outline: none;
+}
+
+.boss-count {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.boss-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: var(--spacing-md, 1rem);
+}
+.boss-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+/* ===== Grid ===== */
+
+.boss-grid {
+  --grid-min: 9.5rem;
+  --grid-gap: var(--spacing-md, 1rem);
+}
+
+/* loadPageData / renderStatus mount their status into the grid itself, so it
+   has to span every track instead of landing in the first 9.5rem column. */
+.boss-grid > .page-status {
+  grid-column: 1 / -1;
+}
+
+.boss-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: var(--spacing-md, 1rem) 0.5rem 0.75rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-align: center;
+  color: inherit;
+  font: inherit;
+}
+
+/* Portraits come from three bundle families at different sizes — qicon 112x112,
+   squareicon 116x116, and one 360x80 banner (sairenboss11). Never assume 1:1. */
+.boss-card-portrait {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.boss-card-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  line-height: 1.25;
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
+
+.boss-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.boss-card-count {
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+}
+
+@media (max-width: 640px) {
+  .boss-page { padding: var(--spacing-md, 1rem); }
+  .boss-grid { --grid-min: 7.5rem; }
+  .boss-card-portrait { width: 60px; height: 60px; }
+}

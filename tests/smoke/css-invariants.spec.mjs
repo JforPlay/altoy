@@ -741,3 +741,36 @@ for (const [theme, rgb] of [['light', '255, 255, 255'], ['dark', '0, 0, 0']]) {
         expect(await probeStyle(page, 'lightbox-modal', 'backgroundColor')).toContain(rgb);
     });
 }
+
+// Base text color is NOT global: global.base.css sets only background + margin,
+// and common.css (which supplies color/line-height) is a per-page import many
+// pages skip. A page importing neither renders its headings in the UA default
+// black — invisible on the dark default theme, and invisible to every other
+// check because no `var()` is involved for check-css-tokens to flag.
+// Hit on boss-viewer 2026-08-03 (title + card names + the whole drawer).
+const readableColor = (page, selector) => page.evaluate((sel) => {
+    const el = document.querySelector(sel);
+    if (!el) return null;
+    return {
+        color: getComputedStyle(el).color,
+        expected: getComputedStyle(document.body).getPropertyValue('--text-primary').trim(),
+    };
+}, selector);
+
+for (const [label, selector] of [
+    ['page title', '.page-header-title'],
+    ['card name', '.boss-card-name'],
+    ['drawer title', '#bossDetailTitle'],
+    ['drawer stat value', '.boss-row-stats dd'],
+]) {
+    test(`boss-viewer ${label} resolves --text-primary, not the UA default`, async ({ page }) => {
+        await page.goto(`${pathFor('boss-viewer')}?boss=wuzang`, { waitUntil: 'load' });
+        await page.waitForSelector('#bossDetailPanel.open');
+        const got = await readableColor(page, selector);
+        expect(got, `${selector} is missing`).not.toBeNull();
+        // Dark is the site default, so --text-primary is near-white here. A bare
+        // rgb(0, 0, 0) means the declaration was dropped and the UA value inherited.
+        expect(got.color, `${selector} fell back to the UA default`).not.toBe('rgb(0, 0, 0)');
+        expect(got.expected, '--text-primary is unset on body').not.toBe('');
+    });
+}

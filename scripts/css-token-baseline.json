@@ -1,0 +1,16 @@
+[
+    "src/styles/event-timeline.css var(--text-color)",
+    "src/styles/island/island.resource.costs.css var(--island-bg-secondary)",
+    "src/styles/island/island.resource.costs.css var(--island-border-hover)",
+    "src/styles/island/island.resource.forest.css var(--island-hover)",
+    "src/styles/island/island.restaurant.comparison.css var(--island-accent-rgb)",
+    "src/styles/island/island.restaurant.menu.css var(--island-accent-rgb)",
+    "src/styles/island/island.restaurant.modal.css var(--island-accent-rgb)",
+    "src/styles/island/island.restaurant.planner.css var(--island-accent-rgb)",
+    "src/styles/shipgirl/shipgirl-tracker.cards.css var(--card-border)",
+    "src/styles/shipgirl/shipgirl-tracker.cards.css var(--secondary-text)",
+    "src/styles/skin/skin.detail.viewer.expression.css var(--accent-color-rgb)",
+    "src/styles/story-viewer/world-file.css var(--bg-color)",
+    "src/styles/story-viewer/world-file.css var(--subtitle-color)",
+    "src/styles/story-viewer/world-file.css var(--text-color)"
+]

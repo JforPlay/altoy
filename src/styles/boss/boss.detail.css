@@ -1,0 +1,149 @@
+/* =========================================================================
+   boss.detail.css — /map/boss-viewer detail drawer body.
+   The shell (fixed position, slide, scrim) comes from the shared .drawer /
+   .drawer-backdrop primitive; only the inner header/body/rows live here.
+   ========================================================================= */
+
+.boss-detail-panel {
+  --drawer-width: min(34rem, 100vw);
+  /* Sit below the fixed navbar, or it covers the drawer's own header — same
+     placement equip-viewer and shipgirl-birthday use. */
+  --drawer-top: var(--navbar-height, 64px);
+  --drawer-height: calc(100% - var(--navbar-height, 64px));
+  display: flex;
+  flex-direction: column;
+  /* The drawer is a sibling of .boss-page, so it inherits from <body> — which
+     sets no color. Supply the same base the page root does. */
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.boss-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: var(--spacing-md, 1rem);
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+.boss-detail-header h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
+
+.boss-detail-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--spacing-md, 1rem);
+}
+
+/* ===== Summary ===== */
+
+.boss-detail-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md, 1rem);
+  padding-bottom: var(--spacing-md, 1rem);
+  border-bottom: 1px solid var(--border-color);
+}
+.boss-detail-portrait {
+  width: 88px;
+  height: 88px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.boss-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+.boss-detail-count {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  width: 100%;
+}
+
+/* ===== Appearance groups ===== */
+
+.boss-group {
+  margin-top: var(--spacing-md, 1rem);
+}
+
+/* Hooks, not property re-declarations — bundle-order-safe (see section-title.css). */
+.boss-group-title {
+  --section-title-mb: 0.5rem;
+  --section-title-color: var(--text-secondary);
+}
+
+/* ===== Appearance rows ===== */
+
+.boss-row-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.boss-row {
+  padding: 0.6rem 0.75rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+}
+
+.boss-row-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+.boss-row-where {
+  font-weight: 600;
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
+.boss-row-lv {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+.boss-row-link {
+  margin-left: auto;
+}
+
+.boss-row-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(4.5rem, 1fr));
+  gap: 0.35rem 0.5rem;
+  margin: 0;
+}
+.boss-row-stats div {
+  display: flex;
+  flex-direction: column;
+}
+.boss-row-stats dt {
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+}
+.boss-row-stats dd {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Operation Siren: stats are runtime-scaled, so none are shown. */
+.boss-row-scaled {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-style: italic;
+  padding: 0.25rem 0;
+  cursor: help;
+}

@@ -6,10 +6,51 @@
  * calcClearEstimate is also exported and used by map.compare.js for the compare table.
  */
 
-import { showElement, hideElement, resolveUrl, getItemIconUrl, renderStatus } from '../utils.js';
+import { showElement, hideElement, resolveUrl, getItemIconUrl, renderStatus, escapeHtml, fetchJSONWithCache } from '../utils.js';
 import { getShipDropsForChapter, getShipInfo, getShipInfoByGid } from './map.data.js';
 
 let state;
+
+/**
+ * Lazy boss index for the 보스 card's name + portrait, fetched on the first
+ * detail-panel render rather than at page boot: it is 37 KB gzipped and the map
+ * viewer's boot payload is tracked by `npm run report:route-boot`. Resolves to
+ * null on failure — the card just hides.
+ */
+let bossIndexPromise = null;
+function ensureBossIndex() {
+    if (!bossIndexPromise) {
+        bossIndexPromise = fetchJSONWithCache('data/boss/boss_data.json', { maxAge: 86400000 })
+            .catch(() => null);
+    }
+    return bossIndexPromise;
+}
+
+/**
+ * Fill the 보스 card once the index arrives; drop it if this icon is unknown.
+ * boss-format.js is imported dynamically rather than at module scope so the map
+ * viewer's boot payload stays flat — it is only needed once a detail panel opens.
+ */
+async function fillBossCard(targetEl, icon) {
+    const card = targetEl.querySelector('.map-boss-card');
+    if (!card) return;
+    const [index, { bossPortraitUrl, bossPortraitFallbackAttr }] = await Promise.all([
+        ensureBossIndex(),
+        import('../boss-format.js'),
+    ]);
+    const rec = index && index[icon];
+    if (!rec) {
+        card.remove();
+        return;
+    }
+    const identity = { icon, sid: rec.sid };
+    const href = resolveUrl(`map/boss-viewer/?boss=${encodeURIComponent(icon)}`);
+    card.querySelector('.map-boss-row').innerHTML =
+        `<img class="map-boss-portrait" src="${escapeHtml(bossPortraitUrl(identity))}"
+              alt="" loading="lazy"${bossPortraitFallbackAttr(identity, escapeHtml)} data-onfail="hide">
+         <span class="map-boss-name">${escapeHtml(rec.name)}</span>
+         <a class="btn btn-sm btn-outline" href="${escapeHtml(href)}">보스 도감</a>`;
+}
 
 /** Receive shared state from map.viewer.js. */
 export function setup(stateRef) {
@@ -185,6 +226,16 @@ export function renderMapInfo(chapter, targetEl) {
 
     html += '</div></div>'; // close info-card-body + info-card
 
+    // ── Card: 보스 → /map/boss-viewer. Shell only; name + portrait are filled
+    // by fillBossCard() once the lazy boss index resolves.
+    const bossIcon = Array.isArray(chapter.icon) ? chapter.icon[0] : null;
+    if (bossIcon) {
+        html += '<div class="info-card map-boss-card">';
+        html += '<div class="info-card-header"><div class="info-card-icon info-card-icon--ship"><span class="material-symbols-outlined">skull</span></div><div class="info-card-label">보스</div></div>';
+        html += '<div class="info-card-body"><div class="map-boss-row"></div></div>';
+        html += '</div>';
+    }
+
     // ── Card 2: 클리어 정보 (clear estimate with mini stat boxes) ──
     if (est.totalBattles > 0) {
         html += '<div class="info-card">';
@@ -357,6 +408,7 @@ export function renderMapInfo(chapter, targetEl) {
 
     html += '</div>'; // close info-grid
     targetEl.innerHTML = html;
+    if (bossIcon) fillBossCard(targetEl, bossIcon);
 }
 
 /** Render quick stats chips (oil, ammo, air dominance, boss refresh, fleet count, oil cap) for standard maps. */

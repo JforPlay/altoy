@@ -1,0 +1,52 @@
+---
+/**
+ * Boss Viewer (보스 도감)
+ * Gallery of every KR boss — stage, war archive, event, META, 극전, 대형작전,
+ * and Operation Siren — with per-appearance stats and map-viewer crosslinks.
+ */
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/boss/boss.style.css';
+import '../../styles/boss/boss.detail.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<!-- accent theme: the sibling map-viewer it crosslinks with uses it, so the
+     palette shouldn't flip when you follow 해역 보기 / the 보스 card. -->
+<Layout title="보스 도감" theme="accent" {base} description="벽람항로 해역/이벤트/META 보스의 스탯과 출현 위치 모아보기">
+    <div class="boss-page">
+        <header class="page-header">
+            <h1 class="page-header-title">
+                <span class="material-symbols-outlined">skull</span>
+                보스 도감
+            </h1>
+            <p class="page-header-subtitle">
+                일반해역 · 하드 · 이벤트 · 기록 · META · 극전 · 대형작전 · 세이렌 보스의 스탯과 출현 위치
+            </p>
+        </header>
+
+        <div class="filter-bar filter-bar--card boss-controls">
+            <label class="boss-search-label">
+                <span class="material-symbols-outlined" aria-hidden="true">search</span>
+                <input id="bossSearch" type="search" placeholder="보스 이름 검색" aria-label="보스 이름 검색">
+            </label>
+            <span id="bossCount" class="boss-count" aria-live="polite"></span>
+        </div>
+
+        <div id="bossFilters" class="boss-filters"></div>
+
+        <div id="bossGrid" class="card-grid boss-grid"></div>
+    </div>
+
+    <div id="bossDetailBackdrop" class="drawer-backdrop"></div>
+    <aside id="bossDetailPanel" class="drawer boss-detail-panel" aria-hidden="true" aria-labelledby="bossDetailTitle">
+        <div class="boss-detail-header">
+            <h2 id="bossDetailTitle"></h2>
+            <button id="bossDetailClose" class="btn btn-icon btn-close" type="button" aria-label="닫기">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div id="bossDetailContent" class="boss-detail-body scroll-styled"></div>
+    </aside>
+
+    <script is:inline type="module" src={`${base}/js/boss/boss.viewer.js`}></script>
+</Layout>
