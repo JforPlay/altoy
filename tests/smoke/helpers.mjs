@@ -19,10 +19,13 @@ export function seedFuse(page) {
                 return { docs: this.data };
             }
 
+            // Matches `name` plus any array-valued `alias` entries (equip 별명),
+            // so nickname search is exercisable without the real Fuse.
             search(query) {
                 const normalized = String(query).toLowerCase();
                 return this.data
-                    .filter(({ name }) => String(name ?? '').toLowerCase().includes(normalized))
+                    .filter((item) => [item?.name, ...(Array.isArray(item?.alias) ? item.alias : [])]
+                        .some(value => String(value ?? '').toLowerCase().includes(normalized)))
                     .map(item => ({ item, matches: [], score: 0 }));
             }
         };

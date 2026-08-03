@@ -1,14 +1,17 @@
 /**
  * global-search.js
  * Global search modal (Ctrl+K) loaded on every page via Layout.astro.
- * Searches both the page catalog (pages.catalog.js) and shipgirl names
- * (lazy-loaded from ship_group_data.json).
+ * Searches the page catalog (pages.catalog.js), shipgirl names
+ * (ship_group_data.json), and equipment names + 별명 (equip_data_lite.json
+ * paired with the curator commentary in equip_hearing.json). Both datasets are
+ * lazy-loaded on first modal open.
  * Depends on Fuse.js (CDN, defer-loaded by Layout), utils.js, and pages.catalog.js.
  */
 
 import {
     debounce,
     fetchJSON,
+    fetchJSONWithCache,
     resolveUrl,
     createSearchIndex,
     ensureFuse,
@@ -17,6 +20,7 @@ import {
     lockBodyScroll,
     unlockBodyScroll,
     renderStatus,
+    DATA_FOR_TOY_BASE,
 } from './utils.js';
 import { LINKS } from './global.script.js';
 import { PAGE_CATALOG } from './pages.catalog.js';
@@ -28,6 +32,10 @@ let pageIndexBuilding = null;
 let shipData = null;
 let shipIndex = null;
 let shipDataLoading = false;
+let equipData = null;
+let equipIndex = null;
+let equipDataLoading = false;
+let upgradeEquipIds = null;
 let activeIndex = -1;
 let allResults = [];
 
@@ -103,9 +111,12 @@ function openSearch() {
         });
     }
 
-    // Lazy-load ship data on first open
+    // Lazy-load ship + equip data on first open
     if (!shipData && !shipDataLoading) {
         loadShipData();
+    }
+    if (!equipData && !equipDataLoading) {
+        loadEquipData();
     }
 }
 
@@ -183,11 +194,82 @@ async function loadShipData() {
     shipDataLoading = false;
 }
 
+// ===== Equip Data Loading =====
+
+const EQUIP_CACHE_MAX_AGE = 24 * 60 * 60 * 1000;
+
+// Icon URLs mirror equip.data.js#getEquipIconUrl, inlined so the palette (which
+// ships on every page) doesn't pull the equip viewer's data module and its
+// simulator dependencies along with it.
+const EQUIP_ICON_BASE = `${DATA_FOR_TOY_BASE}/equips`;
+
+/**
+ * Lazy-load the equipment list plus the curator 별명 that make nicknames
+ * searchable, and the research-tree roster that gates the 장비 연구 sub-link.
+ * These are the same cached URLs the 장비 DB page fetches, so a visitor who has
+ * already been there pays nothing. 별명 and tree data are optional — losing
+ * either must not drop the 장비 section itself.
+ */
+async function loadEquipData() {
+    equipDataLoading = true;
+    try {
+        const cached = (url) => fetchJSONWithCache(url, { maxAge: EQUIP_CACHE_MAX_AGE });
+        const [lite, hearing, upgradeTemplates] = await Promise.all([
+            cached('data/equip/equip_data_lite.json'),
+            cached('data/equip/equip_hearing.json').catch(() => null),
+            cached('data/equip/equip_upgrade_template.json').catch(() => null),
+        ]);
+
+        const commentary = hearing?.entries || {};
+        equipData = lite.map(equip => ({
+            id: equip.id,
+            name: equip.name,
+            icon: equip.icon,
+            rarityName: equip.rarity_name,
+            typeName: equip.type_name2 || equip.type_name || '',
+            // 별명 arrives as one comma-joined string ("황탄, 노탄"); split it so
+            // each nickname matches on its own rather than as a single phrase.
+            alias: String(commentary[equip.id]?.alias || '')
+                .split(',')
+                .map(a => a.trim())
+                .filter(Boolean),
+        }));
+
+        upgradeEquipIds = new Set();
+        for (const template of Object.values(upgradeTemplates || {})) {
+            for (const [, , equipId] of template.equipments || []) {
+                upgradeEquipIds.add(equipId);
+            }
+        }
+
+        await ensureFuse();
+        equipIndex = createSearchIndex(equipData, {
+            keys: [
+                { name: 'name', weight: 2 },
+                { name: 'alias', weight: 2 }
+            ],
+            threshold: 0.3
+        });
+        // Same catch-up as ships: a query typed during the load skipped this index.
+        if (overlay.open && input.value.trim()) {
+            handleSearch();
+        }
+    } catch (e) {
+        console.warn('[GlobalSearch] Failed to load equip data:', e);
+    }
+    equipDataLoading = false;
+}
+
+function equipIconUrl(iconId) {
+    return iconId ? `${EQUIP_ICON_BASE}/${iconId}.webp` : '';
+}
+
 // ===== Search Logic =====
 
 /**
  * Substring fallback for when Fuse.js fails to load. Returns up to `limit`
  * items whose `name` or `description` includes the query (case-insensitive).
+ * Array-valued keys (equip `alias`) are matched across their entries.
  * Mimics Fuse's `{ item }` result shape so the renderer can stay agnostic.
  */
 function simpleSearch(items, query, limit, keys = ['name', 'description']) {
@@ -196,7 +278,9 @@ function simpleSearch(items, query, limit, keys = ['name', 'description']) {
     const out = [];
     for (const item of items) {
         for (const key of keys) {
-            if (typeof item[key] === 'string' && item[key].toLowerCase().includes(needle)) {
+            const value = item[key];
+            const haystack = Array.isArray(value) ? value.join(' ') : value;
+            if (typeof haystack === 'string' && haystack.toLowerCase().includes(needle)) {
                 out.push({ item });
                 break;
             }
@@ -207,8 +291,8 @@ function simpleSearch(items, query, limit, keys = ['name', 'description']) {
 }
 
 /**
- * Run both page and ship indexes against the current input, render combined results.
- * Falls back to substring matching when Fuse.js is unavailable.
+ * Run the page, ship and equip indexes against the current input, render the
+ * combined results. Falls back to substring matching when Fuse.js is unavailable.
  */
 function handleSearch() {
     const query = input.value.trim();
@@ -225,11 +309,15 @@ function handleSearch() {
     const shipResults = shipIndex
         ? shipIndex.search(query).slice(0, 8)
         : simpleSearch(shipData, query, 8, ['name']);
+    const equipResults = equipIndex
+        ? equipIndex.search(query).slice(0, 6)
+        : simpleSearch(equipData, query, 6, ['name', 'alias']);
 
-    // Don't show "no results" if ship data is still loading — fast typers would
-    // see a flashing empty-state between the page-result render and ship-load
-    // completion. Render a loading placeholder under the 함순이 header instead.
-    if (pageResults.length === 0 && shipResults.length === 0 && !shipDataLoading) {
+    // Don't show "no results" while a dataset is still loading — fast typers
+    // would see a flashing empty-state between the page-result render and the
+    // load completing. Render a loading placeholder under that header instead.
+    const stillLoading = shipDataLoading || equipDataLoading;
+    if (pageResults.length === 0 && shipResults.length === 0 && equipResults.length === 0 && !stillLoading) {
         activeIndex = -1;
         allResults = [];
         renderEmptyMessage('검색 결과가 없습니다');
@@ -253,17 +341,27 @@ function handleSearch() {
         }
     } else if (shipDataLoading) {
         fragment.appendChild(createSectionHeader('함순이'));
-        fragment.appendChild(createShipLoadingRow());
+        fragment.appendChild(createLoadingRow('함순이 검색 준비 중...'));
+    }
+
+    if (equipResults.length > 0) {
+        fragment.appendChild(createSectionHeader('장비'));
+        for (const result of equipResults) {
+            fragment.appendChild(createEquipResult(result.item));
+        }
+    } else if (equipDataLoading) {
+        fragment.appendChild(createSectionHeader('장비'));
+        fragment.appendChild(createLoadingRow('장비 검색 준비 중...'));
     }
 
     resultsContainer.replaceChildren(fragment);
     activeIndex = -1;
 }
 
-function createShipLoadingRow() {
+function createLoadingRow(message) {
     // Canonical compact loading state (status.css). renderStatus inserts into a
     // host and returns the element; re-parent it onto the results fragment.
-    return renderStatus(document.createElement('div'), '함순이 검색 준비 중...', 'loading', { compact: true });
+    return renderStatus(document.createElement('div'), message, 'loading', { compact: true });
 }
 
 function createSectionHeader(label) {
@@ -340,16 +438,71 @@ function createShipResult(ship) {
     const links = document.createElement('div');
     links.className = 'global-search-ship-links';
     links.append(
-        createShipLink(infoUrl, '함순이 정보', 'database'),
-        createShipLink(skinUrl, '일러/대사', 'image'),
-        createShipLink(valentineUrl, '발렌타인', 'mail'),
+        createRowLink(infoUrl, '함순이 정보', 'database'),
+        createRowLink(skinUrl, '일러/대사', 'image'),
+        createRowLink(valentineUrl, '발렌타인', 'mail'),
     );
 
     row.append(icon, info, links);
     return row;
 }
 
-function createShipLink(href, title, iconName) {
+/**
+ * Build one equipment row. Reuses the shipgirl row layout (icon + name + rarity
+ * + sub-links) with the 별명 on the second line, falling back to the type name
+ * when the curator hasn't given the equip a nickname. The 장비 연구 link only
+ * appears for equips that actually sit in a research tree.
+ */
+function createEquipResult(equip) {
+    const idx = allResults.length;
+    const dbUrl = `${buildPageUrl(LINKS.EQUIP_VIEWER)}?equip=${equip.id}`;
+    allResults.push({ type: 'equip', url: dbUrl });
+
+    const row = document.createElement('div');
+    row.className = 'global-search-ship';
+    row.dataset.index = String(idx);
+    row.dataset.url = dbUrl;
+    row.addEventListener('click', (event) => {
+        if (event.target.closest('.global-search-ship-link')) return;
+        window.location.href = dbUrl;
+    });
+
+    const icon = createImgElement(equipIconUrl(equip.icon), equip.name, {
+        className: 'global-search-ship-icon',
+        onError() { this.style.display = 'none'; },
+    });
+
+    const info = document.createElement('div');
+    info.className = 'global-search-ship-info';
+    const nameLine = document.createElement('div');
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'global-search-ship-name';
+    nameSpan.textContent = equip.name;
+    const raritySpan = document.createElement('span');
+    raritySpan.className = `global-search-rarity rarity-${equip.rarityName}`;
+    raritySpan.textContent = equip.rarityName;
+    nameLine.append(nameSpan, raritySpan);
+    const subLine = document.createElement('div');
+    subLine.className = 'global-search-item-desc';
+    subLine.textContent = equip.alias.length
+        ? `별명: ${equip.alias.join(', ')}`
+        : equip.typeName;
+    info.append(nameLine, subLine);
+
+    const links = document.createElement('div');
+    links.className = 'global-search-ship-links';
+    links.appendChild(createRowLink(dbUrl, '장비 DB', 'settings'));
+    if (upgradeEquipIds?.has(equip.id)) {
+        links.appendChild(createRowLink(
+            `${buildPageUrl(LINKS.EQUIP_UPGRADE)}?equip=${equip.id}`, '장비 연구', 'science'
+        ));
+    }
+
+    row.append(icon, info, links);
+    return row;
+}
+
+function createRowLink(href, title, iconName) {
     const link = document.createElement('a');
     link.href = href;
     link.className = 'global-search-ship-link';
@@ -417,11 +570,15 @@ function buildPageUrl(path) {
 document.addEventListener('DOMContentLoaded', init);
 
 // Release module-level indexes/data on page unload so bfcache snapshots and
-// long-lived tabs don't carry the full catalog + ship index across navigations.
+// long-lived tabs don't carry the full catalog + ship/equip indexes across
+// navigations.
 window.addEventListener('pagehide', () => {
     pageIndex = null;
     pageIndexBuilding = null;
     shipData = null;
     shipIndex = null;
+    equipData = null;
+    equipIndex = null;
+    upgradeEquipIds = null;
     allResults.length = 0;
 });
