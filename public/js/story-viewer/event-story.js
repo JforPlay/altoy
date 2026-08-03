@@ -4,7 +4,7 @@
  * engine with event-archive data sources and supplies a year-sectioned,
  * chip-filtered index renderer via the engine's config.renderEventGrid hook.
  */
-import { resolveUrl } from '../utils.js';
+import { resolveUrl, renderStatus } from '../utils.js';
 import { groupAndFilterEvents } from './event-story.filter.js';
 import { setupFactionFilter } from './faction-filter.js';
 
@@ -43,10 +43,7 @@ function renderEventGrid(viewer, searchTerm) {
     });
 
     if (groups.length === 0) {
-        const empty = document.createElement('p');
-        empty.className = 'page-status page-status--empty';
-        empty.textContent = '조건에 맞는 이벤트가 없습니다.';
-        grid.appendChild(empty);
+        renderStatus(grid, '조건에 맞는 이벤트가 없습니다.', 'empty');
         return;
     }
 
@@ -85,7 +82,7 @@ function renderEventGrid(viewer, searchTerm) {
             }
 
             const badge = document.createElement('span');
-            badge.className = 'badge badge-info event-subtype-badge';
+            badge.className = 'badge badge--info event-subtype-badge';
             badge.textContent = [SUBTYPE_LABEL[ev.subtype], specialLink ? '메인스토리' : '']
                 .filter(Boolean).join(' · ');
             card.querySelector('.card-content')?.appendChild(badge);
