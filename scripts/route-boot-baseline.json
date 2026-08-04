@@ -17,9 +17,9 @@
       "html": [
         {
           "path": "/altoy/simulators/fleet-sim/",
-          "raw": 29935,
-          "gzip": 6959,
-          "brotli": 6401
+          "raw": 29945,
+          "gzip": 6968,
+          "brotli": 6413
         }
       ],
       "js": [
@@ -109,9 +109,9 @@
         },
         {
           "path": "/altoy/js/pages.catalog.js",
-          "raw": 13815,
-          "gzip": 4521,
-          "brotli": 4325
+          "raw": 13825,
+          "gzip": 4530,
+          "brotli": 4335
         },
         {
           "path": "/altoy/js/simulators/fleet-sim.calc.js",
@@ -182,10 +182,10 @@
       ],
       "css": [
         {
-          "path": "/altoy/_assets/common.CLP5zcTe.css",
-          "raw": 8771,
-          "gzip": 2246,
-          "brotli": 2068
+          "path": "/altoy/_assets/common.Cch28cGX.css",
+          "raw": 8829,
+          "gzip": 2259,
+          "brotli": 2080
         },
         {
           "path": "/altoy/_assets/fleet-sim.CZjvFw7h.css",
@@ -194,10 +194,10 @@
           "brotli": 4215
         },
         {
-          "path": "/altoy/_assets/Layout.g7lKfqWR.css",
-          "raw": 47643,
-          "gzip": 9131,
-          "brotli": 8847
+          "path": "/altoy/_assets/Layout.B6OMe4Ds.css",
+          "raw": 47701,
+          "gzip": 9144,
+          "brotli": 8862
         },
         {
           "path": "/altoy/_assets/sim.common.Cbv8nCqk.css",
@@ -307,21 +307,21 @@
       "bytesAtReady": {
         "html": {
           "count": 1,
-          "raw": 29935,
-          "gzip": 6959,
-          "brotli": 6401
+          "raw": 29945,
+          "gzip": 6968,
+          "brotli": 6413
         },
         "js": {
           "count": 26,
-          "raw": 328905,
-          "gzip": 98462,
-          "brotli": 94154
+          "raw": 328915,
+          "gzip": 98471,
+          "brotli": 94164
         },
         "css": {
           "count": 4,
-          "raw": 95868,
-          "gzip": 19669,
-          "brotli": 18763
+          "raw": 95984,
+          "gzip": 19695,
+          "brotli": 18790
         },
         "json": {
           "count": 16,
@@ -331,29 +331,29 @@
         },
         "total": {
           "count": 47,
-          "raw": 54489450,
-          "gzip": 2970422,
-          "brotli": 1942327
+          "raw": 54489586,
+          "gzip": 2970466,
+          "brotli": 1942376
         }
       },
       "bytes": {
         "html": {
           "count": 1,
-          "raw": 29935,
-          "gzip": 6959,
-          "brotli": 6401
+          "raw": 29945,
+          "gzip": 6968,
+          "brotli": 6413
         },
         "js": {
           "count": 26,
-          "raw": 328905,
-          "gzip": 98462,
-          "brotli": 94154
+          "raw": 328915,
+          "gzip": 98471,
+          "brotli": 94164
         },
         "css": {
           "count": 4,
-          "raw": 95868,
-          "gzip": 19669,
-          "brotli": 18763
+          "raw": 95984,
+          "gzip": 19695,
+          "brotli": 18790
         },
         "json": {
           "count": 16,
@@ -363,9 +363,9 @@
         },
         "total": {
           "count": 47,
-          "raw": 54489450,
-          "gzip": 2970422,
-          "brotli": 1942327
+          "raw": 54489586,
+          "gzip": 2970466,
+          "brotli": 1942376
         }
       },
       "problems": []
@@ -418,15 +418,15 @@
         },
         {
           "path": "/altoy/js/shipgirl/shipgirl-info.data.js",
-          "raw": 10885,
-          "gzip": 3592,
-          "brotli": 3383
+          "raw": 11065,
+          "gzip": 3640,
+          "brotli": 3437
         },
         {
           "path": "/altoy/js/shipgirl/shipgirl-info.detail.js",
-          "raw": 31230,
-          "gzip": 8166,
-          "brotli": 7753
+          "raw": 31510,
+          "gzip": 8263,
+          "brotli": 7847
         },
         {
           "path": "/altoy/js/shipgirl/shipgirl-info.equip-slots.js",
@@ -436,9 +436,9 @@
         },
         {
           "path": "/altoy/js/shipgirl/shipgirl-info.js",
-          "raw": 24707,
-          "gzip": 6760,
-          "brotli": 6416
+          "raw": 24624,
+          "gzip": 6687,
+          "brotli": 6343
         },
         {
           "path": "/altoy/js/shipgirl/shipgirl-info.maps.js",
@@ -532,9 +532,9 @@
         },
         "js": {
           "count": 15,
-          "raw": 255089,
-          "gzip": 76651,
-          "brotli": 72761
+          "raw": 255466,
+          "gzip": 76723,
+          "brotli": 72836
         },
         "css": {
           "count": 2,
@@ -550,9 +550,9 @@
         },
         "total": {
           "count": 23,
-          "raw": 669360,
-          "gzip": 126244,
-          "brotli": 118380
+          "raw": 669737,
+          "gzip": 126316,
+          "brotli": 118455
         }
       },
       "bytes": {
@@ -564,9 +564,9 @@
         },
         "js": {
           "count": 15,
-          "raw": 255089,
-          "gzip": 76651,
-          "brotli": 72761
+          "raw": 255466,
+          "gzip": 76723,
+          "brotli": 72836
         },
         "css": {
           "count": 2,
@@ -582,9 +582,9 @@
         },
         "total": {
           "count": 23,
-          "raw": 669360,
-          "gzip": 126244,
-          "brotli": 118380
+          "raw": 669737,
+          "gzip": 126316,
+          "brotli": 118455
         }
       },
       "problems": []
@@ -603,9 +603,9 @@
       "html": [
         {
           "path": "/altoy/shipgirl/shipgirl-stats/",
-          "raw": 29703,
-          "gzip": 7116,
-          "brotli": 6681
+          "raw": 29713,
+          "gzip": 7124,
+          "brotli": 6685
         }
       ],
       "js": [
@@ -635,9 +635,9 @@
         },
         {
           "path": "/altoy/js/pages.catalog.js",
-          "raw": 13815,
-          "gzip": 4521,
-          "brotli": 4325
+          "raw": 13825,
+          "gzip": 4530,
+          "brotli": 4335
         },
         {
           "path": "/altoy/js/shipgirl/shipgirl-stats.compare.js",
@@ -690,16 +690,16 @@
       ],
       "css": [
         {
-          "path": "/altoy/_assets/Layout.g7lKfqWR.css",
-          "raw": 47643,
-          "gzip": 9131,
-          "brotli": 8847
+          "path": "/altoy/_assets/Layout.B6OMe4Ds.css",
+          "raw": 47701,
+          "gzip": 9144,
+          "brotli": 8862
         },
         {
-          "path": "/altoy/_assets/shipgirl-stats.eQ5DpEyS.css",
-          "raw": 24119,
-          "gzip": 4834,
-          "brotli": 4604
+          "path": "/altoy/_assets/shipgirl-stats.BSgkDIbs.css",
+          "raw": 24177,
+          "gzip": 4848,
+          "brotli": 4615
         }
       ],
       "json": [
@@ -731,21 +731,21 @@
       "bytesAtReady": {
         "html": {
           "count": 1,
-          "raw": 29703,
-          "gzip": 7116,
-          "brotli": 6681
+          "raw": 29713,
+          "gzip": 7124,
+          "brotli": 6685
         },
         "js": {
           "count": 13,
-          "raw": 220972,
-          "gzip": 64195,
-          "brotli": 61122
+          "raw": 220982,
+          "gzip": 64204,
+          "brotli": 61132
         },
         "css": {
           "count": 2,
-          "raw": 71762,
-          "gzip": 13965,
-          "brotli": 13451
+          "raw": 71878,
+          "gzip": 13992,
+          "brotli": 13477
         },
         "json": {
           "count": 4,
@@ -755,29 +755,29 @@
         },
         "total": {
           "count": 20,
-          "raw": 5879989,
-          "gzip": 402758,
-          "brotli": 281216
+          "raw": 5880125,
+          "gzip": 402802,
+          "brotli": 281256
         }
       },
       "bytes": {
         "html": {
           "count": 1,
-          "raw": 29703,
-          "gzip": 7116,
-          "brotli": 6681
+          "raw": 29713,
+          "gzip": 7124,
+          "brotli": 6685
         },
         "js": {
           "count": 13,
-          "raw": 220972,
-          "gzip": 64195,
-          "brotli": 61122
+          "raw": 220982,
+          "gzip": 64204,
+          "brotli": 61132
         },
         "css": {
           "count": 2,
-          "raw": 71762,
-          "gzip": 13965,
-          "brotli": 13451
+          "raw": 71878,
+          "gzip": 13992,
+          "brotli": 13477
         },
         "json": {
           "count": 4,
@@ -787,9 +787,9 @@
         },
         "total": {
           "count": 20,
-          "raw": 5879989,
-          "gzip": 402758,
-          "brotli": 281216
+          "raw": 5880125,
+          "gzip": 402802,
+          "brotli": 281256
         }
       },
       "problems": []
@@ -804,9 +804,9 @@
       "html": [
         {
           "path": "/altoy/island/",
-          "raw": 28254,
-          "gzip": 6354,
-          "brotli": 5900
+          "raw": 28264,
+          "gzip": 6365,
+          "brotli": 5909
         }
       ],
       "js": [
@@ -860,9 +860,9 @@
         },
         {
           "path": "/altoy/js/pages.catalog.js",
-          "raw": 13815,
-          "gzip": 4521,
-          "brotli": 4325
+          "raw": 13825,
+          "gzip": 4530,
+          "brotli": 4335
         },
         {
           "path": "/altoy/js/synced-storage.js",
@@ -879,10 +879,10 @@
       ],
       "css": [
         {
-          "path": "/altoy/_assets/island.CAekEbky.css",
-          "raw": 14045,
-          "gzip": 3490,
-          "brotli": 3225
+          "path": "/altoy/_assets/island.BX5naQJE.css",
+          "raw": 14103,
+          "gzip": 3502,
+          "brotli": 3234
         },
         {
           "path": "/altoy/_assets/island.D1vEcdzt.css",
@@ -891,10 +891,10 @@
           "brotli": 17723
         },
         {
-          "path": "/altoy/_assets/Layout.g7lKfqWR.css",
-          "raw": 47643,
-          "gzip": 9131,
-          "brotli": 8847
+          "path": "/altoy/_assets/Layout.B6OMe4Ds.css",
+          "raw": 47701,
+          "gzip": 9144,
+          "brotli": 8862
         }
       ],
       "json": [
@@ -932,21 +932,21 @@
       "bytesAtReady": {
         "html": {
           "count": 1,
-          "raw": 28254,
-          "gzip": 6354,
-          "brotli": 5900
+          "raw": 28264,
+          "gzip": 6365,
+          "brotli": 5909
         },
         "js": {
           "count": 11,
-          "raw": 201818,
-          "gzip": 59642,
-          "brotli": 56736
+          "raw": 201828,
+          "gzip": 59651,
+          "brotli": 56746
         },
         "css": {
           "count": 3,
-          "raw": 188606,
-          "gzip": 30871,
-          "brotli": 29795
+          "raw": 188722,
+          "gzip": 30896,
+          "brotli": 29819
         },
         "json": {
           "count": 5,
@@ -956,29 +956,29 @@
         },
         "total": {
           "count": 20,
-          "raw": 786134,
-          "gzip": 129218,
-          "brotli": 118419
+          "raw": 786270,
+          "gzip": 129263,
+          "brotli": 118462
         }
       },
       "bytes": {
         "html": {
           "count": 1,
-          "raw": 28254,
-          "gzip": 6354,
-          "brotli": 5900
+          "raw": 28264,
+          "gzip": 6365,
+          "brotli": 5909
         },
         "js": {
           "count": 11,
-          "raw": 201818,
-          "gzip": 59642,
-          "brotli": 56736
+          "raw": 201828,
+          "gzip": 59651,
+          "brotli": 56746
         },
         "css": {
           "count": 3,
-          "raw": 188606,
-          "gzip": 30871,
-          "brotli": 29795
+          "raw": 188722,
+          "gzip": 30896,
+          "brotli": 29819
         },
         "json": {
           "count": 5,
@@ -988,9 +988,9 @@
         },
         "total": {
           "count": 20,
-          "raw": 786134,
-          "gzip": 129218,
-          "brotli": 118419
+          "raw": 786270,
+          "gzip": 129263,
+          "brotli": 118462
         }
       },
       "problems": []
@@ -1005,9 +1005,9 @@
       "html": [
         {
           "path": "/altoy/island/",
-          "raw": 28254,
-          "gzip": 6354,
-          "brotli": 5900
+          "raw": 28264,
+          "gzip": 6365,
+          "brotli": 5909
         }
       ],
       "js": [
@@ -1067,9 +1067,9 @@
         },
         {
           "path": "/altoy/js/pages.catalog.js",
-          "raw": 13815,
-          "gzip": 4521,
-          "brotli": 4325
+          "raw": 13825,
+          "gzip": 4530,
+          "brotli": 4335
         },
         {
           "path": "/altoy/js/synced-storage.js",
@@ -1086,10 +1086,10 @@
       ],
       "css": [
         {
-          "path": "/altoy/_assets/island.CAekEbky.css",
-          "raw": 14045,
-          "gzip": 3490,
-          "brotli": 3225
+          "path": "/altoy/_assets/island.BX5naQJE.css",
+          "raw": 14103,
+          "gzip": 3502,
+          "brotli": 3234
         },
         {
           "path": "/altoy/_assets/island.D1vEcdzt.css",
@@ -1098,10 +1098,10 @@
           "brotli": 17723
         },
         {
-          "path": "/altoy/_assets/Layout.g7lKfqWR.css",
-          "raw": 47643,
-          "gzip": 9131,
-          "brotli": 8847
+          "path": "/altoy/_assets/Layout.B6OMe4Ds.css",
+          "raw": 47701,
+          "gzip": 9144,
+          "brotli": 8862
         }
       ],
       "json": [
@@ -1139,21 +1139,21 @@
       "bytesAtReady": {
         "html": {
           "count": 1,
-          "raw": 28254,
-          "gzip": 6354,
-          "brotli": 5900
+          "raw": 28264,
+          "gzip": 6365,
+          "brotli": 5909
         },
         "js": {
           "count": 12,
-          "raw": 212352,
-          "gzip": 63241,
-          "brotli": 60232
+          "raw": 212362,
+          "gzip": 63250,
+          "brotli": 60242
         },
         "css": {
           "count": 3,
-          "raw": 188606,
-          "gzip": 30871,
-          "brotli": 29795
+          "raw": 188722,
+          "gzip": 30896,
+          "brotli": 29819
         },
         "json": {
           "count": 5,
@@ -1163,29 +1163,29 @@
         },
         "total": {
           "count": 21,
-          "raw": 901329,
-          "gzip": 141447,
-          "brotli": 128498
+          "raw": 901465,
+          "gzip": 141492,
+          "brotli": 128541
         }
       },
       "bytes": {
         "html": {
           "count": 1,
-          "raw": 28254,
-          "gzip": 6354,
-          "brotli": 5900
+          "raw": 28264,
+          "gzip": 6365,
+          "brotli": 5909
         },
         "js": {
           "count": 12,
-          "raw": 212352,
-          "gzip": 63241,
-          "brotli": 60232
+          "raw": 212362,
+          "gzip": 63250,
+          "brotli": 60242
         },
         "css": {
           "count": 3,
-          "raw": 188606,
-          "gzip": 30871,
-          "brotli": 29795
+          "raw": 188722,
+          "gzip": 30896,
+          "brotli": 29819
         },
         "json": {
           "count": 5,
@@ -1195,9 +1195,9 @@
         },
         "total": {
           "count": 21,
-          "raw": 901329,
-          "gzip": 141447,
-          "brotli": 128498
+          "raw": 901465,
+          "gzip": 141492,
+          "brotli": 128541
         }
       },
       "problems": []
@@ -1210,9 +1210,9 @@
       "html": [
         {
           "path": "/altoy/privacy/",
-          "raw": 22992,
-          "gzip": 6392,
-          "brotli": 5926
+          "raw": 23002,
+          "gzip": 6400,
+          "brotli": 5934
         }
       ],
       "js": [
@@ -1242,9 +1242,9 @@
         },
         {
           "path": "/altoy/js/pages.catalog.js",
-          "raw": 13815,
-          "gzip": 4521,
-          "brotli": 4325
+          "raw": 13825,
+          "gzip": 4530,
+          "brotli": 4335
         },
         {
           "path": "/altoy/js/synced-storage.js",
@@ -1261,19 +1261,19 @@
       ],
       "css": [
         {
-          "path": "/altoy/_assets/Layout.g7lKfqWR.css",
-          "raw": 47643,
-          "gzip": 9131,
-          "brotli": 8847
+          "path": "/altoy/_assets/Layout.B6OMe4Ds.css",
+          "raw": 47701,
+          "gzip": 9144,
+          "brotli": 8862
         }
       ],
       "json": [],
       "bytesAtReady": {
         "html": {
           "count": 1,
-          "raw": 22992,
-          "gzip": 6392,
-          "brotli": 5926
+          "raw": 23002,
+          "gzip": 6400,
+          "brotli": 5934
         },
         "js": {
           "count": 0,
@@ -1295,29 +1295,29 @@
         },
         "total": {
           "count": 1,
-          "raw": 22992,
-          "gzip": 6392,
-          "brotli": 5926
+          "raw": 23002,
+          "gzip": 6400,
+          "brotli": 5934
         }
       },
       "bytes": {
         "html": {
           "count": 1,
-          "raw": 22992,
-          "gzip": 6392,
-          "brotli": 5926
+          "raw": 23002,
+          "gzip": 6400,
+          "brotli": 5934
         },
         "js": {
           "count": 7,
-          "raw": 126300,
-          "gzip": 39425,
-          "brotli": 37508
+          "raw": 126310,
+          "gzip": 39434,
+          "brotli": 37518
         },
         "css": {
           "count": 1,
-          "raw": 47643,
-          "gzip": 9131,
-          "brotli": 8847
+          "raw": 47701,
+          "gzip": 9144,
+          "brotli": 8862
         },
         "json": {
           "count": 0,
@@ -1327,9 +1327,9 @@
         },
         "total": {
           "count": 9,
-          "raw": 196935,
-          "gzip": 54948,
-          "brotli": 52281
+          "raw": 197013,
+          "gzip": 54978,
+          "brotli": 52314
         }
       },
       "problems": []
@@ -1345,9 +1345,9 @@
       "html": [
         {
           "path": "/altoy/story-viewer/event-story/",
-          "raw": 24485,
-          "gzip": 6591,
-          "brotli": 5894
+          "raw": 24495,
+          "gzip": 6599,
+          "brotli": 5901
         }
       ],
       "js": [
@@ -1395,9 +1395,9 @@
         },
         {
           "path": "/altoy/js/pages.catalog.js",
-          "raw": 13815,
-          "gzip": 4521,
-          "brotli": 4325
+          "raw": 13825,
+          "gzip": 4530,
+          "brotli": 4335
         },
         {
           "path": "/altoy/js/story-viewer/event-story.filter.js",
@@ -1468,16 +1468,16 @@
       ],
       "css": [
         {
-          "path": "/altoy/_assets/Layout.g7lKfqWR.css",
-          "raw": 47643,
-          "gzip": 9131,
-          "brotli": 8847
+          "path": "/altoy/_assets/Layout.B6OMe4Ds.css",
+          "raw": 47701,
+          "gzip": 9144,
+          "brotli": 8862
         },
         {
-          "path": "/altoy/_assets/story-viewer.common.DqttIdTk.css",
-          "raw": 28383,
-          "gzip": 6648,
-          "brotli": 6285
+          "path": "/altoy/_assets/story-viewer.common.Ewkxnr-v.css",
+          "raw": 28441,
+          "gzip": 6661,
+          "brotli": 6297
         }
       ],
       "json": [
@@ -1497,21 +1497,21 @@
       "bytesAtReady": {
         "html": {
           "count": 1,
-          "raw": 24485,
-          "gzip": 6591,
-          "brotli": 5894
+          "raw": 24495,
+          "gzip": 6599,
+          "brotli": 5901
         },
         "js": {
           "count": 19,
-          "raw": 296080,
-          "gzip": 89290,
-          "brotli": 84806
+          "raw": 296090,
+          "gzip": 89299,
+          "brotli": 84816
         },
         "css": {
           "count": 2,
-          "raw": 76026,
-          "gzip": 15779,
-          "brotli": 15132
+          "raw": 76142,
+          "gzip": 15805,
+          "brotli": 15159
         },
         "json": {
           "count": 2,
@@ -1521,29 +1521,29 @@
         },
         "total": {
           "count": 24,
-          "raw": 889631,
-          "gzip": 172235,
-          "brotli": 159077
+          "raw": 889767,
+          "gzip": 172278,
+          "brotli": 159121
         }
       },
       "bytes": {
         "html": {
           "count": 1,
-          "raw": 24485,
-          "gzip": 6591,
-          "brotli": 5894
+          "raw": 24495,
+          "gzip": 6599,
+          "brotli": 5901
         },
         "js": {
           "count": 19,
-          "raw": 296080,
-          "gzip": 89290,
-          "brotli": 84806
+          "raw": 296090,
+          "gzip": 89299,
+          "brotli": 84816
         },
         "css": {
           "count": 2,
-          "raw": 76026,
-          "gzip": 15779,
-          "brotli": 15132
+          "raw": 76142,
+          "gzip": 15805,
+          "brotli": 15159
         },
         "json": {
           "count": 2,
@@ -1553,9 +1553,9 @@
         },
         "total": {
           "count": 24,
-          "raw": 889631,
-          "gzip": 172235,
-          "brotli": 159077
+          "raw": 889767,
+          "gzip": 172278,
+          "brotli": 159121
         }
       },
       "problems": []
@@ -1570,9 +1570,9 @@
       "html": [
         {
           "path": "/altoy/skin/skin-list-viewer/",
-          "raw": 30073,
-          "gzip": 7888,
-          "brotli": 7449
+          "raw": 30083,
+          "gzip": 7898,
+          "brotli": 7452
         }
       ],
       "js": [
@@ -1620,9 +1620,9 @@
         },
         {
           "path": "/altoy/js/pages.catalog.js",
-          "raw": 13815,
-          "gzip": 4521,
-          "brotli": 4325
+          "raw": 13825,
+          "gzip": 4530,
+          "brotli": 4335
         },
         {
           "path": "/altoy/js/skin/skin.data.js",
@@ -1669,16 +1669,16 @@
       ],
       "css": [
         {
-          "path": "/altoy/_assets/common.CLP5zcTe.css",
-          "raw": 8771,
-          "gzip": 2246,
-          "brotli": 2068
+          "path": "/altoy/_assets/common.Cch28cGX.css",
+          "raw": 8829,
+          "gzip": 2259,
+          "brotli": 2080
         },
         {
-          "path": "/altoy/_assets/Layout.g7lKfqWR.css",
-          "raw": 47643,
-          "gzip": 9131,
-          "brotli": 8847
+          "path": "/altoy/_assets/Layout.B6OMe4Ds.css",
+          "raw": 47701,
+          "gzip": 9144,
+          "brotli": 8862
         },
         {
           "path": "/altoy/_assets/skin-list-viewer.DFnR3Mm2.css",
@@ -1716,21 +1716,21 @@
       "bytesAtReady": {
         "html": {
           "count": 1,
-          "raw": 30073,
-          "gzip": 7888,
-          "brotli": 7449
+          "raw": 30083,
+          "gzip": 7898,
+          "brotli": 7452
         },
         "js": {
           "count": 15,
-          "raw": 242959,
-          "gzip": 71058,
-          "brotli": 67443
+          "raw": 242969,
+          "gzip": 71067,
+          "brotli": 67453
         },
         "css": {
           "count": 4,
-          "raw": 79416,
-          "gzip": 16268,
-          "brotli": 15506
+          "raw": 79532,
+          "gzip": 16294,
+          "brotli": 15533
         },
         "json": {
           "count": 3,
@@ -1740,29 +1740,29 @@
         },
         "total": {
           "count": 23,
-          "raw": 1740418,
-          "gzip": 183540,
-          "brotli": 161059
+          "raw": 1740554,
+          "gzip": 183585,
+          "brotli": 161099
         }
       },
       "bytes": {
         "html": {
           "count": 1,
-          "raw": 30073,
-          "gzip": 7888,
-          "brotli": 7449
+          "raw": 30083,
+          "gzip": 7898,
+          "brotli": 7452
         },
         "js": {
           "count": 15,
-          "raw": 242959,
-          "gzip": 71058,
-          "brotli": 67443
+          "raw": 242969,
+          "gzip": 71067,
+          "brotli": 67453
         },
         "css": {
           "count": 4,
-          "raw": 79416,
-          "gzip": 16268,
-          "brotli": 15506
+          "raw": 79532,
+          "gzip": 16294,
+          "brotli": 15533
         },
         "json": {
           "count": 3,
@@ -1772,9 +1772,9 @@
         },
         "total": {
           "count": 23,
-          "raw": 1740418,
-          "gzip": 183540,
-          "brotli": 161059
+          "raw": 1740554,
+          "gzip": 183585,
+          "brotli": 161099
         }
       },
       "problems": []
@@ -1789,9 +1789,9 @@
       "html": [
         {
           "path": "/altoy/shipgirl/research-tracker/",
-          "raw": 21176,
-          "gzip": 5634,
-          "brotli": 5287
+          "raw": 21186,
+          "gzip": 5642,
+          "brotli": 5299
         }
       ],
       "js": [
@@ -1821,9 +1821,9 @@
         },
         {
           "path": "/altoy/js/pages.catalog.js",
-          "raw": 13815,
-          "gzip": 4521,
-          "brotli": 4325
+          "raw": 13825,
+          "gzip": 4530,
+          "brotli": 4335
         },
         {
           "path": "/altoy/js/shipgirl/research-tracker.js",
@@ -1852,16 +1852,16 @@
       ],
       "css": [
         {
-          "path": "/altoy/_assets/Layout.g7lKfqWR.css",
-          "raw": 47643,
-          "gzip": 9131,
-          "brotli": 8847
+          "path": "/altoy/_assets/Layout.B6OMe4Ds.css",
+          "raw": 47701,
+          "gzip": 9144,
+          "brotli": 8862
         },
         {
-          "path": "/altoy/_assets/research-tracker.BpJR2qnB.css",
-          "raw": 22361,
-          "gzip": 4820,
-          "brotli": 4554
+          "path": "/altoy/_assets/research-tracker.DhZboskl.css",
+          "raw": 22419,
+          "gzip": 4834,
+          "brotli": 4565
         }
       ],
       "json": [
@@ -1905,21 +1905,21 @@
       "bytesAtReady": {
         "html": {
           "count": 1,
-          "raw": 21176,
-          "gzip": 5634,
-          "brotli": 5287
+          "raw": 21186,
+          "gzip": 5642,
+          "brotli": 5299
         },
         "js": {
           "count": 9,
-          "raw": 185777,
-          "gzip": 55552,
-          "brotli": 52898
+          "raw": 185787,
+          "gzip": 55561,
+          "brotli": 52908
         },
         "css": {
           "count": 2,
-          "raw": 70004,
-          "gzip": 13951,
-          "brotli": 13401
+          "raw": 70120,
+          "gzip": 13978,
+          "brotli": 13427
         },
         "json": {
           "count": 6,
@@ -1929,29 +1929,29 @@
         },
         "total": {
           "count": 18,
-          "raw": 11528282,
-          "gzip": 1051163,
-          "brotli": 549112
+          "raw": 11528418,
+          "gzip": 1051207,
+          "brotli": 549160
         }
       },
       "bytes": {
         "html": {
           "count": 1,
-          "raw": 21176,
-          "gzip": 5634,
-          "brotli": 5287
+          "raw": 21186,
+          "gzip": 5642,
+          "brotli": 5299
         },
         "js": {
           "count": 9,
-          "raw": 185777,
-          "gzip": 55552,
-          "brotli": 52898
+          "raw": 185787,
+          "gzip": 55561,
+          "brotli": 52908
         },
         "css": {
           "count": 2,
-          "raw": 70004,
-          "gzip": 13951,
-          "brotli": 13401
+          "raw": 70120,
+          "gzip": 13978,
+          "brotli": 13427
         },
         "json": {
           "count": 6,
@@ -1961,9 +1961,9 @@
         },
         "total": {
           "count": 18,
-          "raw": 11528282,
-          "gzip": 1051163,
-          "brotli": 549112
+          "raw": 11528418,
+          "gzip": 1051207,
+          "brotli": 549160
         }
       },
       "problems": []
@@ -1978,9 +1978,9 @@
       "html": [
         {
           "path": "/altoy/skin/equip-skin-viewer/",
-          "raw": 21342,
-          "gzip": 5665,
-          "brotli": 5297
+          "raw": 21352,
+          "gzip": 5674,
+          "brotli": 5329
         }
       ],
       "js": [
@@ -2010,9 +2010,9 @@
         },
         {
           "path": "/altoy/js/pages.catalog.js",
-          "raw": 13815,
-          "gzip": 4521,
-          "brotli": 4325
+          "raw": 13825,
+          "gzip": 4530,
+          "brotli": 4335
         },
         {
           "path": "/altoy/js/simulators/physics/acc-table.js",
@@ -2179,10 +2179,10 @@
       ],
       "css": [
         {
-          "path": "/altoy/_assets/common.CLP5zcTe.css",
-          "raw": 8771,
-          "gzip": 2246,
-          "brotli": 2068
+          "path": "/altoy/_assets/common.Cch28cGX.css",
+          "raw": 8829,
+          "gzip": 2259,
+          "brotli": 2080
         },
         {
           "path": "/altoy/_assets/equip-skin-viewer.Bf1Jd5z8.css",
@@ -2191,10 +2191,10 @@
           "brotli": 1046
         },
         {
-          "path": "/altoy/_assets/Layout.g7lKfqWR.css",
-          "raw": 47643,
-          "gzip": 9131,
-          "brotli": 8847
+          "path": "/altoy/_assets/Layout.B6OMe4Ds.css",
+          "raw": 47701,
+          "gzip": 9144,
+          "brotli": 8862
         },
         {
           "path": "/altoy/_assets/sim.common.Cbv8nCqk.css",
@@ -2220,21 +2220,21 @@
       "bytesAtReady": {
         "html": {
           "count": 1,
-          "raw": 21342,
-          "gzip": 5665,
-          "brotli": 5297
+          "raw": 21352,
+          "gzip": 5674,
+          "brotli": 5329
         },
         "js": {
           "count": 32,
-          "raw": 298961,
-          "gzip": 95241,
-          "brotli": 90577
+          "raw": 298971,
+          "gzip": 95250,
+          "brotli": 90587
         },
         "css": {
           "count": 4,
-          "raw": 76620,
-          "gzip": 16410,
-          "brotli": 15594
+          "raw": 76736,
+          "gzip": 16436,
+          "brotli": 15621
         },
         "json": {
           "count": 2,
@@ -2244,29 +2244,29 @@
         },
         "total": {
           "count": 39,
-          "raw": 1804179,
-          "gzip": 213947,
-          "brotli": 184307
+          "raw": 1804315,
+          "gzip": 213991,
+          "brotli": 184376
         }
       },
       "bytes": {
         "html": {
           "count": 1,
-          "raw": 21342,
-          "gzip": 5665,
-          "brotli": 5297
+          "raw": 21352,
+          "gzip": 5674,
+          "brotli": 5329
         },
         "js": {
           "count": 32,
-          "raw": 298961,
-          "gzip": 95241,
-          "brotli": 90577
+          "raw": 298971,
+          "gzip": 95250,
+          "brotli": 90587
         },
         "css": {
           "count": 4,
-          "raw": 76620,
-          "gzip": 16410,
-          "brotli": 15594
+          "raw": 76736,
+          "gzip": 16436,
+          "brotli": 15621
         },
         "json": {
           "count": 2,
@@ -2276,9 +2276,9 @@
         },
         "total": {
           "count": 39,
-          "raw": 1804179,
-          "gzip": 213947,
-          "brotli": 184307
+          "raw": 1804315,
+          "gzip": 213991,
+          "brotli": 184376
         }
       },
       "problems": []
@@ -2293,9 +2293,9 @@
       "html": [
         {
           "path": "/altoy/map/map-viewer/",
-          "raw": 24566,
-          "gzip": 6250,
-          "brotli": 5615
+          "raw": 24576,
+          "gzip": 6259,
+          "brotli": 5828
         }
       ],
       "js": [
@@ -2355,9 +2355,9 @@
         },
         {
           "path": "/altoy/js/pages.catalog.js",
-          "raw": 13815,
-          "gzip": 4521,
-          "brotli": 4325
+          "raw": 13825,
+          "gzip": 4530,
+          "brotli": 4335
         },
         {
           "path": "/altoy/js/synced-storage.js",
@@ -2374,10 +2374,10 @@
       ],
       "css": [
         {
-          "path": "/altoy/_assets/Layout.g7lKfqWR.css",
-          "raw": 47643,
-          "gzip": 9131,
-          "brotli": 8847
+          "path": "/altoy/_assets/Layout.B6OMe4Ds.css",
+          "raw": 47701,
+          "gzip": 9144,
+          "brotli": 8862
         },
         {
           "path": "/altoy/_assets/map-viewer.9jcDYKgr.css",
@@ -2403,21 +2403,21 @@
       "bytesAtReady": {
         "html": {
           "count": 1,
-          "raw": 24566,
-          "gzip": 6250,
-          "brotli": 5615
+          "raw": 24576,
+          "gzip": 6259,
+          "brotli": 5828
         },
         "js": {
           "count": 12,
-          "raw": 217726,
-          "gzip": 63530,
-          "brotli": 60556
+          "raw": 217736,
+          "gzip": 63539,
+          "brotli": 60566
         },
         "css": {
           "count": 2,
-          "raw": 70605,
-          "gzip": 13641,
-          "brotli": 13174
+          "raw": 70663,
+          "gzip": 13654,
+          "brotli": 13189
         },
         "json": {
           "count": 2,
@@ -2427,29 +2427,29 @@
         },
         "total": {
           "count": 17,
-          "raw": 675022,
-          "gzip": 120462,
-          "brotli": 106677
+          "raw": 675100,
+          "gzip": 120493,
+          "brotli": 106915
         }
       },
       "bytes": {
         "html": {
           "count": 1,
-          "raw": 24566,
-          "gzip": 6250,
-          "brotli": 5615
+          "raw": 24576,
+          "gzip": 6259,
+          "brotli": 5828
         },
         "js": {
           "count": 12,
-          "raw": 217726,
-          "gzip": 63530,
-          "brotli": 60556
+          "raw": 217736,
+          "gzip": 63539,
+          "brotli": 60566
         },
         "css": {
           "count": 2,
-          "raw": 70605,
-          "gzip": 13641,
-          "brotli": 13174
+          "raw": 70663,
+          "gzip": 13654,
+          "brotli": 13189
         },
         "json": {
           "count": 2,
@@ -2459,9 +2459,9 @@
         },
         "total": {
           "count": 17,
-          "raw": 675022,
-          "gzip": 120462,
-          "brotli": 106677
+          "raw": 675100,
+          "gzip": 120493,
+          "brotli": 106915
         }
       },
       "problems": []
@@ -2479,9 +2479,9 @@
       "html": [
         {
           "path": "/altoy/skin/skin-detail-viewer/",
-          "raw": 25866,
-          "gzip": 6764,
-          "brotli": 6241
+          "raw": 25876,
+          "gzip": 6774,
+          "brotli": 6250
         }
       ],
       "js": [
@@ -2529,9 +2529,9 @@
         },
         {
           "path": "/altoy/js/pages.catalog.js",
-          "raw": 13815,
-          "gzip": 4521,
-          "brotli": 4325
+          "raw": 13825,
+          "gzip": 4530,
+          "brotli": 4335
         },
         {
           "path": "/altoy/js/skin/skin.audio.js",
@@ -2590,16 +2590,16 @@
       ],
       "css": [
         {
-          "path": "/altoy/_assets/common.CLP5zcTe.css",
-          "raw": 8771,
-          "gzip": 2246,
-          "brotli": 2068
+          "path": "/altoy/_assets/common.Cch28cGX.css",
+          "raw": 8829,
+          "gzip": 2259,
+          "brotli": 2080
         },
         {
-          "path": "/altoy/_assets/Layout.g7lKfqWR.css",
-          "raw": 47643,
-          "gzip": 9131,
-          "brotli": 8847
+          "path": "/altoy/_assets/Layout.B6OMe4Ds.css",
+          "raw": 47701,
+          "gzip": 9144,
+          "brotli": 8862
         },
         {
           "path": "/altoy/_assets/skin-detail-viewer.9ck3aZDh.css",
@@ -2637,21 +2637,21 @@
       "bytesAtReady": {
         "html": {
           "count": 1,
-          "raw": 25866,
-          "gzip": 6764,
-          "brotli": 6241
+          "raw": 25876,
+          "gzip": 6774,
+          "brotli": 6250
         },
         "js": {
           "count": 17,
-          "raw": 214635,
-          "gzip": 66950,
-          "brotli": 63557
+          "raw": 214645,
+          "gzip": 66959,
+          "brotli": 63567
         },
         "css": {
           "count": 4,
-          "raw": 77421,
-          "gzip": 15899,
-          "brotli": 15151
+          "raw": 77537,
+          "gzip": 15925,
+          "brotli": 15178
         },
         "json": {
           "count": 3,
@@ -2661,29 +2661,29 @@
         },
         "total": {
           "count": 25,
-          "raw": 741125,
-          "gzip": 159899,
-          "brotli": 146204
+          "raw": 741261,
+          "gzip": 159944,
+          "brotli": 146250
         }
       },
       "bytes": {
         "html": {
           "count": 1,
-          "raw": 25866,
-          "gzip": 6764,
-          "brotli": 6241
+          "raw": 25876,
+          "gzip": 6774,
+          "brotli": 6250
         },
         "js": {
           "count": 17,
-          "raw": 214635,
-          "gzip": 66950,
-          "brotli": 63557
+          "raw": 214645,
+          "gzip": 66959,
+          "brotli": 63567
         },
         "css": {
           "count": 4,
-          "raw": 77421,
-          "gzip": 15899,
-          "brotli": 15151
+          "raw": 77537,
+          "gzip": 15925,
+          "brotli": 15178
         },
         "json": {
           "count": 3,
@@ -2693,9 +2693,9 @@
         },
         "total": {
           "count": 25,
-          "raw": 741125,
-          "gzip": 159899,
-          "brotli": 146204
+          "raw": 741261,
+          "gzip": 159944,
+          "brotli": 146250
         }
       },
       "problems": []

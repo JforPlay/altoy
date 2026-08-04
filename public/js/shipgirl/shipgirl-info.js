@@ -17,7 +17,6 @@ import {
 } from './shipgirl-info.detail.js';
 import {
     setup as setupMaps,
-    showMapsModal,
     setupMapsModalListeners, setupMapBrowserListeners
 } from './shipgirl-info.maps.js';
 import { setup as setupSkillSearch } from './shipgirl-info.skill-search.js';
@@ -619,9 +618,6 @@ state.showMainView = showMainView;
 state.navigateToDetail = navigateToDetail;
 state.navigatePrevNext = navigatePrevNext;
 state.updateNavButtons = updateNavButtons;
-
-// ===== Window Globals for inline onclick handlers =====
-window.showMapsModal = showMapsModal;
 
 // ===== Start Application =====
 // Scroll to top button is handled globally by global.script.js

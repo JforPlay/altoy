@@ -176,6 +176,28 @@ test('R11: a detail deep link loads full and skill data concurrently, then reuse
         .toHaveLength(OPTIONAL_DATA_PATHS.length);
 });
 
+// R11 moved a 5.5 MB download onto the first detail click, so the spinner is the
+// only feedback there. It has to survive `.hidden { display: none !important }`,
+// which an inline style.display cannot override once init() hides the element.
+test('R11: the first-use detail load actually renders the loading spinner', async ({ page }) => {
+    let release;
+    const held = new Promise((resolve) => { release = resolve; });
+    await page.route('**/data/ship_info_data.json', async (route) => {
+        await held;
+        await route.continue();
+    });
+
+    await page.goto(SHIPGIRL_INFO_PATH, { waitUntil: 'domcontentloaded' });
+    await waitForCatalog(page);
+
+    await page.locator('#shipgirls .shipgirl-card').first().click();
+    await expect(page.locator('#loading')).toBeVisible();
+
+    release();
+    await expect(page.locator('#detailView')).toBeVisible();
+    await expect(page.locator('#loading')).toBeHidden();
+});
+
 test('R11: skill search owns the same first-use data group and reuses its corpus', async ({ page }) => {
     const requested = collectOptionalRequests(page);
 

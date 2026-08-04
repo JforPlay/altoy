@@ -34,11 +34,10 @@ export async function loadData() {
  * is cleared so the next interaction can retry.
  */
 export function loadFullData() {
-    if (!state.fullShipDataPromise) {
-        state.fullShipDataPromise = state.fullShipData
-            ? Promise.resolve(state.fullShipData)
-            : doLoadFullData();
-    }
+    // The promise is the single source of truth: it is retained on success and
+    // only cleared on failure, so a populated state.fullShipData always has a
+    // live promise beside it. No separate "already loaded" branch is reachable.
+    if (!state.fullShipDataPromise) state.fullShipDataPromise = doLoadFullData();
     return state.fullShipDataPromise;
 }
 

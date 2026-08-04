@@ -147,11 +147,6 @@
     ],
     "globalAssignments": [
       {
-        "id": "global-assignment:public/js/shipgirl/shipgirl-info.js:window.showMapsModal",
-        "path": "public/js/shipgirl/shipgirl-info.js",
-        "global": "window.showMapsModal"
-      },
-      {
         "id": "global-assignment:public/js/skin/skin.audio.js:window.SkinAudio",
         "path": "public/js/skin/skin.audio.js",
         "global": "window.SkinAudio"

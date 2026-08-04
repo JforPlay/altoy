@@ -5,7 +5,7 @@
  * State is shared via a ref passed to setup() from shipgirl-info.js.
  */
 
-import { createImg, IMG_FALLBACKS, showToast, resolveUrl, DATA_FOR_TOY_BASE } from '../utils.js';
+import { createImg, IMG_FALLBACKS, showToast, resolveUrl, showElement, hideElement, DATA_FOR_TOY_BASE } from '../utils.js';
 import { setupTooltipToggles } from '../global.script.js';
 import {
     getSkillInfo,
@@ -90,7 +90,10 @@ export async function showDetailView(shipName, gid) {
     // Full ship details and skill assets are independent, so start both groups
     // together on first use instead of turning the lazy boundary into a serial
     // interaction delay.
-    state.elements.loading.style.display = 'block';
+    // Toggle via showElement/hideElement, NOT style.display: init() hides #loading
+    // with the `.hidden` class, whose `display: none !important` outranks an
+    // inline style — so the spinner never rendered for R11's 5.5 MB first-use load.
+    showElement(state.elements.loading);
     try {
         await Promise.all([
             loadFullData(),
@@ -103,7 +106,7 @@ export async function showDetailView(shipName, gid) {
         state.showMainView();
         return;
     } finally {
-        state.elements.loading.style.display = 'none';
+        hideElement(state.elements.loading);
     }
 
     // Prefer the stable gid (exact); fall back to the name (exact → roman-numeral
