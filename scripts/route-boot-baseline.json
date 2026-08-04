@@ -375,19 +375,14 @@
       "ready": "first ship card rendered",
       "cutoff": "networkidle",
       "pageEntries": [
-        "/altoy/js/shipgirl/shipgirl-info.data.js",
-        "/altoy/js/shipgirl/shipgirl-info.detail.js",
-        "/altoy/js/shipgirl/shipgirl-info.js",
-        "/altoy/js/shipgirl/shipgirl-info.maps.js",
-        "/altoy/js/shipgirl/shipgirl-info.retrofit.js",
-        "/altoy/js/shipgirl/shipgirl-info.skill-search.js"
+        "/altoy/js/shipgirl/shipgirl-info.js"
       ],
       "html": [
         {
           "path": "/altoy/shipgirl/shipgirl-info/",
-          "raw": 27734,
-          "gzip": 6956,
-          "brotli": 6245
+          "raw": 27335,
+          "gzip": 6937,
+          "brotli": 6483
         }
       ],
       "js": [
@@ -417,21 +412,21 @@
         },
         {
           "path": "/altoy/js/pages.catalog.js",
-          "raw": 13815,
-          "gzip": 4521,
-          "brotli": 4325
+          "raw": 13825,
+          "gzip": 4530,
+          "brotli": 4335
         },
         {
           "path": "/altoy/js/shipgirl/shipgirl-info.data.js",
-          "raw": 10483,
-          "gzip": 3454,
-          "brotli": 3256
+          "raw": 10885,
+          "gzip": 3592,
+          "brotli": 3383
         },
         {
           "path": "/altoy/js/shipgirl/shipgirl-info.detail.js",
-          "raw": 31443,
-          "gzip": 8089,
-          "brotli": 7677
+          "raw": 31230,
+          "gzip": 8166,
+          "brotli": 7753
         },
         {
           "path": "/altoy/js/shipgirl/shipgirl-info.equip-slots.js",
@@ -441,15 +436,15 @@
         },
         {
           "path": "/altoy/js/shipgirl/shipgirl-info.js",
-          "raw": 24972,
-          "gzip": 6849,
-          "brotli": 6495
+          "raw": 24707,
+          "gzip": 6760,
+          "brotli": 6416
         },
         {
           "path": "/altoy/js/shipgirl/shipgirl-info.maps.js",
-          "raw": 20523,
-          "gzip": 4645,
-          "brotli": 4377
+          "raw": 20330,
+          "gzip": 4733,
+          "brotli": 4458
         },
         {
           "path": "/altoy/js/shipgirl/shipgirl-info.resolve.js",
@@ -465,9 +460,9 @@
         },
         {
           "path": "/altoy/js/shipgirl/shipgirl-info.skill-search.js",
-          "raw": 25078,
-          "gzip": 7359,
-          "brotli": 7021
+          "raw": 24974,
+          "gzip": 7339,
+          "brotli": 7019
         },
         {
           "path": "/altoy/js/synced-storage.js",
@@ -484,16 +479,16 @@
       ],
       "css": [
         {
-          "path": "/altoy/_assets/Layout.g7lKfqWR.css",
-          "raw": 47643,
-          "gzip": 9131,
-          "brotli": 8847
+          "path": "/altoy/_assets/Layout.B6OMe4Ds.css",
+          "raw": 47701,
+          "gzip": 9144,
+          "brotli": 8862
         },
         {
-          "path": "/altoy/_assets/shipgirl-info.Qtga22Fk.css",
-          "raw": 48167,
-          "gzip": 9337,
-          "brotli": 9087
+          "path": "/altoy/_assets/shipgirl-info.BTKm6kX-.css",
+          "raw": 48225,
+          "gzip": 9350,
+          "brotli": 9101
         }
       ],
       "json": [
@@ -522,54 +517,30 @@
           "brotli": 436
         },
         {
-          "path": "/altoy/data/ship_info_data.json",
-          "raw": 5543707,
-          "gzip": 315426,
-          "brotli": 198173
-        },
-        {
           "path": "/altoy/data/ship_info_lite.json",
           "raw": 273594,
           "gzip": 21536,
           "brotli": 18887
-        },
-        {
-          "path": "/altoy/data/sim/skill_data_template.json",
-          "raw": 1935308,
-          "gzip": 255217,
-          "brotli": 197971
-        },
-        {
-          "path": "/altoy/data/skill_icon_mapping.json",
-          "raw": 172644,
-          "gzip": 10010,
-          "brotli": 5189
-        },
-        {
-          "path": "/altoy/data/skill_to_icon_id.json",
-          "raw": 152503,
-          "gzip": 23249,
-          "brotli": 14540
         }
       ],
       "bytesAtReady": {
         "html": {
           "count": 1,
-          "raw": 27734,
-          "gzip": 6956,
-          "brotli": 6245
+          "raw": 27335,
+          "gzip": 6937,
+          "brotli": 6483
         },
         "js": {
           "count": 15,
-          "raw": 255452,
-          "gzip": 76448,
-          "brotli": 72548
+          "raw": 255089,
+          "gzip": 76651,
+          "brotli": 72761
         },
         "css": {
           "count": 2,
-          "raw": 95810,
-          "gzip": 18468,
-          "brotli": 17934
+          "raw": 95926,
+          "gzip": 18494,
+          "brotli": 17963
         },
         "json": {
           "count": 5,
@@ -579,41 +550,41 @@
         },
         "total": {
           "count": 23,
-          "raw": 670006,
-          "gzip": 126034,
-          "brotli": 117900
+          "raw": 669360,
+          "gzip": 126244,
+          "brotli": 118380
         }
       },
       "bytes": {
         "html": {
           "count": 1,
-          "raw": 27734,
-          "gzip": 6956,
-          "brotli": 6245
+          "raw": 27335,
+          "gzip": 6937,
+          "brotli": 6483
         },
         "js": {
           "count": 15,
-          "raw": 255452,
-          "gzip": 76448,
-          "brotli": 72548
+          "raw": 255089,
+          "gzip": 76651,
+          "brotli": 72761
         },
         "css": {
           "count": 2,
-          "raw": 95810,
-          "gzip": 18468,
-          "brotli": 17934
+          "raw": 95926,
+          "gzip": 18494,
+          "brotli": 17963
         },
         "json": {
-          "count": 9,
-          "raw": 8095172,
-          "gzip": 628064,
-          "brotli": 437046
+          "count": 5,
+          "raw": 291010,
+          "gzip": 24162,
+          "brotli": 21173
         },
         "total": {
-          "count": 27,
-          "raw": 8474168,
-          "gzip": 729936,
-          "brotli": 533773
+          "count": 23,
+          "raw": 669360,
+          "gzip": 126244,
+          "brotli": 118380
         }
       },
       "problems": []

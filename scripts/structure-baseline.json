@@ -1,19 +1,10 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
+  "modernizedRoutes": [
+    "src/pages/shipgirl/shipgirl-info.astro"
+  ],
   "findings": {
     "multiModuleRoutes": [
-      {
-        "id": "multi-module-route:src/pages/shipgirl/shipgirl-info.astro",
-        "path": "src/pages/shipgirl/shipgirl-info.astro",
-        "modules": [
-          "/js/shipgirl/shipgirl-info.data.js",
-          "/js/shipgirl/shipgirl-info.detail.js",
-          "/js/shipgirl/shipgirl-info.js",
-          "/js/shipgirl/shipgirl-info.maps.js",
-          "/js/shipgirl/shipgirl-info.retrofit.js",
-          "/js/shipgirl/shipgirl-info.skill-search.js"
-        ]
-      },
       {
         "id": "multi-module-route:src/pages/shipgirl/shipgirl-stats.astro",
         "path": "src/pages/shipgirl/shipgirl-stats.astro",

@@ -22,22 +22,34 @@ export function setup(stateRef) {
 }
 
 // ===== Data Loading =====
-/**
- * Load lite data synchronously for fast initial render, then start background load of full data.
- * Full data is needed only when opening a detail view.
- */
+/** Load only the lite catalog required by the initial grid. */
 export async function loadData() {
     state.shipgirlData = await fetchJSON('data/ship_info_lite.json');
     state.filteredData = [...state.shipgirlData];
-
-    // Start loading full data in background
-    state.fullShipDataPromise = loadFullData();
 }
 
-export async function loadFullData() {
+/**
+ * Load the full ship database on first use. Concurrent consumers share one
+ * request, successful data stays cached in page state, and a rejected request
+ * is cleared so the next interaction can retry.
+ */
+export function loadFullData() {
+    if (!state.fullShipDataPromise) {
+        state.fullShipDataPromise = state.fullShipData
+            ? Promise.resolve(state.fullShipData)
+            : doLoadFullData();
+    }
+    return state.fullShipDataPromise;
+}
+
+async function doLoadFullData() {
     try {
-        console.log("Starting background load of full ship data...");
-        state.fullShipData = await fetchJSONWithCache('data/ship_info_data.json');
+        console.log('Loading full ship data on demand...');
+        const data = await fetchJSONWithCache('data/ship_info_data.json');
+        if (!Array.isArray(data)) {
+            throw new Error('Invalid full ship data format');
+        }
+        state.fullShipData = data;
         // Pre-compute the retrofittable-ship lookup once. Used by the listing's
         // "개조" filter; building it here means filterShipgirls stays a hot loop
         // over a Set instead of re-scanning fullShipData on every keystroke.
@@ -49,9 +61,10 @@ export async function loadFullData() {
         console.log("Full ship data loaded successfully.");
         return state.fullShipData;
     } catch (error) {
-        console.warn("Background loading of full data failed:", error);
+        state.fullShipDataPromise = null;
+        console.warn('Full ship data load failed:', error);
+        throw error;
     }
-    return null;
 }
 
 export async function loadNationalityData() {

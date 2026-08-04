@@ -13,6 +13,7 @@ import {
     getShipType,
     getEquipTypeName,
     createAttrMapping,
+    loadFullData,
     loadSkillIconData,
     loadSkillToIconId,
     loadSkillDataTemplate
@@ -86,24 +87,23 @@ export function setup(stateRef) {
  * then delegates to renderDetailView.
  */
 export async function showDetailView(shipName, gid) {
-    // If full data isn't loaded yet, wait for it
-    if (!state.fullShipData) {
-        state.elements.loading.style.display = 'block';
-        try {
-            await state.fullShipDataPromise;
-        } catch (e) {
-            showToast("상세 데이터를 불러오는데 실패했습니다.", 'error');
-            state.showMainView();
-            state.elements.loading.style.display = 'none';
-            return;
-        }
+    // Full ship details and skill assets are independent, so start both groups
+    // together on first use instead of turning the lazy boundary into a serial
+    // interaction delay.
+    state.elements.loading.style.display = 'block';
+    try {
+        await Promise.all([
+            loadFullData(),
+            loadSkillIconData(),
+            loadSkillToIconId(),
+            loadSkillDataTemplate()
+        ]);
+    } catch (error) {
+        showToast('상세 데이터를 불러오는데 실패했습니다. 다시 시도해 주세요.', 'error');
+        state.showMainView();
+        return;
+    } finally {
         state.elements.loading.style.display = 'none';
-    }
-
-    if (!state.fullShipData) {
-         showToast("상세 데이터 로드 실패.", 'error');
-         state.showMainView();
-         return;
     }
 
     // Prefer the stable gid (exact); fall back to the name (exact → roman-numeral
@@ -124,13 +124,6 @@ export async function showDetailView(shipName, gid) {
 
     const limitBreakOptions = Object.keys(ship.base);
     state.currentLimitBreak = limitBreakOptions[limitBreakOptions.length - 1];
-
-    state.elements.loading.style.display = 'block';
-    try {
-        await Promise.all([loadSkillIconData(), loadSkillToIconId(), loadSkillDataTemplate()]);
-    } finally {
-        state.elements.loading.style.display = 'none';
-    }
 
     state.elements.mainView.style.display = 'none';
     state.elements.detailView.style.display = 'block';

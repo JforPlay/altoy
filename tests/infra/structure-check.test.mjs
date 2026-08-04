@@ -11,6 +11,7 @@ import {
     extractPageModulePaths,
     extractStaticModuleSpecifiers,
     featureDirectory,
+    findModernizedRouteRegressions,
     isCrossFeatureEdge,
     isLegacyGlobalPath,
     scanStructure,
@@ -206,6 +207,23 @@ test('baseline comparison separates new, changed, grandfathered, and resolved de
     assert.equal(comparison.globalAssignments.grandfathered.length, 0);
 });
 
+test('modernized routes cannot grandfather a return to multiple page entries', () => {
+    const regression = {
+        id: 'multi-module-route:src/pages/modernized.astro',
+        path: 'src/pages/modernized.astro',
+        modules: ['/js/entry.js', '/js/extra.js'],
+    };
+    const current = {
+        findings: { multiModuleRoutes: [regression] },
+    };
+    const baseline = {
+        modernizedRoutes: ['src/pages/modernized.astro'],
+        findings: { multiModuleRoutes: [regression] },
+    };
+
+    assert.deepEqual(findModernizedRouteRegressions(current, baseline), [regression]);
+});
+
 // A parser reports a line and column but no file. The scan covers every browser
 // module and runs inside the blocking test below, so an unparseable one that does
 // not name itself leaves nothing to search for.
@@ -250,4 +268,9 @@ test('committed baseline still covers the current tree', () => {
             `${after.path} gained page module tags: ${after.modules.join(', ')}`
         );
     }
+    assert.deepEqual(
+        findModernizedRouteRegressions(report, baseline),
+        [],
+        'a modernized route regained multiple page-level module tags'
+    );
 });

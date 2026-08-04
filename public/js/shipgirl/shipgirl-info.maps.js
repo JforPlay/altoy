@@ -8,6 +8,7 @@
  */
 
 import { showToast, openModal, closeModal, setupModal, IMG_FALLBACKS, RARITY_ORDER, renderStatus } from '../utils.js';
+import { loadFullData } from './shipgirl-info.data.js';
 
 'use strict';
 
@@ -60,17 +61,22 @@ function syncMapBrowserControls() {
 
 // ===== Maps Modal (Ship → Stages) =====
 
+async function ensureFullShipData() {
+    if (state.fullShipData) return true;
+
+    showToast('데이터 로딩 중...', 'info');
+    try {
+        await loadFullData();
+        return true;
+    } catch (error) {
+        showToast('전체 데이터를 불러올 수 없습니다. 다시 시도해 주세요.', 'error');
+        return false;
+    }
+}
+
 /** Open the maps modal for a ship, ensuring full data is loaded first. */
 export async function showMapsModal(shipName) {
-    // Ensure full data is loaded
-    if (!state.fullShipData) {
-        showToast('데이터 로딩 중...', 'info');
-        state.fullShipData = await state.fullShipDataPromise;
-        if (!state.fullShipData) {
-            showToast('전체 데이터를 불러올 수 없습니다.', 'error');
-            return;
-        }
-    }
+    if (!(await ensureFullShipData())) return;
 
     const ship = state.fullShipData.find(s => s.name === shipName);
     if (!ship || !ship.maps) {
@@ -225,15 +231,7 @@ export function setupMapsModalListeners() {
  * Builds the mapBrowserData index once on first open, then populates filters and renders.
  */
 async function openMapBrowserModal() {
-    // Ensure full data is loaded
-    if (!state.fullShipData) {
-        showToast('데이터 로딩 중...', 'info');
-        state.fullShipData = await state.fullShipDataPromise;
-        if (!state.fullShipData) {
-            showToast('전체 데이터를 불러올 수 없습니다.', 'error');
-            return;
-        }
-    }
+    if (!(await ensureFullShipData())) return;
 
     // Build map browser data structure
     if (!mapBrowserData) {

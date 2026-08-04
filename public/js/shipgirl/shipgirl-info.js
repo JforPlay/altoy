@@ -8,8 +8,8 @@
 import { createImg, getUrlParam, IMG_FALLBACKS, showToast, resolveUrl, getStorageItem, setStorageItem, setupModal, debounce, escapeHtml, showElement, hideElement } from '../utils.js';
 import {
     setup as setupData,
-    loadData, loadNationalityData, loadAttrTypeData,
-    loadShipTypeData, loadEquipTypeData, loadSkillIconData, loadSkillToIconId, loadSkillDataTemplate
+    loadData, loadFullData, loadNationalityData, loadAttrTypeData,
+    loadShipTypeData, loadEquipTypeData
 } from './shipgirl-info.data.js';
 import {
     setup as setupDetail,
@@ -61,9 +61,8 @@ const state = {
     // Construction-specific filters
     currentConstructionType: 'all',
 
-    // Retrofit filter: 'all' (default) or 'yes' (only retrofittable). Backed by
-    // retrofitGidSet, which is populated from fullShipData once it finishes its
-    // background load.
+    // Retrofit filter: 'all' (default) or 'yes' (only retrofittable). The first
+    // activation loads fullShipData and builds retrofitGidSet.
     currentRetrofitFilter: 'all',
     /** @type {Set<number>|null} */
     retrofitGidSet: null,
@@ -102,8 +101,8 @@ setupRetrofit(state);
 // ===== Initialization =====
 
 /**
- * Bootstrap the page: load all data in parallel, populate filters, handle initial URL route,
- * and set up all event listeners including popstate for browser navigation.
+ * Bootstrap the page: load the lite catalog and display mappings, populate
+ * filters, handle the initial URL route, and set up page listeners.
  */
 async function init() {
     try {
@@ -133,15 +132,6 @@ async function init() {
         setupEventListeners();
         setupStickyFilterRail();
         window.addEventListener('popstate', handleRoute);
-
-        // Warm skill assets after first render. Detail/skill search also await these
-        // explicitly, so this improves repeat interactions without delaying the grid.
-        const loadSkillAssets = () => Promise.all([loadSkillIconData(), loadSkillToIconId(), loadSkillDataTemplate()]);
-        if ('requestIdleCallback' in window) {
-            requestIdleCallback(loadSkillAssets, { timeout: 3000 });
-        } else {
-            setTimeout(loadSkillAssets, 0);
-        }
     } catch (error) {
         hideElement(loading);
         showToast(error.message || 'Initialization error', 'error');
@@ -202,18 +192,27 @@ function setupEventListeners() {
         });
     }
 
-    // Retrofit filter — boolean toggle. Depends on fullShipData (lazy-loaded);
-    // if pressed before that arrives, briefly disable the button until
-    // retrofitGidSet is built so the filter actually has data to work with.
+    // Retrofit filter — boolean toggle. Its first activation owns the optional
+    // full-data request and remains retryable after a failed request.
     const retrofitFilter = document.getElementById('retrofitFilter');
     if (retrofitFilter) {
         retrofitFilter.addEventListener('click', async () => {
             const next = retrofitFilter.getAttribute('aria-pressed') !== 'true';
             retrofitFilter.setAttribute('aria-pressed', String(next));
             state.currentRetrofitFilter = next ? 'yes' : 'all';
-            if (next && !state.retrofitGidSet && state.fullShipDataPromise) {
+            if (next && !state.retrofitGidSet) {
                 retrofitFilter.disabled = true;
-                try { await state.fullShipDataPromise; } finally { retrofitFilter.disabled = false; }
+                retrofitFilter.setAttribute('aria-busy', 'true');
+                try {
+                    await loadFullData();
+                } catch (error) {
+                    state.currentRetrofitFilter = 'all';
+                    retrofitFilter.setAttribute('aria-pressed', 'false');
+                    showToast('개조 정보를 불러오지 못했습니다. 다시 시도해 주세요.', 'error');
+                } finally {
+                    retrofitFilter.disabled = false;
+                    retrofitFilter.removeAttribute('aria-busy');
+                }
             }
             filterShipgirls();
         });

@@ -37,9 +37,9 @@ export const ROUTE_BOOT_TARGETS = Object.freeze([
             minimum: 1,
             description: 'first ship card rendered',
         },
-        // R11's 5.28 MB ship_info_data.json is started fire-and-forget during
-        // loadData(), so it lands on either side of the first card render. A
-        // `ready` cutoff makes this route's byte total a coin flip.
+        // Keep network idle after R11 so the report proves the removed full-data
+        // and skill warmups were deferred to first use, not moved behind a timer
+        // that fires after the first card renders.
         cutoff: 'networkidle',
     },
     {

@@ -40,7 +40,10 @@ import { parse as parseJavaScript } from 'acorn';
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(SCRIPT_DIR, '..');
 const BASELINE_PATH = join(SCRIPT_DIR, 'structure-baseline.json');
-const SCHEMA_VERSION = 2;
+const SCHEMA_VERSION = 3;
+const MODERNIZED_ROUTES = Object.freeze([
+    'src/pages/shipgirl/shipgirl-info.astro',
+]);
 const FINDING_KINDS = Object.freeze([
     'multiModuleRoutes',
     'globalAssignments',
@@ -257,6 +260,7 @@ export function scanStructure(root = ROOT) {
 
     return {
         schemaVersion: SCHEMA_VERSION,
+        modernizedRoutes: [...MODERNIZED_ROUTES],
         findings: sortFindings(findings),
     };
 }
@@ -300,6 +304,16 @@ export function compareStructureFindings(current, baseline) {
     return comparison;
 }
 
+/**
+ * Modernized routes may never grandfather a return to multiple page entries,
+ * even if a later baseline refresh happens while that regression is present.
+ */
+export function findModernizedRouteRegressions(current, baseline) {
+    const modernized = new Set(baseline?.modernizedRoutes ?? []);
+    return (current?.findings?.multiModuleRoutes ?? [])
+        .filter(({ path }) => modernized.has(path));
+}
+
 function findingLabel(kind, finding) {
     if (typeof finding === 'string') return finding;
     if (kind === 'multiModuleRoutes') {
@@ -313,6 +327,7 @@ function findingLabel(kind, finding) {
 
 function printComparison(report, baseline) {
     const comparison = compareStructureFindings(report, baseline);
+    const modernizedRegressions = findModernizedRouteRegressions(report, baseline);
     const labels = {
         multiModuleRoutes: 'routes with multiple page modules',
         globalAssignments: 'non-legacy browser global assignments',
@@ -350,6 +365,13 @@ function printComparison(report, baseline) {
     }
     if (!baseline?.findings) {
         console.log('No reviewed baseline found. Review the findings before --update-baseline.');
+    }
+    console.log(
+        `\nmodernized routes: ${baseline?.modernizedRoutes?.length ?? 0}; `
+        + `${modernizedRegressions.length} multi-entry regressions`
+    );
+    for (const finding of modernizedRegressions) {
+        console.log(`  [MODERNIZED REGRESSION] ${findingLabel('multiModuleRoutes', finding)}`);
     }
 }
 
@@ -391,6 +413,7 @@ Options:
 function baselineSnapshot(report) {
     return {
         schemaVersion: report.schemaVersion,
+        modernizedRoutes: report.modernizedRoutes,
         findings: report.findings,
     };
 }

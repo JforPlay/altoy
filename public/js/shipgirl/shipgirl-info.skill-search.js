@@ -7,6 +7,7 @@
 import {
     processSkillDescription,
     getSkillIconUrl,
+    loadFullData,
     loadSkillIconData,
     loadSkillToIconId,
     loadSkillDataTemplate
@@ -104,19 +105,21 @@ export function setup(stateRef) {
 // ============================================
 
 /**
- * Build the skill corpus from already-loaded data. Awaits fullShipDataPromise
- * if the background load hasn't finished yet.
+ * Build the skill corpus on first open. Independent data and Fuse requests run
+ * together, and loadFullData() shares concurrent work with other consumers.
  */
 async function buildCorpus() {
     if (skillCorpus) return skillCorpus;
 
-    // Wait for full ship data (background-loaded by shipgirl-info.data.js).
-    // Kick off the lazy Fuse load alongside the ship/skill data fetches; getFilteredSkills
-    // can stay synchronous because Fuse will be ready before the corpus is.
-    if (!state.fullShipData && state.fullShipDataPromise) {
-        await state.fullShipDataPromise;
-    }
-    await Promise.all([loadSkillIconData(), loadSkillToIconId(), loadSkillDataTemplate(), ensureFuse()]);
+    // Kick off the lazy Fuse load alongside the ship/skill data fetches;
+    // getFilteredSkills can stay synchronous because Fuse is ready first.
+    await Promise.all([
+        loadFullData(),
+        loadSkillIconData(),
+        loadSkillToIconId(),
+        loadSkillDataTemplate(),
+        ensureFuse()
+    ]);
 
     if (!state.fullShipData || !state.skillDataTemplate || Object.keys(state.skillDataTemplate).length === 0) {
         throw new Error('데이터 로딩이 완료되지 않았습니다');
