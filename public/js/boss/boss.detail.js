@@ -9,8 +9,8 @@
 import { escapeHtml, resolveUrl } from '../utils.js';
 import { getIdentity } from './boss.data.js';
 import {
-    bossPortraitUrl, bossPortraitFallbackAttr, appearanceArmor, groupAppearances,
-    isStatsUsable, ARMOR_LABELS, SRC_LABELS, TYPE_LABELS,
+    bossPortraitUrl, bossPortraitFallbackAttr, appearanceArmor, groupDetail,
+    parseSkillText, isStatsUsable, ARMOR_LABELS, SRC_LABELS, TYPE_LABELS,
 } from '../boss-format.js';
 
 let state;
@@ -63,13 +63,38 @@ function appearanceRow(app, identity) {
     </li>`;
 }
 
-/** One heading + row list per source, replacing a per-row source badge. */
-function appearanceGroup(group, identity) {
+/**
+ * Skill text for one source, printed above that source's appearance rows.
+ *
+ * Only META and 한계 챌린지 fights have any — every other boss's mechanics exist
+ * solely as buff configs with Chinese dev-note names and empty descriptions, so
+ * the block is simply absent from those sections. No source badge is needed: the
+ * enclosing section heading already names the fight these mechanics belong to.
+ */
+function skillBlock(skills) {
+    if (!skills.length) return '';
+    const rows = skills.map((s) => `
+        <li class="boss-skill">
+            <h5 class="boss-skill-name">${escapeHtml(s.n)}</h5>
+            <p class="boss-skill-desc">${parseSkillText(s.d).map((seg) => (seg.em
+        ? `<em class="boss-skill-em">${escapeHtml(seg.text)}</em>`
+        : escapeHtml(seg.text))).join('')}</p>
+        </li>`).join('');
+    return `<h4 class="boss-skill-title">특수 기믹</h4>
+        <ul class="boss-skill-list">${rows}</ul>`;
+}
+
+/** One heading + skills + row list per source, replacing a per-row source badge. */
+function sourceSection(group, identity) {
+    // Count means appearances; a skills-only section has none to state.
+    const count = group.rows.length
+        ? `<span class="badge badge--count">${group.rows.length}</span>` : '';
     return `<section class="boss-group">
         <h3 class="section-title section-title--sm boss-group-title">
             ${escapeHtml(SRC_LABELS[group.src] || group.src)}
-            <span class="badge badge--count">${group.rows.length}</span>
+            ${count}
         </h3>
+        ${skillBlock(group.skills)}
         <ul class="boss-row-list">
             ${group.rows.map((a) => appearanceRow(a, identity)).join('')}
         </ul>
@@ -92,7 +117,7 @@ export function openBossDetail(icon) {
                 <span class="boss-detail-count">출현 ${identity.app.length}곳</span>
             </div>
         </div>
-        ${groupAppearances(identity.app).map((g) => appearanceGroup(g, identity)).join('')}`;
+        ${groupDetail(identity.app, identity.skills).map((g) => sourceSection(g, identity)).join('')}`;
 
     els.detailPanel.classList.add('open');
     els.detailPanel.setAttribute('aria-hidden', 'false');

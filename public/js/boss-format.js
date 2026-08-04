@@ -18,7 +18,7 @@ export const SRC_LABELS = {
     event: '이벤트',
     archive: '기록',
     meta: 'META',
-    challenge: '극전',
+    challenge: '한계 챌린지',
     guild: '대형작전',
     siren: '세이렌',
 };
@@ -116,15 +116,60 @@ export function sortAppearances(apps) {
 }
 
 /**
- * Appearances split into consecutive same-source runs, so the drawer can print
- * one group heading instead of repeating the source badge on all 19 rows.
+ * Detail-drawer sections: one per source in chip order, each carrying that
+ * source's appearance rows *and* its skill text, so the drawer prints one group
+ * heading instead of repeating the source badge on all 19 rows.
+ *
+ * Skills describe a specific fight, not the boss as a whole — 헬레나 holds a
+ * separate META set and 한계 챌린지 set, and 12 of the 23 META bosses also have
+ * plain 일반해역/기록 rows the META mechanics don't apply to — so they belong
+ * inside their own source's section rather than in one list above everything.
+ *
+ * A source with skills but no appearances still gets a section. None exists
+ * today (all 37 skill sources have matching rows), but a future family must
+ * surface rather than silently drop its text.
  */
-export function groupAppearances(apps) {
+export function groupDetail(apps, skills) {
     const groups = [];
-    for (const app of sortAppearances(apps)) {
-        const last = groups[groups.length - 1];
-        if (last && last.src === app.src) last.rows.push(app);
-        else groups.push({ src: app.src, rows: [app] });
+    const bySrc = new Map();
+    const section = (src) => {
+        let g = bySrc.get(src);
+        if (!g) {
+            g = { src, rows: [], skills: [] };
+            bySrc.set(src, g);
+            groups.push(g);
+        }
+        return g;
+    };
+    for (const app of sortAppearances(apps)) section(app.src).rows.push(app);
+    for (const s of skills || []) section(s.src).skills.push(s);
+    return groups.sort((a, b) => srcRank(a.src) - srcRank(b.src));
+}
+
+/** `<color=…>` spans in the game's skill text, and the only markup it uses. */
+const COLOR_TAG = /<color=[^>]*>([\s\S]*?)<\/color>/g;
+
+/**
+ * Skill description split into `{ text, em }` segments for safe rendering.
+ *
+ * The game wraps its key numbers in `<color=#92fc63>`, and that one hex is the
+ * only colour across all 82 descriptions — it means "emphasis", not a palette
+ * choice. So the value is discarded and the segment is merely flagged, letting
+ * the sheet use a theme token that works in both light and dark. It also keeps
+ * upstream text out of a style attribute entirely.
+ *
+ * Callers must still escape `text`; this splits, it does not sanitise.
+ */
+export function parseSkillText(text) {
+    const src = String(text ?? '');
+    const out = [];
+    let last = 0;
+    COLOR_TAG.lastIndex = 0;
+    for (let m = COLOR_TAG.exec(src); m; m = COLOR_TAG.exec(src)) {
+        if (m.index > last) out.push({ text: src.slice(last, m.index), em: false });
+        if (m[1]) out.push({ text: m[1], em: true });
+        last = m.index + m[0].length;
     }
-    return groups;
+    if (last < src.length) out.push({ text: src.slice(last), em: false });
+    return out;
 }

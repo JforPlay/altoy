@@ -92,6 +92,50 @@ test('event and archive appearances carry the event name that disambiguates them
         `${missing.length}/${needsEvent.length} event/archive rows lack an event name`);
 });
 
+test('skill text exists only where the game actually publishes it', () => {
+    // Every other boss's mechanics live in buff configs whose name is a Chinese
+    // dev note and whose desc is empty — if a third src ever shows up here, the
+    // processor picked up internal strings that must not be shown to users.
+    const srcs = new Set(identities.flatMap(([, r]) => (r.skills || []).map((s) => s.src)));
+    assert.deepEqual([...srcs].sort(), ['challenge', 'meta']);
+});
+
+test('every skill entry has a name, a description, and a labelled source', () => {
+    for (const [icon, r] of identities) {
+        for (const s of r.skills || []) {
+            assert.ok(s.n && s.n.trim(), `${icon}: skill with no name`);
+            assert.ok(s.d && s.d.trim(), `${icon}: skill "${s.n}" has no description`);
+            assert.ok(SRC_LABELS[s.src], `${icon}: skill "${s.n}" has unknown src "${s.src}"`);
+        }
+    }
+});
+
+test('an identity never lists the same skill twice for one source', () => {
+    // Both sources repeat themselves: a META boss carries its description on
+    // every tier row, and the three 별자리 tiers share one description block.
+    for (const [icon, r] of identities) {
+        const keys = (r.skills || []).map((s) => `${s.src}\u0000${s.n}`);
+        assert.equal(new Set(keys).size, keys.length, `${icon}: duplicate skill entries`);
+    }
+});
+
+test('all 23 META bosses carry their skill text', () => {
+    const meta = identities.filter(([, r]) => r.app.some((a) => a.src === 'meta'));
+    const withSkills = meta.filter(([, r]) => (r.skills || []).some((s) => s.src === 'meta'));
+    assert.equal(withSkills.length, 23, `${withSkills.length}/${meta.length} META bosses have skills`);
+});
+
+test('한계 챌린지 별자리 pairs both carry the mechanic that names both ships', () => {
+    // 5101–5103 and 5128–5130 are two-boss fights; resolving only a flagship
+    // would drop 사우스다코타 and 킹 조지 5세 from the database entirely.
+    for (const icon of ['huashengdun', 'nandaketa', 'qiaozhiwushi', 'yuekegongjue']) {
+        const r = data[icon];
+        assert.ok(r, `${icon} is missing`);
+        assert.ok((r.skills || []).some((s) => s.src === 'challenge'),
+            `${icon}: no 한계 챌린지 skill text`);
+    }
+});
+
 test('a known boss resolves to its verified in-game stats', () => {
     // 16-4 무사시 — cross-checked against the KR config during the survey.
     const musashi = data.wuzang;

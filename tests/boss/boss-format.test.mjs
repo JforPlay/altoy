@@ -12,8 +12,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
     bossPortraitUrl, bossPortraitFallbackUrl, bossPortraitFallbackAttr,
-    appearanceArmor, sortAppearances, groupAppearances, isStatsUsable,
-    ARMOR_LABELS, SRC_LABELS, TYPE_LABELS,
+    appearanceArmor, sortAppearances, groupDetail, parseSkillText,
+    isStatsUsable, ARMOR_LABELS, SRC_LABELS, TYPE_LABELS,
 } from '../../public/js/boss-format.js';
 
 test('portrait uses skin_qicon when the identity resolved to a skin id', () => {
@@ -99,17 +99,84 @@ test('sortAppearances tolerates an absent list', () => {
     assert.deepEqual(sortAppearances(null), []);
 });
 
-test('groupAppearances splits into one run per source, in the same order', () => {
+test('groupDetail splits appearances into one section per source, in chip order', () => {
     const apps = [
         { src: 'meta', where: 'T2' },
         { src: 'main', lv: 2, where: '1-1' },
         { src: 'meta', where: 'T10' },
         { src: 'main', lv: 132, where: '15-4' },
     ];
-    const groups = groupAppearances(apps);
+    const groups = groupDetail(apps, null);
     assert.deepEqual(groups.map((g) => g.src), ['main', 'meta']);
     assert.deepEqual(groups[0].rows.map((a) => a.where), ['15-4', '1-1']);
     assert.deepEqual(groups[1].rows.map((a) => a.where), ['T10', 'T2']);
+    assert.deepEqual(groups.map((g) => g.skills), [[], []]);
+});
+
+test('groupDetail files each skill under its own source, not the boss', () => {
+    // 헬레나 is the identity that holds two sets: the META mechanics must not
+    // appear over the 한계 챌린지 rows, nor over its plain 일반해역 row.
+    const apps = [
+        { src: 'main', lv: 2, where: '1-1' },
+        { src: 'meta', where: 'T1' },
+        { src: 'challenge', where: '황소자리 · 하드' },
+    ];
+    const skills = [
+        { src: 'meta', n: '레이더 스캔·Hacking', d: '…' },
+        { src: 'challenge', n: '위협 감지', d: '…' },
+        { src: 'meta', n: '「영」 사분면 전개-5%', d: '…' },
+    ];
+    const groups = groupDetail(apps, skills);
+    assert.deepEqual(groups.map((g) => g.src), ['main', 'meta', 'challenge']);
+    assert.deepEqual(groups[0].skills, []);
+    assert.deepEqual(groups[1].skills.map((s) => s.n), ['레이더 스캔·Hacking', '「영」 사분면 전개-5%']);
+    assert.deepEqual(groups[2].skills.map((s) => s.n), ['위협 감지']);
+});
+
+test('groupDetail keeps a skill whose source has no appearances', () => {
+    // No such boss ships today, but a new skill family must surface rather
+    // than vanish because nothing matched its source.
+    const groups = groupDetail([{ src: 'main', lv: 2, where: '1-1' }], [{ src: 'siren', n: 'X', d: '…' }]);
+    assert.deepEqual(groups.map((g) => g.src), ['main', 'siren']);
+    assert.deepEqual(groups[1].rows, []);
+    assert.deepEqual(groups[1].skills.map((s) => s.n), ['X']);
+});
+
+test('groupDetail tolerates missing lists', () => {
+    assert.deepEqual(groupDetail(undefined, undefined), []);
+    assert.deepEqual(groupDetail(null, null), []);
+});
+
+test('parseSkillText flags <color> spans without carrying the hex through', () => {
+    // The value is deliberately dropped: one hex is used across all 82
+    // descriptions and it means emphasis, so the sheet picks a themed colour.
+    const segs = parseSkillText('실드가 <color=#92fc63>60%</color> 회복된다.');
+    assert.deepEqual(segs, [
+        { text: '실드가 ', em: false },
+        { text: '60%', em: true },
+        { text: ' 회복된다.', em: false },
+    ]);
+    assert.ok(!JSON.stringify(segs).includes('92fc63'));
+});
+
+test('parseSkillText handles several spans and preserves newlines', () => {
+    const segs = parseSkillText('a<color=#92fc63>1</color>\nb<color=#92fc63>2</color>');
+    assert.deepEqual(segs.map((s) => s.text), ['a', '1', '\nb', '2']);
+    assert.deepEqual(segs.map((s) => s.em), [false, true, false, true]);
+});
+
+test('parseSkillText leaves plain text and empty input intact', () => {
+    assert.deepEqual(parseSkillText('평범한 설명'), [{ text: '평범한 설명', em: false }]);
+    assert.deepEqual(parseSkillText(''), []);
+    assert.deepEqual(parseSkillText(null), []);
+});
+
+test('parseSkillText is reusable — the global regex must not keep lastIndex', () => {
+    // A /g regex reused across calls silently drops the first match on every
+    // other call unless lastIndex is reset.
+    const once = parseSkillText('x<color=#92fc63>hit</color>');
+    assert.deepEqual(parseSkillText('x<color=#92fc63>hit</color>'), once);
+    assert.deepEqual(parseSkillText('x<color=#92fc63>hit</color>'), once);
 });
 
 test('Operation Siren rows are marked stats-unusable, everything else usable', () => {

@@ -122,6 +122,10 @@
   /* Accent Colors */
   --accent-blue: #0071eb;
   --accent-green: #43b581;
+  /* Paired *text* green (the --r / --r-text split rarity.css uses). --accent-green
+     is tuned as a fill and lands at 2.57:1 as body text on a light card — less
+     legible than the plain text it is meant to emphasise. This one inverts. */
+  --accent-green-text: #15803d;
 
   /* Extended accent palette (CSS unify Phase 4a) — additive, theme-stable,
      hue-named, for reuse beyond --accent-blue/--accent-green. Define-only:
@@ -297,6 +301,8 @@ body.dark-mode {
   /* Accent Colors */
   --accent-blue: #7289da;
   --accent-green: #43b581;
+  /* On dark cards the fill green is already the legible one (5.58:1). */
+  --accent-green-text: #43b581;
 
   /* Rarity Colors (same in both modes — game-canonical) */
   --rarity-ur:        #e91e8c;

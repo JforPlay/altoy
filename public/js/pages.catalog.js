@@ -45,7 +45,7 @@ export const PAGE_CATALOG = [
 
     // ===== Tools / Map / Island =====
     { key: 'MAP_VIEWER',     path: 'map/map-viewer/', name: '해역 정보',          description: '해역 맵, 적 함대, 드롭 정보',                       icon: 'map',         category: '도구' },
-    { key: 'BOSS_VIEWER',    path: 'map/boss-viewer/', name: '보스 도감',         description: '해역/META/극전 보스 스탯과 출현 위치',              icon: 'skull',       category: '도구' },
+    { key: 'BOSS_VIEWER',    path: 'map/boss-viewer/', name: '보스 도감',         description: '해역/META/한계 챌린지 보스 스탯과 출현 위치',              icon: 'skull',       category: '도구' },
     { key: 'ISLAND',         path: 'island/',         name: '아일랜드 계획 관리', description: '벽타듀 캐릭터, 기술, 퀘스트 관리',                  icon: 'forest',      category: '도구' },
     { key: 'ISLAND_MISC',    path: 'island-misc/',    name: '벽뜌땨 잡동사니',    description: '아일랜드 기타 에셋 모아보기',                       icon: 'collections', category: '도구' },
     { key: 'EVENT_TIMELINE', path: 'event-timeline/', name: '룽섭 일정보기',      description: '과거 룽섭 이벤트 일정들을 검색과 함께 확인',        icon: 'event',       category: '도구' },
