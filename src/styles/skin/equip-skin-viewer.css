@@ -232,6 +232,24 @@
     margin: 0;
 }
 
+/* ===== First-Fire Loading Overlay ===== */
+/* The stage stays blank while the first preview downloads the simulator data
+   (~32 MiB raw). The canvas is dark under every theme, so the theme-driven
+   .page-status color is overridden here — an #id beats the component class in
+   any bundle order.
+
+   Placement stays page-local on purpose: .page-status--overlay is position:fixed
+   full-screen (it would blank the page), and a --contain modifier for one consumer
+   would only move position/inset/background — z-index (canvas band: bullets 5,
+   entities 10, fps 100) and color stay here either way. See components/status.css. */
+#preview-loading {
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+    background: var(--overlay-medium);
+    color: var(--highlight-90);
+}
+
 /* ===== Responsive / Mobile ===== */
 @media (max-width: 768px) {
     .esv-content {

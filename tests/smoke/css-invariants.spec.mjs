@@ -774,3 +774,27 @@ for (const [label, selector] of [
         expect(got.expected, '--text-primary is unset on body').not.toBe('');
     });
 }
+
+// #visual-log is an absolutely-positioned padded chip that logToScreen fills on
+// demand; each line self-removes after 5s, so it spends most of its life empty —
+// and padding alone still painted a 20x12 translucent box in the canvas corner
+// (measured on all four sim pages 2026-08-04). `:empty` collapses it. Assert both
+// directions, or "fixing" it by hiding the log outright would pass.
+test('visual-log: an empty log collapses, a filled one still renders (sim-weapon)', async ({ page }) => {
+    await page.goto(pathFor('sim-weapon'), { waitUntil: 'load' });
+    const probe = await page.evaluate(() => {
+        const el = document.getElementById('visual-log');
+        if (!el) return null;
+        el.replaceChildren(); // drain the boot log line
+        const empty = el.getBoundingClientRect();
+        el.append(Object.assign(document.createElement('p'), { textContent: 'x' }));
+        const filled = el.getBoundingClientRect();
+        el.replaceChildren();
+        return { emptyW: empty.width, emptyH: empty.height, filledW: filled.width, filledH: filled.height };
+    });
+    expect(probe, 'no #visual-log on sim-weapon').not.toBeNull();
+    expect(probe.emptyH, 'an empty #visual-log must not paint a box').toBe(0);
+    expect(probe.emptyW).toBe(0);
+    expect(probe.filledH, 'a real log line must still render').toBeGreaterThan(0);
+    expect(probe.filledW).toBeGreaterThan(0);
+});

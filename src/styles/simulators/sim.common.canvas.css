@@ -75,6 +75,13 @@
   backdrop-filter: blur(4px);
 }
 
+/* Log lines are appended on demand and self-remove after 5s, so the box spends
+   most of its life empty — and padding alone still paints a 20x12 chip in the
+   canvas corner. Collapse it until it actually holds a line. */
+#visual-log:empty {
+  display: none;
+}
+
 /* ===== BULLETS (game-specific visuals) ===== */
 
 .bullet {

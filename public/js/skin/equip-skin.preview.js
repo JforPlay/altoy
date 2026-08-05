@@ -5,6 +5,7 @@
  * Part of the equip skin viewer group (equip-skin-viewer.js + equip-skin.data.js + equip-skin.preview.js).
  * Provides loop/pause/speed playback controls on top of the underlying engine.
  */
+import { showElement, hideElement } from '../utils.js';
 import { SimulationEngine } from '../simulators/sim.engine.common.js';
 import { AircraftEntity } from '../simulators/sim.engine.aircraft.js';
 
@@ -39,6 +40,7 @@ class EquipSkinPreview {
         this.isPaused = false;
         this.onError = null;
         this._fireToken = 0;
+        this._loadingEl = container.querySelector('#preview-loading');
 
         // Dynamic style element for skin sprite overrides
         this._styleEl = document.createElement('style');
@@ -128,6 +130,10 @@ class EquipSkinPreview {
         this.clearAll();
         this.currentSkin = skin;
 
+        // The first fire downloads the simulator data (~32 MiB raw) with nothing
+        // on the stage. Only the cold path gets the spinner: once loaded,
+        // startLoop re-fires every 3s and a per-cycle flash would strobe.
+        if (!this.data.simDataLoaded) showElement(this._loadingEl);
         try {
             await this.data.loadSimData();
             if (fireToken !== this._fireToken) return false;
@@ -152,6 +158,8 @@ class EquipSkinPreview {
                 this.clearAll();
             }
             throw error;
+        } finally {
+            hideElement(this._loadingEl);
         }
     }
 

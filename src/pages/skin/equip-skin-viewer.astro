@@ -35,7 +35,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <div id="enemy">
                 <img src={`${base}/assets/img/enemy_chibi.webp`} alt="enemy">
             </div>
-            <div id="visual-log"></div>
+            <!-- Shown by equip-skin.preview.js only while the first fire downloads
+                 the simulator data; the stage is blank until it lands. -->
+            <div id="preview-loading" class="page-status page-status-loading hidden" role="status">
+                <div class="spinner"></div>
+                <p class="page-status-msg">탄막 데이터를 불러오는 중...</p>
+            </div>
         </div>
 
         <!-- Playback Controls -->

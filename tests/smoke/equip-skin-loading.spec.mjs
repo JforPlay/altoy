@@ -89,6 +89,53 @@ test('R1: simulator data starts on first skin preview, not catalog boot', async 
     }
 });
 
+// The deferral moved a ~32 MiB download onto the first preview, so the spinner
+// is the stage's only feedback. It has to actually render on the cold fire and
+// never appear again: startLoop re-fires every 3s and a per-cycle flash strobes.
+test('R1: the first preview renders a loading spinner and later previews do not', async ({ page }) => {
+    await seedFuse(page);
+    let release;
+    const held = new Promise((resolve) => { release = resolve; });
+    await page.route('**/data/sim/weapon_property.json', async (route) => {
+        await held;
+        await route.continue();
+    });
+
+    await page.goto(EQUIP_SKIN_PATH, { waitUntil: 'domcontentloaded' });
+    await page.locator('#theme-list .esv-theme-item').first().click();
+    await page.waitForSelector('#skin-grid-container .esv-skin-card');
+
+    // Count every transition to visible — a poll would miss a brief flash.
+    await page.evaluate(() => {
+        window.__previewLoadingShows = 0;
+        const el = document.getElementById('preview-loading');
+        new MutationObserver(() => {
+            if (!el.classList.contains('hidden')) window.__previewLoadingShows++;
+        }).observe(el, { attributes: true, attributeFilter: ['class'] });
+    });
+
+    const loading = page.locator('#preview-loading');
+    const cards = page.locator('#skin-grid-container .esv-skin-card');
+
+    await expect(loading).toBeHidden();
+    await cards.first().click();
+    await expect(loading).toBeVisible();
+
+    release();
+    await expect(loading).toBeHidden();
+
+    const warmCard = await cards.count() > 1 ? cards.nth(1) : cards.first();
+    await warmCard.click();
+    await page.locator('#fire-button').click();
+    await page.waitForTimeout(500);
+
+    await expect(loading).toBeHidden();
+    expect(
+        await page.evaluate(() => window.__previewLoadingShows),
+        'only the cold fire may show the spinner'
+    ).toBe(1);
+});
+
 test('R1: a skin deep link loads the simulator data needed for its preview', async ({ page }) => {
     await seedFuse(page);
     const requested = collectSimRequests(page);

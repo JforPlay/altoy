@@ -19,6 +19,12 @@
  * Modifiers (size/position variants of the ONE component — never page forks):
  *   .page-status--overlay  full-screen fixed blocking loader (page-init)
  *   .page-status--compact  small icon + tight padding (dropdown / in-button / tight panel)
+ *
+ * No contained/box-scoped variant yet, deliberately (2026-08-04): equip-skin-viewer's
+ * #preview-loading places .page-status inside its canvas with page-local rules,
+ * because --overlay is position:fixed full-screen and half of what it needs (canvas
+ * z-band, dark-stage color) is page knowledge that can't be shared anyway.
+ * Add .page-status--contain when a SECOND page needs a box-scoped loader.
  */
 
 @import './spinner.css';
