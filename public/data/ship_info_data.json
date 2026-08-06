@@ -187885,15 +187885,15 @@
             ]
         },
         "description": [
-            "限时活动：世界巡游"
+            "META 연구실·월드 투어"
         ],
-        "name": "纽伦堡·META",
+        "name": "뉘른베르크·META",
         "gift_dislike": [
             180005,
             180009
         ],
         "skin_id": 9702130,
-        "class_name": "纽伦堡·META",
+        "class_name": "뉘른베르크·META",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9702130.webp",
         "equip_1": [
             2
@@ -197076,7 +197076,7 @@
             ]
         },
         "description": [
-            "한정 이벤트: 월드 투어"
+            "META 상점 교환"
         ],
         "name": "에레버스·META",
         "gift_dislike": [

@@ -91591,10 +91591,10 @@
     "802301": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "纽伦堡·META",
+        "name": "뉘른베르크·META",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9702130.webp",
-        "class_name": "纽伦堡·META",
+        "class_name": "뉘른베르크·META",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/802300.webp",
         "skill_id": 802301,
         "aniEffect": {
@@ -91637,10 +91637,10 @@
     "802302": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "纽伦堡·META",
+        "name": "뉘른베르크·META",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9702130.webp",
-        "class_name": "纽伦堡·META",
+        "class_name": "뉘른베르크·META",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/802300.webp",
         "skill_id": 802302,
         "aniEffect": {
@@ -91703,10 +91703,10 @@
     "802280": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "纽伦堡·META",
+        "name": "뉘른베르크·META",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9702130.webp",
-        "class_name": "纽伦堡·META",
+        "class_name": "뉘른베르크·META",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/802280.webp",
         "skill_id": 802280,
         "aniEffect": {
