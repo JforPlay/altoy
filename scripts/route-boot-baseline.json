@@ -251,15 +251,15 @@
         },
         {
           "path": "/altoy/data/ship_group_data.json",
-          "raw": 597187,
-          "gzip": 35543,
-          "brotli": 27338
+          "raw": 600085,
+          "gzip": 35787,
+          "brotli": 27528
         },
         {
           "path": "/altoy/data/ship_info_data.json",
-          "raw": 5543707,
-          "gzip": 315426,
-          "brotli": 198173
+          "raw": 5567655,
+          "gzip": 317025,
+          "brotli": 199189
         },
         {
           "path": "/altoy/data/shipgirl/fleet_tech_template.json",
@@ -275,21 +275,21 @@
         },
         {
           "path": "/altoy/data/sim/barrage_template.json",
-          "raw": 7569077,
-          "gzip": 390422,
-          "brotli": 313174
+          "raw": 7614239,
+          "gzip": 392933,
+          "brotli": 315308
         },
         {
           "path": "/altoy/data/sim/bullet_template.json",
-          "raw": 11681347,
-          "gzip": 547132,
-          "brotli": 340832
+          "raw": 11778926,
+          "gzip": 551541,
+          "brotli": 343918
         },
         {
           "path": "/altoy/data/sim/fleet_sim_passive_skills.json",
-          "raw": 718309,
-          "gzip": 45958,
-          "brotli": 39172
+          "raw": 729609,
+          "gzip": 46892,
+          "brotli": 39795
         },
         {
           "path": "/altoy/data/sim/spweapon_data.json",
@@ -299,9 +299,9 @@
         },
         {
           "path": "/altoy/data/sim/weapon_property.json",
-          "raw": 14367509,
-          "gzip": 934328,
-          "brotli": 596073
+          "raw": 14389592,
+          "gzip": 937135,
+          "brotli": 597831
         }
       ],
       "bytesAtReady": {
@@ -325,15 +325,15 @@
         },
         "json": {
           "count": 16,
-          "raw": 54034742,
-          "gzip": 2845332,
-          "brotli": 1823009
+          "raw": 54237712,
+          "gzip": 2857836,
+          "brotli": 1831816
         },
         "total": {
           "count": 47,
-          "raw": 54489617,
-          "gzip": 2970473,
-          "brotli": 1942390
+          "raw": 54692587,
+          "gzip": 2982977,
+          "brotli": 1951197
         }
       },
       "bytes": {
@@ -357,15 +357,15 @@
         },
         "json": {
           "count": 16,
-          "raw": 54034742,
-          "gzip": 2845332,
-          "brotli": 1823009
+          "raw": 54237712,
+          "gzip": 2857836,
+          "brotli": 1831816
         },
         "total": {
           "count": 47,
-          "raw": 54489617,
-          "gzip": 2970473,
-          "brotli": 1942390
+          "raw": 54692587,
+          "gzip": 2982977,
+          "brotli": 1951197
         }
       },
       "problems": []
@@ -518,9 +518,9 @@
         },
         {
           "path": "/altoy/data/ship_info_lite.json",
-          "raw": 273594,
-          "gzip": 21536,
-          "brotli": 18887
+          "raw": 274660,
+          "gzip": 21625,
+          "brotli": 18963
         }
       ],
       "bytesAtReady": {
@@ -544,15 +544,15 @@
         },
         "json": {
           "count": 5,
-          "raw": 291010,
-          "gzip": 24162,
-          "brotli": 21173
+          "raw": 292076,
+          "gzip": 24251,
+          "brotli": 21249
         },
         "total": {
           "count": 23,
-          "raw": 669737,
-          "gzip": 126316,
-          "brotli": 118455
+          "raw": 670803,
+          "gzip": 126405,
+          "brotli": 118531
         }
       },
       "bytes": {
@@ -576,15 +576,15 @@
         },
         "json": {
           "count": 5,
-          "raw": 291010,
-          "gzip": 24162,
-          "brotli": 21173
+          "raw": 292076,
+          "gzip": 24251,
+          "brotli": 21249
         },
         "total": {
           "count": 23,
-          "raw": 669737,
-          "gzip": 126316,
-          "brotli": 118455
+          "raw": 670803,
+          "gzip": 126405,
+          "brotli": 118531
         }
       },
       "problems": []
@@ -723,9 +723,9 @@
         },
         {
           "path": "/altoy/data/ship_info_data.json",
-          "raw": 5543707,
-          "gzip": 315426,
-          "brotli": 198173
+          "raw": 5567655,
+          "gzip": 317025,
+          "brotli": 199189
         }
       ],
       "bytesAtReady": {
@@ -749,15 +749,15 @@
         },
         "json": {
           "count": 4,
-          "raw": 5557552,
-          "gzip": 317482,
-          "brotli": 199962
+          "raw": 5581500,
+          "gzip": 319081,
+          "brotli": 200978
         },
         "total": {
           "count": 20,
-          "raw": 5880125,
-          "gzip": 402802,
-          "brotli": 281256
+          "raw": 5904073,
+          "gzip": 404401,
+          "brotli": 282272
         }
       },
       "bytes": {
@@ -781,15 +781,15 @@
         },
         "json": {
           "count": 4,
-          "raw": 5557552,
-          "gzip": 317482,
-          "brotli": 199962
+          "raw": 5581500,
+          "gzip": 319081,
+          "brotli": 200978
         },
         "total": {
           "count": 20,
-          "raw": 5880125,
-          "gzip": 402802,
-          "brotli": 281256
+          "raw": 5904073,
+          "gzip": 404401,
+          "brotli": 282272
         }
       },
       "problems": []
@@ -1489,9 +1489,9 @@
         },
         {
           "path": "/altoy/data/story-viewer/shipgirl_data.json",
-          "raw": 422847,
-          "gzip": 49210,
-          "brotli": 43254
+          "raw": 424710,
+          "gzip": 49451,
+          "brotli": 43430
         }
       ],
       "bytesAtReady": {
@@ -1515,15 +1515,15 @@
         },
         "json": {
           "count": 2,
-          "raw": 493040,
-          "gzip": 60575,
-          "brotli": 53245
+          "raw": 494903,
+          "gzip": 60816,
+          "brotli": 53421
         },
         "total": {
           "count": 24,
-          "raw": 889767,
-          "gzip": 172278,
-          "brotli": 159121
+          "raw": 891630,
+          "gzip": 172519,
+          "brotli": 159297
         }
       },
       "bytes": {
@@ -1547,15 +1547,15 @@
         },
         "json": {
           "count": 2,
-          "raw": 493040,
-          "gzip": 60575,
-          "brotli": 53245
+          "raw": 494903,
+          "gzip": 60816,
+          "brotli": 53421
         },
         "total": {
           "count": 24,
-          "raw": 889767,
-          "gzip": 172278,
-          "brotli": 159121
+          "raw": 891630,
+          "gzip": 172519,
+          "brotli": 159297
         }
       },
       "problems": []
@@ -1702,15 +1702,15 @@
         },
         {
           "path": "/altoy/data/skin/skin_release_dates.json",
-          "raw": 73230,
-          "gzip": 10500,
-          "brotli": 8178
+          "raw": 73544,
+          "gzip": 10554,
+          "brotli": 8242
         },
         {
           "path": "/altoy/data/skin/skin_voiceline_data_subset.json",
-          "raw": 1285030,
-          "gzip": 72994,
-          "brotli": 58302
+          "raw": 1290923,
+          "gzip": 73395,
+          "brotli": 58671
         }
       ],
       "bytesAtReady": {
@@ -1734,15 +1734,15 @@
         },
         "json": {
           "count": 3,
-          "raw": 1387970,
-          "gzip": 88326,
-          "brotli": 70661
+          "raw": 1394177,
+          "gzip": 88781,
+          "brotli": 71094
         },
         "total": {
           "count": 23,
-          "raw": 1740554,
-          "gzip": 183585,
-          "brotli": 161099
+          "raw": 1746761,
+          "gzip": 184040,
+          "brotli": 161532
         }
       },
       "bytes": {
@@ -1766,15 +1766,15 @@
         },
         "json": {
           "count": 3,
-          "raw": 1387970,
-          "gzip": 88326,
-          "brotli": 70661
+          "raw": 1394177,
+          "gzip": 88781,
+          "brotli": 71094
         },
         "total": {
           "count": 23,
-          "raw": 1740554,
-          "gzip": 183585,
-          "brotli": 161099
+          "raw": 1746761,
+          "gzip": 184040,
+          "brotli": 161532
         }
       },
       "problems": []
@@ -1827,9 +1827,9 @@
         },
         {
           "path": "/altoy/js/shipgirl/research-tracker.js",
-          "raw": 55435,
-          "gzip": 14635,
-          "brotli": 14029
+          "raw": 53978,
+          "gzip": 14358,
+          "brotli": 13770
         },
         {
           "path": "/altoy/js/shipgirl/shipgirl-tracker-utils.js",
@@ -1878,22 +1878,22 @@
           "brotli": 436
         },
         {
-          "path": "/altoy/data/maps/map_data_full.json",
-          "raw": 10348422,
-          "gzip": 916039,
-          "brotli": 428731
-        },
-        {
           "path": "/altoy/data/ship_group_data.json",
-          "raw": 597187,
-          "gzip": 35543,
-          "brotli": 27338
+          "raw": 600085,
+          "gzip": 35787,
+          "brotli": 27528
         },
         {
           "path": "/altoy/data/ship_info_lite.json",
-          "raw": 273594,
-          "gzip": 21536,
-          "brotli": 18887
+          "raw": 274660,
+          "gzip": 21625,
+          "brotli": 18963
+        },
+        {
+          "path": "/altoy/data/shipgirl/archive_drop_index.json",
+          "raw": 2376,
+          "gzip": 977,
+          "brotli": 867
         },
         {
           "path": "/altoy/data/shipgirl/fleet_tech_goal.json",
@@ -1911,9 +1911,9 @@
         },
         "js": {
           "count": 9,
-          "raw": 185787,
-          "gzip": 55561,
-          "brotli": 52908
+          "raw": 184330,
+          "gzip": 55284,
+          "brotli": 52649
         },
         "css": {
           "count": 2,
@@ -1923,15 +1923,15 @@
         },
         "json": {
           "count": 6,
-          "raw": 11251325,
-          "gzip": 976026,
-          "brotli": 477526
+          "raw": 909243,
+          "gzip": 61297,
+          "brotli": 49928
         },
         "total": {
           "count": 18,
-          "raw": 11528418,
-          "gzip": 1051207,
-          "brotli": 549160
+          "raw": 1184879,
+          "gzip": 136201,
+          "brotli": 121303
         }
       },
       "bytes": {
@@ -1943,9 +1943,9 @@
         },
         "js": {
           "count": 9,
-          "raw": 185787,
-          "gzip": 55561,
-          "brotli": 52908
+          "raw": 184330,
+          "gzip": 55284,
+          "brotli": 52649
         },
         "css": {
           "count": 2,
@@ -1955,15 +1955,15 @@
         },
         "json": {
           "count": 6,
-          "raw": 11251325,
-          "gzip": 976026,
-          "brotli": 477526
+          "raw": 909243,
+          "gzip": 61297,
+          "brotli": 49928
         },
         "total": {
           "count": 18,
-          "raw": 11528418,
-          "gzip": 1051207,
-          "brotli": 549160
+          "raw": 1184879,
+          "gzip": 136201,
+          "brotli": 121303
         }
       },
       "problems": []
@@ -2623,9 +2623,9 @@
         },
         {
           "path": "/altoy/data/skin/skin_release_dates.json",
-          "raw": 73230,
-          "gzip": 10500,
-          "brotli": 8178
+          "raw": 73544,
+          "gzip": 10554,
+          "brotli": 8242
         },
         {
           "path": "/altoy/data/skin/skin_voiceline_index.json",
@@ -2655,15 +2655,15 @@
         },
         "json": {
           "count": 3,
-          "raw": 423203,
-          "gzip": 70286,
-          "brotli": 61255
+          "raw": 423517,
+          "gzip": 70340,
+          "brotli": 61319
         },
         "total": {
           "count": 25,
-          "raw": 741261,
-          "gzip": 159944,
-          "brotli": 146250
+          "raw": 741575,
+          "gzip": 159998,
+          "brotli": 146314
         }
       },
       "bytes": {
@@ -2687,15 +2687,15 @@
         },
         "json": {
           "count": 3,
-          "raw": 423203,
-          "gzip": 70286,
-          "brotli": 61255
+          "raw": 423517,
+          "gzip": 70340,
+          "brotli": 61319
         },
         "total": {
           "count": 25,
-          "raw": 741261,
-          "gzip": 159944,
-          "brotli": 146250
+          "raw": 741575,
+          "gzip": 159998,
+          "brotli": 146314
         }
       },
       "problems": []

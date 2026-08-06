@@ -24,8 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ensureFuse();
 
     // Descriptions that are NOT map-drops or archive-drops but still grant the ship permanently.
-    // Map drops and archive drops are detected via ship_info_lite.json and map_data_full.json
-    // (same lookup path as the map viewer) rather than by parsing description strings.
+    // Map and archive drops come from generated indexes rather than description strings.
     const NON_DROP_PERMANENT_PATTERNS = [
         /^소형함 건조/,
         /^중형함 건조/,
@@ -61,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         /^훈장 교환/,
     ];
 
-    // NOTE: the 상시 건조 group is driven by buildPoolGids (MrLar), not this test.
+    // NOTE: the 상시 건조 group is driven by generated buildPoolGids, not this test.
     // BUILD_TEST now only guards OTHER_TEST so a construction-described ship is never
     // mislabeled as 기타 획득.
     const BUILD_TEST = d => /건조/.test(d) && !/한정/.test(d) && !/이벤트/.test(d) && !/기간/.test(d);
@@ -136,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
             test: ship => archiveDropGids.has(ship.gid),
         },
         {
-            // 상시 건조 membership comes from MrLar's live build-pool flags
+            // 상시 건조 membership comes from the generated live build-pool flags
             // (buildPoolGids), NOT the ship_data_group description. The game's
             // description is frozen at a ship's debut event, so it misses every
             // 상시편입 ship (event-debut → later added to permanent construction,
@@ -165,13 +164,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let shipTypeData = null;
     let fleetTechGoalData = null;
     // Set<string> gids + parallel Map<gid, shortLabel>. Built once in loadData() from
-    // ship_info_lite.json and map_data_full.json (same authoritative sources the map viewer
-    // uses) so drop-based grouping no longer depends on acquireTip description strings.
+    // ship_info_lite.json and the compact archive index so drop-based grouping no longer
+    // depends on acquireTip description strings or the full map-detail dataset.
     // The label is a brief hint rendered under the ship name — e.g. "1-4, 3-2" for map drops,
     // "홍염의 방문자" for archive drops.
     let mapDropGids = new Set();
     let archiveDropGids = new Set();
-    // 상시 건조 (permanent construction) pool, sourced from MrLar's light/heavy/special
+    // 상시 건조 (permanent construction) pool, sourced from the generated light/heavy/special
     // flags in ship_info_lite.json — see the build group in SOURCE_GROUPS for why the
     // game's ship_data_group description can't drive this.
     const buildPoolGids = new Set();
@@ -180,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const shopDropLabel = new Map();
 
     const MAX_MAP_STAGES_IN_LABEL = 3;
-    const MAX_ARCHIVE_EVENTS_IN_LABEL = 2;
+    const ARCHIVE_DROP_INDEX_VERSION = 1;
     let progress = {};
     let pinned = new Set();
     let activeFaction = null;
@@ -224,31 +223,30 @@ document.addEventListener('DOMContentLoaded', () => {
      *
      * Map drops come from ship_info_lite.json (each ship has a `maps` array of
      * main-story areas; any non-empty entry means the ship drops somewhere).
-     * The 상시 건조 build pool also comes from ship_info_lite.json via MrLar's
+     * The 상시 건조 build pool also comes from ship_info_lite.json via generated
      * light/heavy/special flags (→ buildPoolGids).
-     * Archive drops come from map_data_full.json archive chapters (keys prefixed
-     * "a_"), using `ship_drops_archive` (ship.id) and `special_drop` (type 4).
-     * Both sources use the same approach as the map viewer in map.data.js.
+     * Archive drops come from the map pipeline's compact archive_drop_index.json,
+     * which contains only the gid and short event label needed by this page.
      */
     async function loadData() {
         try {
-            let shipInfoLite, mapDataFull;
-            [shipData, nationalityData, shipTypeData, fleetTechGoalData, shipInfoLite, mapDataFull] = await Promise.all([
+            let shipInfoLite, archiveDropIndex;
+            [shipData, nationalityData, shipTypeData, fleetTechGoalData, shipInfoLite, archiveDropIndex] = await Promise.all([
                 fetchJSONWithCache('data/ship_group_data.json'),
                 fetchJSONWithCache('data/mapping/nationality_mapping.json'),
                 fetchJSONWithCache('data/mapping/ship_type_mapping.json'),
                 fetchJSONWithCache('data/shipgirl/fleet_tech_goal.json'),
                 fetchJSONWithCache('data/ship_info_lite.json'),
-                fetchJSONWithCache('data/maps/map_data_full.json'),
+                // Optional: only the 아카이브 group depends on it, so a failed
+                // request must not reject the boot alongside the required files.
+                fetchJSONWithCache('data/shipgirl/archive_drop_index.json').catch(() => null),
             ]);
 
             // ship_info_lite.json is an array. Each entry has numeric id + gid.
-            // Build the id→gid reverse lookup, the map-drop gid set, and the
-            // per-gid stage label ("1-4, 3-2, …") in one pass.
-            const idToGid = new Map();
+            // Build the map-drop gid set and per-gid stage label
+            // ("1-4, 3-2, …") in one pass.
             for (const ship of shipInfoLite || []) {
-                if (ship.gid != null) idToGid.set(ship.id, String(ship.gid));
-                // 상시 건조 pool: MrLar light/heavy/special. Must run before the maps
+                // 상시 건조 pool: generated light/heavy/special flags. Must run before the maps
                 // early-continue below, since construction-only ships have empty maps.
                 if (ship.gid != null && (ship.light || ship.heavy || ship.special)) {
                     buildPoolGids.add(String(ship.gid));
@@ -271,49 +269,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // Archive drops: iterate only `a_`-prefixed chapters in map_data_full.
-            // ship_drops_archive entries reference ship.id (not gid), so translate via idToGid.
-            // special_drop may be either a ship.id or a gid (matching map.detail.js fallback).
-            // Collect per-gid event name set so we can render a short list under the ship name.
-            const gidToEvents = new Map();
-            const addEvent = (gid, eventName) => {
-                if (!eventName) return;
-                if (!gidToEvents.has(gid)) gidToEvents.set(gid, new Set());
-                gidToEvents.get(gid).add(eventName);
-            };
-            if (mapDataFull) {
-                for (const [key, chapter] of Object.entries(mapDataFull)) {
-                    if (!key.startsWith('a_')) continue;
-                    const eventName = chapter.event_name || '';
-                    const drops = chapter.ship_drops_archive;
-                    if (Array.isArray(drops)) {
-                        for (const drop of drops) {
-                            const gid = idToGid.get(drop.id);
-                            if (!gid) continue;
-                            archiveDropGids.add(gid);
-                            addEvent(gid, eventName);
-                        }
-                    }
-                    const sd = chapter.special_drop;
-                    if (sd && sd.type === 4 && sd.id != null) {
-                        let gidStr = String(sd.id);
-                        if (!shipData[gidStr]) {
-                            const viaId = idToGid.get(sd.id);
-                            gidStr = viaId || null;
-                        }
-                        if (gidStr) {
-                            archiveDropGids.add(gidStr);
-                            addEvent(gidStr, eventName);
-                        }
-                    }
+            // A missing or future-schema index costs only the 아카이브 group, so it
+            // degrades to an empty group rather than failing the whole page. The
+            // build-time shape guard is what keeps a broken file from shipping.
+            const archiveEntries = archiveDropIndex?.version === ARCHIVE_DROP_INDEX_VERSION
+                && archiveDropIndex.entries
+                && typeof archiveDropIndex.entries === 'object'
+                && !Array.isArray(archiveDropIndex.entries)
+                ? archiveDropIndex.entries
+                : null;
+            if (archiveEntries) {
+                for (const [gid, label] of Object.entries(archiveEntries)) {
+                    archiveDropGids.add(gid);
+                    archiveDropLabel.set(gid, label);
                 }
-            }
-            for (const [gid, events] of gidToEvents) {
-                const arr = [...events];
-                const label = arr.length <= MAX_ARCHIVE_EVENTS_IN_LABEL
-                    ? arr.join(', ')
-                    : `${arr.slice(0, MAX_ARCHIVE_EVENTS_IN_LABEL).join(', ')} +${arr.length - MAX_ARCHIVE_EVENTS_IN_LABEL}`;
-                archiveDropLabel.set(gid, label);
+            } else {
+                console.error('archive_drop_index.json unavailable or unsupported; 아카이브 그룹을 건너뜁니다.');
             }
 
             // Shop labels are derived from each ship's description strings (no map data needed).

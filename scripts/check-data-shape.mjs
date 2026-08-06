@@ -301,6 +301,10 @@ export const MANIFEST = [
         'special_drop_display': 'array?',
         'event_pt': 'number?',
     } },
+    { file: 'shipgirl/archive_drop_index.json', kind: 'object', fields: {
+        'version': 'number',
+        'entries': 'object',
+    } },
     // Two-level: 3 pool objects (소형/중형/특형) each keyed by ship id → only container shape guarded.
     { file: 'shipgirl/ship_build_sim_data.json', kind: 'dict', fields: {} },
 ];
