@@ -29226,6 +29226,54 @@
         "op_reply2": "",
         "reply2_shipgirl": null
     },
+    "660": {
+        "id": 660,
+        "ship_group": 20237,
+        "message": "",
+        "name": "Superb",
+        "picture_persist": "",
+        "shipgirl_names": [
+            20237
+        ],
+        "op_option1": "",
+        "op_reply1": "",
+        "reply1_shipgirl": null,
+        "op_option2": "",
+        "op_reply2": "",
+        "reply2_shipgirl": null
+    },
+    "661": {
+        "id": 661,
+        "ship_group": 20314,
+        "message": "",
+        "name": "Surrey",
+        "picture_persist": "",
+        "shipgirl_names": [
+            20314
+        ],
+        "op_option1": "",
+        "op_reply1": "",
+        "reply1_shipgirl": null,
+        "op_option2": "",
+        "op_reply2": "",
+        "reply2_shipgirl": null
+    },
+    "662": {
+        "id": 662,
+        "ship_group": 20115,
+        "message": "",
+        "name": "Griffin",
+        "picture_persist": "",
+        "shipgirl_names": [
+            20115
+        ],
+        "op_option1": "",
+        "op_reply1": "",
+        "reply1_shipgirl": null,
+        "op_option2": "",
+        "op_reply2": "",
+        "reply2_shipgirl": null
+    },
     "67": {
         "id": 67,
         "ship_group": 20603,

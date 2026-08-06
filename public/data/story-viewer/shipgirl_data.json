@@ -1035,6 +1035,10 @@
         "name": "무더운 여름의 시원한 바람",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/103091.webp"
     },
+    "103092": {
+        "name": "放学后的补习时间",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/103092.webp"
+    },
     "103100": {
         "name": "빈센스",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/103100.webp"
@@ -2492,7 +2496,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/11700020.webp"
     },
     "11700021": {
-        "name": "찰나의 휴식",
+        "name": "휴식의 한때",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/11700021.webp"
     },
     "118020": {
@@ -2762,6 +2766,14 @@
     "201149": {
         "name": "글로우웜·改",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/201149.webp"
+    },
+    "201150": {
+        "name": "그리핀",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/201150.webp"
+    },
+    "201151": {
+        "name": "타이트한 루즈 타임",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/201151.webp"
     },
     "201160": {
         "name": "하디 ",
@@ -3395,6 +3407,14 @@
         "name": "드레싱 트래퍼",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/202361.webp"
     },
+    "202370": {
+        "name": "슈퍼브",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/202370.webp"
+    },
+    "202371": {
+        "name": "슈퍼 덴티스트",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/202371.webp"
+    },
     "203010": {
         "name": "런던",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/203010.webp"
@@ -3494,6 +3514,14 @@
     "203131": {
         "name": "데몬 새디스틱",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/203131.webp"
+    },
+    "203140": {
+        "name": "서리",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/203140.webp"
+    },
+    "203141": {
+        "name": "컨퓨징 피버",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/203141.webp"
     },
     "204010": {
         "name": "리나운",
@@ -4142,6 +4170,10 @@
     "299051": {
         "name": "상쾌한 이노센트 돌",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/299051.webp"
+    },
+    "299052": {
+        "name": "백의천사의 전신 검진",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/299052.webp"
     },
     "299060": {
         "name": "던컨",
@@ -6350,6 +6382,10 @@
     "401111": {
         "name": "돈 마련, 봉사, 솔직한 모습",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401111.webp"
+    },
+    "401112": {
+        "name": "간호사님, 용기를 내!",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401112.webp"
     },
     "401130": {
         "name": "Z13",
@@ -10495,6 +10531,10 @@
         "name": "아비터·엠퍼러·IV",
         "icon": null
     },
+    "900547": {
+        "name": "서리",
+        "icon": null
+    },
     "901010": {
         "name": "르 마르스 ",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/901010.webp"
@@ -10815,6 +10855,10 @@
         "name": "봉인된 머메이드",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600071.webp"
     },
+    "9600072": {
+        "name": "트루 마이셀프",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600072.webp"
+    },
     "9600080": {
         "name": "팬시",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600080.webp"
@@ -10982,6 +11026,10 @@
     "9702120": {
         "name": "{namecode:421}·META",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9702120.webp"
+    },
+    "9702130": {
+        "name": "{namecode:446}·META",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9702130.webp"
     },
     "9703010": {
         "name": "트렌토·META",

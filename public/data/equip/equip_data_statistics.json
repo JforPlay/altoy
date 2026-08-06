@@ -26221,6 +26221,108 @@
             171042
         ]
     },
+    "171071": {
+        "ammo": 10,
+        "ammo_icon": [],
+        "ammo_info": [],
+        "descrip": "技能弹幕",
+        "equip_info": [],
+        "equip_parameters": [],
+        "hidden_skill_id": [],
+        "icon": "1",
+        "id": 171071,
+        "label": [],
+        "name": "专属弹幕-华丽I",
+        "nationality": 0,
+        "part_main": [
+            1,
+            19,
+            20,
+            21
+        ],
+        "part_sub": [
+            2,
+            3,
+            4,
+            5,
+            8,
+            13,
+            18
+        ],
+        "property_rate": [],
+        "rarity": 1,
+        "skill_id": [],
+        "speciality": "<[NA]>",
+        "tech": 1,
+        "torpedo_ammo": 0,
+        "type": 1,
+        "value_1": "0",
+        "value_2": 0,
+        "value_3": 0,
+        "weapon_id": [
+            171071
+        ]
+    },
+    "171072": {
+        "base": 171071,
+        "hidden_skill_id": [],
+        "id": 171072,
+        "name": "专属弹幕-华丽II",
+        "weapon_id": [
+            171072
+        ]
+    },
+    "171081": {
+        "ammo": 10,
+        "ammo_icon": [],
+        "ammo_info": [],
+        "descrip": "技能弹幕",
+        "equip_info": [],
+        "equip_parameters": [],
+        "hidden_skill_id": [],
+        "icon": "1",
+        "id": 171081,
+        "label": [],
+        "name": "专属弹幕-萨里I",
+        "nationality": 0,
+        "part_main": [
+            1,
+            19,
+            20,
+            21
+        ],
+        "part_sub": [
+            2,
+            3,
+            4,
+            5,
+            8,
+            13,
+            18
+        ],
+        "property_rate": [],
+        "rarity": 1,
+        "skill_id": [],
+        "speciality": "<[NA]>",
+        "tech": 1,
+        "torpedo_ammo": 0,
+        "type": 1,
+        "value_1": "0",
+        "value_2": 0,
+        "value_3": 0,
+        "weapon_id": [
+            171081
+        ]
+    },
+    "171082": {
+        "base": 171081,
+        "hidden_skill_id": [],
+        "id": 171082,
+        "name": "专属弹幕-萨里II",
+        "weapon_id": [
+            171082
+        ]
+    },
     "17120": {
         "ammo": 5,
         "ammo_icon": [],
@@ -141352,6 +141454,57 @@
         "name": "专属弹幕-高梁II",
         "weapon_id": [
             171062
+        ]
+    },
+    "80671": {
+        "ammo": 10,
+        "ammo_icon": [],
+        "ammo_info": [],
+        "descrip": "技能弹幕",
+        "equip_info": [],
+        "equip_parameters": [],
+        "hidden_skill_id": [],
+        "icon": "1",
+        "id": 80671,
+        "label": [],
+        "name": "专属弹幕-纽伦堡METAI",
+        "nationality": 0,
+        "part_main": [
+            1,
+            19,
+            20,
+            21
+        ],
+        "part_sub": [
+            2,
+            3,
+            4,
+            5,
+            8,
+            13,
+            18
+        ],
+        "property_rate": [],
+        "rarity": 1,
+        "skill_id": [],
+        "speciality": "<[NA]>",
+        "tech": 1,
+        "torpedo_ammo": 0,
+        "type": 2,
+        "value_1": "0",
+        "value_2": 0,
+        "value_3": 0,
+        "weapon_id": [
+            61851
+        ]
+    },
+    "80672": {
+        "base": 80671,
+        "hidden_skill_id": [],
+        "id": 80672,
+        "name": "专属弹幕-纽伦堡METAII",
+        "weapon_id": [
+            61852
         ]
     },
     "807": {

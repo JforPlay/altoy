@@ -3611,6 +3611,36 @@
     "painting_n": null
   },
   {
+    "id": "900547",
+    "name": "서리",
+    "painting": {
+      "faces": [
+        "1",
+        "6",
+        "5",
+        "2",
+        "4",
+        "3",
+        "0"
+      ],
+      "box": [
+        529,
+        238,
+        421,
+        552
+      ],
+      "size": [
+        1626,
+        2048
+      ],
+      "default": "0",
+      "recovered_default": true,
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900547/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900547/painting_face_{faceId}.png"
+    },
+    "painting_n": null
+  },
+  {
     "id": "900004",
     "name": "서포크",
     "painting": {

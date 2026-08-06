@@ -4966,6 +4966,36 @@
         ],
         "rarity": "SR"
     },
+    "20115": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/201150.webp",
+        "name": "그리핀",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 9,
+        "add_level_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_level_value": 1,
+        "class": 20105,
+        "id": 20115,
+        "max_star": 5,
+        "pt_get": 5,
+        "pt_level": 8,
+        "pt_upgrage": 11,
+        "nationality": 2,
+        "type": 1,
+        "description": [
+            "이벤트: 괴담 실록: 백야 빌라에서 탈출하라!"
+        ],
+        "rarity": "SR"
+    },
     "20116": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/201160.webp",
         "name": "하디",
@@ -6392,6 +6422,32 @@
         ],
         "rarity": "SR"
     },
+    "20237": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/202370.webp",
+        "name": "슈퍼브",
+        "add_get_attr": 4,
+        "add_get_shiptype": [
+            2
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 8,
+        "add_level_shiptype": [
+            2
+        ],
+        "add_level_value": 1,
+        "class": 20209,
+        "id": 20237,
+        "max_star": 6,
+        "pt_get": 12,
+        "pt_level": 18,
+        "pt_upgrage": 24,
+        "nationality": 2,
+        "type": 2,
+        "description": [
+            "이벤트: 괴담 실록: 백야 빌라에서 탈출하라!"
+        ],
+        "rarity": "SSR"
+    },
     "20301": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/203010.webp",
         "name": "런던",
@@ -6716,6 +6772,36 @@
             "이벤트: 제로부터 시작하는 마왕 토벌"
         ],
         "rarity": "SR"
+    },
+    "20314": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/203140.webp",
+        "name": "서리",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            3,
+            13,
+            18
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 6,
+        "add_level_shiptype": [
+            3,
+            13,
+            18
+        ],
+        "add_level_value": 1,
+        "class": 20307,
+        "id": 20314,
+        "max_star": 6,
+        "pt_get": 14,
+        "pt_level": 21,
+        "pt_upgrage": 28,
+        "nationality": 2,
+        "type": 3,
+        "description": [
+            "이벤트: 괴담 실록: 백야 빌라에서 탈출하라!"
+        ],
+        "rarity": "SSR"
     },
     "20401": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/204010.webp",
@@ -21222,6 +21308,32 @@
         ],
         "rarity": "SR"
     },
+    "970213": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9702130.webp",
+        "name": "뉘른베르크·META",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            2
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 4,
+        "add_level_shiptype": [
+            2
+        ],
+        "add_level_value": 1,
+        "class": 970213,
+        "id": 970213,
+        "max_star": 5,
+        "pt_get": 10,
+        "pt_level": 16,
+        "pt_upgrage": 21,
+        "nationality": 97,
+        "type": 2,
+        "description": [
+            "限时活动：世界巡游"
+        ],
+        "rarity": "SR"
+    },
     "970301": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9703010.webp",
         "name": "트렌토·META",
@@ -23209,7 +23321,7 @@
         "nationality": 117,
         "type": 3,
         "description": [
-            "이벤트: 자동 보병 인형의 여행"
+            "이벤트: 자동 보병 인형의 여정"
         ],
         "rarity": "SSR"
     },
@@ -23219,7 +23331,7 @@
         "nationality": 117,
         "type": 2,
         "description": [
-            "이벤트: 자동 보병 인형의 여행"
+            "이벤트: 자동 보병 인형의 여정"
         ],
         "rarity": "SSR"
     }

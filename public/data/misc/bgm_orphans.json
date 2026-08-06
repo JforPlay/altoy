@@ -7916,10 +7916,6 @@
             },
             {
                 "kind": "scene",
-                "label": "LoginScene"
-            },
-            {
-                "kind": "scene",
                 "label": "NieRAutomataOmenPage"
             }
         ],
@@ -10892,6 +10888,11 @@
                 "year": 2025
             },
             {
+                "kind": "event",
+                "label": "괴담 실록: 백야 빌라에서 탈출하라!",
+                "year": 2026
+            },
+            {
                 "kind": "main",
                 "label": "은빛 정상의 안개"
             },
@@ -10906,10 +10907,6 @@
             {
                 "kind": "main",
                 "label": "저편에서의 메아리"
-            },
-            {
-                "kind": "main",
-                "label": "휘광의 성에서 피어나라"
             }
         ],
         "year": 2024
@@ -11352,9 +11349,46 @@
                 "kind": "event",
                 "label": "병원 탐방",
                 "year": 2025
+            },
+            {
+                "kind": "event",
+                "label": "괴담 실록: 백야 빌라에서 탈출하라!",
+                "year": 2026
             }
         ],
         "year": 2025
+    },
+    "story-hospitalnight-outshow": {
+        "name": "story-hospitalnight-outshow",
+        "cues": [
+            "山庄怪谈惊魂夜_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "山庄怪谈惊魂夜_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-hospitalnight-outshow/%E5%B1%B1%E5%BA%84%E6%80%AA%E8%B0%88%E6%83%8A%E9%AD%82%E5%A4%9C_PV.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "event",
+                "label": "괴담 실록: 백야 빌라에서 탈출하라!",
+                "year": 2026
+            },
+            {
+                "kind": "scene",
+                "label": "EscapeManorCollectPage"
+            },
+            {
+                "kind": "scene",
+                "label": "EscapeManorMainPage"
+            },
+            {
+                "kind": "scene",
+                "label": "EscapeManorPtPage"
+            }
+        ],
+        "year": 2026
     },
     "story-hrr": {
         "name": "story-hrr",
@@ -12467,6 +12501,16 @@
                 "year": 2026
             },
             {
+                "kind": "event",
+                "label": "괴담 실록: 백야 빌라에서 탈출하라!",
+                "year": 2026
+            },
+            {
+                "kind": "event",
+                "label": "特别竞拍时刻",
+                "year": 2026
+            },
+            {
                 "kind": "scene",
                 "label": "HolidayVillaPage"
             }
@@ -12654,6 +12698,11 @@
                 "kind": "event",
                 "label": "리조트 준비 중",
                 "year": 2025
+            },
+            {
+                "kind": "event",
+                "label": "괴담 실록: 백야 빌라에서 탈출하라!",
+                "year": 2026
             }
         ],
         "year": 2025
@@ -16522,6 +16571,34 @@
             }
         ],
         "year": 2025
+    },
+    "theme-hospitalnight-mystic": {
+        "name": "theme-hospitalnight-mystic",
+        "cues": [
+            "欢迎来到白夜山庄_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "欢迎来到白夜山庄_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-hospitalnight-mystic/%E6%AC%A2%E8%BF%8E%E6%9D%A5%E5%88%B0%E7%99%BD%E5%A4%9C%E5%B1%B1%E5%BA%84_AL.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "event",
+                "label": "괴담 실록: 백야 빌라에서 탈출하라!",
+                "year": 2026
+            },
+            {
+                "kind": "opsi",
+                "label": "보스 함대"
+            },
+            {
+                "kind": "scene",
+                "label": "BossRushEscapeManorScene"
+            }
+        ],
+        "year": 2026
     },
     "theme-hrr": {
         "name": "theme-hrr",
