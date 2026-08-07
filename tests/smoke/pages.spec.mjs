@@ -65,6 +65,14 @@ for (const { key, path } of TARGETS) {
             problems.push(`console.error: ${msg.text()}`);
         });
 
+        // loadingbg / comic-viewer / island-misc list their images through the
+        // unauthenticated GitHub contents API (60 req/hr per IP). CI runners
+        // share IPs, so the call intermittently fails at the network layer and
+        // the pages' catch logs a console.error — an external outage, not a
+        // boot regression. Serve an empty listing so boot stays deterministic.
+        await page.route('https://api.github.com/**', route =>
+            route.fulfill({ status: 200, contentType: 'application/json', body: '[]' }));
+
         const response = await page.goto(path, { waitUntil: 'load' });
         expect(response.ok(), `page load returned ${response.status()}`).toBe(true);
 
