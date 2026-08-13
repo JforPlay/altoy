@@ -251,15 +251,15 @@
         },
         {
           "path": "/altoy/data/ship_group_data.json",
-          "raw": 600085,
-          "gzip": 35787,
-          "brotli": 27528
+          "raw": 600074,
+          "gzip": 35753,
+          "brotli": 27492
         },
         {
           "path": "/altoy/data/ship_info_data.json",
-          "raw": 5567655,
-          "gzip": 317025,
-          "brotli": 199189
+          "raw": 5567656,
+          "gzip": 316953,
+          "brotli": 199153
         },
         {
           "path": "/altoy/data/shipgirl/fleet_tech_template.json",
@@ -287,9 +287,9 @@
         },
         {
           "path": "/altoy/data/sim/fleet_sim_passive_skills.json",
-          "raw": 729609,
-          "gzip": 46892,
-          "brotli": 39795
+          "raw": 729619,
+          "gzip": 46890,
+          "brotli": 39793
         },
         {
           "path": "/altoy/data/sim/spweapon_data.json",
@@ -326,14 +326,14 @@
         "json": {
           "count": 16,
           "raw": 54237712,
-          "gzip": 2857836,
-          "brotli": 1831816
+          "gzip": 2857728,
+          "brotli": 1831742
         },
         "total": {
           "count": 47,
           "raw": 54692587,
-          "gzip": 2982977,
-          "brotli": 1951197
+          "gzip": 2982869,
+          "brotli": 1951123
         }
       },
       "bytes": {
@@ -358,14 +358,14 @@
         "json": {
           "count": 16,
           "raw": 54237712,
-          "gzip": 2857836,
-          "brotli": 1831816
+          "gzip": 2857728,
+          "brotli": 1831742
         },
         "total": {
           "count": 47,
           "raw": 54692587,
-          "gzip": 2982977,
-          "brotli": 1951197
+          "gzip": 2982869,
+          "brotli": 1951123
         }
       },
       "problems": []
@@ -518,9 +518,9 @@
         },
         {
           "path": "/altoy/data/ship_info_lite.json",
-          "raw": 274660,
-          "gzip": 21625,
-          "brotli": 18963
+          "raw": 274666,
+          "gzip": 21616,
+          "brotli": 18953
         }
       ],
       "bytesAtReady": {
@@ -544,15 +544,15 @@
         },
         "json": {
           "count": 5,
-          "raw": 292076,
-          "gzip": 24251,
-          "brotli": 21249
+          "raw": 292082,
+          "gzip": 24242,
+          "brotli": 21239
         },
         "total": {
           "count": 23,
-          "raw": 670803,
-          "gzip": 126405,
-          "brotli": 118531
+          "raw": 670809,
+          "gzip": 126396,
+          "brotli": 118521
         }
       },
       "bytes": {
@@ -576,15 +576,15 @@
         },
         "json": {
           "count": 5,
-          "raw": 292076,
-          "gzip": 24251,
-          "brotli": 21249
+          "raw": 292082,
+          "gzip": 24242,
+          "brotli": 21239
         },
         "total": {
           "count": 23,
-          "raw": 670803,
-          "gzip": 126405,
-          "brotli": 118531
+          "raw": 670809,
+          "gzip": 126396,
+          "brotli": 118521
         }
       },
       "problems": []
@@ -723,9 +723,9 @@
         },
         {
           "path": "/altoy/data/ship_info_data.json",
-          "raw": 5567655,
-          "gzip": 317025,
-          "brotli": 199189
+          "raw": 5567656,
+          "gzip": 316953,
+          "brotli": 199153
         }
       ],
       "bytesAtReady": {
@@ -749,15 +749,15 @@
         },
         "json": {
           "count": 4,
-          "raw": 5581500,
-          "gzip": 319081,
-          "brotli": 200978
+          "raw": 5581501,
+          "gzip": 319009,
+          "brotli": 200942
         },
         "total": {
           "count": 20,
-          "raw": 5904073,
-          "gzip": 404401,
-          "brotli": 282272
+          "raw": 5904074,
+          "gzip": 404329,
+          "brotli": 282236
         }
       },
       "bytes": {
@@ -781,15 +781,15 @@
         },
         "json": {
           "count": 4,
-          "raw": 5581500,
-          "gzip": 319081,
-          "brotli": 200978
+          "raw": 5581501,
+          "gzip": 319009,
+          "brotli": 200942
         },
         "total": {
           "count": 20,
-          "raw": 5904073,
-          "gzip": 404401,
-          "brotli": 282272
+          "raw": 5904074,
+          "gzip": 404329,
+          "brotli": 282236
         }
       },
       "problems": []
@@ -1483,15 +1483,15 @@
       "json": [
         {
           "path": "/altoy/data/story-viewer/event_story_index.json",
-          "raw": 70193,
-          "gzip": 11365,
-          "brotli": 9991
+          "raw": 70645,
+          "gzip": 11488,
+          "brotli": 10098
         },
         {
           "path": "/altoy/data/story-viewer/shipgirl_data.json",
-          "raw": 424710,
-          "gzip": 49451,
-          "brotli": 43430
+          "raw": 424720,
+          "gzip": 49439,
+          "brotli": 43417
         }
       ],
       "bytesAtReady": {
@@ -1515,15 +1515,15 @@
         },
         "json": {
           "count": 2,
-          "raw": 494903,
-          "gzip": 60816,
-          "brotli": 53421
+          "raw": 495365,
+          "gzip": 60927,
+          "brotli": 53515
         },
         "total": {
           "count": 24,
-          "raw": 891630,
-          "gzip": 172519,
-          "brotli": 159297
+          "raw": 892092,
+          "gzip": 172630,
+          "brotli": 159391
         }
       },
       "bytes": {
@@ -1547,15 +1547,15 @@
         },
         "json": {
           "count": 2,
-          "raw": 494903,
-          "gzip": 60816,
-          "brotli": 53421
+          "raw": 495365,
+          "gzip": 60927,
+          "brotli": 53515
         },
         "total": {
           "count": 24,
-          "raw": 891630,
-          "gzip": 172519,
-          "brotli": 159297
+          "raw": 892092,
+          "gzip": 172630,
+          "brotli": 159391
         }
       },
       "problems": []
@@ -1703,14 +1703,14 @@
         {
           "path": "/altoy/data/skin/skin_release_dates.json",
           "raw": 73544,
-          "gzip": 10554,
-          "brotli": 8242
+          "gzip": 10553,
+          "brotli": 8238
         },
         {
           "path": "/altoy/data/skin/skin_voiceline_data_subset.json",
-          "raw": 1290923,
-          "gzip": 73395,
-          "brotli": 58671
+          "raw": 1290933,
+          "gzip": 73386,
+          "brotli": 58669
         }
       ],
       "bytesAtReady": {
@@ -1734,15 +1734,15 @@
         },
         "json": {
           "count": 3,
-          "raw": 1394177,
-          "gzip": 88781,
-          "brotli": 71094
+          "raw": 1394187,
+          "gzip": 88771,
+          "brotli": 71088
         },
         "total": {
           "count": 23,
-          "raw": 1746761,
-          "gzip": 184040,
-          "brotli": 161532
+          "raw": 1746771,
+          "gzip": 184030,
+          "brotli": 161526
         }
       },
       "bytes": {
@@ -1766,15 +1766,15 @@
         },
         "json": {
           "count": 3,
-          "raw": 1394177,
-          "gzip": 88781,
-          "brotli": 71094
+          "raw": 1394187,
+          "gzip": 88771,
+          "brotli": 71088
         },
         "total": {
           "count": 23,
-          "raw": 1746761,
-          "gzip": 184040,
-          "brotli": 161532
+          "raw": 1746771,
+          "gzip": 184030,
+          "brotli": 161526
         }
       },
       "problems": []
@@ -1879,15 +1879,15 @@
         },
         {
           "path": "/altoy/data/ship_group_data.json",
-          "raw": 600085,
-          "gzip": 35787,
-          "brotli": 27528
+          "raw": 600074,
+          "gzip": 35753,
+          "brotli": 27492
         },
         {
           "path": "/altoy/data/ship_info_lite.json",
-          "raw": 274660,
-          "gzip": 21625,
-          "brotli": 18963
+          "raw": 274666,
+          "gzip": 21616,
+          "brotli": 18953
         },
         {
           "path": "/altoy/data/shipgirl/archive_drop_index.json",
@@ -1923,15 +1923,15 @@
         },
         "json": {
           "count": 6,
-          "raw": 909243,
-          "gzip": 61297,
-          "brotli": 49928
+          "raw": 909238,
+          "gzip": 61254,
+          "brotli": 49882
         },
         "total": {
           "count": 18,
-          "raw": 1184879,
-          "gzip": 136201,
-          "brotli": 121303
+          "raw": 1184874,
+          "gzip": 136158,
+          "brotli": 121257
         }
       },
       "bytes": {
@@ -1955,15 +1955,15 @@
         },
         "json": {
           "count": 6,
-          "raw": 909243,
-          "gzip": 61297,
-          "brotli": 49928
+          "raw": 909238,
+          "gzip": 61254,
+          "brotli": 49882
         },
         "total": {
           "count": 18,
-          "raw": 1184879,
-          "gzip": 136201,
-          "brotli": 121303
+          "raw": 1184874,
+          "gzip": 136158,
+          "brotli": 121257
         }
       },
       "problems": []
@@ -2624,14 +2624,14 @@
         {
           "path": "/altoy/data/skin/skin_release_dates.json",
           "raw": 73544,
-          "gzip": 10554,
-          "brotli": 8242
+          "gzip": 10553,
+          "brotli": 8238
         },
         {
           "path": "/altoy/data/skin/skin_voiceline_index.json",
-          "raw": 320263,
-          "gzip": 54954,
-          "brotli": 48896
+          "raw": 321711,
+          "gzip": 55254,
+          "brotli": 49151
         }
       ],
       "bytesAtReady": {
@@ -2655,15 +2655,15 @@
         },
         "json": {
           "count": 3,
-          "raw": 423517,
-          "gzip": 70340,
-          "brotli": 61319
+          "raw": 424965,
+          "gzip": 70639,
+          "brotli": 61570
         },
         "total": {
           "count": 25,
-          "raw": 741575,
-          "gzip": 159998,
-          "brotli": 146314
+          "raw": 743023,
+          "gzip": 160297,
+          "brotli": 146565
         }
       },
       "bytes": {
@@ -2687,15 +2687,688 @@
         },
         "json": {
           "count": 3,
-          "raw": 423517,
-          "gzip": 70340,
-          "brotli": 61319
+          "raw": 424965,
+          "gzip": 70639,
+          "brotli": 61570
         },
         "total": {
           "count": 25,
-          "raw": 741575,
-          "gzip": 159998,
-          "brotli": 146314
+          "raw": 743023,
+          "gzip": 160297,
+          "brotli": 146565
+        }
+      },
+      "problems": []
+    },
+    "CROSS_FLEET_BARRAGES": {
+      "path": "simulators/cross-fleet-barrages/",
+      "ready": "first cross-fleet catalog rows rendered",
+      "cutoff": "networkidle",
+      "pageEntries": [
+        "/altoy/js/simulators/cross-fleet.main.js",
+        "/altoy/js/simulators/sim.engine.bullet.js",
+        "/altoy/js/simulators/sim.engine.common.js",
+        "/altoy/js/simulators/sim.engine.oceanbg.js"
+      ],
+      "html": [
+        {
+          "path": "/altoy/simulators/cross-fleet-barrages/",
+          "raw": 22514,
+          "gzip": 6192,
+          "brotli": 5684
+        }
+      ],
+      "js": [
+        {
+          "path": "/altoy/js/cache.db.js",
+          "raw": 8384,
+          "gzip": 2435,
+          "brotli": 2297
+        },
+        {
+          "path": "/altoy/js/global-search.js",
+          "raw": 21008,
+          "gzip": 6278,
+          "brotli": 5938
+        },
+        {
+          "path": "/altoy/js/global.init.js",
+          "raw": 779,
+          "gzip": 495,
+          "brotli": 427
+        },
+        {
+          "path": "/altoy/js/global.script.js",
+          "raw": 14117,
+          "gzip": 4569,
+          "brotli": 4338
+        },
+        {
+          "path": "/altoy/js/pages.catalog.js",
+          "raw": 13825,
+          "gzip": 4530,
+          "brotli": 4335
+        },
+        {
+          "path": "/altoy/js/simulators/cross-fleet.main.js",
+          "raw": 8212,
+          "gzip": 2725,
+          "brotli": 2593
+        },
+        {
+          "path": "/altoy/js/simulators/physics/acc-table.js",
+          "raw": 2941,
+          "gzip": 1208,
+          "brotli": 1138
+        },
+        {
+          "path": "/altoy/js/simulators/physics/accumulator.js",
+          "raw": 1811,
+          "gzip": 891,
+          "brotli": 828
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullet-registry.js",
+          "raw": 1724,
+          "gzip": 806,
+          "brotli": 753
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullet-unit.js",
+          "raw": 16488,
+          "gzip": 5469,
+          "brotli": 5282
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullets/bomb.js",
+          "raw": 6492,
+          "gzip": 2362,
+          "brotli": 2249
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullets/cannon.js",
+          "raw": 421,
+          "gzip": 282,
+          "brotli": 243
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullets/effect.js",
+          "raw": 1723,
+          "gzip": 830,
+          "brotli": 764
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullets/gravitation.js",
+          "raw": 3580,
+          "gzip": 1615,
+          "brotli": 1525
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullets/shrapnel.js",
+          "raw": 15804,
+          "gzip": 5429,
+          "brotli": 5223
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullets/torpedo.js",
+          "raw": 1010,
+          "gzip": 546,
+          "brotli": 497
+        },
+        {
+          "path": "/altoy/js/simulators/physics/constants.js",
+          "raw": 1147,
+          "gzip": 594,
+          "brotli": 545
+        },
+        {
+          "path": "/altoy/js/simulators/physics/vec.js",
+          "raw": 1729,
+          "gzip": 795,
+          "brotli": 739
+        },
+        {
+          "path": "/altoy/js/simulators/physics/weapons/beam-unit.js",
+          "raw": 4199,
+          "gzip": 1582,
+          "brotli": 1516
+        },
+        {
+          "path": "/altoy/js/simulators/physics/weapons/laser-unit.js",
+          "raw": 3660,
+          "gzip": 1450,
+          "brotli": 1387
+        },
+        {
+          "path": "/altoy/js/simulators/physics/weapons/space-laser-unit.js",
+          "raw": 4030,
+          "gzip": 1622,
+          "brotli": 1546
+        },
+        {
+          "path": "/altoy/js/simulators/physics/weapons/weapon-registry.js",
+          "raw": 1975,
+          "gzip": 931,
+          "brotli": 863
+        },
+        {
+          "path": "/altoy/js/simulators/physics/weapons/weapon-unit.js",
+          "raw": 2211,
+          "gzip": 1066,
+          "brotli": 996
+        },
+        {
+          "path": "/altoy/js/simulators/physics/world.js",
+          "raw": 5630,
+          "gzip": 2046,
+          "brotli": 1920
+        },
+        {
+          "path": "/altoy/js/simulators/sim.engine.aircraft.js",
+          "raw": 8284,
+          "gzip": 2417,
+          "brotli": 2305
+        },
+        {
+          "path": "/altoy/js/simulators/sim.engine.bullet.js",
+          "raw": 29427,
+          "gzip": 8203,
+          "brotli": 7900
+        },
+        {
+          "path": "/altoy/js/simulators/sim.engine.common.js",
+          "raw": 10276,
+          "gzip": 2835,
+          "brotli": 2683
+        },
+        {
+          "path": "/altoy/js/simulators/sim.engine.oceanbg.js",
+          "raw": 12719,
+          "gzip": 2885,
+          "brotli": 2671
+        },
+        {
+          "path": "/altoy/js/simulators/sim.ui.js",
+          "raw": 14052,
+          "gzip": 4731,
+          "brotli": 4503
+        },
+        {
+          "path": "/altoy/js/simulators/sim.weapon.controller.js",
+          "raw": 19898,
+          "gzip": 5294,
+          "brotli": 5103
+        },
+        {
+          "path": "/altoy/js/simulators/sim.weapon.data.js",
+          "raw": 10725,
+          "gzip": 3061,
+          "brotli": 2967
+        },
+        {
+          "path": "/altoy/js/simulators/sim.weapon.stats.js",
+          "raw": 7982,
+          "gzip": 3267,
+          "brotli": 3156
+        },
+        {
+          "path": "/altoy/js/synced-storage.js",
+          "raw": 5206,
+          "gzip": 1895,
+          "brotli": 1783
+        },
+        {
+          "path": "/altoy/js/utils.js",
+          "raw": 62991,
+          "gzip": 19232,
+          "brotli": 18400
+        }
+      ],
+      "css": [
+        {
+          "path": "/altoy/_assets/common.Cch28cGX.css",
+          "raw": 8829,
+          "gzip": 2259,
+          "brotli": 2080
+        },
+        {
+          "path": "/altoy/_assets/Layout.B6OMe4Ds.css",
+          "raw": 47701,
+          "gzip": 9144,
+          "brotli": 8862
+        },
+        {
+          "path": "/altoy/_assets/sim.common.AYHtFyer.css",
+          "raw": 16001,
+          "gzip": 3877,
+          "brotli": 3646
+        }
+      ],
+      "json": [
+        {
+          "path": "/altoy/data/sim/aircraft_template.json",
+          "raw": 2226672,
+          "gzip": 179165,
+          "brotli": 122848
+        },
+        {
+          "path": "/altoy/data/sim/cross_fleet_skills.json",
+          "raw": 29510,
+          "gzip": 4234,
+          "brotli": 4039
+        },
+        {
+          "path": "/altoy/data/sim/skill_data_template.json",
+          "raw": 1945133,
+          "gzip": 256245,
+          "brotli": 198815
+        },
+        {
+          "path": "/altoy/data/sim/skill_weapon_data.json",
+          "raw": 3997544,
+          "gzip": 115473,
+          "brotli": 77163
+        },
+        {
+          "path": "/altoy/data/sim/weapon_chunks/chunk_index.json",
+          "raw": 659428,
+          "gzip": 117284,
+          "brotli": 48242
+        }
+      ],
+      "bytesAtReady": {
+        "html": {
+          "count": 1,
+          "raw": 22514,
+          "gzip": 6192,
+          "brotli": 5684
+        },
+        "js": {
+          "count": 34,
+          "raw": 324460,
+          "gzip": 104376,
+          "brotli": 99413
+        },
+        "css": {
+          "count": 3,
+          "raw": 72531,
+          "gzip": 15280,
+          "brotli": 14588
+        },
+        "json": {
+          "count": 5,
+          "raw": 8858287,
+          "gzip": 672401,
+          "brotli": 451107
+        },
+        "total": {
+          "count": 43,
+          "raw": 9277792,
+          "gzip": 798249,
+          "brotli": 570792
+        }
+      },
+      "bytes": {
+        "html": {
+          "count": 1,
+          "raw": 22514,
+          "gzip": 6192,
+          "brotli": 5684
+        },
+        "js": {
+          "count": 34,
+          "raw": 324460,
+          "gzip": 104376,
+          "brotli": 99413
+        },
+        "css": {
+          "count": 3,
+          "raw": 72531,
+          "gzip": 15280,
+          "brotli": 14588
+        },
+        "json": {
+          "count": 5,
+          "raw": 8858287,
+          "gzip": 672401,
+          "brotli": 451107
+        },
+        "total": {
+          "count": 43,
+          "raw": 9277792,
+          "gzip": 798249,
+          "brotli": 570792
+        }
+      },
+      "problems": []
+    },
+    "SIM_AIRCRAFT": {
+      "path": "simulators/sim-aircraft/",
+      "ready": "aircraft catalog filters initialized",
+      "cutoff": "networkidle",
+      "pageEntries": [
+        "/altoy/js/simulators/sim.aircraft.data.js",
+        "/altoy/js/simulators/sim.aircraft.main.js",
+        "/altoy/js/simulators/sim.engine.bullet.js",
+        "/altoy/js/simulators/sim.engine.common.js",
+        "/altoy/js/simulators/sim.engine.oceanbg.js"
+      ],
+      "html": [
+        {
+          "path": "/altoy/simulators/sim-aircraft/",
+          "raw": 21357,
+          "gzip": 5624,
+          "brotli": 5270
+        }
+      ],
+      "js": [
+        {
+          "path": "/altoy/js/cache.db.js",
+          "raw": 8384,
+          "gzip": 2435,
+          "brotli": 2297
+        },
+        {
+          "path": "/altoy/js/global-search.js",
+          "raw": 21008,
+          "gzip": 6278,
+          "brotli": 5938
+        },
+        {
+          "path": "/altoy/js/global.init.js",
+          "raw": 779,
+          "gzip": 495,
+          "brotli": 427
+        },
+        {
+          "path": "/altoy/js/global.script.js",
+          "raw": 14117,
+          "gzip": 4569,
+          "brotli": 4338
+        },
+        {
+          "path": "/altoy/js/pages.catalog.js",
+          "raw": 13825,
+          "gzip": 4530,
+          "brotli": 4335
+        },
+        {
+          "path": "/altoy/js/simulators/physics/acc-table.js",
+          "raw": 2941,
+          "gzip": 1208,
+          "brotli": 1138
+        },
+        {
+          "path": "/altoy/js/simulators/physics/accumulator.js",
+          "raw": 1811,
+          "gzip": 891,
+          "brotli": 828
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullet-registry.js",
+          "raw": 1724,
+          "gzip": 806,
+          "brotli": 753
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullet-unit.js",
+          "raw": 16488,
+          "gzip": 5469,
+          "brotli": 5282
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullets/bomb.js",
+          "raw": 6492,
+          "gzip": 2362,
+          "brotli": 2249
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullets/cannon.js",
+          "raw": 421,
+          "gzip": 282,
+          "brotli": 243
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullets/effect.js",
+          "raw": 1723,
+          "gzip": 830,
+          "brotli": 764
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullets/gravitation.js",
+          "raw": 3580,
+          "gzip": 1615,
+          "brotli": 1525
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullets/shrapnel.js",
+          "raw": 15804,
+          "gzip": 5429,
+          "brotli": 5223
+        },
+        {
+          "path": "/altoy/js/simulators/physics/bullets/torpedo.js",
+          "raw": 1010,
+          "gzip": 546,
+          "brotli": 497
+        },
+        {
+          "path": "/altoy/js/simulators/physics/constants.js",
+          "raw": 1147,
+          "gzip": 594,
+          "brotli": 545
+        },
+        {
+          "path": "/altoy/js/simulators/physics/vec.js",
+          "raw": 1729,
+          "gzip": 795,
+          "brotli": 739
+        },
+        {
+          "path": "/altoy/js/simulators/physics/weapons/beam-unit.js",
+          "raw": 4199,
+          "gzip": 1582,
+          "brotli": 1516
+        },
+        {
+          "path": "/altoy/js/simulators/physics/weapons/laser-unit.js",
+          "raw": 3660,
+          "gzip": 1450,
+          "brotli": 1387
+        },
+        {
+          "path": "/altoy/js/simulators/physics/weapons/space-laser-unit.js",
+          "raw": 4030,
+          "gzip": 1622,
+          "brotli": 1546
+        },
+        {
+          "path": "/altoy/js/simulators/physics/weapons/weapon-registry.js",
+          "raw": 1975,
+          "gzip": 931,
+          "brotli": 863
+        },
+        {
+          "path": "/altoy/js/simulators/physics/weapons/weapon-unit.js",
+          "raw": 2211,
+          "gzip": 1066,
+          "brotli": 996
+        },
+        {
+          "path": "/altoy/js/simulators/physics/world.js",
+          "raw": 5630,
+          "gzip": 2046,
+          "brotli": 1920
+        },
+        {
+          "path": "/altoy/js/simulators/sim.aircraft.data.js",
+          "raw": 6243,
+          "gzip": 1749,
+          "brotli": 1693
+        },
+        {
+          "path": "/altoy/js/simulators/sim.aircraft.main.js",
+          "raw": 26690,
+          "gzip": 6505,
+          "brotli": 6267
+        },
+        {
+          "path": "/altoy/js/simulators/sim.engine.aircraft.js",
+          "raw": 8284,
+          "gzip": 2417,
+          "brotli": 2305
+        },
+        {
+          "path": "/altoy/js/simulators/sim.engine.bullet.js",
+          "raw": 29427,
+          "gzip": 8203,
+          "brotli": 7900
+        },
+        {
+          "path": "/altoy/js/simulators/sim.engine.common.js",
+          "raw": 10276,
+          "gzip": 2835,
+          "brotli": 2683
+        },
+        {
+          "path": "/altoy/js/simulators/sim.engine.oceanbg.js",
+          "raw": 12719,
+          "gzip": 2885,
+          "brotli": 2671
+        },
+        {
+          "path": "/altoy/js/simulators/sim.ui.js",
+          "raw": 14052,
+          "gzip": 4731,
+          "brotli": 4503
+        },
+        {
+          "path": "/altoy/js/simulators/sim.weapon.stats.js",
+          "raw": 7982,
+          "gzip": 3267,
+          "brotli": 3156
+        },
+        {
+          "path": "/altoy/js/synced-storage.js",
+          "raw": 5206,
+          "gzip": 1895,
+          "brotli": 1783
+        },
+        {
+          "path": "/altoy/js/utils.js",
+          "raw": 62991,
+          "gzip": 19232,
+          "brotli": 18400
+        }
+      ],
+      "css": [
+        {
+          "path": "/altoy/_assets/common.Cch28cGX.css",
+          "raw": 8829,
+          "gzip": 2259,
+          "brotli": 2080
+        },
+        {
+          "path": "/altoy/_assets/Layout.B6OMe4Ds.css",
+          "raw": 47701,
+          "gzip": 9144,
+          "brotli": 8862
+        },
+        {
+          "path": "/altoy/_assets/sim.common.AYHtFyer.css",
+          "raw": 16001,
+          "gzip": 3877,
+          "brotli": 3646
+        }
+      ],
+      "json": [
+        {
+          "path": "/altoy/data/equip/equip_data_full.json",
+          "raw": 10356451,
+          "gzip": 336258,
+          "brotli": 139992
+        },
+        {
+          "path": "/altoy/data/equip/equip_data_lite.json",
+          "raw": 787857,
+          "gzip": 31803,
+          "brotli": 22922
+        },
+        {
+          "path": "/altoy/data/sim/aircraft_template.json",
+          "raw": 2226672,
+          "gzip": 179165,
+          "brotli": 122848
+        },
+        {
+          "path": "/altoy/data/sim/weapon_chunks/chunk_index.json",
+          "raw": 659428,
+          "gzip": 117284,
+          "brotli": 48242
+        }
+      ],
+      "bytesAtReady": {
+        "html": {
+          "count": 1,
+          "raw": 21357,
+          "gzip": 5624,
+          "brotli": 5270
+        },
+        "js": {
+          "count": 33,
+          "raw": 318558,
+          "gzip": 101550,
+          "brotli": 96710
+        },
+        "css": {
+          "count": 3,
+          "raw": 72531,
+          "gzip": 15280,
+          "brotli": 14588
+        },
+        "json": {
+          "count": 4,
+          "raw": 14030408,
+          "gzip": 664510,
+          "brotli": 334004
+        },
+        "total": {
+          "count": 41,
+          "raw": 14442854,
+          "gzip": 786964,
+          "brotli": 450572
+        }
+      },
+      "bytes": {
+        "html": {
+          "count": 1,
+          "raw": 21357,
+          "gzip": 5624,
+          "brotli": 5270
+        },
+        "js": {
+          "count": 33,
+          "raw": 318558,
+          "gzip": 101550,
+          "brotli": 96710
+        },
+        "css": {
+          "count": 3,
+          "raw": 72531,
+          "gzip": 15280,
+          "brotli": 14588
+        },
+        "json": {
+          "count": 4,
+          "raw": 14030408,
+          "gzip": 664510,
+          "brotli": 334004
+        },
+        "total": {
+          "count": 41,
+          "raw": 14442854,
+          "gzip": 786964,
+          "brotli": 450572
         }
       },
       "problems": []

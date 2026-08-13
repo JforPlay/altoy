@@ -172,6 +172,31 @@ export const ROUTE_BOOT_TARGETS = Object.freeze([
         },
         cutoff: 'networkidle',
     },
+    // R9/R10 before-state targets. Keep these at network idle so the later
+    // catalog boundaries must remove the eager simulation data rather than
+    // start it after the first useful controls render.
+    {
+        key: 'CROSS_FLEET_BARRAGES',
+        path: 'simulators/cross-fleet-barrages/',
+        ready: {
+            kind: 'count',
+            selector: '#cf-tbody .cf-row',
+            minimum: 1,
+            description: 'first cross-fleet catalog rows rendered',
+        },
+        cutoff: 'networkidle',
+    },
+    {
+        key: 'SIM_AIRCRAFT',
+        path: 'simulators/sim-aircraft/',
+        ready: {
+            kind: 'count',
+            selector: '#type-filter .type-filter-btn',
+            minimum: 1,
+            description: 'aircraft catalog filters initialized',
+        },
+        cutoff: 'networkidle',
+    },
 ]);
 
 export const GLOBAL_DOCUMENT_MODULES = Object.freeze(new Set([
