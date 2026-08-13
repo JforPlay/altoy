@@ -34,7 +34,9 @@
 .cf-ship a:hover { color: var(--primary-color); text-decoration: underline; }
 .cf-row-buff { opacity: 0.85; }
 .cf-row-selected { background: var(--primary-alpha-20); }
-.cf-col-trigger { max-width: 360px; font-size: 0.8rem; color: var(--text-muted); }
+/* pre-line: three triggers ("…다음 효과를 발동한다") carry their ①② effect bullets
+   on their own lines — without it they collapse into one run-on sentence. */
+.cf-col-trigger { max-width: 360px; font-size: 0.8rem; color: var(--text-muted); white-space: pre-line; }
 
 .cf-render-btn, .cf-info-link { white-space: nowrap; }
 .cf-info-link { color: var(--primary-color); text-decoration: none; }

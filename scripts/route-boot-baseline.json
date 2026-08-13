@@ -1483,9 +1483,9 @@
       "json": [
         {
           "path": "/altoy/data/story-viewer/event_story_index.json",
-          "raw": 70661,
-          "gzip": 11489,
-          "brotli": 10102
+          "raw": 70658,
+          "gzip": 11452,
+          "brotli": 10065
         },
         {
           "path": "/altoy/data/story-viewer/shipgirl_data.json",
@@ -1515,15 +1515,15 @@
         },
         "json": {
           "count": 2,
-          "raw": 495381,
-          "gzip": 60928,
-          "brotli": 53519
+          "raw": 495378,
+          "gzip": 60891,
+          "brotli": 53482
         },
         "total": {
           "count": 24,
-          "raw": 892108,
-          "gzip": 172631,
-          "brotli": 159394
+          "raw": 892105,
+          "gzip": 172594,
+          "brotli": 159357
         }
       },
       "bytes": {
@@ -1547,15 +1547,15 @@
         },
         "json": {
           "count": 2,
-          "raw": 495381,
-          "gzip": 60928,
-          "brotli": 53519
+          "raw": 495378,
+          "gzip": 60891,
+          "brotli": 53482
         },
         "total": {
           "count": 24,
-          "raw": 892108,
-          "gzip": 172631,
-          "brotli": 159394
+          "raw": 892105,
+          "gzip": 172594,
+          "brotli": 159357
         }
       },
       "problems": []
@@ -2713,9 +2713,9 @@
       "html": [
         {
           "path": "/altoy/simulators/cross-fleet-barrages/",
-          "raw": 22514,
-          "gzip": 6192,
-          "brotli": 5684
+          "raw": 22535,
+          "gzip": 6200,
+          "brotli": 5692
         }
       ],
       "js": [
@@ -2953,9 +2953,9 @@
         },
         {
           "path": "/altoy/data/sim/cross_fleet_skills.json",
-          "raw": 41198,
-          "gzip": 5116,
-          "brotli": 4923
+          "raw": 44594,
+          "gzip": 5555,
+          "brotli": 5072
         },
         {
           "path": "/altoy/data/sim/skill_data_template.json",
@@ -2979,9 +2979,9 @@
       "bytesAtReady": {
         "html": {
           "count": 1,
-          "raw": 22514,
-          "gzip": 6192,
-          "brotli": 5684
+          "raw": 22535,
+          "gzip": 6200,
+          "brotli": 5692
         },
         "js": {
           "count": 34,
@@ -2997,23 +2997,23 @@
         },
         "json": {
           "count": 5,
-          "raw": 8878925,
-          "gzip": 673611,
-          "brotli": 452281
+          "raw": 8882321,
+          "gzip": 674050,
+          "brotli": 452430
         },
         "total": {
           "count": 43,
-          "raw": 9298430,
-          "gzip": 799459,
-          "brotli": 571965
+          "raw": 9301847,
+          "gzip": 799906,
+          "brotli": 572122
         }
       },
       "bytes": {
         "html": {
           "count": 1,
-          "raw": 22514,
-          "gzip": 6192,
-          "brotli": 5684
+          "raw": 22535,
+          "gzip": 6200,
+          "brotli": 5692
         },
         "js": {
           "count": 34,
@@ -3029,15 +3029,15 @@
         },
         "json": {
           "count": 5,
-          "raw": 8878925,
-          "gzip": 673611,
-          "brotli": 452281
+          "raw": 8882321,
+          "gzip": 674050,
+          "brotli": 452430
         },
         "total": {
           "count": 43,
-          "raw": 9298430,
-          "gzip": 799459,
-          "brotli": 571965
+          "raw": 9301847,
+          "gzip": 799906,
+          "brotli": 572122
         }
       },
       "problems": []
