@@ -191,8 +191,10 @@ export const ROUTE_BOOT_TARGETS = Object.freeze([
         path: 'simulators/sim-aircraft/',
         ready: {
             kind: 'count',
+            // The '전체' button renders unconditionally, so require a second
+            // one: type buttons only exist once the equipment catalog resolves.
             selector: '#type-filter .type-filter-btn',
-            minimum: 1,
+            minimum: 2,
             description: 'aircraft catalog filters initialized',
         },
         cutoff: 'networkidle',

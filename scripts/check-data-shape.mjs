@@ -15,6 +15,8 @@
  *   'string'         — field must exist and be a string on every sampled record
  *   'number|null'    — unions with `|`; types: string number boolean array object null
  *   'string?'        — trailing `?` = optional: may be absent, but must type-match when present
+ * Optional `values` maps fields to their complete allowed-value lists. It is
+ * checked after the field type contract and is useful for stable enums.
  *
  * To add or refresh a contract, NEVER guess keys — derive from the real file:
  *   node scripts/check-data-shape.mjs --describe <file-relative-to-public/data>
@@ -37,6 +39,7 @@ const SAMPLE_COUNT = 5;
  * @property {string} file - path relative to public/data
  * @property {'array'|'dict'|'object'} kind - array of records | id-keyed dict of records | flat object
  * @property {Object<string,string>} fields - field name → type spec (see grammar in header)
+ * @property {Object<string,readonly unknown[]>} [values] - field name → allowed values
  */
 
 /**
@@ -186,6 +189,27 @@ export const MANIFEST = [
         'trigger_cd': 'number?',
         'cross_fleet': 'boolean?',
     } },
+    { file: 'sim/cross_fleet_skills.json', kind: 'array', fields: {
+        'class_name': 'string',
+        'faction': 'string',
+        'fs_skill_id': 'array',
+        'player_skill_id': 'number',
+        'position': 'string',
+        'render_kind': 'string',
+        'retrofit': 'boolean',
+        'ship_gid': 'number',
+        'ship_icon': 'string',
+        'ship_name': 'string',
+        'shipyard': 'string',
+        'skill_icon': 'string',
+        'skill_name': 'string',
+        'trigger_excerpt': 'string',
+        'trigger_text': 'string',
+        'type': 'string',
+    }, values: {
+        'render_kind': ['bullet', 'aircraft', 'none'],
+        'type': ['barrage', 'buff'],
+    } },
     { file: 'island/island_item_data_template.json', kind: 'dict', fields: {
         'convert': 'number',
         'desc': 'string',
@@ -330,10 +354,11 @@ export function sampleIndices(n, k = SAMPLE_COUNT) {
 
 /**
  * Check one record against a fields contract.
- * @param {string} file @param {*} record @param {Object<string,string>} fields @param {string} where
+ * @param {string} file @param {*} record @param {Object<string,string>} fields
+ * @param {Object<string,readonly unknown[]>} values @param {string} where
  * @returns {{key: string, problem: string, message: string}[]} structured errors (key/problem used for dedupe)
  */
-function checkFields(file, record, fields, where) {
+function checkFields(file, record, fields, values, where) {
     if (!record || typeof record !== 'object' || Array.isArray(record)) {
         return [{ key: '', problem: 'record', message: `${file}: ${where} is not an object (got ${typeOf(record)})` }];
     }
@@ -353,6 +378,14 @@ function checkFields(file, record, fields, where) {
             errors.push({ key, problem: 'type', message: `${file}: field "${key}" on ${where} is ${actual}, expected ${spec} — ${refreshHint}` });
         }
     }
+    for (const [key, allowed] of Object.entries(values)) {
+        if (!(key in record) || allowed.some((value) => Object.is(value, record[key]))) continue;
+        errors.push({
+            key,
+            problem: 'value',
+            message: `${file}: field "${key}" on ${where} has unsupported value ${JSON.stringify(record[key])}, expected one of ${allowed.map((value) => JSON.stringify(value)).join(', ')} — ${refreshHint}`,
+        });
+    }
     return errors;
 }
 
@@ -364,7 +397,7 @@ function checkFields(file, record, fields, where) {
  * @returns {string[]} error messages (empty = OK)
  */
 export function validateOne(entry, parsed) {
-    const { file, kind, fields } = entry;
+    const { file, kind, fields, values = {} } = entry;
 
     let samples; // [where, record][]
     if (kind === 'array') {
@@ -388,7 +421,7 @@ export function validateOne(entry, parsed) {
     const seen = new Set();
     const messages = [];
     for (const [where, record] of samples) {
-        for (const err of checkFields(file, record, fields, where)) {
+        for (const err of checkFields(file, record, fields, values, where)) {
             const dedupeKey = `${err.problem}:${err.key}`;
             if (seen.has(dedupeKey)) continue;
             seen.add(dedupeKey);

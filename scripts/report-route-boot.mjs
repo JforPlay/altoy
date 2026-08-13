@@ -6,6 +6,10 @@
  *   npm run report:route-boot -- --update-baseline
  *   npm run report:route-boot -- --target FLEET_SIM --json C:\tmp\boot.json
  *
+ * Some targets request git-ignored `npm run data:split` output (weapon chunk
+ * index, skin voiceline index). `build:no-minify` does not regenerate it, so a
+ * fresh checkout must run `data:split` first or those routes measure short.
+ *
  * The report serves dist/ from an isolated local server and opens every target
  * in a fresh Chromium process and browser context. It records same-origin HTML,
  * JavaScript, CSS, and JSON requests up to the configured cutoff, plus the byte

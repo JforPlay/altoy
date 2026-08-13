@@ -79,6 +79,17 @@ test('optional field: absence OK, wrong type when present fails', () => {
     assert.match(validateOne(entry, [{ retrofit: 'yes' }])[0], /is string, expected object/);
 });
 
+test('allowed values accept declared enum members and reject other values', () => {
+    const entry = {
+        file: 'x',
+        kind: 'array',
+        fields: { kind: 'string' },
+        values: { kind: ['a', 'b'] },
+    };
+    assert.deepEqual(validateOne(entry, [{ kind: 'a' }, { kind: 'b' }]), []);
+    assert.match(validateOne(entry, [{ kind: 'c' }])[0], /unsupported value "c".*"a", "b"/);
+});
+
 // --- sampling ---
 
 test('sampleIndices: all indices when small, first+last+spread when large', () => {

@@ -118440,6 +118440,64 @@
             ]
         }
     },
+    "152392": {
+        "skill_id": 152392,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "U-2501",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/408150.webp",
+        "position": "잠수",
+        "class_name": "XXI형",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/152380.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "U-2501"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 183891
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "U-2501"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 183900
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
     "150701": {
         "skill_id": 150701,
         "weapon_true": true,
@@ -118489,6 +118547,64 @@
                             ]
                         },
                         "weapon_id": 167130
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "152412": {
+        "skill_id": 152412,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "괴츠 폰 베를리힝겐",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/405070.webp",
+        "position": "후열",
+        "class_name": "울리히 폰 후텐",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/152350.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Berlichingen"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 183941
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Berlichingen"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 183950
                     },
                     "casterAniEffect": "",
                     "targetAniEffect": "",
@@ -120160,6 +120276,126 @@
                     "targetAniEffect": "",
                     "target_choise": "TargetNil",
                     "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "190152": {
+        "skill_id": 190152,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "발파라이소",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/1299010.webp",
+        "position": "후열",
+        "class_name": "발파라이소",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/190120.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Valparaiso"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 184261
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmNearest",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Valparaiso"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 184271
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 190153
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": [
+                        "TargetSelf"
+                    ],
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Valparaiso"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 184270
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmNearest",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Valparaiso"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 184280
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 190153
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": [
+                        "TargetSelf"
+                    ],
+                    "type": "BattleSkillAddBuff"
                 }
             ]
         }
