@@ -163,14 +163,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             </section>
 
             <section class="tab-content" id="tab-resources">
-                <div class="resource-category-filter" id="resource-category-filter">
-                    <div class="page-status page-status-loading">
-                        <div class="spinner"></div>
-                        <p class="page-status-msg">레시피 데이터를 불러오는 중...</p>
-                    </div>
-                </div>
+                {/* data-links is a stored user preference (inline | pinned) applied by
+                    island.resource.engine.js; the CSS default is inline. */}
+                <div class="resource-layout" data-links="inline">
+                    {/* `display: contents` — renderCategoryFilter's two children land
+                        directly in the grid, so the category picker inherits the
+                        sidebar column's width at every breakpoint. */}
+                    <div class="resource-filter" id="resource-category-filter"></div>
 
-                <div class="resource-layout">
                     <aside class="recipe-list scroll-styled" id="recipe-list">
                         <div class="page-status page-status-loading">
                             <div class="spinner"></div>
@@ -186,10 +186,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     </main>
 
                     <aside class="dependency-chain scroll-styled" id="dependency-chain">
-                        <div class="page-status page-status-empty">
-                            <span class="material-symbols-outlined page-status-icon">account_tree</span>
-                            <p class="page-status-msg">레시피를 선택하면 연결된 상위/하위 레시피를 확인할 수 있습니다.</p>
-                        </div>
+                        <section class="recipe-section chain-section">
+                            <div class="recipe-section-head"><h4>관련있는 조합식</h4><span class="rule"></span></div>
+                            <p class="chain-empty">레시피를 선택하면 연결된 상위/하위 레시피가 표시됩니다.</p>
+                        </section>
                     </aside>
                 </div>
             </section>

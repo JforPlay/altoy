@@ -1,266 +1,125 @@
 /* ==========================================================================
-   11. SHOP PURCHASE NODES & COST SUMMARY
+   ISLAND RESOURCE — COST LEDGER
+
+   Rows are the metric, columns are the mode. Replaces the old
+   `.cost-comparison-grid` (two bordered columns of bordered rows that repeated
+   the same six labels and could not be compared across, because the values
+   never lined up). `.cost-item` / `.cost-amount` deliberately live in
+   island.technology.detail.css only — the two definitions used to collide.
    ========================================================================== */
 
-/* Cost Summary Section */
-.cost-summary {
-    margin-bottom: 1.5rem;
-    padding: 0.75rem;
-    background: var(--island-bg-secondary);
-    border: 1px solid var(--island-border);
-    border-radius: 8px;
+.recipe-ledger-wrap {
+    overflow-x: auto;
 }
 
-.cost-summary-title {
-    display: flex;
-    align-items: center;
-    gap: 0.375rem;
-    font-size: 0.8125rem;
-    font-weight: 600;
+.recipe-ledger {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--island-text-sm);
+}
+
+.recipe-ledger th,
+.recipe-ledger td {
+    padding: 0.4375rem 0.25rem;
+}
+
+.recipe-ledger thead th {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--island-text-tertiary);
+    text-align: right;
+    padding-bottom: 0.5625rem;
+    border-bottom: 1px solid var(--island-hair);
+}
+
+.recipe-ledger thead th:first-child,
+.recipe-ledger tbody th,
+.recipe-ledger tfoot th {
+    text-align: left;
+}
+
+.recipe-ledger tbody th {
+    font-weight: 500;
     color: var(--island-text-secondary);
-    margin: 0 0 0.75rem 0;
+    white-space: nowrap;
 }
 
-.cost-summary-title .material-symbols-outlined {
-    font-size: 1rem;
+/* Marks the 개발 자금 rows. A tinted glyph, not tinted text — the label keeps
+   its normal colour, so this is an accent on the row rather than a colour the
+   reader has to decode. */
+.recipe-ledger .ledger-icon {
+    font-size: 1.0625rem;
+    vertical-align: -4px;
+    margin-right: 0.3125rem;
+    color: var(--island-warning);
 }
 
-.cost-items {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+.recipe-ledger td {
+    width: 118px;
+    text-align: right;
+    font-weight: 600;
+    color: var(--island-text-primary);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
 }
 
-.cost-item {
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
-    background: var(--island-surface);
-    border: 1px solid var(--island-border);
-    border-radius: 6px;
-    padding: 0.5rem 0.75rem;
-    transition: var(--island-transition);
+.recipe-ledger tbody tr + tr th,
+.recipe-ledger tbody tr + tr td {
+    border-top: 1px solid var(--island-hair-2);
 }
 
-.cost-item:hover {
-    border-color: var(--island-border-hover);
-    transform: translateX(1px);
+/* Sub-caption row introducing the 기타 재료 block inside the same table. */
+.recipe-ledger .ledger-group th {
+    padding-top: 1rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--island-text-tertiary);
 }
 
-.cost-item.gold {
-    border-left: 2px solid var(--island-warning);
+.recipe-ledger .ledger-group + tr th,
+.recipe-ledger .ledger-group + tr td,
+.recipe-ledger .ledger-group th,
+.recipe-ledger .ledger-group td {
+    border-top: 0;
 }
 
-.cost-item.points {
-    border-left: 2px solid var(--island-points);
+/* 순수익 sits below a rule — the other place colour is allowed on this screen. */
+.recipe-ledger tfoot th,
+.recipe-ledger tfoot td {
+    border-top: 1px solid var(--island-hair);
+    padding-top: 0.625rem;
 }
 
-.cost-item.net-gain {
-    border-left: 2px solid var(--island-success);
+.recipe-ledger tfoot th {
+    font-weight: 700;
+    color: var(--island-text-primary);
 }
 
-.cost-item.net-gain .cost-amount.positive {
-    color: var(--island-success);
+.recipe-ledger tfoot tr + tr th,
+.recipe-ledger tfoot tr + tr td {
+    border-top: 0;
+    padding-top: 0.4375rem;
+}
+
+.recipe-ledger .is-positive {
+    color: var(--island-success-text);
     font-weight: 700;
 }
 
-.cost-item.net-gain .cost-amount.negative {
+.recipe-ledger .is-negative {
     color: var(--island-danger);
     font-weight: 700;
 }
 
-.cost-item.normalized {
-    border-left: 2px solid var(--island-stamina);
-    opacity: 0.9;
-}
-
-.cost-item .cost-icon {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.875rem;
-    overflow: hidden;
-}
-
-.cost-item.gold .cost-icon {
-    font-size: 1rem;
-}
-
-.cost-item.normalized .cost-icon {
-    font-size: 0.75rem;
-}
-
-.cost-item .cost-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.cost-name {
-    flex: 1;
-    font-size: 0.75rem;
-    font-weight: 500;
+/* Marks the faster/cheaper of the two mode columns on a given row. */
+.recipe-ledger td.is-lead {
     color: var(--island-text-primary);
 }
 
-.cost-item.gold .cost-name {
-    color: var(--island-text-primary);
-    font-weight: 600;
-}
-
-.cost-amount {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--island-text-primary);
-}
-
-.cost-item.gold .cost-amount {
-    color: var(--island-text-primary);
-    font-size: 0.75rem;
-}
-
-.cost-item.normalized .cost-name {
-    color: var(--island-text-secondary);
-    font-weight: 500;
-    font-size: 0.7rem;
-}
-
-.cost-item.normalized .cost-amount {
-    color: var(--island-text-secondary);
-    font-weight: 600;
-    font-size: 0.7rem;
-}
-
-/* Dual Column Layout for Category 1 */
-.cost-comparison-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.cost-column {
-    background: var(--island-bg);
-    border: 2px solid var(--island-border);
-    border-radius: 8px;
-    padding: 1rem;
-}
-
-.cost-column.manual-cost {
-    border-left: 4px solid var(--island-success);
-}
-
-.cost-column.auto-cost {
-    border-left: 4px solid var(--island-stamina);
-}
-
-.cost-column-title {
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: var(--island-text-primary);
-    margin: 0 0 0.75rem 0;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.cost-column.manual-cost .cost-column-title {
-    color: var(--island-success);
-}
-
-.cost-column.auto-cost .cost-column-title {
-    color: var(--island-stamina);
-}
-
-.resource-costs {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 2px solid var(--island-border);
-}
-
-.resource-costs-title {
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: var(--island-text-secondary);
-    margin: 0 0 0.75rem 0;
-}
-
-/* Shop Purchase Tree Nodes - Reduced Emphasis */
-.tree-node.shop-purchase {
-    position: relative;
-}
-
-.tree-node-card.shop {
-    background: var(--island-bg);
-    border: 1px solid var(--island-border);
-    border-left: 2px solid rgba(243, 156, 18, 0.4);
-    cursor: default;
-    padding: 0.625rem 0.75rem;
-    box-shadow: none;
-}
-
-.tree-node-card.shop::before {
-    background: rgba(243, 156, 18, 0.3);
-}
-
-.tree-node-card.shop:hover {
-    border-color: var(--island-border);
-    border-left-color: rgba(243, 156, 18, 0.6);
-    background: var(--island-bg);
-    transform: none;
-}
-
-.tree-node-card.shop .tree-node-arrow {
-    display: none;
-}
-
-.tree-node-card.shop .tree-node-icon {
-    width: 36px;
-    height: 36px;
-    border-width: 1px;
-}
-
-/* `.shop-badge` migrated to `.badge.badge--warning` (CSS unification Wave 1).
-   Keeps only the inline-flow layout + uppercase identity. */
-.shop-badge {
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    margin-right: 0.375rem;
-    vertical-align: middle;
-}
-
-.tree-node-meta.shop-cost {
-    display: flex;
-    flex-direction: row;
-    gap: 0.375rem;
-    align-items: center;
-    margin-top: 0.25rem;
-    padding-top: 0;
-    border-top: none;
-}
-
-.shop-cost-label {
-    font-size: 0.625rem;
-    font-weight: 500;
-    color: var(--island-text-tertiary);
-    text-transform: none;
-    letter-spacing: 0;
-}
-
-.shop-cost-value {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    font-size: 0.6875rem;
-    font-weight: 500;
-    color: var(--island-text-secondary);
-}
-
-.total-cost {
-    font-size: 0.625rem;
+.recipe-ledger td.is-muted {
     color: var(--island-text-tertiary);
     font-weight: 500;
 }

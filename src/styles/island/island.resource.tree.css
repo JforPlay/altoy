@@ -1,345 +1,196 @@
 /* ==========================================================================
-   5. DEPENDENCY CHAIN (RIGHT COLUMN)
+   ISLAND RESOURCE — 연결 (DEPENDENCY CHAIN)
+
+   Same content as before (upstream / downstream recipes, shop-purchase leaves),
+   flattened from L-connector tree cards to rows. Nesting is one indent with a
+   hairline elbow instead of a full connector grid.
+
+   Placement is a stored user preference — see island.resource.layout.css. In
+   the default inline mode this panel continues the detail card; when pinned it
+   becomes its own scrolling column.
    ========================================================================== */
 
 .dependency-chain {
-    background: linear-gradient(180deg, var(--highlight-subtle), var(--primary-alpha-10));
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: var(--island-shadow-md);
-    position: sticky;
-    top: 2rem;
-    max-height: 800px;
-    overflow-y: auto;
-    border: 1px solid var(--island-border);
-}
-
-/* === DEPENDENCY TREE (SIMPLIFIED CARD DESIGN) === */
-
-/* Tree Header */
-.tree-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid var(--island-border);
-    margin-bottom: 1.5rem;
-}
-
-.tree-header h3 {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: var(--island-text-primary);
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.tree-header h3 .material-symbols-outlined {
-    font-size: 1.375rem;
-    color: var(--island-accent);
-}
-
-.tree-stats {
-    display: flex;
-    gap: 0.5rem;
-}
-
-/* `.stat-badge-sm` migrated to `.badge.badge--neutral` (CSS unification Wave 1).
-   `.upstream` / `.downstream` are colored-outline variants of the same chip. */
-.stat-badge-sm .material-symbols-outlined {
-    font-size: 0.875rem;
-}
-
-.stat-badge-sm.upstream {
-    border: 1px solid var(--island-stamina);
-    background: transparent;
-    color: var(--island-stamina);
-}
-
-.stat-badge-sm.downstream {
-    border: 1px solid #e67e22;
-    background: transparent;
-    color: #e67e22;
-}
-
-/* Tree Sections */
-.tree-section {
-    margin-bottom: 1.5rem;
-}
-
-.tree-section-title {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: var(--island-text-primary);
-    margin: 0 0 1.25rem 0;
-    padding: 0.75rem 1rem;
-    background: linear-gradient(90deg, var(--highlight-subtle), var(--highlight-subtle));
-    border-radius: 8px;
-    border: 1px solid var(--island-border);
-}
-
-.tree-section-title .material-symbols-outlined {
-    font-size: 1rem;
-}
-
-.tree-section-title.upstream {
-    border: 1px solid var(--primary-alpha-30);
-    background: linear-gradient(90deg, var(--primary-alpha-15), var(--primary-alpha-10));
-    color: var(--island-text-primary);
-}
-
-.tree-section-title.downstream {
-    border: 1px solid rgba(243, 156, 18, 0.55);
-    background: linear-gradient(90deg, rgba(243, 156, 18, 0.16), rgba(243, 156, 18, 0.03));
-    color: var(--island-text-primary);
-}
-
-.tree-nodes-wrapper {
-    position: relative;
-    padding-left: 0.25rem;
-}
-
-/* Current Recipe Separator (Simplified with Visual Effect) */
-.current-recipe-separator {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 1rem 1.25rem;
-    margin: 2rem 0;
-    background:
-        repeating-linear-gradient(
-            45deg,
-            var(--island-surface),
-            var(--island-surface) 10px,
-            var(--primary-alpha-10) 10px,
-            var(--primary-alpha-10) 20px
-        );
-    border: 2px solid var(--island-accent);
-    border-left: 4px solid var(--island-accent);
-    border-radius: 8px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--island-text-secondary);
-    box-shadow: 0 2px 8px rgba(114, 137, 218, 0.15);
-}
-
-.current-recipe-separator .material-symbols-outlined {
-    font-size: 1.125rem;
-    color: var(--island-accent);
-    animation: pulse-icon 2s ease-in-out infinite;
-}
-
-@keyframes pulse-icon {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.6;
-    }
-}
-
-.current-recipe-text {
-    color: var(--island-text-primary);
-}
-
-/* Tree Nodes with Connectors */
-.tree-node {
-    position: relative;
-    margin-bottom: 0;
-    padding-left: 0.35rem;
-}
-
-/* Vertical line connecting siblings */
-.tree-node::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: var(--highlight-soft);
-}
-
-/* Color-coded vertical lines */
-.tree-node[data-direction="upstream"]::before {
-    background: var(--primary-alpha-30);
-}
-
-.tree-node[data-direction="downstream"]::before {
-    background: rgba(243, 156, 18, 0.35);
-}
-
-/* Don't show vertical line for root level */
-.tree-node.depth-0::before {
-    display: none;
-}
-
-/* Last child - vertical line only goes halfway */
-.tree-node.last-child::before {
-    height: 50%;
-}
-
-/* Tree Node Card */
-.tree-node-card {
-    display: flex;
-    align-items: center;
-    gap: 0.875rem;
     background: var(--island-surface);
     border: 1px solid var(--island-border);
-    border-radius: 10px;
-    padding: 1rem;
-    margin-left: 1.75rem;
-    margin-bottom: 0.875rem;
-    cursor: pointer;
-    transition: var(--island-transition);
-    position: relative;
-    box-shadow: var(--island-shadow-sm);
+    border-top: 0;
+    border-radius: 0 0 var(--island-radius-xl) var(--island-radius-xl);
+    padding: 0 1.625rem 1.5rem;
+    color: var(--island-text-primary);
 }
 
-.tree-node-card.manual-mode {
-    border-left: 4px solid var(--island-success);
-    background: linear-gradient(to right, rgba(39, 174, 96, 0.05) 0%, var(--island-surface) 50%);
+body.dark-mode .dependency-chain {
+    border-color: transparent;
 }
 
-.tree-node-card.upstream {
-    background: linear-gradient(90deg, var(--primary-alpha-10), var(--island-surface));
-    border-color: var(--primary-alpha-30);
+@media (min-width: 1101px) {
+    .resource-layout[data-links="pinned"] .dependency-chain {
+        border: 1px solid var(--island-border);
+        border-radius: var(--island-radius-xl);
+        padding: 1.125rem 1rem;
+        max-height: 660px;
+        overflow-y: auto;
+    }
+
+    body.dark-mode .resource-layout[data-links="pinned"] .dependency-chain {
+        border-color: transparent;
+    }
+
+    .resource-layout[data-links="pinned"] .chain-section {
+        padding-top: 0;
+    }
 }
 
-.tree-node-card.downstream {
-    background: linear-gradient(90deg, rgba(243, 156, 18, 0.12), var(--island-surface));
-    border-color: rgba(243, 156, 18, 0.45);
-}
+/* ==========================================================================
+   1. GROUPS
+   ========================================================================== */
 
-.manual-badge {
-    display: inline-block;
-    font-size: 0.875rem;
-    margin-right: 0.25rem;
-}
-
-/* Root level cards - no left margin */
-.tree-node.depth-0 > .tree-node-card {
-    margin-left: 0;
-}
-
-/* Horizontal connector line (L-shape) */
-.tree-node-card::before {
-    content: '';
-    position: absolute;
-    left: -1.75rem;
-    top: 50%;
-    width: 1.75rem;
-    height: 2px;
-    background: var(--island-border);
-}
-
-/* Color-coded horizontal connectors */
-.tree-node-card.upstream::before {
-    background: rgba(114, 137, 218, 0.45);
-}
-
-.tree-node-card.downstream::before {
-    background: rgba(243, 156, 18, 0.45);
-}
-
-/* Root level - no horizontal connector */
-.tree-node.depth-0 > .tree-node-card::before {
-    display: none;
-}
-
-/* Hover effects */
-.tree-node-card:hover {
-    border-color: var(--island-accent);
-    background: var(--island-surface-hover);
-    transform: translateX(3px);
-    box-shadow: var(--island-shadow-sm);
-}
-
-.tree-node-card:hover .tree-node-arrow {
-    opacity: 1;
-    transform: translateX(2px);
-}
-
-/* Tree Node Components */
-.tree-node-icon {
-    width: 48px;
-    height: 48px;
-    flex-shrink: 0;
-    background: var(--island-bg);
-    border: 2px solid var(--island-border);
-    border-radius: 8px;
+.chain-group-head {
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    overflow: hidden;
-    box-shadow: var(--island-shadow-sm);
+    gap: 0.4375rem;
+    padding: 0.75rem 0 0.375rem;
+    font-size: var(--island-text-xs);
+    font-weight: 700;
+    color: var(--island-text-secondary);
 }
 
-.tree-node-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.chain-group-head:first-child {
+    padding-top: 0;
 }
 
-.tree-node-info {
-    flex: 1;
+.chain-group-head .material-symbols-outlined {
+    font-size: 0.8125rem;
+    opacity: 0.6;
+}
+
+.chain-group-head .count {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: var(--island-text-tertiary);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   2. ROWS
+   ========================================================================== */
+
+.chain-link {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0 0.625rem;
+    padding: 0.4375rem 0.5rem;
+    border-radius: 7px;
+    position: relative;
+}
+
+.chain-link[data-action] {
+    cursor: pointer;
+}
+
+.chain-link[data-action]:hover {
+    background: var(--island-surface-hover);
+}
+
+.chain-link .item-frame {
+    width: 28px;
+    height: 28px;
+}
+
+/* Name over target: the pinned column is 296px and cannot hold both on one
+   line, and uniform two-line rows read better in the wide placement too. */
+.chain-link-text {
+    display: flex;
+    flex-direction: column;
     min-width: 0;
-    color: var(--island-text-primary);
 }
 
-.tree-node-name {
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: var(--island-text-primary);
-    margin-bottom: 0.25rem;
+.chain-link-name,
+.chain-link-to {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.tree-node-via {
-    font-size: 0.6875rem;
-    color: var(--island-accent);
-    margin-bottom: 0.375rem;
-    font-style: italic;
+.chain-link-name {
+    font-size: var(--island-text-sm);
+    font-weight: 600;
+    color: var(--island-text-primary);
 }
 
-.tree-node-meta {
-    display: flex;
-    gap: 0.875rem;
-    font-size: 0.75rem;
-    color: var(--island-text-secondary);
+.chain-link-to {
+    font-size: 0.71875rem;
+    line-height: 1.35;
+    color: var(--island-text-tertiary);
+    font-variant-numeric: tabular-nums;
 }
 
-.tree-node-meta span {
+.chain-link-rt {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.625rem;
+    font-size: var(--island-text-xs);
+    color: var(--island-text-tertiary);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
 }
 
-.tree-node-arrow {
-    width: 28px;
-    height: 28px;
-    flex-shrink: 0;
-    color: var(--island-accent);
-    opacity: 0;
-    transition: var(--island-transition);
-    font-size: 1.125rem;
+.chain-chip {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: var(--island-radius-sm);
+    background: var(--island-surface-hover);
+    color: var(--island-text-secondary);
+    font-size: 0.65625rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
 }
 
-/* Children container */
-.tree-node-children {
-    margin-top: 0.5rem;
-    margin-left: 0.85rem;
-    padding-left: 0.85rem;
-    border-left: 1px solid var(--highlight-soft);
+/* One indent level with a hairline elbow — enough to show "via", not a grid. */
+.chain-link.is-nested {
+    margin-left: 1.125rem;
 }
 
-/* Loading / empty / error states use the global `.page-status` component. */
+.chain-link.is-nested::before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    top: 0;
+    bottom: 50%;
+    width: 1px;
+    background: var(--island-hair);
+}
+
+.chain-link.is-nested::after {
+    content: "";
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    width: 7px;
+    height: 1px;
+    background: var(--island-hair);
+}
+
+.chain-more {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    padding: 0.5rem 0.5rem 0.125rem;
+    font: inherit;
+    font-size: var(--island-text-xs);
+    font-weight: 600;
+    color: var(--island-text-tertiary);
+    text-align: left;
+    cursor: pointer;
+}
+
+.chain-more:hover {
+    color: var(--island-text-primary);
+}
+
+.chain-empty {
+    padding: 0.5rem;
+    font-size: var(--island-text-sm);
+    color: var(--island-text-tertiary);
+}

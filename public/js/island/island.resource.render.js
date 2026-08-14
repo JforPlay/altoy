@@ -1,11 +1,16 @@
 /**
  * island.resource.render.js
- * Rendering sub-module for the island resource system. Handles all UI output: category filters,
- * recipe lists, recipe detail panels (costs, season points, dependency trees), and the recipe
- * forest modal. State is shared via setup() called from island.resource.engine.js.
+ * Rendering sub-module for the island resource system. Handles all UI output: the filter row,
+ * the recipe list, the detail panel (production rails + cost ledger), the 관련있는 조합식 panel, and the
+ * recipe forest modal. State is shared via setup() called from island.resource.engine.js.
+ *
+ * The visual language is a production ledger: chrome is achromatic, game sprites carry the only
+ * colour, and grouping is whitespace plus a hairline rule rather than nested boxes. Colour is
+ * reserved for two things — season status in the list, and the sign on 순수익 in the ledger.
+ * Design doc: dev/active/2026-08-13-island-resource-redesign-design.md
  */
 
-import { formatTime, renderStatus, DATA_FOR_TOY_BASE } from '../utils.js';
+import { formatTime, renderStatus, escapeHtml, createImg, IMG_FALLBACKS, DATA_FOR_TOY_BASE } from '../utils.js';
 import { renderSeasonBadge } from './island.season-map.js';
 import {
     CONSTANTS, findRecipeById, findRecipeCategoryById,
@@ -25,6 +30,17 @@ export const categoryNames = {
     '시즌템': '시즌템 (Seasonal Items)'
 };
 
+/** Short category labels for the detail meta line — the parenthetical English
+ *  is only useful in the dropdown, where you are choosing between them. */
+const categoryShortNames = {
+    '1': '재배',
+    '2': '채집',
+    '3': '사육',
+    '4': '요리',
+    '6': '제조',
+    '시즌템': '시즌템'
+};
+
 // ===== State Reference (set via setup) =====
 let state;
 
@@ -32,46 +48,126 @@ export function setup(stateRef) {
     state = stateRef;
 }
 
+// ===== Shared helpers =====
+
+/** The game's own item-slot frames, which is where island rarity is read from
+ *  in-game. Same four tiles the 레스토랑 tab uses (island.restaurant.engine.js).
+ *  Island rarity only goes 1–4, so there is no gold tier to map. */
+const RARITY_FRAMES = {
+    1: `${DATA_FOR_TOY_BASE}/island/rarity_grey.webp`,
+    2: `${DATA_FOR_TOY_BASE}/island/rarity_blue.webp`,
+    3: `${DATA_FOR_TOY_BASE}/island/rarity_purple.webp`,
+    4: `${DATA_FOR_TOY_BASE}/island/rarity_orange.webp`
+};
+
+/** Sprite for an island item, in its rarity frame. `className` sizes the frame,
+ *  not the `<img>` — the sprite fills whatever box the frame is given. Items
+ *  without an icon fall back to the shared placeholder rather than an emoji. */
+export function itemImg(item, className = '') {
+    const src = item?.icon
+        ? `${DATA_FOR_TOY_BASE}/island/islandprops/${item.icon.split('/').pop()}.webp`
+        : IMG_FALLBACKS.DEFAULT;
+    const frame = RARITY_FRAMES[item?.rarity] || RARITY_FRAMES[1];
+    const img = createImg(src, item?.name || '', { fallback: IMG_FALLBACKS.DEFAULT });
+    return `<span class="item-frame ${className}" style="background-image:url('${frame}')">${img}</span>`;
+}
+
+/**
+ * Item quantity for a dependency-tree row. A parent needing one pack of a
+ * 9-per-craft ingredient works out to 0.2222222222…, so these are capped at four
+ * decimals; trailing zeros are dropped so whole counts still print as `×3`.
+ */
+function qty(value) {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return value;
+    return Number(n.toFixed(4)).toLocaleString(undefined, { maximumFractionDigits: 4 });
+}
+
+/** Number formatter for the cost ledger. */
+function num(value, digits = 2) {
+    return Number(value).toLocaleString(undefined, {
+        minimumFractionDigits: digits,
+        maximumFractionDigits: digits
+    });
+}
+
+/**
+ * The detail meta line. Each fact is wrapped so the flex gap falls between
+ * facts — bare text nodes become their own anonymous flex items, which would
+ * put the same gap inside "80 EXP".
+ */
+function renderFacts(facts, trailingHtml = '') {
+    const parts = facts.map(f => `<span>${f}</span>`);
+    if (trailingHtml) parts.push(trailingHtml);
+    return parts.join('<span class="sep"></span>');
+}
+
+/** Section wrapper: a small uppercase label + a rule, the only grouping device. */
+function section(title, bodyHtml, extraClass = '') {
+    return `
+        <section class="recipe-section ${extraClass}">
+            <div class="recipe-section-head"><h4>${title}</h4><span class="rule"></span></div>
+            ${bodyHtml}
+        </section>
+    `;
+}
+
 // ===== UI Rendering =====
 
-/** Render the category dropdown, search input, and forest button into the filter container. */
+/**
+ * Render the filter controls. The container is `display: contents`, so these two
+ * children land directly in the layout grid: the category picker sits in the
+ * sidebar column (matching the recipe list's width at every breakpoint, for free)
+ * and the rest of the controls sit over the detail column.
+ */
 export function renderCategoryFilter() {
     const container = document.getElementById('resource-category-filter');
     if (!container) return;
 
-    const html = `
+    const pos = state.linksPosition === 'pinned' ? 'pinned' : 'inline';
+    const posButton = (value, icon, label, title) => `
+        <button type="button"
+                class="btn btn-outline btn-sm ${pos === value ? 'is-active' : ''}"
+                data-links-position="${value}"
+                aria-pressed="${pos === value}"
+                title="${title}">
+            <span class="material-symbols-outlined">${icon}</span>${label}
+        </button>
+    `;
+
+    container.innerHTML = `
+        <div class="filter-field filter-category">
+            <select id="recipe-category-select" class="category-select" aria-label="카테고리">
+                ${Object.entries(categoryNames).map(([id, name]) => `
+                    <option value="${id}" ${id === state.selectedCategory ? 'selected' : ''}>${escapeHtml(name)}</option>
+                `).join('')}
+            </select>
+            <span class="material-symbols-outlined filter-field-icon">expand_more</span>
+        </div>
         <div class="resource-filter-controls">
-            <div class="dropdown-container">
-                <select id="recipe-category-select" class="category-select">
-                    ${Object.entries(categoryNames).map(([id, name]) => `
-                        <option value="${id}" ${id === state.selectedCategory ? 'selected' : ''}>
-                            ${name}
-                        </option>
-                    `).join('')}
-                </select>
-                <span class="material-symbols-outlined dropdown-icon">expand_more</span>
-            </div>
-            <div class="dropdown-container">
+            <div class="filter-field grow">
                 <input type="text"
                        id="recipe-search"
                        class="search-input"
-                       placeholder="레시피를 검색하세요..."
+                       placeholder="레시피 검색"
                        autocomplete="off">
-                <span class="material-symbols-outlined dropdown-icon">search</span>
+                <span class="material-symbols-outlined filter-field-icon">search</span>
             </div>
-            <div class="filter-action">
-                <button id="recipe-forest-btn" class="ghost-btn tree-btn" type="button">
+            <div class="resource-filter-tools">
+                <button id="recipe-forest-btn" class="btn btn-outline btn-sm tree-btn" type="button">
                     <span class="material-symbols-outlined">account_tree</span>
-                    레시피 트리
+                    전체 트리
                 </button>
+                <div class="btn-group links-position-toggle" id="links-position-toggle" role="group" aria-label="관련있는 조합식 위치">
+                    ${posButton('inline', 'view_agenda', '본문', '관련있는 조합식을 본문 아래에 이어서 표시')}
+                    ${posButton('pinned', 'view_sidebar', '오른쪽', '관련있는 조합식을 오른쪽 열에 고정')}
+                </div>
             </div>
         </div>
     `;
-
-    container.innerHTML = html;
 }
 
-/** Render the recipe card list for the currently selected category, filtered by search query. */
+/** Render the recipe rows for the currently selected category, filtered by search query. */
 export function renderRecipeList() {
     const container = document.getElementById('recipe-list');
     if (!container) return;
@@ -90,28 +186,33 @@ export function renderRecipeList() {
         return;
     }
 
-    const html = filteredRecipes.map(recipe => {
+    container.innerHTML = filteredRecipes.map(recipe => {
         const item = window.IslandEngine.getItemInfo(recipe.item_id);
         const isSelected = state.selectedRecipe?.id === recipe.id;
+        const seasonBadge = renderSeasonBadge(recipe.item_id);
 
+        // The name owns its own line: at sidebar width it was competing with two
+        // number columns and truncating on anything longer than three syllables.
         return `
-            <div class="recipe-card ${isSelected ? 'active' : ''}"
-                 data-recipe-id="${recipe.id}">
-                                        <div class="recipe-icon">
-                                            ${item.icon ? `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${item.icon.split('/').pop()}.webp" alt="${item.name}">` : '📦'}
-                                        </div>                    <div class="recipe-info">
-                <div class="recipe-name">${recipe.name || item.name}</div>
-                <div class="recipe-meta">
-                    <span class="recipe-time">⏱ ${formatTime(recipe.workload)}</span>
-                    <span class="recipe-exp">⚡ ${recipe.ship_exp}</span>
-                    ${renderSeasonBadge(recipe.item_id)}
-                </div>
-            </div>
+            <div class="recipe-card ${isSelected ? 'active' : ''}" data-recipe-id="${recipe.id}">
+                ${itemImg(item, 'recipe-icon')}
+                <span class="recipe-name">${escapeHtml(recipe.name || item.name)}</span>
+                <span class="recipe-meta">
+                    ${recipe.workload > 0 ? `
+                        <span class="recipe-stat">
+                            <span class="material-symbols-outlined">schedule</span>${formatTime(recipe.workload)}
+                        </span>
+                    ` : ''}
+                    ${recipe.stamina_cost > 0 ? `
+                        <span class="recipe-stat">
+                            <span class="material-symbols-outlined">bolt</span>${recipe.stamina_cost}
+                        </span>
+                    ` : ''}
+                    ${seasonBadge || ''}
+                </span>
             </div>
         `;
     }).join('');
-
-    container.innerHTML = html;
 }
 
 /**
@@ -296,146 +397,146 @@ export function gatherRecipeData(recipe) {
 }
 
 export function renderRecipeHeader(recipe, data) {
-    const { item, category } = data;
+    const { item } = data;
     const restaurants = window.RestaurantModule ? window.RestaurantModule.getRestaurantsForRecipe(recipe.id) : [];
+    const seasonBadge = renderSeasonBadge(recipe.item_id);
+
+    // One meta line replaces five badges that carried four numbers plus the
+    // category the dropdown already shows.
+    const facts = [
+        categoryShortNames[state.selectedCategory],
+        Number.isFinite(recipe.ship_exp) ? `<b>${recipe.ship_exp}</b> EXP` : '',
+        Number.isFinite(recipe.stamina_cost) ? `<b>${recipe.stamina_cost}</b> 스태미나` : '',
+        Number.isFinite(item.pt_num) ? `<b>${item.pt_num}</b> pt` : ''
+    ].filter(Boolean);
 
     return `
-        <div class="recipe-detail-header">
-            <div class="recipe-icon-large">
-                ${item.icon ? `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${item.icon.split('/').pop()}.webp" alt="${item.name}">` : '📦'}
+        <header class="recipe-detail-header">
+            ${itemImg(item, 'recipe-art')}
+            <div class="recipe-headline">
+                <h3 class="recipe-title">${escapeHtml(recipe.name || item.name)}</h3>
+                <p class="recipe-facts">${renderFacts(facts, seasonBadge)}</p>
             </div>
-            <div class="recipe-title-section">
-                <h3>${recipe.name || item.name}</h3>
-                <div class="recipe-meta-badges">
-                    <span class="badge recipe-category">${category}</span>
-                    <span class="badge badge--neutral stat-badge exp">⚡ ${recipe.ship_exp} EXP</span>
-                    <span class="badge badge--neutral stat-badge stamina">🔋 ${recipe.stamina_cost} Stamina</span>
-                    <span class="badge badge--neutral stat-badge points">🎯 ${item.pt_num} pt</span>
-                    ${renderSeasonBadge(recipe.item_id)}
-                </div>
-            </div>
-            <div class="recipe-header-actions">
-                ${restaurants.length > 0 ? `
+            ${restaurants.length > 0 ? `
+                <div class="recipe-header-actions">
                     <button class="action-btn" data-action="view-in-restaurant" data-recipe-id="${recipe.id}">
                         <span class="material-symbols-outlined">restaurant</span>
                         레스토랑에서 보기
                     </button>
-                ` : ''}
-            </div>
-        </div>
+                </div>
+            ` : ''}
+        </header>
     `;
 }
 
-export function renderRecipeFlow(recipe, data) {
+/**
+ * One side of a rail: the sprites and quantities a recipe consumes or produces.
+ * `materials` is the raw `[[itemId, quantity], …]` shape; an empty side (채집
+ * recipes consume nothing) holds the column rather than collapsing the grid.
+ */
+function renderRailNode(materials, isOutput) {
+    if (!materials || materials.length === 0) {
+        return `<div class="recipe-node is-empty">—</div>`;
+    }
+
+    const items = materials.map(([itemId, quantity]) => {
+        const item = window.IslandEngine.getItemInfo(itemId);
+        return `
+            <div class="recipe-node-item">
+                ${itemImg(item)}
+                <div class="recipe-node-stack">
+                    <div class="recipe-node-qty">×${quantity}</div>
+                    <div class="recipe-node-name">${escapeHtml(item.name)}</div>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    return `<div class="recipe-node ${isOutput ? 'out' : ''}">${items}</div>`;
+}
+
+/** A single input → output rail. `tag` is null when there is no second mode to contrast it with. */
+function renderRail(tag, inputs, outputs, time, repeats) {
     return `
-        <div class="recipe-flow">
-            <div class="flow-section input-section">
-                <h4 class="flow-title">📥 요구재료</h4>
-                ${renderMaterialListVertical(recipe.commission_cost)}
+        <div class="recipe-rail">
+            ${tag ? `<span class="recipe-rail-tag">${tag}</span>` : ''}
+            ${renderRailNode(inputs, false)}
+            <div class="recipe-wire">
+                <span class="recipe-wire-badge">
+                    <b>${time}</b>${repeats ? `<span class="dotsep"></span>×${repeats}` : ''}
+                </span>
             </div>
-
-            <div class="flow-arrow">
-                <div class="arrow-head">
-                    <span class="material-symbols-outlined">arrow_forward</span>
-                </div>
-                <div class="flow-stats">
-                    <span class="flow-stat">⏱ ${formatTime(recipe.workload)}</span>
-                    <span class="flow-stat">🔄 ×${recipe.production_limit}</span>
-                </div>
-            </div>
-
-            <div class="flow-section output-section">
-                <h4 class="flow-title">📤 생산품</h4>
-                ${renderMaterialListVertical(recipe.commission_product)}
-            </div>
+            ${renderRailNode(outputs, true)}
         </div>
     `;
 }
 
-export function renderManualSection(recipe, data) {
+/**
+ * The 생산 section. Both production modes are always visible, stacked, sharing
+ * one grid so their columns line up — `.recipe-rails` owns the grid and each
+ * rail is `display: contents`. Only 재배 has two modes; every other category
+ * renders the single rail it actually has, without a mode tag.
+ */
+export function renderProductionSection(recipe, data) {
     const { isCategory1, isCategory2, isCategory3 } = data;
+    const manualTime = formatTime(recipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER);
+    const autoRail = {
+        tag: '자동 위임',
+        inputs: recipe.commission_cost,
+        outputs: recipe.commission_product,
+        time: formatTime(recipe.workload),
+        repeats: recipe.production_limit
+    };
 
-    if (isCategory1 && recipe.cost?.length) {
-        return `
-            <div class="manual-drop-section category1-manual">
-                <h4 class="manual-drop-title">💎 수동 생산 <span class="manual-time">(${formatTime(recipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER)})</span></h4>
-                <div class="recipe-flow manual-flow">
-                    <div class="flow-section input-section">
-                        <h4 class="flow-title">📥 요구재료 (수동)</h4>
-                        ${renderMaterialListVertical(recipe.cost)}
-                    </div>
-
-                    <div class="flow-arrow">
-                        <div class="arrow-head">
-                            <span class="material-symbols-outlined">arrow_forward</span>
-                        </div>
-                        <div class="flow-stats">
-                            <span class="flow-stat">⏱ ${formatTime(recipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER)}</span>
-                        </div>
-                    </div>
-
-                    <div class="flow-section output-section">
-                        <h4 class="flow-title">📤 생산품</h4>
-                        ${renderMaterialListVertical(recipe.drop_display || recipe.commission_product)}
-                    </div>
-                </div>
-            </div>
-        `;
+    let manualRail = null;
+    if ((isCategory1 || isCategory3) && recipe.cost?.length) {
+        manualRail = {
+            tag: isCategory3 ? '수동 사육' : '수동 생산',
+            inputs: recipe.cost,
+            outputs: recipe.drop_display || recipe.commission_product,
+            time: manualTime,
+            repeats: null
+        };
+    } else if (isCategory2 && recipe.drop_display?.length) {
+        manualRail = {
+            tag: '수동 채집',
+            inputs: null,
+            outputs: recipe.drop_display,
+            time: formatTime(recipe.workload),
+            repeats: null
+        };
+    } else if (!isCategory1 && !isCategory2 && recipe.drop_display?.length) {
+        manualRail = {
+            tag: '수동 채집',
+            inputs: null,
+            outputs: recipe.drop_display,
+            time: manualTime,
+            repeats: null
+        };
     }
 
-    if (isCategory3 && recipe.cost?.length) {
-        return `
-            <div class="manual-drop-section category3-manual">
-                <h4 class="manual-drop-title">💎 수동 사육 <span class="manual-time">(${formatTime(recipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER)})</span></h4>
-                <div class="recipe-flow manual-flow">
-                    <div class="flow-section input-section">
-                        <h4 class="flow-title">📥 요구재료 (수동)</h4>
-                        ${renderMaterialListVertical(recipe.cost)}
-                    </div>
+    // 채집 has no delegated rail of its own — the manual one is the whole story.
+    const rails = isCategory2 && manualRail ? [manualRail] : [autoRail, manualRail].filter(Boolean);
+    const isSingle = rails.length === 1;
 
-                    <div class="flow-arrow">
-                        <div class="arrow-head">
-                            <span class="material-symbols-outlined">arrow_forward</span>
-                        </div>
-                        <div class="flow-stats">
-                            <span class="flow-stat">⏱ ${formatTime(recipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER)}</span>
-                        </div>
-                    </div>
+    const body = `
+        <div class="recipe-rails ${isSingle ? 'is-single' : ''}">
+            ${rails.map(r => renderRail(isSingle ? null : r.tag, r.inputs, r.outputs, r.time, r.repeats)).join('')}
+        </div>
+    `;
 
-                    <div class="flow-section output-section">
-                        <h4 class="flow-title">📤 생산품</h4>
-                        ${renderMaterialListVertical(recipe.drop_display || recipe.commission_product)}
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-
-    if (isCategory2 && recipe.drop_display?.length) {
-        return `
-            <div class="manual-drop-section category2-manual">
-                <h4 class="manual-drop-title">💎 수동 채집 <span class="manual-time">(${formatTime(recipe.workload)})</span></h4>
-                ${renderMaterialListVertical(recipe.drop_display)}
-            </div>
-        `;
-    }
-
-    if (!isCategory1 && !isCategory2 && recipe.drop_display?.length) {
-        return `
-            <div class="manual-drop-section">
-                <h4 class="manual-drop-title">💎 수동 채집 <span class="manual-time">(${formatTime(recipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER)})</span></h4>
-                ${renderMaterialListVertical(recipe.drop_display)}
-            </div>
-        `;
-    }
-
-    return '';
+    return section('생산', body);
 }
 
+/**
+ * The 비용 section: rows are the metric, columns are the production mode.
+ * Only 재배 has two modes to compare; every other category gets one value
+ * column. 순수익 moves to the footer, which is where the only coloured figures
+ * on this screen live.
+ */
 export function renderCostSummary(recipe, data) {
     const {
         showDualCost,
-        isCategory1,
         isCategory2,
         goldConsumption,
         manualGoldConsumption,
@@ -469,220 +570,132 @@ export function renderCostSummary(recipe, data) {
 
     if (!hasAnyCosts && !hasSeasonPoints) return '';
 
-    // Dual cost mode (category 1 only)
-    if (showDualCost) {
-        return `
-            <div class="cost-summary">
-                <h4 class="cost-summary-title">
-                    <span class="material-symbols-outlined">shopping_cart</span>
-                    총 구매 비용
-                </h4>
-                <div class="cost-comparison-grid">
-                    ${manualGoldConsumption.gold > 0 ? `
-                        <div class="cost-column manual-cost">
-                            <h5 class="cost-column-title">💎 수동 생산</h5>
-                            <div class="cost-items">
-                                <div class="cost-item gold">
-                                    <span class="cost-icon">💰</span>
-                                    <span class="cost-name">총 생산단가</span>
-                                    <span class="cost-amount">×${manualGoldConsumption.gold.toLocaleString()}</span>
-                                </div>
-                                <div class="cost-item normalized">
-                                    <span class="cost-icon">📊</span>
-                                    <span class="cost-name">개당 생산단가</span>
-                                    <span class="cost-amount">${costPerItemManual.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} G/ea</span>
-                                </div>
-                                <div class="cost-item normalized">
-                                    <span class="cost-icon">⏱️</span>
-                                    <span class="cost-name">시간당 생산단가</span>
-                                    <span class="cost-amount">${costPerHourManual.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} G/hr</span>
-                                </div>
-                                ${manualSeasonPointsConsumption > 0 ? `
-                                    <div class="cost-item points">
-                                        <span class="cost-icon">🎯</span>
-                                        <span class="cost-name">재료들의 pt값</span>
-                                        <span class="cost-amount">${ptPerItemManual.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt</span>
-                                    </div>
-                                    <div class="cost-item">
-                                        <span class="cost-icon">📈</span>
-                                        <span class="cost-name">현재 레시피의 pt이득</span>
-                                        <span class="cost-amount">${currentRecipeGainPerItemManual.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt</span>
-                                    </div>
-                                    <div class="cost-item">
-                                        <span class="cost-icon">⚡</span>
-                                        <span class="cost-name">현재 레시피 pt이득/분</span>
-                                        <span class="cost-amount">${currentRecipeGainPerMinManual.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt/min</span>
-                                    </div>
-                                ` : ''}
-                                ${netGainPerItemManual !== 0 ? `
-                                    <div class="cost-item net-gain">
-                                        <span class="cost-icon">💰</span>
-                                        <span class="cost-name">총 순수익pt</span>
-                                        <span class="cost-amount ${netGainPerItemManual >= 0 ? 'positive' : 'negative'}">${netGainPerItemManual >= 0 ? '+' : ''}${netGainPerItemManual.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt</span>
-                                    </div>
-                                    <div class="cost-item net-gain">
-                                        <span class="cost-icon">⏱️</span>
-                                        <span class="cost-name">총 순수익pt/분</span>
-                                        <span class="cost-amount ${netGainPerMinManual >= 0 ? 'positive' : 'negative'}">${netGainPerMinManual >= 0 ? '+' : ''}${netGainPerMinManual.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt/min</span>
-                                    </div>
-                                ` : ''}
-                            </div>
-                        </div>
-                    ` : ''}
-                    ${goldConsumption.gold > 0 || seasonPointsConsumption > 0 || netGainPerItemAuto !== 0 ? `
-                        <div class="cost-column auto-cost">
-                            <h5 class="cost-column-title">🤖 자동 위임</h5>
-                            <div class="cost-items">
-                                <div class="cost-item gold">
-                                    <span class="cost-icon">💰</span>
-                                    <span class="cost-name">총 생산단가</span>
-                                    <span class="cost-amount">×${goldConsumption.gold.toLocaleString()}</span>
-                                </div>
-                                <div class="cost-item normalized">
-                                    <span class="cost-icon">📊</span>
-                                    <span class="cost-name">개당 생산단가</span>
-                                    <span class="cost-amount">${costPerItemAuto.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} G/ea</span>
-                                </div>
-                                <div class="cost-item normalized">
-                                    <span class="cost-icon">⏱️</span>
-                                    <span class="cost-name">시간당 생산단가</span>
-                                    <span class="cost-amount">${costPerHourAuto.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} G/hr</span>
-                                </div>
-                                ${seasonPointsConsumption > 0 ? `
-                                    <div class="cost-item points">
-                                        <span class="cost-icon">🎯</span>
-                                        <span class="cost-name">재료들의 pt값</span>
-                                        <span class="cost-amount">${ptPerItemAuto.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt</span>
-                                    </div>
-                                    <div class="cost-item">
-                                        <span class="cost-icon">📈</span>
-                                        <span class="cost-name">현재 레시피의 pt이득</span>
-                                        <span class="cost-amount">${currentRecipeGainPerItemAuto.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt</span>
-                                    </div>
-                                    <div class="cost-item">
-                                        <span class="cost-icon">⚡</span>
-                                        <span class="cost-name">현재 레시피 pt이득/분</span>
-                                        <span class="cost-amount">${currentRecipeGainPerMinAuto.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt/min</span>
-                                    </div>
-                                ` : ''}
-                                ${netGainPerItemAuto !== 0 ? `
-                                    <div class="cost-item net-gain">
-                                        <span class="cost-icon">💰</span>
-                                        <span class="cost-name">총 순수익pt</span>
-                                        <span class="cost-amount ${netGainPerItemAuto >= 0 ? 'positive' : 'negative'}">${netGainPerItemAuto >= 0 ? '+' : ''}${netGainPerItemAuto.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt</span>
-                                    </div>
-                                    <div class="cost-item net-gain">
-                                        <span class="cost-icon">⏱️</span>
-                                        <span class="cost-name">총 순수익pt/분</span>
-                                        <span class="cost-amount ${netGainPerMinAuto >= 0 ? 'positive' : 'negative'}">${netGainPerMinAuto >= 0 ? '+' : ''}${netGainPerMinAuto.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt/min</span>
-                                    </div>
-                                ` : ''}
-                            </div>
-                        </div>
-                    ` : ''}
-                </div>
-                ${Object.keys(goldConsumption.resources).length > 0 ? `
-                    <div class="resource-costs">
-                        <h5 class="resource-costs-title">기타 재료 비용</h5>
-                        <div class="cost-items">
-                            ${Object.entries(goldConsumption.resources).map(([itemId, data]) => `
-                                <div class="cost-item">
-                                    <div class="cost-icon">
-                                        ${data.icon ? `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${data.icon.split('/').pop()}.webp" alt="${data.name}">` : '📦'}
-                                    </div>
-                                    <span class="cost-name">${data.name}</span>
-                                    <span class="cost-amount">×${data.amount.toLocaleString()}</span>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                ` : ''}
-            </div>
-        `;
+    // Column order matches the rails above: 수동 first, then 자동.
+    const dual = showDualCost && manualGoldConsumption.gold > 0;
+    const columns = dual
+        ? ['수동 생산', '자동 위임']
+        : [isCategory2 ? '채집 기준' : '자동 위임'];
+
+    const pick = (manual, auto) => (dual ? [manual, auto] : [auto]);
+    const signed = (value, unit) =>
+        `<span class="${value >= 0 ? 'is-positive' : 'is-negative'}">${value >= 0 ? '+' : ''}${num(value)} ${unit}</span>`;
+
+    // 개발 자금 rows are marked so a gold figure is identifiable without reading
+    // the unit — every other row on this table is pt or a raw material count.
+    const gold = (label) =>
+        `<span class="material-symbols-outlined ledger-icon">money_bag</span>${label}`;
+
+    const rows = [];
+    if (goldConsumption.gold > 0 || manualGoldConsumption.gold > 0) {
+        rows.push([gold('총 생산단가'), pick(
+            `${manualGoldConsumption.gold.toLocaleString()} G`,
+            `${goldConsumption.gold.toLocaleString()} G`
+        )]);
+        rows.push([
+            gold(dual ? '개당 생산단가' : `개당 생산단가 (×${outputQuantity}개 생산)`),
+            pick(`${num(costPerItemManual, 1)} G/ea`, `${num(costPerItemAuto, 1)} G/ea`)
+        ]);
+        rows.push([gold('시간당 생산단가'), pick(
+            `${num(costPerHourManual, 1)} G/hr`,
+            `${num(costPerHourAuto, 1)} G/hr`
+        )]);
     }
 
-    // Simple cost mode (categories 2, 3, 4, 6)
-    return `
-        <div class="cost-summary">
-            <h4 class="cost-summary-title">
-                <span class="material-symbols-outlined">shopping_cart</span>
-                총 구매 비용
-                ${!isCategory2 ? '<span style="font-size: 0.85em; font-weight: normal; opacity: 0.7; margin-left: 0.5rem;">(자동 생산 기준)</span>' : ''}
-            </h4>
-            <div class="cost-items">
-                ${goldConsumption.gold > 0 ? `
-                    <div class="cost-item gold">
-                        <span class="cost-icon">💰</span>
-                        <span class="cost-name">총 생산단가</span>
-                        <span class="cost-amount">×${goldConsumption.gold.toLocaleString()}</span>
-                    </div>
-                    <div class="cost-item normalized">
-                        <span class="cost-icon">📊</span>
-                        <span class="cost-name">개당 생산단가 (×${outputQuantity}개 생산)</span>
-                        <span class="cost-amount">${costPerItemAuto.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} G/ea</span>
-                    </div>
-                    <div class="cost-item normalized">
-                        <span class="cost-icon">⏱️</span>
-                        <span class="cost-name">시간당 생산단가</span>
-                        <span class="cost-amount">${costPerHourAuto.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} G/hr</span>
-                    </div>
+    if (seasonPointsConsumption > 0 || manualSeasonPointsConsumption > 0) {
+        rows.push(['재료들의 pt값', pick(`${num(ptPerItemManual)} pt`, `${num(ptPerItemAuto)} pt`)]);
+        rows.push(['현재 레시피의 pt이득', pick(
+            `${num(currentRecipeGainPerItemManual)} pt`,
+            `${num(currentRecipeGainPerItemAuto)} pt`
+        )]);
+        rows.push(['현재 레시피 pt이득/분', pick(
+            `${num(currentRecipeGainPerMinManual)} pt/min`,
+            `${num(currentRecipeGainPerMinAuto)} pt/min`
+        )]);
+    }
+
+    const footRows = [];
+    if (netGainPerItemAuto !== 0 || netGainPerItemManual !== 0) {
+        footRows.push(['총 순수익 pt', pick(
+            signed(netGainPerItemManual, 'pt'),
+            signed(netGainPerItemAuto, 'pt')
+        )]);
+        footRows.push(['총 순수익 pt/분', pick(
+            signed(netGainPerMinManual, 'pt/min'),
+            signed(netGainPerMinAuto, 'pt/min')
+        )]);
+    }
+
+    // Extra shop materials the tree consumes, appended to the same table so
+    // there is one place to read costs rather than a second bordered block.
+    const extras = Object.entries(goldConsumption.resources);
+    const extraRows = extras.length > 0
+        ? `
+            <tr class="ledger-group"><th scope="row" colspan="${columns.length + 1}">기타 재료</th></tr>
+            ${extras.map(([, resource]) => `
+                <tr>
+                    <th scope="row">${escapeHtml(resource.name)}</th>
+                    <td class="is-muted" ${columns.length > 1 ? `colspan="${columns.length}"` : ''}>×${resource.amount.toLocaleString()}</td>
+                </tr>
+            `).join('')}
+        `
+        : '';
+
+    if (rows.length === 0 && footRows.length === 0 && !extraRows) return '';
+
+    const cells = (values) => values.map(v => `<td>${v}</td>`).join('');
+
+    const body = `
+        <div class="recipe-ledger-wrap scroll-styled">
+            <table class="recipe-ledger">
+                <thead>
+                    <tr>
+                        <th scope="col">항목</th>
+                        ${columns.map(c => `<th scope="col">${c}</th>`).join('')}
+                    </tr>
+                </thead>
+                <tbody>
+                    ${rows.map(([label, values]) => `
+                        <tr><th scope="row">${label}</th>${cells(values)}</tr>
+                    `).join('')}
+                    ${extraRows}
+                </tbody>
+                ${footRows.length > 0 ? `
+                    <tfoot>
+                        ${footRows.map(([label, values]) => `
+                            <tr><th scope="row">${label}</th>${cells(values)}</tr>
+                        `).join('')}
+                    </tfoot>
                 ` : ''}
-                ${seasonPointsConsumption > 0 ? `
-                    <div class="cost-item points">
-                        <span class="cost-icon">🎯</span>
-                        <span class="cost-name">재료들의 pt 값 (×1개 생산 기준)</span>
-                        <span class="cost-amount">${ptPerItemAuto.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt</span>
-                    </div>
-                    <div class="cost-item">
-                        <span class="cost-icon">📈</span>
-                        <span class="cost-name">현재 레시피의 pt 이득 (×1개 생산 기준)</span>
-                        <span class="cost-amount">${currentRecipeGainPerItemAuto.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt</span>
-                    </div>
-                    <div class="cost-item">
-                        <span class="cost-icon">⚡</span>
-                        <span class="cost-name">현재 레시피 pt 이득/분</span>
-                        <span class="cost-amount">${currentRecipeGainPerMinAuto.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt/min</span>
-                    </div>
-                ` : ''}
-                ${netGainPerItemAuto !== 0 ? `
-                    <div class="cost-item net-gain">
-                        <span class="cost-icon">💰</span>
-                        <span class="cost-name">총 순수익pt (×1개 생산 기준)</span>
-                        <span class="cost-amount ${netGainPerItemAuto >= 0 ? 'positive' : 'negative'}">${netGainPerItemAuto >= 0 ? '+' : ''}${netGainPerItemAuto.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt</span>
-                    </div>
-                    <div class="cost-item net-gain">
-                        <span class="cost-icon">⏱️</span>
-                        <span class="cost-name">총 순수익pt/분</span>
-                        <span class="cost-amount ${netGainPerMinAuto >= 0 ? 'positive' : 'negative'}">${netGainPerMinAuto >= 0 ? '+' : ''}${netGainPerMinAuto.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt/min</span>
-                    </div>
-                ` : ''}
-                ${Object.entries(goldConsumption.resources).map(([itemId, data]) => `
-                    <div class="cost-item">
-                        <div class="cost-icon">
-                            ${data.icon ? `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${data.icon.split('/').pop()}.webp" alt="${data.name}">` : '📦'}
-                        </div>
-                        <span class="cost-name">${data.name}</span>
-                        <span class="cost-amount">×${data.amount.toLocaleString()}</span>
-                    </div>
-                `).join('')}
-            </div>
+            </table>
         </div>
     `;
+
+    return section('비용', body);
 }
 
 export function renderRecipeActions(recipe, data) {
     const { producedByRecipes, usedInRecipes } = data;
     return `
         <div class="recipe-actions">
-            <button class="action-btn" data-action="show-upstream" data-recipe-id="${recipe.id}">
+            <button class="action-btn" type="button" data-action="show-upstream" data-recipe-id="${recipe.id}">
                 <span class="material-symbols-outlined">arrow_upward</span>
-                하위 조합 전체 보기 (${producedByRecipes.length})
+                하위 조합 전체 보기 <span class="count">${producedByRecipes.length}</span>
             </button>
-            <button class="action-btn" data-action="show-downstream" data-recipe-id="${recipe.id}">
+            <button class="action-btn" type="button" data-action="show-downstream" data-recipe-id="${recipe.id}">
                 <span class="material-symbols-outlined">arrow_downward</span>
-                상위 조합 전체 보기 (${usedInRecipes.length})
+                상위 조합 전체 보기 <span class="count">${usedInRecipes.length}</span>
             </button>
         </div>
+    `;
+}
+
+function recipeDetailHtml(recipe) {
+    const data = gatherRecipeData(recipe);
+    return `
+        ${renderRecipeHeader(recipe, data)}
+        ${renderProductionSection(recipe, data)}
+        ${renderCostSummary(recipe, data)}
+        ${renderRecipeActions(recipe, data)}
     `;
 }
 
@@ -690,289 +703,181 @@ export function renderRecipeDetail(recipe) {
     const container = document.getElementById('recipe-detail');
     if (!container) return;
 
-    // Handle seasonal view recipes
-    if (recipe._isSeasonalView) {
-        // If this is a real recipe (not just a shop/pickup item), show full detail with tree
-        if (!recipe.id.toString().startsWith('seasonal_')) {
-            // This is a real recipe, render it normally with full dependency tree
-            const data = gatherRecipeData(recipe);
-            const html = `
-                ${renderRecipeHeader(recipe, data)}
-                ${renderRecipeFlow(recipe, data)}
-                ${renderManualSection(recipe, data)}
-                ${renderCostSummary(recipe, data)}
-                ${renderRecipeActions(recipe, data)}
-            `;
-            container.innerHTML = html;
-            renderDependencyTree(recipe);
-        } else {
-            // This is a synthetic shop/pickup item
-            renderSeasonalItemDetail(recipe, container);
-            renderSeasonalDependencyTree(recipe);
-        }
+    // Synthetic seasonal shop/pickup entries have no recipe of their own.
+    if (recipe._isSeasonalView && recipe.id.toString().startsWith('seasonal_')) {
+        renderSeasonalItemDetail(recipe, container);
+        renderSeasonalDependencyTree(recipe);
         return;
     }
 
-    const data = gatherRecipeData(recipe);
-
-    const html = `
-        ${renderRecipeHeader(recipe, data)}
-        ${renderRecipeFlow(recipe, data)}
-        ${renderManualSection(recipe, data)}
-        ${renderCostSummary(recipe, data)}
-        ${renderRecipeActions(recipe, data)}
-    `;
-
-    container.innerHTML = html;
-
-    // Automatically render dependency tree
+    container.innerHTML = recipeDetailHtml(recipe);
     renderDependencyTree(recipe);
 }
 
+/**
+ * 시즌템 entries are synthetic: a seasonal item with no recipe of its own, so
+ * there are no rails and no ledger — just where it comes from and what makes it.
+ */
 export function renderSeasonalItemDetail(recipe, container) {
     const itemId = recipe._seasonalItemId || recipe.item_id;
     const item = window.IslandEngine.getItemInfo(itemId);
-    const isPickup = recipe._isPickup;
-    const isShop = recipe._isShop;
     const allRecipeIds = recipe._allRecipes || [];
-    const hasRecipes = allRecipeIds.length > 0;
+    const seasonBadge = renderSeasonBadge(itemId);
 
-    let sourceInfo = '';
-    if (isPickup) {
-        sourceInfo = `
-            <div class="seasonal-source pickup">
-                <span class="material-symbols-outlined">hiking</span>
-                <span>채집템 (맵에서 채집)</span>
-            </div>
-        `;
-    } else if (isShop) {
+    const sources = [];
+    if (recipe._isPickup) {
+        sources.push({ icon: 'hiking', text: '채집템 — 맵에서 채집' });
+    }
+    if (recipe._isShop) {
         const shopData = state.shopPurchaseData[itemId];
         if (shopData) {
             const [requiredItemId, cost, packSize] = shopData;
             const costItem = window.IslandEngine.getItemInfo(requiredItemId);
-            sourceInfo = `
-                <div class="seasonal-source shop">
-                    <span class="material-symbols-outlined">store</span>
-                    <span>상점 구매: ${cost} ${costItem.name} (${packSize}개 팩)</span>
-                </div>
-            `;
+            sources.push({
+                icon: 'store',
+                text: `상점 구매 — ${cost} ${costItem.name} (${packSize}개 팩)`
+            });
         }
     }
-
-    if (hasRecipes) {
-        sourceInfo += `
-            <div class="seasonal-source recipe">
-                <span class="material-symbols-outlined">restaurant</span>
-                <span>제작 가능 (${allRecipeIds.length}개 레시피)</span>
-            </div>
-        `;
+    if (allRecipeIds.length > 0) {
+        sources.push({ icon: 'restaurant', text: `제작 가능 — ${allRecipeIds.length}개 레시피` });
     }
 
-    const html = `
-        <div class="recipe-detail-header">
-            <div class="recipe-icon-large">
-                ${item.icon ? `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${item.icon.split('/').pop()}.webp" alt="${item.name}">` : '📦'}
+    const sourcesHtml = sources.length > 0
+        ? sources.map(s => `
+            <div class="seasonal-source">
+                <span class="material-symbols-outlined">${s.icon}</span>
+                <span>${escapeHtml(s.text)}</span>
             </div>
-            <div class="recipe-title-section">
-                <h3>${item.name}</h3>
-                <div class="recipe-meta-badges">
-                    <span class="badge recipe-category">시즌템 (Seasonal)</span>
-                    <span class="badge badge--neutral stat-badge rarity-${item.rarity || 1}">★ ${item.rarity || 1}</span>
-                    ${renderSeasonBadge(itemId)}
-                </div>
-                <p class="item-description">${item.desc || '시즌 한정 아이템입니다.'}</p>
-            </div>
-        </div>
+        `).join('')
+        : '<p class="chain-empty">획득 방법이 확인되지 않았습니다.</p>';
 
-        <div class="seasonal-sources">
-            <h4 class="flow-title">📍 획득 방법</h4>
-            ${sourceInfo}
-        </div>
-
-        ${hasRecipes ? `
-            <div class="seasonal-recipes">
-                <h4 class="flow-title">🔨 제작 레시피</h4>
-                <div class="seasonal-recipe-list">
-                    ${allRecipeIds.map(recipeId => {
+    const recipeRows = allRecipeIds.map(recipeId => {
         const originalRecipe = findRecipeById(recipeId);
         if (!originalRecipe) return '';
         const recipeItem = window.IslandEngine.getItemInfo(originalRecipe.item_id);
         const categoryId = findRecipeCategoryById(recipeId);
-        return `
-                            <div class="seasonal-recipe-card" data-recipe-id="${recipeId}">
-                                <div class="recipe-icon">
-                                    ${recipeItem.icon ? `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${recipeItem.icon.split('/').pop()}.webp" alt="${recipeItem.name}">` : '📦'}
-                                </div>
-                                <div class="recipe-info">
-                                    <div class="recipe-name">${originalRecipe.name || recipeItem.name}</div>
-                                    <div class="recipe-meta">
-                                        <span>${categoryNames[categoryId] || '알 수 없음'}</span>
-                                        <span>⏱ ${formatTime(originalRecipe.workload)}</span>
-                                    </div>
-                                </div>
-                                <span class="material-symbols-outlined">arrow_forward</span>
-                            </div>
-                        `;
-    }).join('')}
-                </div>
-            </div>
-        ` : ''}
-    `;
+        return chainLink({
+            item: recipeItem,
+            name: originalRecipe.name || recipeItem.name,
+            recipeId,
+            chip: categoryShortNames[categoryId] || '',
+            right: formatTime(originalRecipe.workload)
+        });
+    }).join('');
 
-    container.innerHTML = html;
+    container.innerHTML = `
+        <header class="recipe-detail-header">
+            ${itemImg(item, 'recipe-art')}
+            <div class="recipe-headline">
+                <h3 class="recipe-title">${escapeHtml(item.name)}</h3>
+                <p class="recipe-facts">${renderFacts(
+                    ['시즌템', Number.isFinite(item.pt_num) ? `<b>${item.pt_num}</b> pt` : ''].filter(Boolean),
+                    seasonBadge
+                )}</p>
+                ${item.desc ? `<p class="item-description">${escapeHtml(item.desc)}</p>` : ''}
+            </div>
+        </header>
+        ${section('획득 방법', sourcesHtml)}
+        ${allRecipeIds.length > 0 ? section('제작 레시피', recipeRows) : ''}
+    `;
 }
 
-export function renderSeasonalDependencyTree(recipe) {
-    const container = document.getElementById('dependency-chain');
-    if (!container) return;
+// ===== 관련있는 조합식 (dependency chain) =====
 
-    const itemId = recipe._seasonalItemId || recipe.item_id;
-    const item = window.IslandEngine.getItemInfo(itemId);
-
-    // Check what recipes produce this item
-    const producedByRecipes = state.dependencyGraph.producedBy[itemId] || [];
-
-    // Check what recipes use this item
-    const usedInRecipes = state.dependencyGraph.usedBy[itemId] || [];
-
-    const html = `
-        <div class="tree-header">
-            <h3>
-                <span class="material-symbols-outlined">account_tree</span>
-                아이템 관계도
-            </h3>
-        </div>
-
-        ${producedByRecipes.length > 0 ? `
-            <div class="tree-section upstream-section">
-                <h4 class="tree-section-title upstream">
-                    <span class="material-symbols-outlined">arrow_upward</span>
-                    이 아이템을 생산하는 레시피 (${producedByRecipes.length})
-                </h4>
-                <div class="seasonal-usage-list">
-                    ${producedByRecipes.map(recipeId => {
-        const producerRecipe = findRecipeById(recipeId);
-        if (!producerRecipe) return '';
-        const producerItem = window.IslandEngine.getItemInfo(producerRecipe.item_id);
-        const categoryId = findRecipeCategoryById(recipeId);
-        return `
-                            <div class="tree-node-card upstream" data-recipe-id="${recipeId}">
-                                <div class="tree-node-icon">
-                                    ${producerItem.icon ? `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${producerItem.icon.split('/').pop()}.webp" alt="${producerItem.name}">` : '📦'}
-                                </div>
-                                <div class="tree-node-info">
-                                    <div class="tree-node-name">${producerRecipe.name || producerItem.name}</div>
-                                    <div class="tree-node-meta">
-                                        <span>${categoryNames[categoryId] || '알 수 없음'}</span>
-                                        <span>⏱ ${formatTime(producerRecipe.workload)}</span>
-                                        <span>⚡ ${producerRecipe.ship_exp}</span>
-                                    </div>
-                                </div>
-                                <span class="tree-node-arrow material-symbols-outlined">arrow_forward</span>
-                            </div>
-                        `;
-    }).join('')}
-                </div>
-            </div>
-        ` : ''}
-
-        ${usedInRecipes.length > 0 ? `
-            <div class="tree-section downstream-section">
-                <h4 class="tree-section-title downstream">
-                    <span class="material-symbols-outlined">arrow_downward</span>
-                    이 아이템을 사용하는 레시피 (${usedInRecipes.length})
-                </h4>
-                <div class="seasonal-usage-list">
-                    ${usedInRecipes.map(recipeId => {
-        const usageRecipe = findRecipeById(recipeId);
-        if (!usageRecipe) return '';
-        const usageItem = window.IslandEngine.getItemInfo(usageRecipe.item_id);
-        const categoryId = findRecipeCategoryById(recipeId);
-        return `
-                            <div class="tree-node-card downstream" data-recipe-id="${recipeId}">
-                                <div class="tree-node-icon">
-                                    ${usageItem.icon ? `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${usageItem.icon.split('/').pop()}.webp" alt="${usageItem.name}">` : '📦'}
-                                </div>
-                                <div class="tree-node-info">
-                                    <div class="tree-node-name">${usageRecipe.name || usageItem.name}</div>
-                                    <div class="tree-node-meta">
-                                        <span>${categoryNames[categoryId] || '알 수 없음'}</span>
-                                        <span>⏱ ${formatTime(usageRecipe.workload)}</span>
-                                        <span>⚡ ${usageRecipe.ship_exp}</span>
-                                    </div>
-                                </div>
-                                <span class="tree-node-arrow material-symbols-outlined">arrow_forward</span>
-                            </div>
-                        `;
-    }).join('')}
-                </div>
-            </div>
-        ` : ''}
-
-        ${producedByRecipes.length === 0 && usedInRecipes.length === 0 ? `
-            <div class="page-status page-status-empty">
-                <span class="material-symbols-outlined page-status-icon">inventory</span>
-                <p class="page-status-msg">이 아이템과 연결된 레시피가 없습니다.</p>
-            </div>
-        ` : ''}
-    `;
-
-    container.innerHTML = html;
-}
-
-export function renderMaterialList(materials) {
-    if (!materials || materials.length === 0) {
-        return '<p class="no-materials">없음</p>';
-    }
-
+/** Panel shell — the same section head in both placements. */
+function chainShell(bodyHtml) {
     return `
-        <div class="material-list card-grid">
-            ${materials.map(([itemId, quantity]) => {
-        const item = window.IslandEngine.getItemInfo(itemId);
-        return `
-                    <div class="material-item rarity-${item.rarity || 1}">
-                        <div class="material-icon">
-                            ${item.icon ? `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${item.icon.split('/').pop()}.webp" alt="${item.name}">` : '📦'}
-                        </div>
-                        <div class="material-info">
-                            <span class="material-name">${item.name}</span>
-                            <span class="material-quantity">×${quantity}</span>
-                        </div>
-                    </div>
-                `;
-    }).join('')}
-        </div>
+        <section class="recipe-section chain-section">
+            <div class="recipe-section-head"><h4>관련있는 조합식</h4><span class="rule"></span></div>
+            ${bodyHtml}
+        </section>
     `;
 }
 
-export function renderMaterialListVertical(materials) {
-    if (!materials || materials.length === 0) {
-        return '<p class="no-materials">없음</p>';
-    }
-
+function chainGroupHead(icon, label, count) {
     return `
-        <div class="material-list-vertical">
-            ${materials.map(([itemId, quantity]) => {
-        const item = window.IslandEngine.getItemInfo(itemId);
-        return `
-                    <div class="material-item-vertical rarity-${item.rarity || 1}">
-                        <div class="material-top-row">
-                            <div class="material-icon">
-                                ${item.icon ? `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${item.icon.split('/').pop()}.webp" alt="${item.name}">` : '📦'}
-                            </div>
-                            <span class="material-quantity">×${quantity}</span>
-                        </div>
-                        <div class="material-name">${item.name}</div>
-                    </div>
-                `;
-    }).join('')}
+        <div class="chain-group-head">
+            <span class="material-symbols-outlined">${icon}</span>
+            ${label}
+            <span class="count">${count}</span>
         </div>
     `;
 }
 
 /**
- * Render full dependency tree for selected recipe
- * Uses manual mode tree to show category 1 manual requirements
+ * One row in the 관련있는 조합식 panel. `via` is the item that connects this recipe to the
+ * selected one and renders as "→ item"; `sub` is free text on the same second
+ * line (a shop price). `chip` and `right` carry whatever the row's kind makes
+ * useful — a 상점 tag, a category, a production time.
+ */
+function chainLink({ item, name, recipeId, via, sub, chip, right, nested }) {
+    const classes = ['chain-link', nested ? 'is-nested' : ''].filter(Boolean).join(' ');
+    const action = recipeId != null
+        ? ` data-action="select-tree-recipe" data-recipe-id="${recipeId}"`
+        : '';
+    const second = via ? `→ ${escapeHtml(via)}` : (sub ? escapeHtml(sub) : '');
+
+    return `
+        <div class="${classes}"${action}>
+            ${itemImg(item)}
+            <span class="chain-link-text">
+                <span class="chain-link-name">${escapeHtml(name)}</span>
+                ${second ? `<span class="chain-link-to">${second}</span>` : ''}
+            </span>
+            <span class="chain-link-rt">
+                ${chip ? `<span class="chain-chip">${escapeHtml(chip)}</span>` : ''}
+                ${right ? `<span>${escapeHtml(right)}</span>` : ''}
+            </span>
+        </div>
+    `;
+}
+
+/**
+ * Flatten a dependency subtree into rows. Indent is capped at one level: deeper
+ * trees would run out of room in the pinned column, and every row already
+ * states what it feeds via `→ item`.
+ */
+export function renderChainLinks(nodes, depth = 0) {
+    if (!nodes || nodes.length === 0) return '';
+
+    return nodes.map(node => {
+        if (node.isShopPurchase) {
+            const shopCost = node.shopCost;
+            const costItem = shopCost.itemInfo;
+            const perItem = shopCost.packSize > 1 ? shopCost.costPerItem.toFixed(1) : shopCost.unitCost;
+            return chainLink({
+                item: node.itemInfo,
+                name: `${node.itemInfo.name} ×${qty(node.quantity)}`,
+                sub: `${perItem} ${costItem.name}/ea → ${shopCost.totalCost.toFixed(1)}`,
+                chip: '상점',
+                nested: depth > 0
+            });
+        }
+
+        if (!node.recipe) return '';
+
+        const item = window.IslandEngine.getItemInfo(node.recipe.item_id);
+        const children = node.dependencies || node.usages || [];
+        const workload = node.isManualMode
+            ? node.recipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER
+            : node.recipe.workload;
+
+        return chainLink({
+            item,
+            name: node.recipe.name || item.name,
+            recipeId: node.recipe.id,
+            via: node.itemInfo?.name,
+            chip: node.isManualMode ? '수동' : '',
+            right: formatTime(workload),
+            nested: depth > 0
+        }) + renderChainLinks(children, depth + 1);
+    }).join('');
+}
+
+/**
+ * Render the 관련있는 조합식 panel for the selected recipe. Upstream uses the manual-mode
+ * tree so category 1's manual requirements show.
  */
 export function renderDependencyTree(recipe) {
     const container = document.getElementById('dependency-chain');
@@ -983,7 +888,6 @@ export function renderDependencyTree(recipe) {
         return;
     }
 
-    // Build trees using shared utility - use manual tree for upstream (shows manual mode for category 1)
     const upstreamTree = window.IslandEngine.buildRecipeDependencyTree(
         recipe.id,
         state.recipeIndex,
@@ -994,139 +898,58 @@ export function renderDependencyTree(recipe) {
     );
     const downstreamTree = buildDownstreamTree(recipe.id);
 
-    // Calculate stats
-    const upstreamStats = calculateTreeStats(upstreamTree, 'dependencies');
-    const downstreamStats = calculateTreeStats(downstreamTree, 'usages');
+    const upstreamCount = Math.max(calculateTreeStats(upstreamTree, 'dependencies').count - 1, 0);
+    const downstreamCount = Math.max(calculateTreeStats(downstreamTree, 'usages').count - 1, 0);
 
-    const item = window.IslandEngine.getItemInfo(recipe.item_id);
+    const upstream = upstreamTree.dependencies?.length
+        ? chainGroupHead('arrow_upward', '하위 조합 (수동)', upstreamCount) + renderChainLinks(upstreamTree.dependencies)
+        : '';
+    const downstream = downstreamTree.usages?.length
+        ? chainGroupHead('arrow_downward', '상위 조합', downstreamCount) + renderChainLinks(downstreamTree.usages)
+        : '';
 
-    const html = `
-        <div class="tree-header">
-            <h3>
-                <span class="material-symbols-outlined">account_tree</span>
-                관련된 제조법들 (수동 생산)
-            </h3>
-            <div class="tree-stats">
-                <span class="badge badge--neutral stat-badge-sm upstream">
-                    <span class="material-symbols-outlined">arrow_upward</span>
-                    ${upstreamStats.count - 1}
-                </span>
-                <span class="badge badge--neutral stat-badge-sm downstream">
-                    <span class="material-symbols-outlined">arrow_downward</span>
-                    ${downstreamStats.count - 1}
-                </span>
-            </div>
-        </div>
+    const body = upstream || downstream
+        ? upstream + downstream
+        : '<p class="chain-empty">연결된 레시피가 없습니다.</p>';
 
-        <!-- Upstream (Dependencies) -->
-        ${upstreamTree.dependencies.length > 0 ? `
-            <div class="tree-section upstream-section">
-                <h4 class="tree-section-title upstream">
-                    <span class="material-symbols-outlined">arrow_upward</span>
-                    하위 조합 (수동) (${upstreamStats.count - 1})
-                </h4>
-                <div class="tree-nodes-wrapper upstream">
-                    ${renderTreeNodesWithConnectors(upstreamTree.dependencies, 0, 'upstream')}
-                </div>
-            </div>
-        ` : ''}
-
-        <!-- Current Recipe Separator -->
-        <div class="current-recipe-separator">
-            <span class="material-symbols-outlined">radio_button_checked</span>
-            <span class="current-recipe-text">${recipe.name || item.name} 들어가는 곳</span>
-        </div>
-
-        <!-- Downstream (Used In) -->
-        ${downstreamTree.usages.length > 0 ? `
-            <div class="tree-section downstream-section">
-                <h4 class="tree-section-title downstream">
-                    <span class="material-symbols-outlined">arrow_downward</span>
-                    상위 조합 (${downstreamStats.count - 1})
-                </h4>
-                <div class="tree-nodes-wrapper downstream">
-                    ${renderTreeNodesWithConnectors(downstreamTree.usages, 0, 'downstream')}
-                </div>
-            </div>
-        ` : ''}
-    `;
-
-    container.innerHTML = html;
+    container.innerHTML = chainShell(body);
 }
 
-/**
- * Render tree nodes with L-shaped connectors
- */
-export function renderTreeNodesWithConnectors(nodes, depth, direction) {
-    if (!nodes || nodes.length === 0) return '';
+/** 관련있는 조합식 panel for a synthetic 시즌템 entry: which recipes make it, which use it. */
+export function renderSeasonalDependencyTree(recipe) {
+    const container = document.getElementById('dependency-chain');
+    if (!container) return;
 
-    return nodes.map((node, index) => {
-        const isLast = index === nodes.length - 1;
+    const itemId = recipe._seasonalItemId || recipe.item_id;
+    const producedByRecipes = state.dependencyGraph.producedBy[itemId] || [];
+    const usedInRecipes = state.dependencyGraph.usedBy[itemId] || [];
 
-        // Handle shop purchase nodes
-        if (node.isShopPurchase) {
-            const item = node.itemInfo;
-            const shopCost = node.shopCost;
-            const costItem = shopCost.itemInfo;
-            const isGoldPurchase = shopCost.itemId === CONSTANTS.GOLD_ITEM_ID;
-            const hasPacks = shopCost.packSize > 1;
-
-            return `
-                <div class="tree-node depth-${depth} ${isLast ? 'last-child' : ''} shop-purchase" data-direction="${direction}">
-                    <div class="tree-node-card shop ${direction}">
-                        <div class="tree-node-icon">
-                            ${item.icon ? `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${item.icon.split('/').pop()}.webp" alt="${item.name}">` : '📦'}
-                        </div>
-                        <div class="tree-node-info">
-                            <div class="tree-node-name">
-                                <span class="badge badge--warning shop-badge">🛒 Shop</span>
-                                ${item.name} (×${node.quantity})
-                            </div>
-                            <div class="tree-node-meta shop-cost">
-                                <span class="shop-cost-label">${isGoldPurchase ? '💰' : '📦'}</span>
-                                <span class="shop-cost-value">
-                                    ${hasPacks
-                    ? `${shopCost.costPerItem.toFixed(1)} ${costItem.name}/ea × ${node.quantity} = ${shopCost.totalCost.toFixed(1)} (${shopCost.packsNeeded} pack${shopCost.packsNeeded > 1 ? 's' : ''})`
-                    : `${shopCost.unitCost} ${costItem.name}/ea × ${node.quantity} = ${shopCost.totalCost.toFixed(1)}`
-                }
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Handle recipe nodes
-        const item = window.IslandEngine.getItemInfo(node.recipe.item_id);
-        const hasChildren = (node.dependencies?.length || node.usages?.length || 0) > 0;
-        const children = node.dependencies || node.usages || [];
-        const isManualMode = node.isManualMode || false;
-        const workloadTime = isManualMode ? node.recipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER : node.recipe.workload;
-
-        return `
-            <div class="tree-node depth-${depth} ${isLast ? 'last-child' : ''}" data-direction="${direction}">
-                <div class="tree-node-card ${direction} ${isManualMode ? 'manual-mode' : ''}" data-action="select-tree-recipe" data-recipe-id="${node.recipe.id}">
-                    <div class="tree-node-icon">
-                        ${item.icon ? `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${item.icon.split('/').pop()}.webp" alt="${item.name}">` : '📦'}
-                    </div>
-                    <div class="tree-node-info">
-                        <div class="tree-node-name">
-                            ${isManualMode ? '<span class="manual-badge">💎</span>' : ''}
-                            ${node.recipe.name || item.name}
-                        </div>
-                        ${node.itemInfo ? `<div class="tree-node-via">→ ${node.itemInfo.name}</div>` : ''}
-                        <div class="tree-node-meta">
-                            <span>⏱ ${formatTime(workloadTime)}</span>
-                            <span>⚡ ${node.recipe.ship_exp}</span>
-                        </div>
-                    </div>
-                    <span class="tree-node-arrow material-symbols-outlined">arrow_forward</span>
-                </div>
-                ${hasChildren ? `<div class="tree-node-children">${renderTreeNodesWithConnectors(children, depth + 1, direction)}</div>` : ''}
-            </div>
-        `;
+    const rows = (recipeIds) => recipeIds.map(recipeId => {
+        const related = findRecipeById(recipeId);
+        if (!related) return '';
+        const relatedItem = window.IslandEngine.getItemInfo(related.item_id);
+        const categoryId = findRecipeCategoryById(recipeId);
+        return chainLink({
+            item: relatedItem,
+            name: related.name || relatedItem.name,
+            recipeId,
+            chip: categoryShortNames[categoryId] || '',
+            right: formatTime(related.workload)
+        });
     }).join('');
+
+    const produced = producedByRecipes.length
+        ? chainGroupHead('arrow_upward', '이 아이템을 생산', producedByRecipes.length) + rows(producedByRecipes)
+        : '';
+    const used = usedInRecipes.length
+        ? chainGroupHead('arrow_downward', '이 아이템을 사용', usedInRecipes.length) + rows(usedInRecipes)
+        : '';
+
+    const body = produced || used
+        ? produced + used
+        : '<p class="chain-empty">이 아이템과 연결된 레시피가 없습니다.</p>';
+
+    container.innerHTML = chainShell(body);
 }
 
 export function renderEmptyDetail() {
@@ -1136,7 +959,21 @@ export function renderEmptyDetail() {
 
 export function renderEmptyChain() {
     const container = document.getElementById('dependency-chain');
-    renderStatus(container, '레시피를 선택하면 자동으로 전체 의존성 트리가 표시됩니다.', 'empty', { icon: 'account_tree' });
+    if (!container) return;
+    container.innerHTML = chainShell('<p class="chain-empty">레시피를 선택하면 연결된 상위/하위 레시피가 표시됩니다.</p>');
+}
+
+// ===== 전체 레시피 트리 (forest modal) =====
+
+/** One forest node: sprite, name, and whatever figure that kind of node carries. */
+function forestNode(item, text, trailing, action) {
+    return `
+        <div class="forest-tree__content"${action || ''}>
+            ${itemImg(item, 'forest-tree__icon')}
+            <span class="forest-tree__text">${escapeHtml(text)}</span>
+            ${trailing || ''}
+        </div>
+    `;
 }
 
 /**
@@ -1158,50 +995,32 @@ export function renderForestDependencies(nodes, depth = 0) {
     return `
         <div class="forest-tree__group">
             ${nodes.map((node) => {
-        const hasChildren = node.dependencies && node.dependencies.length > 0;
-
         // Shop purchases become leaves with cost info
         if (node.isShopPurchase) {
             const item = node.itemInfo || window.IslandEngine.getItemInfo(node.itemId);
             const costItem = node.shopCost?.itemInfo || window.IslandEngine.getItemInfo(node.shopCost?.itemId);
-            return `
-                    <div class="forest-tree__node">
-                        <div class="forest-tree__content">
-                            ${item.icon ? `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${item.icon.split('/').pop()}.webp" alt="${item.name}" class="forest-tree__icon"/>` : '<span class="forest-tree__icon">•</span>'}
-                            <span class="forest-tree__text">${item.name} (×${node.quantity})</span>
-                            <span class="forest-tree__cost">— ${costItem?.name || '자원'} ×${node.shopCost?.totalCost?.toFixed?.(1) || '?'}</span>
-                        </div>
-                    </div>
-                `;
+            const cost = `<span class="forest-tree__cost">${escapeHtml(costItem?.name || '자원')} ×${node.shopCost?.totalCost?.toFixed?.(1) || '?'}</span>`;
+            return `<div class="forest-tree__node">${forestNode(item, `${item.name} ×${qty(node.quantity)}`, cost)}</div>`;
         }
 
         // Raw material / leaf node (no recipe, not a shop purchase)
         if (!node.recipe) {
             const item = node.itemInfo || window.IslandEngine.getItemInfo(node.itemId);
-            return `
-                    <div class="forest-tree__node">
-                        <div class="forest-tree__content">
-                            ${item.icon ? `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${item.icon.split('/').pop()}.webp" alt="${item.name}" class="forest-tree__icon"/>` : '<span class="forest-tree__icon">•</span>'}
-                            <span class="forest-tree__text">${item.name} (×${node.quantityNeeded || 1})</span>
-                        </div>
-                    </div>
-                `;
+            return `<div class="forest-tree__node">${forestNode(item, `${item.name} ×${qty(node.quantityNeeded || 1)}`)}</div>`;
         }
 
         // Recipe node
         const item = window.IslandEngine.getItemInfo(node.recipe.item_id);
-        const chip = `
-                    <div class="forest-tree__content" data-action="select-tree-recipe" data-recipe-id="${node.recipe.id}">
-                        ${item.icon ? `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${item.icon.split('/').pop()}.webp" alt="${item.name}" class="forest-tree__icon"/>` : '<span class="forest-tree__icon">•</span>'}
-                        <span class="forest-tree__text">${node.recipe.name || item.name}</span>
-                        <span class="forest-tree__meta">⏱${formatTime(node.recipe.workload)}</span>
-                    </div>
-                `;
+        const meta = `<span class="forest-tree__meta">${formatTime(node.recipe.workload)}</span>`;
+        const action = ` data-action="select-tree-recipe" data-recipe-id="${node.recipe.id}"`;
+        const children = node.dependencies?.length
+            ? renderForestDependencies(node.dependencies, depth + 1)
+            : '';
 
         return `
                     <div class="forest-tree__node">
-                        ${chip}
-                        ${hasChildren ? renderForestDependencies(node.dependencies, depth + 1) : ''}
+                        ${forestNode(item, node.recipe.name || item.name, meta, action)}
+                        ${children}
                     </div>
                 `;
     }).join('')}
@@ -1210,9 +1029,10 @@ export function renderForestDependencies(nodes, depth = 0) {
 }
 
 /**
- * Render a single tree in the forest (rooted at a recipe)
+ * Render a single tree in the forest (rooted at a recipe). The category is
+ * named by the section this tree sits in, so the root row omits it.
  */
-export function renderForestTree(recipe, categoryId) {
+export function renderForestTree(recipe) {
     const tree = window.IslandEngine.buildRecipeDependencyTree(
         recipe.id,
         state.recipeIndex,
@@ -1230,15 +1050,17 @@ export function renderForestTree(recipe, categoryId) {
             <details class="forest-tree" open>
                 <summary class="forest-root">
                     <div class="forest-root-chip" data-action="select-modal-recipe" data-recipe-id="${recipe.id}">
-                        ${item.icon ? `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${item.icon.split('/').pop()}.webp" alt="${item.name}" />` : '•'}
-                        <span class="forest-chip-name">${recipe.name || item.name}</span>
+                        ${itemImg(item)}
+                        <span class="forest-chip-name">${escapeHtml(recipe.name || item.name)}</span>
                         <span class="forest-root-meta">
-                            ${categoryNames[categoryId] || '카테고리'} · ⏱${formatTime(recipe.workload)} · ⚡${recipe.ship_exp} ·  Dependencies: ${Math.max(stats.count - 1, 0)}
+                            ${formatTime(recipe.workload)} · ${recipe.ship_exp} EXP · 재료 ${Math.max(stats.count - 1, 0)}
                         </span>
                     </div>
                 </summary>
                 <div class="forest-tree-body">
-                    ${tree && tree.dependencies?.length ? renderForestDependencies(tree.dependencies) : '<ul class="forest-tree-group"><li class="forest-node is-leaf is-last"><span class="forest-node-content">입력 없음</span></li></ul>'}
+                    ${tree && tree.dependencies?.length
+            ? renderForestDependencies(tree.dependencies)
+            : '<div class="forest-tree__group"><div class="forest-tree__node"><div class="forest-tree__content"><span class="forest-tree__text">입력 없음</span></div></div></div>'}
                 </div>
             </details>
         </div>

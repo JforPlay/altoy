@@ -1,486 +1,468 @@
 /* ==========================================================================
-   3. RECIPE LIST (LEFT COLUMN)
+   ISLAND RESOURCE — RECIPE LIST & DETAIL
+
+   The 자원 tab reads as a production ledger: chrome is achromatic, the game
+   sprites carry the only colour, and grouping is done with whitespace plus a
+   hairline rule rather than nested boxes. Design doc:
+   dev/active/2026-08-13-island-resource-redesign-design.md
+   ========================================================================== */
+
+/* ==========================================================================
+   1. RECIPE LIST (rows, not cards)
    ========================================================================== */
 
 .recipe-list {
     background: var(--island-surface);
-    border-radius: 12px;
-    padding: 1rem;
-    box-shadow: var(--island-shadow-sm);
-    max-height: 800px;
+    border: 1px solid var(--island-border);
+    border-radius: var(--island-radius-xl);
+    padding: 6px;
+    max-height: 660px;
     overflow-y: auto;
 }
 
-.recipe-card {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    background: var(--island-bg);
-    border: 2px solid var(--island-border);
-    border-radius: 10px;
-    padding: 0.875rem;
-    margin-bottom: 0.75rem;
-    cursor: pointer;
-    transition: var(--island-transition);
+/* Dark surfaces separate themselves; the outline is only needed on white. */
+body.dark-mode .recipe-list {
+    border-color: transparent;
 }
 
-.recipe-card:last-child {
-    margin-bottom: 0;
+/* Two lines: the name owns the first one outright, and the numbers drop to a
+   second line under it. At sidebar width a name column sharing the row with two
+   number columns truncated on anything longer than three syllables. */
+.recipe-card {
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr);
+    align-items: center;
+    column-gap: 0.6875rem;
+    row-gap: 3px;
+    padding: 0.6875rem 0.75rem;
+    border: 1px solid transparent;
+    border-radius: var(--island-radius-md);
+    cursor: pointer;
+    position: relative;
+}
+
+/* Separator inset to the text edge, so the sprite column reads as one strip. */
+.recipe-card + .recipe-card::before {
+    content: "";
+    position: absolute;
+    left: 62px;
+    right: 0.75rem;
+    top: -1px;
+    height: 1px;
+    background: var(--island-hair-2);
 }
 
 .recipe-card:hover {
-    border-color: var(--island-accent);
     background: var(--island-surface-hover);
-    transform: translateX(4px);
 }
 
+/* A light box rather than an edge marker: the row is two lines tall now, and a
+   single left rule read as a bracket next to the sprite instead of a selection. */
 .recipe-card.active {
-    border-color: var(--island-accent);
     background: var(--island-accent-light);
-    box-shadow: var(--island-shadow-sm);
+    border-color: var(--island-accent);
+}
+
+/* A selected row owns both of its edges. */
+.recipe-card.active::before,
+.recipe-card.active + .recipe-card::before {
+    opacity: 0;
 }
 
 .recipe-icon {
-    width: 44px;
-    height: 44px;
-    flex-shrink: 0;
-    background: var(--island-surface);
-    border: 1px solid var(--island-border);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    overflow: hidden;
-}
-
-.recipe-icon img {
-    width: 82%;
-    height: 82%;
-    object-fit: contain;
-    image-rendering: auto;
-    background: transparent;
-}
-
-.recipe-info {
-    flex: 1;
-    min-width: 0;
+    grid-row: 1 / span 2;
+    width: 38px;
+    height: 38px;
 }
 
 .recipe-name {
-    font-size: 0.9375rem;
+    font-size: var(--island-text-sm);
     font-weight: 600;
-    color: var(--island-text-primary);
-    margin-bottom: 0.375rem;
-    white-space: nowrap;
+    color: var(--island-text-secondary);
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.recipe-card.active .recipe-name {
+    color: var(--island-text-primary);
+    font-weight: 700;
 }
 
 .recipe-meta {
     display: flex;
-    gap: 1rem;
-    font-size: 0.75rem;
-    color: var(--island-text-secondary);
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+    font-size: var(--island-text-xs);
+    color: var(--island-text-tertiary);
+    font-variant-numeric: tabular-nums;
 }
 
-.recipe-time,
-.recipe-exp {
-    display: flex;
+.recipe-stat {
+    display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 2px;
+    white-space: nowrap;
+}
+
+.recipe-stat .material-symbols-outlined {
+    font-size: 0.875rem;
+    opacity: 0.7;
+}
+
+/* Season status is one of only two coloured things on this screen — it is
+   real state (진행중 / 종료), not the category the dropdown already shows. */
+.recipe-meta .badge {
+    margin-left: auto;
+    font-size: 0.65625rem;
+    padding: 1px 6px;
 }
 
 /* ==========================================================================
-   4. RECIPE DETAIL (CENTER COLUMN)
+   2. RECIPE DETAIL — PANEL & HEADER
    ========================================================================== */
 
 .recipe-detail {
     background: var(--island-surface);
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: var(--island-shadow-md);
-    min-height: 600px;
+    border: 1px solid var(--island-border);
+    border-radius: var(--island-radius-xl) var(--island-radius-xl) 0 0;
+    border-bottom: 0;
+    padding: 1.5rem 1.625rem 1.375rem;
+    min-height: 260px;
+}
+
+body.dark-mode .recipe-detail {
+    border-color: transparent;
+}
+
+/* Pinned mode splits the two panels apart again, so the detail closes itself. */
+@media (min-width: 1101px) {
+    .resource-layout[data-links="pinned"] .recipe-detail {
+        border-radius: var(--island-radius-xl);
+        border-bottom: 1px solid var(--island-border);
+    }
+
+    body.dark-mode .resource-layout[data-links="pinned"] .recipe-detail {
+        border-bottom-color: transparent;
+    }
 }
 
 .recipe-detail-header {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 2px solid var(--island-border);
-    margin-bottom: 2rem;
+    gap: 1rem;
+    padding-bottom: 1.25rem;
 }
 
-.recipe-icon-large {
-    width: 80px;
-    height: 80px;
-    flex-shrink: 0;
-    background: var(--island-bg);
-    border: 3px solid var(--island-accent);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.5rem;
-    overflow: hidden;
-    box-shadow: var(--island-shadow-sm);
+.recipe-art {
+    width: 62px;
+    height: 62px;
 }
 
-.recipe-icon-large img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.recipe-headline {
+    flex: 1;
+    min-width: 0;
 }
 
-.recipe-title-section h3 {
-    font-size: 1.5rem;
+.recipe-title {
+    margin: 0;
+    font-size: 1.375rem;
     font-weight: 700;
+    letter-spacing: -0.015em;
     color: var(--island-text-primary);
-    margin: 0 0 0.75rem 0;
 }
 
-.recipe-meta-badges {
+/* One meta line replaces five badges that carried four numbers and a category
+   the dropdown already shows. */
+.recipe-facts {
+    margin: 3px 0 0;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
     flex-wrap: wrap;
+    gap: 0.4375rem;
+    font-size: var(--island-text-sm);
+    color: var(--island-text-tertiary);
 }
 
-/* `.recipe-category` = `.badge` + brand accent fill exception. */
-.recipe-category {
-    background: var(--island-accent);
-    color: #ffffff;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+.recipe-facts b {
+    color: var(--island-text-secondary);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
 }
 
-/* `.stat-badge` migrated to `.badge.badge--neutral` (CSS unification Wave 1).
-   `.exp` / `.stamina` are colored-outline variants of the same chip. */
-.stat-badge.exp {
-    border: 1px solid var(--island-warning);
-    background: transparent;
-    color: var(--island-warning);
-}
-
-.stat-badge.stamina {
-    border: 1px solid var(--island-stamina);
-    background: transparent;
-    color: var(--island-stamina);
+.recipe-facts .sep {
+    width: 3px;
+    height: 3px;
+    border-radius: var(--island-radius-round);
+    background: currentColor;
+    opacity: 0.45;
 }
 
 .recipe-header-actions {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: var(--island-gap-sm);
+    flex-shrink: 0;
 }
 
-.recipe-header-actions .action-btn {
-    flex: 0;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.75rem;
-}
-
-/* Recipe Flow Layout (Horizontal Input -> Output) */
-.recipe-flow {
-    display: flex;
-    align-items: stretch;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-    padding: 1.5rem;
-    background: var(--island-bg);
-    border: 2px solid var(--island-border);
-    border-radius: 12px;
-}
-
-.flow-section {
-    flex: 1;
-    min-width: 0;
-}
-
-.flow-title {
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: var(--island-text-primary);
-    margin: 0 0 1rem 0;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.flow-arrow {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    padding: 0 1rem;
-    position: relative;
-}
-
-.arrow-head {
-    width: 48px;
-    height: 48px;
-    background: var(--island-accent);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 12px rgba(114, 137, 218, 0.3);
-}
-
-.arrow-head .material-symbols-outlined {
-    font-size: 1.75rem;
-    color: #ffffff;
-}
-
-.flow-stats {
-    display: flex;
-    flex-direction: row;
-    gap: 0.5rem;
-    align-items: center;
-}
-
-.flow-stat {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.25rem 0.625rem;
-    background: var(--island-surface);
-    border: 1px solid var(--island-border);
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 600;
+.item-description {
+    margin: 0.5rem 0 0;
+    font-size: var(--island-text-sm);
     color: var(--island-text-secondary);
+}
+
+/* ==========================================================================
+   3. SECTION HEAD — small uppercase label + rule, the only grouping device
+   ========================================================================== */
+
+.recipe-section {
+    padding-top: 1.375rem;
+}
+
+/* Sections after the first get real air: the rails' bottom row otherwise ran
+   straight into the next section head. */
+.recipe-section + .recipe-section {
+    padding-top: 2.25rem;
+}
+
+.recipe-section-head {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.recipe-section-head h4 {
+    margin: 0;
+    font-size: 0.71875rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--island-text-tertiary);
     white-space: nowrap;
 }
 
-/* Vertical Material List (for flow sections) */
-.material-list-vertical {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+.recipe-section-head .rule {
+    flex: 1;
+    height: 1px;
+    background: var(--island-hair);
 }
 
-.material-item-vertical {
-    display: flex;
-    flex-direction: column;
+/* ==========================================================================
+   4. PRODUCTION RAILS
+   Both modes are always visible, stacked. `.recipe-rails` owns the grid and
+   each rail is `display: contents`, so the tag / input / wire / output columns
+   line up across rows instead of each rail sizing itself independently.
+   ========================================================================== */
+
+.recipe-rails {
+    display: grid;
+    grid-template-columns: 62px auto minmax(70px, 1fr) auto;
     align-items: center;
-    gap: 0.5rem;
-    background: var(--island-surface);
-    border: 1px solid var(--island-border);
-    border-radius: 8px;
-    padding: 0.75rem;
-    transition: var(--island-transition);
-    text-align: center;
-    color: var(--island-text-primary);
+    gap: 0.875rem 0.625rem;
+    /* Capped so a wide panel doesn't stretch the wire across the whole screen —
+       input, time and output should read as one glance, not a journey. */
+    max-width: 780px;
 }
 
-.material-top-row {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+/* Only 재배 has two modes to contrast; everything else drops the tag column. */
+.recipe-rails.is-single {
+    grid-template-columns: auto minmax(70px, 1fr) auto;
 }
 
-.material-item-vertical:hover {
-    border-color: var(--island-border);
-    background: var(--island-surface);
-    transform: translateX(2px);
+.recipe-rail {
+    display: contents;
 }
 
-/* Rarity colors: apply to icon ring instead of full row */
-.material-item-vertical,
-.material-item {
-    border-left: none;
-}
-
-/* Neutralize rarity background tints from global rarity classes */
-.material-item-vertical[class*="rarity-"],
-.material-item[class*="rarity-"] {
-    background: var(--island-surface);
-    color: var(--island-text-primary);
-}
-
-.material-item .material-icon,
-.material-item-vertical .material-icon {
-    border: 2px solid var(--island-border);
-    border-radius: 10px;
-}
-
-.material-item.rarity-1 .material-icon,
-.material-item-vertical.rarity-1 .material-icon { border-color: var(--rarity-n); }
-
-.material-item.rarity-2 .material-icon,
-.material-item-vertical.rarity-2 .material-icon { border-color: var(--island-stamina); }
-
-.material-item.rarity-3 .material-icon,
-.material-item-vertical.rarity-3 .material-icon { border-color: var(--island-points); }
-
-.material-item.rarity-4 .material-icon,
-.material-item-vertical.rarity-4 .material-icon { border-color: var(--island-warning); }
-
-.material-item.rarity-5 .material-icon,
-.material-item-vertical.rarity-5 .material-icon { border-color: var(--island-danger); }
-
-/* Manual Drop Section */
-.manual-drop-section {
-    margin-bottom: 2rem;
-    padding: 1.5rem;
-    background: var(--island-bg);
-    border: 2px solid var(--island-border);
-    border-left: 4px solid var(--island-points);
-    border-radius: 12px;
-}
-
-.manual-drop-section.category1-manual {
-    border-left-color: var(--island-success);
-}
-
-.manual-drop-section.category2-manual {
-    border-left-color: var(--island-stamina);
-}
-
-.manual-flow {
-    margin-top: 1rem;
-    padding: 1rem;
-    background: var(--island-surface);
-    border-radius: 8px;
-}
-
-.manual-drop-title {
-    font-size: 0.875rem;
+.recipe-rail-tag {
+    font-size: 0.6875rem;
     font-weight: 700;
-    color: var(--island-text-primary);
-    margin: 0 0 1rem 0;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.manual-time {
-    font-size: 0.75rem;
-    font-weight: 600;
+    letter-spacing: 0.01em;
     color: var(--island-text-tertiary);
 }
 
-/* Keep old horizontal material list for modals */
-.material-list {
-    --grid-min: 200px;
-    --grid-gap: var(--island-spacing-sm);
-}
-
-.material-item {
+/* A side of the rail holds every ingredient/product, so it wraps rather than
+   forcing the grid wider on multi-ingredient 요리 recipes. */
+.recipe-node {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    background: var(--island-surface);
-    border: 1px solid var(--island-border);
-    border-radius: 8px;
-    padding: 0.75rem;
-    transition: var(--island-transition);
-    color: var(--island-text-primary);
-}
-
-.material-item:hover {
-    border-color: var(--island-border);
-    background: var(--island-surface);
-    transform: translateY(var(--card-lift));
-}
-
-/* Rarity colors defined below with vertical items */
-
-.material-icon {
-    width: 40px;
-    height: 40px;
-    flex-shrink: 0;
-    background: var(--island-surface);
-    border: 1px solid var(--island-border);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.25rem;
-    overflow: hidden;
-}
-
-.material-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.material-info {
-    flex: 1;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
     min-width: 0;
 }
 
-.material-name {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--island-text-primary);
-    width: 100%;
+.recipe-node-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6875rem;
+    min-width: 0;
 }
 
-.material-quantity {
-    font-size: 0.875rem;
+.recipe-node .item-frame {
+    width: 44px;
+    height: 44px;
+}
+
+.recipe-node.out {
+    justify-content: flex-end;
+}
+
+.recipe-node.out .recipe-node-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+.recipe-node-qty {
+    font-size: 1rem;
     font-weight: 700;
-    color: var(--island-accent);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--island-text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.recipe-node-name {
+    font-size: var(--island-text-xs);
+    color: var(--island-text-tertiary);
     white-space: nowrap;
+}
+
+/* 채집 recipes consume nothing — hold the column rather than collapse the grid. */
+.recipe-node.is-empty {
+    justify-content: center;
+    min-width: 42px;
+    color: var(--island-text-tertiary);
+}
+
+.recipe-node-stack {
+    min-width: 0;
+}
+
+/* The wire: a hairline with a CSS arrowhead and a surface-coloured badge
+   floating on it. Replaces the bordered flow box + filled accent circle. */
+.recipe-wire {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+}
+
+.recipe-wire::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 12px;
+    top: 50%;
+    height: 1px;
+    background: var(--island-border);
+}
+
+.recipe-wire::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 0;
+    height: 0;
+    transform: translateY(-50%);
+    border-left: 8px solid var(--island-text-tertiary);
+    border-top: 4.5px solid transparent;
+    border-bottom: 4.5px solid transparent;
+}
+
+.recipe-wire-badge {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--island-gap-sm);
+    padding: 0 0.625rem;
+    background: var(--island-surface);
+    font-size: var(--island-text-xs);
+    color: var(--island-text-secondary);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.recipe-wire-badge b {
+    color: var(--island-text-primary);
+    font-weight: 700;
+}
+
+.recipe-wire-badge .dotsep {
+    width: 3px;
+    height: 3px;
+    border-radius: var(--island-radius-round);
+    background: var(--island-text-tertiary);
+    opacity: 0.6;
 }
 
 .no-materials {
-    color: var(--island-text-tertiary);
-    font-style: italic;
-    font-size: 0.875rem;
     margin: 0;
-    padding: 1rem;
-    background: var(--island-bg);
-    border-radius: 8px;
-    text-align: center;
+    font-size: var(--island-text-sm);
+    color: var(--island-text-tertiary);
 }
 
-/* Recipe Actions */
+/* ==========================================================================
+   5. RECIPE ACTIONS
+   ========================================================================== */
+
 .recipe-actions {
     display: flex;
-    gap: 0.75rem;
-    padding-top: 1.5rem;
-    border-top: 2px solid var(--island-border);
+    flex-wrap: wrap;
+    gap: var(--island-gap-sm);
+    margin-top: 1.375rem;
+    padding-top: 1.375rem;
+    border-top: 1px solid var(--island-hair);
 }
 
 .action-btn {
-    flex: 1;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.875rem 1rem;
-    background: var(--island-bg);
-    border: 2px solid var(--island-border);
-    border-radius: 8px;
-    color: var(--island-text-primary);
-    font-size: 0.875rem;
+    gap: 0.4375rem;
+    padding: 0.5rem 0.8125rem;
+    background: transparent;
+    border: 1px solid var(--island-hair);
+    border-radius: var(--island-radius-md);
+    color: var(--island-text-secondary);
+    font: inherit;
+    font-size: var(--island-text-xs);
     font-weight: 600;
     cursor: pointer;
     transition: var(--island-transition);
 }
 
 .action-btn:hover {
-    border-color: var(--island-accent);
-    background: var(--island-accent-light);
-    color: var(--island-accent);
-}
-
-.action-btn.primary {
-    background: var(--island-accent);
-    border-color: var(--island-accent);
-    color: #ffffff;
-}
-
-.action-btn.primary:hover {
-    background: var(--island-accent-hover);
-    transform: translateY(-2px);
+    color: var(--island-text-primary);
+    background: var(--island-surface-hover);
 }
 
 .action-btn .material-symbols-outlined {
-    font-size: 1.125rem;
+    font-size: var(--island-icon-xs);
+    opacity: 0.65;
+}
+
+.action-btn .count {
+    opacity: 0.6;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   6. 시즌템 SOURCES
+   Synthetic seasonal entries have no rails — just where the item comes from.
+   ========================================================================== */
+
+.seasonal-source {
+    display: flex;
+    align-items: center;
+    gap: var(--island-gap-sm);
+    padding: 0.4375rem 0.5rem;
+    font-size: var(--island-text-sm);
+    color: var(--island-text-secondary);
+}
+
+.seasonal-source .material-symbols-outlined {
+    font-size: var(--island-icon-xs);
+    color: var(--island-text-tertiary);
 }

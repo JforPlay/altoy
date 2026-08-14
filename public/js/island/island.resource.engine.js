@@ -6,7 +6,10 @@
  * Registers as window.ResourceModule.
  */
 
-import { fetchJSON, formatTime, openModal, closeModal, setupModal, renderStatus, DATA_FOR_TOY_BASE } from '../utils.js';
+import {
+    fetchJSON, formatTime, openModal, closeModal, setupModal, renderStatus,
+    getStorageItem, setStorageItem
+} from '../utils.js';
 import {
     CONSTANTS,
     setup as setupTree,
@@ -18,11 +21,20 @@ import {
     categoryNames,
     setup as setupRender,
     renderCategoryFilter, renderRecipeList, renderRecipeDetail,
-    renderEmptyDetail, renderEmptyChain,
+    renderEmptyDetail, renderEmptyChain, itemImg,
     renderForestTree, renderForestDependencies
 } from './island.resource.render.js';
 
 'use strict';
+
+/**
+ * Where the 관련있는 조합식 panel sits: 'inline' (under the detail, the default) or
+ * 'pinned' (its own right-hand column). A UI-only preference, so plain storage
+ * rather than syncedStorage. Pinned only takes effect above 1100px — the CSS
+ * falls back to inline below that instead of hiding the panel.
+ */
+const STORAGE_KEY_LINKS_POSITION = 'island-links-position';
+const LINKS_POSITIONS = ['inline', 'pinned'];
 
 // ===== State =====
 const state = {
@@ -38,6 +50,7 @@ const state = {
     selectedRecipe: null,
     selectedCategory: '1',
     searchQuery: '',
+    linksPosition: 'inline', // 관련있는 조합식 panel placement — see STORAGE_KEY_LINKS_POSITION
     treeCache: {}          // Cache for dependency trees
 };
 
@@ -80,6 +93,9 @@ async function init(sharedData) {
         // Build dependency graph using shared function
         state.dependencyGraph = window.IslandEngine.buildDependencyGraph(state.recipes);
 
+        state.linksPosition = loadLinksPosition();
+        applyLinksPosition();
+
         // Build seasonal items category (must be after dependency graph)
         buildSeasonalItemsCategory();
 
@@ -100,6 +116,33 @@ async function init(sharedData) {
         console.error('[Resource] Initialization failed:', error);
         window.IslandEngine.showError('Failed to load resource data');
     }
+}
+
+// ===== 관련있는 조합식 위치 preference =====
+
+/** Stored placement, falling back to inline for anything unrecognised. */
+function loadLinksPosition() {
+    const stored = getStorageItem(STORAGE_KEY_LINKS_POSITION, 'inline');
+    return LINKS_POSITIONS.includes(stored) ? stored : 'inline';
+}
+
+/** Mirror the placement onto the grid element the CSS keys off. */
+function applyLinksPosition() {
+    document.querySelector('.resource-layout')?.setAttribute('data-links', state.linksPosition);
+}
+
+function setLinksPosition(next) {
+    if (!LINKS_POSITIONS.includes(next) || next === state.linksPosition) return;
+
+    state.linksPosition = next;
+    setStorageItem(STORAGE_KEY_LINKS_POSITION, next);
+    applyLinksPosition();
+
+    document.querySelectorAll('#links-position-toggle [data-links-position]').forEach(btn => {
+        const isOn = btn.dataset.linksPosition === next;
+        btn.classList.toggle('is-active', isOn);
+        btn.setAttribute('aria-pressed', String(isOn));
+    });
 }
 
 /**
@@ -194,6 +237,13 @@ function setupEventListeners() {
     const forestButton = document.getElementById('recipe-forest-btn');
     forestButton?.addEventListener('click', showRecipeForest);
 
+    // 관련있는 조합식 위치 (inline / pinned)
+    const linksToggle = document.getElementById('links-position-toggle');
+    linksToggle?.addEventListener('click', (e) => {
+        const button = e.target.closest('[data-links-position]');
+        if (button) setLinksPosition(button.dataset.linksPosition);
+    });
+
     // Search with debouncing
     const searchInput = document.getElementById('recipe-search');
     let searchTimeout;
@@ -253,47 +303,6 @@ function setupEventListeners() {
                     case 'select-tree-recipe':   selectRecipeFromTree(recipeId); return;
                     case 'select-modal-recipe':  selectRecipeFromModal(recipeId); return;
                 }
-            }
-        }
-
-        const seasonalCard = e.target.closest('.seasonal-recipe-card');
-        if (seasonalCard && seasonalCard.dataset.recipeId) {
-            const recipeId = parseInt(seasonalCard.dataset.recipeId);
-            const recipe = findRecipeById(recipeId);
-            if (recipe) {
-                const category = findRecipeCategoryById(recipeId);
-                if (category && category !== state.selectedCategory) {
-                    state.selectedCategory = category;
-                    const categorySelect = document.getElementById('recipe-category-select');
-                    if (categorySelect) {
-                        categorySelect.value = category;
-                    }
-                    renderRecipeList();
-                }
-                state.selectedRecipe = recipe;
-                renderRecipeList();
-                renderRecipeDetail(recipe);
-            }
-        }
-
-        // Handle clicks on usage list items
-        const usageCard = e.target.closest('.seasonal-usage-list .tree-node-card');
-        if (usageCard && usageCard.dataset.recipeId) {
-            const recipeId = parseInt(usageCard.dataset.recipeId);
-            const recipe = findRecipeById(recipeId);
-            if (recipe) {
-                const category = findRecipeCategoryById(recipeId);
-                if (category && category !== state.selectedCategory) {
-                    state.selectedCategory = category;
-                    const categorySelect = document.getElementById('recipe-category-select');
-                    if (categorySelect) {
-                        categorySelect.value = category;
-                    }
-                    renderRecipeList();
-                }
-                state.selectedRecipe = recipe;
-                renderRecipeList();
-                renderRecipeDetail(recipe);
             }
         }
     });
@@ -443,7 +452,7 @@ function showDependencyModal(title, recipes, direction, sourceRecipe) {
                     <div class="modal-recipe-group">
                         <div class="modal-item-header">
                             <div class="modal-item-icon">
-                                ${itemInfo.icon ? `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${itemInfo.icon.split('/').pop()}.webp" alt="${itemInfo.name}">` : '📦'}
+                                ${itemImg(itemInfo)}
                             </div>
                             <div class="modal-item-info">
                                 <h4>${itemInfo.name}</h4>
@@ -456,13 +465,13 @@ function showDependencyModal(title, recipes, direction, sourceRecipe) {
             return `
                                     <div class="modal-recipe-card" data-recipe-id="${recipe.id}">
                                         <div class="modal-recipe-icon">
-                                            ${recipeItem.icon ? `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${recipeItem.icon.split('/').pop()}.webp" alt="${recipeItem.name}">` : '📦'}
+                                            ${itemImg(recipeItem)}
                                         </div>
                                         <div class="modal-recipe-info">
                                             <div class="modal-recipe-name">${recipe.name || recipeItem.name}</div>
                                             <div class="modal-recipe-meta">
-                                                <span>⏱ ${formatTime(recipe.workload)}</span>
-                                                <span>⚡ ${recipe.ship_exp}</span>
+                                                <span>${formatTime(recipe.workload)}</span>
+                                                <span>${recipe.ship_exp} EXP</span>
                                                 <span class="modal-recipe-category">${categoryNames[findRecipeCategoryById(recipe.id)] || '알 수 없음'}</span>
                                             </div>
                                         </div>
@@ -503,12 +512,12 @@ function showRecipeForest() {
     const categorySections = Object.entries(state.recipes).map(([categoryId, recipes]) => `
         <details class="forest-category" data-category="${categoryId}" open>
             <summary class="forest-category-header">
-                <span class="material-symbols-outlined">widgets</span>
+                <span class="material-symbols-outlined">chevron_right</span>
                 ${categoryNames[categoryId] || '카테고리'}
-                <span class="forest-category-count">(${recipes.length} recipes)</span>
+                <span class="forest-category-count">${recipes.length}개</span>
             </summary>
             <div class="forest-category-body">
-                ${recipes.map(recipe => renderForestTree(recipe, categoryId)).join('')}
+                ${recipes.map(recipe => renderForestTree(recipe)).join('')}
             </div>
         </details>
     `).join('');

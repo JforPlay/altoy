@@ -1,106 +1,106 @@
 /* ==========================================================================
-   6. RESPONSIVE DESIGN
+   ISLAND RESOURCE — RESPONSIVE
+
+   The 연결 column is never hidden. Its pinned placement is opt-in above 1100px
+   (island.resource.layout.css); below that the layout falls back to inline, so
+   narrow screens FOLD the panel instead of dropping it the way the old
+   `.dependency-chain { display: none }` rule did.
    ========================================================================== */
 
-@media (max-width: 1400px) {
+@media (max-width: 1280px) {
     .resource-layout {
-        grid-template-columns: 320px 1fr 350px;
-        gap: 1.25rem;
-    }
-
-    .recipe-stats {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 1200px) {
-    .resource-layout {
-        grid-template-columns: 300px 1fr;
-        gap: 1.5rem;
-    }
-
-    .dependency-chain {
-        display: none;
-    }
-
-    .material-list {
-        --grid-min: 180px;
+        grid-template-columns: 274px minmax(0, 1fr);
+        column-gap: 1rem;
     }
 }
 
 @media (max-width: 768px) {
     .resource-layout {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+            "pick"
+            "tools"
+            "list"
+            "detail"
+            "links";
     }
 
-    .recipe-detail {
-        position: static;
+    .filter-category {
+        margin-bottom: 0.625rem;
     }
 
     .recipe-list {
-        max-height: 500px;
+        margin-bottom: 1rem;
+        max-height: 380px;
     }
 
-    .resource-filter-controls {
-        grid-template-columns: 1fr;
+    .recipe-detail {
+        padding: 1.25rem 1.125rem 1.125rem;
+        min-height: 0;
     }
 
-    /* Stack flow layout vertically on mobile */
-    .recipe-flow {
-        flex-direction: column;
-        gap: 1.5rem;
+    .dependency-chain {
+        padding: 0 1.125rem 1.25rem;
     }
 
-    .flow-arrow {
-        flex-direction: row;
-        padding: 1rem 0;
+    .resource-filter-controls .filter-field.grow {
+        flex-basis: 100%;
     }
 
-    .arrow-head {
-        transform: rotate(90deg);
+    /* Give the rail its own row for the mode tag so input → output keeps the
+       full width. `display: contents` on the rail means the tag can span. */
+    .recipe-rails {
+        grid-template-columns: auto minmax(40px, 1fr) auto;
+        gap: 1.125rem 0.5rem;
     }
 
-    .flow-stats {
-        flex-direction: row;
+    .recipe-rail-tag {
+        grid-column: 1 / -1;
+        margin-bottom: -0.75rem;
     }
 
-    .material-list {
-        grid-template-columns: 1fr;
+    .recipe-node .item-frame {
+        width: 36px;
+        height: 36px;
     }
 
-    .recipe-actions {
-        flex-direction: column;
+    .recipe-node-name {
+        white-space: normal;
+    }
+
+    .recipe-detail-header {
+        gap: 0.875rem;
+    }
+
+    .recipe-art {
+        width: 52px;
+        height: 52px;
+    }
+
+    .recipe-title {
+        font-size: 1.25rem;
     }
 }
 
 @media (max-width: 480px) {
-    .recipe-detail {
-        padding: 1.5rem;
+    .recipe-header-actions {
+        display: none;
     }
 
-    .recipe-detail-header {
-        flex-direction: column;
-        align-items: flex-start;
+    .recipe-wire-badge {
+        padding: 0 0.375rem;
+        font-size: 0.6875rem;
     }
 
-    .recipe-meta-badges {
-        width: 100%;
-    }
-
-    .recipe-flow {
-        padding: 1rem;
-    }
-
-    .manual-drop-section {
-        padding: 1rem;
+    .recipe-node {
+        gap: 0.5rem;
     }
 }
 
-/* Scrollbar styling now in island.style.css (unified) */
-/* Loading state styling now in island.style.css (unified) */
+/* ==========================================================================
+   MODAL RESPONSIVE
+   ========================================================================== */
 
-/* Modal Responsive */
 @media (max-width: 768px) {
     .recipe-modal {
         padding: 1rem;
@@ -136,12 +136,5 @@
     .modal-recipe-meta {
         flex-direction: column;
         gap: 0.5rem;
-    }
-}
-
-/* Responsive: Stack columns on smaller screens */
-@media (max-width: 768px) {
-    .cost-comparison-grid {
-        grid-template-columns: 1fr;
     }
 }
