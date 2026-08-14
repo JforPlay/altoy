@@ -71118,7 +71118,7 @@
         ],
         "attribute_2": "cannon",
         "damage": "72 x 3",
-        "descrip": "{namecode:83}급 전함이 장비하는 460mm 함포",
+        "descrip": "야마토급 전함이 장비하는 460mm 함포",
         "equip_info": [
             1,
             2,
@@ -73943,7 +73943,7 @@
         ],
         "attribute_2": "torpedo",
         "damage": "70 x 5",
-        "descrip": "{namecode:18}급 구축함에 탑재된 5연장 610mm 어뢰",
+        "descrip": "시마카제급 구축함에 탑재된 5연장 610mm 어뢰",
         "equip_info": [
             1,
             2,
@@ -139101,7 +139101,7 @@
         "icon": "1",
         "id": 80231,
         "label": [],
-        "name": "专属弹幕-{namecode:532}I",
+        "name": "专属弹幕-프린츠 오이겐(μ장비)I",
         "nationality": 0,
         "part_main": [
             1,
@@ -139136,7 +139136,7 @@
         "base": 80231,
         "hidden_skill_id": [],
         "id": 80232,
-        "name": "专属弹幕-{namecode:532}II",
+        "name": "专属弹幕-프린츠 오이겐(μ장비)II",
         "weapon_id": [
             170442
         ]
@@ -141722,7 +141722,7 @@
         ],
         "attribute_2": "cannon",
         "damage": "50 x 6",
-        "descrip": "双联装203mmSKC主炮，{namecode:425}级重巡主炮，重巡可以使用",
+        "descrip": "双联装203mmSKC主炮，아드미랄 히퍼级重巡主炮，重巡可以使用",
         "equip_info": [
             1,
             2,

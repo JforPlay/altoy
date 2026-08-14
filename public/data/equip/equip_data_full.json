@@ -186162,7 +186162,7 @@
             "AP"
         ],
         "tech": 0,
-        "descrip": "{namecode:83}급 전함이 장비하는 460mm 함포",
+        "descrip": "야마토급 전함이 장비하는 460mm 함포",
         "ammo": 1,
         "ammo_icon": [
             2
@@ -193004,7 +193004,7 @@
             "QUINT"
         ],
         "tech": 0,
-        "descrip": "{namecode:18}급 구축함에 탑재된 5연장 610mm 어뢰",
+        "descrip": "시마카제급 구축함에 탑재된 5연장 610mm 어뢰",
         "ammo": 5,
         "ammo_icon": [],
         "ammo_info": [

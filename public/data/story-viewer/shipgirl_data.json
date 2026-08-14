@@ -4892,11 +4892,11 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301838.webp"
     },
     "301840": {
-        "name": "{namecode:27}",
+        "name": "스즈츠키",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301840.webp"
     },
     "301841": {
-        "name": "{namecode:27}와 함께 바다로!",
+        "name": "스즈츠키와 함께 바다로!",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301841.webp"
     },
     "301842": {
@@ -4976,7 +4976,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301911.webp"
     },
     "301920": {
-        "name": "{namecode:307}",
+        "name": "타에카제",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301920.webp"
     },
     "301921": {
@@ -4984,7 +4984,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301921.webp"
     },
     "301940": {
-        "name": "{namecode:310}",
+        "name": "후지나미",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301940.webp"
     },
     "301941": {
@@ -5212,7 +5212,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/302261.webp"
     },
     "302270": {
-        "name": "{namecode:306}",
+        "name": "미나세",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/302270.webp"
     },
     "302271": {
@@ -5220,7 +5220,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/302271.webp"
     },
     "302280": {
-        "name": "{namecode:312}",
+        "name": "키즈",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/302280.webp"
     },
     "302281": {
@@ -5228,7 +5228,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/302281.webp"
     },
     "302290": {
-        "name": "{namecode:311}",
+        "name": "나요로",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/302290.webp"
     },
     "302291": {
@@ -5372,7 +5372,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/303131.webp"
     },
     "303140": {
-        "name": "{namecode:69}",
+        "name": "초카이",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/303140.webp"
     },
     "303141": {
@@ -5392,7 +5392,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/303172.webp"
     },
     "303180": {
-        "name": "{namecode:60}",
+        "name": "쿠마노",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/303180.webp"
     },
     "303181": {
@@ -5420,7 +5420,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/303192.webp"
     },
     "303200": {
-        "name": "{namecode:305}",
+        "name": "아사마",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/303200.webp"
     },
     "303201": {
@@ -5696,7 +5696,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/305118.webp"
     },
     "305120": {
-        "name": "{namecode:80}",
+        "name": "키이",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/305120.webp"
     },
     "305121": {
@@ -5732,7 +5732,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/305143.webp"
     },
     "305160": {
-        "name": "{namecode:304}",
+        "name": "오미",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/305160.webp"
     },
     "305161": {
@@ -5744,7 +5744,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/305170.webp"
     },
     "306010": {
-        "name": "{namecode:85}",
+        "name": "히요",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/306010.webp"
     },
     "306020": {
@@ -5804,7 +5804,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/306071.webp"
     },
     "306080": {
-        "name": "{namecode:103}",
+        "name": "치토세",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/306080.webp"
     },
     "306081": {
@@ -5820,7 +5820,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/306083.webp"
     },
     "306090": {
-        "name": "{namecode:104}",
+        "name": "치요다",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/306090.webp"
     },
     "306091": {
@@ -5984,7 +5984,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307078.webp"
     },
     "307080": {
-        "name": "{namecode:182}",
+        "name": "시나노 ",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307080.webp"
     },
     "307081": {
@@ -6056,7 +6056,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307158.webp"
     },
     "307160": {
-        "name": "{namecode:302}",
+        "name": "하쿠호",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307160.webp"
     },
     "307161": {
@@ -6064,7 +6064,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307161.webp"
     },
     "307170": {
-        "name": "{namecode:209}",
+        "name": "운류",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307170.webp"
     },
     "307171": {
@@ -6168,7 +6168,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/317011.webp"
     },
     "317020": {
-        "name": "{namecode:303}",
+        "name": "이404",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/317020.webp"
     },
     "317021": {
@@ -6180,7 +6180,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/317022.webp"
     },
     "319010": {
-        "name": "{namecode:188}",
+        "name": "카시노",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/319010.webp"
     },
     "319011": {
@@ -6396,7 +6396,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401131.webp"
     },
     "401140": {
-        "name": "{namecode:560}",
+        "name": "Z14",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401140.webp"
     },
     "401141": {
@@ -6404,7 +6404,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401141.webp"
     },
     "401150": {
-        "name": "{namecode:561}",
+        "name": "Z15",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401150.webp"
     },
     "401151": {
@@ -6540,7 +6540,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401360.webp"
     },
     "401430": {
-        "name": "{namecode:537}",
+        "name": "Z43",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401430.webp"
     },
     "401431": {
@@ -6576,7 +6576,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401466.webp"
     },
     "401470": {
-        "name": "{namecode:494}",
+        "name": "Z47",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401470.webp"
     },
     "401471": {
@@ -6912,7 +6912,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/403160.webp"
     },
     "403170": {
-        "name": "{namecode:559}",
+        "name": "프린츠 모리츠",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/403170.webp"
     },
     "403171": {
@@ -7084,7 +7084,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/405060.webp"
     },
     "405070": {
-        "name": "{namecode:557}",
+        "name": "괴츠 폰 베를리힝겐",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/405070.webp"
     },
     "405071": {
@@ -7324,7 +7324,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/408121.webp"
     },
     "408130": {
-        "name": "{namecode:536}",
+        "name": "U-31",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/408130.webp"
     },
     "408131": {
@@ -7340,7 +7340,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/408141.webp"
     },
     "408150": {
-        "name": "{namecode:558}",
+        "name": "U-2501",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/408150.webp"
     },
     "408151": {
@@ -9384,7 +9384,7 @@
         "icon": null
     },
     "900192": {
-        "name": "{namecode:66}",
+        "name": "타카오",
         "icon": null
     },
     "900193": {
@@ -9768,7 +9768,7 @@
         "icon": null
     },
     "900298": {
-        "name": "{namecode:161}",
+        "name": "아마기 ",
         "icon": null
     },
     "900300": {
@@ -9828,7 +9828,7 @@
         "icon": null
     },
     "900314": {
-        "name": "{namecode:93}·META",
+        "name": "소류·META",
         "icon": null
     },
     "900315": {
@@ -9840,7 +9840,7 @@
         "icon": null
     },
     "900317": {
-        "name": "{namecode:195}",
+        "name": "샌프란시스코",
         "icon": null
     },
     "900318": {
@@ -9892,11 +9892,11 @@
         "icon": null
     },
     "900330": {
-        "name": "{namecode:84}",
+        "name": "무사시",
         "icon": null
     },
     "900331": {
-        "name": "{namecode:39}·META",
+        "name": "진츠·META",
         "icon": null
     },
     "900332": {
@@ -9916,11 +9916,11 @@
         "icon": null
     },
     "900350": {
-        "name": "{namecode:39}",
+        "name": "진츠",
         "icon": null
     },
     "900351": {
-        "name": "{namecode:199}",
+        "name": "뉴저지",
         "icon": null
     },
     "900352": {
@@ -9956,11 +9956,11 @@
         "icon": null
     },
     "900386": {
-        "name": "{namecode:50}",
+        "name": "노시로 ",
         "icon": null
     },
     "900387": {
-        "name": "{namecode:175}",
+        "name": "스루가 ",
         "icon": null
     },
     "900388": {
@@ -9984,7 +9984,7 @@
         "icon": null
     },
     "900393": {
-        "name": "{namecode:191}",
+        "name": "히류·META",
         "icon": null
     },
     "900394": {
@@ -10004,7 +10004,7 @@
         "icon": null
     },
     "900398": {
-        "name": "{namecode:486}",
+        "name": "오딘",
         "icon": null
     },
     "900399": {
@@ -10012,7 +10012,7 @@
         "icon": null
     },
     "900400": {
-        "name": "{namecode:484}",
+        "name": "프린츠 루프레히트",
         "icon": null
     },
     "900401": {
@@ -10128,7 +10128,7 @@
         "icon": null
     },
     "900429": {
-        "name": "{namecode:448}",
+        "name": "엠덴",
         "icon": null
     },
     "900430": {
@@ -10148,11 +10148,11 @@
         "icon": null
     },
     "900434": {
-        "name": "{namecode:81}",
+        "name": "토사",
         "icon": null
     },
     "900435": {
-        "name": "{namecode:455}",
+        "name": "프린츠 아달베르트",
         "icon": null
     },
     "900436": {
@@ -10164,7 +10164,7 @@
         "icon": null
     },
     "900438": {
-        "name": "{namecode:297}",
+        "name": "나토리",
         "icon": null
     },
     "900439": {
@@ -10192,31 +10192,31 @@
         "icon": null
     },
     "900445": {
-        "name": "{namecode:161}",
+        "name": "아마기 ",
         "icon": null
     },
     "900446": {
-        "name": "{namecode:91}",
+        "name": "아카기",
         "icon": null
     },
     "900447": {
-        "name": "{namecode:92}",
+        "name": "카가",
         "icon": null
     },
     "900448": {
-        "name": "{namecode:91}",
+        "name": "아카기",
         "icon": null
     },
     "900449": {
-        "name": "{namecode:91}",
+        "name": "아카기",
         "icon": null
     },
     "900450": {
-        "name": "{namecode:91}",
+        "name": "아카기",
         "icon": null
     },
     "900451": {
-        "name": "{namecode:91}",
+        "name": "아카기",
         "icon": null
     },
     "900452": {
@@ -10224,7 +10224,7 @@
         "icon": null
     },
     "900453": {
-        "name": "{namecode:188}",
+        "name": "카시노",
         "icon": null
     },
     "900454": {
@@ -10232,11 +10232,11 @@
         "icon": null
     },
     "900455": {
-        "name": "{namecode:484}",
+        "name": "프린츠 루프레히트",
         "icon": null
     },
     "900456": {
-        "name": "{namecode:90}",
+        "name": "류조",
         "icon": null
     },
     "900457": {
@@ -10244,7 +10244,7 @@
         "icon": null
     },
     "900458": {
-        "name": "{namecode:84}",
+        "name": "무사시",
         "icon": null
     },
     "900459": {
@@ -10268,7 +10268,7 @@
         "icon": null
     },
     "900464": {
-        "name": "{namecode:295}",
+        "name": "오와리",
         "icon": null
     },
     "900465": {
@@ -10292,15 +10292,15 @@
         "icon": null
     },
     "900470": {
-        "name": "{namecode:199}",
+        "name": "뉴저지",
         "icon": null
     },
     "900471": {
-        "name": "{namecode:523}",
+        "name": "장 바르",
         "icon": null
     },
     "900472": {
-        "name": "{namecode:479}",
+        "name": "마인츠",
         "icon": null
     },
     "900473": {
@@ -10384,7 +10384,7 @@
         "icon": null
     },
     "900509": {
-        "name": "{namecode:531}",
+        "name": "프리드리히 카를",
         "icon": null
     },
     "900510": {
@@ -10392,7 +10392,7 @@
         "icon": null
     },
     "900511": {
-        "name": "{namecode:189}",
+        "name": "하츠즈키 ",
         "icon": null
     },
     "900512": {
@@ -10456,7 +10456,7 @@
         "icon": null
     },
     "900527": {
-        "name": "{namecode:294}",
+        "name": "운젠",
         "icon": null
     },
     "900528": {
@@ -10500,19 +10500,19 @@
         "icon": null
     },
     "900539": {
-        "name": "{namecode:311}",
+        "name": "나요로",
         "icon": null
     },
     "900540": {
-        "name": "{namecode:556}",
+        "name": "엘베·META",
         "icon": null
     },
     "900541": {
-        "name": "{namecode:555}",
+        "name": "쾨니히스베르크·META",
         "icon": null
     },
     "900542": {
-        "name": "{namecode:481}",
+        "name": "아우구스트 폰 파르제팔",
         "icon": null
     },
     "900543": {
@@ -10520,7 +10520,7 @@
         "icon": null
     },
     "900544": {
-        "name": "{namecode:448}",
+        "name": "엠덴",
         "icon": null
     },
     "900545": {
@@ -11016,7 +11016,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9702090.webp"
     },
     "9702100": {
-        "name": "{namecode:423}·META",
+        "name": "쾰른·META",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9702100.webp"
     },
     "9702110": {
@@ -11024,11 +11024,11 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9702110.webp"
     },
     "9702120": {
-        "name": "{namecode:421}·META",
+        "name": "쾨니히스베르크·META",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9702120.webp"
     },
     "9702130": {
-        "name": "{namecode:446}·META",
+        "name": "뉘른베르크·META",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9702130.webp"
     },
     "9703010": {
@@ -11136,7 +11136,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9706040.webp"
     },
     "9706050": {
-        "name": "{namecode:468}·META",
+        "name": "엘베·META",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9706050.webp"
     },
     "9707010": {
