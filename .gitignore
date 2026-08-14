@@ -30,6 +30,7 @@ public/data/story-viewer/main_story_chapters/
 public/data/story-viewer/main_story_index.json
 public/data/story-viewer/event_story_index.json
 public/data/story-viewer/event_story_chunks/
+public/data/story-viewer/story_actor_index.json
 public/data/skin/skin_characters/
 public/data/skin/skin_voiceline_index.json
 public/data/sim/weapon_chunks/

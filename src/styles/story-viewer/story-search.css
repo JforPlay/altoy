@@ -1,0 +1,247 @@
+/* =========================================================================
+   story-search.css — 함순이별 스토리 찾기 (two-pane character → memories)
+
+   Structure only: the page leans on the global component primitives
+   (.page-header, .section-title, .filter-bar, .badge, .page-status).
+   ========================================================================= */
+
+/* Base color + line-height are NOT global and this page skips common.css. */
+.story-search-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-lg, 1.5rem) var(--spacing-md, 1rem) var(--spacing-xl, 2rem);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.story-search-layout {
+    display: grid;
+    grid-template-columns: minmax(240px, 300px) 1fr;
+    gap: var(--spacing-lg, 1.5rem);
+    align-items: start;
+}
+
+/* ===== Sidebar: search + character list ===== */
+
+.story-search-sidebar {
+    position: sticky;
+    top: var(--spacing-md, 1rem);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm, 0.5rem);
+    /* Header + page padding, so the list scrolls instead of the page. */
+    max-height: calc(100vh - 6rem);
+    min-width: 0;
+}
+
+.story-search-bar {
+    flex-wrap: nowrap;
+}
+
+.story-search-input {
+    flex: 1;
+    min-width: 0;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.story-search-input:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 3px var(--primary-alpha-20);
+}
+
+.story-search-label {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+.story-search-ships {
+    flex: 1;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.story-search-ship {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 0.4rem 0.5rem;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: none;
+    color: var(--text-primary);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.story-search-ship:hover {
+    background: var(--bg-secondary);
+}
+
+/* Filled selected state: --accent-blue, never --primary-color (which goes
+   silver in dark mode on default-theme pages and swallows the white text). */
+.story-search-ship[aria-pressed='true'] {
+    background: var(--accent-blue);
+    color: #fff;
+}
+
+/* The count inverts against its row instead of echoing it: blue chip on a plain
+   row, near-black chip once the row itself turns blue. A same-hue pair (blue on
+   blue, or a translucent-white chip on blue) reads as one blob at a glance.
+   Both fills carry #fff — --accent-blue is stable-hue, and the selected chip is
+   a black alpha OVER that blue, so contrast holds in light and dark alike. */
+.story-search-count {
+    flex-shrink: 0;
+    min-width: 1.75rem;
+    justify-content: center;
+    background: var(--accent-blue);
+    color: #fff;
+}
+
+.story-search-ship[aria-pressed='true'] .story-search-count {
+    background: var(--overlay-intense);
+    color: #fff;
+}
+
+.story-search-ship-icon {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    background: var(--bg-secondary);
+}
+
+.story-search-ship-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    font-size: 0.9rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ===== Results: memories grouped by source ===== */
+
+.story-search-results {
+    min-width: 0;
+}
+
+.story-search-results-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md, 1rem);
+    margin-bottom: var(--spacing-md, 1rem);
+}
+
+.story-search-results-portrait {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    object-fit: cover;
+    background: var(--bg-secondary);
+}
+
+.story-search-results-meta {
+    min-width: 0;
+}
+
+.story-search-results-title {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+.story-search-results-count {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.story-search-results-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-top: 0.25rem;
+}
+
+.story-search-group {
+    margin-bottom: var(--spacing-lg, 1.5rem);
+}
+
+.story-search-memories {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* The <li> is the grid item and stretches to the tallest box in its row; the
+   anchor fills it as a flex child. NOT `height: 100%` on the anchor — a
+   percentage there resolves against a row height that was itself measured
+   without it, so a wrapped title overflowed its <li> by ~18px and swallowed the
+   row gap below it. */
+.story-search-memories li {
+    display: flex;
+}
+
+.story-search-memory {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.story-search-memory:hover {
+    border-color: var(--accent-blue);
+    box-shadow: 0 2px 6px var(--shadow-color);
+}
+
+.story-search-memory-title {
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+
+.story-search-memory-source {
+    overflow: hidden;
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ===== Mobile: stack, and let the whole page scroll ===== */
+
+@media (max-width: 768px) {
+    .story-search-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .story-search-sidebar {
+        position: static;
+        max-height: none;
+    }
+
+    .story-search-ships {
+        max-height: 40vh;
+    }
+}

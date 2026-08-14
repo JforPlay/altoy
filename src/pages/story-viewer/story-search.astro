@@ -1,0 +1,44 @@
+---
+/**
+ * 함순이별 스토리 찾기
+ * Two-pane search over the character → memories index (story_actor_index.json):
+ * pick a character on the left, jump straight into the memory in whichever
+ * viewer owns it (메인 / 이벤트 / 대작전) on the right.
+ */
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/rarity.css';   // opt-in per page — never global-imported
+import '../../styles/story-viewer/story-search.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout title="함순이별 스토리 찾기" {base}>
+    <div class="story-search-page">
+        <header class="page-header">
+            <h1 class="page-header-title">함순이별 스토리 찾기</h1>
+            <p class="page-header-subtitle">
+                함순이 이름으로 메인스토리 · 이벤트 스토리 · 대작전 스토리의 등장 회상을 한 번에 찾습니다.
+            </p>
+        </header>
+
+        <div class="story-search-layout">
+            <aside class="story-search-sidebar">
+                <div class="filter-bar filter-bar--card story-search-bar">
+                    <input
+                        type="search"
+                        id="ship-search"
+                        class="story-search-input"
+                        placeholder="함순이 이름 검색..."
+                        autocomplete="off"
+                        aria-label="함순이 이름 검색"
+                    />
+                </div>
+                <p id="ship-list-label" class="story-search-label"></p>
+                <ul id="ship-list" class="story-search-ships scroll-styled"></ul>
+            </aside>
+
+            <section id="memory-panel" class="story-search-results" aria-live="polite"></section>
+        </div>
+    </div>
+
+    <script is:inline type="module" src={`${base}/js/story-viewer/story-search.js`}></script>
+</Layout>

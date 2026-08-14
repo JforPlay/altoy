@@ -58,6 +58,7 @@ export const PAGE_CATALOG = [
     { key: 'SIM_AIRCRAFT', path: 'simulators/sim-aircraft/', name: '함재기 시뮬레이터', description: '함재기 비행 및 무장 시뮬레이션', icon: 'flight',     category: '시뮬레이터' },
 
     // ===== Story =====
+    { key: 'STORY_SEARCH',    path: 'story-viewer/story-search/',    name: '함순이별 스토리 찾기', description: '함순이가 등장하는 회상 찾기',           icon: 'person_search', category: '스토리' },
     { key: 'MAIN_STORY',      path: 'story-viewer/main-story/',      name: '메인스토리',          description: '메인스토리 뷰어',                       icon: 'menu_book',     category: '스토리' },
     { key: 'MAIN_STORYLINE',  path: 'story-viewer/main-storyline/',  name: '메인스토리 타임라인', description: '타임라인으로 스토리 흐름보기',          icon: 'timeline',      category: '스토리' },
     { key: 'EVENT_STORY',     path: 'story-viewer/event-story/',     name: '이벤트 스토리 모음',  description: '메인 스토리 외 기타 이벤트 스토리 모음', icon: 'celebration',  category: '스토리' },
@@ -130,7 +131,7 @@ export const NAV_STRUCTURE = [
         columns: [
             { title: '주요 스토리', keys: ['MAIN_STORY', 'MAIN_STORYLINE', 'WORLD_STORY', 'WORLD_FILE'] },
             { title: '딸내미 키우기', keys: ['TB_STORY', 'NAVI_STORY', 'LORA_STORY'] },
-            { title: '기타 스토리 컨텐츠', keys: ['EVENT_STORY', 'SECRETARY_STORY', 'HOF'] },
+            { title: '기타 스토리 컨텐츠', keys: ['EVENT_STORY', 'STORY_SEARCH', 'SECRETARY_STORY', 'HOF'] },
         ],
     },
     {
