@@ -54,6 +54,8 @@ const state = {
     skillToIconId: {},
     /** @type {Object} */
     skillDataTemplate: {},
+    /** @type {Object} engine-derived effect tags, keyed by skill id */
+    skillTags: {},
     /** @type {string} */
     viewMode: 'grid',
 

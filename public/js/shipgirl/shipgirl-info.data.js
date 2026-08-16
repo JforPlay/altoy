@@ -6,6 +6,7 @@
  */
 
 import { fetchJSON, fetchJSONWithCache } from '../utils.js';
+import { buildSkillTagRows } from './skill-tags.js';
 
 'use strict';
 
@@ -16,6 +17,7 @@ let state;
 let skillIconDataPromise = null;
 let skillToIconIdPromise = null;
 let skillDataTemplatePromise = null;
+let skillTagsPromise = null;
 
 export function setup(stateRef) {
     state = stateRef;
@@ -174,6 +176,44 @@ async function doLoadSkillDataTemplate() {
     } catch (error) {
         console.error('Failed to fetch skill data template from remote:', error);
     }
+}
+
+/**
+ * Load the engine-derived skill effect tags (WSL skill_tag_process.py).
+ *
+ * Optional by design: the file only adds verification rows beneath each skill,
+ * so a missing copy degrades to the description alone rather than failing the
+ * detail view.
+ */
+export async function loadSkillTags() {
+    if (skillTagsPromise) return skillTagsPromise;
+
+    skillTagsPromise = fetchJSON('data/sim/skill_tags.json')
+        .then((data) => {
+            state.skillTags = data;
+            console.log('Loaded skill effect tags:', Object.keys(data).length, 'skills');
+        })
+        .catch((error) => {
+            console.warn('skill_tags.json missing — skill rows will be hidden', error);
+            state.skillTags = {};
+        });
+    return skillTagsPromise;
+}
+
+/**
+ * Korean display rows for one skill's derived effects.
+ *
+ * @param {number|string} skillId
+ * @param {boolean} isBarrage  the skill's existing `weapon_true` flag — the 탄막
+ *   tag comes from there rather than being re-derived, because the flag already
+ *   drives the sim-weapon link and the two disagree (1312 vs 974).
+ */
+export function getSkillTagRows(skillId, isBarrage = false) {
+    return buildSkillTagRows(
+        state.skillTags?.[String(skillId)] || null,
+        { shipTypes: state.shipTypeData, nationalities: state.nationalityData },
+        { isBarrage }
+    );
 }
 
 // ===== Skill Helper Functions =====

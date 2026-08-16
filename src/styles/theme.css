@@ -126,6 +126,9 @@
      is tuned as a fill and lands at 2.57:1 as body text on a light card — less
      legible than the plain text it is meant to emphasise. This one inverts. */
   --accent-green-text: #15803d;
+  /* Its counterpart for downward/negative text. --danger-color (#e74c3c) is a
+     fill and reads 3.7:1 on a light card; this lands at 6.3:1. */
+  --accent-red-text: #b91c1c;
 
   /* Extended accent palette (CSS unify Phase 4a) — additive, theme-stable,
      hue-named, for reuse beyond --accent-blue/--accent-green. Define-only:
@@ -303,6 +306,8 @@ body.dark-mode {
   --accent-green: #43b581;
   /* On dark cards the fill green is already the legible one (5.58:1). */
   --accent-green-text: #43b581;
+  /* #b91c1c is far too dark on a dark card (1.9:1) — lighten instead. */
+  --accent-red-text: #f87171;
 
   /* Rarity Colors (same in both modes — game-canonical) */
   --rarity-ur:        #e91e8c;

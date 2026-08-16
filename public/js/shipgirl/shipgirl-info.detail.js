@@ -16,8 +16,11 @@ import {
     loadFullData,
     loadSkillIconData,
     loadSkillToIconId,
-    loadSkillDataTemplate
+    loadSkillDataTemplate,
+    loadSkillTags,
+    getSkillTagRows
 } from './shipgirl-info.data.js';
+import { isEmptyTagRows } from './skill-tags.js';
 import { showMapsModal } from './shipgirl-info.maps.js';
 import { renderRetrofitMap } from './shipgirl-info.retrofit.js';
 import { renderEquipSlotSection } from './shipgirl-info.equip-slots.js';
@@ -99,7 +102,8 @@ export async function showDetailView(shipName, gid) {
             loadFullData(),
             loadSkillIconData(),
             loadSkillToIconId(),
-            loadSkillDataTemplate()
+            loadSkillDataTemplate(),
+            loadSkillTags()
         ]);
     } catch (error) {
         showToast('상세 데이터를 불러오는데 실패했습니다. 다시 시도해 주세요.', 'error');
@@ -446,6 +450,7 @@ function renderSkillSection(ship) {
                                 </div>
                             </div>
                             <div class="skill-description">${skillInfo.description}</div>
+                            ${renderSkillTagRows(skill.id, isWeaponSkill)}
                             <div class="skill-meta">
                                 <span><strong>필요 조건:</strong> ${skill.requirement}</span>
                                 ${isWeaponSkill ? '<span class="weapon-sim-hint">클릭하여 무기 시뮬레이터에서 보기 →</span>' : ''}
@@ -456,6 +461,67 @@ function renderSkillSection(ship) {
             </ul>
         </div>
     `;
+}
+
+/**
+ * Verification rows beneath a skill description: what the engine's buff graph
+ * actually applies, derived in the pipeline and labelled in skill-tags.js.
+ *
+ * They sit next to the KR text on purpose. 센토's 제공권 확보 + claims
+ * "받는 피해량이 상승" while the engine raises damage DEALT — the reader can
+ * only catch that if both are visible at once.
+ *
+ * Every value here comes from generated data, so nothing is escaped: labels are
+ * module constants and values are numbers formatted by skill-tags.js.
+ */
+function renderSkillTagRows(skillId, isBarrage) {
+    const rows = getSkillTagRows(skillId, isBarrage);
+    if (isEmptyTagRows(rows)) return '';
+
+    const parts = [];
+    if (rows.tags.length) {
+        parts.push(`<div class="skill-tag-row">${rows.tags
+            .map(t => `<span class="badge badge--info">${t}</span>`).join('')}</div>`);
+    }
+    // One row per recipient. The leading label is what makes the list legible:
+    // 114010 sends three effects to three different fleet slices, and a flat
+    // list plus a combined 대상 row cannot say which goes where.
+    for (const group of rows.groups) {
+        const chips = group.effects.map(e => `
+            <span class="skill-effect skill-effect--${e.direction}">
+                <span class="skill-effect-label">${e.label}</span>
+                ${e.value ? `<span class="skill-effect-arrow">${e.direction === 'up' ? '▲' : '▼'}</span>
+                <span class="skill-effect-value">${e.value}</span>` : ''}
+            </span>`).join('');
+        const tags = group.tags
+            .map(t => `<span class="badge badge--info">${t}</span>`).join('');
+        // A barrage payload can be a dice roll (1% on some ignite effects), so the
+        // chance sits beside the recipient it qualifies rather than under the skill.
+        const chance = group.chance
+            ? `<span class="skill-tag-chance">${group.chance}</span>` : '';
+        parts.push(`<div class="skill-tag-row skill-tag-group skill-tag-group--${group.side}">
+            <span class="skill-tag-target">${group.targets.join(' / ') || '대상 불명'}</span>
+            ${chance}${chips}${tags}</div>`);
+    }
+    if (rows.targets.length) {
+        parts.push(`<div class="skill-tag-row skill-tag-row--meta">
+            <span class="skill-tag-key">대상</span>${rows.targets.join(' / ')}</div>`);
+    }
+    if (rows.conditions.length) {
+        parts.push(`<div class="skill-tag-row skill-tag-row--meta">
+            <span class="skill-tag-key">조건</span>${rows.conditions.join(' · ')}</div>`);
+    }
+    // Never let a partial list read as a complete one. Effects and conditions
+    // are worded apart: most markers are condition-only, and calling those
+    // "missing effects" would misdescribe the rows above them.
+    const notes = [];
+    if (rows.hiddenEffects > 0) notes.push(`일부 효과 미표시 (${rows.hiddenEffects}개)`);
+    if (rows.hiddenConditions > 0) notes.push(`추가 발동 조건 있음 (${rows.hiddenConditions}개)`);
+    if (notes.length) {
+        parts.push(`<div class="skill-tag-row skill-tag-incomplete"
+            title="게임 내부 데이터에만 있고 표시할 이름이 없는 항목입니다">⚠ ${notes.join(' · ')}</div>`);
+    }
+    return `<div class="skill-tags">${parts.join('')}</div>`;
 }
 
 function renderSpWeaponSection(ship) {
@@ -529,6 +595,7 @@ function renderSpWeaponSection(ship) {
                                         </div>
                                     </div>
                                     <div class="skill-description">${skillInfo.description}</div>
+                                    ${renderSkillTagRows(skillId, isWeaponSkill)}
                                     <div class="skill-meta">
                                         <span><strong>타입:</strong> 특수 장비 강화 스킬</span>
                                         ${isWeaponSkill ? '<span class="weapon-sim-hint">클릭하여 무기 시뮬레이터에서 보기 →</span>' : ''}
