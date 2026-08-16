@@ -116,8 +116,8 @@ test('a tag magnitude renders on the tag, not as a condition', () => {
 });
 
 test('a tag with no magnitude stays a bare label', () => {
-    const rows = buildSkillTagRows({ t: [{ n: 'cleanse', s: 'ally', g: ['self'] }] }, ctx);
-    assert.deepEqual(groupFor(rows, '자신').tags, ['해제']);
+    const rows = buildSkillTagRows({ t: [{ n: 'guard', s: 'ally', g: ['self'] }] }, ctx);
+    assert.deepEqual(groupFor(rows, '자신').tags, ['보호']);
 });
 
 // 즈이호 150400 heals twice off two different HP pools — "회복량은 즈이호의 내구
@@ -228,10 +228,22 @@ test('barrage flag comes from the caller, not the entry', () => {
 
 test('effect tags map to Korean', () => {
     const rows = buildSkillTagRows({
-        t: [{ n: 'heal', s: 'ally', g: ['self'] }, { n: 'cleanse', s: 'ally', g: ['self'] },
+        t: [{ n: 'heal', s: 'ally', g: ['self'] }, { n: 'guard', s: 'ally', g: ['self'] },
             { n: 'hot', s: 'ally', g: ['self'], v: [1] }],
     }, ctx);
-    assert.deepEqual(groupFor(rows, '자신').tags, ['회복', '해제', '지속 회복 1.0%']);
+    assert.deepEqual(groupFor(rows, '자신').tags, ['회복', '보호', '지속 회복 1.0%']);
+});
+
+// A status cleanse names the status it cures, and the two verbs differ because
+// the KR text's do — 헤스티아 114020 "선봉함대 함선의 점화 상태 … 해제",
+// 클리블랜드·META 802010 "탄약 부족에 의한 영향을 받지 않으며".
+test('a status cleanse names its status rather than reading 해제', () => {
+    const rows = buildSkillTagRows({
+        t: [{ n: 'cleanseignite', s: 'ally', g: ['vanguard'] },
+            { n: 'cleanseammo', s: 'ally', g: ['self'] }],
+    }, ctx);
+    assert.deepEqual(groupFor(rows, '선봉').tags, ['점화 해제']);
+    assert.deepEqual(groupFor(rows, '자신').tags, ['탄약 부족 무시']);
 });
 
 test('an unnamed tag is counted rather than shown', () => {

@@ -466,9 +466,9 @@
         },
         {
           "path": "/altoy/js/shipgirl/skill-tags.js",
-          "raw": 13822,
-          "gzip": 5963,
-          "brotli": 5738
+          "raw": 14408,
+          "gzip": 6289,
+          "brotli": 6057
         },
         {
           "path": "/altoy/js/synced-storage.js",
@@ -538,9 +538,9 @@
         },
         "js": {
           "count": 16,
-          "raw": 272382,
-          "gzip": 84360,
-          "brotli": 80217
+          "raw": 272968,
+          "gzip": 84686,
+          "brotli": 80536
         },
         "css": {
           "count": 2,
@@ -556,9 +556,9 @@
         },
         "total": {
           "count": 24,
-          "raw": 689310,
-          "gzip": 134362,
-          "brotli": 126229
+          "raw": 689896,
+          "gzip": 134688,
+          "brotli": 126548
         }
       },
       "bytes": {
@@ -570,9 +570,9 @@
         },
         "js": {
           "count": 16,
-          "raw": 272382,
-          "gzip": 84360,
-          "brotli": 80217
+          "raw": 272968,
+          "gzip": 84686,
+          "brotli": 80536
         },
         "css": {
           "count": 2,
@@ -588,9 +588,9 @@
         },
         "total": {
           "count": 24,
-          "raw": 689310,
-          "gzip": 134362,
-          "brotli": 126229
+          "raw": 689896,
+          "gzip": 134688,
+          "brotli": 126548
         }
       },
       "problems": []

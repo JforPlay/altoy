@@ -301,7 +301,14 @@ const EFFECT_TAG_NAMES = {
     guard: '보호',
     lockhp: '내구 고정',
     reflect: '피해 반사',
-    cleanse: '해제',
+    // The only two engine-global statuses a skill can genuinely strip; every
+    // other removal edge is the engine refreshing its own buff, so it carries no
+    // tag at all. The verbs differ because the KR text's do: 311 점화 is 해제
+    // (헤스티아, 시만토, 호무라, 핫스) while 211 탄약 부족 is always 무시 —
+    // the status is reapplied continuously, so curing it repeatedly reads as
+    // ignoring it (환창 "탄약 부족 상태를 무시", 클리블랜드·META "영향을 받지 않으며").
+    cleanseignite: '점화 해제',
+    cleanseammo: '탄약 부족 무시',
     summon: '소환',
     slow: '감속',
     stun: '스턴',
