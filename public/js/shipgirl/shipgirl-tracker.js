@@ -10,7 +10,7 @@ import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeMo
 import { parseInvestment, investedCost, nextBreakCost, sumInvestment, rosterTotal, resolveCapClick, applyCapChange, applyMaskChange, AFF_LABELS, SKL_LABELS } from './tracker-investment.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
 document.addEventListener('DOMContentLoaded', () => {
-    let fullShipData, nationalityData, shipTypeData, attrTypeData, fleetTechGoalData, factionTechData, retrofitMapData;
+    let fullShipData, nationalityData, shipTypeData, attrTypeData, fleetTechGoalData, factionTechData;
     let filteredShipIds = [];
     const SAVE_KEY = 'shipgirlTrackerProgress';
     const GOAL_KEY = 'shipgirlTrackerSelectedGoal';
@@ -144,14 +144,10 @@ document.addEventListener('DOMContentLoaded', () => {
             'data/mapping/ship_type_mapping.json',
             'data/mapping/attr_type_mapping.json',
             'data/shipgirl/fleet_tech_goal.json',
-            'data/shipgirl/fleet_tech_template.json',
-            // Keyed by gid, present-if-retrofittable — the 개장 chip's only use of this
-            // file. Much lighter than ship_info_data.json (never load that here — see
-            // CLAUDE.md shipgirl-info loading boundary).
-            'data/retrofit_map.json'
+            'data/shipgirl/fleet_tech_template.json'
         ];
         try {
-            [fullShipData, nationalityData, shipTypeData, attrTypeData, fleetTechGoalData, factionTechData, retrofitMapData] = await Promise.all(
+            [fullShipData, nationalityData, shipTypeData, attrTypeData, fleetTechGoalData, factionTechData] = await Promise.all(
                 dataPaths.map(path => fetchJSON(path))
             );
         } catch (error) {
@@ -305,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }).join('');
 
         const chipsCell = card.querySelector('.lr-chips');
-        const retChip = retrofitMapData[gid]
+        const retChip = ship.retrofit
             ? `<button type="button" class="chip lr-chip ${rec.ret ? 'is-done' : ''}" data-action="ret">개장</button>`
             : `<span class="lr-chip-ghost"></span>`;
         const aff = rec.aff || 0;
