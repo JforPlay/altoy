@@ -21,8 +21,8 @@
   border-bottom: 1px solid var(--border-color);
   text-align: center;
   position: sticky;
-  top: 0;
-  background: var(--bg-gradient-start);
+  top: var(--navbar-height, 0px);
+  background: var(--card-bg);
   z-index: 5;
 }
 #ledger-head .lh-name { text-align: left; }

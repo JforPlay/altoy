@@ -7,7 +7,7 @@
  */
 
 import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeModal, setupModal, showElement, hideElement, syncedStorage, escapeHtml, RARITY_TIERS_DESC as rarityOrder } from '../utils.js';
-import { parseInvestment, investedCost, nextBreakCost, sumInvestment, rosterTotal, resolveCapClick, applyCapChange, applyMaskChange, AFF_LABELS, SKL_LABELS } from './tracker-investment.js';
+import { parseInvestment, nextBreakCost, sumInvestment, rosterTotal, resolveCapClick, applyCapChange, applyMaskChange, AFF_LABELS, SKL_LABELS, MEMO_MAX } from './tracker-investment.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
 document.addEventListener('DOMContentLoaded', () => {
     let fullShipData, nationalityData, shipTypeData, attrTypeData, fleetTechGoalData, factionTechData;
@@ -114,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const investmentStore = syncedStorage(INVEST_KEY, {
         parse: parseInvestment,
         version: 1,
+        debounce: 200,
         onRemoteChange: (next) => {
             investment = next;
             getShipCards().forEach(card => renderInvestmentCells(card, card.dataset.shipId));
@@ -415,6 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const statTech = Object.fromEntries(Object.keys(attrTypeData).map(id => [id, {}]));
         const fleetTechByName = {}; // For goal tracker (by nationality name)
         const positionCounts = {}; // For goal tracker (by position)
+        let ownedCount = 0;
 
         // Iterate over all ship cards to calculate scores (cached card map — no DOM query)
         const shipCards = getShipCards();
@@ -433,6 +435,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const isGetChecked = card._cb.get?.checked;
             const isLevelChecked = card._cb.level?.checked;
             const isUpgradeChecked = card._cb.upgrade?.checked;
+            if (isGetChecked) ownedCount++;
 
             if (isGetChecked) {
                 fleetTech[nationId] += parseDatasetInt(data.ptGet);
@@ -497,6 +500,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (cachedElements.totalScoreValue) {
             cachedElements.totalScoreValue.textContent = totalCurrent.toLocaleString();
         }
+
+        // 보유 n/881 counter
+        const ownedCountEl = document.getElementById('owned-count');
+        const ownedTotalEl = document.getElementById('owned-total');
+        if (ownedCountEl) ownedCountEl.textContent = ownedCount.toLocaleString();
+        if (ownedTotalEl) ownedTotalEl.textContent = shipCards.length.toLocaleString();
 
         // Render the updated score tables.
         renderFleetTechTable(fleetTech);
@@ -1473,6 +1482,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 let message = `주의)) '${action.label}' 작업을 실행하시겠습니까? 필터링 적용된 목록의 함순이들에게 일괄적용됩니다.`;
                 if (action.type === 'all' && !action.state) {
                     message += ` '모두 체크 해제' 실행 시 레벨 상한(성정 유닛) 기록도 초기화됩니다.`;
+                } else if (action.type === 'level' && action.state) {
+                    message += ` '모두 120렙 체크' 실행 시 레벨 상한(성정 유닛) 기록도 Lv120(4돌파)으로 함께 설정됩니다.`;
                 }
                 showConfirmationModal(message, () => bulkCheck(action.type, action.state));
             };
@@ -2124,7 +2135,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setupModal('memo-modal', { closeOnEscape: true, closeOnBackdrop: true, restoreFocus: true });
             document.getElementById('memo-save-btn').addEventListener('click', () => {
                 if (memoGid) {
-                    setInv(memoGid, { memo: document.getElementById('memo-input').value.trim().slice(0, 500) });
+                    setInv(memoGid, { memo: document.getElementById('memo-input').value.trim().slice(0, MEMO_MAX) });
                     renderInvestmentCells(memoCard, memoGid);
                 }
                 closeModal('memo-modal');
