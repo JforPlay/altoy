@@ -1,144 +1,88 @@
-/* ===== Ship Card Grid ===== */
-#ship-list-container {
-  --grid-min: 180px;
+/* ===== Card view (container[data-view="cards"]) =====
+   Same .ship-card DOM as the ledger row (shipgirl-tracker.ledger.css) — this
+   file lays those nodes out as a vertical card grid instead. Every rule here
+   is scoped under [data-view="cards"] so it never leaks into the ledger row
+   layout. Detail strip is always visible (no expander); rarity edge moves
+   from the ledger's left border to a top border. */
+
+#ship-list-container[data-view="cards"] {
+  --grid-min: 240px;
   --grid-gap: 12px;
   padding: 1rem;
 }
 
-.ship-card {
+[data-view="cards"] .ship-card {
   background-color: var(--card-bg);
-  border: 1px solid var(--card-border);
+  border: 1px solid var(--border-color);
+  border-top: 3px solid transparent; /* rarity edge fill, set per .lr-rar-* below */
   border-radius: 8px;
   padding: 0.75rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  gap: 6px;
   box-shadow: 0 1px 3px var(--overlay-12), 0 1px 2px var(--overlay-lighter);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.ship-card:hover {
+[data-view="cards"] .ship-card:hover {
   transform: translateY(var(--card-lift));
   box-shadow: var(--card-hover-shadow);
 }
 
-.ship-icon {
-  width: 70px;
-  height: 70px;
+/* ledger.css's .lr-rar-* sets border-left-color with !important (needed there
+   to beat the ledger row's own ID-qualified border-left reset) — resetting it
+   back to transparent here needs matching !important + higher specificity
+   ([data-view="cards"] beats the bare class) to actually win. Without this the
+   left edge stays tinted alongside the new top edge. */
+[data-view="cards"] .lr-rar-n   { border-top-color: var(--rarity-n);   border-left-color: transparent !important; }
+[data-view="cards"] .lr-rar-r   { border-top-color: var(--rarity-r);   border-left-color: transparent !important; }
+[data-view="cards"] .lr-rar-sr  { border-top-color: var(--rarity-sr);  border-left-color: transparent !important; }
+[data-view="cards"] .lr-rar-ssr { border-top-color: var(--rarity-ssr); border-left-color: transparent !important; }
+[data-view="cards"] .lr-rar-ur  { border-top-color: var(--rarity-ur);  border-left-color: transparent !important; }
+
+[data-view="cards"] .lr-icon { align-self: center; }
+[data-view="cards"] .ship-icon {
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
-  margin-bottom: 0.5rem;
   border: 2px solid var(--border-color);
 }
 
-.ship-name {
-  font-size: 0.95rem;
-  font-weight: 600;
-  margin-bottom: 0.4rem;
-  line-height: 1.2;
-}
+[data-view="cards"] .lr-name { width: 100%; }
+[data-view="cards"] .lr-nm { justify-content: center; }
+[data-view="cards"] .lr-sub { text-align: center; }
+[data-view="cards"] .lr-expander { display: none; }
 
-.info-section {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-  align-items: center;
+[data-view="cards"] .lr-ck { justify-content: flex-start; }
+[data-view="cards"] .lr-ck-label { display: inline; }
+
+[data-view="cards"] .lr-cap,
+[data-view="cards"] .lr-chips {
+  justify-content: flex-start;
   flex-wrap: wrap;
-  justify-content: center;
 }
 
-.info-item {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.75rem;
-}
+[data-view="cards"] .lr-memo { text-align: left; }
+[data-view="cards"] .lr-pt { text-align: left; }
 
-.info-icon {
-  width: 18px;
-  height: 18px;
-}
-
-/* Rarity badge + its colours now come from the shared rarity.css
-   (`.rarity-badge` + `.rarity-N…UR`); imported by shipgirl-tracker.astro. */
-
-/* ===== Description Section ===== */
-.description-section {
-  width: 100%;
-  text-align: left;
+/* Detail strip — hidden-until-expanded in ledger, always on in cards
+   (입수 방법 / 스탯 / 다음 돌파 back on the card face). */
+[data-view="cards"] .lr-detail {
+  display: block;
+  border-top: 1px solid var(--border-color);
+  padding-top: 6px;
   font-size: 0.7rem;
-  padding: 0.4rem 0.5rem;
-  margin-bottom: 0.5rem;
-  border-bottom: 1px solid var(--border-color);
-  flex-grow: 1;
-  min-height: 45px;
-}
-
-.description-label {
-  font-weight: 600;
-  margin-bottom: 0.3rem;
-  display: block;
-  color: var(--accent-color);
-  font-size: 0.75rem;
-}
-
-.description-list {
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
-  color: var(--secondary-text);
-  line-height: 1.3;
-}
-
-.description-list li {
-  padding: 1px 0;
-}
-
-/* ===== Stat Info ===== */
-.stat-info {
-  width: 100%;
-  font-size: 0.65rem;
   color: var(--text-secondary);
-  padding: 0.3rem 0.5rem;
-  margin-bottom: 0.4rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
 }
-
-.stat-info-line {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.stat-label {
-  font-weight: 700;
-  color: var(--primary-color);
-  flex-shrink: 0;
-}
-
-.stat-types-wrap {
-  max-width: 7em;
-  flex-shrink: 1;
-  cursor: default;
-  outline: none;
-}
-
-.stat-types {
+[data-view="cards"] .lr-detail > span {
   display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  margin-top: 4px;
 }
-
-.stat-value {
-  font-weight: 700;
-  color: var(--success-color);
-  flex-shrink: 0;
+[data-view="cards"] .lr-detail > span:first-child {
+  margin-top: 0;
 }
 
 /* ===== Dark Mode Overrides ===== */
-body.dark-mode .ship-card {
+body.dark-mode [data-view="cards"] .ship-card {
   box-shadow: 0 2px 4px var(--shadow-color);
 }

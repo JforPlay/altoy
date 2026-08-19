@@ -3,20 +3,6 @@
    Breakpoints for toolbar, drawer, modals, cards
    ========================================================================== */
 
-@media (min-width: 1400px) {
-  #ship-list-container {
-    --grid-min: 180px;
-    --grid-gap: 14px;
-  }
-}
-
-@media (max-width: 1200px) {
-  #ship-list-container {
-    --grid-min: 170px;
-    --grid-gap: 12px;
-  }
-}
-
 @media (max-width: 768px) {
   /* Page header */
   .st-page-header {
@@ -68,49 +54,23 @@
     max-width: 95% !important;
   }
 
-  /* Cards */
-  #ship-list-container {
-    --grid-min: 150px;
+  /* Cards (scoped — the ledger row overrides its own padding/icon size via
+     higher-specificity ID-qualified selectors in ledger.css). --grid-min stays
+     at the base 240px (cards.css) — the fuller control row (labeled checks,
+     cap bar, chips) needs that width even on narrow screens; auto-fill already
+     reflows to 1 column there without shrinking the track. */
+  #ship-list-container[data-view="cards"] {
     --grid-gap: var(--spacing-sm);
     padding: 0.5rem;
   }
 
-  .ship-card {
+  [data-view="cards"] .ship-card {
     padding: 0.6rem;
   }
 
-  .ship-icon {
+  [data-view="cards"] .ship-icon {
     width: 60px;
     height: 60px;
-  }
-
-  .ship-name {
-    font-size: 0.85rem;
-  }
-
-  .info-section {
-    font-size: 0.7rem;
-    gap: 0.4rem;
-  }
-
-  .description-section {
-    font-size: 0.65rem;
-    min-height: 40px;
-    padding: 0.3rem 0.4rem;
-  }
-
-  .tracker-section {
-    font-size: 0.7rem;
-  }
-
-  .tracker-item {
-    padding: 3px 5px;
-    margin-bottom: 2px;
-  }
-
-  .tracker-item input[type="checkbox"] {
-    width: 14px;
-    height: 14px;
   }
 
   .score-table-wrapper {
@@ -174,65 +134,20 @@
 }
 
 @media (max-width: 480px) {
-  #ship-list-container {
-    --grid-min: 135px;
+  /* --grid-min stays at the base 240px (cards.css) — see the 768px breakpoint
+     comment above; only the gap shrinks here. */
+  #ship-list-container[data-view="cards"] {
     --grid-gap: var(--spacing-sm);
   }
 
-  .ship-card {
+  [data-view="cards"] .ship-card {
     padding: 0.5rem;
   }
 
-  .ship-icon {
+  [data-view="cards"] .ship-icon {
     width: 55px;
     height: 55px;
     margin-bottom: 0.4rem;
-  }
-
-  .ship-name {
-    font-size: 0.8rem;
-    margin-bottom: 0.3rem;
-  }
-
-  .info-section {
-    font-size: 0.65rem;
-    gap: 0.3rem;
-    margin-bottom: 0.4rem;
-  }
-
-  .info-icon {
-    width: 16px;
-    height: 16px;
-  }
-
-  .description-section {
-    font-size: 0.6rem;
-    min-height: 35px;
-    padding: 0.25rem 0.3rem;
-    margin-bottom: 0.4rem;
-  }
-
-  .description-label {
-    font-size: 0.7rem;
-    margin-bottom: 0.2rem;
-  }
-
-  .tracker-section {
-    font-size: 0.65rem;
-  }
-
-  .tracker-item {
-    padding: 3px 4px;
-    margin-bottom: 2px;
-  }
-
-  .tracker-item label {
-    font-size: 0.65rem;
-  }
-
-  .tracker-item input[type="checkbox"] {
-    width: 13px;
-    height: 13px;
   }
 
   .top-filters-wrapper {

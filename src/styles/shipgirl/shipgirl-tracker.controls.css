@@ -1,46 +1,7 @@
 /* ==========================================================================
    SHIPGIRL TRACKER — CONTROLS
-   Tracker section (ship card checkboxes), confirmation modal actions
+   Confirmation modal actions
    ========================================================================== */
-
-/* --- Tracker Section (inside ship cards) --- */
-
-.tracker-section {
-  width: 100%;
-  margin-top: auto;
-  font-size: 0.75rem;
-  text-align: left;
-}
-
-.tracker-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 4px 6px;
-  border-radius: 4px;
-  margin-bottom: 3px;
-  background-color: var(--section-bg);
-  transition: background-color var(--transition-fast);
-}
-
-.tracker-item:hover {
-  background-color: var(--border-color);
-}
-
-.tracker-item label {
-  cursor: pointer;
-  flex-grow: 1;
-  user-select: none;
-  font-size: 0.75rem;
-}
-
-.tracker-item input[type="checkbox"] {
-  cursor: pointer;
-  width: 16px;
-  height: 16px;
-  accent-color: var(--primary-color);
-  flex-shrink: 0;
-}
 
 /* --- Confirmation Modal --- */
 
@@ -96,14 +57,4 @@
 
 #modal-cancel-btn:hover {
   background-color: var(--danger-hover);
-}
-
-/* --- Dark Mode Overrides --- */
-
-body.dark-mode .tracker-item {
-  background-color: var(--highlight-subtle);
-}
-
-body.dark-mode .tracker-item:hover {
-  background-color: var(--border-color);
 }

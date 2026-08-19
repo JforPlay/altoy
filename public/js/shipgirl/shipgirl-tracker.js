@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const SAVE_KEY = 'shipgirlTrackerProgress';
     const GOAL_KEY = 'shipgirlTrackerSelectedGoal';
     const FILTER_KEY = 'shipgirlTrackerFilters';
+    const VIEW_KEY = 'shipgirlTrackerView'; // UI pref — NOT in SYNCED_KEYS, on purpose
 
     // ===== State =====
 
@@ -71,6 +72,19 @@ document.addEventListener('DOMContentLoaded', () => {
         cachedElements.filterDrawerBody = document.getElementById('filter-drawer-body');
         cachedElements.totalScoreValue = document.getElementById('total-score-value');
         cachedElements.totalScoreMax = document.getElementById('total-score-max');
+    }
+
+    // ===== View Toggle (ledger/cards — local pref, not synced) =====
+
+    /** Switches #ship-list-container between ledger rows and vertical cards. */
+    function applyView(view) {
+        cachedElements.shipListContainer.dataset.view = view;
+        // #ledger-head visibility is owned by inline style.display ONLY — never mix with hideElement.
+        const head = document.getElementById('ledger-head');
+        if (head) head.style.display = view === 'ledger' ? '' : 'none';
+        document.getElementById('view-toggle-icon').textContent = view === 'ledger' ? 'grid_view' : 'view_list';
+        document.getElementById('view-toggle-label').textContent = view === 'ledger' ? '카드' : '목록';
+        setStorageItem(VIEW_KEY, view);
     }
 
     // Use utilities from external file
@@ -2065,6 +2079,12 @@ document.addEventListener('DOMContentLoaded', () => {
             investment = investmentStore.load();
             rarityByGid = Object.fromEntries(Object.entries(fullShipData).map(([gid, s]) => [gid, s.rarity]));
             cacheDOMElements();
+
+            // Setup view toggle (ledger/cards)
+            applyView(getStorageItem(VIEW_KEY, 'ledger') === 'cards' ? 'cards' : 'ledger');
+            document.getElementById('view-toggle-btn').addEventListener('click', () => {
+                applyView(cachedElements.shipListContainer.dataset.view === 'ledger' ? 'cards' : 'ledger');
+            });
 
             // Setup drawer
             document.getElementById('filter-drawer-btn').addEventListener('click', openDrawer);
