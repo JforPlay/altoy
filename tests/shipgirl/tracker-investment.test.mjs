@@ -19,10 +19,18 @@ test('parseInvestment: clamps fields, drops empty records', () => {
         '10105': { memo: 'x'.repeat(600) } // clamped to MEMO_MAX
     };
     const out = parseInvestment(raw);
-    assert.deepEqual(out['10102'], { cap: 5, ret: 1, fav: 1, aff: 4, skl: 0 });
+    assert.deepEqual(out['10102'], { cap: 5, ret: 1, fav: 1, aff: 4 });
     assert.deepEqual(out['10103'], { cap: 2 });
     assert.equal(out['10104'], undefined);
     assert.equal(out['10105'].memo.length, MEMO_MAX);
+});
+
+test('parseInvestment: drops zero/false/negative/out-of-range fields (sparse semantics)', () => {
+    assert.deepEqual(parseInvestment({'1':{cap:0}}), {});
+    assert.deepEqual(parseInvestment({'1':{ret:0}}), {});
+    assert.deepEqual(parseInvestment({'1':{fav:false}}), {});
+    assert.deepEqual(parseInvestment({'1':{cap:-3}}), {});
+    assert.deepEqual(parseInvestment({'1':{aff:0,skl:0}}), {});
 });
 
 test('investedCost per rarity', () => {

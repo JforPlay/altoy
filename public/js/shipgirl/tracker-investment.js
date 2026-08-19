@@ -26,8 +26,8 @@ const BREAK_LEVELS = [105, 110, 115, 120, 125];
 
 function clampInt(v, min, max) {
     const n = Number(v);
-    if (!Number.isInteger(n)) return null;
-    return Math.max(min, Math.min(n, max));
+    if (!Number.isInteger(n) || n < min) return null;
+    return Math.min(n, max);
 }
 
 /**
@@ -44,8 +44,8 @@ export function parseInvestment(value) {
         const cap = clampInt(rec.cap, 1, 5);
         const ret = clampInt(rec.ret, 1, 1);
         const fav = clampInt(rec.fav, 1, 1);
-        const aff = clampInt(rec.aff, 0, AFF_LABELS.length - 1);
-        const skl = clampInt(rec.skl, 0, SKL_LABELS.length - 1);
+        const aff = clampInt(rec.aff, 1, AFF_LABELS.length - 1);
+        const skl = clampInt(rec.skl, 1, SKL_LABELS.length - 1);
         if (cap !== null) out.cap = cap;
         if (ret !== null) out.ret = ret;
         if (fav !== null) out.fav = fav;
