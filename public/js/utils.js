@@ -44,6 +44,7 @@ const SYNCED_KEYS = new Set([
     'shipgirlTrackerProgress',
     'shipgirlTrackerSelectedGoal',
     'researchTrackerPinned',
+    'shipgirlInvestment',
 
     // Secretary story completion
     'secretaryStoryCompletion',

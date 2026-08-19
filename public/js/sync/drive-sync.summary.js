@@ -22,6 +22,15 @@ function countTrackerProgress(raw) {
     return count > 0 ? `함순이 ${count}명 트래킹` : '';
 }
 
+function countInvestment(raw) {
+    const obj = tryParse(raw);
+    if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return '';
+    // v1 envelope {v, d} — or a bare gid->record map (legacy/degraded payload)
+    const d = obj.d && typeof obj.d === 'object' && !Array.isArray(obj.d) ? obj.d : obj;
+    const count = Object.keys(d).length;
+    return count > 0 ? `함순이 ${count}명 육성 기록` : '';
+}
+
 function describeGoal(raw) {
     if (!raw || typeof raw !== 'string') return '';
     return `목표 함순이: ${raw}`;
@@ -108,6 +117,7 @@ const SUMMARIZERS = {
     shipgirlTrackerProgress: countTrackerProgress,
     shipgirlTrackerSelectedGoal: describeGoal,
     researchTrackerPinned: countPinned,
+    shipgirlInvestment: countInvestment,
     secretaryStoryCompletion: countSecretaryCompletion,
     skinCollection: countCollection,
     'island-restaurant-rank': describeRestaurantRank,

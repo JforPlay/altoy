@@ -37,6 +37,7 @@ export const VALUE_KINDS = {
     shipgirlTrackerProgress: 'object',
     shipgirlTrackerSelectedGoal: 'string',
     researchTrackerPinned: 'array',
+    shipgirlInvestment: 'object',
     secretaryStoryCompletion: 'object',
     skinCollection: 'object-or-array',
     'island-restaurant-rank': 'string',

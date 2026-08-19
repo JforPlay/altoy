@@ -23,6 +23,7 @@ test('real-shaped values pass validation', () => {
     // object: tracker bitmask map / syncedStorage {v, d} envelope
     assert.ok(validateSyncedValue('shipgirlTrackerProgress', '{"101031":3,"107061":1}'));
     assert.ok(validateSyncedValue('bgm-misc-player', '{"v":1,"d":{"queue":["a"],"repeat":false}}'));
+    assert.ok(validateSyncedValue('shipgirlInvestment', '{"v":1,"d":{"10102":{"cap":3,"fav":1,"memo":"메모"}}}'));
     // array
     assert.ok(validateSyncedValue('researchTrackerPinned', '["gid1","gid2"]'));
     // object-or-array: both legacy array and future envelope forms
@@ -41,6 +42,7 @@ test('real-shaped values pass validation', () => {
 
 test('wrong root shape or broken JSON is rejected', () => {
     assert.equal(validateSyncedValue('shipgirlTrackerProgress', '["not","a","map"]'), false);
+    assert.equal(validateSyncedValue('shipgirlInvestment', '["not","a","map"]'), false);
     assert.equal(validateSyncedValue('shipgirlTrackerProgress', 'not json'), false);
     assert.equal(validateSyncedValue('shipgirlTrackerProgress', 'null'), false);
     assert.equal(validateSyncedValue('researchTrackerPinned', '{"not":"array"}'), false);
