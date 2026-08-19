@@ -7,9 +7,10 @@
  */
 
 import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeModal, setupModal, showElement, hideElement, syncedStorage, escapeHtml, RARITY_TIERS_DESC as rarityOrder } from '../utils.js';
+import { parseInvestment, investedCost, nextBreakCost, sumInvestment, rosterTotal, resolveCapClick, applyCapChange, applyMaskChange, AFF_LABELS, SKL_LABELS } from './tracker-investment.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
 document.addEventListener('DOMContentLoaded', () => {
-    let fullShipData, nationalityData, shipTypeData, attrTypeData, fleetTechGoalData, factionTechData;
+    let fullShipData, nationalityData, shipTypeData, attrTypeData, fleetTechGoalData, factionTechData, retrofitMapData;
     let filteredShipIds = [];
     const SAVE_KEY = 'shipgirlTrackerProgress';
     const GOAL_KEY = 'shipgirlTrackerSelectedGoal';
@@ -90,6 +91,37 @@ document.addEventListener('DOMContentLoaded', () => {
         },
     });
 
+    const INVEST_KEY = 'shipgirlInvestment';
+    let investment = {};
+    let rarityByGid = {};
+
+    // Investment records (cap/ret/fav/aff/skl/memo) — state-as-truth in this map,
+    // unlike progress where the checkboxes are truth. v1 envelope from day 1.
+    const investmentStore = syncedStorage(INVEST_KEY, {
+        parse: parseInvestment,
+        version: 1,
+        onRemoteChange: (next) => {
+            investment = next;
+            getShipCards().forEach(card => renderInvestmentCells(card, card.dataset.shipId));
+            updateInvestmentSummary();
+            if (isInvestmentFilterActive()) applyFilters();
+        },
+    });
+
+    // Stub — task 4 replaces this with a real investment filter control.
+    function isInvestmentFilterActive() { return false; }
+
+    function getInv(gid) { return investment[gid] || {}; }
+
+    function setInv(gid, patch) {
+        const next = { ...getInv(gid), ...patch };
+        // drop zero/empty fields to keep the payload sparse
+        Object.keys(next).forEach(k => { if (!next[k]) delete next[k]; });
+        if (Object.keys(next).length === 0) delete investment[gid];
+        else investment[gid] = next;
+        investmentStore.save(investment);
+    }
+
     /**
      * Lookup ship data by name for goal tracker.
      * @param {string} shipName - Ship name to search for.
@@ -112,10 +144,14 @@ document.addEventListener('DOMContentLoaded', () => {
             'data/mapping/ship_type_mapping.json',
             'data/mapping/attr_type_mapping.json',
             'data/shipgirl/fleet_tech_goal.json',
-            'data/shipgirl/fleet_tech_template.json'
+            'data/shipgirl/fleet_tech_template.json',
+            // Keyed by gid, present-if-retrofittable — the 개장 chip's only use of this
+            // file. Much lighter than ship_info_data.json (never load that here — see
+            // CLAUDE.md shipgirl-info loading boundary).
+            'data/retrofit_map.json'
         ];
         try {
-            [fullShipData, nationalityData, shipTypeData, attrTypeData, fleetTechGoalData, factionTechData] = await Promise.all(
+            [fullShipData, nationalityData, shipTypeData, attrTypeData, fleetTechGoalData, factionTechData, retrofitMapData] = await Promise.all(
                 dataPaths.map(path => fetchJSON(path))
             );
         } catch (error) {
@@ -249,6 +285,61 @@ document.addEventListener('DOMContentLoaded', () => {
         return card;
     }
 
+    const CAP_LEVELS = [105, 110, 115, 120, 125];
+
+    /**
+     * Fills a card's investment cells (cap bar, 육성 chips, memo button, next-break hint)
+     * from the current `investment` record for `gid`. Called once per card from
+     * renderAllCards (after loadProgress), and again after any mutation.
+     */
+    function renderInvestmentCells(card, gid) {
+        const ship = fullShipData[gid];
+        const rec = getInv(gid);
+        const cap = rec.cap || 0;
+
+        const capCell = card.querySelector('.lr-cap');
+        capCell.innerHTML = CAP_LEVELS.map((lvl, i) => {
+            const on = cap >= i + 1;
+            const cls = on ? (i === 4 ? 'on u2' : 'on') : '';
+            return `<button type="button" data-action="cap" data-break="${i + 1}" class="${cls}" aria-pressed="${on}">${lvl}</button>`;
+        }).join('');
+
+        const chipsCell = card.querySelector('.lr-chips');
+        const retChip = retrofitMapData[gid]
+            ? `<button type="button" class="chip lr-chip ${rec.ret ? 'is-done' : ''}" data-action="ret">개장</button>`
+            : `<span class="lr-chip-ghost"></span>`;
+        const aff = rec.aff || 0;
+        const skl = rec.skl || 0;
+        const stateCls = (v, doneAt) => v === 0 ? '' : (v === doneAt ? 'is-done' : (v % 2 ? 'is-plan' : 'is-mid'));
+        chipsCell.innerHTML = retChip
+            + `<button type="button" class="chip lr-chip ${stateCls(aff, 4)}" data-action="aff" title="호감작: ${AFF_LABELS[aff]}">${aff === 0 ? '호감작' : escapeHtml(AFF_LABELS[aff])}</button>`
+            + `<button type="button" class="chip lr-chip ${stateCls(skl, 3)}" data-action="skl" title="스작: ${SKL_LABELS[skl]}">${skl === 0 ? '스작' : escapeHtml(SKL_LABELS[skl])}</button>`;
+
+        const star = card.querySelector('.lr-star');
+        star.textContent = rec.fav ? '★' : '☆';
+        star.classList.toggle('on', !!rec.fav);
+        star.setAttribute('aria-pressed', String(!!rec.fav));
+
+        const memoCell = card.querySelector('.lr-memo');
+        memoCell.innerHTML = `<button type="button" class="lr-memo-btn ${rec.memo ? 'has' : ''}" data-action="memo" aria-label="메모">`
+            + `<span class="material-symbols-outlined">edit_note</span></button>`;
+
+        const next = nextBreakCost(cap, ship.rarity);
+        const nb = card.querySelector('.lr-nextbreak');
+        if (nb) nb.innerHTML = next
+            ? `<i class="lr-dk">다음 돌파</i>Lv${next.level} → 성정 유닛 ${next.u1.toLocaleString()}${next.u2 ? ` + 유닛II ${next.u2.toLocaleString()}` : ''}`
+            : (cap >= 5 ? `<i class="lr-dk">돌파</i>완료 (Lv125)` : '');
+    }
+
+    /** Updates the 유닛/유닛II invested-vs-roster-total counters in the score bar. */
+    function updateInvestmentSummary() {
+        const spent = sumInvestment(investment, rarityByGid);
+        const total = rosterTotal(rarityByGid);
+        const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v.toLocaleString(); };
+        set('unit1-invested', spent.u1); set('unit1-total', total.u1);
+        set('unit2-invested', spent.u2); set('unit2-total', total.u2);
+    }
+
     /**
      * Handles the logic for checkbox interactions within a ship card.
      * For example, checking "120 달성시" will also check "입수 시".
@@ -270,6 +361,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (upgradeCheckbox) upgradeCheckbox.checked = false;
             }
         }
+    }
+
+    /** Write a 3-bit mask back into a card's checkboxes + persist. */
+    function setCardMask(card, mask) {
+        if (card._cb.get) card._cb.get.checked = (mask & 1) > 0;
+        if (card._cb.level) card._cb.level.checked = (mask & 2) > 0;
+        if (card._cb.upgrade) card._cb.upgrade.checked = (mask & 4) > 0;
+        autoSaveProgress();
+        if (isProgressFilterActive()) applyFilters(); else debouncedCalculateScores();
+    }
+
+    /**
+     * Shared coupling step after a progress checkbox changed: keeps cap in sync with
+     * the mask via applyMaskChange, writes back any resulting mask/cap changes, and
+     * re-renders. Used by both the container `change` listener and bulkCheck (which
+     * drives checkboxes directly via handleCheckboxLogic, bypassing that listener).
+     */
+    function coupleCardAfterChange(card, changedType, nowChecked) {
+        const gid = card.dataset.shipId;
+        const { mask, cap } = applyMaskChange(
+            getCardProgressState(card), getInv(gid).cap || 0,
+            changedType, nowChecked);
+        if (cap !== (getInv(gid).cap || 0)) setInv(gid, { cap });
+        if (mask !== getCardProgressState(card)) {
+            if (card._cb.get) card._cb.get.checked = (mask & 1) > 0;
+            if (card._cb.level) card._cb.level.checked = (mask & 2) > 0;
+            if (card._cb.upgrade) card._cb.upgrade.checked = (mask & 4) > 0;
+        }
+        renderInvestmentCells(card, gid);
+        updateInvestmentSummary();
     }
 
     /**
@@ -1326,7 +1447,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 ? 'btn btn-danger bulk-check-btn bulk-deselect-btn'
                 : 'btn btn-secondary bulk-check-btn';
             btn.onclick = () => {
-                const message = `주의)) '${action.label}' 작업을 실행하시겠습니까? 필터링 적용된 목록의 함순이들에게 일괄적용됩니다.`;
+                let message = `주의)) '${action.label}' 작업을 실행하시겠습니까? 필터링 적용된 목록의 함순이들에게 일괄적용됩니다.`;
+                if (action.type === 'all' && !action.state) {
+                    message += ` '모두 체크 해제' 실행 시 레벨 상한(성정 유닛) 기록도 초기화됩니다.`;
+                }
                 showConfirmationModal(message, () => bulkCheck(action.type, action.state));
             };
             bulkWrapper.appendChild(btn);
@@ -1403,6 +1527,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         handleCheckboxLogic(checkbox);
                     }
                 }
+                // bulkCheck drives checkboxes directly (not through the container's
+                // change listener), so it needs its own call to the same coupling step.
+                coupleCardAfterChange(card, type === 'all' ? 'get' : type, shouldBeChecked);
             }
         });
         autoSaveProgress();
@@ -1447,6 +1574,22 @@ document.addEventListener('DOMContentLoaded', () => {
         modalText.textContent = message;
         currentConfirmCallback = onConfirm;
         openModal('confirmation-modal');
+    }
+
+    // ===== Memo Modal =====
+
+    let memoGid = null, memoCard = null;
+
+    /**
+     * Opens the memo modal for a single ship, seeded with its current memo text.
+     * @param {string} gid - Ship group id.
+     * @param {HTMLElement} card - The card whose memo cell gets re-rendered on save.
+     */
+    function openMemoModal(gid, card) {
+        memoGid = gid; memoCard = card;
+        document.getElementById('memo-modal-ship').textContent = `${fullShipData[gid]?.name || ''} — 메모`;
+        document.getElementById('memo-input').value = getInv(gid).memo || '';
+        openModal('memo-modal');
     }
 
     /**
@@ -1850,6 +1993,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cachedElements.totalScoreMax.textContent = maxFleetTech.toLocaleString();
         }
         loadProgress();
+        shipCardById.forEach((card, shipId) => renderInvestmentCells(card, shipId));
     }
 
     /**
@@ -1867,6 +2011,8 @@ document.addEventListener('DOMContentLoaded', () => {
     async function initialize() {
         try {
             await fetchData();
+            investment = investmentStore.load();
+            rarityByGid = Object.fromEntries(Object.entries(fullShipData).map(([gid, s]) => [gid, s.rarity]));
             cacheDOMElements();
 
             // Setup drawer
@@ -1903,10 +2049,21 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             setupConfirmationModal();
 
+            // Setup memo modal
+            setupModal('memo-modal', { closeOnEscape: true, closeOnBackdrop: true, restoreFocus: true });
+            document.getElementById('memo-save-btn').addEventListener('click', () => {
+                if (memoGid) {
+                    setInv(memoGid, { memo: document.getElementById('memo-input').value.trim().slice(0, 500) });
+                    renderInvestmentCells(memoCard, memoGid);
+                }
+                closeModal('memo-modal');
+            });
+
             // Populate filters in drawer, restore saved state, then render
             populateDrawerFilters();
             loadFiltersFromStorage();
             renderAllCards();
+            updateInvestmentSummary();
             applyFilters();
             calculateAndDisplayScores();
 
@@ -1917,6 +2074,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cachedElements.shipListContainer.addEventListener('change', (e) => {
                 if (e.target.classList.contains('tracker-checkbox')) {
                     handleCheckboxLogic(e.target);
+                    coupleCardAfterChange(e.target.closest('.ship-card'), e.target.dataset.type, e.target.checked);
                     autoSaveProgress();
                     if (isProgressFilterActive()) {
                         applyFilters();
@@ -1926,16 +2084,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            // Row expander delegation (single listener; task 3 adds fav/cap/chip/memo actions here).
+            // Row expander + investment action delegation (single listener).
             cachedElements.shipListContainer.addEventListener('click', (e) => {
                 const btn = e.target.closest('[data-action]');
                 if (!btn) return;
                 const card = btn.closest('.ship-card');
                 if (!card) return;
-                if (btn.dataset.action === 'expand') {
+                const gid = card.dataset.shipId;
+                const action = btn.dataset.action;
+                if (action === 'expand') {
                     const open = card.classList.toggle('lr-expanded');
                     btn.setAttribute('aria-expanded', String(open));
+                } else if (action === 'fav') {
+                    setInv(gid, { fav: getInv(gid).fav ? 0 : 1 });
+                    renderInvestmentCells(card, gid);
+                } else if (action === 'ret') {
+                    setInv(gid, { ret: getInv(gid).ret ? 0 : 1 });
+                    renderInvestmentCells(card, gid);
+                } else if (action === 'aff') {
+                    setInv(gid, { aff: ((getInv(gid).aff || 0) + 1) % AFF_LABELS.length });
+                    renderInvestmentCells(card, gid);
+                } else if (action === 'skl') {
+                    setInv(gid, { skl: ((getInv(gid).skl || 0) + 1) % SKL_LABELS.length });
+                    renderInvestmentCells(card, gid);
+                } else if (action === 'cap') {
+                    const cur = getInv(gid).cap || 0;
+                    const clicked = parseDatasetInt(btn.dataset.break);
+                    const { mask, cap } = applyCapChange(getCardProgressState(card), resolveCapClick(cur, clicked));
+                    setInv(gid, { cap });
+                    setCardMask(card, mask);
+                    renderInvestmentCells(card, gid);
+                    updateInvestmentSummary();
+                } else if (action === 'memo') {
+                    openMemoModal(gid, card);
                 }
+                if (action !== 'memo' && action !== 'expand') updateInvestmentSummary();
             });
 
             // Cross-tab sync for GOAL_KEY only — progress sync is handled by progressStore above.
