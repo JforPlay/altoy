@@ -1,0 +1,79 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import {
+    parseInvestment, investedCost, nextBreakCost, sumInvestment, rosterTotal,
+    resolveCapClick, applyCapChange, applyMaskChange, MEMO_MAX,
+} from '../../public/js/shipgirl/tracker-investment.js';
+
+test('parseInvestment: null/array/garbage -> {}', () => {
+    assert.deepEqual(parseInvestment(null), {});
+    assert.deepEqual(parseInvestment([1, 2]), {});
+    assert.deepEqual(parseInvestment('x'), {});
+});
+
+test('parseInvestment: clamps fields, drops empty records', () => {
+    const raw = {
+        '10102': { cap: 7, ret: 3, fav: 1, aff: 9, skl: -1, memo: 42 },
+        '10103': { cap: 2 },
+        '10104': {},                       // nothing set -> dropped
+        '10105': { memo: 'x'.repeat(600) } // clamped to MEMO_MAX
+    };
+    const out = parseInvestment(raw);
+    assert.deepEqual(out['10102'], { cap: 5, ret: 1, fav: 1, aff: 4, skl: 0 });
+    assert.deepEqual(out['10103'], { cap: 2 });
+    assert.equal(out['10104'], undefined);
+    assert.equal(out['10105'].memo.length, MEMO_MAX);
+});
+
+test('investedCost per rarity', () => {
+    assert.deepEqual(investedCost(0, 'SR'), { u1: 0, u2: 0 });
+    assert.deepEqual(investedCost(3, 'UR'), { u1: 300 + 600 + 900, u2: 0 });
+    assert.deepEqual(investedCost(5, 'N'), { u1: 60 + 120 + 180 + 300 + 80, u2: 40 });
+    assert.deepEqual(investedCost(5, 'UR'), { u1: 3750, u2: 225 });
+    assert.equal(investedCost(2, 'Unknown Rarity'), null);
+});
+
+test('nextBreakCost', () => {
+    assert.deepEqual(nextBreakCost(0, 'SSR'), { level: 105, u1: 200, u2: 0 });
+    assert.deepEqual(nextBreakCost(4, 'R'), { level: 125, u1: 120, u2: 60 });
+    assert.equal(nextBreakCost(5, 'R'), null);
+    assert.equal(nextBreakCost(0, 'Unknown Rarity'), null);
+});
+
+test('sumInvestment + rosterTotal skip unknown rarities', () => {
+    const rarityByGid = { '1': 'N', '2': 'UR', '3': 'Unknown Rarity' };
+    assert.deepEqual(rosterTotal(rarityByGid), { u1: 740 + 3750, u2: 40 + 225 });
+    const inv = { '1': { cap: 5 }, '2': { cap: 1 }, '3': { cap: 5 }, '9': { cap: 2 } };
+    // gid 9 absent from rarityByGid -> skipped too
+    assert.deepEqual(sumInvestment(inv, rarityByGid), { u1: 740 + 300, u2: 40 });
+});
+
+test('resolveCapClick: set, step-back on highest, toggle off', () => {
+    assert.equal(resolveCapClick(0, 3), 3);
+    assert.equal(resolveCapClick(3, 3), 2); // click highest filled -> step back
+    assert.equal(resolveCapClick(5, 5), 4);
+    assert.equal(resolveCapClick(2, 5), 5);
+    assert.equal(resolveCapClick(1, 1), 0);
+});
+
+test('applyCapChange: cap>=1 forces get+upgrade; cap<4 clears level', () => {
+    assert.deepEqual(applyCapChange(0, 2), { mask: 5, cap: 2 });
+    assert.deepEqual(applyCapChange(7, 3), { mask: 5, cap: 3 }); // level bit cleared
+    assert.deepEqual(applyCapChange(7, 4), { mask: 7, cap: 4 });
+    assert.deepEqual(applyCapChange(5, 0), { mask: 5, cap: 0 }); // 풀돌 stays
+});
+
+test('applyMaskChange couples per changed control', () => {
+    // check 120 달성 -> cap>=4, get+upgrade forced
+    assert.deepEqual(applyMaskChange(2, 0, 'level', true), { mask: 7, cap: 4 });
+    assert.deepEqual(applyMaskChange(7, 5, 'level', true), { mask: 7, cap: 5 }); // cap 5 kept
+    // uncheck 120 달성 -> cap untouched
+    assert.deepEqual(applyMaskChange(5, 4, 'level', false), { mask: 5, cap: 4 });
+    // uncheck 풀돌 -> cap 0, level cleared
+    assert.deepEqual(applyMaskChange(3, 4, 'upgrade', false), { mask: 1, cap: 0 });
+    // uncheck 보유 -> everything down (caller already cleared level/upgrade bits)
+    assert.deepEqual(applyMaskChange(0, 3, 'get', false), { mask: 0, cap: 0 });
+    // plain checks don't invent caps
+    assert.deepEqual(applyMaskChange(1, 0, 'get', true), { mask: 1, cap: 0 });
+    assert.deepEqual(applyMaskChange(5, 0, 'upgrade', true), { mask: 5, cap: 0 });
+});
