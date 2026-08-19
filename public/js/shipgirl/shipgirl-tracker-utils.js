@@ -66,31 +66,6 @@ const ShipgirlTrackerUtils = {
                 dropdown.style.display = 'none';
             }, 150);
         });
-    },
-
-    /**
-     * Creates a tracker item for ship cards.
-     * @param {string} labelText - Label text for the tracker item.
-     * @param {number} points - Points value.
-     * @param {string} type - Type of tracker ('get', 'level', 'upgrade').
-     * @param {number} uniqueIdLength - Length of unique ID.
-     * @returns {HTMLElement} Tracker item element.
-     */
-    createTrackerItem(labelText, points, type, uniqueIdLength = 9) {
-        const item = document.createElement('div');
-        item.className = 'tracker-item';
-        const uniqueId = `${type}-${Math.random().toString(36).substr(2, uniqueIdLength)}`;
-        const label = document.createElement('label');
-        label.htmlFor = uniqueId;
-        label.textContent = `${labelText} (+${points})`;
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.id = uniqueId;
-        checkbox.className = 'tracker-checkbox';
-        checkbox.dataset.type = type;
-        item.appendChild(label);
-        item.appendChild(checkbox);
-        return item;
     }
 };
 

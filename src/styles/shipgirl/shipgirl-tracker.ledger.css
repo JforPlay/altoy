@@ -1,0 +1,97 @@
+/* ===== Ledger view (container[data-view="ledger"]) =====
+   The same .ship-card children render as a row here and as a card under
+   [data-view="cards"] (shipgirl-tracker.cards.css). Shared control styles
+   (cap bar, chips, star, memo) live at the bottom, unscoped. */
+
+#ledger-head,
+[data-view="ledger"] .ship-card {
+  display: grid;
+  grid-template-columns: 46px minmax(150px, 1.2fr) 42px 42px 42px 210px 170px 34px 64px;
+  align-items: center;
+  gap: 0 6px;
+}
+
+#ledger-head {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 6px 10px 6px 3px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-color);
+  text-align: center;
+  position: sticky;
+  top: 0;
+  background: var(--bg-gradient-start);
+  z-index: 5;
+}
+#ledger-head .lh-name { text-align: left; }
+#ledger-head .lh-pt { text-align: right; }
+
+[data-view="ledger"] { display: block; padding: 0 1rem 1rem; max-width: 1400px; margin: 0 auto; }
+[data-view="ledger"] .ship-card {
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+  border-left: 3px solid transparent;
+  border-radius: 0;
+  padding: 6px 10px 6px 0;
+  box-shadow: none;
+}
+[data-view="ledger"] .ship-card:hover { transform: none; box-shadow: none; background: var(--bg-secondary); }
+[data-view="ledger"] .ship-icon { width: 32px; height: 32px; margin: 0 auto; display: block; }
+
+.lr-rar-n   { border-left-color: var(--rarity-n) !important; }
+.lr-rar-r   { border-left-color: var(--rarity-r) !important; }
+.lr-rar-sr  { border-left-color: var(--rarity-sr) !important; }
+.lr-rar-ssr { border-left-color: var(--rarity-ssr) !important; }
+.lr-rar-ur  { border-left-color: var(--rarity-ur) !important; }
+.lr-unowned { opacity: 0.55; }
+
+.lr-nm { display: flex; align-items: center; gap: 5px; font-size: 0.84rem; font-weight: 600; min-width: 0; }
+.lr-nm-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lr-sub { font-size: 0.68rem; color: var(--text-muted); }
+.lr-star, .lr-expander {
+  background: none; border: 0; padding: 0; cursor: pointer;
+  color: var(--text-muted); font-size: 0.85rem; line-height: 1;
+}
+.lr-star.on { color: var(--warning-color); }
+.lr-expander .material-symbols-outlined { font-size: 16px; transition: transform var(--transition-fast); }
+.lr-expanded .lr-expander .material-symbols-outlined { transform: rotate(180deg); }
+
+.lr-ck { display: flex; justify-content: center; align-items: center; gap: 4px; cursor: pointer; }
+.lr-ck input { width: 16px; height: 16px; accent-color: var(--accent-blue); margin: 0; }
+.lr-ck-label { display: none; font-style: normal; font-size: 0.68rem; color: var(--text-secondary); }
+
+.lr-pt { text-align: right; font-size: 0.74rem; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+.lr-pt b { color: var(--text-primary); }
+
+.lr-detail { display: none; }
+[data-view="ledger"] .lr-expanded .lr-detail {
+  display: flex; flex-wrap: wrap; gap: 4px 26px;
+  grid-column: 1 / -1;
+  margin: 6px 8px 2px 46px;
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 7px 12px;
+  font-size: 0.72rem; color: var(--text-secondary);
+}
+.lr-dk { font-style: normal; color: var(--text-muted); font-weight: 600; margin-right: 6px; }
+.lr-desc { list-style: none; margin: 0; padding: 0; display: inline; }
+.lr-desc li { display: inline; margin-right: 10px; }
+
+/* ===== Mobile fold ===== */
+@media (max-width: 900px) {
+  #ledger-head { display: none; }
+  [data-view="ledger"] .ship-card {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 8px 10px;
+  }
+  [data-view="ledger"] .lr-name { flex: 1; min-width: 0; order: 1; }
+  [data-view="ledger"] .lr-icon { order: 0; }
+  [data-view="ledger"] .lr-pt { order: 2; }
+  [data-view="ledger"] .lr-ck { order: 3; }
+  .lr-ck-label { display: inline; }
+  [data-view="ledger"] .lr-cap { order: 4; }
+  [data-view="ledger"] .lr-chips { order: 5; }
+  [data-view="ledger"] .lr-memo { order: 6; }
+  [data-view="ledger"] .lr-expanded .lr-detail { order: 7; margin: 4px 0 0; flex-basis: 100%; }
+}

@@ -12,6 +12,7 @@ import '../../styles/shipgirl/shipgirl-tracker.scores.css';
 import '../../styles/shipgirl/shipgirl-tracker.controls.css';
 import '../../styles/shipgirl/shipgirl-tracker.responsive.css';
 import '../../styles/shipgirl/shipgirl-tracker.goal.css';
+import '../../styles/shipgirl/shipgirl-tracker.ledger.css';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
@@ -101,7 +102,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
 
     <!-- Ship list -->
-    <div id="ship-list-container" class="card-grid"></div>
+    <div id="ledger-head" aria-hidden="true">
+        <div></div><div class="lh-name">함순이</div><div>보유</div><div>120</div><div>풀돌</div>
+        <div>레벨 상한</div><div>육성 상태</div><div>메모</div><div class="lh-pt">기술 Pt</div>
+    </div>
+    <div id="ship-list-container" class="card-grid" data-view="ledger"></div>
 
     <!-- Filter Drawer (right side) -->
     <div class="st-drawer-backdrop drawer-backdrop" id="filter-drawer-backdrop"></div>

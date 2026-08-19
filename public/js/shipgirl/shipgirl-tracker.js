@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const SAVE_KEY = 'shipgirlTrackerProgress';
     const GOAL_KEY = 'shipgirlTrackerSelectedGoal';
     const FILTER_KEY = 'shipgirlTrackerFilters';
-    const UNIQUE_ID_LENGTH = 9;
 
     // ===== State =====
 
@@ -74,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Use utilities from external file
-    const { parseDatasetInt, filterSearchDropdown, setupDropdownToggle, createTrackerItem, parseProgress } = ShipgirlTrackerUtils;
+    const { parseDatasetInt, filterSearchDropdown, setupDropdownToggle, parseProgress } = ShipgirlTrackerUtils;
 
     // Progress (SAVE_KEY) is shared with research-tracker.js via cross-tab storage events.
     // syncedStorage handles persistence + cross-tab sync; onRemoteChange runs only when
@@ -162,93 +161,83 @@ document.addEventListener('DOMContentLoaded', () => {
         icon.alt = ship.name;
         icon.className = 'ship-icon';
         icon.loading = 'lazy';
-        card.appendChild(icon);
+        const iconCell = document.createElement('div');
+        iconCell.className = 'lr-icon';
+        iconCell.appendChild(icon);
+        card.appendChild(iconCell);
 
-        const name = document.createElement('div');
-        name.className = 'ship-name';
-        name.textContent = ship.name;
-        card.appendChild(name);
-
-        const infoSection = document.createElement('div');
-        infoSection.className = 'info-section';
-
+        // Name cell: ★ + name + expander, sub-line with 진영·함종·등급
+        const nameCell = document.createElement('div');
+        nameCell.className = 'lr-name';
         const nationInfo = nationalityData[ship.nationality];
-        if (nationInfo) {
-            const infoItem = document.createElement('div');
-            infoItem.className = 'info-item';
-            infoItem.title = nationInfo.name;
-            infoItem.innerHTML = `<img src="${escapeHtml(nationInfo.image)}" alt="${escapeHtml(nationInfo.name)}" class="info-icon"><span>${escapeHtml(nationInfo.code || nationInfo.name)}</span>`;
-            infoSection.appendChild(infoItem);
-        }
+        const typeInfo = shipTypeData[ship.type];
+        const sub = [nationInfo?.name, typeInfo?.type_name, ship.rarity].filter(Boolean).join(' · ');
+        nameCell.innerHTML =
+            `<div class="lr-nm">` +
+            `<button type="button" class="lr-star" data-action="fav" aria-label="즐겨찾기" aria-pressed="false">☆</button>` +
+            `<span class="lr-nm-text">${escapeHtml(ship.name)}</span>` +
+            `<button type="button" class="lr-expander" data-action="expand" aria-label="상세 정보" aria-expanded="false">` +
+            `<span class="material-symbols-outlined">expand_more</span></button></div>` +
+            `<div class="lr-sub">${escapeHtml(sub)}</div>`;
+        card.appendChild(nameCell);
 
-        const primaryTypeInfo = shipTypeData[ship.type];
-        if (primaryTypeInfo) {
-            const infoItem = document.createElement('div');
-            infoItem.className = 'info-item';
-            infoItem.title = primaryTypeInfo.type_name;
-            infoItem.innerHTML = `<img src="${escapeHtml(primaryTypeInfo.icon)}" alt="${escapeHtml(primaryTypeInfo.type_name)}" class="info-icon"><span>${escapeHtml(primaryTypeInfo.type_name)}</span>`;
-            infoSection.appendChild(infoItem);
-        }
+        // Three progress checkboxes — same classes/data-types as before so the
+        // existing change-delegation, applyProgress, bulkCheck all keep working.
+        [['get', '보유'], ['level', '120'], ['upgrade', '풀돌']].forEach(([type, label]) => {
+            const cell = document.createElement('label');
+            cell.className = 'lr-ck';
+            const cb = document.createElement('input');
+            cb.type = 'checkbox';
+            cb.className = 'tracker-checkbox';
+            cb.dataset.type = type;
+            cb.setAttribute('aria-label', `${ship.name} ${label}`);
+            const mLabel = document.createElement('i');
+            mLabel.className = 'lr-ck-label';
+            mLabel.textContent = label;
+            cell.appendChild(cb);
+            cell.appendChild(mLabel);
+            card.appendChild(cell);
+        });
 
-        if (ship.rarity) {
-            const infoItem = document.createElement('div');
-            infoItem.className = 'info-item';
-            const raritySpan = document.createElement('span');
-            raritySpan.className = `rarity-badge rarity-${ship.rarity}`;
-            raritySpan.textContent = ship.rarity;
-            infoItem.appendChild(raritySpan);
-            infoSection.appendChild(infoItem);
-        }
-        card.appendChild(infoSection);
+        // Placeholder cells — tasks 3 fills these (cap bar, chips, memo).
+        const capCell = document.createElement('div');
+        capCell.className = 'lr-cap';
+        card.appendChild(capCell);
+        const chipsCell = document.createElement('div');
+        chipsCell.className = 'lr-chips';
+        card.appendChild(chipsCell);
+        const memoCell = document.createElement('div');
+        memoCell.className = 'lr-memo';
+        card.appendChild(memoCell);
 
-        if (ship.description && ship.description.length > 0) {
-            const descriptionSection = document.createElement('div');
-            descriptionSection.className = 'description-section';
-            const label = document.createElement('div');
-            label.className = 'description-label';
-            label.textContent = '입수 방법';
-            descriptionSection.appendChild(label);
-            const list = document.createElement('ul');
-            list.className = 'description-list';
-            ship.description.forEach(desc => {
-                const listItem = document.createElement('li');
-                listItem.textContent = `• ${desc}`;
-                list.appendChild(listItem);
-            });
-            descriptionSection.appendChild(list);
-            card.appendChild(descriptionSection);
-        }
+        // Per-ship tech points
+        const ptCell = document.createElement('div');
+        ptCell.className = 'lr-pt';
+        card.appendChild(ptCell);
 
-        if (ship.add_get_attr || ship.add_level_attr) {
-            const statInfo = document.createElement('div');
-            statInfo.className = 'stat-info';
-            if (ship.add_get_attr) {
-                const attrName = attrTypeData[ship.add_get_attr]?.condition || '';
-                const types = ship.add_get_shiptype.map(t => shipTypeData[t]?.type_name || '').filter(Boolean).join('/');
-                const line = document.createElement('div');
-                line.className = 'stat-info-line';
-                line.innerHTML = `<span class="stat-label">입수</span><span class="stat-types-wrap" data-tooltip="${escapeHtml(types)}" tabindex="0"><span class="stat-types">${escapeHtml(types)}</span></span>${escapeHtml(attrName)} <span class="stat-value">+${escapeHtml(ship.add_get_value)}</span>`;
-                statInfo.appendChild(line);
-            }
-            if (ship.add_level_attr) {
-                const attrName = attrTypeData[ship.add_level_attr]?.condition || '';
-                const types = ship.add_level_shiptype.map(t => shipTypeData[t]?.type_name || '').filter(Boolean).join('/');
-                const line = document.createElement('div');
-                line.className = 'stat-info-line';
-                line.innerHTML = `<span class="stat-label">120렙</span><span class="stat-types-wrap" data-tooltip="${escapeHtml(types)}" tabindex="0"><span class="stat-types">${escapeHtml(types)}</span></span>${escapeHtml(attrName)} <span class="stat-value">+${escapeHtml(ship.add_level_value)}</span>`;
-                statInfo.appendChild(line);
-            }
-            card.appendChild(statInfo);
+        // Detail strip (hidden until expanded; card view shows it always).
+        const detail = document.createElement('div');
+        detail.className = 'lr-detail';
+        const descHtml = (ship.description || []).map(d => `<li>• ${escapeHtml(d)}</li>`).join('');
+        let statHtml = '';
+        if (ship.add_get_attr) {
+            const attrName = attrTypeData[ship.add_get_attr]?.condition || '';
+            const types = ship.add_get_shiptype.map(t => shipTypeData[t]?.type_name || '').filter(Boolean).join('/');
+            statHtml += `<span><i class="lr-dk">입수 스탯</i>${escapeHtml(types)} ${escapeHtml(attrName)} +${escapeHtml(ship.add_get_value)}</span>`;
         }
+        if (ship.add_level_attr) {
+            const attrName = attrTypeData[ship.add_level_attr]?.condition || '';
+            const types = ship.add_level_shiptype.map(t => shipTypeData[t]?.type_name || '').filter(Boolean).join('/');
+            statHtml += `<span><i class="lr-dk">120 스탯</i>${escapeHtml(types)} ${escapeHtml(attrName)} +${escapeHtml(ship.add_level_value)}</span>`;
+        }
+        detail.innerHTML =
+            (descHtml ? `<span><i class="lr-dk">입수 방법</i><ul class="lr-desc">${descHtml}</ul></span>` : '') +
+            statHtml +
+            `<span class="lr-nextbreak"></span>`;
+        card.appendChild(detail);
 
-        const trackerSection = document.createElement('div');
-        trackerSection.className = 'tracker-section';
-        if (ship.pt_get !== undefined) trackerSection.appendChild(createTrackerItem('입수 시', ship.pt_get, 'get', UNIQUE_ID_LENGTH));
-        if (ship.pt_level !== undefined) trackerSection.appendChild(createTrackerItem('120 달성시', ship.pt_level, 'level', UNIQUE_ID_LENGTH));
-        if (ship.pt_upgrage !== undefined) trackerSection.appendChild(createTrackerItem('풀돌 시', ship.pt_upgrage, 'upgrade', UNIQUE_ID_LENGTH));
-        if (trackerSection.hasChildNodes()) {
-            card.appendChild(trackerSection);
-        }
+        // Rarity edge color
+        if (ship.rarity) card.classList.add(`lr-rar-${String(ship.rarity).toLowerCase()}`);
 
         // Cache checkbox references to avoid repeated querySelector calls
         card._cb = {
@@ -360,6 +349,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     fleetTechByName[nationalityName] += parseDatasetInt(data.ptUpgrade);
                 }
             }
+
+            const earned = (isGetChecked ? parseDatasetInt(data.ptGet) : 0)
+                + (isLevelChecked ? parseDatasetInt(data.ptLevel) : 0)
+                + (isUpgradeChecked ? parseDatasetInt(data.ptUpgrade) : 0);
+            const totalPt = parseDatasetInt(data.ptGet) + parseDatasetInt(data.ptLevel) + parseDatasetInt(data.ptUpgrade);
+            const ptCell = card.querySelector('.lr-pt');
+            if (ptCell) ptCell.innerHTML = `<b>${earned}</b>${earned < totalPt ? ` <small>/ ${totalPt}</small>` : ''}`;
+            card.classList.toggle('lr-unowned', !isGetChecked);
         });
 
         // Update total fleet tech score indicator
@@ -1926,6 +1923,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else {
                         debouncedCalculateScores();
                     }
+                }
+            });
+
+            // Row expander delegation (single listener; task 3 adds fav/cap/chip/memo actions here).
+            cachedElements.shipListContainer.addEventListener('click', (e) => {
+                const btn = e.target.closest('[data-action]');
+                if (!btn) return;
+                const card = btn.closest('.ship-card');
+                if (!card) return;
+                if (btn.dataset.action === 'expand') {
+                    const open = card.classList.toggle('lr-expanded');
+                    btn.setAttribute('aria-expanded', String(open));
                 }
             });
 
