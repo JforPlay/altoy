@@ -108,8 +108,10 @@ document.addEventListener('DOMContentLoaded', () => {
         },
     });
 
-    // Stub — task 4 replaces this with a real investment filter control.
-    function isInvestmentFilterActive() { return false; }
+    function isInvestmentFilterActive() {
+        return ['fav-filter', 'retro-filter', 'aff-filter', 'skl-filter', 'memo-filter']
+            .some(id => (document.getElementById(id)?.value || 'all') !== 'all');
+    }
 
     function getInv(gid) { return investment[gid] || {}; }
 
@@ -1369,7 +1371,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const dropdownFilters = [
             { id: 'progress-filter', label: '체크된 함순이들로 필터링', options: { all: '체크여부 - 전체', checked: '하나라도 체크됨', unchecked: '체크 안됨' }, description: '체크박스 상태에 따라 함순이를 필터링합니다.' },
             { id: 'get-attr-filter', label: '입수 스탯으로 필터링', data: attrTypeData, allOptionText: '입수스탯 - 전체', prefix: '입수: ', description: '함순이 입수 시 제공하는 함대 기술 스탯으로 필터링합니다.' },
-            { id: 'level-attr-filter', label: '120렙 스탯으로 필터링', data: attrTypeData, allOptionText: '120스탯 - 전체', prefix: '120렙: ', description: '함순이 120레벨 달성 시 제공하는 함대 기술 스탯으로 필터링합니다.' }
+            { id: 'level-attr-filter', label: '120렙 스탯으로 필터링', data: attrTypeData, allOptionText: '120스탯 - 전체', prefix: '120렙: ', description: '함순이 120레벨 달성 시 제공하는 함대 기술 스탯으로 필터링합니다.' },
+            { id: 'fav-filter', label: '즐겨찾기 필터', options: { all: '즐겨찾기 - 전체', fav: '즐겨찾기만' }, description: '즐겨찾기한 함순이만 표시합니다.' },
+            { id: 'retro-filter', label: '개장 필터', options: { all: '개장 - 전체', able: '개장 가능', done: '개장 완료', todo: '개장 미완' }, description: '개장 가능/완료 여부로 필터링합니다.' },
+            { id: 'aff-filter', label: '호감작 필터', options: { all: '호감작 - 전체', 0: '호감작 안함', 1: '100 예정', 2: '100 완료', 3: '200 예정', 4: '200 완료' }, description: '호감작 상태로 필터링합니다.' },
+            { id: 'skl-filter', label: '스작 필터', options: { all: '스작 - 전체', 0: '스작 안함', 1: '스작 예정', 2: '스작 진행중', 3: '스작 완료' }, description: '스작 상태로 필터링합니다.' },
+            { id: 'memo-filter', label: '메모 필터', options: { all: '메모 - 전체', has: '메모 있음' }, description: '메모가 있는 함순이만 표시합니다.' }
         ];
 
         dropdownFilters.forEach(f => {
@@ -1388,12 +1395,18 @@ document.addEventListener('DOMContentLoaded', () => {
             select.id = f.id;
             select.setAttribute('aria-label', f.label);
             if (f.options) {
-                Object.entries(f.options).forEach(([val, text]) => {
-                    const option = document.createElement('option');
-                    option.value = val;
-                    option.textContent = text;
-                    select.appendChild(option);
-                });
+                // Object key enumeration always sorts integer-like keys (e.g. aff/skl's
+                // 0..4) before string keys, regardless of source order — sort 'all' back
+                // to the front so it's both the visible first option and the default
+                // selectedIndex (no explicit `selected` is set anywhere).
+                Object.entries(f.options)
+                    .sort(([a], [b]) => (a === 'all' ? -1 : b === 'all' ? 1 : 0))
+                    .forEach(([val, text]) => {
+                        const option = document.createElement('option');
+                        option.value = val;
+                        option.textContent = text;
+                        select.appendChild(option);
+                    });
             } else {
                 const allText = f.allOptionText || '전체';
                 const allOption = document.createElement('option');
@@ -1738,6 +1751,14 @@ document.addEventListener('DOMContentLoaded', () => {
             chips.push({ label: selectedOption.textContent, type: 'level-attr', value: levelAttrEl.value });
         }
 
+        // Investment chips (fav/retro/aff/skl/memo) — label = selected option text.
+        ['fav', 'retro', 'aff', 'skl', 'memo'].forEach(type => {
+            const el = document.getElementById(`${type}-filter`);
+            if (el && el.value !== 'all') {
+                chips.push({ label: el.options[el.selectedIndex].textContent, type, value: el.value });
+            }
+        });
+
         // Search chip
         const searchVal = document.getElementById('search-bar')?.value?.trim();
         if (searchVal) {
@@ -1794,6 +1815,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (el) el.value = 'all';
         } else if (chip.type === 'search') {
             document.getElementById('search-bar').value = '';
+        } else if (['fav', 'retro', 'aff', 'skl', 'memo'].includes(chip.type)) {
+            const el = document.getElementById(`${chip.type}-filter`);
+            if (el) el.value = 'all';
         }
         applyFilters();
     }
@@ -1809,6 +1833,11 @@ document.addEventListener('DOMContentLoaded', () => {
             progress: document.getElementById('progress-filter')?.value || 'all',
             getAttr: document.getElementById('get-attr-filter')?.value || 'all',
             levelAttr: document.getElementById('level-attr-filter')?.value || 'all',
+            fav: document.getElementById('fav-filter')?.value || 'all',
+            retro: document.getElementById('retro-filter')?.value || 'all',
+            aff: document.getElementById('aff-filter')?.value || 'all',
+            skl: document.getElementById('skl-filter')?.value || 'all',
+            memo: document.getElementById('memo-filter')?.value || 'all',
         };
         setStorageItem(FILTER_KEY, JSON.stringify(filters));
     }
@@ -1861,6 +1890,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (getAttrEl && filters.getAttr) getAttrEl.value = filters.getAttr;
             const levelAttrEl = document.getElementById('level-attr-filter');
             if (levelAttrEl && filters.levelAttr) levelAttrEl.value = filters.levelAttr;
+            const favEl = document.getElementById('fav-filter');
+            if (favEl && filters.fav) favEl.value = filters.fav;
+            const retroEl = document.getElementById('retro-filter');
+            if (retroEl && filters.retro) retroEl.value = filters.retro;
+            const affEl = document.getElementById('aff-filter');
+            if (affEl && filters.aff) affEl.value = filters.aff;
+            const sklEl = document.getElementById('skl-filter');
+            if (sklEl && filters.skl) sklEl.value = filters.skl;
+            const memoEl = document.getElementById('memo-filter');
+            if (memoEl && filters.memo) memoEl.value = filters.memo;
         } catch (e) {
             console.error('Failed to load saved filters:', e);
         }
@@ -1874,6 +1913,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const progressFilter = document.getElementById('progress-filter').value;
         const getAttrFilter = document.getElementById('get-attr-filter').value;
         const levelAttrFilter = document.getElementById('level-attr-filter').value;
+        const favFilter = document.getElementById('fav-filter').value;
+        const retroFilter = document.getElementById('retro-filter').value;
+        const affFilter = document.getElementById('aff-filter').value;
+        const sklFilter = document.getElementById('skl-filter').value;
+        const memoFilter = document.getElementById('memo-filter').value;
         const checkedNations = Array.from(document.querySelectorAll('#nationality-filter input[data-filter-type="individual"]:checked')).map(cb => parseDatasetInt(cb.value));
         const checkedTypes = Array.from(document.querySelectorAll('#type-filter input[data-filter-type="individual"]:checked')).map(cb => parseDatasetInt(cb.value));
 
@@ -1904,7 +1948,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const getAttrMatch = getAttrFilter === 'all' || ship.add_get_attr === parseDatasetInt(getAttrFilter);
             const levelAttrMatch = levelAttrFilter === 'all' || ship.add_level_attr === parseDatasetInt(levelAttrFilter);
 
-            return searchMatch && natMatch && typeMatch && rarityMatch && progressMatch && getAttrMatch && levelAttrMatch;
+            const rec = getInv(shipId);
+            const favMatch = favFilter === 'all' || !!rec.fav;
+            const retroMatch = retroFilter === 'all'
+                || (retroFilter === 'able' && !!ship.retrofit)
+                || (retroFilter === 'done' && !!rec.ret)
+                || (retroFilter === 'todo' && !!ship.retrofit && !rec.ret);
+            const affMatch = affFilter === 'all' || (rec.aff || 0) === parseDatasetInt(affFilter);
+            const sklMatch = sklFilter === 'all' || (rec.skl || 0) === parseDatasetInt(sklFilter);
+            const memoMatch = memoFilter === 'all' || !!rec.memo;
+
+            return searchMatch && natMatch && typeMatch && rarityMatch && progressMatch && getAttrMatch && levelAttrMatch
+                && favMatch && retroMatch && affMatch && sklMatch && memoMatch;
         });
 
         renderVisibleCards();
