@@ -87,6 +87,19 @@ document.addEventListener('DOMContentLoaded', () => {
         setStorageItem(VIEW_KEY, view);
     }
 
+    /**
+     * Pins #ledger-head just below the sticky toolbar. Both stick at navbar
+     * height, but the toolbar wins on z-index — pinning the head at
+     * --navbar-height alone slides it invisibly under the toolbar on scroll,
+     * so the head's offset must add the toolbar's live height (it wraps).
+     */
+    function updateStickyOffset() {
+        const toolbar = document.querySelector('.st-toolbar');
+        if (!toolbar) return;
+        const nav = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--navbar-height')) || 65;
+        document.documentElement.style.setProperty('--st-sticky-h', `${nav + toolbar.offsetHeight}px`);
+    }
+
     // Use utilities from external file
     const { parseDatasetInt, filterSearchDropdown, setupDropdownToggle, parseProgress } = ShipgirlTrackerUtils;
 
@@ -215,19 +228,26 @@ document.addEventListener('DOMContentLoaded', () => {
         iconCell.appendChild(icon);
         card.appendChild(iconCell);
 
-        // Name cell: ★ + name + expander, sub-line with 진영·함종·등급
+        // Name cell: ★ + name + expander, sub-line with 진영/함종 icons + rarity badge
+        // (rarity.css badge — ledger view compacts it, cards view shows it full-size)
         const nameCell = document.createElement('div');
         nameCell.className = 'lr-name';
         const nationInfo = nationalityData[ship.nationality];
         const typeInfo = shipTypeData[ship.type];
-        const sub = [nationInfo?.name, typeInfo?.type_name, ship.rarity].filter(Boolean).join(' · ');
+        let subHtml = '';
+        if (nationInfo) subHtml +=
+            `<span class="lr-sub-item">${nationInfo.image ? `<img src="${escapeHtml(nationInfo.image)}" alt="" class="lr-sub-icon" loading="lazy">` : ''}${escapeHtml(nationInfo.name)}</span>`;
+        if (typeInfo) subHtml +=
+            `<span class="lr-sub-item">${typeInfo.icon ? `<img src="${escapeHtml(typeInfo.icon)}" alt="" class="lr-sub-icon" loading="lazy">` : ''}${escapeHtml(typeInfo.type_name)}</span>`;
+        if (ship.rarity) subHtml +=
+            `<span class="rarity-badge rarity-${escapeHtml(String(ship.rarity))}">${escapeHtml(String(ship.rarity))}</span>`;
         nameCell.innerHTML =
             `<div class="lr-nm">` +
             `<button type="button" class="lr-star" data-action="fav" aria-label="즐겨찾기" aria-pressed="false">☆</button>` +
             `<span class="lr-nm-text">${escapeHtml(ship.name)}</span>` +
             `<button type="button" class="lr-expander" data-action="expand" aria-label="상세 정보" aria-expanded="false">` +
             `<span class="material-symbols-outlined">expand_more</span></button></div>` +
-            `<div class="lr-sub">${escapeHtml(sub)}</div>`;
+            `<div class="lr-sub">${subHtml}</div>`;
         card.appendChild(nameCell);
 
         // Three progress checkboxes — same classes/data-types as before so the
@@ -319,14 +339,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const chipsCell = card.querySelector('.lr-chips');
         const retChip = ship.retrofit
-            ? `<button type="button" class="chip lr-chip ${rec.ret ? 'is-done' : ''}" data-action="ret">개장</button>`
+            ? `<button type="button" class="chip lr-chip ${rec.ret ? 'is-done' : ''}" data-action="ret" title="개장 — 클릭: 완료/해제">개장</button>`
             : `<span class="lr-chip-ghost"></span>`;
         const aff = rec.aff || 0;
         const skl = rec.skl || 0;
         const stateCls = (v, doneAt) => v === 0 ? '' : (v === doneAt ? 'is-done' : (v % 2 ? 'is-plan' : 'is-mid'));
+        // step dots: empty dots on the idle chip signal there are stages to cycle
+        // through; dropped at max stage (the filled is-done chip already says 완료,
+        // and the longest labels otherwise overflow the 230px ledger cell)
+        const stepDots = (v, n) => v >= n ? '' : `<span class="lr-chip-step" aria-hidden="true">`
+            + Array.from({ length: n }, (_, i) => `<i class="${i < v ? 'f' : ''}"></i>`).join('') + `</span>`;
         chipsCell.innerHTML = retChip
-            + `<button type="button" class="chip lr-chip ${stateCls(aff, 4)}" data-action="aff" title="호감작: ${AFF_LABELS[aff]}">${aff === 0 ? '호감작' : escapeHtml(AFF_LABELS[aff])}</button>`
-            + `<button type="button" class="chip lr-chip ${stateCls(skl, 3)}" data-action="skl" title="스작: ${SKL_LABELS[skl]}">${skl === 0 ? '스작' : escapeHtml(SKL_LABELS[skl])}</button>`;
+            + `<button type="button" class="chip lr-chip ${stateCls(aff, 4)}" data-action="aff" title="호감작 ${aff}/4단계 (${AFF_LABELS[aff]}) — 클릭: 다음 단계">`
+            + `${aff === 0 ? '호감작' : '호감 ' + escapeHtml(AFF_LABELS[aff])}${stepDots(aff, 4)}</button>`
+            + `<button type="button" class="chip lr-chip ${stateCls(skl, 3)}" data-action="skl" title="스작 ${skl}/3단계 (${SKL_LABELS[skl]}) — 클릭: 다음 단계">`
+            + `${escapeHtml(SKL_LABELS[skl])}${stepDots(skl, 3)}</button>`;
 
         const star = card.querySelector('.lr-star');
         star.textContent = rec.fav ? '★' : '☆';
@@ -335,7 +362,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const memoCell = card.querySelector('.lr-memo');
         memoCell.innerHTML = `<button type="button" class="lr-memo-btn ${rec.memo ? 'has' : ''}" data-action="memo" aria-label="메모">`
-            + `<span class="material-symbols-outlined">edit_note</span></button>`;
+            + `<span class="material-symbols-outlined">edit_note</span><span class="lr-memo-txt">메모</span></button>`;
 
         const next = nextBreakCost(cap, ship.rarity);
         const nb = card.querySelector('.lr-nextbreak');
@@ -1810,8 +1837,7 @@ document.addEventListener('DOMContentLoaded', () => {
             el.addEventListener('click', () => removeFilterChip(chip));
             fragment.appendChild(el);
         });
-        const totalScoreBar = document.getElementById('total-score-bar');
-        chipsRow.insertBefore(fragment, totalScoreBar);
+        chipsRow.appendChild(fragment);
     }
 
     /**
@@ -2096,6 +2122,10 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('view-toggle-btn').addEventListener('click', () => {
                 applyView(cachedElements.shipListContainer.dataset.view === 'ledger' ? 'cards' : 'ledger');
             });
+
+            // Sticky ledger-head offset (navbar + toolbar) — toolbar height is live (wraps)
+            updateStickyOffset();
+            window.addEventListener('resize', updateStickyOffset);
 
             // Setup drawer
             document.getElementById('filter-drawer-btn').addEventListener('click', openDrawer);

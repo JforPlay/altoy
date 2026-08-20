@@ -6,22 +6,25 @@
 #ledger-head,
 [data-view="ledger"] .ship-card {
   display: grid;
-  grid-template-columns: 46px minmax(150px, 1.2fr) 42px 42px 42px 210px 170px 34px 64px;
+  grid-template-columns: 56px minmax(150px, 1.2fr) 46px 46px 46px 230px 230px 40px 72px;
   align-items: center;
-  gap: 0 6px;
+  gap: 0 8px;
 }
 
 #ledger-head {
   max-width: 1400px;
+  width: calc(100% - 2rem);
   margin: 0 auto;
-  padding: 6px 10px 6px 3px;
-  font-size: 0.68rem;
+  padding: 8px 10px 8px 3px;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-muted);
   border-bottom: 1px solid var(--border-color);
   text-align: center;
   position: sticky;
-  top: var(--navbar-height, 0px);
+  /* Below the sticky toolbar (navbar + toolbar height, JS-measured) — pinning at
+     --navbar-height alone slides the head invisibly under the z-100 toolbar. */
+  top: var(--st-sticky-h, 120px);
   background: var(--card-bg);
   z-index: 5;
 }
@@ -31,17 +34,20 @@
 /* ID-qualified so these beat cards.css's #ship-list-container padding and its
    body.dark-mode .ship-card box-shadow (both outrank a plain [data-view] rule
    on specificity alone) — Task 2 review fixes. */
-#ship-list-container[data-view="ledger"] { display: block; padding: 0 1rem 1rem; max-width: 1400px; margin: 0 auto; }
+/* Width treatment must match #ledger-head exactly (same max-width, same
+   `calc(100% - 2rem)`, NO extra side padding) so row borders + columns align
+   with the header bar — the old `padding: 0 1rem` inset every row 16px. */
+#ship-list-container[data-view="ledger"] { display: block; padding: 0 0 1rem; max-width: 1400px; width: calc(100% - 2rem); margin: 0 auto; }
 #ship-list-container[data-view="ledger"] .ship-card {
   background: var(--card-bg);
   border-bottom: 1px solid var(--border-color);
   border-left: 3px solid transparent;
   border-radius: 0;
-  padding: 6px 10px 6px 0;
+  padding: 8px 10px 8px 0;
   box-shadow: none;
 }
 [data-view="ledger"] .ship-card:hover { transform: none; box-shadow: none; background: var(--bg-secondary); }
-[data-view="ledger"] .ship-icon { width: 32px; height: 32px; margin: 0 auto; display: block; }
+[data-view="ledger"] .ship-icon { width: 44px; height: 44px; margin: 0 auto; display: block; }
 
 .lr-rar-n   { border-left-color: var(--rarity-n) !important; }
 .lr-rar-r   { border-left-color: var(--rarity-r) !important; }
@@ -50,40 +56,46 @@
 .lr-rar-ur  { border-left-color: var(--rarity-ur) !important; }
 .lr-unowned { opacity: 0.55; }
 
-.lr-nm { display: flex; align-items: center; gap: 5px; font-size: 0.84rem; font-weight: 600; min-width: 0; }
+.lr-nm { display: flex; align-items: center; gap: 6px; font-size: 0.95rem; font-weight: 600; min-width: 0; }
 .lr-nm-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.lr-sub { font-size: 0.68rem; color: var(--text-muted); }
+.lr-sub { display: flex; align-items: center; flex-wrap: wrap; gap: 2px 8px; font-size: 0.75rem; color: var(--text-muted); }
+.lr-sub-item { display: inline-flex; align-items: center; gap: 3px; }
+.lr-sub-icon { width: 14px; height: 14px; object-fit: contain; }
+/* rarity.css badge at row scale (cards view keeps its natural size) */
+[data-view="ledger"] .lr-sub .rarity-badge { font-size: 0.62rem; padding: 0 5px; }
 .lr-star, .lr-expander {
-  background: none; border: 0; padding: 0; cursor: pointer;
-  color: var(--text-muted); font-size: 0.85rem; line-height: 1;
+  background: none; border: 0; padding: 2px; cursor: pointer;
+  color: var(--text-muted); font-size: 1rem; line-height: 1;
 }
 .lr-star.on { color: var(--warning-color); }
-.lr-expander .material-symbols-outlined { font-size: 16px; transition: transform var(--transition-fast); }
+.lr-expander .material-symbols-outlined { font-size: 18px; transition: transform var(--transition-fast); }
 .lr-expanded .lr-expander .material-symbols-outlined { transform: rotate(180deg); }
 
 .lr-ck { display: flex; justify-content: center; align-items: center; gap: 4px; cursor: pointer; }
-.lr-ck input { width: 16px; height: 16px; accent-color: var(--accent-blue); margin: 0; }
-.lr-ck-label { display: none; font-style: normal; font-size: 0.68rem; color: var(--text-secondary); }
+.lr-ck input { width: 18px; height: 18px; accent-color: var(--accent-blue); margin: 0; cursor: pointer; }
+.lr-ck-label { display: none; font-style: normal; font-size: 0.75rem; color: var(--text-secondary); }
 
-.lr-pt { text-align: right; font-size: 0.74rem; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+.lr-pt { text-align: right; font-size: 0.9rem; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
 .lr-pt b { color: var(--text-primary); }
 
 .lr-detail { display: none; }
 [data-view="ledger"] .lr-expanded .lr-detail {
   display: flex; flex-wrap: wrap; gap: 4px 26px;
   grid-column: 1 / -1;
-  margin: 6px 8px 2px 46px;
+  margin: 8px 8px 2px 64px;
   border: 1px dashed var(--border-color);
   border-radius: var(--radius-sm);
-  padding: 7px 12px;
-  font-size: 0.72rem; color: var(--text-secondary);
+  padding: 8px 12px;
+  font-size: 0.78rem; color: var(--text-secondary);
 }
 .lr-dk { font-style: normal; color: var(--text-muted); font-weight: 600; margin-right: 6px; }
 .lr-desc { list-style: none; margin: 0; padding: 0; display: inline; }
 .lr-desc li { display: inline; margin-right: 10px; }
 
-/* ===== Mobile fold ===== */
-@media (max-width: 900px) {
+/* ===== Mobile fold =====
+   1024px, not 900: the widened fixed tracks sum to ~980px + 2rem side margin,
+   so the grid row would overflow its container below ~1012px viewport. */
+@media (max-width: 1024px) {
   #ledger-head { display: none; }
   /* ID-qualified to match the desktop .ship-card rule's specificity (both now
      beat cards.css's body.dark-mode .ship-card) so this padding override still wins. */
@@ -102,10 +114,10 @@
 }
 
 /* ===== Cap segment bar ===== */
-.lr-cap { display: flex; gap: 2px; justify-content: center; }
+.lr-cap { display: flex; gap: 3px; justify-content: center; }
 .lr-cap button {
-  width: 38px; height: 20px; padding: 0;
-  font-size: 0.64rem; font-weight: 600; font-variant-numeric: tabular-nums;
+  width: 42px; height: 26px; padding: 0;
+  font-size: 0.72rem; font-weight: 600; font-variant-numeric: tabular-nums;
   border: 1px solid var(--border-color); border-radius: var(--radius-xs);
   background: transparent; color: var(--text-muted); cursor: pointer;
 }
@@ -114,28 +126,32 @@
 .lr-cap button:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 1px; }
 
 /* ===== 육성 chips (개장 / 호감작 / 스작) ===== */
-.lr-chips { display: flex; gap: 4px; justify-content: center; }
+.lr-chips { display: flex; flex-wrap: wrap; gap: 3px 4px; justify-content: center; }
 .lr-chip {
-  font-size: 0.66rem; font-weight: 600; padding: 2px 7px;
+  display: inline-flex; align-items: center;
+  font-size: 0.78rem; font-weight: 600; padding: 4px 9px; min-height: 26px;
   border-radius: var(--radius-sm); border: 1px solid var(--border-color);
   background: transparent; color: var(--text-muted); cursor: pointer; white-space: nowrap;
 }
+/* cycle-progress dots (4 for 호감작, 3 for 스작); filled = reached stage */
+.lr-chip-step { display: inline-flex; gap: 2px; margin-left: 5px; }
+.lr-chip-step i { width: 4px; height: 4px; border-radius: var(--radius-full); background: currentColor; opacity: 0.25; }
+.lr-chip-step i.f { opacity: 1; }
 .lr-chip.is-plan { border-style: dashed; border-color: var(--accent-blue); color: var(--accent-blue); }
 .lr-chip.is-mid  { border-color: var(--accent-blue); color: var(--accent-blue); background: var(--primary-alpha-10, rgba(0, 113, 235, 0.08)); }
 .lr-chip.is-done { background: var(--accent-blue); border-color: var(--accent-blue); color: #fff; }
-.lr-chip-ghost { width: 44px; }
+.lr-chip-ghost { width: 48px; }
 
 /* ===== Memo ===== */
 .lr-memo { text-align: center; }
 .lr-memo-btn { background: none; border: 0; padding: 0; cursor: pointer; color: var(--text-muted); position: relative; }
-.lr-memo-btn .material-symbols-outlined { font-size: 18px; }
+.lr-memo-btn .material-symbols-outlined { font-size: 22px; }
+.lr-memo-txt { display: none; } /* cards view shows it */
 .lr-memo-btn.has::after {
   content: ""; position: absolute; top: 0; right: -2px;
   width: 6px; height: 6px; border-radius: var(--radius-full); background: var(--accent-blue);
 }
 
-/* ===== Summary counters + memo modal bits ===== */
-.st-unit-cell { font-size: 0.78rem; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
-.st-unit-cell b { color: var(--text-primary); }
+/* ===== Memo modal ===== */
 #memo-input { width: 100%; resize: vertical; background: var(--input-bg); color: var(--text-primary);
   border: 1px solid var(--input-border); border-radius: var(--radius-sm); padding: 8px; font: inherit; }

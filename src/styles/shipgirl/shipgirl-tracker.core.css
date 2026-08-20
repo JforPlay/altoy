@@ -70,7 +70,7 @@ body {
   width: calc(100% - 2rem);
   flex-wrap: wrap;
   position: sticky;
-  top: 65px;
+  top: var(--navbar-height, 65px);
   z-index: 100;
   border: 1px solid var(--border-color);
   transition: background var(--transition-fast), box-shadow var(--transition-fast);
@@ -158,39 +158,72 @@ body {
   font-size: 1.15rem;
 }
 
-/* --- Total Score Bar --- */
+/* --- Summary Strip (기술 Pt · 보유 · 성정 유닛 · 유닛 II) --- */
 
-.st-total-score {
+.st-summary {
   display: flex;
+  flex-wrap: wrap;
+  max-width: 1400px;
+  width: calc(100% - 2rem);
+  margin: var(--spacing-xs) auto 0;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+}
+
+.st-sum-item {
+  flex: 1 1 160px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  margin-left: auto;
-  font-size: 0.85rem;
+  gap: 2px;
+  padding: 10px 14px;
+}
+
+.st-sum-item + .st-sum-item {
+  border-left: 1px solid var(--border-color);
+}
+
+.st-sum-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
   font-weight: 600;
-  color: var(--text-secondary);
-  white-space: nowrap;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
 }
 
-.st-total-score .material-symbols-outlined {
-  font-size: 1.1rem;
+.st-sum-label .material-symbols-outlined {
+  font-size: 0.95rem;
   color: var(--primary-color);
 }
 
-.st-total-score-value {
-  color: var(--primary-color);
+.st-sum-value {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
   font-variant-numeric: tabular-nums;
+  line-height: 1.2;
 }
 
-.st-total-score-sep {
-  color: var(--text-secondary);
-  opacity: 0.5;
+.st-sum-value small {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
 }
 
-.st-total-score-max {
-  font-variant-numeric: tabular-nums;
+/* wrapped 2×2 layout: side borders stop lining up, drop them */
+@media (max-width: 700px) {
+  .st-sum-item { flex-basis: 45%; }
+  .st-sum-item + .st-sum-item { border-left: 0; }
 }
 
 /* --- Filter Chips Row --- */
+
+.st-chips-row:empty {
+  display: none;
+}
 
 .st-chips-row {
   display: flex;

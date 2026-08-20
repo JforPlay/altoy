@@ -1,12 +1,13 @@
 /* ===== Card view (container[data-view="cards"]) =====
    Same .ship-card DOM as the ledger row (shipgirl-tracker.ledger.css) — this
-   file lays those nodes out as a vertical card grid instead. Every rule here
-   is scoped under [data-view="cards"] so it never leaks into the ledger row
-   layout. Detail strip is always visible (no expander); rarity edge moves
-   from the ledger's left border to a top border. */
+   file lays those nodes out as a vertical card grid, restoring the
+   pre-redesign card look: centered 70px portrait, labeled checkbox rows on
+   --section-bg, labeled cap-bar / 육성 / memo / Pt groups. Every rule is
+   scoped under [data-view="cards"] so it never leaks into the ledger layout.
+   Rarity edge moves from the ledger's left border to a top border. */
 
 #ship-list-container[data-view="cards"] {
-  --grid-min: 240px;
+  --grid-min: 250px;
   --grid-gap: 12px;
   padding: 1rem;
 }
@@ -19,7 +20,7 @@
   padding: 0.75rem;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   box-shadow: 0 1px 3px var(--overlay-12), 0 1px 2px var(--overlay-lighter);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -40,49 +41,103 @@
 [data-view="cards"] .lr-rar-ssr { border-top-color: var(--rarity-ssr); border-left-color: transparent !important; }
 [data-view="cards"] .lr-rar-ur  { border-top-color: var(--rarity-ur);  border-left-color: transparent !important; }
 
+/* --- Portrait + name block --- */
 [data-view="cards"] .lr-icon { align-self: center; }
 [data-view="cards"] .ship-icon {
-  width: 64px;
-  height: 64px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   border: 2px solid var(--border-color);
 }
 
 [data-view="cards"] .lr-name { width: 100%; }
 [data-view="cards"] .lr-nm { justify-content: center; }
-[data-view="cards"] .lr-sub { text-align: center; }
+[data-view="cards"] .lr-sub { justify-content: center; margin-top: 3px; }
 [data-view="cards"] .lr-expander { display: none; }
 
-[data-view="cards"] .lr-ck { justify-content: flex-start; }
-[data-view="cards"] .lr-ck-label { display: inline; }
+/* --- 보유/120/풀돌: pre-redesign tracker-item rows (label left, box right) --- */
+[data-view="cards"] .lr-ck {
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  width: 100%;
+  padding: 5px 8px;
+  border-radius: 4px;
+  background: var(--section-bg);
+  transition: background-color var(--transition-fast);
+}
+[data-view="cards"] .lr-ck:hover { background: var(--border-color); }
+[data-view="cards"] .lr-ck-label { display: inline; font-size: 0.8rem; color: var(--text-primary); }
 
+/* --- Labeled control groups (cap bar / 육성 chips) --- */
 [data-view="cards"] .lr-cap,
 [data-view="cards"] .lr-chips {
   justify-content: flex-start;
   flex-wrap: wrap;
 }
+[data-view="cards"] .lr-cap::before,
+[data-view="cards"] .lr-chips::before {
+  flex-basis: 100%;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+[data-view="cards"] .lr-cap::before { content: "레벨 상한 (성정 유닛)"; }
+[data-view="cards"] .lr-chips::before { content: "육성"; }
+[data-view="cards"] .lr-cap button { flex: 1; width: auto; }
+[data-view="cards"] .lr-chip-ghost { display: none; }
 
-[data-view="cards"] .lr-memo { text-align: left; }
-[data-view="cards"] .lr-pt { text-align: left; }
+/* --- Memo: full-width labeled row --- */
+[data-view="cards"] .lr-memo { text-align: left; width: 100%; }
+[data-view="cards"] .lr-memo-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 5px 8px;
+  border-radius: 4px;
+  background: var(--section-bg);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  transition: background-color var(--transition-fast);
+}
+[data-view="cards"] .lr-memo-btn:hover { background: var(--border-color); }
+[data-view="cards"] .lr-memo-btn .material-symbols-outlined { font-size: 18px; }
+[data-view="cards"] .lr-memo-txt { display: inline; }
 
-/* Detail strip — hidden-until-expanded in ledger, always on in cards
-   (입수 방법 / 스탯 / 다음 돌파 back on the card face). */
+/* --- 기술 Pt with inline label --- */
+[data-view="cards"] .lr-pt { text-align: left; font-size: 0.9rem; }
+[data-view="cards"] .lr-pt::before {
+  content: "기술 Pt";
+  margin-right: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* --- Detail strip: hidden-until-expanded in ledger, always on in cards
+   (입수 방법 / 스탯 / 다음 돌파 back on the card face, stacked). --- */
 [data-view="cards"] .lr-detail {
   display: block;
   border-top: 1px solid var(--border-color);
   padding-top: 6px;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
 }
-[data-view="cards"] .lr-detail > span {
-  display: block;
-  margin-top: 4px;
-}
-[data-view="cards"] .lr-detail > span:first-child {
-  margin-top: 0;
-}
+[data-view="cards"] .lr-detail > span { display: block; margin-top: 6px; }
+[data-view="cards"] .lr-detail > span:first-child { margin-top: 0; }
+[data-view="cards"] .lr-dk { display: block; margin: 0 0 2px; }
+[data-view="cards"] .lr-desc { display: block; }
+[data-view="cards"] .lr-desc li { display: block; padding: 1px 0; margin: 0; }
 
 /* ===== Dark Mode Overrides ===== */
 body.dark-mode [data-view="cards"] .ship-card {
   box-shadow: 0 2px 4px var(--shadow-color);
+}
+body.dark-mode [data-view="cards"] .lr-ck,
+body.dark-mode [data-view="cards"] .lr-memo-btn {
+  background: var(--highlight-subtle);
+}
+body.dark-mode [data-view="cards"] .lr-ck:hover,
+body.dark-mode [data-view="cards"] .lr-memo-btn:hover {
+  background: var(--border-color);
 }

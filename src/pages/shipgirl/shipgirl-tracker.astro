@@ -49,6 +49,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     </div>
                 </div>
                 <div class="info-step">
+                    <div class="info-icon"><i class="fas fa-heart"></i></div>
+                    <div class="info-content">
+                        <h3>육성 기록</h3>
+                        <p><strong>호감작</strong>(100/200 예정·완료, 4단계)과 <strong>스작</strong>(예정·진행중·완료, 3단계) 칩은 클릭할 때마다 다음 단계로 넘어가고, 마지막 단계에서 다시 클릭하면 초기화됩니다. <strong>레벨 상한</strong> 바는 목표 돌파 레벨을 클릭해 설정하고, 현재 단계를 다시 클릭하면 한 단계 내려갑니다.</p>
+                    </div>
+                </div>
+                <div class="info-step">
                     <div class="info-icon"><i class="fas fa-filter"></i></div>
                     <div class="info-content">
                         <h3>필터</h3>
@@ -96,21 +103,28 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
     </div>
 
-    <!-- Active filter chips + total score -->
-    <div class="st-chips-row" id="filter-chips">
-        <div class="st-total-score" id="total-score-bar">
-            <span class="material-symbols-outlined">military_tech</span>
-            <span class="st-total-score-value" id="total-score-value">0</span>
-            <span class="st-total-score-sep">/</span>
-            <span class="st-total-score-max" id="total-score-max">0</span>
-            <span class="st-unit-cell" title="성정 유닛 (투자 / 전체 함순이 125 기준)">
-                유닛 <b id="unit1-invested">0</b><small>/<span id="unit1-total">0</span></small></span>
-            <span class="st-unit-cell" title="성정 유닛II (투자 / 전체 함순이 125 기준)">
-                II <b id="unit2-invested">0</b><small>/<span id="unit2-total">0</span></small></span>
-            <span class="st-unit-cell" title="보유 함순이 수">
-                보유 <b id="owned-count">0</b><small>/<span id="owned-total">0</span></small></span>
+    <!-- Score / investment summary strip -->
+    <div class="st-summary" id="tracker-summary">
+        <div class="st-sum-item" title="현재 기술 Pt / 최대 기술 Pt">
+            <span class="st-sum-label"><span class="material-symbols-outlined">military_tech</span>기술 Pt</span>
+            <span class="st-sum-value"><b id="total-score-value">0</b> <small>/ <span id="total-score-max">0</span></small></span>
+        </div>
+        <div class="st-sum-item" title="보유 함순이 / 전체 함순이">
+            <span class="st-sum-label">보유 함순이</span>
+            <span class="st-sum-value"><b id="owned-count">0</b> <small>/ <span id="owned-total">0</span></small></span>
+        </div>
+        <div class="st-sum-item" title="투자한 성정 유닛 / 전체 함순이 Lv125 기준 필요량">
+            <span class="st-sum-label">성정 유닛</span>
+            <span class="st-sum-value"><b id="unit1-invested">0</b> <small>/ <span id="unit1-total">0</span></small></span>
+        </div>
+        <div class="st-sum-item" title="투자한 성정 유닛II / 전체 함순이 Lv125 기준 필요량">
+            <span class="st-sum-label">성정 유닛 II</span>
+            <span class="st-sum-value"><b id="unit2-invested">0</b> <small>/ <span id="unit2-total">0</span></small></span>
         </div>
     </div>
+
+    <!-- Active filter chips -->
+    <div class="st-chips-row" id="filter-chips"></div>
 
     <!-- Ship list -->
     <div id="ledger-head" aria-hidden="true">
