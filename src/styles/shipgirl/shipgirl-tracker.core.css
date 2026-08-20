@@ -244,7 +244,7 @@ body {
   color: var(--primary-color);
   background: var(--primary-alpha-10);
   border: 1px solid var(--primary-alpha-20);
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all var(--transition-fast);
 }

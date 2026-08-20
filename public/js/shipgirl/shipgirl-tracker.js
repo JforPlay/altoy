@@ -1276,6 +1276,70 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!drawerBody) return;
         drawerBody.innerHTML = '';
 
+        // --- Dropdown options section (진행/육성) ---
+        const dropdownSection = document.createElement('div');
+        dropdownSection.className = 'st-drawer-section';
+        dropdownSection.innerHTML = '<h3>진행/육성</h3>';
+
+        const dropdownControlsContainer = document.createElement('div');
+        dropdownControlsContainer.className = 'dropdown-controls-container';
+
+        const dropdownFilters = [
+            { id: 'progress-filter', label: '체크 상태', options: { all: '체크여부 - 전체', checked: '하나라도 체크됨', unchecked: '체크 안됨' } },
+            { id: 'get-attr-filter', label: '입수 스탯', data: attrTypeData, allOptionText: '입수스탯 - 전체', prefix: '입수: ' },
+            { id: 'level-attr-filter', label: '120렙 스탯', data: attrTypeData, allOptionText: '120스탯 - 전체', prefix: '120렙: ' },
+            { id: 'fav-filter', label: '즐겨찾기', options: { all: '즐겨찾기 - 전체', fav: '즐겨찾기만' } },
+            { id: 'retro-filter', label: '개장', options: { all: '개장 - 전체', able: '개장 가능', done: '개장 완료', todo: '개장 미완' } },
+            { id: 'aff-filter', label: '호감작', options: { all: '호감작 - 전체', 0: '호감작 안함', 1: '100 예정', 2: '100 완료', 3: '200 예정', 4: '200 완료' } },
+            { id: 'skl-filter', label: '스작', options: { all: '스작 - 전체', 0: '스작 안함', 1: '스작 예정', 2: '스작 진행중', 3: '스작 완료' } },
+            { id: 'memo-filter', label: '메모', options: { all: '메모 - 전체', has: '메모 있음' } }
+        ];
+
+        dropdownFilters.forEach(f => {
+            const group = document.createElement('div');
+            group.className = 'dropdown-filter-group';
+            const label = document.createElement('label');
+            label.htmlFor = f.id;
+            label.className = 'st-filter-label';
+            label.textContent = f.label;
+            group.appendChild(label);
+
+            const select = document.createElement('select');
+            select.id = f.id;
+            select.setAttribute('aria-label', f.label);
+            if (f.options) {
+                // Object key enumeration always sorts integer-like keys (e.g. aff/skl's
+                // 0..4) before string keys, regardless of source order — sort 'all' back
+                // to the front so it's both the visible first option and the default
+                // selectedIndex (no explicit `selected` is set anywhere).
+                Object.entries(f.options)
+                    .sort(([a], [b]) => (a === 'all' ? -1 : b === 'all' ? 1 : 0))
+                    .forEach(([val, text]) => {
+                        const option = document.createElement('option');
+                        option.value = val;
+                        option.textContent = text;
+                        select.appendChild(option);
+                    });
+            } else {
+                const allText = f.allOptionText || '전체';
+                const allOption = document.createElement('option');
+                allOption.value = 'all';
+                allOption.textContent = allText;
+                select.appendChild(allOption);
+                for (const attrId in f.data) {
+                    const option = document.createElement('option');
+                    option.value = f.data[attrId].id;
+                    option.textContent = (f.prefix || '') + f.data[attrId].condition;
+                    select.appendChild(option);
+                }
+            }
+            group.appendChild(select);
+            dropdownControlsContainer.appendChild(group);
+        });
+
+        dropdownSection.appendChild(dropdownControlsContainer);
+        drawerBody.appendChild(dropdownSection);
+
         // --- Rarity section ---
         const raritySection = document.createElement('div');
         raritySection.className = 'st-drawer-section';
@@ -1305,22 +1369,12 @@ document.addEventListener('DOMContentLoaded', () => {
         raritySection.appendChild(rarityChips);
         drawerBody.appendChild(raritySection);
 
-        // --- Nationality section (collapsible) ---
-        const nationalitySection = document.createElement('div');
-        nationalitySection.className = 'st-drawer-section';
-
-        const natToggle = document.createElement('button');
-        natToggle.className = 'filter-group-toggle';
-        natToggle.innerHTML = '<span class="chevron material-symbols-outlined">expand_more</span> 진영';
-        nationalitySection.appendChild(natToggle);
-
-        const natCollapsible = document.createElement('div');
-        natCollapsible.className = 'collapsible-content';
-
-        natToggle.addEventListener('click', () => {
-            natToggle.classList.toggle('collapsed');
-            natCollapsible.classList.toggle('collapsed');
-        });
+        // --- Nationality section (native details) ---
+        const natSection = document.createElement('details');
+        natSection.className = 'st-drawer-section st-filter-details';
+        const natSummary = document.createElement('summary');
+        natSummary.textContent = '진영';
+        natSection.appendChild(natSummary);
 
         const nationalityGroup = document.createElement('div');
         nationalityGroup.id = 'nationality-filter';
@@ -1350,26 +1404,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         nationalityGroup.appendChild(natWrapper);
-        natCollapsible.appendChild(nationalityGroup);
-        nationalitySection.appendChild(natCollapsible);
-        drawerBody.appendChild(nationalitySection);
+        natSection.appendChild(nationalityGroup);   // unchanged #nationality-filter .filter-group
+        drawerBody.appendChild(natSection);
 
-        // --- Type section (collapsible) ---
-        const typeSection = document.createElement('div');
-        typeSection.className = 'st-drawer-section';
-
-        const typeToggle = document.createElement('button');
-        typeToggle.className = 'filter-group-toggle';
-        typeToggle.innerHTML = '<span class="chevron material-symbols-outlined">expand_more</span> 함종';
-        typeSection.appendChild(typeToggle);
-
-        const typeCollapsible = document.createElement('div');
-        typeCollapsible.className = 'collapsible-content';
-
-        typeToggle.addEventListener('click', () => {
-            typeToggle.classList.toggle('collapsed');
-            typeCollapsible.classList.toggle('collapsed');
-        });
+        // --- Type section (native details) ---
+        const typeSection = document.createElement('details');
+        typeSection.className = 'st-drawer-section st-filter-details';
+        const typeSummary = document.createElement('summary');
+        typeSummary.textContent = '함종';
+        typeSection.appendChild(typeSummary);
 
         const typeGroup = document.createElement('div');
         typeGroup.id = 'type-filter';
@@ -1424,73 +1467,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         typeGroup.appendChild(typeWrapper);
-        typeCollapsible.appendChild(typeGroup);
-        typeSection.appendChild(typeCollapsible);
+        typeSection.appendChild(typeGroup);
         drawerBody.appendChild(typeSection);
-
-        // --- Dropdown options section ---
-        const dropdownSection = document.createElement('div');
-        dropdownSection.className = 'st-drawer-section';
-        dropdownSection.innerHTML = '<h3>보기 옵션</h3>';
-
-        const dropdownControlsContainer = document.createElement('div');
-        dropdownControlsContainer.className = 'dropdown-controls-container';
-
-        const dropdownFilters = [
-            { id: 'progress-filter', label: '체크된 함순이들로 필터링', options: { all: '체크여부 - 전체', checked: '하나라도 체크됨', unchecked: '체크 안됨' } },
-            { id: 'get-attr-filter', label: '입수 스탯으로 필터링', data: attrTypeData, allOptionText: '입수스탯 - 전체', prefix: '입수: ' },
-            { id: 'level-attr-filter', label: '120렙 스탯으로 필터링', data: attrTypeData, allOptionText: '120스탯 - 전체', prefix: '120렙: ' },
-            { id: 'fav-filter', label: '즐겨찾기 필터', options: { all: '즐겨찾기 - 전체', fav: '즐겨찾기만' } },
-            { id: 'retro-filter', label: '개장 필터', options: { all: '개장 - 전체', able: '개장 가능', done: '개장 완료', todo: '개장 미완' } },
-            { id: 'aff-filter', label: '호감작 필터', options: { all: '호감작 - 전체', 0: '호감작 안함', 1: '100 예정', 2: '100 완료', 3: '200 예정', 4: '200 완료' } },
-            { id: 'skl-filter', label: '스작 필터', options: { all: '스작 - 전체', 0: '스작 안함', 1: '스작 예정', 2: '스작 진행중', 3: '스작 완료' } },
-            { id: 'memo-filter', label: '메모 필터', options: { all: '메모 - 전체', has: '메모 있음' } }
-        ];
-
-        dropdownFilters.forEach(f => {
-            const group = document.createElement('div');
-            group.className = 'dropdown-filter-group';
-            const label = document.createElement('label');
-            label.htmlFor = f.id;
-            label.className = 'filter-group-label sr-only';
-            label.textContent = f.label;
-            group.appendChild(label);
-
-            const select = document.createElement('select');
-            select.id = f.id;
-            select.setAttribute('aria-label', f.label);
-            if (f.options) {
-                // Object key enumeration always sorts integer-like keys (e.g. aff/skl's
-                // 0..4) before string keys, regardless of source order — sort 'all' back
-                // to the front so it's both the visible first option and the default
-                // selectedIndex (no explicit `selected` is set anywhere).
-                Object.entries(f.options)
-                    .sort(([a], [b]) => (a === 'all' ? -1 : b === 'all' ? 1 : 0))
-                    .forEach(([val, text]) => {
-                        const option = document.createElement('option');
-                        option.value = val;
-                        option.textContent = text;
-                        select.appendChild(option);
-                    });
-            } else {
-                const allText = f.allOptionText || '전체';
-                const allOption = document.createElement('option');
-                allOption.value = 'all';
-                allOption.textContent = allText;
-                select.appendChild(allOption);
-                for (const attrId in f.data) {
-                    const option = document.createElement('option');
-                    option.value = f.data[attrId].id;
-                    option.textContent = (f.prefix || '') + f.data[attrId].condition;
-                    select.appendChild(option);
-                }
-            }
-            group.appendChild(select);
-            dropdownControlsContainer.appendChild(group);
-        });
-
-        dropdownSection.appendChild(dropdownControlsContainer);
-        drawerBody.insertBefore(dropdownSection, drawerBody.firstChild);
 
         // --- Bulk actions section ---
         const bulkSection = document.createElement('div');
@@ -1926,6 +1904,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const cb = document.querySelector(`#nationality-filter input[value="${val}"][data-filter-type="individual"]`);
                     if (cb) cb.checked = true;
                 });
+                document.getElementById('nationality-filter')?.closest('details')?.setAttribute('open', '');
             }
 
             // Apply types
@@ -1936,6 +1915,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const cb = document.querySelector(`#type-filter input[value="${val}"][data-filter-type="individual"]`);
                     if (cb) cb.checked = true;
                 });
+                document.getElementById('type-filter')?.closest('details')?.setAttribute('open', '');
             }
 
             // Apply dropdowns

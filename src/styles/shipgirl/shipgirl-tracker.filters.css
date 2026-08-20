@@ -86,6 +86,26 @@
   margin: 0;
 }
 
+/* --- Filter Details Sections (진영/함종, native <details>) --- */
+
+.st-filter-details summary {
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 0;
+}
+
+/* --- Dropdown Select Labels --- */
+
+.st-filter-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
 /* --- Rarity Chips --- */
 
 .st-rarity-chips {
@@ -97,7 +117,7 @@
 .st-rarity-chip {
   padding: 4px 12px;
   border: 1.5px solid var(--border-color);
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
@@ -162,7 +182,7 @@
   padding: 6px 14px;
   background-color: var(--section-bg);
   border: 1.5px solid var(--border-color);
-  border-radius: 20px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all var(--transition-fast);
   font-size: 0.8rem;
@@ -219,9 +239,8 @@
 }
 
 .dropdown-controls-container {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -232,16 +251,9 @@
   gap: 0.4rem;
 }
 
-.dropdown-filter-group label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
 .dropdown-filter-group select {
-  min-width: 130px;
+  min-width: 0;
+  width: 100%;
   cursor: pointer;
   background-color: var(--input-bg);
   color: var(--text-primary);
@@ -387,46 +399,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-}
-
-.filter-group-toggle {
-  background: none;
-  border: none;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-  outline: inherit;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.85rem;
-  color: var(--primary-color);
-  margin-bottom: 0.3rem;
-  font-weight: 600;
-  width: 100%;
-  justify-content: flex-start;
-}
-
-.filter-group-toggle .chevron {
-  transition: transform 0.3s ease;
-  font-size: 0.9rem;
-}
-
-.filter-group-toggle.collapsed .chevron {
-  transform: rotate(-90deg);
-}
-
-.collapsible-content {
-  overflow: hidden;
-  opacity: 1;
-  transform: scaleY(1);
-  transform-origin: top;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  will-change: transform, opacity;
-}
-
-.collapsible-content.collapsed {
-  display: none;
 }
 
 .search-container {
