@@ -55,7 +55,10 @@
 .lr-rar-sr  { border-left-color: var(--rarity-sr) !important; }
 .lr-rar-ssr { border-left-color: var(--rarity-ssr) !important; }
 .lr-rar-ur  { border-left-color: var(--rarity-ur) !important; }
-.lr-unowned { opacity: 0.55; }
+/* Unowned: quiet the portrait only — whole-row opacity dimmed names, controls,
+   and focus rings at once (DP6). */
+.lr-unowned .ship-icon { opacity: 0.6; filter: grayscale(0.4); }
+.lr-unowned .lr-nm-text { color: var(--text-secondary); }
 
 .lr-nm { display: flex; align-items: center; gap: 6px; font-size: 0.95rem; font-weight: 600; min-width: 0; }
 .lr-nm-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

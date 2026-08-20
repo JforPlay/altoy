@@ -1423,22 +1423,19 @@ document.addEventListener('DOMContentLoaded', () => {
         dropdownControlsContainer.className = 'dropdown-controls-container';
 
         const dropdownFilters = [
-            { id: 'progress-filter', label: '체크된 함순이들로 필터링', options: { all: '체크여부 - 전체', checked: '하나라도 체크됨', unchecked: '체크 안됨' }, description: '체크박스 상태에 따라 함순이를 필터링합니다.' },
-            { id: 'get-attr-filter', label: '입수 스탯으로 필터링', data: attrTypeData, allOptionText: '입수스탯 - 전체', prefix: '입수: ', description: '함순이 입수 시 제공하는 함대 기술 스탯으로 필터링합니다.' },
-            { id: 'level-attr-filter', label: '120렙 스탯으로 필터링', data: attrTypeData, allOptionText: '120스탯 - 전체', prefix: '120렙: ', description: '함순이 120레벨 달성 시 제공하는 함대 기술 스탯으로 필터링합니다.' },
-            { id: 'fav-filter', label: '즐겨찾기 필터', options: { all: '즐겨찾기 - 전체', fav: '즐겨찾기만' }, description: '즐겨찾기한 함순이만 표시합니다.' },
-            { id: 'retro-filter', label: '개장 필터', options: { all: '개장 - 전체', able: '개장 가능', done: '개장 완료', todo: '개장 미완' }, description: '개장 가능/완료 여부로 필터링합니다.' },
-            { id: 'aff-filter', label: '호감작 필터', options: { all: '호감작 - 전체', 0: '호감작 안함', 1: '100 예정', 2: '100 완료', 3: '200 예정', 4: '200 완료' }, description: '호감작 상태로 필터링합니다.' },
-            { id: 'skl-filter', label: '스작 필터', options: { all: '스작 - 전체', 0: '스작 안함', 1: '스작 예정', 2: '스작 진행중', 3: '스작 완료' }, description: '스작 상태로 필터링합니다.' },
-            { id: 'memo-filter', label: '메모 필터', options: { all: '메모 - 전체', has: '메모 있음' }, description: '메모가 있는 함순이만 표시합니다.' }
+            { id: 'progress-filter', label: '체크된 함순이들로 필터링', options: { all: '체크여부 - 전체', checked: '하나라도 체크됨', unchecked: '체크 안됨' } },
+            { id: 'get-attr-filter', label: '입수 스탯으로 필터링', data: attrTypeData, allOptionText: '입수스탯 - 전체', prefix: '입수: ' },
+            { id: 'level-attr-filter', label: '120렙 스탯으로 필터링', data: attrTypeData, allOptionText: '120스탯 - 전체', prefix: '120렙: ' },
+            { id: 'fav-filter', label: '즐겨찾기 필터', options: { all: '즐겨찾기 - 전체', fav: '즐겨찾기만' } },
+            { id: 'retro-filter', label: '개장 필터', options: { all: '개장 - 전체', able: '개장 가능', done: '개장 완료', todo: '개장 미완' } },
+            { id: 'aff-filter', label: '호감작 필터', options: { all: '호감작 - 전체', 0: '호감작 안함', 1: '100 예정', 2: '100 완료', 3: '200 예정', 4: '200 완료' } },
+            { id: 'skl-filter', label: '스작 필터', options: { all: '스작 - 전체', 0: '스작 안함', 1: '스작 예정', 2: '스작 진행중', 3: '스작 완료' } },
+            { id: 'memo-filter', label: '메모 필터', options: { all: '메모 - 전체', has: '메모 있음' } }
         ];
 
         dropdownFilters.forEach(f => {
             const group = document.createElement('div');
             group.className = 'dropdown-filter-group';
-            if (f.description) {
-                group.setAttribute('data-tooltip', f.description);
-            }
             const label = document.createElement('label');
             label.htmlFor = f.id;
             label.className = 'filter-group-label sr-only';
@@ -1523,14 +1520,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         bulkSection.appendChild(bulkWrapper);
         drawerBody.appendChild(bulkSection);
-
-        // --- Reset button ---
-        const resetButton = document.createElement('button');
-        resetButton.id = 'reset-filters-btn';
-        resetButton.className = 'btn btn-danger btn-block st-reset-btn';
-        resetButton.textContent = '필터 초기화';
-        resetButton.addEventListener('click', resetFilters);
-        drawerBody.appendChild(resetButton);
 
         // --- Event delegation for checkboxes and selects in drawer ---
         drawerBody.addEventListener('change', (e) => {
@@ -2021,6 +2010,9 @@ document.addEventListener('DOMContentLoaded', () => {
         calculateAndDisplayScores();
         updateFilterChips();
         saveFiltersToStorage();
+
+        const drawerCount = document.getElementById('drawer-count');
+        if (drawerCount) drawerCount.textContent = `${filteredShipIds.length}척`;
     }
 
     /**
@@ -2146,6 +2138,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('filter-drawer-btn').addEventListener('click', openDrawer);
             document.getElementById('filter-drawer-backdrop').addEventListener('click', closeDrawer);
             document.querySelector('#filter-drawer .st-drawer-close').addEventListener('click', closeDrawer);
+            document.getElementById('reset-filters-btn').addEventListener('click', resetFilters);
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
                     const drawer = document.getElementById('filter-drawer');

@@ -139,10 +139,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="st-drawer-backdrop drawer-backdrop" id="filter-drawer-backdrop"></div>
     <aside class="st-drawer drawer" id="filter-drawer">
         <div class="st-drawer-header">
-            <h2>필터</h2>
-            <button class="st-drawer-close" aria-label="닫기">
-                <span class="material-symbols-outlined">close</span>
-            </button>
+            <h2>필터 <span class="st-drawer-count" id="drawer-count"></span></h2>
+            <div class="st-drawer-head-actions">
+                <button type="button" class="btn btn-ghost btn-sm" id="reset-filters-btn">초기화</button>
+                <button class="st-drawer-close" aria-label="닫기">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
         </div>
         <div class="st-drawer-body scroll-styled" id="filter-drawer-body">
             <!-- Filter controls rendered by JS -->

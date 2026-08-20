@@ -8,6 +8,10 @@
 /* --- Drawer --- canonical .drawer (drawer.css) owns the shell; per-page width + inner overflow only */
 .st-drawer {
   --drawer-width: 22.5rem;   /* 360px */
+  /* Below the navbar — at top:0 the higher-z navbar covered the drawer
+     header, making the close button unclickable (DP3 blocker). */
+  --drawer-top: var(--navbar-height, 65px);
+  --drawer-height: calc(100dvh - var(--navbar-height, 65px));
   overflow: hidden;          /* inner .st-drawer-body scrolls */
 }
 
@@ -26,6 +30,9 @@
   font-weight: 700;
   color: var(--text-primary);
 }
+
+.st-drawer-count { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
+.st-drawer-head-actions { display: flex; align-items: center; gap: 4px; }
 
 .st-drawer-close {
   display: inline-flex;
@@ -278,8 +285,6 @@
   --btn-font-size: 0.75rem;
 }
 
-/* --- Reset Button = `.btn .btn-danger .btn-block` (components/button.css) --- */
-
 /* --- Action Controls Container (inside drawer) --- */
 
 .action-controls-container {
@@ -293,43 +298,8 @@
   border: 1px solid var(--border-color);
 }
 
-/* (#reset-filters-btn shares the .st-reset-btn element → now a canonical
-   `.btn .btn-danger .btn-block`; the old id-scoped shape rule was removed.) */
-
-/* --- Tooltip --- */
-
-[data-tooltip] {
-  position: relative;
-}
-
-[data-tooltip]::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  top: 100%;
-  left: 0;
-  margin-top: 8px;
-  background-color: var(--surface-elevated);
-  color: var(--text-primary);
-  font-size: 0.75rem;
-  padding: 6px 12px;
-  border-radius: 6px;
-  white-space: normal;
-  width: max-content;
-  max-width: 280px;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s, visibility 0s 0.2s;
-  z-index: 100;
-  pointer-events: none;
-  border: 1px solid var(--border-color);
-}
-
-[data-tooltip]:hover::after,
-[data-tooltip]:focus::after {
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 0.2s;
-}
+/* #reset-filters-btn moved to the drawer header (`.btn .btn-ghost .btn-sm`,
+   components/button.css) — no local rule needed here. */
 
 /* --- Search Dropdown --- */
 
