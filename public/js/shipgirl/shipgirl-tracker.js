@@ -88,16 +88,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Pins #ledger-head just below the sticky toolbar. Both stick at navbar
-     * height, but the toolbar wins on z-index — pinning the head at
-     * --navbar-height alone slides it invisibly under the toolbar on scroll,
-     * so the head's offset must add the toolbar's live height (it wraps).
+     * Pins #ledger-head just below the sticky control surface. Both stick at
+     * navbar height, but the surface wins on z-index — pinning the head at
+     * --navbar-height alone slides it invisibly under the surface on scroll,
+     * so the head's offset must add the surface's live height (it wraps).
      */
     function updateStickyOffset() {
-        const toolbar = document.querySelector('.st-toolbar');
-        if (!toolbar) return;
+        const surface = document.querySelector('.st-control-surface');
+        if (!surface) return;
         const nav = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--navbar-height')) || 65;
-        document.documentElement.style.setProperty('--st-sticky-h', `${nav + toolbar.offsetHeight}px`);
+        document.documentElement.style.setProperty('--st-sticky-h', `${nav + surface.offsetHeight}px`);
     }
 
     // Use utilities from external file
@@ -2123,9 +2123,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 applyView(cachedElements.shipListContainer.dataset.view === 'ledger' ? 'cards' : 'ledger');
             });
 
-            // Sticky ledger-head offset (navbar + toolbar) — toolbar height is live (wraps)
+            // Sticky ledger-head offset (navbar + control surface) — surface height is live (wraps)
             updateStickyOffset();
             window.addEventListener('resize', updateStickyOffset);
+
+            // Shadow only while the control surface is actually pinned.
+            const surface = document.querySelector('.st-control-surface');
+            const sentinel = document.querySelector('.st-sticky-sentinel');
+            if (surface && sentinel && 'IntersectionObserver' in window) {
+                const nav = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--navbar-height')) || 65;
+                new IntersectionObserver(
+                    ([entry]) => surface.classList.toggle('is-stuck', !entry.isIntersecting),
+                    { rootMargin: `-${nav + 1}px 0px 0px 0px` }
+                ).observe(sentinel);
+            }
 
             // Setup drawer
             document.getElementById('filter-drawer-btn').addEventListener('click', openDrawer);

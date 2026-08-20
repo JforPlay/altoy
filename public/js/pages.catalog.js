@@ -28,7 +28,7 @@ export const PAGE_CATALOG = [
     { key: 'SHIPGIRL_BUILD',    path: 'shipgirl/shipgirl-build-sim/', name: '함순이 건조확률 보기', description: '배너별 건조확률 상세확인',              icon: 'casino',       category: '함순이' },
     { key: 'SHIPGIRL_BIRTHDAY', path: 'shipgirl/shipgirl-birthday/', name: '함순이 생일',         description: '함순이 생일 확인하기',                  icon: 'cake',         category: '함순이' },
     { key: 'SHIPGIRL_STATS',    path: 'shipgirl/shipgirl-stats/',    name: '함순이 통계',         description: '함순이/스킨 통계 및 비교',              icon: 'bar_chart',    category: '함순이' },
-    { key: 'SHIPGIRL_TRACKER',  path: 'shipgirl/shipgirl-tracker/',  name: '함순이 육성트래커',   description: '기술/진영점수 계산',                    icon: 'calculate',    category: '함순이' },
+    { key: 'SHIPGIRL_TRACKER',  path: 'shipgirl/shipgirl-tracker/',  name: '함순이 육성트래커',   description: '보유·육성 기록과 기술/진영 점수 관리',  icon: 'checklist',    category: '함순이' },
     { key: 'RESEARCH_TRACKER',  path: 'shipgirl/research-tracker/',  name: '개발함 트래커',       description: '상시 획득 가능 함순이 진영점수 트래커', icon: 'science',      category: '함순이' },
 
     // ===== Skin =====

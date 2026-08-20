@@ -17,18 +17,17 @@ import '../../styles/shipgirl/shipgirl-tracker.ledger.css';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="벽람 점수 트래커" {base}>
+<Layout title="함순이 육성트래커" {base}>
     <!-- Page Header -->
-    <header class="st-page-header page-header page-header--boxed">
-        <div class="header-top">
-            <div class="header-title-container page-header-title">
-                <span class="material-symbols-outlined">calculate</span>
-                <h1>기술/진영점수 계산기</h1>
-                <button class="info-button" id="info-button" title="사용법 보기">
-                    <i class="fas fa-info-circle"></i>
-                </button>
-            </div>
+    <header class="st-page-header">
+        <div class="header-title-container page-header-title">
+            <span class="material-symbols-outlined">checklist</span>
+            <h1>함순이 육성트래커</h1>
+            <button class="info-button" id="info-button" title="사용법 보기">
+                <i class="fas fa-info-circle"></i>
+            </button>
         </div>
+        <p class="st-page-sub">육성 현황과 함대 기술 점수를 한 곳에서 관리</p>
     </header>
 
     <!-- Info Popup -->
@@ -73,58 +72,61 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
     </div>
 
-    <!-- Toolbar -->
-    <div class="st-toolbar">
-        <div class="st-toolbar-left">
-            <div class="st-search-wrapper">
-                <span class="material-symbols-outlined st-search-icon">search</span>
-                <input type="text" id="search-bar" class="st-search-input" placeholder="이름으로 검색..." autocomplete="off">
-                <div class="dropdown-content" id="search-dropdown"></div>
+    <div class="st-sticky-sentinel" aria-hidden="true"></div>
+    <div class="st-control-surface" id="control-surface">
+        <!-- Toolbar -->
+        <div class="st-toolbar">
+            <div class="st-toolbar-left">
+                <div class="st-search-wrapper">
+                    <span class="material-symbols-outlined st-search-icon">search</span>
+                    <input type="text" id="search-bar" class="st-search-input" placeholder="이름으로 검색..." autocomplete="off">
+                    <div class="dropdown-content" id="search-dropdown"></div>
+                </div>
+            </div>
+            <div class="st-toolbar-right">
+                <button class="st-toolbar-btn" id="view-toggle-btn" aria-label="보기 전환">
+                    <span class="material-symbols-outlined" id="view-toggle-icon">grid_view</span>
+                    <span id="view-toggle-label">카드</span>
+                </button>
+                <button class="st-toolbar-btn" id="filter-drawer-btn">
+                    <span class="material-symbols-outlined">tune</span>
+                    <span>필터</span>
+                    <span class="badge badge--count hidden" id="filter-badge">0</span>
+                </button>
+                <button class="st-toolbar-btn" id="score-modal-btn">
+                    <span class="material-symbols-outlined">leaderboard</span>
+                    <span>점수판</span>
+                </button>
+                <button class="st-toolbar-btn" id="goal-modal-btn">
+                    <span class="material-symbols-outlined">flag</span>
+                    <span>연구 목표</span>
+                </button>
             </div>
         </div>
-        <div class="st-toolbar-right">
-            <button class="st-toolbar-btn" id="view-toggle-btn" aria-label="보기 전환">
-                <span class="material-symbols-outlined" id="view-toggle-icon">grid_view</span>
-                <span id="view-toggle-label">카드</span>
-            </button>
-            <button class="st-toolbar-btn" id="filter-drawer-btn">
-                <span class="material-symbols-outlined">tune</span>
-                <span>필터</span>
-                <span class="badge badge--count hidden" id="filter-badge">0</span>
-            </button>
-            <button class="st-toolbar-btn" id="score-modal-btn">
-                <span class="material-symbols-outlined">leaderboard</span>
-                <span>점수판</span>
-            </button>
-            <button class="st-toolbar-btn" id="goal-modal-btn">
-                <span class="material-symbols-outlined">flag</span>
-                <span>연구 목표</span>
-            </button>
-        </div>
-    </div>
 
-    <!-- Score / investment summary strip -->
-    <div class="st-summary" id="tracker-summary">
-        <div class="st-sum-item" title="현재 기술 Pt / 최대 기술 Pt">
-            <span class="st-sum-label"><span class="material-symbols-outlined">military_tech</span>기술 Pt</span>
-            <span class="st-sum-value"><b id="total-score-value">0</b> <small>/ <span id="total-score-max">0</span></small></span>
+        <!-- Score / investment summary strip -->
+        <div class="st-summary" id="tracker-summary">
+            <div class="st-sum-item" title="현재 기술 Pt / 최대 기술 Pt">
+                <span class="st-sum-label"><span class="material-symbols-outlined">military_tech</span>기술 Pt</span>
+                <span class="st-sum-value"><b id="total-score-value">0</b> <small>/ <span id="total-score-max">0</span></small></span>
+            </div>
+            <div class="st-sum-item" title="보유 함순이 / 전체 함순이">
+                <span class="st-sum-label">보유 함순이</span>
+                <span class="st-sum-value"><b id="owned-count">0</b> <small>/ <span id="owned-total">0</span></small></span>
+            </div>
+            <div class="st-sum-item" title="투자한 성정 유닛 / 전체 함순이 Lv125 기준 필요량">
+                <span class="st-sum-label">성정 유닛</span>
+                <span class="st-sum-value"><b id="unit1-invested">0</b> <small>/ <span id="unit1-total">0</span></small></span>
+            </div>
+            <div class="st-sum-item" title="투자한 성정 유닛II / 전체 함순이 Lv125 기준 필요량">
+                <span class="st-sum-label">성정 유닛 II</span>
+                <span class="st-sum-value"><b id="unit2-invested">0</b> <small>/ <span id="unit2-total">0</span></small></span>
+            </div>
         </div>
-        <div class="st-sum-item" title="보유 함순이 / 전체 함순이">
-            <span class="st-sum-label">보유 함순이</span>
-            <span class="st-sum-value"><b id="owned-count">0</b> <small>/ <span id="owned-total">0</span></small></span>
-        </div>
-        <div class="st-sum-item" title="투자한 성정 유닛 / 전체 함순이 Lv125 기준 필요량">
-            <span class="st-sum-label">성정 유닛</span>
-            <span class="st-sum-value"><b id="unit1-invested">0</b> <small>/ <span id="unit1-total">0</span></small></span>
-        </div>
-        <div class="st-sum-item" title="투자한 성정 유닛II / 전체 함순이 Lv125 기준 필요량">
-            <span class="st-sum-label">성정 유닛 II</span>
-            <span class="st-sum-value"><b id="unit2-invested">0</b> <small>/ <span id="unit2-total">0</span></small></span>
-        </div>
-    </div>
 
-    <!-- Active filter chips -->
-    <div class="st-chips-row" id="filter-chips"></div>
+        <!-- Active filter chips -->
+        <div class="st-chips-row" id="filter-chips"></div>
+    </div>
 
     <!-- Ship list -->
     <div id="ledger-head" aria-hidden="true">

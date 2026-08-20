@@ -23,20 +23,9 @@ body {
 /* --- Page Header --- */
 
 .st-page-header {
-  /* boxed chrome now from page-header--boxed; hooks set page-specific values */
-  --page-header-pad: 1.25rem;
-  --page-header-shadow: 0 4px 6px var(--shadow-color);
   margin: var(--spacing-md) auto 0;
   max-width: 1400px;
   width: calc(100% - 2rem);
-}
-
-.st-page-header .header-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.9375rem;
 }
 
 .st-page-header .header-title-container .material-symbols-outlined {
@@ -46,13 +35,36 @@ body {
 .st-page-header h1 {
   color: var(--primary-color);
   margin: 0;
-  font-size: 2em;
-  transition: color 0.3s ease;
+  font-size: 1.6em;
 }
 
 .st-page-header .header-title-container .info-button {
   font-size: 1.5em;
   margin-left: 0.5rem;
+}
+
+.st-page-sub {
+  margin: 2px 0 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* --- Control surface (toolbar + summary + active chips as ONE card) --- */
+
+.st-sticky-sentinel { height: 1px; }
+.st-control-surface {
+  max-width: 1400px;
+  width: calc(100% - 2rem);
+  margin: var(--spacing-sm) auto;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+}
+/* Sticky only where the surface is short (desktop); the mobile stack is too
+   tall to pin. Shadow only while actually stuck (.is-stuck via sentinel). */
+@media (min-width: 1025px) {
+  .st-control-surface { position: sticky; top: var(--navbar-height, 65px); z-index: 100; }
+  .st-control-surface.is-stuck { box-shadow: var(--shadow-md); }
 }
 
 /* --- Toolbar --- */
@@ -62,18 +74,8 @@ body {
   align-items: center;
   gap: var(--spacing-md);
   padding: var(--spacing-sm) var(--spacing-md);
-  background: var(--card-bg);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  margin: var(--spacing-xs) auto;
-  max-width: 1400px;
-  width: calc(100% - 2rem);
+  border-bottom: 1px solid var(--border-color);
   flex-wrap: wrap;
-  position: sticky;
-  top: var(--navbar-height, 65px);
-  z-index: 100;
-  border: 1px solid var(--border-color);
-  transition: background var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .st-toolbar-left {
@@ -163,12 +165,8 @@ body {
 .st-summary {
   display: flex;
   flex-wrap: wrap;
-  max-width: 1400px;
-  width: calc(100% - 2rem);
-  margin: var(--spacing-xs) auto 0;
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
+  width: 100%;
+  margin: 0;
 }
 
 .st-sum-item {
@@ -231,9 +229,9 @@ body {
   align-items: center;
   gap: 6px;
   padding: var(--spacing-xs) var(--spacing-md);
-  max-width: 1400px;
-  width: calc(100% - 2rem);
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
+  border-top: 1px solid var(--border-color);
 }
 
 .st-chip {
@@ -354,10 +352,6 @@ body {
 }
 
 /* --- Dark Mode Overrides --- */
-
-body.dark-mode .st-toolbar {
-  box-shadow: var(--shadow-lg);
-}
 
 body.dark-mode .st-toolbar-btn {
   background: var(--highlight-subtle);
