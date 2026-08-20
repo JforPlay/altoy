@@ -94,25 +94,47 @@
 .lr-desc li { display: inline; margin-right: 10px; }
 
 /* ===== Mobile fold =====
-   1024px, not 900: the widened fixed tracks sum to ~980px + 2rem side margin,
-   so the grid row would overflow its container below ~1012px viewport. */
-@media (max-width: 1024px) {
+   1100px: fixed tracks (56+46×3+250+230+40+72) + name min + gaps + 2rem side
+   margin ≈ 1080px viewport. Explicit grid areas — the old wrapping flex row
+   squeezed the name to zero width and painted actions off-canvas at 320px. */
+@media (max-width: 1100px) {
   #ledger-head { display: none; }
-  /* ID-qualified to match the desktop .ship-card rule's specificity (both now
-     beat cards.css's body.dark-mode .ship-card) so this padding override still wins. */
   #ship-list-container[data-view="ledger"] .ship-card {
-    display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 8px 10px;
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr) max-content;
+    grid-template-areas:
+      "icon name pt"
+      "progress progress progress"
+      "cap cap cap"
+      "chips chips memo";
+    gap: 8px 10px;
+    padding: 10px;
   }
-  [data-view="ledger"] .lr-name { flex: 1; min-width: 0; order: 1; }
-  [data-view="ledger"] .lr-icon { order: 0; }
-  [data-view="ledger"] .lr-pt { order: 2; }
-  [data-view="ledger"] .lr-ck { order: 3; }
+  [data-view="ledger"] .lr-icon { grid-area: icon; }
+  [data-view="ledger"] .lr-name { grid-area: name; min-width: 0; }
+  [data-view="ledger"] .lr-pt { grid-area: pt; }
+  [data-view="ledger"] .lr-progress {
+    grid-area: progress;
+    display: flex;
+    gap: 6px;
+  }
+  [data-view="ledger"] .lr-progress .lr-ck {
+    flex: 1 1 0;
+    min-width: 0;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px 4px;
+    border-radius: var(--radius-sm);
+    background: var(--section-bg);
+  }
   .lr-ck-label { display: inline; }
-  [data-view="ledger"] .lr-cap { order: 4; }
-  [data-view="ledger"] .lr-chips { order: 5; }
-  [data-view="ledger"] .lr-memo { order: 6; }
-  [data-view="ledger"] .lr-expanded .lr-detail { order: 7; margin: 4px 0 0; flex-basis: 100%; }
+  [data-view="ledger"] .lr-cap { grid-area: cap; }
+  [data-view="ledger"] .lr-cap button { flex: 1 1 0; width: auto; min-width: 0; }
+  [data-view="ledger"] .lr-chips { grid-area: chips; justify-content: flex-start; }
+  [data-view="ledger"] .lr-memo { grid-area: memo; justify-self: end; }
+  [data-view="ledger"] .lr-expanded .lr-detail { grid-column: 1 / -1; margin: 0; }
 }
+body.dark-mode [data-view="ledger"] .lr-progress .lr-ck { background: var(--highlight-subtle); }
 
 /* ===== Cap segment bar ===== */
 .lr-cap { display: flex; gap: 3px; justify-content: center; }

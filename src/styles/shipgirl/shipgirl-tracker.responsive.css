@@ -5,10 +5,6 @@
 
 @media (max-width: 768px) {
   /* Page header */
-  .st-page-header {
-    --page-header-pad: 1rem;
-  }
-
   .st-page-header .header-title-container {
     width: 100%;
   }
@@ -32,10 +28,15 @@
     max-width: 100%;
   }
 
+  /* Deterministic 4-cell action grid — flex-end let the first action clip
+     off-canvas left at 320px. */
   .st-toolbar-right {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
     width: 100%;
-    justify-content: flex-end;
   }
+  .st-toolbar-btn { justify-content: center; padding: 8px 4px; min-width: 0; }
 
   /* Drawer full width */
   .st-drawer {
@@ -172,4 +173,11 @@
   .goal-quick-label {
     font-size: 0.8rem;
   }
+}
+
+@media (max-width: 360px) {
+  /* keep-all: '함순이 육성트래커' breaks at the space, never mid-syllable */
+  .st-page-header h1 { font-size: 1.3em; word-break: keep-all; }
+  .st-toolbar-btn { font-size: 0.78rem; gap: 4px; }
+  .st-toolbar-btn .material-symbols-outlined { font-size: 1rem; }
 }
