@@ -9,6 +9,7 @@
 import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeModal, setupModal, showElement, hideElement, syncedStorage, escapeHtml, RARITY_TIERS_DESC as rarityOrder } from '../utils.js';
 import { parseInvestment, nextBreakCost, sumInvestment, rosterTotal, BREAK_LEVELS, applyCapChange, applyMaskChange, AFF_LABELS, SKL_LABELS, MEMO_MAX } from './tracker-investment.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
+import { createStatusMenu } from './shipgirl-tracker.status-menu.js';
 document.addEventListener('DOMContentLoaded', () => {
     let fullShipData, nationalityData, shipTypeData, attrTypeData, fleetTechGoalData, factionTechData;
     let filteredShipIds = [];
@@ -121,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const INVEST_KEY = 'shipgirlInvestment';
     let investment = {};
     let rarityByGid = {};
+    const statusMenu = createStatusMenu();
 
     // Investment records (cap/ret/fav/aff/skl/memo) — state-as-truth in this map,
     // unlike progress where the checkboxes are truth. v1 envelope from day 1.
@@ -344,21 +346,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const chipsCell = card.querySelector('.lr-chips');
         const retChip = ship.retrofit
-            ? `<button type="button" class="chip lr-chip ${rec.ret ? 'is-done' : ''}" data-action="ret" title="개장 — 클릭: 완료/해제">개장</button>`
+            ? `<button type="button" class="chip lr-chip ${rec.ret ? 'is-done' : ''}" data-action="ret"`
+                + ` aria-pressed="${!!rec.ret}" aria-label="${escapeHtml(ship.name)} 개장 ${rec.ret ? '완료' : '미완'}">개장</button>`
             : `<span class="lr-chip-ghost"></span>`;
         const aff = rec.aff || 0;
         const skl = rec.skl || 0;
-        const stateCls = (v, doneAt) => v === 0 ? '' : (v === doneAt ? 'is-done' : (v % 2 ? 'is-plan' : 'is-mid'));
-        // step dots: empty dots on the idle chip signal there are stages to cycle
-        // through; dropped at max stage (the filled is-done chip already says 완료,
-        // and the longest labels otherwise overflow the 230px ledger cell)
-        const stepDots = (v, n) => v >= n ? '' : `<span class="lr-chip-step" aria-hidden="true">`
-            + Array.from({ length: n }, (_, i) => `<i class="${i < v ? 'f' : ''}"></i>`).join('') + `</span>`;
-        chipsCell.innerHTML = retChip
-            + `<button type="button" class="chip lr-chip ${stateCls(aff, 4)}" data-action="aff" title="호감작 ${aff}/4단계 (${AFF_LABELS[aff]}) — 클릭: 다음 단계">`
-            + `${aff === 0 ? '호감작' : '호감 ' + escapeHtml(AFF_LABELS[aff])}${stepDots(aff, 4)}</button>`
-            + `<button type="button" class="chip lr-chip ${stateCls(skl, 3)}" data-action="skl" title="스작 ${skl}/3단계 (${SKL_LABELS[skl]}) — 클릭: 다음 단계">`
-            + `${escapeHtml(SKL_LABELS[skl])}${stepDots(skl, 3)}</button>`;
+        const stateCls = (v, max) => v === 0 ? '' : (v === max ? 'is-done' : 'is-mid');
+        const affLabel = aff === 0 ? '호감작' : `호감 · ${AFF_LABELS[aff]}`;
+        const sklLabel = SKL_LABELS[skl]; // 스작 labels self-identify
+        const menuChip = (action, cls, label, name) =>
+            `<button type="button" class="chip lr-chip ${cls}" data-action="${action}"`
+            + ` aria-haspopup="menu" aria-expanded="false" aria-label="${escapeHtml(name)}">`
+            + `${escapeHtml(label)}<span class="material-symbols-outlined lr-chip-caret" aria-hidden="true">arrow_drop_down</span></button>`;
+        chipsCell.innerHTML = `<span class="lr-cell-label">육성</span>` + retChip
+            + menuChip('aff', stateCls(aff, 4), affLabel, `${ship.name} 호감작: ${AFF_LABELS[aff]}`)
+            + menuChip('skl', stateCls(skl, 3), sklLabel, `${ship.name} 스작: ${SKL_LABELS[skl]}`);
 
         const star = card.querySelector('.lr-star');
         star.textContent = rec.fav ? '★' : '☆';
@@ -366,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
         star.setAttribute('aria-pressed', String(!!rec.fav));
 
         const memoCell = card.querySelector('.lr-memo');
-        memoCell.innerHTML = `<button type="button" class="lr-memo-btn ${rec.memo ? 'has' : ''}" data-action="memo" aria-label="메모">`
+        memoCell.innerHTML = `<button type="button" class="lr-memo-btn ${rec.memo ? 'has' : ''}" data-action="memo" aria-label="${escapeHtml(ship.name)} 메모">`
             + `<span class="material-symbols-outlined">edit_note</span><span class="lr-memo-txt">메모</span></button>`;
 
         const next = nextBreakCost(cap, ship.rarity);
@@ -408,11 +410,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /** Write a 3-bit mask back into a card's checkboxes + persist. */
-    function setCardMask(card, mask) {
+    /** Write a 3-bit mask into a card's cached checkboxes (shared by save/couple/apply paths). */
+    function writeMaskToCheckboxes(card, mask) {
         if (card._cb.get) card._cb.get.checked = (mask & 1) > 0;
         if (card._cb.level) card._cb.level.checked = (mask & 2) > 0;
         if (card._cb.upgrade) card._cb.upgrade.checked = (mask & 4) > 0;
+    }
+
+    /** Write a 3-bit mask back into a card's checkboxes + persist. */
+    function setCardMask(card, mask) {
+        writeMaskToCheckboxes(card, mask);
         autoSaveProgress();
         if (isProgressFilterActive()) applyFilters(); else debouncedCalculateScores();
     }
@@ -429,11 +436,7 @@ document.addEventListener('DOMContentLoaded', () => {
             getCardProgressState(card), getInv(gid).cap || 0,
             changedType, nowChecked);
         if (cap !== (getInv(gid).cap || 0)) setInv(gid, { cap });
-        if (mask !== getCardProgressState(card)) {
-            if (card._cb.get) card._cb.get.checked = (mask & 1) > 0;
-            if (card._cb.level) card._cb.level.checked = (mask & 2) > 0;
-            if (card._cb.upgrade) card._cb.upgrade.checked = (mask & 4) > 0;
-        }
+        if (mask !== getCardProgressState(card)) writeMaskToCheckboxes(card, mask);
         renderInvestmentCells(card, gid);
         updateInvestmentSummary();
     }
@@ -1662,10 +1665,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const nextProgress = progress && typeof progress === 'object' ? progress : {};
         getShipCards().forEach(card => {
             const shipId = card.dataset.shipId;
-            const state = nextProgress[shipId] || 0;
-            if (card._cb.get) card._cb.get.checked = (state & 1) > 0;
-            if (card._cb.level) card._cb.level.checked = (state & 2) > 0;
-            if (card._cb.upgrade) card._cb.upgrade.checked = (state & 4) > 0;
+            writeMaskToCheckboxes(card, nextProgress[shipId] || 0);
         });
     }
 
@@ -2215,29 +2215,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 const action = btn.dataset.action;
                 if (action === 'expand') {
                     const open = card.classList.toggle('lr-expanded');
-                    btn.setAttribute('aria-expanded', String(open));
-                } else if (action === 'fav') {
-                    setInv(gid, { fav: getInv(gid).fav ? 0 : 1 });
+                    card.querySelectorAll('[data-action="expand"]')
+                        .forEach(b => b.setAttribute('aria-expanded', String(open)));
+                } else if (action === 'aff' || action === 'skl') {
+                    const labels = action === 'aff' ? AFF_LABELS : SKL_LABELS;
+                    statusMenu.open({
+                        trigger: btn,
+                        options: labels.map((label, value) => ({ value, label })),
+                        current: getInv(gid)[action] || 0,
+                        onSelect: (value) => {
+                            setInv(gid, { [action]: value });
+                            renderInvestmentCells(card, gid);
+                            // the trigger node was replaced — refocus its successor
+                            card.querySelector(`[data-action="${action}"]`)?.focus({ preventScroll: true });
+                        },
+                    });
+                } else if (action === 'fav' || action === 'ret') {
+                    setInv(gid, { [action]: getInv(gid)[action] ? 0 : 1 });
                     renderInvestmentCells(card, gid);
-                } else if (action === 'ret') {
-                    setInv(gid, { ret: getInv(gid).ret ? 0 : 1 });
-                    renderInvestmentCells(card, gid);
-                } else if (action === 'aff') {
-                    setInv(gid, { aff: ((getInv(gid).aff || 0) + 1) % AFF_LABELS.length });
-                    renderInvestmentCells(card, gid);
-                } else if (action === 'skl') {
-                    setInv(gid, { skl: ((getInv(gid).skl || 0) + 1) % SKL_LABELS.length });
-                    renderInvestmentCells(card, gid);
+                    card.querySelector(`[data-action="${action}"]`)?.focus({ preventScroll: true });
                 } else if (action === 'cap') {
                     const { mask, cap } = applyCapChange(getCardProgressState(card), parseDatasetInt(btn.dataset.break));
                     setInv(gid, { cap });
                     setCardMask(card, mask);
                     renderInvestmentCells(card, gid);
                     updateInvestmentSummary();
+                    card.querySelector(`[data-action="cap"][data-break="${btn.dataset.break}"]`)?.focus({ preventScroll: true });
                 } else if (action === 'memo') {
                     openMemoModal(gid, card);
                 }
-                if (action !== 'memo' && action !== 'expand') updateInvestmentSummary();
             });
 
             // Cross-tab sync for GOAL_KEY only — progress sync is handled by progressStore above.

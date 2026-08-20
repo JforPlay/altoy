@@ -161,13 +161,9 @@
   border-radius: var(--radius-sm); border: 1px solid var(--border-color);
   background: transparent; color: var(--text-muted); cursor: pointer; white-space: nowrap;
 }
-/* cycle-progress dots (4 for 호감작, 3 for 스작); filled = reached stage */
-.lr-chip-step { display: inline-flex; gap: 2px; margin-left: 5px; }
-.lr-chip-step i { width: 4px; height: 4px; border-radius: var(--radius-full); background: currentColor; opacity: 0.25; }
-.lr-chip-step i.f { opacity: 1; }
-.lr-chip.is-plan { border-style: dashed; border-color: var(--accent-blue); color: var(--accent-blue); }
 .lr-chip.is-mid  { border-color: var(--accent-blue); color: var(--accent-blue); background: var(--primary-alpha-10, rgba(0, 113, 235, 0.08)); }
 .lr-chip.is-done { background: var(--accent-blue); border-color: var(--accent-blue); color: #fff; }
+.lr-chip-caret { font-size: 16px; margin: 0 -4px 0 -2px; }
 .lr-chip-ghost { width: 48px; }
 
 /* Real DOM group labels (cards view shows them; ledger's column header carries
@@ -187,3 +183,61 @@
 /* ===== Memo modal ===== */
 #memo-input { width: 100%; resize: vertical; background: var(--input-bg); color: var(--text-primary);
   border: 1px solid var(--input-border); border-radius: var(--radius-sm); padding: 8px; font: inherit; }
+
+/* ===== Status menu (shared shell, appended to body) ===== */
+.st-status-menu {
+  position: fixed;
+  z-index: 400; /* ad-hoc popover band (below navbar/toolbar structural z) */
+  min-width: 170px;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+.st-status-menu[hidden] { display: none; }
+.st-status-menu button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: none;
+  border: 0;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: left;
+}
+.st-status-menu button:hover,
+.st-status-menu button:focus-visible { background: var(--section-bg); outline: none; }
+.st-status-menu button[aria-checked="true"] { color: var(--accent-blue); font-weight: 700; }
+.st-status-menu button .material-symbols-outlined { font-size: 18px; visibility: hidden; }
+.st-status-menu button[aria-checked="true"] .material-symbols-outlined { visibility: visible; }
+@media (max-width: 480px) {
+  /* bottom sheet: same shell, viewport-pinned so no menu clips */
+  .st-status-menu {
+    left: 0 !important;
+    right: 0;
+    top: auto !important;
+    bottom: 0;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+  }
+  .st-status-menu button { padding: 12px 16px; font-size: 0.95rem; }
+}
+body.dark-mode .st-status-menu button:hover,
+body.dark-mode .st-status-menu button:focus-visible { background: var(--highlight-subtle); }
+
+/* ===== Focus-visible (complete set — was cap-bar-only) ===== */
+.lr-chip:focus-visible,
+.lr-star:focus-visible,
+.lr-memo-btn:focus-visible,
+.lr-expander:focus-visible,
+.lr-detail-toggle:focus-visible,
+.lr-ck input:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 1px;
+}

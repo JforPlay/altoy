@@ -142,6 +142,11 @@
   color: var(--rarity-n-text);
 }
 
+.st-rarity-chip:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 1px;
+}
+
 /* --- Checkbox Filter Items (pill-shaped labels) --- */
 
 .st-checkbox-list {
