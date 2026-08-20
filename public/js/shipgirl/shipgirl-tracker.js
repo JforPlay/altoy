@@ -283,17 +283,18 @@ document.addEventListener('DOMContentLoaded', () => {
         // Fleet-tech stat bonuses: on the card face, not behind the toggle.
         // MUST stay after every ledger-column cell — the expanded state spans
         // `grid-column: 1/-1`, which would push any later cell onto a new row.
+        // Scope (which hulls benefit) and the stat gain are separate spans so
+        // each can carry its own weight — see .lr-stat-types / .lr-stat-val.
+        const statLine = (label, attr, hulls, value) => {
+            const attrName = attrTypeData[attr]?.condition || '';
+            const types = hulls.map(t => shipTypeData[t]?.type_name || '').filter(Boolean).join('/');
+            return `<span class="lr-stat"><i class="lr-dk">${label}</i>`
+                + `<span class="lr-stat-types">${escapeHtml(types)}</span> `
+                + `<span class="lr-stat-val">${escapeHtml(attrName)} +${escapeHtml(value)}</span></span>`;
+        };
         let statHtml = '';
-        if (ship.add_get_attr) {
-            const attrName = attrTypeData[ship.add_get_attr]?.condition || '';
-            const types = ship.add_get_shiptype.map(t => shipTypeData[t]?.type_name || '').filter(Boolean).join('/');
-            statHtml += `<span class="lr-stat"><i class="lr-dk">입수 스탯</i>${escapeHtml(types)} ${escapeHtml(attrName)} +${escapeHtml(ship.add_get_value)}</span>`;
-        }
-        if (ship.add_level_attr) {
-            const attrName = attrTypeData[ship.add_level_attr]?.condition || '';
-            const types = ship.add_level_shiptype.map(t => shipTypeData[t]?.type_name || '').filter(Boolean).join('/');
-            statHtml += `<span class="lr-stat"><i class="lr-dk">120 스탯</i>${escapeHtml(types)} ${escapeHtml(attrName)} +${escapeHtml(ship.add_level_value)}</span>`;
-        }
+        if (ship.add_get_attr) statHtml += statLine('입수 스탯', ship.add_get_attr, ship.add_get_shiptype, ship.add_get_value);
+        if (ship.add_level_attr) statHtml += statLine('120 스탯', ship.add_level_attr, ship.add_level_shiptype, ship.add_level_value);
         if (statHtml) {
             const stats = document.createElement('div');
             stats.className = 'lr-stats';
@@ -393,18 +394,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Score-bar counters: 성정 유닛 on the Lv120 basis (the realistic goal — both
-     * sides capped at break 4 so it reads as 0-100%), and 유닛 I+II combined on
-     * the Lv125 basis.
+     * Score-bar counters, split by the break they pay for rather than
+     * accumulated: Lv100→120 spends 유닛 only (breaks 1-4), Lv120→125 is the
+     * single final break that spends both 유닛 and 유닛II. Subtracting the
+     * break-4 basis from the full one isolates that last break on both sides.
      */
     function updateInvestmentSummary() {
         const spent120 = sumInvestment(investment, rarityByGid, 4);
         const total120 = rosterTotal(rarityByGid, 4);
-        const spent125 = sumInvestment(investment, rarityByGid);
-        const total125 = rosterTotal(rarityByGid);
+        const spentAll = sumInvestment(investment, rarityByGid);
+        const totalAll = rosterTotal(rarityByGid);
         const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v.toLocaleString(); };
-        set('unit120-invested', spent120.u1); set('unit120-total', total120.u1);
-        set('unit125-invested', spent125.u1 + spent125.u2); set('unit125-total', total125.u1 + total125.u2);
+        set('unit1-120-invested', spent120.u1); set('unit1-120-total', total120.u1);
+        set('unit1-125-invested', spentAll.u1 - spent120.u1); set('unit1-125-total', totalAll.u1 - total120.u1);
+        set('unit2-125-invested', spentAll.u2 - spent120.u2); set('unit2-125-total', totalAll.u2 - total120.u2);
     }
 
     /**

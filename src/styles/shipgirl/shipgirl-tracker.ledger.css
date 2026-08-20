@@ -101,7 +101,12 @@
   padding: 8px 12px;
   font-size: 0.78rem; color: var(--text-secondary);
 }
-.lr-dk { font-style: normal; color: var(--text-muted); font-weight: 600; margin-right: 6px; }
+/* Field labels (입수 스탯 / 120 스탯 / 입수 방법 / 다음 목표) read as headers:
+   primary text against the secondary + green values beside them. */
+.lr-dk { font-style: normal; color: var(--text-primary); font-weight: 600; margin-right: 6px; }
+.lr-stat-types { color: var(--text-secondary); }
+/* the *-text green inverts per theme; plain --accent-green is 2.6:1 on light */
+.lr-stat-val { color: var(--accent-green-text); font-weight: 600; }
 .lr-desc { list-style: none; margin: 0; padding: 0; display: inline; }
 .lr-desc li { display: inline; margin-right: 10px; }
 
