@@ -4,7 +4,7 @@
  * + stateful wrapper that initializes from island_season.json. Consumers call
  * renderSeasonBadge(itemId) to get a status pill or '' for non-seasonal items.
  *
- * Maintenance: when a new season launches, update SEASON_ID_RANGES — see
+ * Maintenance: when a new season launches, update SEASON_THEMES — see
  * CLAUDE.md > Island Seasonal Items > "When a new season launches".
  */
 
@@ -13,27 +13,47 @@
 // ===== Constants =====
 
 /**
- * Hand-maintained per-season ID ranges. Loose upper bound on the current
- * season catches newly added items between season updates.
+ * Seasons cycle THEMES, and a repeated theme re-runs the SAME item ids —
+ * S4 (가을) reuses S1's exact 4001–4014 block rather than adding new ones.
+ * So item id → season is not a function; item id → theme is. Both tables
+ * below are read straight off the game's own 특산품 경영 request tasks
+ * (`island_task[500010xx/500020xx]`: `series` = the theme title,
+ * `unlock_time` = the season window, `target_id.target_param` = the items).
+ * They are hand-copied rather than derived because the only file carrying
+ * them, `tasks.json`, is 755 KB and the island boots on ~160 KB.
  *
- * As of 2026-05-22 (S3 live). When S4 launches:
- *   1. Tighten S3's max to (S4_min - 1).
- *   2. Append { season: 4, min: <S4_min>, max: <S4_min + 70> }.
+ * Verified against KR 8.5.63 (2026-08-20).
  */
-export const SEASON_ID_RANGES = [
-    { season: null, min: 4001, max: 4018 }, // unclassified / pre-season-system
-    { season: 2,    min: 4019, max: 4028 }, // Ⅱ — anchored by 4019 아스파라거스
-    { season: 3,    min: 4029, max: 4099 }, // Ⅲ — anchored by 4029 자스민 / 4031 수박
+
+/**
+ * Item id block → theme. Bounds are TIGHT on purpose: a future 겨울 season
+ * would add ids past the last block, and bucketing those into the previous
+ * theme would print a confidently wrong "종료" badge on a live item. Leaving
+ * them unmapped renders no badge and trips the orphan warn in initSeasonMap.
+ */
+export const THEME_ID_RANGES = [
+    { theme: 'fall',   min: 4001, max: 4014 }, // 가을 — 가을 국화 … 국화차
+    { theme: 'spring', min: 4015, max: 4028 }, // 봄 — 봄 죽순 … 봄의 꽃다발
+    { theme: 'summer', min: 4029, max: 4042 }, // 여름 — 자스민 … 여름 꽃다발
 ];
 
 /**
- * Thematic season titles — not in island_season.json (data only carries the
- * generic "개발 시즌Ⅲ"). When a new season launches, add one line below.
- *
- *   <season id>: '<KR thematic title>',   // e.g. 4: '겨울 ○○ 경영',
+ * Season id → theme. KR has never run a 겨울 season: S4 went back to 가을.
+ * When a new season launches, add one line here (and a THEME_ID_RANGES block
+ * only if it ships item ids nobody has seen before).
  */
-export const SEASON_THEMATIC_NAMES = {
-    3: '여름 특산물 경영',
+export const SEASON_THEMES = {
+    1: 'fall',   // 2025-11-20 ~ 2026-02-26
+    2: 'spring', // 2026-02-26 ~ 2026-05-21
+    3: 'summer', // 2026-05-21 ~ 2026-08-20
+    4: 'fall',   // 2026-08-20 ~ 2026-11-19 — reuses S1's items
+};
+
+/** Theme → the in-game title (island_task `series`, minus its brackets). */
+export const THEME_NAMES = {
+    fall: '가을 특산품 경영',
+    spring: '봄 특산품 경영',
+    summer: '여름 특산품 경영',
 };
 
 // ===== Pure Helpers (testable) =====
@@ -76,14 +96,26 @@ export function findCurrentSeasonId(seasonsData, nowMs) {
 }
 
 /**
- * Match itemId against SEASON_ID_RANGES. Returns the range descriptor or null
- * for items outside any known range (including all non-4xxx IDs).
+ * Match itemId against THEME_ID_RANGES. Returns the theme key or null for
+ * items outside any known block (including all non-4xxx IDs).
  */
-export function lookupItemSeasonRange(itemId) {
-    for (const range of SEASON_ID_RANGES) {
-        if (itemId >= range.min && itemId <= range.max) return range;
+export function lookupItemTheme(itemId) {
+    for (const range of THEME_ID_RANGES) {
+        if (itemId >= range.min && itemId <= range.max) return range.theme;
     }
     return null;
+}
+
+/**
+ * Every season id that has run (or is running) the given theme, ascending.
+ * A theme repeats across seasons — 가을 is both S1 and S4 — so this is the
+ * list, not a single id.
+ */
+export function seasonsForTheme(theme) {
+    return Object.keys(SEASON_THEMES)
+        .filter((id) => SEASON_THEMES[id] === theme)
+        .map(Number)
+        .sort((a, b) => a - b);
 }
 
 // ===== Stateful Wrapper =====
@@ -97,9 +129,11 @@ let _state = null;
  * call re-runs the orphan scan and replaces _state, so callers that
  * legitimately want to refresh on a data reload can simply re-invoke.
  *
- * The orphan scan: any 4xxx item id not covered by SEASON_ID_RANGES
+ * The orphan scan: any 4xxx item id not covered by THEME_ID_RANGES
  * produces a single console.warn so a maintainer opening DevTools after
- * a future season launch sees the drift immediately.
+ * a future season launch sees the drift immediately. Because the blocks
+ * are tightly bounded, a season that ships genuinely new items (e.g. a
+ * first 겨울) trips this on its first load rather than mislabelling them.
  */
 export function initSeasonMap(seasonsData, opts = {}) {
     const nowMs = opts.nowMs ?? Date.now();
@@ -112,39 +146,48 @@ export function initSeasonMap(seasonsData, opts = {}) {
         const id = Number(key);
         if (!Number.isFinite(id)) continue;
         if (id < 4001 || id > 4999) continue;
-        if (lookupItemSeasonRange(id) === null) orphans.push(id);
+        if (lookupItemTheme(id) === null) orphans.push(id);
     }
     if (orphans.length > 0) {
         console.warn(
-            `[island.season-map] ${orphans.length} item id(s) in 4xxx range are missing from SEASON_ID_RANGES — ` +
+            `[island.season-map] ${orphans.length} item id(s) in 4xxx range are missing from THEME_ID_RANGES — ` +
             `update the table per CLAUDE.md > Island Seasonal Items. Orphans: ${orphans.join(', ')}`
         );
     }
 
-    _state = { seasonsData, currentSeasonId };
+    _state = { seasonsData, currentSeasonId, nowMs };
 }
 
 /**
- * Returns { seasonId, label, isCurrent } for a known seasonal item,
- * or null if the item is outside any known range (callers render no badge).
+ * Returns { theme, seasonId, seasons, label, isCurrent } for a known seasonal
+ * item, or null if the item is outside any known block (callers render no
+ * badge).
+ *
+ * `seasonId` is the run the badge speaks for: the live season when the item is
+ * in it, otherwise the most recent run that has ALREADY STARTED. Taking the
+ * highest id instead would label a 가을 item mid-S3 as "시즌Ⅳ · 종료" — a
+ * season that has not happened yet; taking the lowest would label the same
+ * item mid-S4 as "시즌Ⅰ · 종료" while it is sitting in the shop.
  *
  * Returns null before initSeasonMap has been called — safe default for
  * accidental early calls during module wiring.
  */
 export function getItemSeason(itemId) {
     if (!_state) return null;
-    const range = lookupItemSeasonRange(itemId);
-    if (range === null) return null;
+    const theme = lookupItemTheme(itemId);
+    if (theme === null) return null;
 
-    const seasonId = range.season;
-    let label;
-    if (seasonId === null) {
-        label = '이전 시즌';
-    } else {
-        label = _state.seasonsData[String(seasonId)]?.name_short || `시즌 ${seasonId}`;
-    }
-    const isCurrent = seasonId !== null && seasonId === _state.currentSeasonId;
-    return { seasonId, label, isCurrent };
+    const seasons = seasonsForTheme(theme);
+    const isCurrent = seasons.includes(_state.currentSeasonId);
+    const started = seasons.filter((id) => {
+        const time = _state.seasonsData[String(id)]?.time;
+        return Array.isArray(time) && time.length > 0 && krWindowToMs(time[0]) <= _state.nowMs;
+    });
+    const seasonId = isCurrent
+        ? _state.currentSeasonId
+        : (started[started.length - 1] ?? seasons[0]);
+    const label = _state.seasonsData[String(seasonId)]?.name_short || `시즌 ${seasonId}`;
+    return { theme, seasonId, seasons, label, isCurrent };
 }
 
 /**
@@ -171,12 +214,12 @@ export function getCurrentSeasonId() {
 }
 
 /**
- * Returns the thematic name for a given season id (e.g. "여름 특산물 경영"
- * for S3) or null if no override is registered. Callers should fall back
- * to the data's generic `name` field when this returns null.
+ * Returns the thematic name for a given season id (e.g. "여름 특산품 경영"
+ * for S3) or null if the season's theme is not registered. Callers should
+ * fall back to the data's generic `name` field when this returns null.
  */
 export function getSeasonThematicName(seasonId) {
-    return SEASON_THEMATIC_NAMES[seasonId] ?? null;
+    return THEME_NAMES[SEASON_THEMES[seasonId]] ?? null;
 }
 
 // Test-only reset hook. Production callers should never invoke this — calling
