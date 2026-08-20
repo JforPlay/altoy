@@ -7,7 +7,7 @@
  */
 
 import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeModal, setupModal, showElement, hideElement, syncedStorage, escapeHtml, RARITY_TIERS_DESC as rarityOrder } from '../utils.js';
-import { parseInvestment, nextBreakCost, sumInvestment, rosterTotal, resolveCapClick, applyCapChange, applyMaskChange, AFF_LABELS, SKL_LABELS, MEMO_MAX } from './tracker-investment.js';
+import { parseInvestment, nextBreakCost, sumInvestment, rosterTotal, BREAK_LEVELS, applyCapChange, applyMaskChange, AFF_LABELS, SKL_LABELS, MEMO_MAX } from './tracker-investment.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
 document.addEventListener('DOMContentLoaded', () => {
     let fullShipData, nationalityData, shipTypeData, attrTypeData, fleetTechGoalData, factionTechData;
@@ -322,8 +322,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return card;
     }
 
-    const CAP_LEVELS = [105, 110, 115, 120, 125];
-
     /**
      * Fills a card's investment cells (cap bar, 육성 chips, memo button, next-break hint)
      * from the current `investment` record for `gid`. Called once per card from
@@ -335,11 +333,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const cap = rec.cap || 0;
 
         const capCell = card.querySelector('.lr-cap');
-        capCell.innerHTML = CAP_LEVELS.map((lvl, i) => {
-            const on = cap >= i + 1;
-            const cls = on ? (i === 4 ? 'on u2' : 'on') : '';
-            return `<button type="button" data-action="cap" data-break="${i + 1}" class="${cls}" aria-pressed="${on}">${lvl}</button>`;
-        }).join('');
+        // data-break = target cap value 0..5; 100 = no breaks (direct reset).
+        capCell.innerHTML = `<span class="lr-cell-label">상한 해제 (성정 유닛)</span>`
+            + [100, ...BREAK_LEVELS].map((lvl, i) => {
+                const on = cap >= i;
+                const cls = on ? (i === 5 ? 'on u2' : 'on') : '';
+                const name = i === 0 ? `${ship.name} 상한 해제 없음 (Lv100)` : `${ship.name} Lv${lvl} 상한 해제`;
+                return `<button type="button" data-action="cap" data-break="${i}" class="${cls}" aria-pressed="${on}" aria-label="${escapeHtml(name)}">${lvl}</button>`;
+            }).join('');
 
         const chipsCell = card.querySelector('.lr-chips');
         const retChip = ship.retrofit
@@ -2228,9 +2229,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     setInv(gid, { skl: ((getInv(gid).skl || 0) + 1) % SKL_LABELS.length });
                     renderInvestmentCells(card, gid);
                 } else if (action === 'cap') {
-                    const cur = getInv(gid).cap || 0;
-                    const clicked = parseDatasetInt(btn.dataset.break);
-                    const { mask, cap } = applyCapChange(getCardProgressState(card), resolveCapClick(cur, clicked));
+                    const { mask, cap } = applyCapChange(getCardProgressState(card), parseDatasetInt(btn.dataset.break));
                     setInv(gid, { cap });
                     setCardMask(card, mask);
                     renderInvestmentCells(card, gid);

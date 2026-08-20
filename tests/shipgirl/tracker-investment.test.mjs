@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
     parseInvestment, investedCost, nextBreakCost, sumInvestment, rosterTotal,
-    resolveCapClick, applyCapChange, applyMaskChange, MEMO_MAX,
+    BREAK_LEVELS, applyCapChange, applyMaskChange, MEMO_MAX,
 } from '../../public/js/shipgirl/tracker-investment.js';
 
 test('parseInvestment: null/array/garbage -> {}', () => {
@@ -56,12 +56,8 @@ test('sumInvestment + rosterTotal skip unknown rarities', () => {
     assert.deepEqual(sumInvestment(inv, rarityByGid), { u1: 740 + 300, u2: 40 });
 });
 
-test('resolveCapClick: set, step-back on highest, toggle off', () => {
-    assert.equal(resolveCapClick(0, 3), 3);
-    assert.equal(resolveCapClick(3, 3), 2); // click highest filled -> step back
-    assert.equal(resolveCapClick(5, 5), 4);
-    assert.equal(resolveCapClick(2, 5), 5);
-    assert.equal(resolveCapClick(1, 1), 0);
+test('BREAK_LEVELS is the exported 5-break ladder', () => {
+    assert.deepEqual(BREAK_LEVELS, [105, 110, 115, 120, 125]);
 });
 
 test('applyCapChange: cap>=1 forces get+upgrade; cap<4 clears level', () => {

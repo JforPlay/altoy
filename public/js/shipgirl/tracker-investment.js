@@ -22,7 +22,7 @@ const BREAK_COSTS = {
     SSR: [{ u1: 200 }, { u1: 400 }, { u1: 600 }, { u1: 1000 }, { u1: 300, u2: 150 }],
     UR:  [{ u1: 300 }, { u1: 600 }, { u1: 900 }, { u1: 1500 }, { u1: 450, u2: 225 }],
 };
-const BREAK_LEVELS = [105, 110, 115, 120, 125];
+export const BREAK_LEVELS = [105, 110, 115, 120, 125];
 
 function clampInt(v, min, max) {
     const n = Number(v);
@@ -101,11 +101,6 @@ export function rosterTotal(rarityByGid) {
         u2 += cost.u2;
     }
     return { u1, u2 };
-}
-
-/** Cap-cell click semantics: click sets that break; clicking the current cap steps back one. */
-export function resolveCapClick(currentCap, clickedBreak) {
-    return clickedBreak === currentCap ? clickedBreak - 1 : clickedBreak;
 }
 
 /** Coupling after the cap changed: breaks require MLB (풀돌+보유); cap<4 can't claim 120 달성. */
