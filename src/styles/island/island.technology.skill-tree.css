@@ -42,7 +42,10 @@
 }
 
 /* Node States */
-.skill-tree-node.locked {
+/* Dim the CONTENTS, not the node. The node paints over the SVG connector layer,
+   so element opacity would make every line running underneath show through the
+   box — and nearly every node in a tree is locked. */
+.skill-tree-node.locked > * {
     opacity: 0.6;
 }
 

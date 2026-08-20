@@ -118,6 +118,16 @@ function setupEventDelegation() {
             treeContainer.style.cursor = 'grabbing';
         });
 
+        // A breakpoint resizes the grid without re-rendering it, leaving the
+        // measured connector coordinates behind. Deliberately not a
+        // ResizeObserver: it delivers before the media query restyles the
+        // nodes, so the callback still measures the outgoing node size.
+        let repositionTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(repositionTimer);
+            repositionTimer = setTimeout(() => positionConnections(treeContainer), 150);
+        });
+
         treeContainer.addEventListener('mouseleave', () => {
             isDragging = false;
             treeContainer.style.cursor = 'grab';
@@ -506,17 +516,14 @@ function renderSkillTreeView(techs, container) {
                     const targetTech = techs.find(t => t.id === targetId);
                     // Only create connection if target tech exists in current filtered list
                     if (targetTech) {
-                        connections.push({
-                            from: targetTech.axis,
-                            to: tech.axis
-                        });
+                        connections.push({ from: targetTech.id, to: tech.id });
                     }
                 }
             });
         }
     });
 
-    html += renderConnections(connections, maxX, maxY, xCoordMap);
+    html += renderConnections(connections);
 
     // Add nodes - use normalized coordinates
     techs.forEach(tech => {
@@ -530,6 +537,7 @@ function renderSkillTreeView(techs, container) {
     html += '</div>';
 
     container.innerHTML = html;
+    positionConnections(container);
 
     // Render resource totals separately (outside the scrolling container)
     renderResourceTotalsContainer(techs);
@@ -565,56 +573,51 @@ function checkExternalDependencies(tech, currentTechs) {
 }
 
 /**
- * Render SVG connections between nodes
+ * Render the SVG connection layer. Lines are emitted without coordinates —
+ * positionConnections() fills them in from the laid-out DOM.
  */
-function renderConnections(connections, maxX, maxY, xCoordMap) {
+function renderConnections(connections) {
     if (connections.length === 0) return '';
 
-    // Dynamically get the base font size (1rem in pixels)
-    // Default to 16 if calculation fails
-    let baseFontSize = 16;
-    try {
-        baseFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-    } catch (e) {
-        console.warn('[Island Technology] Failed to calculate base font size, using default 16px');
-    }
+    const lines = connections
+        .map(conn => `<line class="tech-connection" data-from="${conn.from}" data-to="${conn.to}" />`)
+        .join('');
 
-    // Use rem values converted to px matching CSS grid values
-    // Node width: 300px (18.75rem)
-    // Node height: ~33.6px (2.1rem)
-    // Gap: 32px (2rem)
-    const nodeWidth = 18.75 * baseFontSize;
-    const nodeHeight = 2.1 * baseFontSize;
-    const gap = 2 * baseFontSize;
+    return `<svg class="skill-tree-connections" style="grid-column: 1 / -1; grid-row: 1 / -1;">${lines}</svg>`;
+}
 
-    let svg = `<svg class="skill-tree-connections" style="grid-column: 1 / -1; grid-row: 1 / -1;">`;
+/**
+ * Point every connector at the real centre of the nodes it joins, measured from
+ * the laid-out DOM. Deriving the centres from the CSS rem values instead drifts:
+ * nodes are content-box, so a node renders ~20px wider and ~12px taller than the
+ * grid track it sits in, and four responsive breakpoints resize the tracks, the
+ * nodes and the gap together. Coordinates are relative to the SVG, which spans
+ * the whole grid area and carries no viewBox, so user units are CSS pixels.
+ */
+function positionConnections(container) {
+    const svg = container.querySelector('.skill-tree-connections');
+    if (!svg) return;
 
-    connections.forEach(conn => {
-        // Floor decimal coordinates and normalize
-        const rawX1 = Math.floor(conn.from[0]);
-        const rawY1 = Math.floor(conn.from[1]);
-        const rawX2 = Math.floor(conn.to[0]);
-        const rawY2 = Math.floor(conn.to[1]);
+    const origin = svg.getBoundingClientRect();
+    const centreOf = techId => {
+        const node = container.querySelector(`.skill-tree-node[data-tech-id="${techId}"]`);
+        if (!node) return null;
+        const rect = node.getBoundingClientRect();
+        return [rect.x - origin.x + rect.width / 2, rect.y - origin.y + rect.height / 2];
+    };
 
-        // Apply coordinate normalization
-        const x1 = xCoordMap[rawX1];
-        const y1 = rawY1;
-        const x2 = xCoordMap[rawX2];
-        const y2 = rawY2;
-
-        // Calculate positions (center of each node)
-        const startX = (x1 - 1) * (nodeWidth + gap) + nodeWidth / 2;
-        const startY = (y1 - 1) * (nodeHeight + gap) + nodeHeight / 2;
-        const endX = (x2 - 1) * (nodeWidth + gap) + nodeWidth / 2;
-        const endY = (y2 - 1) * (nodeHeight + gap) + nodeHeight / 2;
-
-        // Draw line
-        svg += `<line x1="${startX}" y1="${startY}" x2="${endX}" y2="${endY}"
-                     class="tech-connection" stroke="var(--island-border)" stroke-width="2" />`;
+    svg.querySelectorAll('line').forEach(line => {
+        const from = centreOf(line.dataset.from);
+        const to = centreOf(line.dataset.to);
+        if (!from || !to) {
+            line.remove();
+            return;
+        }
+        line.setAttribute('x1', from[0]);
+        line.setAttribute('y1', from[1]);
+        line.setAttribute('x2', to[0]);
+        line.setAttribute('y2', to[1]);
     });
-
-    svg += '</svg>';
-    return svg;
 }
 
 /**
