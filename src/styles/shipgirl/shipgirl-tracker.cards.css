@@ -1,13 +1,14 @@
 /* ===== Card view (container[data-view="cards"]) =====
    Same .ship-card DOM as the ledger row (shipgirl-tracker.ledger.css) — this
-   file lays those nodes out as a vertical card grid, restoring the
-   pre-redesign card look: centered 70px portrait, labeled checkbox rows on
-   --section-bg, labeled cap-bar / 육성 / memo / Pt groups. Every rule is
-   scoped under [data-view="cards"] so it never leaks into the ledger layout.
-   Rarity edge moves from the ledger's left border to a top border. */
+   file lays those nodes out as a vertical card grid, glance-first: portrait,
+   name, 보유/풀돌/Lv120 progress rows, labeled cap-bar / 육성 / memo / Pt
+   groups on the face, with 입수 방법 / 스탯 / 다음 돌파 collapsed behind a
+   detail toggle. Every rule is scoped under [data-view="cards"] so it never
+   leaks into the ledger layout. Rarity edge moves from the ledger's left
+   border to a top border. */
 
 #ship-list-container[data-view="cards"] {
-  --grid-min: 250px;
+  --grid-min: 230px;
   --grid-gap: 12px;
   padding: 1rem;
 }
@@ -41,21 +42,25 @@
 [data-view="cards"] .lr-rar-ssr { border-top-color: var(--rarity-ssr); border-left-color: transparent !important; }
 [data-view="cards"] .lr-rar-ur  { border-top-color: var(--rarity-ur);  border-left-color: transparent !important; }
 
-/* --- Portrait + name block --- */
+/* --- Portrait + identity --- */
 [data-view="cards"] .lr-icon { align-self: center; }
-[data-view="cards"] .ship-icon {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  border: 2px solid var(--border-color);
-}
-
+[data-view="cards"] .ship-icon { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--border-color); }
 [data-view="cards"] .lr-name { width: 100%; }
 [data-view="cards"] .lr-nm { justify-content: center; }
 [data-view="cards"] .lr-sub { justify-content: center; margin-top: 3px; }
 [data-view="cards"] .lr-expander { display: none; }
 
-/* --- 보유/120/풀돌: pre-redesign tracker-item rows (label left, box right) --- */
+/* --- DOM group labels (replace the old ::before content) --- */
+[data-view="cards"] .lr-cell-label {
+  display: block;
+  flex-basis: 100%;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* --- Progress rows (label left, box right) --- */
+[data-view="cards"] .lr-progress { display: flex; flex-direction: column; gap: 6px; width: 100%; }
 [data-view="cards"] .lr-ck {
   flex-direction: row-reverse;
   justify-content: space-between;
@@ -68,55 +73,41 @@
 [data-view="cards"] .lr-ck:hover { background: var(--border-color); }
 [data-view="cards"] .lr-ck-label { display: inline; font-size: 0.8rem; color: var(--text-primary); }
 
-/* --- Labeled control groups (cap bar / 육성 chips) --- */
+/* --- Labeled control groups --- */
 [data-view="cards"] .lr-cap,
-[data-view="cards"] .lr-chips {
-  justify-content: flex-start;
-  flex-wrap: wrap;
-}
-[data-view="cards"] .lr-cap::before,
-[data-view="cards"] .lr-chips::before {
-  flex-basis: 100%;
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--text-muted);
-}
-[data-view="cards"] .lr-cap::before { content: "레벨 상한 (성정 유닛)"; }
-[data-view="cards"] .lr-chips::before { content: "육성"; }
+[data-view="cards"] .lr-chips { justify-content: flex-start; flex-wrap: wrap; }
 [data-view="cards"] .lr-cap button { flex: 1; width: auto; }
 [data-view="cards"] .lr-chip-ghost { display: none; }
 
-/* --- Memo: full-width labeled row --- */
+/* --- Memo row --- */
 [data-view="cards"] .lr-memo { text-align: left; width: 100%; }
 [data-view="cards"] .lr-memo-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  width: 100%;
-  padding: 5px 8px;
-  border-radius: 4px;
+  display: flex; align-items: center; gap: 6px;
+  width: 100%; padding: 5px 8px; border-radius: 4px;
   background: var(--section-bg);
-  font-size: 0.8rem;
-  color: var(--text-secondary);
+  font-size: 0.8rem; color: var(--text-secondary);
   transition: background-color var(--transition-fast);
 }
 [data-view="cards"] .lr-memo-btn:hover { background: var(--border-color); }
 [data-view="cards"] .lr-memo-btn .material-symbols-outlined { font-size: 18px; }
 [data-view="cards"] .lr-memo-txt { display: inline; }
 
-/* --- 기술 Pt with inline label --- */
+/* --- Pt with inline DOM label --- */
 [data-view="cards"] .lr-pt { text-align: left; font-size: 0.9rem; }
-[data-view="cards"] .lr-pt::before {
-  content: "기술 Pt";
-  margin-right: 6px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--text-muted);
-}
+[data-view="cards"] .lr-pt .lr-cell-label { display: inline; flex-basis: auto; margin-right: 6px; }
 
-/* --- Detail strip: hidden-until-expanded in ledger, always on in cards
-   (입수 방법 / 스탯 / 다음 돌파 back on the card face, stacked). --- */
-[data-view="cards"] .lr-detail {
+/* --- Collapsed detail behind the labeled toggle (glance-first card) --- */
+[data-view="cards"] .lr-detail-toggle {
+  display: flex; align-items: center; justify-content: center; gap: 4px;
+  width: 100%; padding: 5px 8px; border-radius: 4px;
+  background: var(--section-bg); border: 0; cursor: pointer;
+  font-size: 0.8rem; color: var(--text-secondary);
+}
+[data-view="cards"] .lr-detail-toggle:hover { background: var(--border-color); }
+[data-view="cards"] .lr-detail-toggle .material-symbols-outlined { font-size: 18px; transition: transform var(--transition-fast); }
+[data-view="cards"] .lr-expanded .lr-detail-toggle .material-symbols-outlined { transform: rotate(180deg); }
+[data-view="cards"] .lr-detail { display: none; }
+[data-view="cards"] .lr-expanded .lr-detail {
   display: block;
   border-top: 1px solid var(--border-color);
   padding-top: 6px;
@@ -129,15 +120,11 @@
 [data-view="cards"] .lr-desc { display: block; }
 [data-view="cards"] .lr-desc li { display: block; padding: 1px 0; margin: 0; }
 
-/* ===== Dark Mode Overrides ===== */
-body.dark-mode [data-view="cards"] .ship-card {
-  box-shadow: 0 2px 4px var(--shadow-color);
-}
+/* ===== Dark Mode ===== */
+body.dark-mode [data-view="cards"] .ship-card { box-shadow: 0 2px 4px var(--shadow-color); }
 body.dark-mode [data-view="cards"] .lr-ck,
-body.dark-mode [data-view="cards"] .lr-memo-btn {
-  background: var(--highlight-subtle);
-}
+body.dark-mode [data-view="cards"] .lr-memo-btn,
+body.dark-mode [data-view="cards"] .lr-detail-toggle { background: var(--highlight-subtle); }
 body.dark-mode [data-view="cards"] .lr-ck:hover,
-body.dark-mode [data-view="cards"] .lr-memo-btn:hover {
-  background: var(--border-color);
-}
+body.dark-mode [data-view="cards"] .lr-memo-btn:hover,
+body.dark-mode [data-view="cards"] .lr-detail-toggle:hover { background: var(--border-color); }

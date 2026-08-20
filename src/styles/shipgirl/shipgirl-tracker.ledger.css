@@ -83,6 +83,9 @@
 .lr-pt b { color: var(--text-primary); }
 
 .lr-detail { display: none; }
+/* Cards-only affordance (DP4) — ledger uses the name-row .lr-expander instead;
+   display:none keeps this out of the ledger grid's 9-column track count. */
+.lr-detail-toggle { display: none; }
 [data-view="ledger"] .lr-expanded .lr-detail {
   display: flex; flex-wrap: wrap; gap: 4px 26px;
   grid-column: 1 / -1;

@@ -51,7 +51,7 @@
 
   /* Cards (scoped — the ledger row overrides its own padding/icon size via
      higher-specificity ID-qualified selectors in ledger.css). --grid-min stays
-     at the base 240px (cards.css) — the fuller control row (labeled checks,
+     at the base 230px (cards.css) — the fuller control row (labeled checks,
      cap bar, chips) needs that width even on narrow screens; auto-fill already
      reflows to 1 column there without shrinking the track. */
   #ship-list-container[data-view="cards"] {
@@ -129,7 +129,7 @@
 }
 
 @media (max-width: 480px) {
-  /* --grid-min stays at the base 240px (cards.css) — see the 768px breakpoint
+  /* --grid-min stays at the base 230px (cards.css) — see the 768px breakpoint
      comment above; only the gap shrinks here. */
   #ship-list-container[data-view="cards"] {
     --grid-gap: var(--spacing-sm);

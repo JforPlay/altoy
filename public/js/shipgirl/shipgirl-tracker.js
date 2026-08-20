@@ -290,6 +290,16 @@ document.addEventListener('DOMContentLoaded', () => {
         card.appendChild(ptCell);
         card._pt = ptCell;
 
+        // Cards-view detail affordance (ledger uses the name-row expander;
+        // display:none there keeps it out of the ledger grid's track count).
+        const detailToggle = document.createElement('button');
+        detailToggle.type = 'button';
+        detailToggle.className = 'lr-detail-toggle';
+        detailToggle.dataset.action = 'expand';
+        detailToggle.setAttribute('aria-expanded', 'false');
+        detailToggle.innerHTML = `<span class="material-symbols-outlined" aria-hidden="true">expand_more</span>입수·기술 정보`;
+        card.appendChild(detailToggle);
+
         // Detail strip (hidden until expanded; card view shows it always).
         const detail = document.createElement('div');
         detail.className = 'lr-detail';
