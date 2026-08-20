@@ -145,10 +145,6 @@
     margin-bottom: 0.4rem;
   }
 
-  .top-filters-wrapper {
-    gap: 12px;
-  }
-
   .dropdown-filter-group select {
     min-width: 100%;
   }

@@ -221,9 +221,9 @@ document.addEventListener('DOMContentLoaded', () => {
             `<span class="rarity-badge rarity-${escapeHtml(String(ship.rarity))}">${escapeHtml(String(ship.rarity))}</span>`;
         nameCell.innerHTML =
             `<div class="lr-nm">` +
-            `<button type="button" class="lr-star" data-action="fav" aria-label="즐겨찾기" aria-pressed="false">☆</button>` +
+            `<button type="button" class="lr-star" data-action="fav" aria-label="${escapeHtml(ship.name)} 즐겨찾기" aria-pressed="false">☆</button>` +
             `<span class="lr-nm-text">${escapeHtml(ship.name)}</span>` +
-            `<button type="button" class="lr-expander" data-action="expand" aria-label="상세 정보" aria-expanded="false">` +
+            `<button type="button" class="lr-expander" data-action="expand" aria-label="${escapeHtml(ship.name)} 상세 정보" aria-expanded="false">` +
             `<span class="material-symbols-outlined">expand_more</span></button></div>` +
             `<div class="lr-sub">${subHtml}</div>`;
         card.appendChild(nameCell);
@@ -2225,6 +2225,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     trigger: btn,
                     options: labels.map((label, value) => ({ value, label })),
                     current: getInv(gid)[action] || 0,
+                    kind: action === 'aff' ? '호감작' : '스작',
                     onSelect: (value) => {
                         setInv(gid, { [action]: value });
                         renderInvestmentCells(card, gid);

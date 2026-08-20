@@ -169,12 +169,6 @@
 
 /* --- Checkbox Filter Items --- */
 
-.st-checkbox-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
 .checkbox-filter-item label {
   display: inline-flex;
   align-items: center;
@@ -200,9 +194,9 @@
 }
 
 .checkbox-filter-item input[type="checkbox"]:checked + label {
-  background-color: var(--primary-color);
+  background-color: var(--accent-blue);
   color: #fff;
-  border-color: var(--primary-color);
+  border-color: var(--accent-blue);
   box-shadow: var(--shadow-sm);
 }
 
@@ -222,21 +216,7 @@
   object-fit: contain;
 }
 
-/* --- Dropdown Row --- */
-
-.st-dropdown-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
 /* --- Dropdown Controls (unified) --- */
-
-.dropdown-group-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
 
 .dropdown-controls-container {
   display: grid;
@@ -287,32 +267,12 @@
   gap: 6px;
 }
 
-.bulk-check-controls {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  flex: 1;
-}
-
 /* Bulk-check buttons = `.btn .btn-secondary` (deselect = `.btn-danger`) from
    components/button.css; only the compact drawer sizing stays local. */
 .bulk-check-btn {
   --btn-pad-y: 7px;
   --btn-pad-x: 14px;
   --btn-font-size: 0.75rem;
-}
-
-/* --- Action Controls Container (inside drawer) --- */
-
-.action-controls-container {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  padding: var(--spacing-sm);
-  background-color: var(--section-bg);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-color);
 }
 
 /* #reset-filters-btn moved to the drawer header (`.btn .btn-ghost .btn-sm`,
@@ -346,20 +306,6 @@
 
 .dropdown-content a:hover {
   background-color: var(--section-bg);
-}
-
-/* --- Utility Classes --- */
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
 }
 
 /* --- Filter Group (legacy support for JS-generated content) --- */
@@ -401,35 +347,6 @@
   gap: 8px;
 }
 
-.search-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  position: relative;
-}
-
-.search-container label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.dropdown-container {
-  position: relative;
-}
-
-.top-filters-wrapper {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--spacing-md);
-  padding: var(--spacing-sm);
-  background-color: var(--section-bg);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-color);
-}
-
 /* --- Dark Mode Overrides --- */
 /* (body.dark-mode .st-drawer box-shadow removed — converges to canonical --shadow-xl) */
 
@@ -438,26 +355,11 @@ body.dark-mode .checkbox-filter-item label {
   border-color: var(--border-color);
 }
 
-body.dark-mode .checkbox-filter-item input[type="checkbox"]:checked + label {
-  background: var(--primary-color);
-  border-color: var(--primary-color);
-}
-
 body.dark-mode .filter-group {
-  background-color: var(--highlight-subtle);
-  border-color: var(--border-color);
-}
-
-body.dark-mode .action-controls-container {
   background-color: var(--highlight-subtle);
   border-color: var(--border-color);
 }
 
 body.dark-mode .dropdown-content {
   box-shadow: 0 4px 8px var(--overlay-strong);
-}
-
-body.dark-mode .top-filters-wrapper {
-  background-color: var(--highlight-subtle);
-  border-color: var(--border-color);
 }

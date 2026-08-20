@@ -4,7 +4,8 @@
  * state selection instead of click-to-cycle. Single DOM shell reused across
  * all rows (event delegation scale); ≤480px the same shell renders as a
  * bottom sheet via CSS. Keyboard: Arrows/Home/End roam, Enter/Space select,
- * Escape/outside click close. Focus return is the CALLER's job — selection
+ * Escape/outside click/Tab close (Tab lets focus move on naturally, per the
+ * ARIA APG menu pattern). Focus return is the CALLER's job — selection
  * re-renders the trigger's cell, so the caller re-queries and refocuses.
  */
 
@@ -41,6 +42,10 @@ export function createStatusMenu() {
 
     function onKeydown(e) {
         if (e.key === 'Escape') { e.stopPropagation(); close({ refocus: true }); return; }
+        // ARIA APG menu pattern: Tab closes the menu and lets focus move to the
+        // next element in the page's natural tab sequence — no preventDefault,
+        // no trapping.
+        if (e.key === 'Tab') { close(); return; }
         if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             select(Number(items[activeIndex].dataset.value));
@@ -69,11 +74,12 @@ export function createStatusMenu() {
         if (cb) cb(value);
     }
 
-    function open({ trigger, options, current, onSelect }) {
+    function open({ trigger, options, current, kind, onSelect }) {
         ensureShell();
         if (!shell.hidden) close();
         selectCb = onSelect;
         anchorTrigger = trigger;
+        shell.setAttribute('aria-label', kind);
         shell.innerHTML = options.map(({ value, label }) =>
             `<button type="button" role="menuitemradio" data-value="${value}"`
             + ` aria-checked="${value === current}" tabindex="-1">`
