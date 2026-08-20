@@ -6,7 +6,7 @@
  * faction tech bonus display, and cross-tab sync via the storage event (shares SAVE_KEY with research-tracker.js).
  */
 
-import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeModal, setupModal, showElement, hideElement, syncedStorage, escapeHtml, RARITY_TIERS_DESC as rarityOrder } from '../utils.js';
+import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeModal, setupModal, showElement, hideElement, syncedStorage, escapeHtml, RARITY_TIERS_DESC as rarityOrder, requireElements, renderStatus, loadPageData } from '../utils.js';
 import { parseInvestment, nextBreakCost, sumInvestment, rosterTotal, BREAK_LEVELS, applyCapChange, applyMaskChange, AFF_LABELS, SKL_LABELS, MEMO_MAX } from './tracker-investment.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
 import { createStatusMenu } from './shipgirl-tracker.status-menu.js';
@@ -166,30 +166,6 @@ document.addEventListener('DOMContentLoaded', () => {
                ) || null;
     }
 
-    // ===== Data Loading =====
-
-    /** Fetch all required data in parallel. Re-throws on failure to halt initialization. */
-    async function fetchData() {
-        const dataPaths = [
-            'data/ship_group_data.json',
-            'data/mapping/nationality_mapping.json',
-            'data/mapping/ship_type_mapping.json',
-            'data/mapping/attr_type_mapping.json',
-            'data/shipgirl/fleet_tech_goal.json',
-            'data/shipgirl/fleet_tech_template.json'
-        ];
-        try {
-            [fullShipData, nationalityData, shipTypeData, attrTypeData, fleetTechGoalData, factionTechData] = await Promise.all(
-                dataPaths.map(path => fetchJSON(path))
-            );
-        } catch (error) {
-            console.error("Error loading data files:", error);
-            const container = document.getElementById('ship-list-container');
-            if (container) container.innerHTML = `<p style="color: red; text-align: center;">데이터 파일을 불러오는 데 실패했습니다. 파일 경로와 JSON 형식을 확인하세요.</p>`;
-            throw error;
-        }
-    }
-
     // ===== Card Rendering =====
 
     /**
@@ -300,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
         detailToggle.innerHTML = `<span class="material-symbols-outlined" aria-hidden="true">expand_more</span>입수·기술 정보`;
         card.appendChild(detailToggle);
 
-        // Detail strip (hidden until expanded; card view shows it always).
+        // Detail strip (hidden until expanded in either view).
         const detail = document.createElement('div');
         detail.className = 'lr-detail';
         const descHtml = (ship.description || []).map(d => `<li>• ${escapeHtml(d)}</li>`).join('');
@@ -2093,163 +2069,195 @@ document.addEventListener('DOMContentLoaded', () => {
         shipCardById.forEach((card, shipId) => {
             card.style.display = visibleSet.has(shipId) ? '' : 'none';
         });
+        const emptyEl = document.getElementById('tracker-empty');
+        if (emptyEl) {
+            if (filteredShipIds.length === 0) {
+                renderStatus(emptyEl, '조건에 맞는 함순이가 없습니다. 필터를 확인해 주세요.', 'empty');
+                showElement(emptyEl);
+            } else {
+                hideElement(emptyEl);
+            }
+        }
     }
 
     // ===== Initialization =====
 
     async function initialize() {
-        try {
-            await fetchData();
-            investment = investmentStore.load();
-            rarityByGid = Object.fromEntries(Object.entries(fullShipData).map(([gid, s]) => [gid, s.rarity]));
-            cacheDOMElements();
+        const els = {
+            shipListContainer: document.getElementById('ship-list-container'),
+            ledgerHead: document.getElementById('ledger-head'),
+            controlSurface: document.querySelector('.st-control-surface'),
+            filterDrawer: document.getElementById('filter-drawer'),
+            filterDrawerBody: document.getElementById('filter-drawer-body'),
+            searchBar: document.getElementById('search-bar'),
+            viewToggleBtn: document.getElementById('view-toggle-btn'),
+        };
+        if (!requireElements(els, 'Shipgirl tracker')) return;
 
-            // Setup view toggle (ledger/cards)
-            applyView(getStorageItem(VIEW_KEY, 'ledger') === 'cards' ? 'cards' : 'ledger');
-            document.getElementById('view-toggle-btn').addEventListener('click', () => {
-                applyView(cachedElements.shipListContainer.dataset.view === 'ledger' ? 'cards' : 'ledger');
-            });
+        const data = await loadPageData(async () => {
+            const [ships, nations, types, attrs, goals, factions] = await Promise.all([
+                'data/ship_group_data.json',
+                'data/mapping/nationality_mapping.json',
+                'data/mapping/ship_type_mapping.json',
+                'data/mapping/attr_type_mapping.json',
+                'data/shipgirl/fleet_tech_goal.json',
+                'data/shipgirl/fleet_tech_template.json',
+            ].map(path => fetchJSON(path)));
+            return { ships, nations, types, attrs, goals, factions };
+        }, els.shipListContainer, { contextLabel: 'Shipgirl tracker' });
+        if (data === null) return;
+        ({ ships: fullShipData, nations: nationalityData, types: shipTypeData,
+           attrs: attrTypeData, goals: fleetTechGoalData, factions: factionTechData } = data);
 
-            // Sticky ledger-head offset (navbar + control surface) — surface height is live (wraps)
-            updateStickyOffset();
-            window.addEventListener('resize', updateStickyOffset);
+        investment = investmentStore.load();
+        rarityByGid = Object.fromEntries(Object.entries(fullShipData).map(([gid, s]) => [gid, s.rarity]));
+        cacheDOMElements();
 
-            // Shadow only while the control surface is actually pinned.
-            const surface = document.querySelector('.st-control-surface');
-            const sentinel = document.querySelector('.st-sticky-sentinel');
-            if (surface && sentinel && 'IntersectionObserver' in window) {
-                const nav = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--navbar-height')) || 65;
-                new IntersectionObserver(
-                    ([entry]) => surface.classList.toggle('is-stuck', !entry.isIntersecting),
-                    { rootMargin: `-${nav + 1}px 0px 0px 0px` }
-                ).observe(sentinel);
-            }
+        // Setup view toggle (ledger/cards)
+        applyView(getStorageItem(VIEW_KEY, 'ledger') === 'cards' ? 'cards' : 'ledger');
+        els.viewToggleBtn.addEventListener('click', () => {
+            applyView(cachedElements.shipListContainer.dataset.view === 'ledger' ? 'cards' : 'ledger');
+        });
 
-            // Setup drawer
-            document.getElementById('filter-drawer-btn').addEventListener('click', openDrawer);
-            document.getElementById('filter-drawer-backdrop').addEventListener('click', closeDrawer);
-            document.querySelector('#filter-drawer .st-drawer-close').addEventListener('click', closeDrawer);
-            document.getElementById('reset-filters-btn').addEventListener('click', resetFilters);
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    const drawer = document.getElementById('filter-drawer');
-                    if (drawer.classList.contains('open')) closeDrawer();
-                }
-            });
+        // Sticky ledger-head offset (navbar + control surface) — surface height is live (wraps)
+        updateStickyOffset();
+        // chips row appearing/disappearing changes the surface height —
+        // observe the element, not just window resizes
+        if ('ResizeObserver' in window) new ResizeObserver(updateStickyOffset).observe(els.controlSurface);
+        else window.addEventListener('resize', updateStickyOffset);
 
-            // Setup score modal
-            document.getElementById('score-modal-btn').addEventListener('click', () => {
-                calculateAndDisplayScores();
-                openModal('score-modal');
-            });
-            setupModal('score-modal', { closeOnEscape: true, closeOnBackdrop: true, restoreFocus: true });
-
-            // Setup goal modal
-            document.getElementById('goal-modal-btn').addEventListener('click', () => {
-                renderGoalTracker();
-                openModal('goal-modal');
-            });
-            setupModal('goal-modal', { closeOnEscape: true, closeOnBackdrop: true, restoreFocus: true });
-
-            // Setup confirmation modal
-            setupModal('confirmation-modal', {
-                closeOnEscape: true,
-                closeOnBackdrop: true,
-                restoreFocus: true,
-                onClose: () => { currentConfirmCallback = null; }
-            });
-            setupConfirmationModal();
-
-            // Setup memo modal
-            setupModal('memo-modal', { closeOnEscape: true, closeOnBackdrop: true, restoreFocus: true });
-            document.getElementById('memo-save-btn').addEventListener('click', () => {
-                if (memoGid) {
-                    setInv(memoGid, { memo: document.getElementById('memo-input').value.trim().slice(0, MEMO_MAX) });
-                    renderInvestmentCells(memoCard, memoGid);
-                }
-                closeModal('memo-modal');
-            });
-
-            // Populate filters in drawer, restore saved state, then render
-            populateDrawerFilters();
-            loadFiltersFromStorage();
-            renderAllCards();
-            updateInvestmentSummary();
-            applyFilters();
-            calculateAndDisplayScores();
-
-            // Search setup
-            setupSearch();
-
-            // Tracker checkbox delegation
-            cachedElements.shipListContainer.addEventListener('change', (e) => {
-                if (e.target.classList.contains('tracker-checkbox')) {
-                    handleCheckboxLogic(e.target);
-                    coupleCardAfterChange(e.target.closest('.ship-card'), e.target.dataset.type, e.target.checked);
-                    autoSaveProgress();
-                    if (isProgressFilterActive()) {
-                        applyFilters();
-                    } else {
-                        debouncedCalculateScores();
-                    }
-                }
-            });
-
-            // Row expander + investment action delegation (single listener).
-            cachedElements.shipListContainer.addEventListener('click', (e) => {
-                const btn = e.target.closest('[data-action]');
-                if (!btn) return;
-                const card = btn.closest('.ship-card');
-                if (!card) return;
-                const gid = card.dataset.shipId;
-                const action = btn.dataset.action;
-                if (action === 'expand') {
-                    const open = card.classList.toggle('lr-expanded');
-                    card.querySelectorAll('[data-action="expand"]')
-                        .forEach(b => b.setAttribute('aria-expanded', String(open)));
-                } else if (action === 'aff' || action === 'skl') {
-                    const labels = action === 'aff' ? AFF_LABELS : SKL_LABELS;
-                    statusMenu.open({
-                        trigger: btn,
-                        options: labels.map((label, value) => ({ value, label })),
-                        current: getInv(gid)[action] || 0,
-                        onSelect: (value) => {
-                            setInv(gid, { [action]: value });
-                            renderInvestmentCells(card, gid);
-                            // the trigger node was replaced — refocus its successor
-                            card.querySelector(`[data-action="${action}"]`)?.focus({ preventScroll: true });
-                        },
-                    });
-                } else if (action === 'fav' || action === 'ret') {
-                    setInv(gid, { [action]: getInv(gid)[action] ? 0 : 1 });
-                    renderInvestmentCells(card, gid);
-                    card.querySelector(`[data-action="${action}"]`)?.focus({ preventScroll: true });
-                } else if (action === 'cap') {
-                    const { mask, cap } = applyCapChange(getCardProgressState(card), parseDatasetInt(btn.dataset.break));
-                    setInv(gid, { cap });
-                    setCardMask(card, mask);
-                    renderInvestmentCells(card, gid);
-                    updateInvestmentSummary();
-                    card.querySelector(`[data-action="cap"][data-break="${btn.dataset.break}"]`)?.focus({ preventScroll: true });
-                } else if (action === 'memo') {
-                    openMemoModal(gid, card);
-                }
-            });
-
-            // Cross-tab sync for GOAL_KEY only — progress sync is handled by progressStore above.
-            // GOAL_KEY stores a bare string (legacy wire format) and is read by drive-sync.summary.js
-            // as such, so it stays outside syncedStorage to preserve format compatibility.
-            window.addEventListener('storage', (e) => {
-                if (e.key !== GOAL_KEY) return;
-                const goalModal = document.getElementById('goal-modal');
-                if (goalModal?.classList.contains('active')) {
-                    renderGoalTracker();
-                }
-            });
-
-        } catch (error) {
-            // fetchData errors stop initialization
+        // Shadow only while the control surface is actually pinned.
+        const surface = document.querySelector('.st-control-surface');
+        const sentinel = document.querySelector('.st-sticky-sentinel');
+        if (surface && sentinel && 'IntersectionObserver' in window) {
+            const nav = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--navbar-height')) || 65;
+            new IntersectionObserver(
+                ([entry]) => surface.classList.toggle('is-stuck', !entry.isIntersecting),
+                { rootMargin: `-${nav + 1}px 0px 0px 0px` }
+            ).observe(sentinel);
         }
+
+        // Setup drawer
+        document.getElementById('filter-drawer-btn').addEventListener('click', openDrawer);
+        document.getElementById('filter-drawer-backdrop').addEventListener('click', closeDrawer);
+        document.querySelector('#filter-drawer .st-drawer-close').addEventListener('click', closeDrawer);
+        document.getElementById('reset-filters-btn').addEventListener('click', resetFilters);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const drawer = document.getElementById('filter-drawer');
+                if (drawer.classList.contains('open')) closeDrawer();
+            }
+        });
+
+        // Setup score modal
+        document.getElementById('score-modal-btn').addEventListener('click', () => {
+            calculateAndDisplayScores();
+            openModal('score-modal');
+        });
+        setupModal('score-modal', { closeOnEscape: true, closeOnBackdrop: true, restoreFocus: true });
+
+        // Setup goal modal
+        document.getElementById('goal-modal-btn').addEventListener('click', () => {
+            renderGoalTracker();
+            openModal('goal-modal');
+        });
+        setupModal('goal-modal', { closeOnEscape: true, closeOnBackdrop: true, restoreFocus: true });
+
+        // Setup confirmation modal
+        setupModal('confirmation-modal', {
+            closeOnEscape: true,
+            closeOnBackdrop: true,
+            restoreFocus: true,
+            onClose: () => { currentConfirmCallback = null; }
+        });
+        setupConfirmationModal();
+
+        // Setup memo modal
+        setupModal('memo-modal', { closeOnEscape: true, closeOnBackdrop: true, restoreFocus: true });
+        document.getElementById('memo-save-btn').addEventListener('click', () => {
+            if (memoGid) {
+                setInv(memoGid, { memo: document.getElementById('memo-input').value.trim().slice(0, MEMO_MAX) });
+                renderInvestmentCells(memoCard, memoGid);
+            }
+            closeModal('memo-modal');
+        });
+
+        // Populate filters in drawer, restore saved state, then render
+        populateDrawerFilters();
+        loadFiltersFromStorage();
+        renderAllCards();
+        updateInvestmentSummary();
+        applyFilters();
+        calculateAndDisplayScores();
+
+        // Search setup
+        setupSearch();
+
+        // Tracker checkbox delegation
+        cachedElements.shipListContainer.addEventListener('change', (e) => {
+            if (e.target.classList.contains('tracker-checkbox')) {
+                handleCheckboxLogic(e.target);
+                coupleCardAfterChange(e.target.closest('.ship-card'), e.target.dataset.type, e.target.checked);
+                autoSaveProgress();
+                if (isProgressFilterActive()) {
+                    applyFilters();
+                } else {
+                    debouncedCalculateScores();
+                }
+            }
+        });
+
+        // Row expander + investment action delegation (single listener).
+        cachedElements.shipListContainer.addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-action]');
+            if (!btn) return;
+            const card = btn.closest('.ship-card');
+            if (!card) return;
+            const gid = card.dataset.shipId;
+            const action = btn.dataset.action;
+            if (action === 'expand') {
+                const open = card.classList.toggle('lr-expanded');
+                card.querySelectorAll('[data-action="expand"]')
+                    .forEach(b => b.setAttribute('aria-expanded', String(open)));
+            } else if (action === 'aff' || action === 'skl') {
+                const labels = action === 'aff' ? AFF_LABELS : SKL_LABELS;
+                statusMenu.open({
+                    trigger: btn,
+                    options: labels.map((label, value) => ({ value, label })),
+                    current: getInv(gid)[action] || 0,
+                    onSelect: (value) => {
+                        setInv(gid, { [action]: value });
+                        renderInvestmentCells(card, gid);
+                        // the trigger node was replaced — refocus its successor
+                        card.querySelector(`[data-action="${action}"]`)?.focus({ preventScroll: true });
+                    },
+                });
+            } else if (action === 'fav' || action === 'ret') {
+                setInv(gid, { [action]: getInv(gid)[action] ? 0 : 1 });
+                renderInvestmentCells(card, gid);
+                card.querySelector(`[data-action="${action}"]`)?.focus({ preventScroll: true });
+            } else if (action === 'cap') {
+                const { mask, cap } = applyCapChange(getCardProgressState(card), parseDatasetInt(btn.dataset.break));
+                setInv(gid, { cap });
+                setCardMask(card, mask);
+                renderInvestmentCells(card, gid);
+                updateInvestmentSummary();
+                card.querySelector(`[data-action="cap"][data-break="${btn.dataset.break}"]`)?.focus({ preventScroll: true });
+            } else if (action === 'memo') {
+                openMemoModal(gid, card);
+            }
+        });
+
+        // Cross-tab sync for GOAL_KEY only — progress sync is handled by progressStore above.
+        // GOAL_KEY stores a bare string (legacy wire format) and is read by drive-sync.summary.js
+        // as such, so it stays outside syncedStorage to preserve format compatibility.
+        window.addEventListener('storage', (e) => {
+            if (e.key !== GOAL_KEY) return;
+            const goalModal = document.getElementById('goal-modal');
+            if (goalModal?.classList.contains('active')) {
+                renderGoalTracker();
+            }
+        });
     }
 
     // Start the application.
