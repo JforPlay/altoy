@@ -25,12 +25,7 @@
     z-index: 2;
 }
 
-.skill-tree-node.empty {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.skill-tree-node:not(.empty):hover {
+.skill-tree-node:hover {
     transform: translateY(var(--card-lift));
     box-shadow: var(--island-shadow-md);
     border-color: var(--island-accent);
@@ -38,7 +33,7 @@
 
 .skill-tree-node.selected {
     border-color: var(--island-accent);
-    box-shadow: 0 0 0 3px var(--island-accent)20;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--island-accent) 25%, transparent);
 }
 
 /* Node States */
@@ -51,11 +46,6 @@
 
 .skill-tree-node.available {
     border-color: var(--island-accent);
-}
-
-.skill-tree-node.unlocked {
-    border-color: var(--island-success);
-    background: var(--island-success)10;
 }
 
 /* Node Icon */

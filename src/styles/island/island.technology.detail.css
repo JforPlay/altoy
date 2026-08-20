@@ -210,10 +210,6 @@
     font-size: 0.875rem;
 }
 
-.cost-resource {
-    color: var(--island-text-secondary);
-}
-
 .cost-amount {
     font-weight: 600;
     color: var(--island-text-primary);
@@ -246,7 +242,7 @@
 /* Completion Tips */
 .completion-tips {
     padding: 1rem;
-    background: var(--island-success)10;
+    background: var(--island-success-soft);
     border-left: 3px solid var(--island-success);
     border-radius: 8px;
     font-size: 0.875rem;

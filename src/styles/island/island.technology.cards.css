@@ -79,7 +79,7 @@
 
 .tech-card.selected {
     border-color: var(--island-accent);
-    box-shadow: 0 0 0 3px var(--island-accent)20;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--island-accent) 25%, transparent);
 }
 
 .tech-card.locked {

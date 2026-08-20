@@ -431,57 +431,6 @@ function renderCategoryGroupedView(techs, container) {
 }
 
 /**
- * Setup drag-to-pan functionality for tech tree container
- */
-function setupDragToPan(container) {
-    let isDragging = false;
-    let startX, startY, scrollLeft, scrollTop;
-
-    container.addEventListener('mousedown', (e) => {
-        // Don't drag if clicking on interactive elements
-        if (e.target.closest('[data-tech-id]') ||
-            e.target.closest('.tech-completion-toggle') ||
-            e.target.closest('button')) {
-            return;
-        }
-
-        isDragging = true;
-        container.style.cursor = 'grabbing';
-        container.style.userSelect = 'none';
-
-        startX = e.pageX - container.offsetLeft;
-        startY = e.pageY - container.offsetTop;
-        scrollLeft = container.scrollLeft;
-        scrollTop = container.scrollTop;
-    });
-
-    container.addEventListener('mouseleave', () => {
-        isDragging = false;
-        container.style.cursor = 'grab';
-        container.style.userSelect = '';
-    });
-
-    container.addEventListener('mouseup', () => {
-        isDragging = false;
-        container.style.cursor = 'grab';
-        container.style.userSelect = '';
-    });
-
-    container.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-        e.preventDefault();
-
-        const x = e.pageX - container.offsetLeft;
-        const y = e.pageY - container.offsetTop;
-        const walkX = (x - startX) * 1.5; // Multiply for faster scroll
-        const walkY = (y - startY) * 1.5;
-
-        container.scrollLeft = scrollLeft - walkX;
-        container.scrollTop = scrollTop - walkY;
-    });
-}
-
-/**
  * Render skill tree view with nodes and connections
  */
 function renderSkillTreeView(techs, container) {
@@ -496,13 +445,6 @@ function renderSkillTreeView(techs, container) {
     // Calculate normalized grid dimensions
     const maxX = uniqueXCoords.length; // Number of unique x-coordinates
     const maxY = Math.max(...techs.map(t => Math.floor(t.axis[1])));
-
-    // Create a map for quick lookup
-    const techMap = {};
-    techs.forEach(tech => {
-        const key = `${tech.axis[0]},${tech.axis[1]}`;
-        techMap[key] = tech;
-    });
 
     // Build the skill tree HTML
     let html = '<div class="skill-tree-grid" style="--max-x: ' + maxX + '; --max-y: ' + maxY + ';">';
@@ -624,7 +566,6 @@ function positionConnections(container) {
  * Create a skill tree node
  */
 function createSkillTreeNode(tech, x, y, externalDeps = null, currentTechs = []) {
-    const category = CATEGORIES[tech.tech_belong];
     const isLocked = tech.sys_unlock && tech.sys_unlock.length > 0;
     const isCompleted = state.completedTechs[tech.id] || false;
     const canComplete = canCompleteTech(tech.id, currentTechs);
@@ -683,7 +624,6 @@ function createSkillTreeNode(tech, x, y, externalDeps = null, currentTechs = [])
  * Create a technology card (for grid view)
  */
 function createTechCard(tech, currentTechs = []) {
-    const category = CATEGORIES[tech.tech_belong];
     const isLocked = tech.sys_unlock && tech.sys_unlock.length > 0;
     const isCompleted = state.completedTechs[tech.id] || false;
     const canComplete = canCompleteTech(tech.id, currentTechs);
@@ -723,32 +663,6 @@ function createTechCard(tech, currentTechs = []) {
             </div>
         </div>
     `;
-}
-
-/**
- * Attach click handlers to tech cards/nodes
- */
-function attachTechCardHandlers(container) {
-    // Tech card selection handlers
-    container.querySelectorAll('[data-tech-id]').forEach(element => {
-        element.addEventListener('click', (e) => {
-            // Don't select if clicking the toggle button
-            if (e.target.closest('.tech-completion-toggle')) {
-                return;
-            }
-            const techId = element.dataset.techId;
-            selectTechnology(techId);
-        });
-    });
-
-    // Completion toggle handlers
-    container.querySelectorAll('[data-toggle-tech-id]').forEach(toggle => {
-        toggle.addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevent card selection
-            const techId = toggle.dataset.toggleTechId;
-            toggleTechCompletion(techId);
-        });
-    });
 }
 
 // ===== Technology Detail Panel =====

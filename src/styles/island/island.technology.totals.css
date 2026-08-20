@@ -68,9 +68,7 @@
 .skill-tree-node.tech-completed {
     filter: saturate(0.6);
     background:
-        linear-gradient(to right,
-            color-mix(in srgb, var(--island-success) 8%, transparent) 0%,
-            transparent 100%),
+        linear-gradient(to right, var(--island-success-soft) 0%, transparent 100%),
         var(--island-bg);
     border-left: 4px solid var(--island-success);
     padding-left: calc(1rem - 4px); /* Compensate for thicker left border */
@@ -218,7 +216,7 @@
     width: 2.5rem;
     height: 2.5rem;
     min-width: 2.5rem;
-    background: var(--island-accent)20;
+    background: var(--island-accent-light);
     border-radius: 8px;
     display: flex;
     align-items: center;
