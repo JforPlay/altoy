@@ -199,6 +199,16 @@ export const ROUTE_BOOT_TARGETS = Object.freeze([
         },
         cutoff: 'networkidle',
     },
+    {
+        key: 'SHIPGIRL_TRACKER',
+        path: 'shipgirl/shipgirl-tracker/',
+        ready: {
+            kind: 'count',
+            selector: '#ship-list-container .ship-card',
+            minimum: 1,
+            description: 'first ledger row rendered',
+        },
+    },
 ]);
 
 export const GLOBAL_DOCUMENT_MODULES = Object.freeze(new Set([

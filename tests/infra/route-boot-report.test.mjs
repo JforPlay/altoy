@@ -14,7 +14,7 @@ import {
 } from '../../scripts/report-route-boot.mjs';
 
 test('route boot targets have unique keys and durable ready signals', () => {
-    assert.equal(ROUTE_BOOT_TARGETS.length, 14);
+    assert.equal(ROUTE_BOOT_TARGETS.length, 15);
     assert.equal(new Set(ROUTE_BOOT_TARGETS.map(({ key }) => key)).size, ROUTE_BOOT_TARGETS.length);
     for (const target of ROUTE_BOOT_TARGETS) {
         assert.match(target.key, /^[A-Z0-9_]+$/);
