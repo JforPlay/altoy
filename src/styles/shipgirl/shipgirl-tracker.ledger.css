@@ -133,8 +133,10 @@
   [data-view="ledger"] .lr-chips { grid-area: chips; justify-content: flex-start; }
   [data-view="ledger"] .lr-memo { grid-area: memo; justify-self: end; }
   [data-view="ledger"] .lr-expanded .lr-detail { grid-column: 1 / -1; margin: 0; }
+  /* dark fold rows — must stay inside the fold query: display:contents doesn't
+     stop matching at desktop */
+  body.dark-mode [data-view="ledger"] .lr-progress .lr-ck { background: var(--highlight-subtle); }
 }
-body.dark-mode [data-view="ledger"] .lr-progress .lr-ck { background: var(--highlight-subtle); }
 
 /* ===== Cap segment bar ===== */
 .lr-cap { display: flex; gap: 3px; justify-content: center; }
