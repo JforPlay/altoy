@@ -53,10 +53,14 @@ export function extractStyleImports(source, fromFile) {
         .map((m) => resolve(dir, m[1]));
 }
 
-/** `@import './x.css'` targets inside a stylesheet, resolved to absolute paths. */
+/**
+ * `@import './x.css'` targets inside a stylesheet, resolved to absolute paths.
+ * Both spellings count: every sheet in this repo writes the `url()` form, and
+ * missing it made the tokens those sheets import look undefined.
+ */
 function extractCssImports(css, fromFile) {
     const dir = dirname(fromFile);
-    return [...css.matchAll(/@import\s+['"]([^'"]+)['"]/g)].map((m) => resolve(dir, m[1]));
+    return [...css.matchAll(/@import\s+(?:url\(\s*)?['"]([^'"]+)['"]/g)].map((m) => resolve(dir, m[1]));
 }
 
 /** A sheet plus everything it @imports, transitively. */

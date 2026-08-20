@@ -120,7 +120,7 @@
 
 .expression-thumb.active {
     border-color: var(--accent-color);
-    box-shadow: 0 0 0 2px rgba(var(--accent-color-rgb), 0.3);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color) 30%, transparent);
     transform: scale(1.05);
 }
 

@@ -100,7 +100,7 @@
 .rank-btn.active {
     border-color: var(--rank-color);
     background: linear-gradient(to bottom, var(--island-surface), var(--island-bg));
-    box-shadow: 0 0 12px rgba(var(--rank-color), 0.3);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--rank-color) 30%, transparent);
 }
 
 .rank-btn.active .rank-name {

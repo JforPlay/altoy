@@ -698,7 +698,7 @@ body.dark-mode .mudak-chart {
 }
 
 .mudak-row:not(.mudak-head):hover {
-  --row-bg: color-mix(in srgb, var(--card-bg) 94%, var(--text-color));
+  --row-bg: color-mix(in srgb, var(--card-bg) 94%, var(--text-primary));
 }
 
 .mudak-head {

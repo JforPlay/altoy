@@ -23,6 +23,7 @@
     --island-accent: #0071eb;
     --island-accent-hover: #005ec4;
     --island-accent-light: rgba(0, 113, 235, 0.08);
+    --island-accent-rgb: 0, 113, 235;
 
     /* Hairlines — sub-border weights for the 자원 ledger language. `--island-hair`
        separates sections and panels, `--island-hair-2` separates rows inside one. */
@@ -111,6 +112,7 @@ body.dark-mode {
     --island-accent: #7289da;
     --island-accent-hover: #8ea1e1;
     --island-accent-light: rgba(114, 137, 218, 0.1);
+    --island-accent-rgb: 114, 137, 218;
 
     --island-hair: rgba(255, 255, 255, 0.075);
     --island-hair-2: rgba(255, 255, 255, 0.04);
