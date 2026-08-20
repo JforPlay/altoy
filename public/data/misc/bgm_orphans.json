@@ -997,12 +997,12 @@
                 "label": "창공에 울리는 소리"
             },
             {
-                "kind": "event",
-                "label": "EX-2 새로운 시대"
+                "kind": "main",
+                "label": "찾아온 손님"
             },
             {
-                "kind": "scene",
-                "label": "KurskSPPtRePage"
+                "kind": "opsi",
+                "label": "엘리트 함대"
             }
         ],
         "year": null
@@ -3345,6 +3345,10 @@
                 "label": "극지 폭풍"
             },
             {
+                "kind": "main",
+                "label": "찾아온 손님"
+            },
+            {
                 "kind": "map",
                 "label": "B3 종말과 서곡"
             },
@@ -3367,10 +3371,6 @@
             {
                 "kind": "opsi",
                 "label": "소형 주력 함대"
-            },
-            {
-                "kind": "opsi",
-                "label": "중형 주력 함대"
             }
         ],
         "year": 2023
@@ -7041,6 +7041,10 @@
                 "label": "창공에 울리는 소리"
             },
             {
+                "kind": "main",
+                "label": "찾아온 손님"
+            },
+            {
                 "kind": "opsi",
                 "label": "NA海域深处A"
             },
@@ -7051,10 +7055,6 @@
             {
                 "kind": "opsi",
                 "label": "NA海域深处C"
-            },
-            {
-                "kind": "opsi",
-                "label": "NA海域中心"
             }
         ],
         "year": null
@@ -11290,6 +11290,10 @@
         "usage": [
             {
                 "kind": "scene",
+                "label": "RapidSeasideMusicGamePage"
+            },
+            {
+                "kind": "scene",
                 "label": "SecretsAbyssMGPage"
             }
         ],
@@ -12382,6 +12386,10 @@
             {
                 "kind": "scene",
                 "label": "SleeplessCityRePage"
+            },
+            {
+                "kind": "scene",
+                "label": "StarsCityOmenPage"
             }
         ],
         "year": 2025
@@ -14860,6 +14868,10 @@
                 "label": "성인 전의 동맹"
             },
             {
+                "kind": "main",
+                "label": "찾아온 손님"
+            },
+            {
                 "kind": "map",
                 "label": "T1 스위트 트랩"
             },
@@ -14894,10 +14906,6 @@
             {
                 "kind": "opsi",
                 "label": "중형 정찰함대"
-            },
-            {
-                "kind": "opsi",
-                "label": "대형 정찰함대"
             }
         ],
         "year": 2026
@@ -15329,6 +15337,10 @@
                 "label": "설경미종"
             },
             {
+                "kind": "main",
+                "label": "찾아온 손님"
+            },
+            {
                 "kind": "map",
                 "label": "A1 남극 대륙에서"
             },
@@ -15367,10 +15379,6 @@
             {
                 "kind": "opsi",
                 "label": "중형 정찰 함대"
-            },
-            {
-                "kind": "opsi",
-                "label": "대형 정찰 함대"
             }
         ],
         "year": null
@@ -15955,6 +15963,10 @@
             },
             {
                 "kind": "scene",
+                "label": "EelTecCatchupPage"
+            },
+            {
+                "kind": "scene",
                 "label": "FrancescaPage"
             },
             {
@@ -15976,10 +15988,6 @@
             {
                 "kind": "scene",
                 "label": "PlymouthTecCatchupPage"
-            },
-            {
-                "kind": "scene",
-                "label": "RupprechtTecCatchupPage"
             }
         ],
         "year": null
@@ -17916,6 +17924,10 @@
                 "label": "설경미종"
             },
             {
+                "kind": "main",
+                "label": "찾아온 손님"
+            },
+            {
                 "kind": "opsi",
                 "label": "소형 정찰 함대"
             },
@@ -17954,10 +17966,6 @@
             {
                 "kind": "opsi",
                 "label": "적 기함"
-            },
-            {
-                "kind": "opsi",
-                "label": "엘리트 함대"
             }
         ],
         "year": null
@@ -18646,6 +18654,10 @@
             {
                 "kind": "main",
                 "label": "빛을 쫓는 별의 바다"
+            },
+            {
+                "kind": "main",
+                "label": "찾아온 손님"
             },
             {
                 "kind": "map",

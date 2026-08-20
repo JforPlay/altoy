@@ -66404,6 +66404,19 @@
             180008
         ],
         "skin_id": 205090,
+        "sp_weapon": {
+            "icon": "15540",
+            "name": "로열 나이트 소드",
+            "skill_upgrade": [
+                [
+                    0,
+                    1013450
+                ]
+            ],
+            "attribute_1": "cannon",
+            "attribute_2": "hit",
+            "weapon_true": false
+        },
         "class_name": "킹 조지 5세급",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/205090.webp",
         "equip_1": [
@@ -97361,6 +97374,19 @@
             180004
         ],
         "skin_id": 303080,
+        "sp_weapon": {
+            "icon": "15560",
+            "name": "완벽의 모자",
+            "skill_upgrade": [
+                [
+                    0,
+                    1090500
+                ]
+            ],
+            "attribute_1": "durability",
+            "attribute_2": "dodge",
+            "weapon_true": false
+        },
         "class_name": "묘코급",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/303080.webp",
         "equip_1": [
@@ -187888,10 +187914,7 @@
             "META 연구실·월드 투어"
         ],
         "name": "뉘른베르크·META",
-        "gift_dislike": [
-            180005,
-            180009
-        ],
+        "gift_dislike": [],
         "skin_id": 9702130,
         "class_name": "뉘른베르크·META",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9702130.webp",

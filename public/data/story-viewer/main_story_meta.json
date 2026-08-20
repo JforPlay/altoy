@@ -1773,14 +1773,35 @@
     },
     "96": {
         "id": 96,
-        "name": "敬请期待",
-        "description": "敬请期待",
+        "name": "찾아온 손님",
+        "description": "언젠가는 찾아올 이가 있고, 언젠가는 맞닥뜨릴 상황도 있는 법. 찾아왔다면 곧 손님이지. 초대받지 않은 자여, 그 목적을 말해 보아라.",
+        "summary": "",
+        "shipnation": [
+            7,
+            1,
+            2,
+            4,
+            5
+        ],
+        "bgm": "story-richang-light",
+        "link_event": [
+            97
+        ],
+        "chapter": 5,
+        "column": 60,
+        "row": 0,
+        "icon": "InterludeOne_3"
+    },
+    "97": {
+        "id": 97,
+        "name": "기대해주세요",
+        "description": "기대해주세요",
         "summary": "",
         "shipnation": 0,
         "bgm": "",
         "link_event": "",
         "chapter": 0,
-        "column": 60,
+        "column": 61,
         "row": 0,
         "icon": ""
     }
