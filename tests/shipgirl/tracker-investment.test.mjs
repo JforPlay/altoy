@@ -56,6 +56,17 @@ test('sumInvestment + rosterTotal skip unknown rarities', () => {
     assert.deepEqual(sumInvestment(inv, rarityByGid), { u1: 740 + 300, u2: 40 });
 });
 
+test('capLimit scopes both sides to a break ceiling (the Lv120 summary basis)', () => {
+    const rarityByGid = { '1': 'N', '2': 'UR' };
+    // Lv120 = the first four breaks, which never spend 유닛II
+    assert.deepEqual(rosterTotal(rarityByGid, 4), { u1: 660 + 3300, u2: 0 });
+    // a ship parked at Lv125 counts only its first four breaks on this basis,
+    // so invested can never exceed the total it is shown against
+    assert.deepEqual(sumInvestment({ '1': { cap: 5 } }, rarityByGid, 4), { u1: 660, u2: 0 });
+    // default stays the full Lv125 basis
+    assert.deepEqual(sumInvestment({ '1': { cap: 5 } }, rarityByGid), { u1: 740, u2: 40 });
+});
+
 test('BREAK_LEVELS is the exported 5-break ladder', () => {
     assert.deepEqual(BREAK_LEVELS, [105, 110, 115, 120, 125]);
 });

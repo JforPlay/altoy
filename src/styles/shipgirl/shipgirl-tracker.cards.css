@@ -8,9 +8,12 @@
    border to a top border. */
 
 #ship-list-container[data-view="cards"] {
-  --grid-min: 230px;
+  --grid-min: 220px;
   --grid-gap: 12px;
   padding: 1rem;
+  /* Ships without stat bonuses have shorter cards — stretching them to the
+     row's tallest left a block of dead space under the last control. */
+  align-items: start;
 }
 
 [data-view="cards"] .ship-card {
@@ -18,10 +21,10 @@
   border: 1px solid var(--border-color);
   border-top: 3px solid transparent; /* rarity edge fill, set per .lr-rar-* below */
   border-radius: 8px;
-  padding: 0.75rem;
+  padding: 0.6rem;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   box-shadow: 0 1px 3px var(--overlay-12), 0 1px 2px var(--overlay-lighter);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -44,7 +47,7 @@
 
 /* --- Portrait + identity --- */
 [data-view="cards"] .lr-icon { align-self: center; }
-[data-view="cards"] .ship-icon { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--border-color); }
+[data-view="cards"] .ship-icon { width: 58px; height: 58px; border-radius: 50%; border: 2px solid var(--border-color); }
 [data-view="cards"] .lr-name { width: 100%; }
 [data-view="cards"] .lr-nm { justify-content: center; }
 [data-view="cards"] .lr-sub { justify-content: center; margin-top: 3px; }
@@ -59,19 +62,27 @@
   color: var(--text-muted);
 }
 
-/* --- Progress rows (label left, box right) --- */
-[data-view="cards"] .lr-progress { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+/* --- Progress: 보유/풀돌/Lv120 share one row (each cell shrinks to 1/3) --- */
+[data-view="cards"] .lr-progress { display: flex; gap: 4px; width: 100%; }
 [data-view="cards"] .lr-ck {
-  flex-direction: row-reverse;
-  justify-content: space-between;
-  width: 100%;
-  padding: 5px 8px;
+  flex: 1 1 0;
+  min-width: 0;
+  justify-content: center;
+  gap: 3px;
+  padding: 5px 2px;
   border-radius: 4px;
   background: var(--section-bg);
   transition: background-color var(--transition-fast);
 }
+[data-view="cards"] .lr-ck input { width: 16px; height: 16px; }
 [data-view="cards"] .lr-ck:hover { background: var(--border-color); }
-[data-view="cards"] .lr-ck-label { display: inline; font-size: 0.8rem; color: var(--text-primary); }
+[data-view="cards"] .lr-ck-label {
+  display: inline;
+  font-size: 0.72rem;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--text-primary);
+}
 
 /* --- Labeled control groups --- */
 [data-view="cards"] .lr-cap,
@@ -92,9 +103,18 @@
 [data-view="cards"] .lr-memo-btn .material-symbols-outlined { font-size: 18px; }
 [data-view="cards"] .lr-memo-txt { display: inline; }
 
-/* --- Pt with inline DOM label --- */
-[data-view="cards"] .lr-pt { text-align: left; font-size: 0.9rem; }
+/* --- Pt with inline DOM label (sits under the toggles that earn it) --- */
+[data-view="cards"] .lr-pt { text-align: left; font-size: 0.8rem; }
 [data-view="cards"] .lr-pt .lr-cell-label { display: inline; flex-basis: auto; margin-right: 6px; }
+
+/* --- Fleet-tech stat bonuses: always on the face, not behind the toggle --- */
+[data-view="cards"] .lr-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
 
 /* --- Collapsed detail behind the labeled toggle (glance-first card) --- */
 [data-view="cards"] .lr-detail-toggle {
@@ -116,7 +136,7 @@
 }
 [data-view="cards"] .lr-detail > span { display: block; margin-top: 6px; }
 [data-view="cards"] .lr-detail > span:first-child { margin-top: 0; }
-[data-view="cards"] .lr-dk { display: block; margin: 0 0 2px; }
+[data-view="cards"] .lr-detail .lr-dk { display: block; margin: 0 0 2px; }
 [data-view="cards"] .lr-desc { display: block; }
 [data-view="cards"] .lr-desc li { display: block; padding: 1px 0; margin: 0; }
 

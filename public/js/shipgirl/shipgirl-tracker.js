@@ -7,7 +7,7 @@
  */
 
 import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeModal, setupModal, showElement, hideElement, syncedStorage, escapeHtml, RARITY_TIERS_DESC as rarityOrder, requireElements, renderStatus, loadPageData } from '../utils.js';
-import { parseInvestment, nextBreakCost, sumInvestment, rosterTotal, BREAK_LEVELS, applyCapChange, applyMaskChange, AFF_LABELS, SKL_LABELS, MEMO_MAX } from './tracker-investment.js';
+import { parseInvestment, investedCost, sumInvestment, rosterTotal, applyCapChange, applyMaskChange, AFF_LABELS, SKL_LABELS, MEMO_MAX } from './tracker-investment.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
 import { createStatusMenu } from './shipgirl-tracker.status-menu.js';
 document.addEventListener('DOMContentLoaded', () => {
@@ -17,6 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const GOAL_KEY = 'shipgirlTrackerSelectedGoal';
     const FILTER_KEY = 'shipgirlTrackerFilters';
     const VIEW_KEY = 'shipgirlTrackerView'; // UI pref — NOT in SYNCED_KEYS, on purpose
+
+    // Cap bar stops: [cap value stored, level shown]. Only the three levels players
+    // actually park at — 유닛II is rare enough that Lv120 is the practical ceiling.
+    // The store still accepts caps 1-3 (imports); they just aren't settable here.
+    const CAP_STOPS = [[0, 100], [4, 120], [5, 125]];
 
     // ===== State =====
 
@@ -83,8 +88,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // #ledger-head visibility is owned by inline style.display ONLY — never mix with hideElement.
         const head = document.getElementById('ledger-head');
         if (head) head.style.display = view === 'ledger' ? '' : 'none';
+        // Button advertises the view it switches TO.
         document.getElementById('view-toggle-icon').textContent = view === 'ledger' ? 'grid_view' : 'view_list';
-        document.getElementById('view-toggle-label').textContent = view === 'ledger' ? '카드' : '목록';
+        document.getElementById('view-toggle-label').textContent = view === 'ledger' ? '카드형 보기' : '목록형 보기';
         setStorageItem(VIEW_KEY, view);
     }
 
@@ -232,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // display:contents in the desktop ledger keeps the three grid tracks.
         const progress = document.createElement('div');
         progress.className = 'lr-progress';
-        [['get', '보유'], ['upgrade', '풀돌'], ['level', 'Lv120']].forEach(([type, label]) => {
+        [['get', '보유', ship.pt_get], ['upgrade', '풀돌', ship.pt_upgrage], ['level', 'Lv120', ship.pt_level]].forEach(([type, label, pt]) => {
             const cell = document.createElement('label');
             cell.className = 'lr-ck';
             const cb = document.createElement('input');
@@ -242,12 +248,26 @@ document.addEventListener('DOMContentLoaded', () => {
             cb.setAttribute('aria-label', `${ship.name} ${label}`);
             const mLabel = document.createElement('i');
             mLabel.className = 'lr-ck-label';
-            mLabel.textContent = label;
+            // Trailing space is the wrap opportunity: in a narrow card the gain
+            // drops to its own line instead of overflowing the cell.
+            mLabel.textContent = `${label} `;
+            // Tech points this toggle awards — smaller so three toggles fit one row.
+            const ptTag = document.createElement('b');
+            ptTag.className = 'lr-ck-pt';
+            ptTag.textContent = `(+${Number(pt) || 0})`;
+            mLabel.appendChild(ptTag);
             cell.appendChild(cb);
             cell.appendChild(mLabel);
             progress.appendChild(cell);
         });
         card.appendChild(progress);
+
+        // Per-ship tech points — sits right under the progress toggles that earn them
+        // (cards view flow; the ledger column order matches).
+        const ptCell = document.createElement('div');
+        ptCell.className = 'lr-pt';
+        card.appendChild(ptCell);
+        card._pt = ptCell;
 
         // Placeholder cells — tasks 3 fills these (cap bar, chips, memo).
         const capCell = document.createElement('div');
@@ -260,11 +280,26 @@ document.addEventListener('DOMContentLoaded', () => {
         memoCell.className = 'lr-memo';
         card.appendChild(memoCell);
 
-        // Per-ship tech points
-        const ptCell = document.createElement('div');
-        ptCell.className = 'lr-pt';
-        card.appendChild(ptCell);
-        card._pt = ptCell;
+        // Fleet-tech stat bonuses: on the card face, not behind the toggle.
+        // MUST stay after every ledger-column cell — the expanded state spans
+        // `grid-column: 1/-1`, which would push any later cell onto a new row.
+        let statHtml = '';
+        if (ship.add_get_attr) {
+            const attrName = attrTypeData[ship.add_get_attr]?.condition || '';
+            const types = ship.add_get_shiptype.map(t => shipTypeData[t]?.type_name || '').filter(Boolean).join('/');
+            statHtml += `<span class="lr-stat"><i class="lr-dk">입수 스탯</i>${escapeHtml(types)} ${escapeHtml(attrName)} +${escapeHtml(ship.add_get_value)}</span>`;
+        }
+        if (ship.add_level_attr) {
+            const attrName = attrTypeData[ship.add_level_attr]?.condition || '';
+            const types = ship.add_level_shiptype.map(t => shipTypeData[t]?.type_name || '').filter(Boolean).join('/');
+            statHtml += `<span class="lr-stat"><i class="lr-dk">120 스탯</i>${escapeHtml(types)} ${escapeHtml(attrName)} +${escapeHtml(ship.add_level_value)}</span>`;
+        }
+        if (statHtml) {
+            const stats = document.createElement('div');
+            stats.className = 'lr-stats';
+            stats.innerHTML = statHtml;
+            card.appendChild(stats);
+        }
 
         // Cards-view detail affordance (ledger uses the name-row expander;
         // display:none there keeps it out of the ledger grid's track count).
@@ -273,27 +308,15 @@ document.addEventListener('DOMContentLoaded', () => {
         detailToggle.className = 'lr-detail-toggle';
         detailToggle.dataset.action = 'expand';
         detailToggle.setAttribute('aria-expanded', 'false');
-        detailToggle.innerHTML = `<span class="material-symbols-outlined" aria-hidden="true">expand_more</span>입수·기술 정보`;
+        detailToggle.innerHTML = `<span class="material-symbols-outlined" aria-hidden="true">expand_more</span>입수 정보`;
         card.appendChild(detailToggle);
 
         // Detail strip (hidden until expanded in either view).
         const detail = document.createElement('div');
         detail.className = 'lr-detail';
         const descHtml = (ship.description || []).map(d => `<li>• ${escapeHtml(d)}</li>`).join('');
-        let statHtml = '';
-        if (ship.add_get_attr) {
-            const attrName = attrTypeData[ship.add_get_attr]?.condition || '';
-            const types = ship.add_get_shiptype.map(t => shipTypeData[t]?.type_name || '').filter(Boolean).join('/');
-            statHtml += `<span><i class="lr-dk">입수 스탯</i>${escapeHtml(types)} ${escapeHtml(attrName)} +${escapeHtml(ship.add_get_value)}</span>`;
-        }
-        if (ship.add_level_attr) {
-            const attrName = attrTypeData[ship.add_level_attr]?.condition || '';
-            const types = ship.add_level_shiptype.map(t => shipTypeData[t]?.type_name || '').filter(Boolean).join('/');
-            statHtml += `<span><i class="lr-dk">120 스탯</i>${escapeHtml(types)} ${escapeHtml(attrName)} +${escapeHtml(ship.add_level_value)}</span>`;
-        }
         detail.innerHTML =
             (descHtml ? `<span><i class="lr-dk">입수 방법</i><ul class="lr-desc">${descHtml}</ul></span>` : '') +
-            statHtml +
             `<span class="lr-nextbreak"></span>`;
         card.appendChild(detail);
 
@@ -321,13 +344,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const cap = rec.cap || 0;
 
         const capCell = card.querySelector('.lr-cap');
-        // data-break = target cap value 0..5; 100 = no breaks (direct reset).
+        // data-break = the cap value the button sets (see CAP_STOPS); 100 = reset.
         capCell.innerHTML = `<span class="lr-cell-label">상한 해제 (성정 유닛)</span>`
-            + [100, ...BREAK_LEVELS].map((lvl, i) => {
-                const on = cap >= i;
-                const cls = on ? (i === 5 ? 'on u2' : 'on') : '';
-                const name = i === 0 ? `${ship.name} 상한 해제 없음 (Lv100)` : `${ship.name} Lv${lvl} 상한 해제`;
-                return `<button type="button" data-action="cap" data-break="${i}" class="${cls}" aria-pressed="${on}" aria-label="${escapeHtml(name)}">${lvl}</button>`;
+            + CAP_STOPS.map(([brk, lvl]) => {
+                const on = cap >= brk;
+                const cls = on ? (brk === 5 ? 'on u2' : 'on') : '';
+                const name = brk === 0 ? `${ship.name} 상한 해제 없음 (Lv100)` : `${ship.name} Lv${lvl} 상한 해제`;
+                return `<button type="button" data-action="cap" data-break="${brk}" class="${cls}" aria-pressed="${on}" aria-label="${escapeHtml(name)}">${lvl}</button>`;
             }).join('');
 
         const chipsCell = card.querySelector('.lr-chips');
@@ -357,20 +380,31 @@ document.addEventListener('DOMContentLoaded', () => {
         memoCell.innerHTML = `<button type="button" class="lr-memo-btn ${rec.memo ? 'has' : ''}" data-action="memo" aria-label="${escapeHtml(ship.name)} 메모">`
             + `<span class="material-symbols-outlined">edit_note</span><span class="lr-memo-txt">메모</span></button>`;
 
-        const next = nextBreakCost(cap, ship.rarity);
+        // Cost to the next stop the bar can actually reach (Lv120, then Lv125),
+        // i.e. the cumulative remainder — not a single break.
+        const target = cap < 4 ? 4 : (cap < 5 ? 5 : null);
+        const from = investedCost(cap, ship.rarity);
+        const to = target === null ? null : investedCost(target, ship.rarity);
         const nb = card.querySelector('.lr-nextbreak');
-        if (nb) nb.innerHTML = next
-            ? `<i class="lr-dk">다음 돌파</i>Lv${next.level} → 성정 유닛 ${next.u1.toLocaleString()}${next.u2 ? ` + 유닛II ${next.u2.toLocaleString()}` : ''}`
+        if (nb) nb.innerHTML = (from && to)
+            ? `<i class="lr-dk">다음 목표</i>Lv${target === 4 ? 120 : 125} → 성정 유닛 ${(to.u1 - from.u1).toLocaleString()}`
+                + (to.u2 - from.u2 ? ` + 유닛II ${(to.u2 - from.u2).toLocaleString()}` : '')
             : (cap >= 5 ? `<i class="lr-dk">돌파</i>완료 (Lv125)` : '');
     }
 
-    /** Updates the 유닛/유닛II invested-vs-roster-total counters in the score bar. */
+    /**
+     * Score-bar counters: 성정 유닛 on the Lv120 basis (the realistic goal — both
+     * sides capped at break 4 so it reads as 0-100%), and 유닛 I+II combined on
+     * the Lv125 basis.
+     */
     function updateInvestmentSummary() {
-        const spent = sumInvestment(investment, rarityByGid);
-        const total = rosterTotal(rarityByGid);
+        const spent120 = sumInvestment(investment, rarityByGid, 4);
+        const total120 = rosterTotal(rarityByGid, 4);
+        const spent125 = sumInvestment(investment, rarityByGid);
+        const total125 = rosterTotal(rarityByGid);
         const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v.toLocaleString(); };
-        set('unit1-invested', spent.u1); set('unit1-total', total.u1);
-        set('unit2-invested', spent.u2); set('unit2-total', total.u2);
+        set('unit120-invested', spent120.u1); set('unit120-total', total120.u1);
+        set('unit125-invested', spent125.u1 + spent125.u2); set('unit125-total', total125.u1 + total125.u2);
     }
 
     /**
@@ -522,11 +556,14 @@ document.addEventListener('DOMContentLoaded', () => {
             cachedElements.totalScoreValue.textContent = totalCurrent.toLocaleString();
         }
 
-        // 보유 n/881 counter
+        // 보유 n/881 (xx.x%) counter
         const ownedCountEl = document.getElementById('owned-count');
         const ownedTotalEl = document.getElementById('owned-total');
+        const ownedPctEl = document.getElementById('owned-pct');
         if (ownedCountEl) ownedCountEl.textContent = ownedCount.toLocaleString();
         if (ownedTotalEl) ownedTotalEl.textContent = shipCards.length.toLocaleString();
+        if (ownedPctEl) ownedPctEl.textContent = shipCards.length
+            ? ` (${(ownedCount / shipCards.length * 100).toFixed(1)}%)` : '';
 
         // Render the updated score tables.
         renderFleetTechTable(fleetTech);
@@ -2114,7 +2151,8 @@ document.addEventListener('DOMContentLoaded', () => {
         cacheDOMElements();
 
         // Setup view toggle (ledger/cards)
-        applyView(getStorageItem(VIEW_KEY, 'ledger') === 'cards' ? 'cards' : 'ledger');
+        // Cards is the default view; only an explicit stored 'ledger' opts out.
+        applyView(getStorageItem(VIEW_KEY, 'cards') === 'ledger' ? 'ledger' : 'cards');
         els.viewToggleBtn.addEventListener('click', () => {
             applyView(cachedElements.shipListContainer.dataset.view === 'ledger' ? 'cards' : 'ledger');
         });

@@ -79,11 +79,15 @@ export function nextBreakCost(cap, rarity) {
     return { level: BREAK_LEVELS[cap], u1: step.u1, u2: step.u2 || 0 };
 }
 
-/** Sum invested units over an investment map. Gids with unknown rarity are skipped. */
-export function sumInvestment(investment, rarityByGid) {
+/**
+ * Sum invested units over an investment map. Gids with unknown rarity are skipped.
+ * `capLimit` counts each ship's spend only up to that break (4 = the Lv120 basis
+ * the summary bar reports against), so the pair stays a true 0..100% progress.
+ */
+export function sumInvestment(investment, rarityByGid, capLimit = 5) {
     let u1 = 0, u2 = 0;
     for (const [gid, rec] of Object.entries(investment)) {
-        const cost = investedCost(rec.cap || 0, rarityByGid[gid]);
+        const cost = investedCost(Math.min(rec.cap || 0, capLimit), rarityByGid[gid]);
         if (!cost) continue;
         u1 += cost.u1;
         u2 += cost.u2;
@@ -91,11 +95,11 @@ export function sumInvestment(investment, rarityByGid) {
     return { u1, u2 };
 }
 
-/** Units needed to take every known-rarity ship in the roster to Lv125. */
-export function rosterTotal(rarityByGid) {
+/** Units needed to take every known-rarity ship in the roster to `capLimit` breaks (5 = Lv125). */
+export function rosterTotal(rarityByGid, capLimit = 5) {
     let u1 = 0, u2 = 0;
     for (const rarity of Object.values(rarityByGid)) {
-        const cost = investedCost(5, rarity);
+        const cost = investedCost(capLimit, rarity);
         if (!cost) continue;
         u1 += cost.u1;
         u2 += cost.u2;

@@ -51,7 +51,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <div class="info-icon"><i class="fas fa-heart"></i></div>
                     <div class="info-content">
                         <h3>육성 기록</h3>
-                        <p><strong>호감작</strong>과 <strong>스작</strong> 버튼을 누르면 전체 단계 메뉴가 열려 원하는 상태를 바로 선택할 수 있습니다. <strong>상한 해제</strong> 바는 원하는 상한 레벨(100~125)을 클릭해 바로 설정합니다. Lv120 달성 체크와 서로 연동됩니다.</p>
+                        <p><strong>호감작</strong>과 <strong>스작</strong> 버튼을 누르면 전체 단계 메뉴가 열려 원하는 상태를 바로 선택할 수 있습니다. <strong>상한 해제</strong> 바는 원하는 상한 레벨(100 / 120 / 125)을 클릭해 바로 설정합니다. Lv120 달성 체크와 서로 연동됩니다.</p>
                     </div>
                 </div>
                 <div class="info-step">
@@ -84,9 +84,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 </div>
             </div>
             <div class="st-toolbar-right">
+                <!-- Initial state matches the cards default in shipgirl-tracker.js -->
                 <button class="st-toolbar-btn" id="view-toggle-btn" aria-label="보기 전환">
-                    <span class="material-symbols-outlined" id="view-toggle-icon">grid_view</span>
-                    <span id="view-toggle-label">카드</span>
+                    <span class="material-symbols-outlined" id="view-toggle-icon">view_list</span>
+                    <span id="view-toggle-label">목록형 보기</span>
                 </button>
                 <button class="st-toolbar-btn" id="filter-drawer-btn">
                     <span class="material-symbols-outlined">tune</span>
@@ -112,15 +113,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             </div>
             <div class="st-sum-item" title="보유 함순이 / 전체 함순이">
                 <span class="st-sum-label">보유 함순이</span>
-                <span class="st-sum-value"><b id="owned-count">0</b> <small>/ <span id="owned-total">0</span></small></span>
+                <span class="st-sum-value"><b id="owned-count">0</b> <small>/ <span id="owned-total">0</span><span id="owned-pct"></span></small></span>
             </div>
-            <div class="st-sum-item" title="투자한 성정 유닛 / 전체 함순이 Lv125 기준 필요량">
-                <span class="st-sum-label">성정 유닛</span>
-                <span class="st-sum-value"><b id="unit1-invested">0</b> <small>/ <span id="unit1-total">0</span></small></span>
+            <div class="st-sum-item" title="투자한 성정 유닛 / 전체 함순이 Lv120 달성에 필요한 성정 유닛">
+                <span class="st-sum-label">성정 유닛 <small>(Lv120 기준)</small></span>
+                <span class="st-sum-value"><b id="unit120-invested">0</b> <small>/ <span id="unit120-total">0</span></small></span>
             </div>
-            <div class="st-sum-item" title="투자한 성정 유닛II / 전체 함순이 Lv125 기준 필요량">
-                <span class="st-sum-label">성정 유닛 II</span>
-                <span class="st-sum-value"><b id="unit2-invested">0</b> <small>/ <span id="unit2-total">0</span></small></span>
+            <div class="st-sum-item" title="투자한 성정 유닛 I+II 합계 / 전체 함순이 Lv125 달성에 필요한 합계">
+                <span class="st-sum-label">성정 유닛 I+II <small>(Lv125 기준)</small></span>
+                <span class="st-sum-value"><b id="unit125-invested">0</b> <small>/ <span id="unit125-total">0</span></small></span>
             </div>
         </div>
 
@@ -128,12 +129,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div class="st-chips-row" id="filter-chips"></div>
     </div>
 
-    <!-- Ship list -->
-    <div id="ledger-head" aria-hidden="true">
+    <!-- Ship list. Cards is the default view, so the ledger head starts hidden —
+         its visibility is owned by inline style.display only (see applyView). -->
+    <div id="ledger-head" aria-hidden="true" style="display:none">
         <div></div><div class="lh-name">함순이</div><div>보유</div><div>풀돌</div><div>Lv120</div>
-        <div>상한 해제</div><div>육성 상태</div><div>메모</div><div class="lh-pt">기술 Pt</div>
+        <div>기술 Pt</div><div>상한 해제</div><div>육성 상태</div><div>메모</div>
     </div>
-    <div id="ship-list-container" class="card-grid" data-view="ledger"></div>
+    <div id="ship-list-container" class="card-grid" data-view="cards"></div>
     <div id="tracker-empty" class="hidden" aria-live="polite"></div>
 
     <!-- Filter Drawer (right side) -->

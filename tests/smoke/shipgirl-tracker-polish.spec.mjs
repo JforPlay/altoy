@@ -67,19 +67,25 @@ test('status menu selects an exact value and returns focus', async ({ page }) =>
     await expect(page.locator('.ship-card [data-action="aff"]').first()).toBeFocused();
 });
 
-test('view switch preserves state and cards expose the detail toggle', async ({ page }) => {
+test('cards is the default view and switching preserves state', async ({ page }) => {
     await boot(page, { width: 1440, height: 900 });
-    await page.locator('.ship-card [data-type="get"]').first().check();
-    await page.locator('#view-toggle-btn').click();
     await expect(page.locator('#ship-list-container')).toHaveAttribute('data-view', 'cards');
-    await expect(page.locator('.ship-card [data-type="get"]').first()).toBeChecked();
+    // stat bonuses read on the card face, not behind the detail toggle
+    await expect(page.locator('.ship-card .lr-stats').first()).toBeVisible();
     const toggle = page.locator('.ship-card .lr-detail-toggle').first();
     await toggle.click();
     await expect(page.locator('.ship-card .lr-detail').first()).toBeVisible();
+
+    await page.locator('.ship-card [data-type="get"]').first().check();
+    await page.locator('#view-toggle-btn').click();
+    await expect(page.locator('#ship-list-container')).toHaveAttribute('data-view', 'ledger');
+    await expect(page.locator('.ship-card [data-type="get"]').first()).toBeChecked();
 });
 
 test('sticky surface and ledger head do not overlap on desktop', async ({ page }) => {
     await boot(page, { width: 1440, height: 900 });
+    await page.locator('#view-toggle-btn').click(); // cards -> ledger
+    await expect(page.locator('#ledger-head')).toBeVisible();
     await page.mouse.wheel(0, 1500);
     await page.waitForTimeout(300);
     const surface = await page.locator('.st-control-surface').boundingBox();
