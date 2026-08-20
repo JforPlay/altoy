@@ -69,17 +69,27 @@
 [data-view="cards"] .lr-name { order: 0; }
 [data-view="cards"] .lr-stats { order: 1; }
 
-/* --- Progress rows: one line each, label left / box right --- */
-[data-view="cards"] .lr-progress { display: flex; flex-direction: column; gap: 4px; width: 100%; }
+/* --- Progress rows: one line each, label left / box right ---
+   One bordered group with hairline dividers rather than three separate filled
+   slabs: --section-bg over --card-bg measures 1.06:1 in light mode, so the
+   fills carried no grouping there at all, and in dark they made the three
+   toggles read as three unrelated blocks. */
+[data-view="cards"] .lr-progress {
+  display: flex; flex-direction: column; gap: 0; width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
 [data-view="cards"] .lr-ck {
   flex-direction: row-reverse;
   justify-content: space-between;
   width: 100%;
-  padding: 4px 8px;
-  border-radius: 4px;
-  background: var(--section-bg);
+  padding: 5px 8px;
+  background: none;
   transition: background-color var(--transition-fast);
 }
+[data-view="cards"] .lr-ck + .lr-ck { border-top: 1px solid var(--border-color); }
+[data-view="cards"] .lr-ck:first-child { border-radius: 3px 3px 0 0; }
+[data-view="cards"] .lr-ck:last-child { border-radius: 0 0 3px 3px; }
 [data-view="cards"] .lr-ck input { width: 16px; height: 16px; }
 [data-view="cards"] .lr-ck:hover { background: var(--border-color); }
 [data-view="cards"] .lr-ck-label {
@@ -91,15 +101,21 @@
 /* --- Labeled control groups --- */
 [data-view="cards"] .lr-cap,
 [data-view="cards"] .lr-chips { justify-content: flex-start; flex-wrap: wrap; }
-[data-view="cards"] .lr-cap button { flex: 1; width: auto; }
+/* max-width matches the ledger fold: at a 1-column mobile card the three
+   stops stretched to ~110px each and out-shouted the toggles above them. */
+[data-view="cards"] .lr-cap button { flex: 1; width: auto; max-width: 88px; }
 [data-view="cards"] .lr-chip-ghost { display: none; }
 
-/* --- Memo row --- */
-[data-view="cards"] .lr-memo { text-align: left; width: 100%; }
+/* --- Memo row: first of the two footer actions, split off by one rule --- */
+[data-view="cards"] .lr-memo {
+  text-align: left; width: 100%;
+  border-top: 1px solid var(--border-color);
+  margin-top: 2px; padding-top: 4px;
+}
 [data-view="cards"] .lr-memo-btn {
   display: flex; align-items: center; gap: 6px;
   width: 100%; padding: 5px 8px; border-radius: 4px;
-  background: var(--section-bg);
+  background: none;
   font-size: 0.8rem; color: var(--text-secondary);
   transition: background-color var(--transition-fast);
 }
@@ -120,15 +136,27 @@
   padding: 5px 8px;
   border-radius: 4px;
   background: var(--section-bg);
+  border: 1px solid var(--border-color);
   font-size: 0.72rem;
   line-height: 1.35;
 }
+
+/* One line per stat, always: the field label and the gain hold their width, the
+   hull list absorbs what is left and ellipsizes (full list on hover). Wrapping
+   dropped "내구 +1" onto its own line, where it read as a separate fact. */
+[data-view="cards"] .lr-stat { display: flex; align-items: baseline; gap: 4px; min-width: 0; }
+[data-view="cards"] .lr-stat .lr-dk { flex: none; margin-right: 0; }
+[data-view="cards"] .lr-stat-types {
+  flex: 1 1 auto; min-width: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+[data-view="cards"] .lr-stat-val { flex: none; white-space: nowrap; }
 
 /* --- Collapsed detail behind the labeled toggle (glance-first card) --- */
 [data-view="cards"] .lr-detail-toggle {
   display: flex; align-items: center; justify-content: center; gap: 4px;
   width: 100%; padding: 5px 8px; border-radius: 4px;
-  background: var(--section-bg); border: 0; cursor: pointer;
+  background: none; border: 0; cursor: pointer;
   font-size: 0.8rem; color: var(--text-secondary);
 }
 [data-view="cards"] .lr-detail-toggle:hover { background: var(--border-color); }
@@ -150,10 +178,6 @@
 
 /* ===== Dark Mode ===== */
 body.dark-mode [data-view="cards"] .ship-card { box-shadow: 0 2px 4px var(--shadow-color); }
-body.dark-mode [data-view="cards"] .lr-ck,
-body.dark-mode [data-view="cards"] .lr-stats,
-body.dark-mode [data-view="cards"] .lr-memo-btn,
-body.dark-mode [data-view="cards"] .lr-detail-toggle { background: var(--highlight-subtle); }
-body.dark-mode [data-view="cards"] .lr-ck:hover,
-body.dark-mode [data-view="cards"] .lr-memo-btn:hover,
-body.dark-mode [data-view="cards"] .lr-detail-toggle:hover { background: var(--border-color); }
+/* .lr-stats is the only face element still carrying a fill; the rest are
+   hairline-grouped now and share the light-mode hover below. */
+body.dark-mode [data-view="cards"] .lr-stats { background: var(--highlight-subtle); }

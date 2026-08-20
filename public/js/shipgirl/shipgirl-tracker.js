@@ -248,14 +248,19 @@ document.addEventListener('DOMContentLoaded', () => {
             cb.setAttribute('aria-label', `${ship.name} ${label}`);
             const mLabel = document.createElement('i');
             mLabel.className = 'lr-ck-label';
+            const gain = Number(pt) || 0;
             // Trailing space is the wrap opportunity: in a narrow card the gain
             // drops to its own line instead of overflowing the cell.
-            mLabel.textContent = `${label} `;
-            // Tech points this toggle awards — smaller so three toggles fit one row.
-            const ptTag = document.createElement('b');
-            ptTag.className = 'lr-ck-pt';
-            ptTag.textContent = `(+${Number(pt) || 0})`;
-            mLabel.appendChild(ptTag);
+            mLabel.textContent = gain ? `${label} ` : label;
+            // Tech points this toggle awards — smaller so three toggles fit one
+            // row. Omitted at 0: the Bulins earn nothing, and "(+0)" three times
+            // per card is noise that says only what the Pt row already says.
+            if (gain) {
+                const ptTag = document.createElement('b');
+                ptTag.className = 'lr-ck-pt';
+                ptTag.textContent = `(+${gain})`;
+                mLabel.appendChild(ptTag);
+            }
             cell.appendChild(cb);
             cell.appendChild(mLabel);
             progress.appendChild(cell);
@@ -285,11 +290,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // `grid-column: 1/-1`, which would push any later cell onto a new row.
         // Scope (which hulls benefit) and the stat gain are separate spans so
         // each can carry its own weight — see .lr-stat-types / .lr-stat-val.
+        // The card ellipsizes the hull list to hold one line, so it carries a
+        // title with the full text.
         const statLine = (label, attr, hulls, value) => {
             const attrName = attrTypeData[attr]?.condition || '';
             const types = hulls.map(t => shipTypeData[t]?.type_name || '').filter(Boolean).join('/');
             return `<span class="lr-stat"><i class="lr-dk">${label}</i>`
-                + `<span class="lr-stat-types">${escapeHtml(types)}</span> `
+                + `<span class="lr-stat-types" title="${escapeHtml(types)}">${escapeHtml(types)}</span> `
                 + `<span class="lr-stat-val">${escapeHtml(attrName)} +${escapeHtml(value)}</span></span>`;
         };
         let statHtml = '';

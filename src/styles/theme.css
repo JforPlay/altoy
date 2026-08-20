@@ -129,6 +129,9 @@
   /* Its counterpart for downward/negative text. --danger-color (#e74c3c) is a
      fill and reads 3.7:1 on a light card; this lands at 6.3:1. */
   --accent-red-text: #b91c1c;
+  /* Same split for blue. --accent-blue is tuned as a fill; as text on a tinted
+     chip it lands at 4.0:1 light / 3.8:1 dark. This one inverts like the green. */
+  --accent-blue-text: #0060c9;
 
   /* Extended accent palette (CSS unify Phase 4a) — additive, theme-stable,
      hue-named, for reuse beyond --accent-blue/--accent-green. Define-only:
@@ -306,6 +309,8 @@ body.dark-mode {
   --accent-green: #43b581;
   /* On dark cards the fill green is already the legible one (5.58:1). */
   --accent-green-text: #43b581;
+  /* The blurple fill (#7289da) is too dark as text on a dark card — lighten. */
+  --accent-blue-text: #9aabe8;
   /* #b91c1c is far too dark on a dark card (1.9:1) — lighten instead. */
   --accent-red-text: #f87171;
 

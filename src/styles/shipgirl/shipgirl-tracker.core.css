@@ -33,7 +33,10 @@ body {
 }
 
 .st-page-header h1 {
-  color: var(--primary-color);
+  /* --text-primary, not --primary-color: on a default-theme page that token is
+     grayscale (#4a4a4a light / #c0c0c0 dark), so the H1 rendered DIMMER than the
+     body text under it. Matches common.css and the other 12 page headers. */
+  color: var(--text-primary);
   margin: 0;
   font-size: 1.6em;
 }
@@ -46,7 +49,7 @@ body {
 .st-page-sub {
   margin: 2px 0 0;
   font-size: 0.85rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 /* --- Control surface (toolbar + summary + active chips as ONE card) --- */
@@ -182,19 +185,17 @@ body {
   border-left: 1px solid var(--border-color);
 }
 
+/* Labels + denominators are --text-secondary, not --text-muted: muted measures
+   3.6:1 dark / 3.1:1 light at these sizes, and these five strings are the only
+   thing that says what the five big numbers are. */
 .st-sum-label {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   font-size: 0.72rem;
   font-weight: 600;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   letter-spacing: 0.03em;
-}
-
-.st-sum-label .material-symbols-outlined {
-  font-size: 0.95rem;
-  color: var(--primary-color);
 }
 
 .st-sum-value {
@@ -208,7 +209,7 @@ body {
 .st-sum-value small {
   font-size: 0.78rem;
   font-weight: 600;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 /* wrapped 2×2 layout: side borders stop lining up, drop them */
