@@ -250,9 +250,11 @@ document.addEventListener('DOMContentLoaded', () => {
             `<div class="lr-sub">${subHtml}</div>`;
         card.appendChild(nameCell);
 
-        // Three progress checkboxes — same classes/data-types as before so the
-        // existing change-delegation, applyProgress, bulkCheck all keep working.
-        [['get', '보유'], ['level', '120'], ['upgrade', '풀돌']].forEach(([type, label]) => {
+        // Progress group: 보유 → 풀돌 → Lv120 (tracker order; mask bits unchanged).
+        // display:contents in the desktop ledger keeps the three grid tracks.
+        const progress = document.createElement('div');
+        progress.className = 'lr-progress';
+        [['get', '보유'], ['upgrade', '풀돌'], ['level', 'Lv120']].forEach(([type, label]) => {
             const cell = document.createElement('label');
             cell.className = 'lr-ck';
             const cb = document.createElement('input');
@@ -265,8 +267,9 @@ document.addEventListener('DOMContentLoaded', () => {
             mLabel.textContent = label;
             cell.appendChild(cb);
             cell.appendChild(mLabel);
-            card.appendChild(cell);
+            progress.appendChild(cell);
         });
+        card.appendChild(progress);
 
         // Placeholder cells — tasks 3 fills these (cap bar, chips, memo).
         const capCell = document.createElement('div');
@@ -283,6 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const ptCell = document.createElement('div');
         ptCell.className = 'lr-pt';
         card.appendChild(ptCell);
+        card._pt = ptCell;
 
         // Detail strip (hidden until expanded; card view shows it always).
         const detail = document.createElement('div');
@@ -517,8 +521,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 + (isLevelChecked ? parseDatasetInt(data.ptLevel) : 0)
                 + (isUpgradeChecked ? parseDatasetInt(data.ptUpgrade) : 0);
             const totalPt = parseDatasetInt(data.ptGet) + parseDatasetInt(data.ptLevel) + parseDatasetInt(data.ptUpgrade);
-            const ptCell = card.querySelector('.lr-pt');
-            if (ptCell) ptCell.innerHTML = `<b>${earned}</b>${earned < totalPt ? ` <small>/ ${totalPt}</small>` : ''}`;
+            const ptCell = card._pt;
+            if (ptCell) ptCell.innerHTML = `<span class="lr-cell-label">기술 Pt</span><b>${earned}</b>${earned < totalPt ? ` <small>/ ${totalPt}</small>` : ''}`;
             card.classList.toggle('lr-unowned', !isGetChecked);
         });
 
@@ -1492,7 +1496,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const bulkCheckActions = [
             { label: '모두 입수 체크', type: 'get', state: true },
-            { label: '모두 120렙 체크', type: 'level', state: true },
+            { label: '모두 Lv120 체크', type: 'level', state: true },
             { label: '모두 풀돌 체크', type: 'upgrade', state: true },
             { label: '모두 체크 해제', type: 'all', state: false }
         ];
@@ -1508,9 +1512,9 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.onclick = () => {
                 let message = `주의)) '${action.label}' 작업을 실행하시겠습니까? 필터링 적용된 목록의 함순이들에게 일괄적용됩니다.`;
                 if (action.type === 'all' && !action.state) {
-                    message += ` '모두 체크 해제' 실행 시 레벨 상한(성정 유닛) 기록도 초기화됩니다.`;
+                    message += ` '모두 체크 해제' 실행 시 상한 해제(성정 유닛) 기록도 초기화됩니다.`;
                 } else if (action.type === 'level' && action.state) {
-                    message += ` '모두 120렙 체크' 실행 시 레벨 상한(성정 유닛) 기록도 Lv120(4돌파)으로 함께 설정됩니다.`;
+                    message += ` '모두 Lv120 체크' 실행 시 상한 해제(성정 유닛) 기록도 Lv120(4돌파)으로 함께 설정됩니다.`;
                 }
                 showConfirmationModal(message, () => bulkCheck(action.type, action.state));
             };

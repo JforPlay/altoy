@@ -44,7 +44,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <div class="info-icon"><i class="fas fa-check-square"></i></div>
                     <div class="info-content">
                         <h3>보유 체크</h3>
-                        <p>상단 <strong>보기 전환</strong>으로 장부형 목록/카드형 보기를 바꿀 수 있습니다. 보유·120·풀돌 체크박스를 누르면 기술/진영 점수에 반영되고, 레벨 상한(성정 유닛)·개장·호감작·스작 같은 육성 기록도 함께 남길 수 있습니다.</p>
+                        <p>상단 <strong>보기 전환</strong>으로 장부형 목록/카드형 보기를 바꿀 수 있습니다. 보유·풀돌·Lv120 체크박스를 누르면 기술/진영 점수에 반영되고, 상한 해제(성정 유닛)·개장·호감작·스작 같은 육성 기록도 함께 남길 수 있습니다.</p>
                     </div>
                 </div>
                 <div class="info-step">
@@ -130,8 +130,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     <!-- Ship list -->
     <div id="ledger-head" aria-hidden="true">
-        <div></div><div class="lh-name">함순이</div><div>보유</div><div>120</div><div>풀돌</div>
-        <div>레벨 상한</div><div>육성 상태</div><div>메모</div><div class="lh-pt">기술 Pt</div>
+        <div></div><div class="lh-name">함순이</div><div>보유</div><div>풀돌</div><div>Lv120</div>
+        <div>상한 해제</div><div>육성 상태</div><div>메모</div><div class="lh-pt">기술 Pt</div>
     </div>
     <div id="ship-list-container" class="card-grid" data-view="ledger"></div>
 
