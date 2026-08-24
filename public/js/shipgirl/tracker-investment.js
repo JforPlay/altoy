@@ -7,8 +7,16 @@
  * the new cap state. No DOM, no storage — node-tested.
  */
 
-export const AFF_LABELS = ['호감작', '100 예정', '100 완료', '200 예정', '200 완료'];
-export const SKL_LABELS = ['스작', '스작 예정', '스작 중', '스작 완료'];
+// Display labels for the aff/skl ladders. Index IS the stored value, so the
+// strings are display-only — re-wording them never migrates data.
+//
+// The wording deliberately matches the user's Google Sheet vocabulary so the
+// sheet codec needs no translation layer, and so these can be the single source
+// for BOTH the chips and the filter drawer's option lists (which previously
+// hardcoded the sheet wording and drifted from the chips: 스작 진행중 vs 스작 중).
+// The codec still keeps its own copy — see tracker-sheet-codec.js.
+export const AFF_LABELS = ['호감작 안함', '100 예정', '100 완료', '200 예정', '200 완료'];
+export const SKL_LABELS = ['스작 안함', '스작 예정', '스작 진행중', '스작 완료'];
 export const MEMO_MAX = 500;
 
 // 성정 유닛(u1, item 15008) / 유닛II(u2, item 15012) per break, by rarity.
@@ -107,11 +115,13 @@ export function rosterTotal(rarityByGid, capLimit = 5) {
     return { u1, u2 };
 }
 
-/** Coupling after the cap changed: breaks require MLB (풀돌+보유); cap<4 can't claim 120 달성. */
+/** Coupling after the cap changed: breaks require MLB (풀돌+보유); the 120 cap and the
+ *  Lv120 달성 bit are the same fact, so they move together in both directions. */
 export function applyCapChange(mask, newCap) {
     let m = mask;
     if (newCap >= 1) m |= 5;       // get + upgrade
-    if (newCap < 4) m &= ~2;       // level off
+    if (newCap >= 4) m |= 2;       // level on — a 120 cap IS Lv120 reached
+    else m &= ~2;                  // level off
     return { mask: m, cap: newCap };
 }
 

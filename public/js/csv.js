@@ -1,17 +1,23 @@
 /**
- * csv.mjs
- * RFC4180 CSV primitives shared by the Google-Sheet-backed data pipelines
- * (sync-equip-hearing, sync-skin-labels). Pure and dependency-free — no I/O,
- * no globals, node-testable.
+ * csv.js
+ * RFC4180 CSV/TSV primitives shared by the Google-Sheet-backed data pipelines
+ * (scripts/sync-equip-hearing, scripts/sync-skin-labels) AND the browser-side
+ * shipgirl-tracker sheet codec. Pure and dependency-free — no I/O, no globals,
+ * node-testable. Lives under public/js so the one implementation serves both
+ * node scripts and the un-bundled browser tree.
  */
 
 /**
  * Minimal RFC4180 parser (quoted fields, doubled quotes, embedded newlines).
  * Returns rows of string fields. CR outside quotes is ignored (CRLF input);
  * CR inside quotes is content.
- * @param {string} text @returns {string[][]}
+ *
+ * `delimiter` exists because a Google Sheets *copy* yields TSV while a Sheets
+ * *download* yields CSV, and the tracker's import accepts both. It defaults to
+ * ',' so the two node pipelines are unaffected.
+ * @param {string} text @param {string} [delimiter] @returns {string[][]}
  */
-export function parseCsv(text) {
+export function parseCsv(text, delimiter = ',') {
     if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
     const rows = [];
     let row = [];
@@ -29,7 +35,7 @@ export function parseCsv(text) {
             continue;
         }
         if (ch === '"') { inQuotes = true; continue; }
-        if (ch === ',') { row.push(field); field = ''; continue; }
+        if (ch === delimiter) { row.push(field); field = ''; continue; }
         if (ch === '\r') continue;
         if (ch === '\n') { row.push(field); rows.push(row); row = []; field = ''; continue; }
         field += ch;

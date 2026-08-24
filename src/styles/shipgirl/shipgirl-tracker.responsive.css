@@ -64,8 +64,8 @@
   }
 
   [data-view="cards"] .ship-icon {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
   }
 
   .score-table-wrapper {
@@ -140,8 +140,8 @@
   }
 
   [data-view="cards"] .ship-icon {
-    width: 55px;
-    height: 55px;
+    width: 64px;
+    height: 64px;
     margin-bottom: 0.4rem;
   }
 

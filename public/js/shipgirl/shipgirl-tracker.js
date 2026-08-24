@@ -8,6 +8,7 @@
 
 import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeModal, setupModal, showElement, hideElement, syncedStorage, escapeHtml, RARITY_TIERS_DESC as rarityOrder, requireElements, renderStatus, loadPageData } from '../utils.js';
 import { parseInvestment, investedCost, sumInvestment, rosterTotal, applyCapChange, applyMaskChange, AFF_LABELS, SKL_LABELS, MEMO_MAX } from './tracker-investment.js';
+import { setupSheetImport } from './tracker-sheet-io.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
 import { createStatusMenu } from './shipgirl-tracker.status-menu.js';
 document.addEventListener('DOMContentLoaded', () => {
@@ -21,7 +22,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Cap bar stops: [cap value stored, level shown]. Only the three levels players
     // actually park at — 유닛II is rare enough that Lv120 is the practical ceiling.
     // The store still accepts caps 1-3 (imports); they just aren't settable here.
-    const CAP_STOPS = [[0, 100], [4, 120], [5, 125]];
+    // The bar carries only the two stops the sheet's 획득/육성 ladder names — 미획득
+    // /획득/풀돌 are the three checkboxes above it. Clicking the stop a ship is
+    // already at steps back down, which is what the dropped 100 button used to do.
+    const CAP_STOPS = [[4, 120], [5, 125]];
 
     // ===== State =====
 
@@ -300,8 +304,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 + `<span class="lr-stat-val">${escapeHtml(attrName)} +${escapeHtml(value)}</span></span>`;
         };
         let statHtml = '';
-        if (ship.add_get_attr) statHtml += statLine('입수 스탯', ship.add_get_attr, ship.add_get_shiptype, ship.add_get_value);
-        if (ship.add_level_attr) statHtml += statLine('120 스탯', ship.add_level_attr, ship.add_level_shiptype, ship.add_level_value);
+        if (ship.add_get_attr) statHtml += statLine('입수', ship.add_get_attr, ship.add_get_shiptype, ship.add_get_value);
+        if (ship.add_level_attr) statHtml += statLine('120렙', ship.add_level_attr, ship.add_level_shiptype, ship.add_level_value);
         if (statHtml) {
             const stats = document.createElement('div');
             stats.className = 'lr-stats';
@@ -352,12 +356,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const cap = rec.cap || 0;
 
         const capCell = card.querySelector('.lr-cap');
-        // data-break = the cap value the button sets (see CAP_STOPS); 100 = reset.
-        capCell.innerHTML = `<span class="lr-cell-label">상한 해제 (성정 유닛)</span>`
+        // data-break = the cap value the button sets (see CAP_STOPS).
+        capCell.innerHTML = `<span class="lr-cell-label">육성 레벨</span>`
             + CAP_STOPS.map(([brk, lvl]) => {
                 const on = cap >= brk;
                 const cls = on ? (brk === 5 ? 'on u2' : 'on') : '';
-                const name = brk === 0 ? `${ship.name} 상한 해제 없음 (Lv100)` : `${ship.name} Lv${lvl} 상한 해제`;
+                const name = `${ship.name} Lv${lvl}${cap === brk ? ' 해제 (다시 누르면 해제 취소)' : ' 상한 해제'}`;
                 return `<button type="button" data-action="cap" data-break="${brk}" class="${cls}" aria-pressed="${on}" aria-label="${escapeHtml(name)}">${lvl}</button>`;
             }).join('');
 
@@ -369,15 +373,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const aff = rec.aff || 0;
         const skl = rec.skl || 0;
         const stateCls = (v, max) => v === 0 ? '' : (v === max ? 'is-done' : 'is-mid');
-        const affLabel = aff === 0 ? '호감작' : `호감 · ${AFF_LABELS[aff]}`;
+        // Both ladders' index-0 label self-identifies (호감작 안함 / 스작 안함), so the
+        // set states get a 호감 · prefix and the unset state stands alone.
+        const affLabel = aff === 0 ? AFF_LABELS[0] : `호감 · ${AFF_LABELS[aff]}`;
         const sklLabel = SKL_LABELS[skl]; // 스작 labels self-identify
         const menuChip = (action, cls, label, name) =>
             `<button type="button" class="chip lr-chip ${cls}" data-action="${action}"`
             + ` aria-haspopup="menu" aria-expanded="false" aria-label="${escapeHtml(name)}">`
             + `${escapeHtml(label)}<span class="material-symbols-outlined lr-chip-caret" aria-hidden="true">arrow_drop_down</span></button>`;
-        chipsCell.innerHTML = `<span class="lr-cell-label">육성</span>` + retChip
+        // 개장 trails the two menu chips: only ~107 ships have it, and leading with it
+        // shifted 호감작/스작 sideways from card to card. The ghost holds its slot so the
+        // ledger's centred group keeps a constant width.
+        chipsCell.innerHTML = `<span class="lr-cell-label">기타 육성</span>`
             + menuChip('aff', stateCls(aff, 4), affLabel, `${ship.name} 호감작: ${AFF_LABELS[aff]}`)
-            + menuChip('skl', stateCls(skl, 3), sklLabel, `${ship.name} 스작: ${SKL_LABELS[skl]}`);
+            + menuChip('skl', stateCls(skl, 3), sklLabel, `${ship.name} 스작: ${SKL_LABELS[skl]}`)
+            + retChip;
 
         const star = card.querySelector('.lr-star');
         star.textContent = rec.fav ? '★' : '☆';
@@ -1313,8 +1323,10 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 'level-attr-filter', label: '120렙 스탯', data: attrTypeData, allOptionText: '120스탯 - 전체', prefix: '120렙: ' },
             { id: 'fav-filter', label: '즐겨찾기', options: { all: '즐겨찾기 - 전체', fav: '즐겨찾기만' } },
             { id: 'retro-filter', label: '개장', options: { all: '개장 - 전체', able: '개장 가능', done: '개장 완료', todo: '개장 미완' } },
-            { id: 'aff-filter', label: '호감작', options: { all: '호감작 - 전체', 0: '호감작 안함', 1: '100 예정', 2: '100 완료', 3: '200 예정', 4: '200 완료' } },
-            { id: 'skl-filter', label: '스작', options: { all: '스작 - 전체', 0: '스작 안함', 1: '스작 예정', 2: '스작 진행중', 3: '스작 완료' } },
+            // Options derive from the label arrays — hardcoding them here is what
+            // let the filter say 스작 진행중 while the chip beside it said 스작 중.
+            { id: 'aff-filter', label: '호감작', options: { all: '호감작 - 전체', ...AFF_LABELS } },
+            { id: 'skl-filter', label: '스작', options: { all: '스작 - 전체', ...SKL_LABELS } },
             { id: 'memo-filter', label: '메모', options: { all: '메모 - 전체', has: '메모 있음' } }
         ];
 
@@ -2241,6 +2253,29 @@ document.addEventListener('DOMContentLoaded', () => {
         // Search setup
         setupSearch();
 
+        // Google Sheet import. Applying reuses the same whole-store-replaced path
+        // the two syncedStorage onRemoteChange handlers use for cross-tab writes —
+        // an import is the same event, so the summary recomputes exactly once and
+        // no second render pipeline exists to drift.
+        setupSheetImport({
+            getStores: () => ({ progress: collectProgressFromCards(), investment }),
+            onApply: ({ progress: nextProgress, investment: nextInvestment, changedGids }) => {
+                applyProgress(nextProgress);
+                autoSaveProgress();
+                investment = nextInvestment;
+                investmentStore.save(investment);
+                // Only the ships whose stored state actually moved. Re-rendering
+                // every card costs ~2.8s of layout/paint at full roster size, and
+                // re-importing an unchanged sheet should cost nothing at all.
+                const touched = new Set(changedGids);
+                getShipCards().forEach(card => {
+                    if (touched.has(card.dataset.shipId)) renderInvestmentCells(card, card.dataset.shipId);
+                });
+                updateInvestmentSummary();
+                applyFilters();   // re-renders + calls calculateAndDisplayScores itself
+            },
+        });
+
         // Tracker checkbox delegation
         cachedElements.shipListContainer.addEventListener('change', (e) => {
             if (e.target.classList.contains('tracker-checkbox')) {
@@ -2286,7 +2321,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderInvestmentCells(card, gid);
                 card.querySelector(`[data-action="${action}"]`)?.focus({ preventScroll: true });
             } else if (action === 'cap') {
-                const { mask, cap } = applyCapChange(getCardProgressState(card), parseDatasetInt(btn.dataset.break));
+                const brk = parseDatasetInt(btn.dataset.break);
+                const i = CAP_STOPS.findIndex(([b]) => b === brk);
+                // Each stop is a toggle over what it DISPLAYS (on = cap >= brk), so
+                // turning one off drops to the stop below it: 125 off leaves 120 on,
+                // 120 off clears 125 with it.
+                const target = (getInv(gid).cap || 0) >= brk ? (CAP_STOPS[i - 1]?.[0] ?? 0) : brk;
+                const { mask, cap } = applyCapChange(getCardProgressState(card), target);
                 setInv(gid, { cap });
                 setCardMask(card, mask);
                 renderInvestmentCells(card, gid);

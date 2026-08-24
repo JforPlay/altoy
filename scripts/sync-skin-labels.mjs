@@ -26,7 +26,7 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
-import { parseCsv, csvField, headerIndex } from './csv.mjs';
+import { parseCsv, csvField, headerIndex } from '../public/js/csv.js';
 import {
     ATTRIBUTES, ID_HEADER, CHECKED_HEADER, CHARACTER_TRAIT_KEYS, parseAttributeCell,
 } from './skin-attributes.mjs';

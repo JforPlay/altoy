@@ -21,9 +21,10 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import { DATA_FOR_TOY_BASE } from '../public/js/utils.js';
 
-// CSV primitives live in csv.mjs (shared with sync-skin-labels); re-exported
-// here so this module's public surface — and its tests — are unchanged.
-import { parseCsv, csvField, headerIndex } from './csv.mjs';
+// CSV primitives live in public/js/csv.js (shared with sync-skin-labels AND the
+// browser-side tracker sheet codec). Re-exported here so this module's public
+// surface — and its tests — are unchanged.
+import { parseCsv, csvField, headerIndex } from '../public/js/csv.js';
 export { parseCsv, csvField };
 
 // Curator config: fill in after creating the sheet (File → Share → anyone

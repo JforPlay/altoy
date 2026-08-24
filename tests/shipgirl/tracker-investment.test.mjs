@@ -71,7 +71,9 @@ test('BREAK_LEVELS is the exported 5-break ladder', () => {
     assert.deepEqual(BREAK_LEVELS, [105, 110, 115, 120, 125]);
 });
 
-test('applyCapChange: cap>=1 forces get+upgrade; cap<4 clears level', () => {
+test('applyCapChange: cap>=1 forces get+upgrade; cap>=4 sets level, cap<4 clears it', () => {
+    assert.deepEqual(applyCapChange(5, 4), { mask: 7, cap: 4 }); // 120 cap == Lv120 달성
+    assert.deepEqual(applyCapChange(0, 5), { mask: 7, cap: 5 });
     assert.deepEqual(applyCapChange(0, 2), { mask: 5, cap: 2 });
     assert.deepEqual(applyCapChange(7, 3), { mask: 5, cap: 3 }); // level bit cleared
     assert.deepEqual(applyCapChange(7, 4), { mask: 7, cap: 4 });

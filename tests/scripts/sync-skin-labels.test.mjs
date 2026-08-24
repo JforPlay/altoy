@@ -26,7 +26,7 @@ const POLL = {
 };
 
 import { mapRows, validateRows } from '../../scripts/sync-skin-labels.mjs';
-import { parseCsv } from '../../scripts/csv.mjs';
+import { parseCsv } from '../../public/js/csv.js';
 
 const HEADER = '클뜯 id,이름,아이웨어,자세,방향,강조부위,머리색,머리 다중색,눈색,수인특징,검수';
 const sheet = (...rows) => parseCsv([HEADER, ...rows].join('\n') + '\n');

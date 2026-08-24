@@ -6,10 +6,10 @@
 #ledger-head,
 [data-view="ledger"] .ship-card {
   display: grid;
-  /* icon | 함순이 | 보유 | 풀돌 | Lv120 | 기술 Pt | 상한 해제 (3 stops) | 육성 | 메모 */
+  /* icon | 함순이 | 보유 | 풀돌 | Lv120 | 기술 Pt | 육성 레벨 (2 stops) | 기타 육성 | 메모 */
   /* 육성 needs 290px to hold its widest pair (호감 · 200 완료 + 스작 완료) on ONE
      line — at 230px every maxed row wrapped, so row heights alternated 61/72px. */
-  grid-template-columns: 56px minmax(150px, 1fr) 46px 46px 46px 72px 124px 290px 40px;
+  grid-template-columns: 56px minmax(150px, 1fr) 46px 46px 46px 72px 82px 290px 40px;
   align-items: center;
   gap: 0 8px;
 }
@@ -112,7 +112,7 @@
   padding: 8px 12px;
   font-size: 0.78rem; color: var(--text-secondary);
 }
-/* Field labels (입수 스탯 / 120 스탯 / 입수 방법 / 다음 목표) read as headers:
+/* Field labels (입수 / 120렙 / 입수 방법 / 다음 목표) read as headers:
    primary text against the secondary + green values beside them. */
 .lr-dk { font-style: normal; color: var(--text-primary); font-weight: 600; margin-right: 6px; }
 .lr-stat-types { color: var(--text-secondary); }
@@ -173,7 +173,7 @@
   body.dark-mode [data-view="ledger"] .lr-progress .lr-ck { background: var(--highlight-subtle); }
 }
 
-/* ===== Cap segment bar ===== */
+/* ===== 육성 레벨 bar (cap stops) ===== */
 .lr-cap { display: flex; gap: 3px; justify-content: center; }
 .lr-cap button {
   width: 38px; height: 26px; padding: 0;
@@ -185,7 +185,7 @@
 .lr-cap button.on.u2 { background: var(--warning-color); border-color: var(--warning-color); color: #3d2c00; }
 .lr-cap button:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 1px; }
 
-/* ===== 육성 chips (개장 / 호감작 / 스작) ===== */
+/* ===== 기타 육성 chips (호감작 / 스작 / 개장) ===== */
 .lr-chips { display: flex; flex-wrap: wrap; gap: 3px 4px; justify-content: center; }
 .lr-chip {
   display: inline-flex; align-items: center;

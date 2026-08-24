@@ -44,14 +44,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <div class="info-icon"><i class="fas fa-check-square"></i></div>
                     <div class="info-content">
                         <h3>보유 체크</h3>
-                        <p>상단 <strong>보기 전환</strong>으로 장부형 목록/카드형 보기를 바꿀 수 있습니다. 보유·풀돌·Lv120 체크박스를 누르면 기술/진영 점수에 반영되고, 상한 해제(성정 유닛)·개장·호감작·스작 같은 육성 기록도 함께 남길 수 있습니다.</p>
+                        <p>상단 <strong>보기 전환</strong>으로 장부형 목록/카드형 보기를 바꿀 수 있습니다. 보유·풀돌·Lv120 체크박스를 누르면 기술/진영 점수에 반영되고, 육성 레벨(성정 유닛)·개장·호감작·스작 같은 육성 기록도 함께 남길 수 있습니다.</p>
                     </div>
                 </div>
                 <div class="info-step">
                     <div class="info-icon"><i class="fas fa-heart"></i></div>
                     <div class="info-content">
                         <h3>육성 기록</h3>
-                        <p><strong>호감작</strong>과 <strong>스작</strong> 버튼을 누르면 전체 단계 메뉴가 열려 원하는 상태를 바로 선택할 수 있습니다. <strong>상한 해제</strong> 바는 원하는 상한 레벨(100 / 120 / 125)을 클릭해 바로 설정합니다. Lv120 달성 체크와 서로 연동됩니다.</p>
+                        <p><strong>호감작</strong>과 <strong>스작</strong> 버튼을 누르면 전체 단계 메뉴가 열려 원하는 상태를 바로 선택할 수 있습니다. <strong>육성 레벨</strong> 바의 <strong>120 / 125</strong>는 각각 토글입니다. 125를 켜면 120도 함께 켜지고, 120을 끄면 125도 함께 꺼집니다. Lv120 달성 체크와도 서로 연동됩니다.</p>
                     </div>
                 </div>
                 <div class="info-step">
@@ -102,6 +102,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <span class="material-symbols-outlined">flag</span>
                     <span>연구 목표</span>
                 </button>
+                <button class="st-toolbar-btn" id="sheet-import-btn">
+                    <span class="material-symbols-outlined">table_view</span>
+                    <span>시트 가져오기</span>
+                </button>
             </div>
         </div>
 
@@ -115,7 +119,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <span class="st-sum-label">보유 함순이</span>
                 <span class="st-sum-value"><b id="owned-count">0</b> <small>/ <span id="owned-total">0</span><span id="owned-pct"></span></small></span>
             </div>
-            <div class="st-sum-item" title="Lv100→120 상한 해제에 쓴 성정 유닛 / 전체 함순이 기준 필요량">
+            <div class="st-sum-item" title="Lv100→120 육성에 쓴 성정 유닛 / 전체 함순이 기준 필요량">
                 <span class="st-sum-label">성정 유닛 I <small>(Lv100→120)</small></span>
                 <span class="st-sum-value"><b id="unit1-120-invested">0</b> <small>/ <span id="unit1-120-total">0</span></small></span>
             </div>
@@ -137,7 +141,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
          its visibility is owned by inline style.display only (see applyView). -->
     <div id="ledger-head" aria-hidden="true" style="display:none">
         <div></div><div class="lh-name">함순이</div><div>보유</div><div>풀돌</div><div>Lv120</div>
-        <div>기술 Pt</div><div>상한 해제</div><div>육성 상태</div><div>메모</div>
+        <div>기술 Pt</div><div>육성 레벨</div><div>기타 육성</div><div>메모</div>
     </div>
     <div id="ship-list-container" class="card-grid" data-view="cards"></div>
     <div id="tracker-empty" class="hidden" aria-live="polite"></div>
@@ -216,6 +220,37 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                   placeholder="자유 코멘트 (입수처, 육성 계획 등)"></textarea>
         <div class="modal-actions" slot="footer">
             <button type="button" class="btn btn-primary" id="memo-save-btn">저장</button>
+        </div>
+    </Modal>
+
+    <Modal id="sheet-modal" title="시트에서 가져오기" maxWidth="44rem">
+        <ol class="sheet-howto">
+            <li>구글 시트에서 머리글 행을 포함해 원하는 범위를 복사합니다.</li>
+            <li>아래 칸에 붙여넣거나, 내려받은 CSV 파일을 선택합니다.</li>
+            <li>미리보기에서 인식된 함순이 수를 확인한 뒤 적용합니다.</li>
+        </ol>
+        <p class="sheet-note">
+            <strong>ID</strong> 열을 기준으로 맞춥니다(<code>123</code> · <code>Z001</code> ·
+            <code>P001</code> · <code>M061</code>). 이름은 확인용으로만 쓰며, 빈 칸은
+            <strong>변경하지 않음</strong>으로 처리합니다. 점수·능력치 등 계산용 열은 무시합니다.
+        </p>
+
+        <label class="sheet-field">
+            <span class="sheet-field-label">CSV 파일</span>
+            <input type="file" id="sheet-file" accept=".csv,.tsv,.txt,text/csv,text/tab-separated-values">
+        </label>
+
+        <label class="sheet-field">
+            <span class="sheet-field-label">또는 시트에서 복사해 붙여넣기</span>
+            <textarea id="sheet-paste" class="scroll-styled" rows="6" spellcheck="false"
+                      placeholder="ID&#9;사진&#9;이름&#9;…"></textarea>
+        </label>
+
+        <p class="sheet-status" id="sheet-status" role="status" aria-live="polite"></p>
+        <div class="sheet-preview scroll-styled" id="sheet-preview"></div>
+
+        <div class="modal-actions" slot="footer">
+            <button type="button" class="btn btn-primary" id="sheet-apply-btn" disabled>적용</button>
         </div>
     </Modal>
 
