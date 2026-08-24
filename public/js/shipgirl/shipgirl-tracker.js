@@ -164,6 +164,10 @@ document.addEventListener('DOMContentLoaded', () => {
         },
     });
 
+    // Filter groups that select several values at once, mapped to the label array
+    // whose INDEX is the stored value. Adding a filter here is what makes it multi.
+    const MULTI_FILTER_LABELS = { aff: AFF_LABELS, skl: SKL_LABELS };
+
     const INVEST_KEY = 'shipgirlInvestment';
     let investment = {};
     let rarityByGid = {};
@@ -185,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function isInvestmentFilterActive() {
         return ['fav-filter', 'retro-filter', 'aff-filter', 'skl-filter', 'memo-filter']
-            .some(id => (document.getElementById(id)?.value || 'all') !== 'all');
+            .some(id => filterValues(id).length > 0);
     }
 
     function getInv(gid) { return investment[gid] || {}; }
@@ -1452,6 +1456,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const debouncedApplyFilters = debounce(applyFilters, 150);
 
     /**
+     * The selected values of one filter control, as strings; `[]` = filter off.
+     * Single-select groups are a <select> whose 'all' means off, multi-select groups
+     * are a .chip row where nothing active means off — every caller (applyFilters,
+     * chips, storage, the cross-tab guard) asks this instead of knowing the shape.
+     */
+    function filterValues(id) {
+        const el = document.getElementById(id);
+        if (!el) return [];
+        if (el.tagName === 'SELECT') return el.value === 'all' ? [] : [el.value];
+        return Array.from(el.querySelectorAll('.chip.active')).map(c => c.dataset.value);
+    }
+
+    function setFilterChip(chip, on) {
+        chip.classList.toggle('active', on);
+        chip.setAttribute('aria-pressed', String(on));
+    }
+
+    /**
      * Populates the filter drawer body with all filter controls.
      */
     function populateDrawerFilters() {
@@ -1473,21 +1495,46 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 'level-attr-filter', label: '120렙 스탯', data: attrTypeData, allOptionText: '120스탯 - 전체', prefix: '120렙: ' },
             { id: 'fav-filter', label: '즐겨찾기', options: { all: '즐겨찾기 - 전체', fav: '즐겨찾기만' } },
             { id: 'retro-filter', label: '개장', options: { all: '개장 - 전체', able: '개장 가능', done: '개장 완료', todo: '개장 미완' } },
-            // Options derive from the label arrays — hardcoding them here is what
-            // let the filter say 스작 진행중 while the chip beside it said 스작 중.
-            { id: 'aff-filter', label: '호감작', options: { all: '호감작 - 전체', ...AFF_LABELS } },
-            { id: 'skl-filter', label: '스작', options: { all: '스작 - 전체', ...SKL_LABELS } },
-            { id: 'memo-filter', label: '메모', options: { all: '메모 - 전체', has: '메모 있음' } }
+            { id: 'memo-filter', label: '메모', options: { all: '메모 - 전체', has: '메모 있음' } },
+            // Multi-select, and full-width — so they go last and leave the selects
+            // above a tidy 2-up grid. The labels array IS the value→label map (index
+            // = the stored aff/skl value), which is both what makes 호감작 100 예정 +
+            // 100 완료 one OR group and what stops the filter from saying 스작 진행중
+            // while the chip beside it says 스작 중.
+            { id: 'aff-filter', label: '호감작', multi: AFF_LABELS },
+            { id: 'skl-filter', label: '스작', multi: SKL_LABELS },
         ];
 
         dropdownFilters.forEach(f => {
             const group = document.createElement('div');
             group.className = 'dropdown-filter-group';
-            const label = document.createElement('label');
-            label.htmlFor = f.id;
+            const label = document.createElement(f.multi ? 'span' : 'label');
+            if (!f.multi) label.htmlFor = f.id;
             label.className = 'st-filter-label';
             label.textContent = f.label;
             group.appendChild(label);
+
+            if (f.multi) {
+                const row = document.createElement('div');
+                row.id = f.id;
+                row.className = 'st-filter-chips';
+                row.setAttribute('role', 'group');
+                row.setAttribute('aria-label', f.label);
+                f.multi.forEach((text, value) => {
+                    const chip = document.createElement('button');
+                    chip.type = 'button';
+                    chip.className = 'chip';
+                    chip.dataset.value = value;
+                    chip.setAttribute('aria-pressed', 'false');
+                    chip.textContent = text;
+                    row.appendChild(chip);
+                });
+                // Full drawer width: a 5-chip row wraps three times in a half column.
+                group.classList.add('dropdown-filter-group--wide');
+                group.appendChild(row);
+                dropdownControlsContainer.appendChild(group);
+                return;
+            }
 
             const select = document.createElement('select');
             select.id = f.id;
@@ -1707,6 +1754,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 handleFilterCheckboxLogic(target);
                 debouncedApplyFilters();
             }
+        });
+
+        drawerBody.addEventListener('click', (e) => {
+            const chip = e.target.closest('.st-filter-chips .chip');
+            if (!chip) return;
+            setFilterChip(chip, !chip.classList.contains('active'));
+            debouncedApplyFilters();
         });
     }
 
@@ -1970,8 +2024,16 @@ document.addEventListener('DOMContentLoaded', () => {
             chips.push({ label: selectedOption.textContent, type: 'level-attr', value: levelAttrEl.value });
         }
 
-        // Investment chips (fav/retro/aff/skl/memo) — label = selected option text.
+        // Investment chips (fav/retro/aff/skl/memo). Multi-select groups emit one
+        // removable chip per selected value; single selects keep their option text.
         ['fav', 'retro', 'aff', 'skl', 'memo'].forEach(type => {
+            const labels = MULTI_FILTER_LABELS[type];
+            if (labels) {
+                filterValues(`${type}-filter`).forEach(value => {
+                    chips.push({ label: labels[value], type, value });
+                });
+                return;
+            }
             const el = document.getElementById(`${type}-filter`);
             if (el && el.value !== 'all') {
                 chips.push({ label: el.options[el.selectedIndex].textContent, type, value: el.value });
@@ -2033,7 +2095,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (el) el.value = 'all';
         } else if (chip.type === 'search') {
             document.getElementById('search-bar').value = '';
-        } else if (['fav', 'retro', 'aff', 'skl', 'memo'].includes(chip.type)) {
+        } else if (MULTI_FILTER_LABELS[chip.type]) {
+            const el = document.querySelector(`#${chip.type}-filter .chip[data-value="${chip.value}"]`);
+            if (el) setFilterChip(el, false);
+        } else if (['fav', 'retro', 'memo'].includes(chip.type)) {
             const el = document.getElementById(`${chip.type}-filter`);
             if (el) el.value = 'all';
         }
@@ -2053,8 +2118,8 @@ document.addEventListener('DOMContentLoaded', () => {
             levelAttr: document.getElementById('level-attr-filter')?.value || 'all',
             fav: document.getElementById('fav-filter')?.value || 'all',
             retro: document.getElementById('retro-filter')?.value || 'all',
-            aff: document.getElementById('aff-filter')?.value || 'all',
-            skl: document.getElementById('skl-filter')?.value || 'all',
+            aff: filterValues('aff-filter'),
+            skl: filterValues('skl-filter'),
             memo: document.getElementById('memo-filter')?.value || 'all',
         };
         setStorageItem(FILTER_KEY, JSON.stringify(filters));
@@ -2114,10 +2179,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (favEl && filters.fav) favEl.value = filters.fav;
             const retroEl = document.getElementById('retro-filter');
             if (retroEl && filters.retro) retroEl.value = filters.retro;
-            const affEl = document.getElementById('aff-filter');
-            if (affEl && filters.aff) affEl.value = filters.aff;
-            const sklEl = document.getElementById('skl-filter');
-            if (sklEl && filters.skl) sklEl.value = filters.skl;
+            // aff/skl are arrays since they went multi-select; older saves hold the
+            // single string the <select> wrote.
+            Object.keys(MULTI_FILTER_LABELS).forEach(type => {
+                const saved = filters[type];
+                const values = Array.isArray(saved) ? saved : (saved && saved !== 'all' ? [saved] : []);
+                values.forEach(v => {
+                    const chip = document.querySelector(`#${type}-filter .chip[data-value="${v}"]`);
+                    if (chip) setFilterChip(chip, true);
+                });
+            });
             const memoEl = document.getElementById('memo-filter');
             if (memoEl && filters.memo) memoEl.value = filters.memo;
         } catch (e) {
@@ -2135,8 +2206,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const levelAttrFilter = document.getElementById('level-attr-filter').value;
         const favFilter = document.getElementById('fav-filter').value;
         const retroFilter = document.getElementById('retro-filter').value;
-        const affFilter = document.getElementById('aff-filter').value;
-        const sklFilter = document.getElementById('skl-filter').value;
+        const affFilter = filterValues('aff-filter').map(v => parseDatasetInt(v));
+        const sklFilter = filterValues('skl-filter').map(v => parseDatasetInt(v));
         const memoFilter = document.getElementById('memo-filter').value;
         const checkedNations = Array.from(document.querySelectorAll('#nationality-filter input[data-filter-type="individual"]:checked')).map(cb => parseDatasetInt(cb.value));
         const checkedTypes = Array.from(document.querySelectorAll('#type-filter input[data-filter-type="individual"]:checked')).map(cb => parseDatasetInt(cb.value));
@@ -2174,8 +2245,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 || (retroFilter === 'able' && !!ship.retrofit)
                 || (retroFilter === 'done' && !!rec.ret)
                 || (retroFilter === 'todo' && !!ship.retrofit && !rec.ret);
-            const affMatch = affFilter === 'all' || (rec.aff || 0) === parseDatasetInt(affFilter);
-            const sklMatch = sklFilter === 'all' || (rec.skl || 0) === parseDatasetInt(sklFilter);
+            const affMatch = !affFilter.length || affFilter.includes(rec.aff || 0);
+            const sklMatch = !sklFilter.length || sklFilter.includes(rec.skl || 0);
             const memoMatch = memoFilter === 'all' || !!rec.memo;
 
             return searchMatch && natMatch && typeMatch && rarityMatch && progressMatch && getAttrMatch && levelAttrMatch
@@ -2209,6 +2280,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Reset selects
         document.querySelectorAll('#filter-drawer-body select').forEach(s => s.selectedIndex = 0);
+
+        // Reset multi-select chip rows (none active = filter off)
+        document.querySelectorAll('#filter-drawer-body .st-filter-chips .chip')
+            .forEach(c => setFilterChip(c, false));
 
         applyFilters();
     }

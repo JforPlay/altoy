@@ -108,3 +108,37 @@ test('sticky surface and ledger head do not overlap on desktop', async ({ page }
     const head = await page.locator('#ledger-head').boundingBox();
     expect(head.y).toBeGreaterThanOrEqual(surface.y + surface.height - 1);
 });
+
+test('호감작 filter ORs its selected values', async ({ page }) => {
+    await boot(page, { width: 1440, height: 900 });
+
+    // Seed three known 호감작 states on real gids: 1 × 100 예정, 2 × 100 완료.
+    // Without a seed the counts are all zero and the sum assertion is vacuous.
+    const ids = await page.locator('#ship-list-container .ship-card')
+        .evaluateAll(cards => cards.slice(0, 3).map(c => c.dataset.shipId));
+    expect(ids).toHaveLength(3);
+    await page.evaluate(([a, b, c]) => {
+        localStorage.setItem('shipgirlInvestment', JSON.stringify({
+            v: 1, d: { [a]: { aff: 1 }, [b]: { aff: 2 }, [c]: { aff: 2 } },
+        }));
+        localStorage.removeItem('shipgirlTrackerFilters');
+    }, ids);
+    await boot(page);
+
+    await page.locator('#filter-drawer-btn').click();
+    const count = page.locator('#drawer-count');
+    const planned = page.locator('#aff-filter .chip[data-value="1"]');   // 100 예정
+    const done = page.locator('#aff-filter .chip[data-value="2"]');      // 100 완료
+
+    await planned.click();
+    await expect(count).toHaveText('1척');
+    await done.click();
+    await expect(count).toHaveText('3척');           // the union, not the last click
+    await expect(page.locator('#filter-chips .st-chip')).toHaveCount(2);
+
+    // Removing one chip leaves the other filter standing (chips row sits under
+    // the drawer backdrop, so close the drawer first).
+    await page.locator('#filter-drawer .st-drawer-close').click();
+    await page.locator('#filter-chips .st-chip').first().click();
+    await expect(count).toHaveText('2척');
+});

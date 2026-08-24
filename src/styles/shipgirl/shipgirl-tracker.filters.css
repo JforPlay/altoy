@@ -363,3 +363,17 @@ body.dark-mode .filter-group {
 body.dark-mode .dropdown-content {
   box-shadow: 0 4px 8px var(--overlay-strong);
 }
+
+/* --- Multi-select filter chip row (호감작 / 스작) --- */
+
+/* Spans both columns of .dropdown-controls-container: a 5-chip row wraps
+   three times inside a half-width column. */
+.dropdown-filter-group--wide {
+  grid-column: 1 / -1;
+}
+
+.st-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
