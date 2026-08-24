@@ -506,11 +506,18 @@ document.addEventListener('DOMContentLoaded', () => {
      * roster order. Deliberately NOT re-run on every step: re-sorting mid-sweep
      * teleports the tile out from under the cursor, which is the one gesture
      * the wall exists for. It runs on entry, on 지표 change, and on 재정렬.
+     *
+     * 미획득 sinks below every owned ship as a second term, whichever 지표 is
+     * active. Under 스작/호감작 an unrecorded ship and an unowned one both read
+     * 0, so without it the two interleave and 재정렬 reads as a no-op — the
+     * whole feature looked level-only. Under 육성 레벨 the term changes nothing:
+     * value 0 there IS 미획득, so the two orderings already agreed.
      */
     function sortWall() {
         const max = WALL_METRICS[wallMetric].max;
         getShipCards().forEach(card => {
-            card.style.order = String(max - (Number(card.dataset.wall) || 0));
+            const rank = max - (Number(card.dataset.wall) || 0);
+            card.style.order = String(rank * 2 + (card.dataset.wallOwned === '1' ? 0 : 1));
         });
     }
 

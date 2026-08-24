@@ -138,10 +138,17 @@ test('sort is descending, order-only, and holds still between presses', async ({
 
     const ranks = await page.evaluate(() =>
         [...document.querySelectorAll('#ship-list-container .ship-card')]
-            .map(c => ({ order: Number(c.style.order), wall: Number(c.dataset.wall) })));
+            .map(c => ({
+                order: Number(c.style.order),
+                wall: Number(c.dataset.wall),
+                owned: c.dataset.wallOwned === '1',
+            })));
     expect(ranks.length).toBeGreaterThan(50);
-    // order = max - value, so a higher 지표 value must never sort later.
-    for (const { order, wall } of ranks) expect(order + wall).toBe(4);
+    // order = (max - value) * 2 + (미획득 ? 1 : 0): a higher 지표 value never
+    // sorts later, and an unowned ship never outranks an owned one that ties it.
+    for (const { order, wall, owned } of ranks) {
+        expect(order).toBe((4 - wall) * 2 + (owned ? 0 : 1));
+    }
 
     // Stepping does NOT re-sort — the tile must stay put mid-sweep.
     const gid = await firstGid(page);
@@ -159,6 +166,29 @@ test('sort is descending, order-only, and holds still between presses', async ({
         [...document.querySelectorAll('#ship-list-container .ship-card')].slice(0, 12)
             .map(c => c.dataset.shipId));
     expect(domOrderAfter).toEqual(domOrderBefore);
+});
+
+test('재정렬 still separates owned from 미획득 under a 지표 with no data', async ({ page }) => {
+    // The reported symptom: 재정렬 looked level-only. Under 스작/호감작 an
+    // unrecorded ship and an unowned one both read 0, so they tied and
+    // interleaved — nothing appeared to move.
+    await bootWall(page);
+    const gids = await page.evaluate(() =>
+        [...document.querySelectorAll('#ship-list-container .ship-card')]
+            .slice(0, 3).map(c => c.dataset.shipId));
+    const [ownedGid, , untouchedGid] = gids;
+
+    await cardFor(page, ownedGid).locator('.lr-tile').click();      // 보유
+    await expect(cardFor(page, ownedGid)).toHaveAttribute('data-wall-owned', '1');
+
+    await page.locator('#wall-metric-group button[data-metric="skl"]').click();
+    // Both read 0 on this ladder — only ownership separates them.
+    await expect(cardFor(page, ownedGid)).toHaveAttribute('data-wall', '0');
+    await expect(cardFor(page, untouchedGid)).toHaveAttribute('data-wall', '0');
+    await page.locator('#wall-sort-btn').click();
+
+    const orderOf = gid => cardFor(page, gid).evaluate(el => Number(el.style.order));
+    expect(await orderOf(ownedGid)).toBeLessThan(await orderOf(untouchedGid));
 });
 
 test('leaving the wall clears the order so the other views are untouched', async ({ page }) => {
@@ -194,7 +224,13 @@ test('booting straight into a stored 요약 pref arrives sorted', async ({ page 
     await expect(page.locator('#ship-list-container .ship-card').first()).toBeVisible();
     const ranks = await page.evaluate(() =>
         [...document.querySelectorAll('#ship-list-container .ship-card')]
-            .map(c => ({ order: c.style.order, wall: Number(c.dataset.wall) })));
+            .map(c => ({
+                order: c.style.order,
+                wall: Number(c.dataset.wall),
+                owned: c.dataset.wallOwned === '1',
+            })));
     expect(ranks.every(r => r.order !== '')).toBe(true);
-    for (const { order, wall } of ranks) expect(Number(order) + wall).toBe(4);
+    for (const { order, wall, owned } of ranks) {
+        expect(Number(order)).toBe((4 - wall) * 2 + (owned ? 0 : 1));
+    }
 });
