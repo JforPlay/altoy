@@ -86,12 +86,6 @@
   border-color: var(--accent-blue);
 }
 
-/* Hide number spinners for cleaner look */
-.dmg-edit-input[type="number"]::-webkit-inner-spin-button,
-.dmg-edit-input[type="number"]::-webkit-outer-spin-button {
-  opacity: 0.4;
-}
-
 /* ===== Per-ship result rows ===== */
 
 .dmg-ship-list {
@@ -213,17 +207,8 @@
 /* ===== Dark mode overrides ===== */
 /* (tokens already handle most of it; only override where tokens don't flip) */
 
-/* ===== Equipment efficiency badge (under weapon-slot icons, slots 0-2) ===== */
-
-.equip-eff-badge {
-  display: block;
-  margin-top: 2px;
-  font-size: 0.7em;
-  line-height: 1.2;
-  text-align: center;
-  white-space: nowrap;
-  color: var(--text-secondary);
-}
+/* Equipment efficiency badge (slots 0-2): layout now owned by .equip-slot-caption
+   in fleet-sim.ship-card.css. .equip-eff-badge stays on the element as a hook. */
 
 /* ===== META boss target select + clear-check (2026-07 Phase 1) ===== */
 .dmg-target-select {
@@ -265,3 +250,32 @@
 .dmg-clear-ttk { color: var(--text-secondary); }
 .dmg-clear-ok { color: var(--success-color); font-weight: 600; }
 .dmg-clear-no { color: var(--danger-color); font-weight: 600; }
+
+/* Compare strip was three bare numbers with no key saying what they measure. */
+.dmg-cmp-key {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  align-self: baseline;
+}
+
+/* --warning-color is a FILL and measures 2.19:1 as text on --card-bg in this
+   page's accent theme. Amber cannot reach the 4.5:1 floor on white at any
+   tuning, so this uses the paired red text token — the message is a failure
+   notice, not an advisory. */
+.dmg-missing-note {
+  font-size: 0.78rem;
+  color: var(--accent-red-text);
+}
+
+/* The spinners were half-hidden at opacity .4, which read as broken rather than
+   as suppressed. */
+.dmg-edit-input[type="number"]::-webkit-inner-spin-button,
+.dmg-edit-input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.dmg-edit-input[type="number"] {
+  -moz-appearance: textfield;
+}

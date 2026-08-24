@@ -62,7 +62,7 @@
 
 /* ===== SP WEAPON SLOT (Task 1) ===== */
 
-.equip-slot.sp-slot .equip-slot-label {
+.equip-slot.sp-slot .equip-slot-caption--label {
   color: var(--rarity-ur);
   font-weight: 600;
 }
@@ -121,4 +121,16 @@
 
 .ship-card:not(.ship-card--empty) {
   animation: cardFadeIn 0.3s ease-out;
+}
+
+/* ===== REDUCED MOTION ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  .ship-card:not(.ship-card--empty) { animation: none; }
+  .ship-card,
+  .ship-stats-collapsible,
+  .stats-toggle .material-symbols-outlined { transition: none; }
+  .ship-card:hover { transform: none; }
+  .enhance-popover { animation: none; }
+  .retrofit-toggle .toggle-track::after { transition: none; }
 }

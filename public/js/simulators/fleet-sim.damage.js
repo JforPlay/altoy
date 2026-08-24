@@ -339,7 +339,12 @@ function _buildTarget(targetOpts) {
     if (targetOpts.kind === 'meta' && targetOpts.bossId != null) {
         const boss = _data.getMetaBoss(targetOpts.bossId);
         if (boss) return _engine.makeMetaTarget(boss, targetOpts.tier ?? null, targetOpts.overrides || {});
-        // boss data absent → graceful fallback to a preset
+        // Boss data absent (e.g. a share link from an older roster). Fall back to a
+        // preset, but flag it so the panel can say so instead of silently showing
+        // a different target's name with the tier controls hidden.
+        const missing = _engine.makeTarget(targetOpts.presetKey || 'heavy', targetOpts.overrides || {});
+        missing.bossMissing = true;
+        return missing;
     }
     return _engine.makeTarget(targetOpts.presetKey || 'heavy', targetOpts.overrides || {});
 }

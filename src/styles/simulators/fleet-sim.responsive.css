@@ -32,12 +32,38 @@
     justify-content: center;
   }
 
+  /* The identity row (drag + 72px portrait + name + Lv stepper + 호감도 select +
+     chrome) is already at its width limit here, so the 장비 코드 label is the
+     first thing to go — back to the icon-only button, with aria-label carrying
+     the accessible name in both states. */
+  .equip-code-btn-label {
+    display: none;
+  }
+
+  .equip-code-btn {
+    aspect-ratio: 1;
+    padding: var(--btn-pad-y);
+  }
+
+  /* .btn-sm is fine under a mouse, but once the label is gone both chrome
+     buttons fall under the 24px minimum touch target — hold them at 32px. */
+  .ship-card-actions .btn {
+    min-width: 32px;
+    min-height: 32px;
+  }
+
   .equip-slots-grid {
     max-width: none;
   }
 
   .equip-slot {
-    max-width: 48px;
+    max-width: 52px;
+  }
+
+  .equip-slot-icon-box {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
   }
 
   /* Full-screen picker modals on mobile */
@@ -70,8 +96,12 @@
     padding-bottom: 2px;
   }
 
-  .filter-chip {
+  .filter-chips .chip {
     flex-shrink: 0;
+  }
+
+  .filter-more-btn {
+    display: none;
   }
 }
 

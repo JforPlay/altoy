@@ -8,6 +8,7 @@ import { showElement, hideElement, IMG_FALLBACKS, resolveUrl, escapeHtml, render
 import { getShipByGid, getEquipById, getEquipIconUrl, getRarityBgUrl, getShipPortraitUrl, getSlotName, getSPWeaponIconUrl, getDedicatedSPWeapon, getMetaBoss } from './fleet-sim.data.js';
 import {
     DISPLAY_STATS,
+    pickVitalStats,
     calculateShipStats,
     calculateFleetTechBonuses,
     resolvePassiveBuffs,
@@ -193,7 +194,6 @@ function _renderCard(slotIndex, calcResult, highlights) {
  */
 function _renderEmptyCard(card, slotIndex) {
     card.className = 'ship-card ship-card--empty';
-    card.removeAttribute('data-rarity');
     card.draggable = false;
     card.dataset.slot = slotIndex;
     card.innerHTML = `
@@ -208,10 +208,8 @@ function _renderEmptyCard(card, slotIndex) {
  * Render a populated card with all sections.
  */
 function _renderPopulatedCard(card, slotIndex, ship, slotConfig, calcResult, highlights, shipDmgResult = null) {
-    const rarity = (ship.rarity || '').toLowerCase();
     card.className = 'ship-card';
     card.dataset.slot = slotIndex;
-    card.dataset.rarity = rarity;
     card.draggable = true;
 
     const frag = document.createDocumentFragment();
@@ -221,7 +219,7 @@ function _renderPopulatedCard(card, slotIndex, ship, slotConfig, calcResult, hig
     const isCollapsed = statsCollapsed.has(slotIndex);
     const html = [
         _buildIdentityHTML(slotIndex, ship, slotConfig),
-        _buildReloadBarHTML(calcResult),
+        _buildVitalsHTML(calcResult),
         _buildEquipSlotsHTML(slotIndex, ship, slotConfig),
         _buildStatsToggleHTML(slotIndex, isCollapsed),
         `<div class="ship-stats-collapsible${isCollapsed ? ' collapsed' : ''}"><div class="ship-stats-collapsible-inner">`,
@@ -256,6 +254,11 @@ function _buildIdentityHTML(slotIndex, ship, slotConfig) {
     const typeNation = [shipType, shipNation].filter(Boolean).join(' · ');
     const safeShipName = escapeHtml(ship.name || '');
     const safeTypeNation = escapeHtml(typeNation);
+    // ship.rarity is already the rarity.css palette-class suffix (N/R/SR/SSR/UR).
+    const rarityGrade = String(ship.rarity || '').toUpperCase();
+    const rarityBadge = rarityGrade
+        ? `<span class="rarity-badge rarity-${escapeHtml(rarityGrade)} ship-rarity-badge">${escapeHtml(rarityGrade)}</span>`
+        : '';
     const level = slotConfig.level || 125;
     const affinity = slotConfig.affinity || 'love';
 
@@ -286,38 +289,43 @@ function _buildIdentityHTML(slotIndex, ship, slotConfig) {
                  data-action="change-ship"
                  data-slot="${slotIndex}"
                  loading="lazy" />
-            <div class="ship-identity-content">
-                <div class="ship-identity-top">
-                    <div class="ship-name-group">
-                        <div class="ship-name" title="${safeShipName}">${safeShipName}</div>
-                        ${retrofitHTML}
-                    </div>
-                    <div class="config-group">
-                        <span class="config-label">Lv.</span>
-                        <div class="level-stepper btn-group">
-                            <button class="btn btn-icon btn-sm stepper-btn" data-action="step-level" data-slot="${slotIndex}" data-dir="-1">−</button>
-                            <span class="stepper-value" data-action="edit-level" data-slot="${slotIndex}">${level}</span>
-                            <button class="btn btn-icon btn-sm stepper-btn" data-action="step-level" data-slot="${slotIndex}" data-dir="1">+</button>
-                        </div>
-                    </div>
+            <div class="ship-identity-main">
+                <div class="ship-name-group">
+                    <div class="ship-name" title="${safeShipName}">${safeShipName}</div>
+                    ${retrofitHTML}
                 </div>
                 <div class="ship-identity-bottom">
+                    ${rarityBadge}
                     <div class="ship-type-nation">${safeTypeNation}</div>
-                    <div class="config-group">
-                        <span class="config-label">호감도</span>
+                </div>
+            </div>
+            <div class="ship-identity-controls">
+                <div class="config-group">
+                    <span class="config-label">Lv.</span>
+                    <div class="level-stepper btn-group">
+                        <button class="btn btn-icon btn-sm stepper-btn" data-action="step-level" data-slot="${slotIndex}" data-dir="-1">−</button>
+                        <span class="stepper-value" data-action="edit-level" data-slot="${slotIndex}">${level}</span>
+                        <button class="btn btn-icon btn-sm stepper-btn" data-action="step-level" data-slot="${slotIndex}" data-dir="1">+</button>
+                    </div>
+                </div>
+                <div class="config-group">
+                    <span class="config-label">호감도</span>
+                    <span class="select-wrap">
                         <select class="config-select"
                                 data-action="change-affinity"
                                 data-slot="${slotIndex}">
                             ${affinityOptions}
                         </select>
-                    </div>
+                    </span>
                 </div>
             </div>
             <div class="ship-card-actions">
-                <button class="btn btn-icon btn-sm" data-action="equip-code" data-slot="${slotIndex}" title="장비 코드">
+                <button class="btn btn-ghost btn-sm equip-code-btn" data-action="equip-code" data-slot="${slotIndex}"
+                        title="이 함순이의 장비 코드 만들기 / 불러오기" aria-label="장비 코드">
                     <span class="material-symbols-outlined">code</span>
+                    <span class="equip-code-btn-label">장비 코드</span>
                 </button>
-                <button class="btn btn-close" data-action="remove-ship" data-slot="${slotIndex}" title="제거">
+                <button class="btn btn-close btn-sm" data-action="remove-ship" data-slot="${slotIndex}" title="제거" aria-label="제거">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
@@ -346,30 +354,17 @@ function _buildEquipSlotsHTML(slotIndex, ship, slotConfig) {
 
 /**
  * Build a single equip slot cell.
+ *
+ * The slot-type label renders ONLY on empty slots: a filled slot is identified
+ * by its icon, and the label duplicated it six times per card. The `title`
+ * attribute still carries `slotName: equipName` for hover and assistive tech.
+ * One caption row sits under the grid in both states so baselines stay aligned.
  */
 function _buildSingleEquipSlotHTML(slotIndex, equipIndex, equipConfig, ship, isRetrofit) {
     const slotName = getSlotName(ship, equipIndex, isRetrofit);
     const safeSlotName = escapeHtml(slotName);
+    const equip = equipConfig && equipConfig.id ? getEquipById(equipConfig.id) : null;
 
-    if (!equipConfig || !equipConfig.id) {
-        // Empty slot
-        return `
-            <div class="equip-slot"
-                 role="button"
-                 tabindex="0"
-                 data-action="change-equip"
-                 data-slot="${slotIndex}"
-                 data-equip-index="${equipIndex}"
-                 title="${safeSlotName}">
-                <span class="equip-slot-label">${safeSlotName}</span>
-                <div class="equip-slot-icon-box">
-                    <span class="equip-slot-empty"><span class="material-symbols-outlined">add</span></span>
-                </div>
-            </div>
-        `;
-    }
-
-    const equip = getEquipById(equipConfig.id);
     if (!equip) {
         return `
             <div class="equip-slot"
@@ -379,10 +374,10 @@ function _buildSingleEquipSlotHTML(slotIndex, equipIndex, equipConfig, ship, isR
                  data-slot="${slotIndex}"
                  data-equip-index="${equipIndex}"
                  title="${safeSlotName}">
-                <span class="equip-slot-label">${safeSlotName}</span>
                 <div class="equip-slot-icon-box">
                     <span class="equip-slot-empty"><span class="material-symbols-outlined">add</span></span>
                 </div>
+                <span class="equip-slot-caption equip-slot-caption--label">${safeSlotName}</span>
             </div>
         `;
     }
@@ -393,12 +388,12 @@ function _buildSingleEquipSlotHTML(slotIndex, equipIndex, equipConfig, ship, isR
     const enhanceLevel = equipConfig.level || 0;
     const safeEquipName = escapeHtml(equip.name || '');
 
-    // Weapon slots (0-2) carry an equipment-efficiency multiplier (max-LB + retrofit);
-    // surface it under the icon so the slot's damage contribution is legible.
-    let effBadge = '';
+    // Weapon slots (0-2) carry an equipment-efficiency multiplier (max-LB +
+    // retrofit); the title supplies the word the caption drops.
+    let effCaption = '';
     if (equipIndex < 3) {
         const eff = effectiveProficiency(ship, isRetrofit)[equipIndex];
-        if (eff != null) effBadge = `<span class="equip-eff-badge" title="장비 효율">효율 ${Math.round(eff * 100)}%</span>`;
+        if (eff != null) effCaption = `${Math.round(eff * 100)}%`;
     }
 
     return `
@@ -410,7 +405,6 @@ function _buildSingleEquipSlotHTML(slotIndex, equipIndex, equipConfig, ship, isR
              data-equip-index="${equipIndex}"
              data-equip-rarity="${rarityAttr}"
              title="${safeSlotName}: ${safeEquipName}">
-            <span class="equip-slot-label">${safeSlotName}</span>
             <div class="equip-slot-icon-box">
                 <div class="equip-icon-wrapper">
                     <img class="equip-icon-bg" src="${bgUrl}" alt="" loading="lazy" />
@@ -421,7 +415,7 @@ function _buildSingleEquipSlotHTML(slotIndex, equipIndex, equipConfig, ship, isR
                       data-slot="${slotIndex}"
                       data-equip-index="${equipIndex}">+${enhanceLevel}</span>
             </div>
-            ${effBadge}
+            <span class="equip-slot-caption equip-eff-badge"${effCaption ? ' title="장비 효율"' : ''}>${effCaption}</span>
         </div>
     `;
 }
@@ -448,7 +442,6 @@ function _buildSPSlotHTML(slotIndex, ship, slotConfig) {
                      data-slot="${slotIndex}"
                      data-equip-rarity="${SP_RARITY_MAP[spWeapon.rarity] || ''}"
                      title="${safeName}">
-                    <span class="equip-slot-label">특수 장비</span>
                     <div class="equip-slot-icon-box">
                         <div class="equip-icon-wrapper">
                             <img class="equip-icon-bg" src="${bgUrl}" alt="" loading="lazy" />
@@ -458,6 +451,7 @@ function _buildSPSlotHTML(slotIndex, ship, slotConfig) {
                               data-action="change-sp-level"
                               data-slot="${slotIndex}">+${spConfig.level || 1}</span>
                     </div>
+                    <span class="equip-slot-caption"></span>
                 </div>`;
         }
     }
@@ -474,7 +468,6 @@ function _buildSPSlotHTML(slotIndex, ship, slotConfig) {
 
         return `
             <div class="equip-slot equipped sp-slot sp-dedicated" data-equip-rarity="${SP_RARITY_MAP[spRarity] || 'ssr'}" title="${safeName} (전용)">
-                <span class="equip-slot-label">전용 무기</span>
                 <div class="equip-slot-icon-box">
                     <div class="equip-icon-wrapper">
                         <img class="equip-icon-bg" src="${bgUrl}" alt="" loading="lazy" />
@@ -482,6 +475,7 @@ function _buildSPSlotHTML(slotIndex, ship, slotConfig) {
                     </div>
                     <span class="equip-enhance-badge">SP</span>
                 </div>
+                <span class="equip-slot-caption"></span>
             </div>`;
     }
 
@@ -493,10 +487,10 @@ function _buildSPSlotHTML(slotIndex, ship, slotConfig) {
              data-action="change-sp-weapon"
              data-slot="${slotIndex}"
              title="특수 장비 선택">
-            <span class="equip-slot-label">특수 장비</span>
             <div class="equip-slot-icon-box">
                 <span class="equip-slot-empty"><span class="material-symbols-outlined">add</span></span>
             </div>
+            <span class="equip-slot-caption equip-slot-caption--label">특수 장비</span>
         </div>`;
 }
 
@@ -512,7 +506,7 @@ function _getSPWeaponDataById(id) {
 function _buildStatsToggleHTML(slotIndex, isCollapsed) {
     return `
         <div class="stats-toggle${isCollapsed ? ' collapsed' : ''}" role="button" tabindex="0" aria-expanded="${String(!isCollapsed)}" data-action="toggle-stats" data-slot="${slotIndex}">
-            <span class="stats-toggle-label">스탯</span>
+            <span class="stats-toggle-label">스탯 전체</span>
             <span class="material-symbols-outlined">expand_less</span>
         </div>
     `;
@@ -579,22 +573,32 @@ function _buildBreakdownHTML(bd) {
 }
 
 /**
- * Build reload time bar (shown in config-row position, not collapsible).
+ * Build the always-on vitals strip: offensive headline stats, then reload times.
+ *
+ * Returns '' rather than an empty wrapper when there is nothing to show — the
+ * predecessor (.ship-reload-bar) emitted a childless div with a min-height and a
+ * background, which drew a hollow tinted band on every equip-less ship.
  */
-function _buildReloadBarHTML(calcResult) {
-    if (!calcResult || !calcResult.reloads || calcResult.reloads.length === 0) {
-        return `<div class="ship-reload-bar"></div>`;
-    }
+function _buildVitalsHTML(calcResult) {
+    const vitals = pickVitalStats(calcResult ? calcResult.stats : null);
+    const statItems = vitals.map(({ label, value }) => `
+        <span class="vital-stat">
+            <span class="vital-label">${escapeHtml(label)}</span>
+            <span class="vital-value">${value}</span>
+        </span>`).join('');
 
-    const items = calcResult.reloads.map(({ label, seconds }) => `
-        <div class="reload-item">
+    const reloads = (calcResult && calcResult.reloads) || [];
+    const reloadItems = reloads.map(({ label, seconds }) => `
+        <span class="reload-item">
             <span class="material-symbols-outlined">timer</span>
-            <span>${label}</span>
+            <span>${escapeHtml(String(label))}</span>
             <span class="reload-value">${seconds.toFixed(2)}s</span>
-        </div>
-    `).join('');
+        </span>`).join('');
 
-    return `<div class="ship-reload-bar">${items}</div>`;
+    if (!statItems && !reloadItems) return '';
+
+    const sep = (statItems && reloadItems) ? '<span class="vital-sep" aria-hidden="true"></span>' : '';
+    return `<div class="ship-vitals">${statItems}${sep}${reloadItems}</div>`;
 }
 
 // ===== Fleet Summary =====
@@ -625,9 +629,10 @@ function _renderTechBonuses(techBonuses) {
     if (!techBonuses) {
         const basePath = resolveUrl('shipgirl/shipgirl-tracker');
         techBonusList.innerHTML = `
-            <div class="tech-bonus-item">
-                <span>함대 기술 데이터 없음</span>
-                <a href="${basePath}" class="tech-bonus-value" style="text-decoration:underline;">함순이 육성트래커로 이동</a>
+            <div class="page-status page-status-empty page-status--compact">
+                <span class="material-symbols-outlined page-status-icon">info</span>
+                <p class="page-status-msg">함대 기술 데이터 없음</p>
+                <a class="page-status-action" href="${basePath}">함순이 육성트래커로 이동</a>
             </div>
         `;
         return;
@@ -684,13 +689,12 @@ function _renderPassiveSkills(fleetShips) {
     }
 
     if (skillEntries.length === 0) {
-        const item = document.createElement('div');
-        item.className = 'passive-skill-item';
-        const message = document.createElement('span');
-        message.textContent = '적용 가능한 패시브 스킬 없음';
-        item.appendChild(message);
-        passiveSkillList.innerHTML = '';
-        passiveSkillList.appendChild(item);
+        passiveSkillList.innerHTML = `
+            <div class="page-status page-status-empty page-status--compact">
+                <span class="material-symbols-outlined page-status-icon">info</span>
+                <p class="page-status-msg">적용 가능한 패시브 스킬 없음</p>
+            </div>
+        `;
         return;
     }
 
@@ -862,10 +866,25 @@ export async function renderDamagePanel(container) {
             <button class="btn btn-sm btn-outline" data-action="dmg-open-picker">변경</button>
         </div>`;
 
+    const missingNote = result.target && result.target.bossMissing
+        ? `<div class="dmg-missing-note">저장된 보스 데이터를 찾을 수 없어 기본 타겟으로 계산했습니다.</div>`
+        : '';
+
+    const windowField =
+        `<label class="dmg-edit-label">제한 시간
+            <input class="dmg-edit-input" type="number" min="10" max="600" step="10"
+                   data-action="dmg-window" aria-label="제한 시간(초)"
+                   value="${escapeHtml(String(tgt.window))}" />
+        </label>`;
+
     // Clear-check row (uses the boss/preset HP the engine carried on the result).
     const cc = result.clearCheck;
     let clearCheckRow = '';
-    if (cc) {
+    // Gated to a RESOLVED META target: the generic presets carry HP large enough
+    // that the verdict reads 미클리어 essentially always, which is noise rather
+    // than a check. bossMissing means we fell back to a preset, so the same
+    // applies there even though tgt.kind is still 'meta'.
+    if (cc && isMeta && !(result.target && result.target.bossMissing)) {
         const ttk = Number.isFinite(cc.ttkSeconds) ? `${cc.ttkSeconds.toFixed(1)}초` : '—';
         const verdict = cc.clears
             ? `<span class="dmg-clear-ok">${escapeHtml(String(tgt.window))}초 내 클리어 ✓</span>`
@@ -888,7 +907,7 @@ export async function renderDamagePanel(container) {
         ['antiAir', '대공'],
         ['armorReduce', '경감'],
     ];
-    const editRow = editFields.map(([k, lab]) =>
+    const editRow = windowField + editFields.map(([k, lab]) =>
         `<label class="dmg-edit-label">${escapeHtml(lab)}<input class="dmg-edit-input" type="number" data-action="dmg-edit" data-field="${k}" value="${escapeHtml(String(ov[k] != null ? ov[k] : ''))}" placeholder="기본" /></label>`
     ).join('');
 
@@ -910,6 +929,9 @@ export async function renderDamagePanel(container) {
         if (!r) return '';
         return `<span class="dmg-cmp-cell"><em>${escapeHtml(preset.shipClass)}</em>${_fmt(r.dps)}</span>`;
     }).join('');
+    const compareRow = compareStrip
+        ? `<div class="dmg-compare"><span class="dmg-cmp-key">장갑별 DPS</span>${compareStrip}</div>`
+        : '';
 
     container.innerHTML = `
         <div class="dmg-panel">
@@ -917,6 +939,7 @@ export async function renderDamagePanel(container) {
                 <span class="dmg-panel-title">피해 계산 (${escapeHtml(String(tgt.window))}초)</span>
             </div>
             ${targetSelectRow}
+            ${missingNote}
             ${adaptRow}
             <div class="dmg-edit-row">${editRow}</div>
             <div class="dmg-ship-list">${perShipRows}</div>
@@ -927,7 +950,7 @@ export async function renderDamagePanel(container) {
                 <strong class="dmg-total-val">${_fmt(result.dps)}</strong>
             </div>
             ${clearCheckRow}
-            <div class="dmg-compare">${compareStrip}</div>
+            ${compareRow}
         </div>`;
 
     // After updating the panel DOM, re-render the per-weapon breakdown in ship cards

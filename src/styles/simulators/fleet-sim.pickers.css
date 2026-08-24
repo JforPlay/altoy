@@ -64,37 +64,27 @@
   gap: 4px;
 }
 
-.filter-chip {
-  padding: 3px 10px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  background: var(--section-bg);
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  font-family: inherit;
-  line-height: 1.4;
+/* 진영 ships ~27 chips. On the wrapping layout that is four rows, which pushes
+   the results grid below the fold, so cap it at exactly two rows and disclose
+   the rest. Deliberately NOT applied at mobile widths: there .filter-chips
+   switches to nowrap + horizontal scroll, and an overflow:hidden here would
+   outrank it (ID beats class) and strand 24 of the 27 chips with no way to
+   reach them. */
+@media (min-width: 641px) {
+  #ship-nation-filters {
+    max-height: 3.25rem;
+    overflow: hidden;
+  }
+
+  #ship-nation-filters.is-expanded {
+    max-height: none;
+  }
 }
 
-.filter-chip:hover {
-  border-color: var(--primary-color);
-  color: var(--primary-color);
+.filter-more-btn {
+  align-self: flex-start;
+  margin-top: 2px;
 }
-
-.filter-chip.active {
-  background: var(--primary-color);
-  border-color: var(--primary-color);
-  color: #fff;
-}
-
-/* Rarity-colored filter chips */
-.filter-chip[data-rarity="ur"].active  { background: var(--rarity-ur); border-color: var(--rarity-ur); }
-.filter-chip[data-rarity="ssr"].active { background: var(--rarity-ssr); border-color: var(--rarity-ssr); color: var(--rarity-ssr-text); }
-.filter-chip[data-rarity="sr"].active  { background: var(--rarity-sr); border-color: var(--rarity-sr); }
-.filter-chip[data-rarity="r"].active   { background: var(--rarity-r); border-color: var(--rarity-r); }
-.filter-chip[data-rarity="n"].active   { background: var(--rarity-n); border-color: var(--rarity-n); color: var(--rarity-n-text); }
 
 /* Picker item grid */
 .picker-grid {

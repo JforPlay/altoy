@@ -30,6 +30,35 @@ export const DISPLAY_STATS = [
     { key: 'reload',    label: '장전', battleAttr: 'loadSpeed' },
 ];
 
+/**
+ * Offensive headline stats for the always-on card strip, in strip order.
+ * Deliberately excludes 내구 (always non-zero, so it would take a slot on every
+ * card) and 기동/명중 (secondary) — the 스탯 전체 grid still shows all eight.
+ */
+const VITAL_STATS = ['firepower', 'aviation', 'torpedo', 'antiair', 'reload'];
+
+/**
+ * Pick the non-zero vitals for one ship, resolving labels through DISPLAY_STATS
+ * so the strip and the full grid can never disagree on wording.
+ *
+ * @param {object|null} stats calcResult.stats, or null before a calc lands
+ * @param {number} [max=5] hard cap on returned entries
+ * @returns {Array<{key: string, label: string, value: number}>}
+ */
+export function pickVitalStats(stats, max = 5) {
+    if (!stats) return [];
+    const out = [];
+    for (const key of VITAL_STATS) {
+        if (out.length >= max) break;
+        const value = stats[key];
+        if (!value) continue;
+        const meta = DISPLAY_STATS.find((s) => s.key === key);
+        if (!meta) continue;
+        out.push({ key, label: meta.label, value: Math.floor(value) });
+    }
+    return out;
+}
+
 /** Affinity bonus multipliers */
 const AFFINITY_BONUSES = {
     other:   1.0,

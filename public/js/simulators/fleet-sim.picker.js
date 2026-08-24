@@ -277,6 +277,15 @@ function _cacheDOM() {
     shipNationChips = document.getElementById('ship-nation-filters');
     shipGrid = document.getElementById('ship-picker-grid');
 
+    const moreBtn = document.getElementById('nation-filter-more');
+    if (moreBtn && shipNationChips) {
+        moreBtn.addEventListener('click', () => {
+            const expanded = shipNationChips.classList.toggle('is-expanded');
+            moreBtn.textContent = expanded ? '접기' : '더보기';
+            moreBtn.setAttribute('aria-expanded', String(expanded));
+        });
+    }
+
     equipSearchInput = document.getElementById('equip-picker-search');
     equipRarityChips = document.getElementById('equip-rarity-filters');
     equipGrid = document.getElementById('equip-picker-grid');
@@ -326,7 +335,7 @@ function _setupEventListeners() {
     // Boss category chips (일반 / META)
     if (bossCategoryChips) {
         bossCategoryChips.addEventListener('click', (e) => {
-            const chip = e.target.closest('.filter-chip');
+            const chip = e.target.closest('.chip');
             if (!chip) return;
             const val = chip.dataset.category;
             bossFilters.category = bossFilters.category === val ? null : val;
@@ -355,7 +364,7 @@ function _setupEventListeners() {
     // Ship type chip clicks (event delegation)
     if (shipTypeChips) {
         shipTypeChips.addEventListener('click', (e) => {
-            const chip = e.target.closest('.filter-chip');
+            const chip = e.target.closest('.chip');
             if (!chip) return;
 
             const typeValue = chip.dataset.type;
@@ -375,7 +384,7 @@ function _setupEventListeners() {
     // Ship rarity chip clicks (event delegation)
     if (shipRarityChips) {
         shipRarityChips.addEventListener('click', (e) => {
-            const chip = e.target.closest('.filter-chip');
+            const chip = e.target.closest('.chip');
             if (!chip) return;
 
             const rarityValue = chip.dataset.rarity;
@@ -394,7 +403,7 @@ function _setupEventListeners() {
     // Ship nationality chip clicks (event delegation)
     if (shipNationChips) {
         shipNationChips.addEventListener('click', (e) => {
-            const chip = e.target.closest('.filter-chip');
+            const chip = e.target.closest('.chip');
             if (!chip) return;
 
             const nationValue = chip.dataset.nation;
@@ -413,7 +422,7 @@ function _setupEventListeners() {
     // Equip rarity chip clicks (event delegation)
     if (equipRarityChips) {
         equipRarityChips.addEventListener('click', (e) => {
-            const chip = e.target.closest('.filter-chip');
+            const chip = e.target.closest('.chip');
             if (!chip) return;
 
             const rarityValue = chip.dataset.rarity;
@@ -518,7 +527,7 @@ function _populateShipTypeChips(ships) {
         if (!typeName) continue;
 
         const btn = document.createElement('button');
-        btn.className = 'filter-chip';
+        btn.className = 'chip';
         btn.type = 'button';
         btn.setAttribute('aria-pressed', 'false');
         btn.dataset.type = String(typeId);
@@ -548,10 +557,11 @@ function _populateShipRarityChips(ships) {
         if (!raritySet.has(rarity)) continue;
 
         const btn = document.createElement('button');
-        btn.className = 'filter-chip';
+        btn.className = `chip chip--rarity rarity-${rarity}`;
         btn.type = 'button';
         btn.setAttribute('aria-pressed', 'false');
-        // Use lowercase for CSS matching (.filter-chip[data-rarity="ssr"].active)
+        // .chip--rarity + the rarity.css palette class drive the active fill;
+        // dataset.rarity stays lowercase because the filter logic reads it.
         btn.dataset.rarity = rarity.toLowerCase();
         btn.textContent = RARITY_DISPLAY[rarity] || rarity;
         frag.appendChild(btn);
@@ -582,7 +592,7 @@ function _populateShipNationChips(ships) {
         if (!natName) continue;
 
         const btn = document.createElement('button');
-        btn.className = 'filter-chip';
+        btn.className = 'chip';
         btn.type = 'button';
         btn.setAttribute('aria-pressed', 'false');
         btn.dataset.nation = String(natId);
@@ -611,10 +621,11 @@ function _populateEquipRarityChips(equips) {
         if (!raritySet.has(rarity)) continue;
 
         const btn = document.createElement('button');
-        btn.className = 'filter-chip';
+        btn.className = `chip chip--rarity rarity-${rarity}`;
         btn.type = 'button';
         btn.setAttribute('aria-pressed', 'false');
-        // Use lowercase for CSS matching (.filter-chip[data-rarity="ssr"].active)
+        // .chip--rarity + the rarity.css palette class drive the active fill;
+        // dataset.rarity stays lowercase because the filter logic reads it.
         btn.dataset.rarity = rarity.toLowerCase();
         btn.textContent = RARITY_DISPLAY[rarity] || rarity;
         frag.appendChild(btn);
@@ -635,7 +646,7 @@ function _populateEquipRarityChips(equips) {
 function _updateChipStates(container, activeValue, dataAttr) {
     if (!container) return;
 
-    const chips = container.querySelectorAll('.filter-chip');
+    const chips = container.querySelectorAll('.chip');
     for (const chip of chips) {
         if (activeValue != null && chip.dataset[dataAttr] === activeValue) {
             chip.classList.add('active');
@@ -827,7 +838,7 @@ function _populateBossCategoryChips() {
     const frag = document.createDocumentFragment();
     for (const [val, label] of cats) {
         const btn = document.createElement('button');
-        btn.className = 'filter-chip';
+        btn.className = 'chip';
         btn.type = 'button';
         btn.setAttribute('aria-pressed', 'false');
         btn.dataset.category = val;

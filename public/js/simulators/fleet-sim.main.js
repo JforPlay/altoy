@@ -17,6 +17,7 @@ import {
     renderStatus,
     syncedStorage,
     IMG_FALLBACKS,
+    createImgElement,
 } from '../utils.js';
 import {
     MAX_SAVE_SLOTS, SAVES_VERSION, parseSaves, migrateSaves,
@@ -291,7 +292,21 @@ function setupEventListeners() {
     // Each edit triggers a full renderFleet + 4 async damage calcs, so coalesce
     // rapid keystrokes; capture field+value at fire time (element may change).
     let _dmgEditTimer = null;
+    let _dmgWindowTimer = null;
     page.addEventListener('input', (e) => {
+        const winEl = e.target.closest('[data-action="dmg-window"]');
+        if (winEl) {
+            const raw = winEl.value.trim();
+            clearTimeout(_dmgWindowTimer);
+            _dmgWindowTimer = setTimeout(() => {
+                const n = Number(raw);
+                if (Number.isFinite(n) && n >= 10 && n <= 600) {
+                    setDamageTarget({ window: Math.round(n) });
+                }
+            }, 300);
+            return;
+        }
+
         const actionEl = e.target.closest('[data-action="dmg-edit"]');
         if (!actionEl) return;
         const field = actionEl.dataset.field;
@@ -748,20 +763,21 @@ function _renderSaveSlotList() {
         if (save.target && save.target.bossId != null) {
             const boss = getMetaBoss(save.target.bossId);
             const bossShip = getShipByGid(save.target.bossId);
-            if (boss || bossShip) {
+            const portraitUrl = bossShip && bossShip.skin_id ? getShipPortraitUrl(bossShip.skin_id) : '';
+            const hasTier = save.target.tier != null;
+            // Only build the badge when it will actually carry something — the old
+            // guard (boss || bossShip) could emit a childless 0x0 div.
+            if (portraitUrl || hasTier) {
                 bossBadge = document.createElement('div');
                 bossBadge.className = 'save-slot-boss';
-                bossBadge.title = boss ? boss.name : '';
-                if (bossShip && bossShip.skin_id) {
-                    const img = document.createElement('img');
-                    img.className = 'save-slot-boss-portrait';
-                    img.src = getShipPortraitUrl(bossShip.skin_id);
-                    img.alt = boss ? boss.name : '';
-                    img.loading = 'lazy';
-                    img.dataset.fallback = IMG_FALLBACKS.DEFAULT;
-                    bossBadge.appendChild(img);
+                bossBadge.title = (boss && boss.name) || (bossShip && bossShip.name) || '';
+                if (portraitUrl) {
+                    bossBadge.appendChild(createImgElement(portraitUrl, bossBadge.title, {
+                        className: 'save-slot-boss-portrait',
+                        fallback: IMG_FALLBACKS.DEFAULT,
+                    }));
                 }
-                if (save.target.tier != null) {
+                if (hasTier) {
                     const tierChip = document.createElement('span');
                     tierChip.className = 'save-slot-boss-tier';
                     tierChip.textContent = `T${save.target.tier}`;

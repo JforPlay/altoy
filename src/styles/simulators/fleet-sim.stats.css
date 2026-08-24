@@ -153,7 +153,7 @@
   opacity: 0.8;
 }
 
-/* ===== RELOAD ITEMS (used in .ship-reload-bar) ===== */
+/* ===== RELOAD ITEMS (used in .ship-vitals) ===== */
 
 .reload-item {
   display: flex;
@@ -254,5 +254,15 @@
   border-radius: var(--radius-xs);
   object-fit: cover;
   flex-shrink: 0;
+}
+
+/* --accent-blue is a FILL token (theme.css:132) and measures 4.47:1 as text on
+   --card-bg in dark mode, under the 4.5:1 AA floor. The paired --accent-blue-text
+   variant inverts per theme and clears 5:1 in both. Size matches the sibling
+   .page-status-msg, which inherits 0.85rem from .page-status--compact. */
+.summary-panel .page-status-action {
+  font-size: 0.85rem;
+  color: var(--accent-blue-text);
+  text-decoration: underline;
 }
 

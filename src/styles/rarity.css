@@ -81,3 +81,9 @@
   50%  { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+
+/* The UR badge loops forever; hold it on a static frame for users who asked for
+   reduced motion. Shared file — this applies to every rarity-badge consumer. */
+@media (prefers-reduced-motion: reduce) {
+  .rarity-badge.rarity-UR { animation: none; }
+}
