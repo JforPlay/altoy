@@ -14,6 +14,7 @@ import '../../styles/shipgirl/shipgirl-tracker.controls.css';
 import '../../styles/shipgirl/shipgirl-tracker.responsive.css';
 import '../../styles/shipgirl/shipgirl-tracker.goal.css';
 import '../../styles/shipgirl/shipgirl-tracker.ledger.css';
+import '../../styles/shipgirl/shipgirl-tracker.wall.css';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
@@ -44,7 +45,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <div class="info-icon"><i class="fas fa-check-square"></i></div>
                     <div class="info-content">
                         <h3>보유 체크</h3>
-                        <p>상단 <strong>보기 전환</strong>으로 장부형 목록/카드형 보기를 바꿀 수 있습니다. 보유·풀돌·Lv120 체크박스를 누르면 기술/진영 점수에 반영되고, 육성 레벨(성정 유닛)·개장·호감작·스작 같은 육성 기록도 함께 남길 수 있습니다.</p>
+                        <p>상단 <strong>보기 전환</strong>을 누를 때마다 <strong>목록형 → 카드형 → 요약형</strong> 순으로 바뀝니다. 보유·풀돌·Lv120 체크박스를 누르면 기술/진영 점수에 반영되고, 육성 레벨(성정 유닛)·개장·호감작·스작 같은 육성 기록도 함께 남길 수 있습니다.</p>
+                        <p><strong>요약형 보기</strong>는 모든 함순이를 작은 타일로 한눈에 봅니다. <strong>지표</strong>를 육성 레벨 / 스작 / 호감작 중에서 고르면 타일 아래 막대가 그 지표의 진행도를 나타내고, 타일을 <strong>누르면 한 단계 위</strong>로 올라갑니다. <strong>Shift+클릭</strong>·<strong>우클릭</strong>(모바일은 <strong>길게 누르기</strong>)은 한 단계 내립니다. 미획득 함순이는 어떤 지표에서든 흑백으로 표시됩니다. 정렬은 지표를 바꿀 때와 <strong>재정렬</strong>을 누를 때만 다시 계산되므로, 연속으로 표시하는 동안 타일이 움직이지 않습니다.</p>
                     </div>
                 </div>
                 <div class="info-step">
@@ -135,6 +137,26 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
         <!-- Active filter chips -->
         <div class="st-chips-row" id="filter-chips"></div>
+    </div>
+
+    <!-- 요약 wall 지표 selector. Deliberately OUTSIDE .st-control-surface: a row
+         inside that sticky panel pushes its bottom edge down over the summary
+         strip. It belongs with the grid it drives, exactly like #ledger-head.
+         Visibility is owned by showElement/hideElement only (see applyView) —
+         never set inline display on this element. -->
+    <div class="st-wall-metrics hidden" id="wall-metric-row">
+        <span class="st-wall-metrics-label">지표</span>
+        <div class="btn-group" id="wall-metric-group" role="group" aria-label="요약 지표 선택">
+            <button type="button" class="btn btn-secondary btn-sm is-active" data-metric="lv" aria-pressed="true">육성 레벨</button>
+            <button type="button" class="btn btn-secondary btn-sm" data-metric="skl" aria-pressed="false">스작</button>
+            <button type="button" class="btn btn-secondary btn-sm" data-metric="aff" aria-pressed="false">호감작</button>
+        </div>
+        <button type="button" class="btn btn-outline btn-sm" id="wall-sort-btn">
+            <span class="material-symbols-outlined">swap_vert</span>
+            <span>높은 순으로 재정렬</span>
+        </button>
+        <span class="st-wall-hint st-wall-hint--pointer">타일을 누르면 한 단계 올라가고, Shift+클릭·우클릭은 내려갑니다</span>
+        <span class="st-wall-hint st-wall-hint--touch">타일을 누르면 한 단계 올라가고, 길게 누르면 내려갑니다</span>
     </div>
 
     <!-- Ship list. Cards is the default view, so the ledger head starts hidden —

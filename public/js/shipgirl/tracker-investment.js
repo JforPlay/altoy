@@ -19,6 +19,28 @@ export const AFF_LABELS = ['호감작 안함', '100 예정', '100 완료', '200 
 export const SKL_LABELS = ['스작 안함', '스작 예정', '스작 진행중', '스작 완료'];
 export const MEMO_MAX = 500;
 
+const GET = 1, LEVEL = 2, UPGRADE = 4;
+
+/**
+ * The one progress ladder, as (mask, cap) pairs. The sheet codec IMPORTS this
+ * rather than declaring its own copy — the sheet's 미획득/획득/풀돌/120/125
+ * column and the 요약 wall's step gesture are the same five states, and they
+ * silently disagreed once already (importing `120` set the Lv120 bit; clicking
+ * the 120 cap stop did not). Keep them one table.
+ */
+export const PROGRESS_RUNGS = [
+    { mask: 0, cap: 0 },                        // 미획득
+    { mask: GET, cap: 0 },                      // 보유
+    { mask: GET | UPGRADE, cap: 0 },            // 풀돌
+    { mask: GET | UPGRADE | LEVEL, cap: 4 },    // Lv120
+    { mask: GET | UPGRADE | LEVEL, cap: 5 },    // Lv125
+];
+
+// Site wording for the rungs above — deliberately NOT the sheet's vocabulary
+// (the site says 보유 where the sheet says 획득), which is why the codec keeps
+// its own display strings while sharing the state table.
+export const RUNG_LABELS = ['미획득', '보유', '풀돌', 'Lv120', 'Lv125'];
+
 // 성정 유닛(u1, item 15008) / 유닛II(u2, item 15012) per break, by rarity.
 // Source: AzurLaneLuaScripts KR sharecfg/ship_level.lua need_item_rarity2..6
 // (rarity codes 2..6 = N/R/SR/SSR/UR); breaks at Lv100/105/110/115/120.
@@ -123,6 +145,35 @@ export function applyCapChange(mask, newCap) {
     if (newCap >= 4) m |= 2;       // level on — a 120 cap IS Lv120 reached
     else m &= ~2;                  // level off
     return { mask: m, cap: newCap };
+}
+
+/**
+ * Which rung a ship sits on, tolerant of off-ladder state — the same priority
+ * the sheet export uses. A cap of 1-3 (Lv105/110/115) has been unsettable since
+ * the 육성 레벨 bar narrowed to 120/125, but older imports still carry it; it
+ * reads as 풀돌 rather than falling off the ladder, and normalises on the next
+ * step. Cap wins over the level bit only at 5, so a corrupt cap-4-without-level
+ * record also degrades to the highest rung its mask actually justifies.
+ */
+export function progressRung(mask, cap) {
+    if ((cap || 0) >= 5) return 4;
+    if (mask & LEVEL) return 3;
+    if (mask & UPGRADE) return 2;
+    if (mask & GET) return 1;
+    return 0;
+}
+
+/**
+ * One step along PROGRESS_RUNGS, clamped at both ends. Returns the canonical
+ * state for the landing rung, so stepping is also what normalises an
+ * off-ladder record. `rung` is returned so callers can detect a no-op at the
+ * ends without recomputing.
+ */
+export function stepRung(mask, cap, dir) {
+    const rung = Math.min(
+        PROGRESS_RUNGS.length - 1,
+        Math.max(0, progressRung(mask, cap) + (dir > 0 ? 1 : -1)));
+    return { ...PROGRESS_RUNGS[rung], rung };
 }
 
 /**

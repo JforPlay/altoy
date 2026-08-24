@@ -21,7 +21,7 @@
 
 import { parseCsv, headerIndex } from '../csv.js';
 import { normalizeRomanNumerals } from '../utils.js';
-import { MEMO_MAX } from './tracker-investment.js';
+import { MEMO_MAX, PROGRESS_RUNGS } from './tracker-investment.js';
 
 // ===== Sheet vocabulary =====
 
@@ -38,15 +38,10 @@ const LEGACY_AFF = ['호감작'];
 const LEGACY_SKL = ['스작', '스작 예정', '스작 중', '스작 완료'];
 
 // Progress ladder → the FROZEN 3-bit mask (get=1, level=2, upgrade=4, shared
-// with research-tracker/fleet-sim) plus the cap it implies.
-const GET = 1, LEVEL = 2, UPGRADE = 4;
-const PROGRESS_STATE = [
-    { mask: 0, cap: 0 },                        // 미획득
-    { mask: GET, cap: 0 },                      // 획득
-    { mask: GET | UPGRADE, cap: 0 },            // 풀돌
-    { mask: GET | UPGRADE | LEVEL, cap: 4 },    // 120
-    { mask: GET | UPGRADE | LEVEL, cap: 5 },    // 125
-];
+// with research-tracker/fleet-sim) plus the cap it implies. IMPORTED, not
+// declared here: the wall's step gesture walks the same five states, and a
+// second copy is how the two drifted apart before. Only the display strings
+// above stay local — the sheet says 획득 where the site says 보유.
 
 // Sheet ID prefixes → dex band offset. Plain digits are the dex id as-is.
 const ID_BANDS = { Z: 10000, P: 20000, M: 30000 };
@@ -212,7 +207,7 @@ export function parseSheet(text, { ships } = {}) {
         if (progress) {
             const idx = PROGRESS_INDEX.get(squash(progress).toLowerCase());
             if (idx === undefined) bad = `획득/육성 여부 값을 알 수 없습니다: ${progress}`;
-            else { mask = PROGRESS_STATE[idx].mask; inv.cap = PROGRESS_STATE[idx].cap; }
+            else { mask = PROGRESS_RUNGS[idx].mask; inv.cap = PROGRESS_RUNGS[idx].cap; }
         }
 
         for (const [key, index, label] of [['skl', SKL_INDEX, '스작'], ['aff', AFF_INDEX, '호감작']]) {

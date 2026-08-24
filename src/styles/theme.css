@@ -139,6 +139,9 @@
   --accent-coral:       #ff6b6b;
   --accent-amber:       #f59e0b;
   --accent-purple:      #9b59b6;
+  /* Dark enough to carry #fff (4.58:1) — unlike --accent-coral (2.9:1), which
+     is a tint, not a fill for text. */
+  --accent-pink:        #d6336c;
   --accent-teal:        #14b8a6;
   --accent-slate:       #2d3748;
   --accent-slate-light: #4a5568;

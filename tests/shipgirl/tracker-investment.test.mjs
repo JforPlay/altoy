@@ -3,7 +3,9 @@ import assert from 'node:assert/strict';
 import {
     parseInvestment, investedCost, nextBreakCost, sumInvestment, rosterTotal,
     BREAK_LEVELS, applyCapChange, applyMaskChange, MEMO_MAX,
+    PROGRESS_RUNGS, RUNG_LABELS, progressRung, stepRung,
 } from '../../public/js/shipgirl/tracker-investment.js';
+import { SHEET_PROGRESS } from '../../public/js/shipgirl/tracker-sheet-codec.js';
 
 test('parseInvestment: null/array/garbage -> {}', () => {
     assert.deepEqual(parseInvestment(null), {});
@@ -93,4 +95,68 @@ test('applyMaskChange couples per changed control', () => {
     // plain checks don't invent caps
     assert.deepEqual(applyMaskChange(1, 0, 'get', true), { mask: 1, cap: 0 });
     assert.deepEqual(applyMaskChange(5, 0, 'upgrade', true), { mask: 5, cap: 0 });
+});
+
+// ===== 요약 wall ladder =====
+
+test('PROGRESS_RUNGS is the single ladder the sheet codec also speaks', () => {
+    // One rung per sheet value. If these ever diverge, importing "120" and
+    // clicking the 120 stop stop meaning the same thing — the exact bug the
+    // shared table exists to prevent.
+    assert.equal(PROGRESS_RUNGS.length, SHEET_PROGRESS.length);
+    assert.equal(RUNG_LABELS.length, PROGRESS_RUNGS.length);
+    // Every rung round-trips through progressRung.
+    PROGRESS_RUNGS.forEach(({ mask, cap }, i) => {
+        assert.equal(progressRung(mask, cap), i, `rung ${i}`);
+    });
+});
+
+test('progressRung: reads off-ladder state by export priority', () => {
+    assert.equal(progressRung(0, 0), 0);
+    assert.equal(progressRung(1, 0), 1);          // 보유
+    assert.equal(progressRung(5, 0), 2);          // 풀돌
+    assert.equal(progressRung(7, 4), 3);          // Lv120
+    assert.equal(progressRung(7, 5), 4);          // Lv125
+    // Caps 1-3 are unsettable in the UI but importable — they read as 풀돌,
+    // never as a rung of their own and never off the ladder.
+    assert.equal(progressRung(5, 1), 2);
+    assert.equal(progressRung(5, 3), 2);
+    // cap 5 wins over a missing level bit; a cap-4 record without it does not.
+    assert.equal(progressRung(5, 5), 4);
+    assert.equal(progressRung(5, 4), 2);
+    // Tolerates a missing cap entirely (undefined/null records).
+    assert.equal(progressRung(1, undefined), 1);
+    assert.equal(progressRung(7, null), 3);
+});
+
+test('stepRung: clamps at both ends and lands on canonical state', () => {
+    assert.deepEqual(stepRung(0, 0, 1), { mask: 1, cap: 0, rung: 1 });
+    assert.deepEqual(stepRung(5, 0, 1), { mask: 7, cap: 4, rung: 3 });
+    assert.deepEqual(stepRung(7, 4, 1), { mask: 7, cap: 5, rung: 4 });
+    assert.deepEqual(stepRung(7, 5, 1), { mask: 7, cap: 5, rung: 4 }); // clamped at top
+    assert.deepEqual(stepRung(7, 5, -1), { mask: 7, cap: 4, rung: 3 });
+    assert.deepEqual(stepRung(0, 0, -1), { mask: 0, cap: 0, rung: 0 }); // clamped at bottom
+    // Stepping is what normalises an off-ladder cap: 110 reads as 풀돌, so up
+    // lands on Lv120 and drops the orphan cap rather than preserving it.
+    assert.deepEqual(stepRung(5, 2, 1), { mask: 7, cap: 4, rung: 3 });
+    assert.deepEqual(stepRung(5, 2, -1), { mask: 1, cap: 0, rung: 1 });
+});
+
+test('stepRung never mutates or aliases the shared table', () => {
+    const before = JSON.stringify(PROGRESS_RUNGS);
+    const got = stepRung(0, 0, 1);
+    got.cap = 99;
+    assert.equal(PROGRESS_RUNGS[1].cap, 0);
+    assert.equal(JSON.stringify(PROGRESS_RUNGS), before);
+});
+
+test('every rung is a fixed point of applyCapChange', () => {
+    // The wall lands directly on PROGRESS_RUNGS states; the 육성 레벨 bar routes
+    // the same states through applyCapChange. A rung that is not a fixed point
+    // would make the two controls disagree about the same ship.
+    PROGRESS_RUNGS.forEach(({ mask, cap }, i) => {
+        const coupled = applyCapChange(mask, cap);
+        assert.deepEqual(coupled, { mask, cap }, `rung ${i}`);
+        assert.equal(progressRung(coupled.mask, coupled.cap), i, `rung ${i} round-trip`);
+    });
 });

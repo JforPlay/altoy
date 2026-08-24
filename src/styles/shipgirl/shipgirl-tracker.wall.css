@@ -1,0 +1,214 @@
+/* ===== 요약 wall view (container[data-view="wall"]) =====
+   Third CSS presentation of the SAME .ship-card DOM as the ledger row
+   (shipgirl-tracker.ledger.css) and the card (shipgirl-tracker.cards.css).
+   Everything collapses to a 72px square: the existing .lr-icon fills it, and
+   .lr-tile — the one node the wall adds to the card — sits on top carrying the
+   rarity badge, the 진영 code and the 지표 bar.
+
+   The bar reads value/max for whichever 지표 is active, written by
+   renderWallCell as `--wall-f` plus two dataset flags, so switching 지표 costs
+   one style write per card and no re-render. Every rule is scoped under
+   [data-view="wall"] so it never leaks into the other two layouts. */
+
+/* Hidden in ledger + cards; the wall re-shows it below. Bare class on purpose —
+   the card carries this node in all three views. */
+.lr-tile { display: none; }
+
+#ship-list-container[data-view="wall"] {
+  --grid-min: 72px;
+  --grid-gap: 6px;
+  padding: 0.75rem;
+  /* Square tiles never vary in height, but auto-fill rows still stretch the
+     last one without this. */
+  align-items: start;
+}
+
+[data-view="wall"] .ship-card {
+  position: relative;
+  aspect-ratio: 1;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--card-bg);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.2s ease, opacity 0.2s ease;
+}
+
+/* ledger.css's .lr-rar-* sets border-left-color with !important (it has to, to
+   beat the ledger row's own border-left reset). The wall has no rarity edge —
+   rarity moved into the badge — so the left border must be reset back with
+   matching !important + higher specificity, exactly as cards.css does. */
+[data-view="wall"] .lr-rar-n,
+[data-view="wall"] .lr-rar-r,
+[data-view="wall"] .lr-rar-sr,
+[data-view="wall"] .lr-rar-ssr,
+[data-view="wall"] .lr-rar-ur { border-left-color: var(--border-color) !important; }
+
+/* Only the portrait and the tile button survive. */
+[data-view="wall"] .ship-card > * { display: none; }
+[data-view="wall"] .ship-card > .lr-icon,
+[data-view="wall"] .ship-card > .lr-tile { display: block; }
+
+[data-view="wall"] .lr-icon { position: absolute; inset: 0; }
+[data-view="wall"] .ship-icon {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border: 0;
+  border-radius: 0;
+}
+
+/* --- The hit area --- */
+[data-view="wall"] .lr-tile {
+  position: absolute; inset: 0; z-index: 2;
+  width: 100%; height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  /* Suppresses the double-tap-zoom delay so a tap steps immediately, and keeps
+     the 500ms long-press (step down) from being read as a pan. */
+  touch-action: manipulation;
+}
+
+[data-view="wall"] .ship-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px -2px var(--overlay-strong);
+  z-index: 2;
+}
+[data-view="wall"] .ship-card:active { transform: none; }
+[data-view="wall"] .lr-tile:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+  z-index: 3;
+}
+
+/* --- Rarity badge + 진영 code, over a scrim so they hold against any portrait --- */
+[data-view="wall"] .lr-tile-top {
+  position: absolute; inset: 0 0 auto 0;
+  display: flex; align-items: center; gap: 3px;
+  padding: 3px 4px 9px;
+  background: linear-gradient(180deg, var(--overlay-60) 0%, var(--overlay-15) 60%, transparent 100%);
+}
+/* rarity.css owns the palette and the UR gradient; the wall only shrinks it. */
+[data-view="wall"] .lr-tile-rar {
+  flex: none;
+  padding: 1px 3px;
+  font-size: 0.55rem;
+  font-weight: 600;
+  line-height: 1.35;
+  border-radius: var(--radius-xs);
+}
+[data-view="wall"] .lr-tile-nat {
+  flex: 1 1 auto; min-width: 0;
+  text-align: right;
+  font-size: 0.56rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  /* Fixed white on a fixed dark scrim — theme-independent by construction, so
+     this is not the --primary-color fill trap. Collab codes (DateALiveV,
+     SENRAN…) are longer than the 3-4 letters a real 진영 uses and ellipsize. */
+  color: #fff;
+  text-shadow: 0 1px 2px var(--overlay-80);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* --- 지표 accent ---
+   One hue per ladder, stamped as data-wall-metric on BOTH the grid and the
+   지표 bar by syncMetricButtons, so the tile bars and the active toggle segment
+   inherit the same token and the wall's colour says which ladder you are
+   reading. All three are dark enough to carry the #fff the filled segment
+   uses — --accent-teal (2.5:1) and --accent-coral (2.9:1) are not, which is
+   why they are not in this map. */
+[data-wall-metric="lv"]  { --wall-accent: var(--accent-blue); }
+[data-wall-metric="skl"] { --wall-accent: var(--accent-purple); }
+[data-wall-metric="aff"] { --wall-accent: var(--accent-pink); }
+
+#wall-metric-group .btn.is-active {
+  background: var(--wall-accent, var(--accent-blue));
+  border-color: var(--wall-accent, var(--accent-blue));
+}
+
+/* --- The 지표 bar --- */
+[data-view="wall"] .lr-tile-bar {
+  position: absolute; inset: auto 0 0 0;
+  height: 6px;
+  background: var(--overlay-medium);
+}
+[data-view="wall"] .lr-tile-fill {
+  display: block;
+  height: 100%;
+  width: var(--wall-f, 0%);
+  background: var(--wall-accent, var(--accent-blue));
+  transition: width 0.18s ease, background-color 0.18s ease;
+}
+/* 완료 is carried by the FRAME, not by a second fill colour. The wall sorts
+   descending, so every maxed tile lands on the first screen — an amber fill
+   there covered the whole viewport and buried the 지표 accent the bar is
+   supposed to be announcing. A full-width bar already says "topped out"; the
+   ring just makes it legible at a glance without spending a hue on it. */
+[data-view="wall"] .ship-card[data-wall-top="1"] {
+  border-color: var(--wall-accent, var(--accent-blue));
+  box-shadow: inset 0 0 0 1px var(--wall-accent, var(--accent-blue));
+}
+
+/* Keyed to the `get` bit, NOT to the active 지표: a ship you don't own can't be
+   스작'd either, so it stays grey under all three. */
+[data-view="wall"] .ship-card[data-wall-owned="0"] { filter: grayscale(1); opacity: 0.4; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-view="wall"] .ship-card,
+  [data-view="wall"] .lr-tile-fill { transition: none; }
+  [data-view="wall"] .ship-card:hover { transform: none; }
+}
+
+/* ===== 지표 selector (only present in wall view) =====
+   A sibling of the grid, NOT a row inside .st-control-surface — inside that
+   sticky panel it had no side padding of its own and pushed the panel's bottom
+   border down under the summary strip. The box mirrors .st-control-surface
+   (core.css) so the bar's two edges line up with the panel it sits under. */
+.st-wall-metrics {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  max-width: 1400px;
+  width: calc(100% - 2rem);
+  margin: 0 auto;
+  padding: var(--spacing-sm) 0 0;
+}
+.st-wall-metrics-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+}
+#wall-sort-btn .material-symbols-outlined { font-size: 1.05rem; }
+
+/* The step gesture is the point of the wall and nothing else advertises it.
+   --text-secondary, not --text-muted: muted measures ~3.1:1 light at this size.
+   Two strings, not one: the down gesture is Shift+click / right-click with a
+   pointer and a 500ms long-press on touch, so a single line would name a
+   gesture half the readers don't have. */
+.st-wall-hint {
+  margin-left: auto;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+.st-wall-hint--touch { display: none; }
+
+@media (max-width: 860px) {
+  /* Past the wrap the bar is two rows already; the hint becomes its own
+     full-width caption line rather than a right-aligned scrap. */
+  .st-wall-hint {
+    margin-left: 0;
+    width: 100%;
+    line-height: 1.35;
+  }
+  .st-wall-hint--pointer { display: none; }
+  .st-wall-hint--touch { display: block; }
+}
+
+/* ===== Dark Mode ===== */
+body.dark-mode [data-view="wall"] .ship-card:hover { box-shadow: 0 3px 12px -2px var(--shadow-color); }

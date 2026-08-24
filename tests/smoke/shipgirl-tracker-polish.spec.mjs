@@ -28,6 +28,16 @@ test('no horizontal overflow at reviewed widths', async ({ page }) => {
     for (const width of [1440, 1024, 768, 390, 320]) {
         await boot(page, { width, height: 900 });
         expect(await bodyOverflow(page), `${width}px`).toBeLessThanOrEqual(0);
+        // 요약 is the one full-bleed layout — the other two are width-capped —
+        // and its 지표 bar wraps rather than shrinking, so it gets its own read.
+        // The view is a stored pref, so the previous width left it on 요약:
+        // cycle rather than assuming one click lands there.
+        const container = page.locator('#ship-list-container');
+        for (let i = 0; i < 3 && await container.getAttribute('data-view') !== 'wall'; i++) {
+            await page.locator('#view-toggle-btn').click();
+        }
+        await expect(container).toHaveAttribute('data-view', 'wall');
+        expect(await bodyOverflow(page), `${width}px wall`).toBeLessThanOrEqual(0);
     }
 });
 
@@ -77,6 +87,10 @@ test('cards is the default view and switching preserves state', async ({ page })
     await expect(page.locator('.ship-card .lr-detail').first()).toBeVisible();
 
     await page.locator('.ship-card [data-type="get"]').first().check();
+    // The toggle cycles 카드 → 요약 → 목록; state has to survive both hops,
+    // since all three are presentations of one card DOM.
+    await page.locator('#view-toggle-btn').click();
+    await expect(page.locator('#ship-list-container')).toHaveAttribute('data-view', 'wall');
     await page.locator('#view-toggle-btn').click();
     await expect(page.locator('#ship-list-container')).toHaveAttribute('data-view', 'ledger');
     await expect(page.locator('.ship-card [data-type="get"]').first()).toBeChecked();
@@ -84,7 +98,9 @@ test('cards is the default view and switching preserves state', async ({ page })
 
 test('sticky surface and ledger head do not overlap on desktop', async ({ page }) => {
     await boot(page, { width: 1440, height: 900 });
-    await page.locator('#view-toggle-btn').click(); // cards -> ledger
+    // cards -> wall -> ledger (the toggle cycles all three views)
+    await page.locator('#view-toggle-btn').click();
+    await page.locator('#view-toggle-btn').click();
     await expect(page.locator('#ledger-head')).toBeVisible();
     await page.mouse.wheel(0, 1500);
     await page.waitForTimeout(300);

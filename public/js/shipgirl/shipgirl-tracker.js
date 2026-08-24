@@ -7,7 +7,7 @@
  */
 
 import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeModal, setupModal, showElement, hideElement, syncedStorage, escapeHtml, RARITY_TIERS_DESC as rarityOrder, requireElements, renderStatus, loadPageData } from '../utils.js';
-import { parseInvestment, investedCost, sumInvestment, rosterTotal, applyCapChange, applyMaskChange, AFF_LABELS, SKL_LABELS, MEMO_MAX } from './tracker-investment.js';
+import { parseInvestment, investedCost, sumInvestment, rosterTotal, applyCapChange, applyMaskChange, progressRung, stepRung, AFF_LABELS, SKL_LABELS, RUNG_LABELS, MEMO_MAX } from './tracker-investment.js';
 import { setupSheetImport } from './tracker-sheet-io.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
 import { createStatusMenu } from './shipgirl-tracker.status-menu.js';
@@ -18,6 +18,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const GOAL_KEY = 'shipgirlTrackerSelectedGoal';
     const FILTER_KEY = 'shipgirlTrackerFilters';
     const VIEW_KEY = 'shipgirlTrackerView'; // UI pref — NOT in SYNCED_KEYS, on purpose
+    const WALL_METRIC_KEY = 'shipgirlTrackerWallMetric'; // ditto
+
+    // ===== 요약 wall =====
+
+    // The three ladders the wall can measure. `max` is the top step, so one bar
+    // renders value/max for all of them; `read` pulls from whichever store owns
+    // that field. 스작/호감작 need no new plumbing — the 기타 육성 chips already
+    // write inv.skl/inv.aff through setInv, so the tile just reaches the same
+    // setter with a different gesture.
+    const WALL_METRICS = {
+        lv:  { name: '육성 레벨', max: 4, labels: RUNG_LABELS,
+               read: (mask, rec) => progressRung(mask, rec.cap || 0) },
+        skl: { name: '스작',      max: 3, labels: SKL_LABELS,
+               read: (mask, rec) => rec.skl || 0 },
+        aff: { name: '호감작',    max: 4, labels: AFF_LABELS,
+               read: (mask, rec) => rec.aff || 0 },
+    };
+    let wallMetric = 'lv';
+    // Set by a long-press so the click it also fires doesn't step back up.
+    let wallLongFired = false;
 
     // Cap bar stops: [cap value stored, level shown]. Only the three levels players
     // actually park at — 유닛II is rare enough that Lv120 is the practical ceiling.
@@ -84,18 +104,33 @@ document.addEventListener('DOMContentLoaded', () => {
         cachedElements.totalScoreMax = document.getElementById('total-score-max');
     }
 
-    // ===== View Toggle (ledger/cards — local pref, not synced) =====
+    // ===== View Toggle (ledger/cards/wall — local pref, not synced) =====
 
-    /** Switches #ship-list-container between ledger rows and vertical cards. */
+    // The button cycles rather than being a segmented control: the mobile
+    // toolbar is a fixed repeat(4, 1fr) grid of exactly four buttons, and a
+    // third segment would need a row of its own. Each entry names the view it
+    // switches TO, which is what the label has always advertised.
+    const VIEW_CYCLE = {
+        ledger: { next: 'cards',  icon: 'grid_view', label: '카드형 보기' },
+        cards:  { next: 'wall',   icon: 'apps',      label: '요약형 보기' },
+        wall:   { next: 'ledger', icon: 'view_list', label: '목록형 보기' },
+    };
+
+    /** Switches #ship-list-container between ledger rows, cards and the 요약 wall. */
     function applyView(view) {
         cachedElements.shipListContainer.dataset.view = view;
         // #ledger-head visibility is owned by inline style.display ONLY — never mix with hideElement.
         const head = document.getElementById('ledger-head');
         if (head) head.style.display = view === 'ledger' ? '' : 'none';
-        // Button advertises the view it switches TO.
-        document.getElementById('view-toggle-icon').textContent = view === 'ledger' ? 'grid_view' : 'view_list';
-        document.getElementById('view-toggle-label').textContent = view === 'ledger' ? '카드형 보기' : '목록형 보기';
+        const metricRow = document.getElementById('wall-metric-row');
+        // The 지표 row is the opposite: owned by showElement/hideElement only.
+        if (metricRow) (view === 'wall' ? showElement : hideElement)(metricRow);
+        const meta = VIEW_CYCLE[view] || VIEW_CYCLE.cards;
+        document.getElementById('view-toggle-icon').textContent = meta.icon;
+        document.getElementById('view-toggle-label').textContent = meta.label;
         setStorageItem(VIEW_KEY, view);
+        if (view === 'wall') sortWall();
+        else clearWallOrder();
     }
 
     /**
@@ -332,6 +367,25 @@ document.addEventListener('DOMContentLoaded', () => {
             `<span class="lr-nextbreak"></span>`;
         card.appendChild(detail);
 
+        // Wall-view tile: one real button covering the whole tile, so Tab/Enter
+        // reach it and its aria-label can announce the ship's 지표 state. Hidden
+        // in the other two views (wall.css), and it carries the tile's own
+        // overlay chrome — the rarity badge reuses rarity.css verbatim, and the
+        // 진영 code is the `code` field already loaded for the sub-line above.
+        const tile = document.createElement('button');
+        tile.type = 'button';
+        tile.className = 'lr-tile';
+        tile.dataset.action = 'rung';
+        tile.innerHTML =
+            `<span class="lr-tile-top">`
+            + (ship.rarity
+                ? `<span class="rarity-badge rarity-${escapeHtml(String(ship.rarity))} lr-tile-rar">${escapeHtml(String(ship.rarity))}</span>`
+                : '')
+            + `<span class="lr-tile-nat">${escapeHtml(nationInfo?.code || '')}</span></span>`
+            + `<span class="lr-tile-bar"><span class="lr-tile-fill"></span></span>`;
+        card.appendChild(tile);
+        card._tile = tile;
+
         // Rarity edge color
         if (ship.rarity) card.classList.add(`lr-rar-${String(ship.rarity).toLowerCase()}`);
 
@@ -408,6 +462,95 @@ document.addEventListener('DOMContentLoaded', () => {
             ? `<i class="lr-dk">다음 목표</i>Lv${target === 4 ? 120 : 125} → 성정 유닛 ${(to.u1 - from.u1).toLocaleString()}`
                 + (to.u2 - from.u2 ? ` + 유닛II ${(to.u2 - from.u2).toLocaleString()}` : '')
             : (cap >= 5 ? `<i class="lr-dk">돌파</i>완료 (Lv125)` : '');
+
+        renderWallCell(card, ship, rec);
+    }
+
+    /**
+     * Wall-tile state for the active 지표. Written as dataset values + one custom
+     * property so the CSS draws the bar and the 미획득 treatment with no extra
+     * elements and no per-tile measurement. Lives inside renderInvestmentCells
+     * because every mutation path — checkbox, cap bar, chip, bulk op, sheet
+     * import — already funnels through there.
+     *
+     * 미획득 is keyed to the `get` bit rather than to the metric: a ship you
+     * don't own can't be 스작'd either, so it greys out under all three.
+     */
+    function renderWallCell(card, ship, rec) {
+        if (!card._tile) return;
+        const metric = WALL_METRICS[wallMetric];
+        const mask = getCardProgressState(card);
+        const value = metric.read(mask, rec);
+        card.dataset.wall = value;
+        card.dataset.wallTop = value === metric.max ? '1' : '0';
+        card.dataset.wallOwned = (mask & 1) ? '1' : '0';
+        card.style.setProperty('--wall-f', `${value / metric.max * 100}%`);
+        const state = `${ship.name} · ${metric.name} ${metric.labels[value]}`;
+        card._tile.setAttribute('aria-label',
+            value < metric.max ? `${state} — 누르면 다음 단계` : `${state} — 최고 단계`);
+        card._tile.title = state;
+    }
+
+    /** Re-read every tile after the 지표 changed (the per-card writes above only
+     *  ever run for the metric that was active at the time). */
+    function repaintWall() {
+        getShipCards().forEach(card => {
+            const gid = card.dataset.shipId;
+            renderWallCell(card, fullShipData[gid], getInv(gid));
+        });
+    }
+
+    /**
+     * Descending by the active 지표, using CSS `order` only — the DOM never
+     * moves, so ledger and cards are untouched when you switch back. Ties keep
+     * roster order. Deliberately NOT re-run on every step: re-sorting mid-sweep
+     * teleports the tile out from under the cursor, which is the one gesture
+     * the wall exists for. It runs on entry, on 지표 change, and on 재정렬.
+     */
+    function sortWall() {
+        const max = WALL_METRICS[wallMetric].max;
+        getShipCards().forEach(card => {
+            card.style.order = String(max - (Number(card.dataset.wall) || 0));
+        });
+    }
+
+    function clearWallOrder() {
+        getShipCards().forEach(card => { card.style.order = ''; });
+    }
+
+    /**
+     * Mirror the active 지표 onto the segmented control, and onto both elements
+     * that carry its accent — wall.css maps data-wall-metric to --wall-accent,
+     * which the tile bars and the filled segment both read. The grid and the
+     * 지표 bar are siblings, so each needs its own stamp.
+     */
+    function syncMetricButtons() {
+        document.querySelectorAll('#wall-metric-group button[data-metric]').forEach(btn => {
+            const on = btn.dataset.metric === wallMetric;
+            btn.classList.toggle('is-active', on);
+            btn.setAttribute('aria-pressed', String(on));
+        });
+        const metricRow = document.getElementById('wall-metric-row');
+        if (metricRow) metricRow.dataset.wallMetric = wallMetric;
+        cachedElements.shipListContainer.dataset.wallMetric = wallMetric;
+    }
+
+    /** One step along the active 지표 for one ship. */
+    function stepWall(card, gid, dir) {
+        const metric = WALL_METRICS[wallMetric];
+        const rec = getInv(gid);
+        const current = metric.read(getCardProgressState(card), rec);
+        const next = Math.min(metric.max, Math.max(0, current + dir));
+        if (next === current) return;
+        if (wallMetric === 'lv') {
+            const { mask, cap } = stepRung(getCardProgressState(card), rec.cap || 0, dir);
+            setInv(gid, { cap });
+            setCardMask(card, mask);
+        } else {
+            setInv(gid, { [wallMetric]: next });
+        }
+        renderInvestmentCells(card, gid);
+        updateInvestmentSummary();
     }
 
     /**
@@ -2150,6 +2293,7 @@ document.addEventListener('DOMContentLoaded', () => {
             filterDrawerBody: document.getElementById('filter-drawer-body'),
             searchBar: document.getElementById('search-bar'),
             viewToggleBtn: document.getElementById('view-toggle-btn'),
+            wallMetricGroup: document.getElementById('wall-metric-group'),
         };
         if (!requireElements(els, 'Shipgirl tracker')) return;
 
@@ -2172,12 +2316,30 @@ document.addEventListener('DOMContentLoaded', () => {
         rarityByGid = Object.fromEntries(Object.entries(fullShipData).map(([gid, s]) => [gid, s.rarity]));
         cacheDOMElements();
 
-        // Setup view toggle (ledger/cards)
-        // Cards is the default view; only an explicit stored 'ledger' opts out.
-        applyView(getStorageItem(VIEW_KEY, 'cards') === 'ledger' ? 'ledger' : 'cards');
+        // Setup view toggle (ledger/cards/wall)
+        // Cards stays the default; an unknown stored value falls back to it.
+        const storedMetric = getStorageItem(WALL_METRIC_KEY, 'lv');
+        if (WALL_METRICS[storedMetric]) wallMetric = storedMetric;
+        syncMetricButtons();
+        const storedView = getStorageItem(VIEW_KEY, 'cards');
+        applyView(VIEW_CYCLE[storedView] ? storedView : 'cards');
         els.viewToggleBtn.addEventListener('click', () => {
-            applyView(cachedElements.shipListContainer.dataset.view === 'ledger' ? 'cards' : 'ledger');
+            const current = cachedElements.shipListContainer.dataset.view;
+            applyView((VIEW_CYCLE[current] || VIEW_CYCLE.cards).next);
         });
+
+        // 지표 toggle — repaints every tile, then re-sorts, because the stored
+        // per-card values only ever describe the metric that was active.
+        els.wallMetricGroup.addEventListener('click', (e) => {
+            const btn = e.target.closest('button[data-metric]');
+            if (!btn || btn.dataset.metric === wallMetric) return;
+            wallMetric = btn.dataset.metric;
+            setStorageItem(WALL_METRIC_KEY, wallMetric);
+            syncMetricButtons();
+            repaintWall();
+            sortWall();
+        });
+        document.getElementById('wall-sort-btn').addEventListener('click', sortWall);
 
         // Sticky ledger-head offset (navbar + control surface) — surface height is live (wraps)
         updateStickyOffset();
@@ -2249,6 +2411,9 @@ document.addEventListener('DOMContentLoaded', () => {
         updateInvestmentSummary();
         applyFilters();
         calculateAndDisplayScores();
+        // applyView ran before a single card existed, so its sort was a no-op.
+        // Booting straight into a stored 요약 pref needs the order applied here.
+        if (cachedElements.shipListContainer.dataset.view === 'wall') sortWall();
 
         // Search setup
         setupSearch();
@@ -2298,7 +2463,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!card) return;
             const gid = card.dataset.shipId;
             const action = btn.dataset.action;
-            if (action === 'expand') {
+            if (action === 'rung') {
+                // A long-press already stepped down and browsers fire click after
+                // it; swallowing that click is what keeps the two from cancelling.
+                if (wallLongFired) { wallLongFired = false; return; }
+                stepWall(card, gid, e.shiftKey ? -1 : 1);
+            } else if (action === 'expand') {
                 const open = card.classList.toggle('lr-expanded');
                 card.querySelectorAll('[data-action="expand"]')
                     .forEach(b => b.setAttribute('aria-expanded', String(open)));
@@ -2337,6 +2507,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 openMemoModal(gid, card);
             }
         });
+
+        // Stepping DOWN in the wall. shift+click is handled in the click delegate
+        // above; these cover the pointers that have no shift key. A click mutates
+        // persisted state that feeds the fleet-tech scores, so a misclick has to
+        // be undoable in one gesture — the alternative (wrapping around at the top
+        // of the ladder) costs four clicks to correct.
+        let wallPressTimer = null;
+        cachedElements.shipListContainer.addEventListener('contextmenu', (e) => {
+            const btn = e.target.closest('[data-action="rung"]');
+            if (!btn) return;
+            e.preventDefault();
+            const card = btn.closest('.ship-card');
+            stepWall(card, card.dataset.shipId, -1);
+        });
+        cachedElements.shipListContainer.addEventListener('pointerdown', (e) => {
+            const btn = e.target.closest('[data-action="rung"]');
+            if (!btn || e.pointerType === 'mouse') return;
+            wallLongFired = false;
+            const card = btn.closest('.ship-card');
+            wallPressTimer = setTimeout(() => {
+                wallLongFired = true;
+                stepWall(card, card.dataset.shipId, -1);
+            }, 500);
+        });
+        ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev =>
+            cachedElements.shipListContainer.addEventListener(ev, () => clearTimeout(wallPressTimer)));
 
         // Cross-tab sync for GOAL_KEY only — progress sync is handled by progressStore above.
         // GOAL_KEY stores a bare string (legacy wire format) and is read by drive-sync.summary.js
