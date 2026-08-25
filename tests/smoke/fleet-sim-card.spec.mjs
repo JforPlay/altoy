@@ -109,3 +109,17 @@ test('identity exposes the level for the compact view, and the dead name wrapper
     // column; it is deleted rather than patched.
     await expect(card.locator('.ship-name-group')).toHaveCount(0);
 });
+
+test('every select-wrap select suppresses its native chrome', async ({ page }) => {
+    await page.goto(PAGE);
+    await addShip(page);
+    // The tier <select> only renders once a META target with >1 tier is chosen,
+    // so this asserts on whichever .select-wrap selects ARE on screen (today:
+    // just the affinity select) rather than forcing that flow into existence.
+    const selects = page.locator('.select-wrap select');
+    await expect(selects.first()).toBeVisible();
+    const appearances = await selects.evaluateAll((els) => els.map((el) => getComputedStyle(el).appearance));
+    for (const appearance of appearances) {
+        expect(appearance).toBe('none');
+    }
+});
