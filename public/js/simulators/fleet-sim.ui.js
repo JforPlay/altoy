@@ -281,19 +281,21 @@ function _buildIdentityHTML(slotIndex, ship, slotConfig) {
     return `
         <div class="ship-card-identity" data-level="${escapeHtml(String(level))}" data-rarity="${escapeHtml(rarityGrade)}">
             <span class="material-symbols-outlined drag-handle" title="드래그하여 이동">drag_indicator</span>
-            <img class="ship-portrait"
-                 src="${portraitUrl}"
-                 alt="${safeShipName}"
-                 role="button"
-                 tabindex="0"
-                 data-action="change-ship"
-                 data-slot="${slotIndex}"
-                 loading="lazy" />
+            <div class="ship-portrait-wrap">
+                <img class="ship-portrait"
+                     src="${portraitUrl}"
+                     alt="${safeShipName}"
+                     role="button"
+                     tabindex="0"
+                     data-action="change-ship"
+                     data-slot="${slotIndex}"
+                     loading="lazy" />
+                ${rarityBadge}
+            </div>
             <div class="ship-identity-main">
                 <div class="ship-name" title="${safeShipName}">${safeShipName}</div>
                 <div class="ship-identity-bottom">
-                    ${rarityBadge}
-                    <div class="ship-type-nation">${safeTypeNation}</div>
+                    <div class="ship-type-nation" title="${safeTypeNation}">${safeTypeNation}</div>
                     ${retrofitHTML}
                 </div>
             </div>
@@ -320,7 +322,6 @@ function _buildIdentityHTML(slotIndex, ship, slotConfig) {
             <div class="ship-card-actions">
                 <button class="btn btn-ghost btn-sm equip-code-btn" data-action="equip-code" data-slot="${slotIndex}"
                         title="이 함순이의 장비 코드 만들기 / 불러오기" aria-label="장비 코드">
-                    <span class="material-symbols-outlined">code</span>
                     <span class="equip-code-btn-label">장비 코드</span>
                 </button>
                 <button class="btn btn-close btn-sm" data-action="remove-ship" data-slot="${slotIndex}" title="제거" aria-label="제거">
@@ -454,7 +455,7 @@ function _buildSPSlotHTML(slotIndex, ship, slotConfig) {
                               data-action="change-sp-level"
                               data-slot="${slotIndex}">+${spConfig.level || 1}</span>
                     </div>
-                    <span class="equip-slot-caption"></span>
+                    <span class="equip-slot-caption" title="${safeName}">${safeName}</span>
                 </div>`;
         }
     }

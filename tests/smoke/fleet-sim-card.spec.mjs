@@ -6,11 +6,16 @@
  *   - the slot-type label survives only where it answers a question (empty
  *     slots keep it, a filled slot drops it for the equip name instead)
  *   - rarity reads as a badge and NOT as a border on the card
+ *   - the rarity chip rides the portrait's corner, freeing the meta line
  *   - the rarity badge stays a rectangular chip, not rarity.css's default pill
  *   - an empty fleet slot renders compact rather than reserving a populated
  *     card's full height
- *   - the card's action chrome is vertically centred in the identity row,
- *     not pinned to the top like the predecessor
+ *   - the card's action chrome and the config panel share the identity row's
+ *     top edge (the portrait fills the row, so top IS the shared datum now)
+ *   - 함종 · 진영 survives uncut on a 개장 ship at desktop width — the case the
+ *     identity row's width budget was rebalanced for
+ *   - the 장비 코드 button keeps a visible label at every width, since dropping
+ *     the `code` glyph left the label as its only content
  *   - the level stepper and 호감도 select share one grid column, so their
  *     edges line up by construction rather than by two intrinsic widths
  *     happening to agree
@@ -21,6 +26,8 @@
  *     original rule was scoped to
  *   - a filled equip slot captions the equip's own name, and both badges
  *     live inside the icon box rather than the caption row
+ *   - a generic 특수 장비 slot captions its weapon too, the same as the
+ *     dedicated-SP branch beside it
  *   - the efficiency badge is suppressed at exactly 100%, so a fully-fluent
  *     weapon slot doesn't print a redundant "100%"
  *   - equip slots grow fluidly with the card instead of holding a fixed 64px
@@ -47,6 +54,17 @@ async function addShip(page, slot = 0, nth = 3) {
     await expect(page.locator('#ship-picker-grid .picker-item').first()).toBeVisible();
     await page.locator('#ship-picker-grid .picker-item').nth(nth).click();
     await expect(page.locator(`.ship-card[data-slot="${slot}"] .equip-slot`).first()).toBeVisible();
+}
+
+/** 유니콘 is picked by name because the roster order gives no stable index for a
+ *  개장 ship, and the retrofit toggle is what squeezes the meta line. */
+async function addRetrofitShip(page, slot = 0) {
+    await page.locator(`.ship-card[data-slot="${slot}"] .ship-card-add`).click();
+    await expect(page.locator('#ship-picker-grid .picker-item').first()).toBeVisible();
+    await page.locator('#ship-picker-search').fill('유니콘');
+    await expect(page.locator('#ship-picker-grid .picker-item')).toHaveCount(1);
+    await page.locator('#ship-picker-grid .picker-item').first().click();
+    await expect(page.locator(`.ship-card[data-slot="${slot}"] .retrofit-toggle`)).toBeVisible();
 }
 
 test('vitals strip renders with content on a ship carrying no equipment', async ({ page }) => {
@@ -101,17 +119,82 @@ test('rarity badge stays rectangular, not a pill', async ({ page }) => {
     expect(parseFloat(radius)).toBeLessThanOrEqual(6);
 });
 
-test('card chrome is vertically centred in the identity row', async ({ page }) => {
+test('portrait, config panel and chrome share the identity row top edge', async ({ page }) => {
+    await page.goto(PAGE);
+    await addShip(page);
+    // One evaluate, one layout snapshot: three separate boundingBox() round-trips
+    // read the page at three different moments, and the card is still settling
+    // by a pixel or so as the panels below it resolve.
+    const g = await page.locator('.ship-card[data-slot="0"]').evaluate((card) => {
+        const box = (sel) => { const b = card.querySelector(sel).getBoundingClientRect(); return { y: b.top, h: b.height }; };
+        return { portrait: box('.ship-portrait'), panel: box('.ship-identity-controls'), chrome: box('.ship-card-actions') };
+    });
+    const geom = JSON.stringify(g);
+    // The portrait fills the row's content height, so the row has a real top
+    // datum. Centring the chrome against a stretched panel put it 23px below
+    // both; three cells on one edge is what makes the row read as aligned.
+    expect(Math.abs(g.panel.y - g.portrait.y), geom).toBeLessThan(2);
+    expect(Math.abs(g.chrome.y - g.portrait.y), geom).toBeLessThan(2);
+    // The panel is stretched to the row, so it ends level with the portrait too.
+    expect(Math.abs((g.panel.y + g.panel.h) - (g.portrait.y + g.portrait.h)), geom).toBeLessThan(2);
+});
+
+test('the rarity chip rides the portrait, not the meta line', async ({ page }) => {
     await page.goto(PAGE);
     await addShip(page);
     const card = page.locator('.ship-card[data-slot="0"]');
-    const row = await card.locator('.ship-card-identity').boundingBox();
-    const chrome = await card.locator('.ship-card-actions').boundingBox();
-    // The predecessor pinned the chrome with align-self: flex-start while every
-    // other cell was centred — that offset IS the reported misalignment.
-    const rowMid = row.y + row.height / 2;
-    const chromeMid = chrome.y + chrome.height / 2;
-    expect(Math.abs(rowMid - chromeMid)).toBeLessThan(4);
+    // Inside the portrait box: in the meta line the chip cost ~28px of the one
+    // row that also has to hold 함종 · 진영 and the 개장 toggle. Measured in one
+    // evaluate so both rects come from the same layout.
+    const inside = await card.evaluate((el) => {
+        const b = el.querySelector('.ship-rarity-badge').getBoundingClientRect();
+        const p = el.querySelector('.ship-portrait').getBoundingClientRect();
+        return b.left >= p.left - 1 && b.top >= p.top - 1
+            && b.right <= p.right + 1 && b.bottom <= p.bottom + 1;
+    });
+    expect(inside).toBe(true);
+    // And it is out of the meta line entirely, not merely repositioned.
+    await expect(card.locator('.ship-identity-bottom .ship-rarity-badge')).toHaveCount(0);
+});
+
+test('함종 · 진영 survives uncut beside the 개장 toggle', async ({ page }) => {
+    await page.goto(PAGE);
+    await addRetrofitShip(page);
+    const label = page.locator('.ship-card[data-slot="0"] .ship-type-nation');
+    // The worst case for the identity row's width budget: a 개장 ship spends
+    // ~55px of the meta line on the toggle. 경항모 · 로열 네이비 was clipped to
+    // "경항모 · 로..." before the row's gaps, panel and chrome were rebalanced.
+    const fits = await label.evaluate((el) => el.scrollWidth <= el.clientWidth);
+    expect(fits).toBe(true);
+});
+
+test('the 장비 코드 button keeps a visible label at mobile width', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(PAGE);
+    await addShip(page);
+    const label = page.locator('.ship-card[data-slot="0"] .equip-code-btn-label');
+    // The `code` glyph is gone, so the label is the button's only content: the
+    // old mobile rule that hid it now renders an empty bordered box.
+    await expect(label).toBeVisible();
+    const box = await label.boundingBox();
+    expect(box.width).toBeGreaterThan(20);
+});
+
+test('함종 · 진영 survives uncut at 390px too, and costs no card height', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(PAGE);
+    await addRetrofitShip(page);
+    const card = page.locator('.ship-card[data-slot="0"]');
+    const label = card.locator('.ship-type-nation');
+    // The meta line has ~104px here and the toggle takes 55 of it, so the toggle
+    // wraps to its own line instead of clipping the 진영.
+    expect(await label.evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(true);
+    // Three text lines still fit inside the portrait that sets the row height,
+    // so the wrap must not grow the card. One evaluate = one layout.
+    const fitsRow = await card.evaluate((el) =>
+        el.querySelector('.ship-identity-main').getBoundingClientRect().height
+        <= el.querySelector('.ship-portrait').getBoundingClientRect().height);
+    expect(fitsRow).toBe(true);
 });
 
 test('the level stepper and 호감도 select share one column', async ({ page }) => {
@@ -205,6 +288,23 @@ test('a filled equip slot captions the equip name and badges inside the icon box
     // Both badges live inside the icon box, not in the caption row beneath it.
     await expect(slot0.locator('.equip-slot-icon-box .equip-enhance-badge')).toHaveCount(1);
     await expect(slot0.locator('.equip-slot-caption .equip-eff-badge')).toHaveCount(0);
+});
+
+test('a generic 특수 장비 slot captions its weapon, like the dedicated one', async ({ page }) => {
+    await page.goto(PAGE);
+    await addShip(page);
+    const sp = page.locator('.ship-card[data-slot="0"] .equip-slot.sp-slot');
+    await expect(sp.locator('.equip-slot-caption--label')).toHaveCount(1);
+
+    await sp.click();
+    await expect(page.locator('#equip-picker-grid .picker-item').first()).toBeVisible();
+    const picked = (await page.locator('#equip-picker-grid .picker-item').first().innerText()).trim();
+    await page.locator('#equip-picker-grid .picker-item').first().click();
+
+    // The dedicated-SP branch has always named its weapon; the generic branch
+    // built the name and then emitted an empty caption span beside it.
+    await expect(sp).toHaveClass(/equipped/);
+    await expect(sp.locator('.equip-slot-caption')).toHaveText(picked);
 });
 
 test('the efficiency badge is suppressed at 100%', async ({ page }) => {

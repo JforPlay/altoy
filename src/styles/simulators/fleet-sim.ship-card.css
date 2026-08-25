@@ -74,7 +74,10 @@
   display: grid;
   grid-template-columns: auto auto minmax(0, 1fr) auto auto;
   align-items: center;
-  gap: var(--spacing-sm);
+  /* xs, not sm: four 12px gutters spent 48px of a 586px row on whitespace, and
+     the only flexible column — the ship's own name and 함종 · 진영 — is what paid
+     for it. */
+  gap: var(--spacing-xs);
   padding: var(--spacing-sm) var(--spacing-md);
   border-bottom: 1px solid var(--surface-border);
 }
@@ -103,9 +106,9 @@
   white-space: nowrap;
 }
 
-.ship-identity-bottom .retrofit-toggle {
-  margin-left: auto; /* flex-shrink: 0 already comes from the base .retrofit-toggle rule */
-}
+/* No margin-left: auto here. Pushing 개장 to the far edge of the identity column
+   parked it under the Lv. stepper with a void between it and the text it
+   modifies, so it read as part of the config block rather than of the ship. */
 
 /* Both control rows share ONE grid so the two labels land in one column and the
    two controls in another — the right edge is flush by construction instead of
@@ -114,12 +117,22 @@
    uses to align every control to the panel it drives). */
 .ship-identity-controls {
   display: grid;
-  grid-template-columns: auto minmax(92px, auto);
+  grid-template-columns: auto minmax(84px, auto);
   align-items: center;
-  justify-items: end;
+  justify-items: stretch;
   column-gap: var(--spacing-xs);
   row-gap: 4px;
   flex-shrink: 0;
+  /* An inset panel, so the gap the 1fr identity column leaves reads as a gutter
+     between two modules instead of as dead space beside two stray widgets.
+     Stretched to the row so its edges line up with the portrait opposite it —
+     centred, it was a third vertical anchor beside the portrait and the chrome. */
+  align-self: stretch;
+  align-content: center;
+  padding: var(--spacing-xs);
+  background: var(--overlay-lightest);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-sm);
 }
 
 .ship-identity-controls .config-group { display: contents; }
@@ -130,7 +143,28 @@
   width: 100%;
 }
 
+/* Both control rows are the same height so the panel reads as a matched pair;
+   the stepper is a bordered .btn-group and the select a bordered input, and left
+   to their own padding they landed 3px apart. */
+.ship-identity-controls .level-stepper,
+.ship-identity-controls .select-wrap {
+  min-height: 24px;
+}
+
+.ship-identity-controls .level-stepper { align-items: stretch; }
+.ship-identity-controls .config-select { height: 100%; }
+
+/* Anchors the rarity chip. */
+.ship-portrait-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
 .ship-portrait {
+  /* block, not the inline default: baseline-aligned, the image floated ~2px
+     above its own wrapper's box, so the portrait no longer started on the row's
+     top edge the panel and chrome sit on. */
+  display: block;
   width: 72px;
   height: 72px;
   border-radius: var(--radius-md);
@@ -159,26 +193,38 @@
   color: var(--text-muted);
 }
 
-/* rarity.css defaults .rarity-badge to a pill radius; the house rule is
+/* The grade rides the portrait's corner instead of the meta line below it. In
+   the meta line it cost ~28px of the one row that has to hold 함종 · 진영 and the
+   개장 toggle, which truncated the 진영 on a 588px card; here it costs nothing,
+   colours a header that was entirely greyscale, and survives 간략 보기, where the
+   meta line is hidden.
+   rarity.css defaults .rarity-badge to a pill radius; the house rule is
    rectangular chips. Compounded with .rarity-badge so this wins on specificity
    rather than on stylesheet import order. */
 .rarity-badge.ship-rarity-badge {
-  flex-shrink: 0;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  padding: 0 4px;
+  font-size: 0.6rem;
   border-radius: var(--radius-sm);
-  line-height: 1.3;
+  line-height: 1.5;
+  pointer-events: none;
+  box-shadow: 0 1px 3px var(--overlay-medium);
 }
 
-/* Card chrome pair: the 장비 코드 command and the remove X. Both are borderless
-   ghost-family buttons at .btn-sm, so they read as one group — the predecessor
-   paired a bordered .btn-icon.btn-sm with a full-size .btn-close, which differed
-   in both treatment and height. Bordered .btn-icon stays the language of the
-   card's *controls* (the level steppers), not its chrome.
-   Only the destructive danger-red hover is a genuine local difference (default
+/* Card chrome: the 장비 코드 command and the remove X. align-items: stretch, not
+   center — 장비 코드 is text-only and X is a glyph, so their intrinsic heights
+   differ by 3px and centring made the pair look unaligned.
+   The destructive danger-red hover is a genuine local difference (default
    .btn-close hover is neutral). */
 .ship-card-actions {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 2px;
+  /* Card chrome belongs in the card's corner. Centred, it floated at the
+     mid-height of a two-row identity with no edge to relate to. */
+  align-self: start;
 }
 
 .ship-card-actions .btn-close:hover {
@@ -186,9 +232,18 @@
   background: var(--primary-alpha-10);
 }
 
-/* The label is what makes the button discoverable: the `code` glyph alone gave
-   no hint that it produces the in-game 장비 코드. Slightly under the .btn-sm
-   font so it stays subordinate to the ship name it sits beside. */
+/* Text-only, no `code` glyph: the glyph cost 22px of the identity row, which is
+   what forced 함종 · 진영 to truncate on 개장 ships at a 588px card. The Korean
+   label is also the in-game feature's own name, so it carries the recognition
+   the glyph never did. A border restores the button affordance the glyph was
+   providing — compounded with the parent so it beats .btn-ghost's own border
+   declaration on specificity rather than on bundle order. */
+.ship-card-actions .equip-code-btn {
+  border: 1px solid var(--surface-border);
+}
+
+/* Slightly under the .btn-sm font so it stays subordinate to the ship name it
+   sits beside. */
 .equip-code-btn-label {
   font-size: 0.75rem;
   font-weight: 500; /* .btn's 600 made it compete with the ship name beside it */
@@ -580,11 +635,10 @@
   height: 64px;
 }
 
-/* Compact hides .ship-identity-bottom, and the rarity badge lives there — so the
-   grade moves to the portrait border, which is the only place left that can carry
-   it without costing a row. Scoped to compact ON PURPOSE: the default view
-   deliberately reads rarity as a badge and NOT as a border (a smoke test asserts
-   .ship-card carries no rarity border), and that stays true. */
+/* The chip rides the portrait now, so compact keeps it — this border is a second,
+   quieter read of the same grade at a size where a 5px chip is easy to miss.
+   Scoped to compact ON PURPOSE: the default view reads rarity as a chip and NOT
+   as a border (a smoke test asserts .ship-card carries no rarity border). */
 .fleet-grid[data-view="compact"] .ship-card-identity[data-rarity="UR"]  .ship-portrait { border-color: var(--rarity-ur); }
 .fleet-grid[data-view="compact"] .ship-card-identity[data-rarity="SSR"] .ship-portrait { border-color: var(--rarity-ssr); }
 .fleet-grid[data-view="compact"] .ship-card-identity[data-rarity="SR"]  .ship-portrait { border-color: var(--rarity-sr); }
