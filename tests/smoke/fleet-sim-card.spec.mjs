@@ -212,3 +212,57 @@ test('equip slots grow with the card instead of holding a fixed 64px', async ({ 
     // Squares at every width.
     expect(Math.abs(box.width - box.height)).toBeLessThan(2);
 });
+
+test('간략 보기 collapses a card to one row of portrait + 6 equip squares', async ({ page }) => {
+    await page.goto(PAGE);
+    await addShip(page);
+    await page.locator('#view-toggle-btn').click();
+    await expect(page.locator('.fleet-grid')).toHaveAttribute('data-view', 'compact');
+
+    const card = page.locator('.ship-card[data-slot="0"]');
+    const portrait = await card.locator('.ship-portrait').boundingBox();
+    const boxes = card.locator('.equip-slot-icon-box');
+    await expect(boxes).toHaveCount(6);
+
+    // All 7 squares sit on one horizontal band, left to right.
+    const first = await boxes.first().boundingBox();
+    const last = await boxes.last().boundingBox();
+    expect(first.x).toBeGreaterThan(portrait.x + portrait.width - 2);
+    expect(last.x).toBeGreaterThan(first.x);
+    const band = (b) => b.y + b.height / 2;
+    expect(Math.abs(band(first) - band(portrait))).toBeLessThan(portrait.height);
+    expect(Math.abs(band(last) - band(first))).toBeLessThan(4);
+});
+
+test('compact view hides the controls and captions but keeps the level', async ({ page }) => {
+    await page.goto(PAGE);
+    await addShip(page);
+    await page.locator('#view-toggle-btn').click();
+    const card = page.locator('.ship-card[data-slot="0"]');
+
+    await expect(card.locator('.ship-identity-controls')).toBeHidden();
+    await expect(card.locator('.ship-card-actions')).toBeHidden();
+    await expect(card.locator('.ship-vitals')).toBeHidden();
+    await expect(card.locator('.stats-toggle')).toBeHidden();
+    await expect(card.locator('.equip-slot-caption').first()).toBeHidden();
+    // The ship name must survive — a shared screenshot is unreadable without it.
+    await expect(card.locator('.ship-name')).toBeVisible();
+
+    // The level lives in the hidden stepper, so compact prints it from
+    // data-level via content: attr(). ::after is not a DOM node, so read the
+    // computed style rather than locating it.
+    const printed = await card.locator('.ship-card-identity')
+        .evaluate((el) => getComputedStyle(el, '::after').content);
+    expect(printed).toMatch(/\d/);
+});
+
+test('the chosen view survives a reload', async ({ page }) => {
+    await page.goto(PAGE);
+    await page.locator('#view-toggle-btn').click();
+    await expect(page.locator('.fleet-grid')).toHaveAttribute('data-view', 'compact');
+    await page.reload();
+    await expect(page.locator('.fleet-grid')).toHaveAttribute('data-view', 'compact');
+    // And back again.
+    await page.locator('#view-toggle-btn').click();
+    await expect(page.locator('.fleet-grid')).toHaveAttribute('data-view', 'default');
+});

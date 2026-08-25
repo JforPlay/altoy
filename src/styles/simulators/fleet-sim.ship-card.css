@@ -488,7 +488,7 @@
 .equip-eff-badge {
   top: 0;
   left: 0;
-  color: var(--text-on-overlay, #fff);
+  color: #fff;
   border-radius: 0 var(--radius-xs) 0 var(--radius-xs);
   pointer-events: none;
 }
@@ -545,5 +545,105 @@
 .equip-slot.locked:hover {
   border-color: var(--border-color);
   background: var(--surface-border);
+}
+
+/* ===== COMPACT VIEW (간략 보기) =====
+   One card DOM, two presentations — the shipgirl-tracker pattern. Every rule is
+   scoped under [data-view="compact"], so the default view never sees them and a
+   third presentation stays cheap. A plain toggle rather than the tracker's
+   three-way cycle: that cycle exists only because its mobile toolbar is a hard
+   four-button grid, which does not apply here. */
+
+.fleet-grid[data-view="compact"] .ship-card-grid {
+  gap: var(--spacing-xs);
+}
+
+.fleet-grid[data-view="compact"] .ship-card {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+}
+
+.fleet-grid[data-view="compact"] .ship-vitals,
+.fleet-grid[data-view="compact"] .stats-toggle,
+.fleet-grid[data-view="compact"] .ship-stats-collapsible,
+.fleet-grid[data-view="compact"] .ship-identity-controls,
+.fleet-grid[data-view="compact"] .ship-card-actions,
+.fleet-grid[data-view="compact"] .drag-handle,
+.fleet-grid[data-view="compact"] .ship-identity-bottom,
+.fleet-grid[data-view="compact"] .equip-slot-caption {
+  display: none;
+}
+
+/* Identity collapses to portrait over name. position: relative anchors the
+   level, which lives in the stepper the rule above just hid. */
+.fleet-grid[data-view="compact"] .ship-card-identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 0;
+  border-bottom: 0;
+  position: relative;
+  flex-shrink: 0;
+  width: 64px;
+}
+
+.fleet-grid[data-view="compact"] .ship-portrait {
+  width: 64px;
+  height: 64px;
+}
+
+/* Compact hides .ship-identity-bottom, and the rarity badge lives there — so the
+   grade moves to the portrait border, which is the only place left that can carry
+   it without costing a row. Scoped to compact ON PURPOSE: the default view
+   deliberately reads rarity as a badge and NOT as a border (a smoke test asserts
+   .ship-card carries no rarity border), and that stays true. */
+.fleet-grid[data-view="compact"] .ship-card-identity[data-rarity="UR"]  .ship-portrait { border-color: var(--rarity-ur); }
+.fleet-grid[data-view="compact"] .ship-card-identity[data-rarity="SSR"] .ship-portrait { border-color: var(--rarity-ssr); }
+.fleet-grid[data-view="compact"] .ship-card-identity[data-rarity="SR"]  .ship-portrait { border-color: var(--rarity-sr); }
+.fleet-grid[data-view="compact"] .ship-card-identity[data-rarity="R"]   .ship-portrait { border-color: var(--rarity-r); }
+.fleet-grid[data-view="compact"] .ship-card-identity[data-rarity="N"]   .ship-portrait { border-color: var(--rarity-n); }
+
+.fleet-grid[data-view="compact"] .ship-name {
+  font-size: 0.7rem;
+  max-width: 64px;
+}
+
+/* Printed from the data-level attribute rather than by absolutely positioning a
+   deeply nested element. `top`, not `bottom`: the portrait starts at y=0 in this
+   column, so the offset is stable no matter how the name below wraps. The value
+   is a clamped integer, so there is nothing to escape. */
+.fleet-grid[data-view="compact"] .ship-card-identity::after {
+  content: 'Lv.' attr(data-level);
+  position: absolute;
+  top: 44px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.6rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #fff;
+  background: var(--overlay-intense);
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+.fleet-grid[data-view="compact"] .equip-slots-grid {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+}
+
+/* Empty slots must not be the tallest thing on a compact page. */
+.fleet-grid[data-view="compact"] .ship-card--empty {
+  min-height: 0;
+}
+
+.fleet-grid[data-view="compact"] .ship-card-add {
+  min-height: 56px;
+  padding: var(--spacing-xs);
 }
 

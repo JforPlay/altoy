@@ -116,9 +116,40 @@ export function setDamageTarget(patch) {
     renderFleet();
 }
 
+// ===== View Mode =====
+
+/** UI-only preference — plain storage, not a syncedStorage key.
+ *  Shaped like shipgirl-tracker's VIEW_CYCLE: each entry belongs to the view you
+ *  are IN and carries the affordance for what clicking DOES, so the button
+ *  advertises the destination rather than the current state. */
+const VIEW_KEY = 'fleetSimView';
+const VIEW_TOGGLE = {
+    default: { next: 'compact', icon: 'view_list',   label: '간략 보기' },
+    compact: { next: 'default', icon: 'view_agenda', label: '기본 보기' },
+};
+
+function _applyView(view) {
+    const mode = VIEW_TOGGLE[view] ? view : 'default';
+    const grid = document.querySelector('.fleet-grid');
+    if (grid) grid.dataset.view = mode;
+
+    const btn = document.getElementById('view-toggle-btn');
+    const icon = document.getElementById('view-toggle-icon');
+    const label = document.getElementById('view-toggle-label');
+    if (icon) icon.textContent = VIEW_TOGGLE[mode].icon;
+    if (label) label.textContent = VIEW_TOGGLE[mode].label;
+    // Label names the destination; aria-pressed reports the current state.
+    if (btn) btn.setAttribute('aria-pressed', String(mode === 'compact'));
+
+    setStorageItem(VIEW_KEY, mode);
+}
+
 // ===== Initialization =====
 
 async function init() {
+    // 0. Apply the stored view before first paint (no default-view flash)
+    _applyView(getStorageItem(VIEW_KEY, 'default'));
+
     // 1. Setup all modules with shared state
     setupData(state);
     setupCalc(state);
@@ -383,6 +414,14 @@ function setupEventListeners() {
     }
 
     // --- Header buttons ---
+    const viewToggle = document.getElementById('view-toggle-btn');
+    if (viewToggle) {
+        viewToggle.addEventListener('click', () => {
+            const current = document.querySelector('.fleet-grid')?.dataset.view;
+            _applyView((VIEW_TOGGLE[current] || VIEW_TOGGLE.default).next);
+        });
+    }
+
     const saveLoadBtn = document.getElementById('save-load-btn');
     if (saveLoadBtn) {
         saveLoadBtn.addEventListener('click', handleOpenSaveLoad);
