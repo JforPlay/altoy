@@ -32,10 +32,35 @@
     justify-content: center;
   }
 
-  /* The identity row (drag + 72px portrait + name + Lv stepper + 호감도 select +
-     chrome) is already at its width limit here, so the 장비 코드 label is the
-     first thing to go — back to the icon-only button, with aria-label carrying
-     the accessible name in both states. */
+  /* At this width the 5-column identity grid (drag/portrait/identity/controls/
+     chrome) has no room left for the flexible identity column: drag, portrait,
+     controls and chrome are all auto tracks sized to their own content, and
+     together they already exceed the card width, so minmax(0, 1fr) collapses
+     toward zero — the ship name renders invisible and the retrofit toggle
+     riding inside it bleeds into the controls column. Drop to 4 columns and
+     move the controls onto a row of their own so the identity column gets the
+     freed width. The chrome pair needs an explicit position: left to
+     auto-placement it would land in a new row 3 behind the now-spanning
+     controls row, since the placement cursor never backtracks to row 1. */
+  .ship-card-identity {
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+  }
+
+  .ship-identity-controls {
+    grid-row: 2;
+    grid-column: 3 / -1;
+    justify-items: start;
+  }
+
+  .ship-card-actions {
+    grid-row: 1;
+    grid-column: 4;
+  }
+
+  /* The identity row (drag + 72px portrait + name + chrome) is already at its
+     width limit here, so the 장비 코드 label is the first thing to go — back
+     to the icon-only button, with aria-label carrying the accessible name in
+     both states. */
   .equip-code-btn-label {
     display: none;
   }

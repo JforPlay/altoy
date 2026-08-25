@@ -29,6 +29,9 @@
  *   - compact view hides the controls/captions/vitals but keeps the ship
  *     name and still prints the level, via the identity row's data-level
  *   - the chosen view persists across a reload
+ *   - at a 390px viewport in the default view, the identity row reflows onto
+ *     two rows so the ship name column keeps a real, readable width instead
+ *     of collapsing toward the zero end of its minmax(0, 1fr) track
  */
 import { test, expect } from '@playwright/test';
 
@@ -289,4 +292,24 @@ test('the chosen view survives a reload', async ({ page }) => {
     // And back again.
     await page.locator('#view-toggle-btn').click();
     await expect(page.locator('.fleet-grid')).toHaveAttribute('data-view', 'default');
+});
+
+test.describe('mobile identity row (390px)', () => {
+    test.use({ viewport: { width: 390, height: 844 } });
+
+    test('the ship name stays visible and readable when the identity row reflows at 390px', async ({ page }) => {
+        await page.goto(PAGE);
+        await addShip(page);
+        const name = page.locator('.ship-card[data-slot="0"] .ship-name');
+        await expect(name).toBeVisible();
+        const box = await name.boundingBox();
+        // Pre-fix, the 5-column identity grid (drag/portrait/identity/controls/
+        // chrome) leaves no room for minmax(0, 1fr) at this width: the other
+        // four columns are auto tracks sized to their own content and already
+        // exceed the card on their own, so the identity column collapses
+        // toward 0 and the name renders with zero to one visible characters.
+        // 80 sits well clear of that collapse and well under the real ~140px
+        // the reflowed column measures.
+        expect(box.width).toBeGreaterThan(80);
+    });
 });
