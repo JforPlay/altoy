@@ -128,3 +128,84 @@ test('effectiveProficiency: missing data / no retrofit defaults to ×1', () => {
   assert.deepEqual(effectiveProficiency({}, true), [1, 1, 1]);
   assert.deepEqual(effectiveProficiency({ equipment_proficiency: [1.2] }, true), [1.2, 1, 1]);
 });
+
+import { salvosBySlot, activeBarrageSkillIds, cadenceLabel, resolveBarrageDescriptors }
+  from '../../public/js/simulators/fleet-sim.damage.js';
+
+test('activeBarrageSkillIds drops the superseded rung of an upgrade chain', () => {
+  // 듀이's real shape: both rungs are listed, only the Limit Break 3 one fires.
+  // Counting both would roughly double most destroyers' barrage damage.
+  const dewey = { skill: {
+    12000: { id: 12000, upgrade: null, downgrade: null, requirement: 'Default', weapon_true: false },
+    20011: { id: 20011, upgrade: 20012, downgrade: null, requirement: 'Limit Break 1', weapon_true: true },
+    20012: { id: 20012, upgrade: null, downgrade: 20011, requirement: 'Limit Break 3', weapon_true: true },
+  } };
+  assert.deepEqual(activeBarrageSkillIds(dewey, false), ['20012']);
+});
+
+test('activeBarrageSkillIds keeps a base rung whose upgrade the ship does not list', () => {
+  const ship = { skill: {
+    30011: { id: 30011, upgrade: 30012, downgrade: null, requirement: 'Limit Break 1', weapon_true: true },
+  } };
+  assert.deepEqual(activeBarrageSkillIds(ship, false), ['30011']);
+});
+
+test('activeBarrageSkillIds gates a Retrofit skill on the retrofit toggle', () => {
+  const ship = { skill: {
+    40010: { id: 40010, upgrade: null, downgrade: null, requirement: 'Retrofit', weapon_true: true },
+    40020: { id: 40020, upgrade: null, downgrade: null, requirement: 'Limit Break 3', weapon_true: true },
+  } };
+  assert.deepEqual(activeBarrageSkillIds(ship, false), ['40020']);
+  assert.deepEqual(activeBarrageSkillIds(ship, true).sort(), ['40010', '40020']);
+});
+
+test('salvosBySlot keys the window salvo count by equip slot (1-based)', () => {
+  // slot index in the data is 1-based; descriptors carry a 0-based slotIndex.
+  const descriptors = [
+    { slotIndex: 0, reloadMax: 240, cycleExtra: 0 },
+    { slotIndex: 1, reloadMax: 480, cycleExtra: 0 },
+  ];
+  const out = salvosBySlot(descriptors, 150, 90);
+  assert.ok(out[1] > out[2], 'the faster weapon must fire more often');
+  assert.ok(Number.isInteger(out[1]));
+});
+
+test('cadenceLabel renders Korean from the machine trigger, and nothing for unknown kinds', () => {
+  assert.equal(cadenceLabel({ k: 'count', n: 15, slots: [1] }), '주포 15회마다');
+  assert.equal(cadenceLabel({ k: 'count', n: 10 }), '10회 발사마다');
+  assert.equal(cadenceLabel({ k: 'timer', n: 20, d: 20 }), '20초마다');
+  assert.equal(cadenceLabel({ k: 'timer', n: 20, d: 5 }), '5초 후 20초마다');
+  assert.equal(cadenceLabel({ k: 'fire', n: 12, d: 12 }), '발사 시 (재사용 12초)');
+  assert.equal(cadenceLabel({ k: 'air' }), '항공 공격 시');
+  assert.equal(cadenceLabel({ k: 'once' }), '전투 시작 시');
+  assert.equal(cadenceLabel({ k: 'nope' }), '');
+});
+
+test('resolveBarrageDescriptors builds one descriptor per fired weapon and counts the rest', () => {
+  const table = {
+    '29081': { n: '전탄 발사 - 재블린I', w: [900], t: { k: 'count', n: 15, slots: [1] } },
+    '99999': { n: '알 수 없음', w: [901], t: { k: 'conditional' } },   // unknown kind
+  };
+  const weapons = {
+    900: { damage: 30, corrected: 100, attack_attribute: 1, attack_attribute_ratio: 80,
+           reload_max: 0, barrage_ID: [8], bullet_ID: [1400] },
+    901: { damage: 30, corrected: 100, attack_attribute: 1, attack_attribute_ratio: 80,
+           reload_max: 0, barrage_ID: [8], bullet_ID: [1400] },
+  };
+  const { descriptors, unmodeled } = resolveBarrageDescriptors(['29081', '99999', '404040'], {
+    getBarrageSkill: (id) => table[id] || null,
+    getWeapon: (id) => weapons[id] || null,
+    getBarrage, getBullet,
+    stats: { firepower: 500, torpedo: 0, aviation: 0 },
+    ctx: { window: 90, salvosBySlot: { 1: 30 }, airstrikes: 0 },
+  });
+  assert.equal(descriptors.length, 1);
+  assert.equal(descriptors[0].activations, 2);
+  assert.equal(descriptors[0].potential, 1, 'a barrage is not equipment — no proficiency');
+  assert.equal(descriptors[0].cycleExtra, 0, 'a barrage has no gun fire cycle');
+  assert.equal(descriptors[0].label, '탄막 · 전탄 발사 - 재블린I');
+  assert.equal(descriptors[0].cadence, '주포 15회마다');
+  // The unknown kind counts as unmodelled; a skill missing from the table entirely
+  // is NOT a barrage the sim knows about and must not be counted.
+  assert.equal(unmodeled, 1);
+});

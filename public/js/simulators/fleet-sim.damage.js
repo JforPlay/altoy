@@ -21,6 +21,9 @@
  */
 import { ATTR_TO_KEY } from '../engine/damage/constants.js';
 import { weaponSalvoDuration } from '../engine/damage/salvo-timing.js';
+import { barrageActivations } from '../engine/damage/barrage.js';
+import { weaponCycleInterval } from '../engine/damage/reload.js';
+import { countSalvos } from '../engine/damage/timeline.js';
 
 // ===== Pure helpers (unit-testable, take data/lookups as params) =====
 
@@ -130,6 +133,73 @@ export function effectiveProficiency(ship, useRetrofit) {
     return out;
 }
 
+/**
+ * Window salvo count per EQUIP SLOT, keyed 1-based to match the game's own
+ * `index` on BattleBuffCount. Derived through weaponCycleInterval so the count
+ * is the same one simulateAttacker computes, not a second copy that can drift.
+ */
+export function salvosBySlot(descriptors, reloadStat, window) {
+    const out = {};
+    for (const d of descriptors) {
+        if (d.slotIndex == null) continue;
+        const interval = weaponCycleInterval(d, reloadStat);
+        const slot = d.slotIndex + 1;
+        out[slot] = (out[slot] || 0) + countSalvos(interval, d.initialDelay ?? 0, window);
+    }
+    return out;
+}
+
+/** Korean cadence text for a trigger. The DATA holds machine keys; Korean lives here. */
+export function cadenceLabel(t) {
+    if (!t) return '';
+    if (t.k === 'count') {
+        return (t.slots && t.slots.length === 1 && t.slots[0] === 1)
+            ? `주포 ${t.n}회마다`
+            : `${t.n}회 발사마다`;
+    }
+    if (t.k === 'timer') return (t.d && t.d !== t.n) ? `${t.d}초 후 ${t.n}초마다` : `${t.n}초마다`;
+    if (t.k === 'fire')  return t.n ? `발사 시 (재사용 ${t.n}초)` : '발사 시';
+    if (t.k === 'air')   return '항공 공격 시';
+    if (t.k === 'once')  return '전투 시작 시';
+    return '';
+}
+
+/**
+ * Resolve a ship's barrage skills into WeaponDescriptors carrying a pre-resolved
+ * activation count. A skill the table doesn't know is not a barrage this build
+ * models at all and is NOT counted as unmodelled; a skill present but with an
+ * unreadable cadence IS — that is the number the card surfaces.
+ */
+export function resolveBarrageDescriptors(skillIds, deps) {
+    const descriptors = [];
+    let unmodeled = 0;
+    for (const sid of skillIds || []) {
+        const rec = deps.getBarrageSkill(String(sid));
+        if (!rec) continue;
+        const n = barrageActivations(rec, deps.ctx);
+        const cadence = cadenceLabel(rec.t);
+        if (!(n > 0) || !cadence) { unmodeled++; continue; }
+        for (const wid of rec.w || []) {
+            const raw = deps.getWeapon(wid);
+            if (!raw) continue;
+            const weapon = mergeWeaponWithBase(raw, deps.getWeapon);
+            const d = resolveWeaponDescriptor(weapon, deps.stats, {
+                getBarrage: deps.getBarrage,
+                getBullet: deps.getBullet,
+                label: `탄막 · ${rec.n}`,
+                mountCount: 1,      // the barrage expansion IS the bullet count
+                potential: 1,       // not equipment — no slot proficiency
+                reloadMaxOverride: 0,
+            });
+            if (!d) continue;
+            d.activations = n;
+            d.cadence = cadence;
+            descriptors.push(d);
+        }
+    }
+    return { descriptors, unmodeled };
+}
+
 // ===== Stateful resolution (wired to fleet-sim modules — browser only) =====
 //
 // These functions import fleet-sim.data.js / fleet-sim.calc.js lazily via
@@ -223,7 +293,10 @@ function _resolveSurfaceWeapons(slotConfig, shipType, stats, baseList, prof) {
             mountCount: baseList[i] ?? 1,   // 포좌: gun mounts firing per wave (×1 until base_list lands in data)
             potential: prof[i] ?? 1,        // equipment_proficiency for this slot
         });
-        if (d) out.push(d);
+        if (d) {
+            d.slotIndex = i;
+            out.push(d);
+        }
     }
     return out;
 }
@@ -312,28 +385,74 @@ function _resolveCarrierWeapons(slotConfig, stats, baseList, prof) {
 }
 
 /**
- * Resolve all in-scope weapons for one ship slot config.
- * Must be called from an async context after _ensureImports().
+ * Resolve all in-scope weapons for one ship slot config, PLUS the ship's active
+ * barrage skills (each expanded into its own WeaponDescriptor with a pre-resolved
+ * `activations` count). Must be called from an async context after _ensureImports().
  * @param {object} slotConfig  { gid, level, retrofit, equips: [{id, level}, ...] }
  * @param {object} ship        Ship data object (from getShipByGid)
  * @param {object} stats       Buffed ship stats { firepower, torpedo, aviation, ... }
- * @returns {object[]} WeaponDescriptor[]
+ * @param {number} [window]    Battle time window in seconds (barrage activation counts need it)
+ * @returns {{weapons: object[], unmodeled: number}} WeaponDescriptor[] + count of barrage
+ *   skills that produced no descriptor (unreadable cadence, missing weapon data, etc.)
  */
-export function resolveShipWeapons(slotConfig, ship, stats) {
-    if (!_data) return [];   // needs _ensureImports() first — route external callers through simulateFleetDamage
+export function resolveShipWeapons(slotConfig, ship, stats, window = 90) {
+    if (!_data) return { weapons: [], unmodeled: 0 };   // needs _ensureImports() first — route external callers through simulateFleetDamage
     const useRetrofit = slotConfig.retrofit !== false && !!ship.retrofit;
     const shipType = _data.getEffectiveShipType(ship, useRetrofit);
     const baseList = (_calc.getShipBaseList(ship, useRetrofit)) || [];   // [s1,s2,s3] mount/plane count; ×1 fallback
     const prof = effectiveProficiency(ship, useRetrofit);               // max-LB efficiency + retrofit-toggle deltas
-    return CARRIER_TYPES.has(shipType)
+    const isCarrier = CARRIER_TYPES.has(shipType);
+    const weapons = isCarrier
         ? _resolveCarrierWeapons(slotConfig, stats, baseList, prof)
         : _resolveSurfaceWeapons(slotConfig, shipType, stats, baseList, prof);
+
+    // Barrage skills the ship actually has active. Two filters, and BOTH matter.
+    const skillIds = activeBarrageSkillIds(ship, useRetrofit);
+    const airstrikes = isCarrier && weapons.length
+        ? _engine.countSalvos(_engine.calculateReloadTime(weapons[0].reloadMax, stats.reload), 0, window)
+        : 0;
+    const { descriptors, unmodeled } = resolveBarrageDescriptors(skillIds, {
+        getBarrageSkill: _data.getBarrageSkill,
+        getWeapon: _data.getWeaponProperty,
+        getBarrage: _data.getBarrage,
+        getBullet: _data.getBullet,
+        stats,
+        ctx: { window, salvosBySlot: salvosBySlot(weapons, stats.reload, window), airstrikes },
+    });
+    return { weapons: weapons.concat(descriptors), unmodeled };
+}
+
+/**
+ * The barrage skills a built ship actually fires.
+ *
+ * SUPERSEDED SKILLS ARE THE TRAP. A ship lists every rung of an upgrade chain,
+ * not just the live one: 듀이 carries BOTH 20011 (Limit Break 1, upgrade→20012)
+ * and 20012 (Limit Break 3, downgrade→20011). At max limit break only 20012
+ * fires. 564 of the roster's barrage skills have this shape, so iterating
+ * ship.skill naively counts most destroyers' and cruisers' barrage TWICE and
+ * roughly doubles their contribution — a wrong headline number that looks
+ * entirely plausible.
+ *
+ * `requirement` is the raw game string ("Default", "Limit Break 1/2/3",
+ * "Retrofit", "Devs 10", "Fate Simulation 5", …). The sim assumes max limit
+ * break / max development, so the retrofit toggle is the only live gate.
+ */
+export function activeBarrageSkillIds(ship, useRetrofit) {
+    const skills = ship.skill || {};
+    return Object.keys(skills).filter((sid) => {
+        const sk = skills[sid];
+        if (!sk || !sk.weapon_true) return false;
+        if (sk.upgrade != null && skills[String(sk.upgrade)]) return false;   // superseded rung
+        return sk.requirement === 'Retrofit' ? !!useRetrofit : true;
+    });
 }
 
 /**
  * Build the engine TargetProfile from targetOpts. META kind resolves the boss
  * record from loaded data and defers to makeMetaTarget; anything else (or a
- * missing boss) falls back to the generic armor preset. Must run after _ensureImports().
+ * missing boss) falls back to the generic armor preset, flagged `bossMissing`
+ * so the panel can say so instead of silently showing a different target's
+ * name with the tier controls hidden. Must run after _ensureImports().
  */
 function _buildTarget(targetOpts) {
     if (targetOpts.kind === 'meta' && targetOpts.bossId != null) {
@@ -366,13 +485,16 @@ export async function simulateFleetDamage(ships, targetOpts) {
     const target = _buildTarget(targetOpts);
     const techBonuses = _calc.calculateFleetTechBonuses();
     const present = (ships || []).filter(Boolean);
+    const window = targetOpts.window ?? 90;
 
     const engineShips = [];
+    const unmodeledByRef = new Map();
     for (const slot of present) {
         const computed = _computeStatsForSlot(slot, present, techBonuses);
         if (!computed) continue;
         const { ship, stats } = computed;
-        const weapons = resolveShipWeapons(slot, ship, stats);
+        const { weapons, unmodeled } = resolveShipWeapons(slot, ship, stats, window);
+        unmodeledByRef.set(slot.gid, unmodeled);
         engineShips.push({
             ref: slot.gid,
             profile: {
@@ -385,8 +507,8 @@ export async function simulateFleetDamage(ships, targetOpts) {
         });
     }
 
-    const window = targetOpts.window ?? 90;
     const sim = _engine.simulateFleet(engineShips, target, { window });
+    for (const s of sim.perShip) s.unmodeledBarrages = unmodeledByRef.get(s.ref) || 0;
     const clearCheck = _engine.computeClearCheck({ fleetDps: sim.dps, bossHp: target.hp, timeLimit: window });
     return { ...sim, target, clearCheck };
 }
