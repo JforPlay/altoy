@@ -26,8 +26,7 @@
  *     original rule was scoped to
  *   - a filled equip slot captions the equip's own name, and both badges
  *     live inside the icon box rather than the caption row
- *   - a generic 특수 장비 slot captions its weapon too, the same as the
- *     dedicated-SP branch beside it
+ *   - a 특수 장비 slot captions its weapon rather than leaving the caption empty
  *   - the efficiency badge is suppressed at exactly 100%, so a fully-fluent
  *     weapon slot doesn't print a redundant "100%"
  *   - equip slots grow fluidly with the card instead of holding a fixed 64px
@@ -290,7 +289,7 @@ test('a filled equip slot captions the equip name and badges inside the icon box
     await expect(slot0.locator('.equip-slot-caption .equip-eff-badge')).toHaveCount(0);
 });
 
-test('a generic 특수 장비 slot captions its weapon, like the dedicated one', async ({ page }) => {
+test('a 특수 장비 slot captions its weapon', async ({ page }) => {
     await page.goto(PAGE);
     await addShip(page);
     const sp = page.locator('.ship-card[data-slot="0"] .equip-slot.sp-slot');
@@ -301,8 +300,8 @@ test('a generic 특수 장비 slot captions its weapon, like the dedicated one',
     const picked = (await page.locator('#equip-picker-grid .picker-item').first().innerText()).trim();
     await page.locator('#equip-picker-grid .picker-item').first().click();
 
-    // The dedicated-SP branch has always named its weapon; the generic branch
-    // built the name and then emitted an empty caption span beside it.
+    // The SP branch built the weapon name and then emitted an empty caption
+    // span beside it.
     await expect(sp).toHaveClass(/equipped/);
     await expect(sp.locator('.equip-slot-caption')).toHaveText(picked);
 });

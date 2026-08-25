@@ -5,7 +5,7 @@
  */
 
 import { showElement, hideElement, IMG_FALLBACKS, resolveUrl, escapeHtml, renderStatus } from '../utils.js';
-import { getShipByGid, getEquipById, getEquipIconUrl, getRarityBgUrl, getShipPortraitUrl, getSlotName, getSPWeaponIconUrl, getDedicatedSPWeapon, getMetaBoss } from './fleet-sim.data.js';
+import { getShipByGid, getEquipById, getEquipIconUrl, getRarityBgUrl, getShipPortraitUrl, getSlotName, getSPWeaponIconUrl, getMetaBoss } from './fleet-sim.data.js';
 import {
     DISPLAY_STATS,
     pickVitalStats,
@@ -425,12 +425,11 @@ function _buildSingleEquipSlotHTML(slotIndex, equipIndex, equipConfig, ship, isR
 }
 
 /**
- * Build the SP weapon (6th) slot.
- * - Ships with dedicated SP weapon: show it display-only with correct icon
- * - Ships without: allow picking generic SP weapons, or show empty slot
+ * Build the SP weapon (6th) slot. One path: whatever the slot holds is a real,
+ * selectable weapon with a live level badge — a 전용 장비 is materialised into
+ * slot state on ship select, so it no longer needs a display-only branch.
  */
 function _buildSPSlotHTML(slotIndex, ship, slotConfig) {
-    // If user has selected a generic SP weapon
     const spConfig = slotConfig.spWeapon;
     if (spConfig && spConfig.id) {
         const spWeapon = _getSPWeaponDataById(spConfig.id);
@@ -453,37 +452,14 @@ function _buildSPSlotHTML(slotIndex, ship, slotConfig) {
                         </div>
                         <span class="equip-slot-badge equip-enhance-badge"
                               data-action="change-sp-level"
-                              data-slot="${slotIndex}">+${spConfig.level || 1}</span>
+                              data-slot="${slotIndex}">+${spConfig.level ?? 0}</span>
                     </div>
                     <span class="equip-slot-caption" title="${safeName}">${safeName}</span>
                 </div>`;
         }
     }
 
-    // Ships with dedicated SP weapon — display-only with correct icon URL
-    if (ship.sp_weapon) {
-        const dedicated = getDedicatedSPWeapon(ship.gid);
-        const iconUrl = dedicated ? getSPWeaponIconUrl(dedicated.icon) :
-                         ship.sp_weapon.icon ? getSPWeaponIconUrl(ship.sp_weapon.icon) : '';
-        const name = dedicated ? dedicated.name : (ship.sp_weapon.name || 'SP 무기');
-        const spRarity = dedicated ? dedicated.rarity : 4;
-        const bgUrl = getRarityBgUrl(spRarity + 1);
-        const safeName = escapeHtml(name);
-
-        return `
-            <div class="equip-slot equipped sp-slot sp-dedicated" data-equip-rarity="${SP_RARITY_MAP[spRarity] || 'ssr'}" title="${safeName} (전용)">
-                <div class="equip-slot-icon-box">
-                    <div class="equip-icon-wrapper">
-                        <img class="equip-icon-bg" src="${bgUrl}" alt="" loading="lazy" />
-                        ${iconUrl ? `<img class="equip-icon-fg" src="${iconUrl}" alt="${safeName}" loading="lazy" />` : ''}
-                    </div>
-                    <span class="equip-slot-badge equip-enhance-badge">SP</span>
-                </div>
-                <span class="equip-slot-caption" title="${safeName}">${safeName}</span>
-            </div>`;
-    }
-
-    // No dedicated SP weapon — show empty slot for generic SP weapon selection
+    // Nothing equipped — empty slot that opens the SP picker
     return `
         <div class="equip-slot sp-slot"
              role="button"

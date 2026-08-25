@@ -250,7 +250,7 @@ export function calculateShipStats(slotConfig, fleetTechBonuses, fleetPassiveBuf
     }
 
     // --- Step 4b: SP weapon stat bonuses (counted as equip) ---
-    const spWeaponStats = _getSPWeaponStatBonuses(slotConfig, ship);
+    const spWeaponStats = _getSPWeaponStatBonuses(slotConfig);
     for (const [statKey, value] of Object.entries(spWeaponStats)) {
         if (stats[statKey] !== undefined) {
             stats[statKey] += value;
@@ -538,50 +538,28 @@ export function getShipBaseList(ship, useRetrofit) {
 }
 
 /**
- * Get SP weapon stat bonuses for a ship slot.
- * Handles both dedicated (unique) SP weapons and user-selected generic ones.
+ * Get SP weapon stat bonuses for a ship slot. Every SP weapon — generic or
+ * 전용 — is slot state now, so there is one path and no ship-data fallback.
  */
-function _getSPWeaponStatBonuses(slotConfig, ship) {
+function _getSPWeaponStatBonuses(slotConfig) {
     const bonuses = {};
 
-    // Check for user-selected SP weapon first. Stored level is the visible
-    // enhance value (+0..+10), while data levels are indexed from base.
+    // Stored level is the visible enhance value (+0..+10); data levels are
+    // indexed from base, and an oversized stored level clamps into the list.
     const spConfig = slotConfig.spWeapon;
-    if (spConfig && spConfig.id) {
-        const spWeapon = getSPWeaponById(spConfig.id);
-        if (spWeapon && spWeapon.levels) {
-            const levelIdx = Math.min(spConfig.level || 0, spWeapon.levels.length - 1);
-            const lvl = spWeapon.levels[Math.max(0, levelIdx)];
-            const stat1 = EQUIP_ATTR_TO_STAT[spWeapon.attr_1];
-            const stat2 = EQUIP_ATTR_TO_STAT[spWeapon.attr_2];
-            if (stat1 && lvl.v1) bonuses[stat1] = (bonuses[stat1] || 0) + lvl.v1;
-            if (stat2 && lvl.v2) bonuses[stat2] = (bonuses[stat2] || 0) + lvl.v2;
-        }
-        return bonuses;
-    }
+    if (!spConfig || !spConfig.id) return bonuses;
 
-    // Fall back to dedicated SP weapon from ship data (display-only, always max level)
-    if (ship.sp_weapon) {
-        const dedicated = _findDedicatedSPWeaponData(ship.gid);
-        if (dedicated && dedicated.levels) {
-            const lvl = dedicated.levels[dedicated.levels.length - 1]; // max level
-            const stat1 = EQUIP_ATTR_TO_STAT[dedicated.attr_1];
-            const stat2 = EQUIP_ATTR_TO_STAT[dedicated.attr_2];
-            if (stat1 && lvl.v1) bonuses[stat1] = (bonuses[stat1] || 0) + lvl.v1;
-            if (stat2 && lvl.v2) bonuses[stat2] = (bonuses[stat2] || 0) + lvl.v2;
-        }
+    const spWeapon = getSPWeaponById(spConfig.id);
+    if (spWeapon && spWeapon.levels) {
+        const levelIdx = Math.min(spConfig.level || 0, spWeapon.levels.length - 1);
+        const lvl = spWeapon.levels[Math.max(0, levelIdx)];
+        const stat1 = EQUIP_ATTR_TO_STAT[spWeapon.attr_1];
+        const stat2 = EQUIP_ATTR_TO_STAT[spWeapon.attr_2];
+        if (stat1 && lvl.v1) bonuses[stat1] = (bonuses[stat1] || 0) + lvl.v1;
+        if (stat2 && lvl.v2) bonuses[stat2] = (bonuses[stat2] || 0) + lvl.v2;
     }
 
     return bonuses;
-}
-
-/** Find dedicated SP weapon data from spWeaponData by ship gid */
-function _findDedicatedSPWeaponData(gid) {
-    if (!state.spWeaponData || !state.spWeaponData.weapons) return null;
-    for (const weapon of Object.values(state.spWeaponData.weapons)) {
-        if (weapon.unique === gid) return weapon;
-    }
-    return null;
 }
 
 /**

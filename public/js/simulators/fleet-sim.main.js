@@ -32,6 +32,8 @@ import {
     getMaxEnhanceLevel,
     getMetaBoss,
     getShipPortraitUrl,
+    getDedicatedSPWeapon,
+    getSPWeaponById,
 } from './fleet-sim.data.js';
 
 import { setup as setupCalc } from './fleet-sim.calc.js';
@@ -466,10 +468,45 @@ function handleShipSelected(slotIndex, gid) {
         level: 125,
         affinity: 'love',
         equips: new Array(5).fill(null),
-        spWeapon: null,
+        spWeapon: _defaultSPWeapon(ship),
         retrofit: ship?.retrofit ? true : undefined,
     };
     renderFleet();
+}
+
+/**
+ * A 전용 특수 장비 is real slot state, not a display-only fallback: one code path
+ * then serves every SP slot, and the level is selectable. Max level reproduces
+ * the old fallback's numbers exactly, so no displayed stat moves.
+ */
+function _defaultSPWeapon(ship) {
+    if (!ship?.sp_weapon) return null;
+    const dedicated = getDedicatedSPWeapon(ship.gid);
+    if (!dedicated) return null;
+    return { id: Number(dedicated.id), level: _spMaxLevel(dedicated.id) };
+}
+
+/** SP weapons run to levels.length - 1 (+10, except 슈퍼 레인보우 망치 1호 at +0). */
+function _spMaxLevel(spWeaponId) {
+    const w = getSPWeaponById(spWeaponId);
+    return Math.max(0, (w?.levels?.length || 11) - 1);
+}
+
+/**
+ * Fill in the 전용 장비 for slots hydrated from a save or share URL written
+ * before it became real state — those carry no sp field at all, and without
+ * this an old save silently loses the weapon's stats.
+ *
+ * ponytail: an absent sp field and a deliberately-emptied one are the same
+ * thing in both formats, so unequipping a 전용 장비 does not survive a
+ * save/load round trip. Give the formats an explicit null when R3 changes them.
+ */
+function _fillDedicatedSP(ships) {
+    for (const slot of ships) {
+        if (!slot || slot.spWeapon) continue;
+        slot.spWeapon = _defaultSPWeapon(getShipByGid(slot.gid));
+    }
+    return ships;
 }
 
 function handleEquipSelected(slotIndex, equipIndex, equipId, level) {
@@ -483,7 +520,9 @@ function handleEquipSelected(slotIndex, equipIndex, equipId, level) {
 function handleSPWeaponSelected(slotIndex, spWeaponId, maxLevel) {
     const slotConfig = state.ships[slotIndex];
     if (!slotConfig) return;
-    slotConfig.spWeapon = spWeaponId ? { id: spWeaponId, level: clampLevel(maxLevel, 0, 10) } : null;
+    slotConfig.spWeapon = spWeaponId
+        ? { id: spWeaponId, level: clampLevel(maxLevel, 0, _spMaxLevel(spWeaponId)) }
+        : null;
     renderFleet();
 }
 
@@ -626,7 +665,9 @@ function _showSPLevelPopover(badge, slotIndex) {
     const sp = state.ships[slotIndex]?.spWeapon;
     if (!sp) return;
 
-    _showLevelPopover(badge, 0, 10, sp.level || 0,
+    // Derived, not hardcoded: 슈퍼 레인보우 망치 1호 has one level, and offering
+    // +0..+10 there is a lie calc.js silently clamps back to index 0.
+    _showLevelPopover(badge, 0, _spMaxLevel(sp.id), sp.level || 0,
         (val) => { sp.level = val; badge.textContent = `+${val}`; },
         () => renderFleet()
     );
@@ -698,7 +739,7 @@ function _handleLoad(saveIndex) {
     const save = saves[saveIndex];
     if (!save) return;
 
-    state.ships = deserializeFleet(save.ships);
+    state.ships = _fillDedicatedSP(deserializeFleet(save.ships));
     closeModal('saveLoadModal');
     renderFleet();
     showToast('불러오기 완료', 'success');
@@ -964,11 +1005,12 @@ function restoreFromUrl(encoded) {
             };
             const spId = s.sp ? Number(s.sp[0]) : NaN;
             if (Number.isFinite(spId) && spId > 0) {
-                slot.spWeapon = { id: spId, level: clampLevel(s.sp[1], 0, 10, 0) };
+                slot.spWeapon = { id: spId, level: clampLevel(s.sp[1], 0, _spMaxLevel(spId), 0) };
             }
             if (s.r !== undefined) slot.retrofit = s.r === 1;
             return slot;
         });
+        _fillDedicatedSP(state.ships);
 
         if (config.t) {
             const t = config.t;

@@ -10,10 +10,9 @@ import { planImport } from '../../public/js/simulators/fleet-sim.code-apply.js';
 function ctxWith(overrides = {}) {
     return {
         shipGid: 20516,
-        hasDedicatedSP: false,
         isEquipAllowed: () => true,
         maxEnhance: () => 13,
-        spInfo: () => ({ unique: 0, type: 1 }),
+        spInfo: () => ({ unique: 0, type: 1, maxLevel: 10 }),
         allowedSPTypes: new Set([1]),
         ...overrides,
     };
@@ -65,24 +64,40 @@ test('matching gid is not a mismatch', () => {
     assert.equal(plan.gidMismatch, false);
 });
 
-test('sp: dedicated-augment ship ignores the sp field with a notice', () => {
+test("sp: the ship's OWN 전용 applies, and skips the generic type gate", () => {
+    // allowedSPTypes lists the types of the ship's GENERIC options; a 전용
+    // weapon's own type need not be among them, so type 9 must still apply.
     const decoded = decodedWith({ sp: { baseId: 10000, level: 10 } });
-    const plan = planImport(decoded, ctxWith({ hasDedicatedSP: true }));
-    assert.equal(plan.sp, null);
-    assert.ok(plan.notices.some(n => n.includes('전용')));
+    const plan = planImport(decoded, ctxWith({
+        spInfo: () => ({ unique: 20516, type: 9, maxLevel: 10 }),
+    }));
+    assert.deepEqual(plan.sp, { baseId: 10000, level: 10 });
+    assert.deepEqual(plan.notices, []);
 });
 
-test('sp: generic + type-allowed applies; unique-to-other or wrong type skips', () => {
+test("sp: generic + type-allowed applies; another ship's 전용 or a wrong type skips", () => {
     const decoded = decodedWith({ sp: { baseId: 10000, level: 5 } });
     const ok = planImport(decoded, ctxWith());
     assert.deepEqual(ok.sp, { baseId: 10000, level: 5 });
 
-    const uniqueOther = planImport(decoded, ctxWith({ spInfo: () => ({ unique: 30707, type: 1 }) }));
+    const uniqueOther = planImport(decoded, ctxWith({ spInfo: () => ({ unique: 30707, type: 1, maxLevel: 10 }) }));
     assert.equal(uniqueOther.sp, null);
     assert.equal(uniqueOther.notices.length, 1);
+    assert.match(uniqueOther.notices[0], /다른 함순이/);
 
-    const wrongType = planImport(decoded, ctxWith({ spInfo: () => ({ unique: 0, type: 9 }) }));
+    const wrongType = planImport(decoded, ctxWith({ spInfo: () => ({ unique: 0, type: 9, maxLevel: 10 }) }));
     assert.equal(wrongType.sp, null);
+    assert.match(wrongType.notices[0], /함종/);
+});
+
+test('sp: an over-max level clamps WITH a notice, like the equip slots do', () => {
+    // 슈퍼 레인보우 망치 1호 (id 9000) is the one SP weapon with a single level.
+    const decoded = decodedWith({ sp: { baseId: 9000, level: 10 } });
+    const plan = planImport(decoded, ctxWith({
+        spInfo: () => ({ unique: 20516, type: 1, maxLevel: 0 }),
+    }));
+    assert.deepEqual(plan.sp, { baseId: 9000, level: 0 });
+    assert.ok(plan.notices.some(n => n.includes('특수 장비') && n.includes('최대치 조정')));
 });
 
 test('unknown-sp decode errors become a 특수 장비 notice', () => {

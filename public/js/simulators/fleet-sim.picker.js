@@ -4,7 +4,7 @@
  * Both support fuzzy search (Fuse.js) and filter chips (type, rarity, nationality).
  */
 
-import { createSearchIndex, ensureFuse, debounce, setupModal, openModal, closeModal, IMG_FALLBACKS, RARITY_TIERS_DESC as RARITY_ORDER, renderStatus } from '../utils.js';
+import { createSearchIndex, ensureFuse, debounce, setupModal, openModal, closeModal, fetchJSONWithCache, IMG_FALLBACKS, RARITY_TIERS_DESC as RARITY_ORDER, renderStatus } from '../utils.js';
 import {
     getShipByGid,
     getShipsByPosition,
@@ -13,6 +13,7 @@ import {
     getEquipIconUrl,
     getRarityBgUrl,
     getGenericSPWeapons,
+    getDedicatedSPWeapon,
     getSPWeaponIconUrl,
     getMaxEnhanceLevel,
     getSlotAllowedTypes,
@@ -32,6 +33,10 @@ let activeEquipIndex = -1;
 // ===== Search Indexes =====
 let shipSearchIndex = null;
 let equipSearchIndex = null;
+
+// 별명 for the equip picker's search — fetched on first picker open, never at boot.
+let equipAliases = null;      // equipId → hearing entry, once the fetch lands
+let equipAliasPromise = null;
 
 // ===== Current Data Lists =====
 let currentShipList = [];
@@ -130,6 +135,49 @@ export function openShipPicker(slotIndex) {
 }
 
 /**
+ * Fetch 별명 once, lazily. Resolves even on failure — losing the hearing file
+ * must cost nicknames, never the picker's own search.
+ *
+ * ponytail: reuses the 123 KB hearing file for its 3.6 KB of aliases. It is the
+ * same cached URL 장비 DB and Ctrl+K already fetch through, so most visitors pay
+ * nothing; split out an alias-only artifact if a cold visit ever measures badly.
+ */
+function _ensureEquipAliases() {
+    if (!equipAliasPromise) {
+        equipAliasPromise = fetchJSONWithCache('data/equip/equip_hearing.json')
+            .then((hearing) => { equipAliases = hearing?.entries || {}; })
+            .catch(() => { equipAliases = {}; });
+    }
+    return equipAliasPromise;
+}
+
+/**
+ * (Re)build the search index over currentEquipList, folding 별명 onto each entry
+ * as an ARRAY — 30 of them are comma-joined ("황탄, 노탄"), and left joined the
+ * second nickname matches at neither position 0 nor most of the string, so it
+ * scores badly. SP weapons are skipped: equip_hearing is keyed by equip id.
+ */
+function _buildEquipSearchIndex() {
+    if (currentEquipList.length === 0) {
+        equipSearchIndex = null;
+        return;
+    }
+    if (equipAliases) {
+        for (const e of currentEquipList) {
+            if (e._isSPWeapon || e._alias !== undefined) continue;
+            e._alias = String(equipAliases[e.id]?.alias || '')
+                .split(',')
+                .map((a) => a.trim())
+                .filter(Boolean);
+        }
+    }
+    equipSearchIndex = createSearchIndex(currentEquipList, {
+        keys: [{ name: 'name', weight: 2 }, { name: '_alias', weight: 2 }],
+        threshold: 0.3,
+    });
+}
+
+/**
  * Open the equipment picker for a given fleet slot and equipment index.
  * @param {number} slotIndex - Fleet slot index (0-5)
  * @param {number} equipIndex - Equipment slot index within the ship (0-4)
@@ -164,13 +212,19 @@ export function openEquipPicker(slotIndex, equipIndex) {
 
     currentEquipList = filteredEquips;
 
-    // Create search index
-    equipSearchIndex = currentEquipList.length > 0
-        ? createSearchIndex(currentEquipList, { keys: ['name'], threshold: 0.3 })
-        : null;
+    // Index with whatever is on hand now; 별명 fold in when the lazy fetch lands,
+    // so a slow network delays nickname matching but never the picker itself.
+    _buildEquipSearchIndex();
+    if (!equipAliases) _ensureEquipAliases().then(_buildEquipSearchIndex);
 
     // Reset filters
     equipFilters = { rarity: null, query: '' };
+
+    // Both pickers share this modal, so restore the title the SP picker
+    // overwrites — otherwise every equip picker after one SP open is headed
+    // 특수 장비 선택.
+    const header = document.getElementById('equipPickerModal-title');
+    if (header) header.textContent = '장비 선택';
 
     // Populate rarity chips
     _populateEquipRarityChips(currentEquipList);
@@ -204,12 +258,20 @@ export function openSPWeaponPicker(slotIndex) {
     if (ship) {
         const isRetrofit = slotConfig?.retrofit !== false && !!ship.retrofit;
         spWeapons = getGenericSPWeapons(getEffectiveShipType(ship, isRetrofit));
+        // The ship's own 전용 장비 leads the list — it is a normal, selectable
+        // weapon now. It goes through the SAME projection as the generics so it
+        // carries rarity_name; the rarity chips filter on that field, and an
+        // unmapped entry would vanish the moment any chip is active.
+        const dedicated = ship.sp_weapon ? getDedicatedSPWeapon(ship.gid) : null;
+        if (dedicated) spWeapons = [dedicated, ...spWeapons];
     }
 
     // Map SP weapons to equip-like objects for grid rendering
     currentEquipList = spWeapons.map(w => ({
         id: w.id,
-        name: w.name,
+        // Prefix, not suffix: the picker caption ellipsises at ~10 characters,
+        // which ate a trailing "(전용)" whole.
+        name: w.unique ? `[전용] ${w.name}` : w.name,
         rarity: w.rarity,
         rarity_name: SP_RARITY_REVERSE[w.rarity] || '',
         icon: w.icon,
@@ -217,9 +279,7 @@ export function openSPWeaponPicker(slotIndex) {
         _isSPWeapon: true,
     }));
 
-    equipSearchIndex = currentEquipList.length > 0
-        ? createSearchIndex(currentEquipList, { keys: ['name'], threshold: 0.3 })
-        : null;
+    _buildEquipSearchIndex();
 
     equipFilters = { rarity: null, query: '' };
     _populateEquipRarityChips(currentEquipList);
@@ -805,8 +865,13 @@ function _renderEquipGrid() {
         div.dataset.rarity = rarityLower;
         if (equip._isSPWeapon) div.dataset.spWeapon = '1';
 
-        // Max enhance level = level_count - 1 (e.g., 14 levels → +13 max)
-        const maxLevel = getMaxEnhanceLevel(equip);
+        // Equips cap by rarity (ENHANCE_CAP); SP weapons do NOT — they run to
+        // levels.length - 1, i.e. +10 for all but 슈퍼 레인보우 망치 1호, which has
+        // a single level. The SP rarity scale is shifted by one, so putting SP
+        // weapons through ENHANCE_CAP capped R/SR generics at +3/+6.
+        const maxLevel = equip._isSPWeapon
+            ? Math.max(0, (equip.level_count || 1) - 1)
+            : getMaxEnhanceLevel(equip);
         div.dataset.maxLevel = maxLevel;
 
         // SP weapons use different icon URL
@@ -919,7 +984,12 @@ function _getNationalityName(natId) {
 function _filterByQuery(items, query) {
     const normalized = query.trim().toLowerCase();
     if (!normalized) return items;
-    return items.filter(item => String(item.name || '').toLowerCase().includes(normalized));
+    return items.filter(item =>
+        String(item.name || '').toLowerCase().includes(normalized)
+        // 별명 match on the no-Fuse path too, so a CDN outage costs ranking
+        // rather than the nickname feature itself.
+        || (item._alias || []).some(a => a.toLowerCase().includes(normalized))
+    );
 }
 
 function _renderEmptyState(container, message) {

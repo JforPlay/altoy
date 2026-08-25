@@ -39,20 +39,25 @@ export function planImport(decoded, ctx) {
         plan.apply.push({ slot, baseId: entry.baseId, level });
     });
 
+    // A 전용-장비 함순이 can hold a generic SP weapon too, so the old
+    // refuse-the-whole-field rule is gone — what matters is WHOSE 전용 it is.
     if (decoded.sp) {
-        if (ctx.hasDedicatedSP) {
-            plan.notices.push('특수 장비: 전용 장비 함순이 — 코드의 특수 장비는 무시됩니다');
+        const info = ctx.spInfo(decoded.sp.baseId);
+        if (!info) {
+            plan.notices.push('특수 장비: 알 수 없는 장비 ID — 건너뜀');
+        } else if (info.unique !== 0 && info.unique !== ctx.shipGid) {
+            plan.notices.push('특수 장비: 다른 함순이의 전용 장비 — 건너뜀');
+        } else if (info.unique === 0 && !ctx.allowedSPTypes.has(info.type)) {
+            // The ship's own 전용 skips this gate: allowedSPTypes lists the types
+            // of its GENERIC options, which a 전용 weapon's type need not be in.
+            plan.notices.push('특수 장비: 함종과 호환되지 않음 — 건너뜀');
         } else {
-            const info = ctx.spInfo(decoded.sp.baseId);
-            if (!info) {
-                plan.notices.push('특수 장비: 알 수 없는 장비 ID — 건너뜀');
-            } else if (info.unique !== 0) {
-                plan.notices.push('특수 장비: 다른 함순이의 전용 장비 — 건너뜀');
-            } else if (!ctx.allowedSPTypes.has(info.type)) {
-                plan.notices.push('특수 장비: 함종과 호환되지 않음 — 건너뜀');
-            } else {
-                plan.sp = { baseId: decoded.sp.baseId, level: decoded.sp.level };
+            const cap = info.maxLevel ?? decoded.sp.level;
+            const level = Math.max(0, Math.min(decoded.sp.level, cap));
+            if (level !== decoded.sp.level) {
+                plan.notices.push(`특수 장비: 강화 +${decoded.sp.level} → +${level} (최대치 조정)`);
             }
+            plan.sp = { baseId: decoded.sp.baseId, level };
         }
     }
 

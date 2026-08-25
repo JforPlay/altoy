@@ -67,11 +67,6 @@
   font-weight: 600;
 }
 
-.equip-slot.sp-dedicated .equip-slot-icon-box {
-  border-style: solid;
-  border-color: var(--rarity-ur);
-  cursor: default;
-}
 
 /* ===== DRAG AND DROP (Task 6) ===== */
 
