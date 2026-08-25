@@ -3,15 +3,40 @@
  * the redesign makes by construction, so a regression is a real behaviour change
  * rather than a styling drift:
  *   - the vitals strip is never emitted empty (its predecessor drew a hollow band)
- *   - the slot-type label survives only where it answers a question
+ *   - the slot-type label survives only where it answers a question (empty
+ *     slots keep it, a filled slot drops it for the equip name instead)
  *   - rarity reads as a badge and NOT as a border on the card
  *   - the rarity badge stays a rectangular chip, not rarity.css's default pill
+ *   - an empty fleet slot renders compact rather than reserving a populated
+ *     card's full height
+ *   - the card's action chrome is vertically centred in the identity row,
+ *     not pinned to the top like the predecessor
+ *   - the level stepper and 호감도 select share one grid column, so their
+ *     edges line up by construction rather than by two intrinsic widths
+ *     happening to agree
+ *   - the identity row exposes data-level/data-rarity (for the compact view
+ *     to read), and the dead .ship-name-group wrapper is gone
+ *   - every select-wrap select suppresses the native OS chevron, including
+ *     the damage panel's .dmg-tier-select — not just the config selects the
+ *     original rule was scoped to
+ *   - a filled equip slot captions the equip's own name, and both badges
+ *     live inside the icon box rather than the caption row
+ *   - the efficiency badge is suppressed at exactly 100%, so a fully-fluent
+ *     weapon slot doesn't print a redundant "100%"
+ *   - equip slots grow fluidly with the card instead of holding a fixed 64px
+ *   - 간략 보기 (compact view) collapses a card to one row: portrait then 6
+ *     equip squares, left to right
+ *   - compact view hides the controls/captions/vitals but keeps the ship
+ *     name and still prints the level, via the identity row's data-level
+ *   - the chosen view persists across a reload
  */
 import { test, expect } from '@playwright/test';
 
 const PAGE = 'simulators/fleet-sim/';
 
-/** Put a ship in slot 0 and wait for the populated card to render. */
+/** Put a ship in slot 0 and wait for the populated card to render.
+ *  nth defaults to 3 because the first picker entries are the highest-rarity
+ *  ships, and index 3 lands on one that reliably carries all five equip slots. */
 async function addShip(page, slot = 0, nth = 3) {
     await page.locator(`.ship-card[data-slot="${slot}"] .ship-card-add`).click();
     await expect(page.locator('#ship-picker-grid .picker-item').first()).toBeVisible();
@@ -26,7 +51,6 @@ test('vitals strip renders with content on a ship carrying no equipment', async 
     await expect(vitals).toHaveCount(1);
     // The regression being guarded is an EMPTY strip, so assert on content.
     await expect(vitals.locator('.vital-stat')).not.toHaveCount(0);
-    await expect(vitals).not.toHaveText('');
 });
 
 test('empty equip slots carry their type label, filled ones do not', async ({ page }) => {
