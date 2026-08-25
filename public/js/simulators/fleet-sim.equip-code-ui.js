@@ -235,8 +235,7 @@ function _applyPlan(plan) {
     // the import input so the modal doesn't invite double-applying — do this
     // BEFORE painting notices so a plain openEquipCodeModal() refresh (which
     // resets notices) can't wipe the per-slot notices we're about to render.
-    const slotCfg = state.ships[activeSlot];
-    _refreshExport(slotCfg);
+    _refreshExport(slotConfig);
     const importInput = document.getElementById('equip-code-import');
     if (importInput) importInput.value = '';
     _renderNotices(plan.notices);

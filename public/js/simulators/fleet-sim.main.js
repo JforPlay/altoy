@@ -20,8 +20,9 @@ import {
     createImgElement,
 } from '../utils.js';
 import {
-    MAX_SAVE_SLOTS, SAVES_VERSION, parseSaves, migrateSaves,
+    MAX_SAVE_SLOTS, MAX_FLEETS, SAVES_VERSION, parseSaves, migrateSaves,
     serializeFleet, deserializeFleet, clampLevel,
+    encodeFleetConfig, decodeFleetConfig,
 } from './fleet-sim.saves.js';
 
 import {
@@ -37,7 +38,7 @@ import {
 } from './fleet-sim.data.js';
 
 import { setup as setupCalc } from './fleet-sim.calc.js';
-import { setup as setupUI, renderFleet, toggleStats } from './fleet-sim.ui.js';
+import { setup as setupUI, renderFleet, toggleStats, clearDamageCache } from './fleet-sim.ui.js';
 import { setup as setupPicker, openShipPicker, openEquipPicker, openSPWeaponPicker, openBossPicker } from './fleet-sim.picker.js';
 import { setup as setupEquipCodeUI, openEquipCodeModal } from './fleet-sim.equip-code-ui.js';
 
@@ -63,8 +64,14 @@ const savesStore = syncedStorage(STORAGE_KEY, {
 // ===== Shared State =====
 
 const state = {
+    // Up to MAX_FLEETS independent fleets, one visible at a time (they fight in
+    // sequence in game, so there is no combined figure to show). Every consumer
+    // keeps reading `state.ships`; the getter points it at the active fleet.
     // Fleet slots: 0-2 = main (back row), 3-5 = vanguard (front row)
-    ships: [null, null, null, null, null, null],
+    fleets: [new Array(6).fill(null)],
+    activeFleet: 0,
+    get ships() { return this.fleets[this.activeFleet]; },
+    set ships(v) { this.fleets[this.activeFleet] = v; },
 
     // Data (populated by data module's loadAllData)
     shipData: [],
@@ -148,6 +155,56 @@ function _applyView(view) {
     setStorageItem(VIEW_KEY, mode);
 }
 
+// ===== Fleet Tabs =====
+
+const _fleetChromeBtn = (action, icon, label, disabled) =>
+    `<button type="button" class="btn btn-secondary btn-sm btn-icon" data-action="${action}"`
+    + ` title="${label}" aria-label="${label}"${disabled ? ' disabled' : ''}>`
+    + `<span class="material-symbols-outlined">${icon}</span></button>`;
+
+/** Repaint the fleet tab strip. Only the fleet index is interpolated, and it is
+ *  an array position — no user data reaches this innerHTML. */
+function _renderFleetTabs() {
+    const el = document.getElementById('fleet-tabs');
+    if (!el) return;
+    const tabs = state.fleets.map((_, i) => {
+        const active = i === state.activeFleet;
+        return `<button type="button" class="btn btn-secondary btn-sm${active ? ' is-active' : ''}"`
+            + ` data-action="switch-fleet" data-fleet="${i}" aria-pressed="${active}">${i + 1}함대</button>`;
+    }).join('');
+    el.innerHTML = `<div class="btn-group">${tabs}</div>`
+        + _fleetChromeBtn('add-fleet', 'add', '함대 추가', state.fleets.length >= MAX_FLEETS)
+        + _fleetChromeBtn('remove-fleet', 'close', '함대 삭제', state.fleets.length <= 1);
+}
+
+function _switchFleet(index) {
+    if (!Number.isInteger(index) || index < 0 || index >= state.fleets.length) return;
+    if (index === state.activeFleet) return;
+    state.activeFleet = index;
+    clearDamageCache();
+    _renderFleetTabs();
+    renderFleet();
+}
+
+function _addFleet() {
+    if (state.fleets.length >= MAX_FLEETS) return;
+    state.fleets.push(new Array(6).fill(null));
+    _switchFleet(state.fleets.length - 1);
+}
+
+/** Removes the ACTIVE fleet and falls back to the previous index. A populated
+ *  fleet is real user work with no undo, so it confirms first. */
+function _removeFleet() {
+    if (state.fleets.length <= 1) return;
+    const index = state.activeFleet;
+    if (state.fleets[index].some(Boolean) && !confirm(`${index + 1}함대를 삭제할까요?`)) return;
+    state.fleets.splice(index, 1);
+    state.activeFleet = Math.max(0, index - 1);
+    clearDamageCache();
+    _renderFleetTabs();
+    renderFleet();
+}
+
 // ===== Initialization =====
 
 async function init() {
@@ -186,6 +243,7 @@ async function init() {
     setupModal('saveLoadModal', { restoreFocus: true });
 
     // 6. Initial render
+    _renderFleetTabs();
     renderFleet();
 }
 
@@ -215,6 +273,18 @@ function setupEventListeners() {
         const slot = _getSlot(actionEl);
 
         switch (action) {
+            case 'switch-fleet': {
+                _switchFleet(parseInt(actionEl.dataset.fleet, 10));
+                break;
+            }
+            case 'add-fleet': {
+                _addFleet();
+                break;
+            }
+            case 'remove-fleet': {
+                _removeFleet();
+                break;
+            }
             case 'change-ship': {
                 if (slot !== -1) openShipPicker(slot);
                 break;
@@ -497,13 +567,13 @@ function _spMaxLevel(spWeaponId) {
  * before it became real state — those carry no sp field at all, and without
  * this an old save silently loses the weapon's stats.
  *
- * ponytail: an absent sp field and a deliberately-emptied one are the same
- * thing in both formats, so unequipping a 전용 장비 does not survive a
- * save/load round trip. Give the formats an explicit null when R3 changes them.
+ * Both formats now always write the field, so `undefined` means "legacy, fill
+ * it in" while an explicit `null` means the user removed the weapon and it must
+ * stay removed.
  */
 function _fillDedicatedSP(ships) {
     for (const slot of ships) {
-        if (!slot || slot.spWeapon) continue;
+        if (!slot || slot.spWeapon !== undefined) continue;
         slot.spWeapon = _defaultSPWeapon(getShipByGid(slot.gid));
     }
     return ships;
@@ -693,9 +763,8 @@ function handleOpenSaveLoad() {
  * Handle save button click: save current fleet to a new slot.
  */
 function handleSave() {
-    // Check if there's anything to save
-    const hasShip = state.ships.some(s => s !== null);
-    if (!hasShip) {
+    // Check if there's anything to save (in ANY fleet, not just the visible one)
+    if (!_hasAnyShip()) {
         showToast('저장할 편성이 없습니다', 'error');
         return;
     }
@@ -710,11 +779,15 @@ function handleSave() {
         return;
     }
 
+    // `ships` always holds fleet 1 verbatim: it keeps parseSaves' Array.isArray
+    // filter true and every existing reader working, so a stale cached build
+    // loads fleet 1 rather than nothing.
     const record = {
         name,
         timestamp: Date.now(),
-        ships: serializeFleet(state.ships),
+        ships: serializeFleet(state.fleets[0]),
     };
+    if (state.fleets.length > 1) record.fleets = state.fleets.map(serializeFleet);
     // Boss metadata is display-only (portrait/tier on the save row) — loading
     // a preset never restores the damage target (user decision, spec §2.4).
     const dt = state.damageTarget;
@@ -739,8 +812,12 @@ function _handleLoad(saveIndex) {
     const save = saves[saveIndex];
     if (!save) return;
 
-    state.ships = _fillDedicatedSP(deserializeFleet(save.ships));
+    state.fleets = _saveFleets(save).slice(0, MAX_FLEETS)
+        .map(f => _fillDedicatedSP(deserializeFleet(f)));
+    state.activeFleet = 0;
+    clearDamageCache();
     closeModal('saveLoadModal');
+    _renderFleetTabs();
     renderFleet();
     showToast('불러오기 완료', 'success');
 }
@@ -763,6 +840,15 @@ function _handleDelete(saveIndex) {
  */
 function _getSaves() {
     return savesStore.load();
+}
+
+/** A save's fleets, oldest single-fleet shape included. */
+function _saveFleets(save) {
+    return Array.isArray(save.fleets) && save.fleets.length ? save.fleets : [save.ships];
+}
+
+function _hasAnyShip() {
+    return state.fleets.some(f => f.some(Boolean));
 }
 
 /**
@@ -794,10 +880,10 @@ function _renderSaveSlotList() {
         const date = new Date(save.timestamp);
         const dateStr = `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
 
-        // Count occupied ship slots
-        const shipCount = Array.isArray(save.ships)
-            ? save.ships.filter(s => s !== null).length
-            : 0;
+        // Count occupied ship slots across every fleet the save carries
+        const fleets = _saveFleets(save);
+        const shipCount = fleets.reduce(
+            (n, f) => n + (Array.isArray(f) ? f.filter(s => s !== null).length : 0), 0);
 
         // Ship name summary (first 3 names)
         const shipNames = _getSaveShipNames(save.ships);
@@ -823,6 +909,11 @@ function _renderSaveSlotList() {
         const dateEl = document.createElement('span');
         dateEl.textContent = dateStr;
         meta.append(count, separator, dateEl);
+        if (fleets.length > 1) {
+            const fleetCount = document.createElement('span');
+            fleetCount.textContent = `· ${fleets.length}함대`;
+            meta.appendChild(fleetCount);
+        }
 
         info.append(name, meta);
         if (shipNames) {
@@ -941,38 +1032,12 @@ function _createSaveActionButton(className, saveIndex, iconName, label) {
 // ===== URL Sharing =====
 
 function handleShare() {
-    const hasShip = state.ships.some(s => s !== null);
-    if (!hasShip) {
+    if (!_hasAnyShip()) {
         showToast('공유할 편성이 없습니다', 'info');
         return;
     }
 
-    const config = {
-        s: state.ships.map(s => {
-            if (!s) return null;
-            const o = {
-                g: s.gid,
-                l: s.level,
-                a: s.affinity,
-                e: (s.equips || []).map(eq => eq ? [eq.id, eq.level] : null),
-            };
-            if (s.spWeapon) o.sp = [s.spWeapon.id, s.spWeapon.level];
-            if (s.retrofit !== undefined) o.r = s.retrofit ? 1 : 0;
-            return o;
-        }),
-    };
-
-    const dt = state.damageTarget;
-    if (dt) {
-        config.t = dt.kind === 'meta'
-            ? { k: 'meta', b: dt.bossId, ti: dt.tier }
-            : { k: 'preset', p: dt.presetKey, ad: dt.adapt };
-        if (dt.overrides && Object.keys(dt.overrides).length) config.t.o = dt.overrides;
-        if (dt.window && dt.window !== 90) config.t.w = dt.window;
-    }
-
-    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(config))));
-    setUrlParams({ fleet: encoded }, { replace: true });
+    setUrlParams({ fleet: encodeFleetConfig(state) }, { replace: true });
 
     // Copy URL to clipboard
     navigator.clipboard.writeText(window.location.href).then(() => {
@@ -982,61 +1047,17 @@ function handleShare() {
     });
 }
 
+/** DOM half of the share codec: decodeFleetConfig does the parsing, hardening
+ *  and clamping; this applies the result to state and the damage target. */
 function restoreFromUrl(encoded) {
-    try {
-        const json = decodeURIComponent(escape(atob(encoded)));
-        const config = JSON.parse(json);
-
-        state.ships = (config.s || []).map(s => {
-            if (!s) return null;
-            const gid = Number(s.g);
-            if (!Number.isFinite(gid) || gid <= 0) return null;
-            const slot = {
-                gid,
-                level: clampLevel(s.l, 1, 125, 125),
-                affinity: s.a || 'love',
-                equips: (s.e || []).slice(0, 5).map(eq => {
-                    const id = eq ? Number(eq[0]) : NaN;
-                    return Number.isFinite(id) && id > 0
-                        ? { id, level: clampLevel(eq[1], 0, 13, 0) }
-                        : null;
-                }),
-                spWeapon: null,
-            };
-            const spId = s.sp ? Number(s.sp[0]) : NaN;
-            if (Number.isFinite(spId) && spId > 0) {
-                slot.spWeapon = { id: spId, level: clampLevel(s.sp[1], 0, _spMaxLevel(spId), 0) };
-            }
-            if (s.r !== undefined) slot.retrofit = s.r === 1;
-            return slot;
-        });
-        _fillDedicatedSP(state.ships);
-
-        if (config.t) {
-            const t = config.t;
-            const patch = t.k === 'meta'
-                ? { kind: 'meta', bossId: t.b ?? null, tier: t.ti ?? null }
-                : { kind: 'preset', presetKey: t.p || 'heavy', adapt: t.ad || 'base' };
-            // The share URL is untrusted — coerce restored overrides to finite numbers
-            // (matching the live Number() edit path); drops non-numeric values (XSS/NaN guard).
-            patch.overrides = {};
-            if (t.o && typeof t.o === 'object') {
-                for (const [k, v] of Object.entries(t.o)) {
-                    const n = Number(v);
-                    if (Number.isFinite(n)) patch.overrides[k] = n;
-                }
-            }
-            const w = Number(t.w);
-            patch.window = Number.isFinite(w) ? w : 90;
-            setDamageTarget(patch);
-        }
-
-        // Ensure exactly 6 slots
-        while (state.ships.length < 6) state.ships.push(null);
-        if (state.ships.length > 6) state.ships.length = 6;
-    } catch (e) {
-        console.warn('Failed to restore fleet from URL:', e);
+    const config = decodeFleetConfig(encoded, _spMaxLevel);
+    if (!config) {
+        console.warn('Failed to restore fleet from URL');
+        return;
     }
+    state.fleets = config.fleets.map(_fillDedicatedSP);
+    state.activeFleet = config.activeFleet;
+    if (config.target) setDamageTarget(config.target);
 }
 
 // ===== Self-start =====

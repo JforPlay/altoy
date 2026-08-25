@@ -26,6 +26,18 @@
   gap: var(--spacing-sm);
 }
 
+/* ===== FLEET TABS ===== */
+
+/* Segments are plain .btn-group members (.is-active paints the current one);
+   only the strip's own layout lives here. */
+.fleet-tabs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-md);
+}
+
 /* ===== FLEET GRID ===== */
 
 .fleet-grid {

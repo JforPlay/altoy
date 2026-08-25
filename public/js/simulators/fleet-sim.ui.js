@@ -75,6 +75,19 @@ export function setup(stateRef) {
 /**
  * Toggle stats visibility for a given ship slot.
  */
+/**
+ * Drop the cached damage result and supersede any in-flight damage render.
+ * Cards match their per-weapon breakdown by gid, so a ship present in two
+ * fleets would otherwise paint the other fleet's numbers after a switch — and
+ * an in-flight render for the old fleet must not land either, which the token
+ * bump handles (renderFleet skips renderDamagePanel entirely for an empty
+ * fleet, so it cannot be relied on to bump the token itself).
+ */
+export function clearDamageCache() {
+    _lastDamageResult = null;
+    _renderToken++;
+}
+
 export function toggleStats(slotIndex) {
     if (statsCollapsed.has(slotIndex)) {
         statsCollapsed.delete(slotIndex);
