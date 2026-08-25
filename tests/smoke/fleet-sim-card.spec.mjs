@@ -113,13 +113,40 @@ test('identity exposes the level for the compact view, and the dead name wrapper
 test('every select-wrap select suppresses its native chrome', async ({ page }) => {
     await page.goto(PAGE);
     await addShip(page);
-    // The tier <select> only renders once a META target with >1 tier is chosen,
-    // so this asserts on whichever .select-wrap selects ARE on screen (today:
-    // just the affinity select) rather than forcing that flow into existence.
+    // The affinity select is always on screen once a ship is added; assert on
+    // it directly (this alone would NOT have caught the .dmg-tier-select
+    // regression below, since it already matched the old, narrower selector).
     const selects = page.locator('.select-wrap select');
     await expect(selects.first()).toBeVisible();
     const appearances = await selects.evaluateAll((els) => els.map((el) => getComputedStyle(el).appearance));
     for (const appearance of appearances) {
         expect(appearance).toBe('none');
     }
+
+    // The regression this guards (fixed in f4b1ddb) is that .select-wrap's
+    // chevron-suppression rule was scoped to .config-select, so the damage
+    // panel's .dmg-tier-select — wrapped the same way in renderDamagePanel —
+    // drew a second, native arrow. That real <select> only renders after
+    // driving the boss picker to a META target with more than one tier, which
+    // would couple this guard to boss data (today all 23 bosses happen to
+    // carry 15 tiers, but that is game data, not a contract) and to picker
+    // modal/search timing that has nothing to do with the CSS bug. Instead,
+    // inject the same markup shape directly into the live page: every real
+    // stylesheet is already loaded, so this resolves through the actual
+    // cascade rather than a mocked one, while staying independent of data.
+    const tier = await page.evaluate(() => {
+        const wrap = document.createElement('span');
+        wrap.className = 'select-wrap';
+        wrap.innerHTML = '<select class="dmg-tier-select"></select>';
+        document.body.appendChild(wrap);
+        const style = getComputedStyle(wrap.querySelector('select'));
+        const result = {
+            appearance: style.getPropertyValue('appearance'),
+            webkitAppearance: style.getPropertyValue('-webkit-appearance'),
+        };
+        wrap.remove();
+        return result;
+    });
+    expect(tier.appearance).toBe('none');
+    expect(tier.webkitAppearance).toBe('none');
 });

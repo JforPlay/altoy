@@ -104,8 +104,7 @@
 }
 
 .ship-identity-bottom .retrofit-toggle {
-  margin-left: auto;
-  flex-shrink: 0;
+  margin-left: auto; /* flex-shrink: 0 already comes from the base .retrofit-toggle rule */
 }
 
 /* Both control rows share ONE grid so the two labels land in one column and the
