@@ -279,7 +279,7 @@ function _buildIdentityHTML(slotIndex, ship, slotConfig) {
     ).join('');
 
     return `
-        <div class="ship-card-identity">
+        <div class="ship-card-identity" data-level="${level}" data-rarity="${escapeHtml(rarityGrade)}">
             <span class="material-symbols-outlined drag-handle" title="드래그하여 이동">drag_indicator</span>
             <img class="ship-portrait"
                  src="${portraitUrl}"
@@ -290,13 +290,11 @@ function _buildIdentityHTML(slotIndex, ship, slotConfig) {
                  data-slot="${slotIndex}"
                  loading="lazy" />
             <div class="ship-identity-main">
-                <div class="ship-name-group">
-                    <div class="ship-name" title="${safeShipName}">${safeShipName}</div>
-                    ${retrofitHTML}
-                </div>
+                <div class="ship-name" title="${safeShipName}">${safeShipName}</div>
                 <div class="ship-identity-bottom">
                     ${rarityBadge}
                     <div class="ship-type-nation">${safeTypeNation}</div>
+                    ${retrofitHTML}
                 </div>
             </div>
             <div class="ship-identity-controls">
@@ -856,7 +854,7 @@ export async function renderDamagePanel(container) {
             const opts = boss.tiers.map((t) =>
                 `<option value="${t.tier}"${t.tier === activeTier ? ' selected' : ''}>Tier ${t.tier}</option>`
             ).join('');
-            tierSelect = `<select class="dmg-tier-select" data-action="dmg-tier" aria-label="난이도 티어">${opts}</select>`;
+            tierSelect = `<span class="select-wrap"><select class="dmg-tier-select" data-action="dmg-tier" aria-label="난이도 티어">${opts}</select></span>`;
         }
     }
     const targetSelectRow =

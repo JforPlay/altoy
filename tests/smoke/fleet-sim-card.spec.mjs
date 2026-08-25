@@ -71,3 +71,41 @@ test('rarity badge stays rectangular, not a pill', async ({ page }) => {
     const radius = await badge.evaluate((el) => getComputedStyle(el).borderRadius);
     expect(parseFloat(radius)).toBeLessThanOrEqual(6);
 });
+
+test('card chrome is vertically centred in the identity row', async ({ page }) => {
+    await page.goto(PAGE);
+    await addShip(page);
+    const card = page.locator('.ship-card[data-slot="0"]');
+    const row = await card.locator('.ship-card-identity').boundingBox();
+    const chrome = await card.locator('.ship-card-actions').boundingBox();
+    // The predecessor pinned the chrome with align-self: flex-start while every
+    // other cell was centred — that offset IS the reported misalignment.
+    const rowMid = row.y + row.height / 2;
+    const chromeMid = chrome.y + chrome.height / 2;
+    expect(Math.abs(rowMid - chromeMid)).toBeLessThan(4);
+});
+
+test('the level stepper and 호감도 select share one column', async ({ page }) => {
+    await page.goto(PAGE);
+    await addShip(page);
+    const card = page.locator('.ship-card[data-slot="0"]');
+    const stepper = await card.locator('.ship-identity-controls .level-stepper').boundingBox();
+    const select = await card.locator('.ship-identity-controls .select-wrap').boundingBox();
+    // Both are grid items in the same column at width:100%, so their edges match
+    // by construction rather than by two intrinsic widths happening to agree.
+    expect(Math.abs(stepper.x - select.x)).toBeLessThan(2);
+    expect(Math.abs((stepper.x + stepper.width) - (select.x + select.width))).toBeLessThan(2);
+});
+
+test('identity exposes the level for the compact view, and the dead name wrapper is gone', async ({ page }) => {
+    await page.goto(PAGE);
+    await addShip(page);
+    const card = page.locator('.ship-card[data-slot="0"]');
+    await expect(card.locator('.ship-card-identity')).toHaveAttribute('data-level', /^\d+$/);
+    // Compact view hides the rarity badge's row, so the grade also has to reach
+    // the identity element for the portrait border to carry it there.
+    await expect(card.locator('.ship-card-identity')).toHaveAttribute('data-rarity', /^(N|R|SR|SSR|UR)$/);
+    // .ship-name-group carried a flex:1 that went inert when its parent became a
+    // column; it is deleted rather than patched.
+    await expect(card.locator('.ship-name-group')).toHaveCount(0);
+});

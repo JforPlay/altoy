@@ -65,25 +65,30 @@
 
 /* ===== POPULATED CARD ===== */
 
-/* Ship identity section: [drag] [portrait] [2-row content] [close] */
+/* Ship identity row. An explicit 5-column grid, because the flex predecessor
+   had four rules fighting: the chrome was pinned with align-self: flex-start
+   while every other cell was centred, .ship-name-group's flex:1 had gone inert
+   when this element became a column, and .config-group's flex:1 was cancelled
+   two rules later. Columns: drag | portrait | identity | controls | chrome. */
 .ship-card-identity {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto auto;
   align-items: center;
   gap: var(--spacing-sm);
   padding: var(--spacing-sm) var(--spacing-md);
   border-bottom: 1px solid var(--surface-border);
 }
 
-/* Left column owns identity, right column owns controls — a long ship name no
-   longer competes with the level stepper for the same flex line. */
 .ship-identity-main {
-  flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 3px;
 }
 
+/* 개장 sits here rather than beside the name: it is a state toggle, and inline
+   after the name it competed with a long ship name for one line. It is also
+   what changes the ship type printed next to it. */
 .ship-identity-bottom {
   display: flex;
   align-items: center;
@@ -98,34 +103,32 @@
   white-space: nowrap;
 }
 
+.ship-identity-bottom .retrofit-toggle {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* Both control rows share ONE grid so the two labels land in one column and the
+   two controls in another — the right edge is flush by construction instead of
+   depending on two intrinsic widths agreeing. `display: contents` hoists each
+   .config-group's children into this grid (same technique the island 자원 tab
+   uses to align every control to the panel it drives). */
 .ship-identity-controls {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-  flex-shrink: 0;
-}
-
-.ship-identity-controls .config-group {
-  flex: none;
-  justify-content: flex-end;
-}
-
-.ship-name-group {
-  flex: 1;
-  min-width: 0;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(92px, auto);
   align-items: center;
-  gap: var(--spacing-xs);
-}
-
-.ship-name-group .ship-name {
-  min-width: 0;
-}
-
-.ship-card-identity > .ship-card-actions {
-  align-self: flex-start;
+  justify-items: end;
+  column-gap: var(--spacing-xs);
+  row-gap: 4px;
   flex-shrink: 0;
+}
+
+.ship-identity-controls .config-group { display: contents; }
+
+.ship-identity-controls .level-stepper,
+.ship-identity-controls .select-wrap,
+.ship-identity-controls .config-select {
+  width: 100%;
 }
 
 .ship-portrait {
@@ -233,7 +236,6 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  flex: 1;
 }
 
 .config-label {
@@ -304,8 +306,9 @@
   border-color: var(--primary-color);
 }
 
-/* The only native-chrome control on the page; suppress the platform arrow and
-   draw our own so it matches the surrounding buttons in both themes. */
+/* Suppresses the platform arrow and draws our own so selects match the
+   surrounding buttons in both themes. `.dmg-tier-select` opts in via the
+   same wrapper. */
 .select-wrap {
   position: relative;
   display: inline-flex;
@@ -319,7 +322,7 @@
 }
 
 .select-wrap::after {
-  content: 'expand_more';
+  content: '\e5cf'; /* Material Symbols "expand_more" */
   font-family: 'Material Symbols Outlined';
   font-size: 14px;
   line-height: 1;
