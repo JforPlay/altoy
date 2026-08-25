@@ -280,10 +280,6 @@
 }
 
 /* Hide native number spinner */
-.config-input::-webkit-inner-spin-button,
-.config-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-.config-input { -moz-appearance: textfield; }
-
 .stepper-edit::-webkit-inner-spin-button,
 .stepper-edit::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 .stepper-edit { -moz-appearance: textfield; }
@@ -349,6 +345,14 @@
   align-items: center;
   gap: 3px;
   cursor: pointer;
+  /* .equip-slot is a 1fr (= minmax(auto, 1fr)) grid item in .equip-slots-grid,
+     so its track floor is its min-content width — the caption's max-width:100%
+     does NOT lower that floor (a percentage against an indefinite width is
+     dropped during intrinsic sizing). One long, nowrap equip name therefore
+     drags its whole column wider than the other five (measured: 224/108/97/
+     50/81/53px at 484px card width) until .ship-card's overflow:hidden clips
+     it. This forces the floor to 0 so the caption's own ellipsis can engage. */
+  min-width: 0;
 }
 
 /* One caption row under the grid in both states: the equip name on filled
@@ -415,12 +419,6 @@
 .equip-slot[data-equip-rarity="sr"] .equip-slot-icon-box  { border-color: var(--rarity-sr); }
 .equip-slot[data-equip-rarity="r"] .equip-slot-icon-box   { border-color: var(--rarity-r); }
 .equip-slot[data-equip-rarity="n"] .equip-slot-icon-box   { border-color: var(--rarity-n); }
-
-.equip-slot-icon {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
 
 /* Equip icon with rarity background overlay */
 .equip-icon-wrapper {
@@ -532,19 +530,6 @@
 @keyframes popoverIn {
   from { opacity: 0; }
   to { opacity: 1; }
-}
-
-/* Locked/disabled slot */
-.equip-slot.locked {
-  opacity: 0.4;
-  cursor: not-allowed;
-  border-style: solid;
-  background: var(--surface-border);
-}
-
-.equip-slot.locked:hover {
-  border-color: var(--border-color);
-  background: var(--surface-border);
 }
 
 /* ===== COMPACT VIEW (간략 보기) =====

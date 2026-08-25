@@ -133,13 +133,15 @@ function _applyView(view) {
     const grid = document.querySelector('.fleet-grid');
     if (grid) grid.dataset.view = mode;
 
-    const btn = document.getElementById('view-toggle-btn');
     const icon = document.getElementById('view-toggle-icon');
     const label = document.getElementById('view-toggle-label');
     if (icon) icon.textContent = VIEW_TOGGLE[mode].icon;
     if (label) label.textContent = VIEW_TOGGLE[mode].label;
-    // Label names the destination; aria-pressed reports the current state.
-    if (btn) btn.setAttribute('aria-pressed', String(mode === 'compact'));
+    // The button's label names the destination view (house convention — see
+    // shipgirl-tracker), so it needs no aria-pressed: an action-named button
+    // has no "pressed" state to report, and pairing one with a destination
+    // label would announce the wrong thing ("기본 보기, pressed" while in
+    // compact view).
 
     setStorageItem(VIEW_KEY, mode);
 }

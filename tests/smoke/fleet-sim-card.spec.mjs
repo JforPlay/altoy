@@ -24,6 +24,8 @@
  *   - the efficiency badge is suppressed at exactly 100%, so a fully-fluent
  *     weapon slot doesn't print a redundant "100%"
  *   - equip slots grow fluidly with the card instead of holding a fixed 64px
+ *   - a long equip name does not blow out its own grid column: all six equip
+ *     slot columns stay equal width regardless of caption length
  *   - 간략 보기 (compact view) collapses a card to one row: portrait then 6
  *     equip squares, left to right
  *   - compact view hides the controls/captions/vitals but keeps the ship
@@ -238,6 +240,33 @@ test('equip slots grow with the card instead of holding a fixed 64px', async ({ 
     expect(box.width).toBeGreaterThan(80);
     // Squares at every width.
     expect(Math.abs(box.width - box.height)).toBeLessThan(2);
+
+    // The check above only ever measured an UNEQUIPPED slot, whose caption is
+    // a short slot-type label. A long, nowrap equip NAME is a much bigger
+    // min-content floor, and .equip-slot is a 1fr grid item — without
+    // min-width: 0 that floor drags just its own column wider than the other
+    // five instead of growing uniformly. Equip the slot with the longest name
+    // the picker actually offers (not a hard-coded id, which could go stale).
+    const slot0 = page.locator('.ship-card[data-slot="0"] .equip-slot[data-equip-index="0"]');
+    await slot0.click();
+    await expect(page.locator('#equip-picker-grid .picker-item').first()).toBeVisible();
+    const names = await page.locator('#equip-picker-grid .picker-item-name').allInnerTexts();
+    let longestIndex = 0;
+    for (let i = 1; i < names.length; i++) {
+        if (names[i].length > names[longestIndex].length) longestIndex = i;
+    }
+    // Sanity: the picked name must actually be long enough to stress the
+    // layout, or this assertion would pass vacuously on a short-name catalog.
+    expect(names[longestIndex].length).toBeGreaterThanOrEqual(12);
+    await page.locator('#equip-picker-grid .picker-item').nth(longestIndex).click();
+    await expect(slot0).toHaveClass(/equipped/);
+
+    const boxes = page.locator('.ship-card[data-slot="0"] .equip-slot-icon-box');
+    await expect(boxes).toHaveCount(6);
+    const widths = await boxes.evaluateAll((els) => els.map((el) => el.getBoundingClientRect().width));
+    // All six are 1fr tracks of the same grid — a working fix keeps them equal
+    // no matter how long one slot's caption is.
+    expect(Math.max(...widths) - Math.min(...widths)).toBeLessThan(2);
 });
 
 test('간략 보기 collapses a card to one row of portrait + 6 equip squares', async ({ page }) => {

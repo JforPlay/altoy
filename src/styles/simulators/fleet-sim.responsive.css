@@ -25,6 +25,10 @@
 
   .fleet-sim-page .header-actions {
     width: 100%;
+    /* Three flex:1 buttons (간략 보기 view toggle + 저장/불러오기 + 공유) overflow a
+       358px row at this width (measured 376px) now that the view-toggle button
+       joined the group — wrap instead of clipping the third button off-screen. */
+    flex-wrap: wrap;
   }
 
   .fleet-sim-page .header-actions .btn {
@@ -42,6 +46,14 @@
      freed width. The chrome pair needs an explicit position: left to
      auto-placement it would land in a new row 3 behind the now-spanning
      controls row, since the placement cursor never backtracks to row 1. */
+  /* .ship-card-identity / .ship-identity-controls / .ship-card-actions below are
+     unscoped, so they also match inside 간략 보기 (compact view) markup at this
+     width — but they're inert there: compact's own
+     .fleet-grid[data-view="compact"] .ship-card-identity (etc.) rules carry
+     specificity (0,3,0) against these plain-class rules' (0,1,0), so compact's
+     display:flex/none always wins the cascade. Verified, not re-scoped on
+     purpose — re-scoping would touch a working cascade for a cosmetic-only
+     concern. */
   .ship-card-identity {
     grid-template-columns: auto auto minmax(0, 1fr) auto;
   }
