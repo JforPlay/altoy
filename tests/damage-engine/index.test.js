@@ -1,7 +1,7 @@
 // tests/damage-engine/index.test.js
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { simulateAttacker, simulateFleet, makeTarget } from '../../public/js/engine/damage/index.js';
+import { simulateAttacker, simulateFleet, makeTarget, weaponCycleInterval, calculateReloadTime } from '../../public/js/engine/damage/index.js';
 
 const approx = (a, b, eps = 0.5) => Math.abs(a - b) < eps;
 
@@ -61,4 +61,39 @@ test('empty weapons → zero output', () => {
   assert.equal(r.oneShotExpected, 0);
   assert.equal(r.total, 0);
   assert.equal(r.dps, 0);
+});
+
+test('weaponCycleInterval matches what simulateAttacker uses internally', () => {
+  const w = { reloadMax: 240, cycleExtra: 1.5 };
+  const direct = weaponCycleInterval(w, 150);
+  assert.ok(Math.abs(direct - (calculateReloadTime(240, 150) + 1.5)) < 1e-12);
+});
+
+test('simulateAttacker uses w.activations verbatim and reports reloadInterval 0', () => {
+  const attacker = { accuracy: 100, luck: 20, level: 125, reload: 150 };
+  const target = { armorType: 2, evasion: 30, antiAir: 100, level: 125, luck: 10, hp: 100000 };
+  const barrage = {
+    attackAttribute: 'cannon', stat: 500, damage: 40, corrected: 100, ratio: 100,
+    bulletsPerSalvo: 6, damageType: [1, 1, 1], reloadMax: 0,
+    activations: 3, cadence: '주포 15회마다', label: '탄막 · 전탄 발사',
+  };
+  const out = simulateAttacker(attacker, [barrage], target, { window: 90 });
+  const row = out.perWeapon[0];
+  assert.equal(row.salvoCount, 3);
+  assert.equal(row.reloadInterval, 0);
+  assert.equal(row.cadence, '주포 15회마다');   // passthrough from the descriptor, unchanged
+  assert.ok(Math.abs(row.total - row.oneSalvoExpected * 3) < 1e-9);
+  assert.ok(Math.abs(row.dps - row.total / 90) < 1e-9);
+});
+
+test('a fractional activation count is honoured (expected value, not a salvo count)', () => {
+  const attacker = { accuracy: 100, luck: 20, level: 125, reload: 150 };
+  const target = { armorType: 2, evasion: 30, antiAir: 100, level: 125, luck: 10, hp: 100000 };
+  const base = {
+    attackAttribute: 'cannon', stat: 500, damage: 40, corrected: 100, ratio: 100,
+    bulletsPerSalvo: 6, damageType: [1, 1, 1], reloadMax: 0, label: '탄막',
+  };
+  const full = simulateAttacker(attacker, [{ ...base, activations: 2 }], target, { window: 90 });
+  const half = simulateAttacker(attacker, [{ ...base, activations: 1 }], target, { window: 90 });
+  assert.ok(Math.abs(full.total - half.total * 2) < 1e-9);
 });

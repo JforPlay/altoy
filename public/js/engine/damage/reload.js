@@ -19,3 +19,13 @@ export function calculateAirAssistReloadMax(reloadMaxValues) {
   const sum = reloadMaxValues.reduce((a, b) => a + b, 0);
   return (sum / reloadMaxValues.length) * AIR_ASSIST_RELOAD_RATIO;
 }
+
+/**
+ * Seconds between a weapon's salvos, including the fixed 발사 후 경직 the reload
+ * stat does NOT scale. Exported so callers that need a salvo count (the barrage
+ * adapter) derive it from the same line simulateAttacker uses, rather than a
+ * second copy that can drift.
+ */
+export function weaponCycleInterval(weapon, reloadStat) {
+  return calculateReloadTime(weapon.reloadMax, reloadStat) + (weapon.cycleExtra ?? 0);
+}
