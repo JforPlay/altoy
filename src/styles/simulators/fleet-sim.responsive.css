@@ -52,18 +52,8 @@
     min-height: 32px;
   }
 
-  .equip-slots-grid {
-    max-width: none;
-  }
-
   .equip-slot {
     max-width: 52px;
-  }
-
-  .equip-slot-icon-box {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1;
   }
 
   /* Full-screen picker modals on mobile */

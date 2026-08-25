@@ -336,7 +336,9 @@
 .equip-slots-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 2px var(--spacing-xs);
+  /* 2px, not 0: the slots carry rarity-coloured borders, and at zero gap the
+     adjacent borders abut and read as one table rule rather than six items. */
+  gap: 2px;
   padding: var(--spacing-sm) var(--spacing-md);
 }
 
@@ -349,15 +351,20 @@
   cursor: pointer;
 }
 
-/* One caption row under the grid in both states: the efficiency figure on filled
-   weapon slots, the slot-type label on empty ones. Always present (even empty)
-   so every cell in the row shares a baseline. */
+/* One caption row under the grid in both states: the equip name on filled
+   slots, the slot-type label on empty ones. Always present (even empty) so
+   every cell in the row shares a baseline. Ellipsis rather than a marquee —
+   a marquee is mid-scroll in every screenshot, and sharing is the point of
+   the compact view. */
 .equip-slot-caption {
   min-height: 1em;
+  max-width: 100%;
   font-size: 0.65rem;
   line-height: 1;
   text-align: center;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: var(--text-secondary);
 }
 
@@ -367,8 +374,10 @@
 
 .equip-slot-icon-box {
   position: relative;
-  width: 64px;
-  height: 64px;
+  /* Fluid, so the strip fills the card at every breakpoint instead of leaving
+     the fixed-64px gutter visible. */
+  width: 100%;
+  aspect-ratio: 1;
   background: var(--section-bg);
   border: 1px dashed var(--border-color);
   border-radius: var(--radius-sm);
@@ -453,22 +462,35 @@
   font-size: 16px;
 }
 
-/* Enhance level badge (bottom-right corner) — Task 2 improved */
-.equip-enhance-badge {
+/* Corner badges inside the icon box. One base, two corners — the enhance level
+   bottom-right, the equipment-efficiency figure top-left. The efficiency figure
+   used to sit in the caption row, where its class had no stylesheet rule at all. */
+.equip-slot-badge {
   position: absolute;
-  bottom: 0;
-  right: 0;
   background: var(--overlay-intense);
-  color: var(--rarity-ssr);
   font-size: 0.7rem;
   font-weight: 700;
   padding: 1px 5px;
   line-height: 1.4;
-  border-radius: var(--radius-xs) 0 var(--radius-xs) 0;
   font-variant-numeric: tabular-nums;
-  cursor: pointer;
   transition: background var(--transition-fast);
   z-index: 2;
+}
+
+.equip-enhance-badge {
+  bottom: 0;
+  right: 0;
+  color: var(--rarity-ssr);
+  border-radius: var(--radius-xs) 0 var(--radius-xs) 0;
+  cursor: pointer;
+}
+
+.equip-eff-badge {
+  top: 0;
+  left: 0;
+  color: var(--text-on-overlay, #fff);
+  border-radius: 0 var(--radius-xs) 0 var(--radius-xs);
+  pointer-events: none;
 }
 
 .equip-enhance-badge:hover {

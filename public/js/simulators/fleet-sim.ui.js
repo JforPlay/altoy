@@ -353,10 +353,10 @@ function _buildEquipSlotsHTML(slotIndex, ship, slotConfig) {
 /**
  * Build a single equip slot cell.
  *
- * The slot-type label renders ONLY on empty slots: a filled slot is identified
- * by its icon, and the label duplicated it six times per card. The `title`
- * attribute still carries `slotName: equipName` for hover and assistive tech.
- * One caption row sits under the grid in both states so baselines stay aligned.
+ * The caption names the equip on filled slots and the slot type on empty
+ * ones, so every cell can be read without relying on the icon alone. The
+ * `title` attribute carries `slotName: equipName` in both states for hover
+ * and assistive tech.
  */
 function _buildSingleEquipSlotHTML(slotIndex, equipIndex, equipConfig, ship, isRetrofit) {
     const slotName = getSlotName(ship, equipIndex, isRetrofit);
@@ -387,11 +387,15 @@ function _buildSingleEquipSlotHTML(slotIndex, equipIndex, equipConfig, ship, isR
     const safeEquipName = escapeHtml(equip.name || '');
 
     // Weapon slots (0-2) carry an equipment-efficiency multiplier (max-LB +
-    // retrofit); the title supplies the word the caption drops.
-    let effCaption = '';
+    // retrofit). effectiveProficiency fills gaps with `?? 1`, so a `!= null`
+    // guard is always true — gate on the VALUE instead, or every card prints
+    // six copies of 100%.
+    let effBadge = '';
     if (equipIndex < 3) {
         const eff = effectiveProficiency(ship, isRetrofit)[equipIndex];
-        if (eff != null) effCaption = `${Math.round(eff * 100)}%`;
+        if (eff != null && eff !== 1) {
+            effBadge = `<span class="equip-slot-badge equip-eff-badge" title="장비 효율">${Math.round(eff * 100)}%</span>`;
+        }
     }
 
     return `
@@ -408,12 +412,13 @@ function _buildSingleEquipSlotHTML(slotIndex, equipIndex, equipConfig, ship, isR
                     <img class="equip-icon-bg" src="${bgUrl}" alt="" loading="lazy" />
                     ${iconUrl ? `<img class="equip-icon-fg" src="${iconUrl}" alt="${safeEquipName}" loading="lazy" />` : ''}
                 </div>
-                <span class="equip-enhance-badge"
+                ${effBadge}
+                <span class="equip-slot-badge equip-enhance-badge"
                       data-action="change-equip-level"
                       data-slot="${slotIndex}"
                       data-equip-index="${equipIndex}">+${enhanceLevel}</span>
             </div>
-            <span class="equip-slot-caption equip-eff-badge"${effCaption ? ' title="장비 효율"' : ''}>${effCaption}</span>
+            <span class="equip-slot-caption" title="${safeEquipName}">${safeEquipName}</span>
         </div>
     `;
 }
@@ -445,7 +450,7 @@ function _buildSPSlotHTML(slotIndex, ship, slotConfig) {
                             <img class="equip-icon-bg" src="${bgUrl}" alt="" loading="lazy" />
                             ${iconUrl ? `<img class="equip-icon-fg" src="${iconUrl}" alt="${safeName}" loading="lazy" />` : ''}
                         </div>
-                        <span class="equip-enhance-badge"
+                        <span class="equip-slot-badge equip-enhance-badge"
                               data-action="change-sp-level"
                               data-slot="${slotIndex}">+${spConfig.level || 1}</span>
                     </div>
@@ -471,7 +476,7 @@ function _buildSPSlotHTML(slotIndex, ship, slotConfig) {
                         <img class="equip-icon-bg" src="${bgUrl}" alt="" loading="lazy" />
                         ${iconUrl ? `<img class="equip-icon-fg" src="${iconUrl}" alt="${safeName}" loading="lazy" />` : ''}
                     </div>
-                    <span class="equip-enhance-badge">SP</span>
+                    <span class="equip-slot-badge equip-enhance-badge">SP</span>
                 </div>
                 <span class="equip-slot-caption"></span>
             </div>`;

@@ -150,3 +150,65 @@ test('every select-wrap select suppresses its native chrome', async ({ page }) =
     expect(tier.appearance).toBe('none');
     expect(tier.webkitAppearance).toBe('none');
 });
+
+test('a filled equip slot captions the equip name and badges inside the icon box', async ({ page }) => {
+    await page.goto(PAGE);
+    await addShip(page);
+    const slot0 = page.locator('.ship-card[data-slot="0"] .equip-slot[data-equip-index="0"]');
+    await slot0.click();
+    await expect(page.locator('#equip-picker-grid .picker-item').first()).toBeVisible();
+    const pickedName = await page.locator('#equip-picker-grid .picker-item').nth(2)
+        .locator('.picker-item-name').innerText();
+    await page.locator('#equip-picker-grid .picker-item').nth(2).click();
+
+    await expect(slot0).toHaveClass(/equipped/);
+    // The caption used to be a duplicated slot-type label; it now names the equip.
+    // Exact match against the picker's own text, not just "not empty" — a mere
+    // non-empty check still passes if the caption regresses back to the
+    // slot-type label, since that label is non-empty too.
+    await expect(slot0.locator('.equip-slot-caption')).toHaveText(pickedName.trim());
+    // Substring, NOT a RegExp built from data — equip names carry regex
+    // metacharacters ("(개조)", "+"), which would fail the test for reasons that
+    // have nothing to do with the code under test. getAttribute returns the
+    // decoded value, so it compares equal to the picker's rendered text.
+    const title = await slot0.getAttribute('title');
+    expect(title).toContain(pickedName.trim());
+    // Both badges live inside the icon box, not in the caption row beneath it.
+    await expect(slot0.locator('.equip-slot-icon-box .equip-enhance-badge')).toHaveCount(1);
+    await expect(slot0.locator('.equip-slot-caption .equip-eff-badge')).toHaveCount(0);
+});
+
+test('the efficiency badge is suppressed at 100%', async ({ page }) => {
+    await page.goto(PAGE);
+    await addShip(page);
+    // A weapon slot (index < 3) must actually be FILLED — the eff-badge branch
+    // never runs on an empty slot, so checking the page for a stray "100%"
+    // would pass vacuously (nothing equipped, not "100% suppressed") without
+    // this. Slot 2 (AA guns) sits at exactly 100% base proficiency on the
+    // default test ship (slot 0 carries a +30% innate bonus and would render
+    // regardless of the gate under test, so it cannot exercise this claim).
+    const slot2 = page.locator('.ship-card[data-slot="0"] .equip-slot[data-equip-index="2"]');
+    await slot2.click();
+    await expect(page.locator('#equip-picker-grid .picker-item').first()).toBeVisible();
+    await page.locator('#equip-picker-grid .picker-item').first().click();
+    await expect(slot2).toHaveClass(/equipped/);
+    // effectiveProficiency fills gaps with `?? 1`, so its guard is always true and
+    // every weapon slot used to print a percentage — usually a flat 100%. Six
+    // copies of that per card is noise, so full efficiency renders nothing.
+    await expect(slot2.locator('.equip-eff-badge')).toHaveCount(0);
+});
+
+test('equip slots grow with the card instead of holding a fixed 64px', async ({ page }) => {
+    await page.goto(PAGE);
+    await addShip(page);
+    const box = await page.locator('.ship-card[data-slot="0"] .equip-slot-icon-box').first().boundingBox();
+    // >64 alone doesn't discriminate: the box carries a 1px dashed border and
+    // this stylesheet never sets box-sizing: border-box, so a plain
+    // `width: 64px; height: 64px` (content-box, the old fixed rule) still
+    // measures 66px — clearing 64 without being the fluid layout under test.
+    // The fluid box (100% of a 6-column card at the default 1280px viewport)
+    // measures ~93px, so 80 sits well clear of both directions.
+    expect(box.width).toBeGreaterThan(80);
+    // Squares at every width.
+    expect(Math.abs(box.width - box.height)).toBeLessThan(2);
+});
