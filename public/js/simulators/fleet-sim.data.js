@@ -54,7 +54,7 @@ export async function loadAllData() {
 
     // Phase 2: Extended data (parallel, all cached — non-fatal failures)
     const [equipFullData, weaponPropertyData, passiveSkillData, fleetTechData, shipGroupData, spWeaponData,
-           barrageData, bulletData, aircraftData, metaBossData] = await Promise.all([
+           barrageData, bulletData, aircraftData, metaBossData, presetData] = await Promise.all([
         _loadCached('data/equip/equip_data_full.json'),
         _loadCached('data/sim/weapon_property.json'),
         _loadCached('data/sim/fleet_sim_passive_skills.json'),
@@ -65,6 +65,7 @@ export async function loadAllData() {
         _loadCached('data/sim/bullet_template.json'),
         _loadCached('data/sim/aircraft_template.json'),
         _loadCached('data/meta_bosses.json'),
+        _loadCached('data/fleet_sim_presets.json'),
     ]);
 
     state.equipFullData = equipFullData;
@@ -77,6 +78,9 @@ export async function loadAllData() {
     state.bulletData = bulletData;
     state.aircraftData = aircraftData;
     state.metaBossData = metaBossData;
+    // Curated presets gate their own header button, so they load at boot rather
+    // than on first modal open — an absent/short file just means no button.
+    state.presets = Array.isArray(presetData?.presets) ? presetData.presets : [];
 
     // Build SP weapon lookup indexes
     _buildSPWeaponIndex(spWeaponData);

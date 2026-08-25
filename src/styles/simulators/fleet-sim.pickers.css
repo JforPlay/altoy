@@ -311,6 +311,13 @@
   color: #fff;
 }
 
+/* Curated preset rows reuse the save-row markup wholesale; the authored note
+   is the only element saves have no counterpart for. */
+.preset-note {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
 /* 장비 코드 modal */
 .equip-code-section {
   display: flex;

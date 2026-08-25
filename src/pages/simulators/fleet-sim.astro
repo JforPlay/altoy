@@ -37,6 +37,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <span class="material-symbols-outlined" id="view-toggle-icon">view_list</span>
                     <span id="view-toggle-label">간략 보기</span>
                 </button>
+                <!-- Revealed by fleet-sim.main.js only when the curated preset
+                     file actually carries a preset. -->
+                <button id="preset-btn" class="btn btn-secondary hidden" title="추천 편성">
+                    <span class="material-symbols-outlined">recommend</span>
+                    추천 편성
+                </button>
                 <button id="save-load-btn" class="btn btn-secondary" title="저장/불러오기">
                     <span class="material-symbols-outlined">save</span>
                     저장/불러오기
@@ -197,6 +203,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 </div>
             </div>
         </div>
+    </Modal>
+
+    <!-- Curated Preset Modal (추천 편성) -->
+    <Modal id="presetModal" title="추천 편성">
+        <div id="preset-list" class="save-slot-list scroll-styled"></div>
     </Modal>
 
     <!-- Equip Code Modal (장비 코드 내보내기/가져오기) -->

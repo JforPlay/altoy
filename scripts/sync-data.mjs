@@ -29,6 +29,9 @@ const ROOT = resolve(SCRIPT_DIR, '..');
 const MAPPINGS = [
     { src: 'src/data/kr_event_timeline.json',   dest: 'public/data/kr_event_timeline.json' },
     { src: 'src/data/shipgirl_birthday_data.json', dest: 'public/data/shipgirl/shipgirl_birthday_data.json' },
+    // Root of public/data on purpose: public/data/sim/ and public/data/shipgirl/
+    // are WSL-generated trees, and a hand-maintained file is safer outside them.
+    { src: 'src/data/fleet_sim_presets.json',   dest: 'public/data/fleet_sim_presets.json' },
 ];
 
 let copied = 0;

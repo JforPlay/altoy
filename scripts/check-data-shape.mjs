@@ -329,6 +329,13 @@ export const MANIFEST = [
         'version': 'number',
         'entries': 'object',
     } },
+    // Hand-maintained (src/data/fleet_sim_presets.json, mirrored by sync-data).
+    // Container only; per-preset records are gated by tests/simulators/fleet-sim-presets.test.mjs,
+    // which decodes every share code rather than just type-checking it.
+    { file: 'fleet_sim_presets.json', kind: 'object', fields: {
+        'version': 'number',
+        'presets': 'array',
+    } },
     // Two-level: 3 pool objects (소형/중형/특형) each keyed by ship id → only container shape guarded.
     { file: 'shipgirl/ship_build_sim_data.json', kind: 'dict', fields: {} },
 ];

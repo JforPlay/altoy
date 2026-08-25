@@ -7,7 +7,7 @@
  * node-testable; main.js owns the syncedStorage instance and all DOM.
  *
  * The ?fleet= share codec lives here too (encode/decodeFleetConfig): it is the
- * same pure shape work, and the preset library reads share codes directly.
+ * same pure shape work, and the curated preset file stores share codes directly.
  */
 
 export const MAX_SAVE_SLOTS = 30;
@@ -203,4 +203,15 @@ function _decodeTarget(t) {
     const w = Number(t.w);
     patch.window = Number.isFinite(w) ? w : 90;
     return patch;
+}
+
+/**
+ * A curated preset's `code`, from either the bare ?fleet= payload or the whole
+ * URL the 공유 button copies to the clipboard — authoring is paste-what-you-copied.
+ * URLSearchParams percent-encodes base64's `+` and `/`, hence the decode.
+ */
+export function presetCode(raw) {
+    const s = String(raw || '');
+    const m = s.match(/[?&]fleet=([^&#]+)/);
+    return m ? decodeURIComponent(m[1]) : s;
 }

@@ -18,11 +18,12 @@ import {
     syncedStorage,
     IMG_FALLBACKS,
     createImgElement,
+    showElement,
 } from '../utils.js';
 import {
     MAX_SAVE_SLOTS, MAX_FLEETS, SAVES_VERSION, parseSaves, migrateSaves,
     serializeFleet, deserializeFleet, clampLevel,
-    encodeFleetConfig, decodeFleetConfig,
+    encodeFleetConfig, decodeFleetConfig, presetCode,
 } from './fleet-sim.saves.js';
 
 import {
@@ -56,8 +57,9 @@ const savesStore = syncedStorage(STORAGE_KEY, {
     migrate: migrateSaves,
     onRemoteChange: () => {
         const modal = document.getElementById('saveLoadModal');
-        // openModal sets inline display:flex; closed = 'none' or initial hidden
-        if (modal && modal.style.display === 'flex') _renderSaveSlotList();
+        // .active is openModal's own open marker; reading style.display would
+        // couple this to the fact that it shows modals with an inline style.
+        if (modal && modal.classList.contains('active')) _renderSaveSlotList();
     },
 });
 
@@ -83,6 +85,8 @@ const state = {
     passiveSkillData: null,
     fleetTechTemplateData: null,
     shipGroupData: null,
+    // Curated boss presets (src/data/fleet_sim_presets.json) — [] when absent
+    presets: [],
 
     // Mappings
     shipTypeData: {},
@@ -120,9 +124,16 @@ function _loadDamageTarget() {
  * Called from click/input handlers when the user changes target preset/adapt/overrides.
  */
 export function setDamageTarget(patch) {
+    _applyDamageTarget(patch);
+    renderFleet();
+}
+
+/** Merge + persist WITHOUT rendering, for callers that render immediately
+ *  afterwards anyway (URL restore at boot, preset load). renderFleet fans out
+ *  into four async damage sims, so doing it twice is not free. */
+function _applyDamageTarget(patch) {
     state.damageTarget = { ...state.damageTarget, ...patch };
     setStorageItem('fleetSimDamageTarget', JSON.stringify(state.damageTarget));
-    renderFleet();
 }
 
 // ===== View Mode =====
@@ -241,8 +252,13 @@ async function init() {
     // 5. Setup save/load modal (Modal.astro shell — setupModal defaults
     // cover the .modal-close button and .modal-backdrop clicks)
     setupModal('saveLoadModal', { restoreFocus: true });
+    setupModal('presetModal', { restoreFocus: true });
 
-    // 6. Initial render
+    // 6. Curated presets are optional content — the button stays hidden until
+    // the file actually carries one, so an empty file ships no dead UI.
+    if (state.presets.length) showElement('preset-btn');
+
+    // 7. Initial render
     _renderFleetTabs();
     renderFleet();
 }
@@ -494,6 +510,11 @@ function setupEventListeners() {
             const current = document.querySelector('.fleet-grid')?.dataset.view;
             _applyView((VIEW_TOGGLE[current] || VIEW_TOGGLE.default).next);
         });
+    }
+
+    const presetBtn = document.getElementById('preset-btn');
+    if (presetBtn) {
+        presetBtn.addEventListener('click', handleOpenPresets);
     }
 
     const saveLoadBtn = document.getElementById('save-load-btn');
@@ -779,22 +800,7 @@ function handleSave() {
         return;
     }
 
-    // `ships` always holds fleet 1 verbatim: it keeps parseSaves' Array.isArray
-    // filter true and every existing reader working, so a stale cached build
-    // loads fleet 1 rather than nothing.
-    const record = {
-        name,
-        timestamp: Date.now(),
-        ships: serializeFleet(state.fleets[0]),
-    };
-    if (state.fleets.length > 1) record.fleets = state.fleets.map(serializeFleet);
-    // Boss metadata is display-only (portrait/tier on the save row) — loading
-    // a preset never restores the damage target (user decision, spec §2.4).
-    const dt = state.damageTarget;
-    if (dt && dt.kind === 'meta' && dt.bossId != null) {
-        record.target = { bossId: dt.bossId, tier: dt.tier ?? null };
-    }
-    saves.push(record);
+    saves.push(_fleetRecord(name));
     savesStore.save(saves);
 
     // Clear input and re-render list
@@ -802,6 +808,28 @@ function handleSave() {
     _renderSaveSlotList();
 
     showToast('저장 완료', 'success');
+}
+
+/**
+ * A save record snapshotting the CURRENT state under `name`.
+ * `ships` always holds fleet 1 verbatim: it keeps parseSaves' Array.isArray
+ * filter true and every existing reader working, so a stale cached build loads
+ * fleet 1 rather than nothing.
+ */
+function _fleetRecord(name) {
+    const record = {
+        name,
+        timestamp: Date.now(),
+        ships: serializeFleet(state.fleets[0]),
+    };
+    if (state.fleets.length > 1) record.fleets = state.fleets.map(serializeFleet);
+    // Boss metadata is display-only (portrait/tier on the save row) — loading
+    // a save never restores the damage target (user decision, spec §2.4).
+    const dt = state.damageTarget;
+    if (dt && dt.kind === 'meta' && dt.bossId != null) {
+        record.target = { bossId: dt.bossId, tier: dt.tier ?? null };
+    }
+    return record;
 }
 
 /**
@@ -820,6 +848,47 @@ function _handleLoad(saveIndex) {
     _renderFleetTabs();
     renderFleet();
     showToast('불러오기 완료', 'success');
+}
+
+/**
+ * Rename a saved slot in place. prompt() is the platform's own single-field
+ * dialog — an inline editor would be a second focus/commit/escape implementation.
+ */
+function _handleRename(saveIndex) {
+    const saves = _getSaves();
+    const save = saves[saveIndex];
+    if (!save) return;
+
+    const next = (prompt('편성 이름', save.name || '') || '').trim();
+    if (!next || next === save.name) return;
+
+    // maxlength on the save input is 30; prompt() enforces nothing.
+    save.name = next.slice(0, 30);
+    savesStore.save(saves);
+    _renderSaveSlotList();
+    showToast('이름을 변경했습니다', 'success');
+}
+
+/**
+ * Overwrite a saved slot with the fleets currently on screen, keeping its name
+ * and position. The record is REPLACED, not merged: a merge would leave a stale
+ * `fleets` or `target` behind when the new state no longer has one.
+ * Destructive with no undo, so it confirms first.
+ */
+function _handleOverwrite(saveIndex) {
+    const saves = _getSaves();
+    const save = saves[saveIndex];
+    if (!save) return;
+    if (!_hasAnyShip()) {
+        showToast('저장할 편성이 없습니다', 'error');
+        return;
+    }
+    if (!confirm(`'${save.name}'을(를) 현재 편성으로 덮어쓸까요?`)) return;
+
+    saves[saveIndex] = _fleetRecord(save.name);
+    savesStore.save(saves);
+    _renderSaveSlotList();
+    showToast('덮어쓰기 완료', 'success');
 }
 
 /**
@@ -926,39 +995,13 @@ function _renderSaveSlotList() {
         const actions = document.createElement('div');
         actions.className = 'save-slot-actions';
         actions.append(
-            _createSaveActionButton('save-slot-load', i, 'download', '불러오기'),
-            _createSaveActionButton('save-slot-delete', i, 'delete', '삭제')
+            _rowActionButton('save-slot-load', i, 'download', '불러오기'),
+            _rowActionButton('save-slot-overwrite', i, 'save_as', '현재 편성으로 덮어쓰기', 'btn-secondary'),
+            _rowActionButton('save-slot-rename', i, 'edit', '이름 변경', 'btn-secondary'),
+            _rowActionButton('save-slot-delete', i, 'delete', '삭제', 'btn-danger')
         );
 
-        // Boss metadata badge (display-only). bossId == the playable META
-        // ship's gid, so the portrait rides the existing ship-portrait pipeline.
-        let bossBadge = null;
-        if (save.target && save.target.bossId != null) {
-            const boss = getMetaBoss(save.target.bossId);
-            const bossShip = getShipByGid(save.target.bossId);
-            const portraitUrl = bossShip && bossShip.skin_id ? getShipPortraitUrl(bossShip.skin_id) : '';
-            const hasTier = save.target.tier != null;
-            // Only build the badge when it will actually carry something — the old
-            // guard (boss || bossShip) could emit a childless 0x0 div.
-            if (portraitUrl || hasTier) {
-                bossBadge = document.createElement('div');
-                bossBadge.className = 'save-slot-boss';
-                bossBadge.title = (boss && boss.name) || (bossShip && bossShip.name) || '';
-                if (portraitUrl) {
-                    bossBadge.appendChild(createImgElement(portraitUrl, bossBadge.title, {
-                        className: 'save-slot-boss-portrait',
-                        fallback: IMG_FALLBACKS.DEFAULT,
-                    }));
-                }
-                if (hasTier) {
-                    const tierChip = document.createElement('span');
-                    tierChip.className = 'save-slot-boss-tier';
-                    tierChip.textContent = `T${save.target.tier}`;
-                    bossBadge.appendChild(tierChip);
-                }
-            }
-        }
-
+        const bossBadge = _bossBadge(save.target);
         if (bossBadge) slot.append(info, bossBadge, actions);
         else slot.append(info, actions);
 
@@ -968,28 +1011,18 @@ function _renderSaveSlotList() {
     listEl.innerHTML = '';
     listEl.appendChild(frag);
 
-    // Attach event listeners to load/delete buttons via delegation
+    // Every actionable node in a row carries data-save-index, so one lookup
+    // covers all four buttons plus the info area (which also loads).
     listEl.onclick = (e) => {
-        const loadBtn = e.target.closest('.save-slot-load');
-        if (loadBtn) {
-            const idx = parseInt(loadBtn.dataset.saveIndex, 10);
-            if (!isNaN(idx)) _handleLoad(idx);
-            return;
-        }
+        const el = e.target.closest('[data-save-index]');
+        if (!el) return;
+        const idx = parseInt(el.dataset.saveIndex, 10);
+        if (isNaN(idx)) return;
 
-        const deleteBtn = e.target.closest('.save-slot-delete');
-        if (deleteBtn) {
-            const idx = parseInt(deleteBtn.dataset.saveIndex, 10);
-            if (!isNaN(idx)) _handleDelete(idx);
-            return;
-        }
-
-        // Click on the info area also loads
-        const infoArea = e.target.closest('.save-slot-info');
-        if (infoArea) {
-            const idx = parseInt(infoArea.dataset.saveIndex, 10);
-            if (!isNaN(idx)) _handleLoad(idx);
-        }
+        if (el.classList.contains('save-slot-delete')) _handleDelete(idx);
+        else if (el.classList.contains('save-slot-rename')) _handleRename(idx);
+        else if (el.classList.contains('save-slot-overwrite')) _handleOverwrite(idx);
+        else _handleLoad(idx);
     };
 }
 
@@ -1015,18 +1048,168 @@ function _renderSaveEmptyState(listEl) {
     renderStatus(listEl, '저장된 편성이 없습니다.', 'empty', { compact: true });
 }
 
-function _createSaveActionButton(className, saveIndex, iconName, label) {
+/**
+ * One row action button. `datasetKey` names the index attribute the row's own
+ * delegate reads — save rows and preset rows share the markup but not the list.
+ */
+function _rowActionButton(className, index, iconName, label, variant = 'btn-primary', datasetKey = 'saveIndex') {
     const button = document.createElement('button');
-    const variant = className === 'save-slot-load' ? 'btn-primary' : 'btn-danger';
     button.className = `btn btn-sm ${variant} ${className}`;
     button.type = 'button';
-    button.dataset.saveIndex = String(saveIndex);
+    button.dataset[datasetKey] = String(index);
     button.title = label;
     button.setAttribute('aria-label', label);
 
     button.appendChild(createMaterialIcon(iconName));
 
     return button;
+}
+
+/**
+ * Boss metadata badge (portrait + tier), or null when there is nothing to show.
+ * `bossId` == the playable META ship's gid, so the portrait rides the existing
+ * ship-portrait pipeline. Shared by save rows and preset rows; the guard is
+ * portrait-or-tier because boss-or-bossShip could emit a childless 0x0 div.
+ */
+function _bossBadge(target) {
+    if (!target || target.bossId == null) return null;
+
+    const boss = getMetaBoss(target.bossId);
+    const bossShip = getShipByGid(target.bossId);
+    const portraitUrl = bossShip && bossShip.skin_id ? getShipPortraitUrl(bossShip.skin_id) : '';
+    const hasTier = target.tier != null;
+    if (!portraitUrl && !hasTier) return null;
+
+    const badge = document.createElement('div');
+    badge.className = 'save-slot-boss';
+    badge.title = (boss && boss.name) || (bossShip && bossShip.name) || '';
+    if (portraitUrl) {
+        badge.appendChild(createImgElement(portraitUrl, badge.title, {
+            className: 'save-slot-boss-portrait',
+            fallback: IMG_FALLBACKS.DEFAULT,
+        }));
+    }
+    if (hasTier) {
+        const tierChip = document.createElement('span');
+        tierChip.className = 'save-slot-boss-tier';
+        tierChip.textContent = `T${target.tier}`;
+        badge.appendChild(tierChip);
+    }
+    return badge;
+}
+
+// ===== Curated Presets (추천 편성) =====
+
+/**
+ * Open the curated preset modal. The list is rebuilt per open — it is a handful
+ * of rows and the decode is what makes them, so caching it buys nothing.
+ */
+function handleOpenPresets() {
+    _renderPresetList();
+    openModal('presetModal');
+}
+
+/**
+ * Render the curated preset rows. A preset is a fleet you load, so it reuses the
+ * save row's shape minus the destructive actions. Names and notes come from a
+ * committed file and every node is built with textContent — no innerHTML.
+ */
+function _renderPresetList() {
+    const listEl = document.getElementById('preset-list');
+    if (!listEl) return;
+
+    const frag = document.createDocumentFragment();
+    let rendered = 0;
+
+    state.presets.forEach((preset, i) => {
+        const config = decodeFleetConfig(presetCode(preset.code), _spMaxLevel);
+        // A code that no longer decodes is authoring damage, not user input:
+        // drop the row rather than offering a 불러오기 that clears the fleet.
+        if (!config || !config.fleets.some(f => f.some(Boolean))) return;
+        rendered++;
+
+        const fleets = config.fleets;
+        const shipCount = fleets.reduce((n, f) => n + f.filter(Boolean).length, 0);
+
+        const item = document.createElement('div');
+        item.className = 'save-slot-item';
+
+        const info = document.createElement('button');
+        info.className = 'save-slot-info';
+        info.type = 'button';
+        info.dataset.presetIndex = String(i);
+        info.title = '불러오기';
+
+        const name = document.createElement('div');
+        name.className = 'save-slot-name';
+        name.textContent = preset.name || preset.id || '';
+
+        const meta = document.createElement('div');
+        meta.className = 'save-slot-meta';
+        meta.textContent = fleets.length > 1
+            ? `${shipCount}척 · ${fleets.length}함대`
+            : `${shipCount}척`;
+
+        info.append(name, meta);
+
+        const shipNames = _getSaveShipNames(fleets[0]);
+        if (shipNames) {
+            const ships = document.createElement('div');
+            ships.className = 'save-slot-ships';
+            ships.textContent = shipNames;
+            info.appendChild(ships);
+        }
+        if (preset.note) {
+            const note = document.createElement('div');
+            note.className = 'preset-note';
+            note.textContent = preset.note;
+            info.appendChild(note);
+        }
+
+        const actions = document.createElement('div');
+        actions.className = 'save-slot-actions';
+        actions.appendChild(
+            _rowActionButton('preset-load', i, 'download', '불러오기', 'btn-primary', 'presetIndex')
+        );
+
+        const bossBadge = _bossBadge(preset);
+        if (bossBadge) item.append(info, bossBadge, actions);
+        else item.append(info, actions);
+
+        frag.appendChild(item);
+    });
+
+    if (!rendered) {
+        renderStatus(listEl, '추천 편성이 없습니다.', 'empty', { compact: true });
+        return;
+    }
+
+    listEl.innerHTML = '';
+    listEl.appendChild(frag);
+
+    listEl.onclick = (e) => {
+        const el = e.target.closest('[data-preset-index]');
+        if (!el) return;
+        const idx = parseInt(el.dataset.presetIndex, 10);
+        if (!isNaN(idx)) _handlePresetLoad(idx);
+    };
+}
+
+/**
+ * Load a curated preset. Its `code` IS a 공유 payload, so this is the share
+ * restore path verbatim — the author's damage target included, which is the
+ * whole point of a per-boss build.
+ */
+function _handlePresetLoad(index) {
+    const preset = state.presets[index];
+    if (!preset) return;
+
+    clearDamageCache();
+    restoreFromUrl(presetCode(preset.code));
+    closeModal('presetModal');
+    _renderFleetTabs();
+    renderFleet();
+    showToast('불러오기 완료', 'success');
 }
 
 // ===== URL Sharing =====
@@ -1057,7 +1240,7 @@ function restoreFromUrl(encoded) {
     }
     state.fleets = config.fleets.map(_fillDedicatedSP);
     state.activeFleet = config.activeFleet;
-    if (config.target) setDamageTarget(config.target);
+    if (config.target) _applyDamageTarget(config.target);
 }
 
 // ===== Self-start =====
