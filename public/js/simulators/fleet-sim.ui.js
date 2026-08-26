@@ -772,21 +772,26 @@ const _fmt = (n) => Math.round(n).toLocaleString('en-US');
 function _buildWeaponBreakdownHTML(shipResult) {
     if (!shipResult || !Array.isArray(shipResult.perWeapon) || shipResult.perWeapon.length === 0) return '';
     const rows = shipResult.perWeapon.map((w) => `
-        <tr>
+        <tr${w.cadence ? ' class="dmg-row-barrage"' : ''}>
             <td>${escapeHtml(w.label || '')}</td>
             <td>${_fmt(w.oneSalvoExpected)}</td>
-            <td>${w.reloadInterval.toFixed(2)}s</td>
-            <td>${w.salvoCount}</td>
+            <td>${w.cadence ? escapeHtml(w.cadence) : `${w.reloadInterval.toFixed(2)}s`}</td>
+            <td>${w.salvoCount % 1 ? w.salvoCount.toFixed(1) : w.salvoCount}</td>
             <td>${_fmt(w.dps)}</td>
             <td>${Math.round(w.hitRate * 100)}%</td>
             <td>${Math.round(w.critRate * 100)}%</td>
         </tr>`).join('');
+    // A barrage's activation count can be fractional (proc chance is an expected
+    // value over the window), so it's formatted above rather than printed raw.
+    const unmodeled = shipResult.unmodeledBarrages
+        ? `<p class="dmg-unmodeled-note">발동 조건을 계산할 수 없는 탄막 ${shipResult.unmodeledBarrages}개는 제외되었습니다.</p>`
+        : '';
     return `<table class="dmg-weapon-table">
         <thead><tr>
             <th>무기</th><th>일격</th><th>장전</th><th title="90초 동안의 발사(살보) 횟수">발사/90초</th><th>DPS</th><th>명중</th><th>치명</th>
         </tr></thead>
         <tbody>${rows}</tbody>
-    </table>`;
+    </table>${unmodeled}`;
 }
 
 /**

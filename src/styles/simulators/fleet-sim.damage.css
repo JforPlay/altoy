@@ -204,6 +204,22 @@
   border-bottom: none;
 }
 
+/* A barrage (탄막) row reports a skill cadence in place of a reload time —
+   tint its weapon name so it reads as a distinct row kind at a glance. */
+.dmg-weapon-table .dmg-row-barrage td:first-child {
+  color: var(--accent-blue);
+}
+
+/* Barrage skills the extractor couldn't resolve are silently dropped from the
+   breakdown rather than guessed at (R5 design D3) — this note says so instead
+   of the ship quietly under-reporting its damage. Muted, not warning-colored:
+   --warning-color measures ~2.0:1 as prose on --card-bg. */
+.dmg-unmodeled-note {
+  margin: 6px 0 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
 /* ===== Dark mode overrides ===== */
 /* (tokens already handle most of it; only override where tokens don't flip) */
 
