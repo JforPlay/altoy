@@ -134,34 +134,58 @@ export function effectiveProficiency(ship, useRetrofit) {
 }
 
 /**
- * Window salvo count per EQUIP SLOT, keyed 1-based to match the game's own
- * `index` on BattleBuffCount. Derived through weaponCycleInterval so the count
- * is the same one simulateAttacker computes, not a second copy that can drift.
+ * Window salvo count grouped by `keyOf(descriptor)`. Derived through
+ * weaponCycleInterval so the count is the same one simulateAttacker computes,
+ * not a second copy that can drift.
  */
-export function salvosBySlot(descriptors, reloadStat, window) {
+function _salvoCounts(descriptors, reloadStat, window, keyOf) {
     const out = {};
     for (const d of descriptors) {
         if (d.slotIndex == null) continue;
         const interval = weaponCycleInterval(d, reloadStat);
-        const slot = d.slotIndex + 1;
-        out[slot] = (out[slot] || 0) + countSalvos(interval, d.initialDelay ?? 0, window);
+        const k = keyOf(d);
+        out[k] = (out[k] || 0) + countSalvos(interval, d.initialDelay ?? 0, window);
     }
     return out;
 }
 
-/** Korean cadence text for a trigger. The DATA holds machine keys; Korean lives here. */
-export function cadenceLabel(t) {
+/** Salvos per EQUIP SLOT, keyed 1-based to match the game's own `index` on BattleBuffCount. */
+export const salvosBySlot = (descriptors, reloadStat, window) =>
+    _salvoCounts(descriptors, reloadStat, window, (d) => d.slotIndex + 1);
+
+/**
+ * Salvos per ATTACK ATTRIBUTE — what a trigger that names a weapon class filters
+ * on (`t.a`). The class cannot ride a slot index: the torpedo slot moves by hull
+ * (구축함 2번, 잠수함 1·2번), while the attribute is the same wherever it sits.
+ */
+export const salvosByAttr = (descriptors, reloadStat, window) =>
+    _salvoCounts(descriptors, reloadStat, window, (d) => d.attackAttribute);
+
+/**
+ * Korean cadence text for a trigger. The DATA holds machine keys; Korean lives here.
+ * `rant` is part of the cadence, not a footnote: without it 워싱턴 reads `20초마다`
+ * beside `발사/90초 = 2.8`, and 90 / 20 does not give 2.8.
+ */
+export function cadenceLabel(t, p) {
     if (!t) return '';
+    let base = '';
     if (t.k === 'count') {
-        return (t.slots && t.slots.length === 1 && t.slots[0] === 1)
+        base = (t.slots && t.slots.length === 1 && t.slots[0] === 1)
             ? `주포 ${t.n}회마다`
             : `${t.n}회 발사마다`;
+    } else if (t.k === 'timer') {
+        base = (t.d && t.d !== t.n) ? `${t.d}초 후 ${t.n}초마다` : `${t.n}초마다`;
+    } else if (t.k === 'fire') {
+        base = t.n ? `발사 시 (재사용 ${t.n}초)` : '발사 시';
+    } else if (t.k === 'air') {
+        base = '항공 공격 시';
+    } else if (t.k === 'once') {
+        base = '전투 시작 시';
+    } else {
+        return '';
     }
-    if (t.k === 'timer') return (t.d && t.d !== t.n) ? `${t.d}초 후 ${t.n}초마다` : `${t.n}초마다`;
-    if (t.k === 'fire')  return t.n ? `발사 시 (재사용 ${t.n}초)` : '발사 시';
-    if (t.k === 'air')   return '항공 공격 시';
-    if (t.k === 'once')  return '전투 시작 시';
-    return '';
+    // `p` is basis points (10000 = certain), and it is omitted at 10000.
+    return p != null && p < 10000 ? `${base} ${Math.round(p / 10) / 10}%` : base;
 }
 
 /**
@@ -175,6 +199,13 @@ export function cadenceLabel(t) {
  * a rate (submarine / conditional / untraced / no-readable-cadence skills), and that
  * honesty is exactly why the gap must surface here instead of silently vanishing.
  *
+ * ZERO ACTIVATIONS IS NOT THE SAME ANSWER and is counted apart (`inactive`). The
+ * trigger was read and the loadout simply never fires it: an unequipped ship (every
+ * count/fire barrage), any CARRIER (no air descriptor carries a slotIndex, so
+ * salvosBySlot is empty), a 대공-slot trigger. Calling those "발동 조건을 계산할 수
+ * 없는" is wrong — the condition was computed and came out zero — and it made an
+ * empty or carrier card look broken. Both stay visible, which is what D3 asks for.
+ *
  * FAILS SAFE if `deps.getBarrageSkill` isn't callable (Task 8's loader landing
  * after this adapter, or a stale cached fleet-sim.damage.js paired with a fresh
  * fleet-sim.data.js behind the network-first service worker): every requested
@@ -184,16 +215,18 @@ export function cadenceLabel(t) {
  */
 export function resolveBarrageDescriptors(skillIds, deps) {
     if (typeof deps.getBarrageSkill !== 'function') {
-        return { descriptors: [], unmodeled: (skillIds || []).length };
+        return { descriptors: [], unmodeled: (skillIds || []).length, inactive: 0 };
     }
     const descriptors = [];
     let unmodeled = 0;
+    let inactive = 0;
     for (const sid of skillIds || []) {
         const rec = deps.getBarrageSkill(String(sid));
         if (!rec) { unmodeled++; continue; }
+        const cadence = cadenceLabel(rec.t, rec.p);
+        if (!cadence) { unmodeled++; continue; }        // unknown trigger kind
         const n = barrageActivations(rec, deps.ctx);
-        const cadence = cadenceLabel(rec.t);
-        if (!(n > 0) || !cadence) { unmodeled++; continue; }
+        if (!(n > 0)) { inactive++; continue; }         // read fine, this loadout never fires it
         let produced = false;
         for (const wid of rec.w || []) {
             const raw = deps.getWeapon(wid);
@@ -215,7 +248,7 @@ export function resolveBarrageDescriptors(skillIds, deps) {
         }
         if (!produced) unmodeled++;   // every weapon id in rec.w failed to resolve
     }
-    return { descriptors, unmodeled };
+    return { descriptors, unmodeled, inactive };
 }
 
 // ===== Stateful resolution (wired to fleet-sim modules — browser only) =====
@@ -410,11 +443,13 @@ function _resolveCarrierWeapons(slotConfig, stats, baseList, prof) {
  * @param {object} ship        Ship data object (from getShipByGid)
  * @param {object} stats       Buffed ship stats { firepower, torpedo, aviation, ... }
  * @param {number} [window]    Battle time window in seconds (barrage activation counts need it)
- * @returns {{weapons: object[], unmodeled: number}} WeaponDescriptor[] + count of barrage
- *   skills that produced no descriptor (unreadable cadence, missing weapon data, etc.)
+ * @returns {{weapons: object[], unmodeled: number, inactive: number}} WeaponDescriptor[],
+ *   the count of barrage skills that produced no descriptor (unreadable cadence, missing
+ *   weapon data), and the count whose trigger read fine but yields zero activations for
+ *   this loadout (unequipped ship, carrier, 대공-slot trigger).
  */
 export function resolveShipWeapons(slotConfig, ship, stats, window = 90) {
-    if (!_data) return { weapons: [], unmodeled: 0 };   // needs _ensureImports() first — route external callers through simulateFleetDamage
+    if (!_data) return { weapons: [], unmodeled: 0, inactive: 0 };   // needs _ensureImports() first — route external callers through simulateFleetDamage
     const useRetrofit = slotConfig.retrofit !== false && !!ship.retrofit;
     const shipType = _data.getEffectiveShipType(ship, useRetrofit);
     const baseList = (_calc.getShipBaseList(ship, useRetrofit)) || [];   // [s1,s2,s3] mount/plane count; ×1 fallback
@@ -429,15 +464,20 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90) {
     const airstrikes = isCarrier && weapons.length
         ? _engine.countSalvos(_engine.calculateReloadTime(weapons[0].reloadMax, stats.reload), 0, window)
         : 0;
-    const { descriptors, unmodeled } = resolveBarrageDescriptors(skillIds, {
+    const { descriptors, unmodeled, inactive } = resolveBarrageDescriptors(skillIds, {
         getBarrageSkill: _data.getBarrageSkill,
         getWeapon: _data.getWeaponProperty,
         getBarrage: _data.getBarrage,
         getBullet: _data.getBullet,
         stats,
-        ctx: { window, salvosBySlot: salvosBySlot(weapons, stats.reload, window), airstrikes },
+        ctx: {
+            window,
+            salvosBySlot: salvosBySlot(weapons, stats.reload, window),
+            salvosByAttr: salvosByAttr(weapons, stats.reload, window),
+            airstrikes,
+        },
     });
-    return { weapons: weapons.concat(descriptors), unmodeled };
+    return { weapons: weapons.concat(descriptors), unmodeled, inactive };
 }
 
 /**
@@ -515,13 +555,13 @@ export async function simulateFleetDamage(ships, targetOpts) {
     const window = targetOpts.window ?? 90;
 
     const engineShips = [];
-    const unmodeledByRef = new Map();
+    const barrageGapsByRef = new Map();
     for (const slot of present) {
         const computed = _computeStatsForSlot(slot, present, techBonuses);
         if (!computed) continue;
         const { ship, stats } = computed;
-        const { weapons, unmodeled } = resolveShipWeapons(slot, ship, stats, window);
-        unmodeledByRef.set(slot.gid, unmodeled);
+        const { weapons, unmodeled, inactive } = resolveShipWeapons(slot, ship, stats, window);
+        barrageGapsByRef.set(slot.gid, { unmodeled, inactive });
         engineShips.push({
             ref: slot.gid,
             profile: {
@@ -535,7 +575,11 @@ export async function simulateFleetDamage(ships, targetOpts) {
     }
 
     const sim = _engine.simulateFleet(engineShips, target, { window });
-    for (const s of sim.perShip) s.unmodeledBarrages = unmodeledByRef.get(s.ref) || 0;
+    for (const s of sim.perShip) {
+        const gaps = barrageGapsByRef.get(s.ref) || {};
+        s.unmodeledBarrages = gaps.unmodeled || 0;
+        s.inactiveBarrages = gaps.inactive || 0;
+    }
     const clearCheck = _engine.computeClearCheck({ fleetDps: sim.dps, bossHp: target.hp, timeLimit: window });
     return { ...sim, target, clearCheck };
 }

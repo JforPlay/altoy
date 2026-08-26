@@ -217,7 +217,9 @@
 /* Barrage skills the extractor couldn't resolve are silently dropped from the
    breakdown rather than guessed at (R5 design D3) — this note says so instead
    of the ship quietly under-reporting its damage. Muted, not warning-colored:
-   --warning-color measures ~2.0:1 as prose on --card-bg. */
+   --warning-color measures ~2.0:1 as prose on --card-bg.
+   A card can carry TWO of these (unreadable trigger + zero activations for this
+   loadout), so the rule has to stack cleanly. */
 .dmg-unmodeled-note {
   margin: 6px 0 0;
   font-size: 0.78rem;

@@ -250,6 +250,47 @@ test('resolveBarrageDescriptors counts a skill unmodeled when every one of its w
   assert.equal(unmodeled, 1);
 });
 
+// "발동 조건을 계산할 수 없는" is the wrong thing to say about a barrage whose
+// condition was computed and came out zero — an unequipped ship, a carrier (no
+// air descriptor carries a slotIndex, so salvosBySlot is empty), a 대공-slot
+// trigger. Both stay visible (D3), but they are different answers.
+test('resolveBarrageDescriptors counts a zero-activation barrage apart from an unreadable one', () => {
+  const table = {
+    '29081': { n: '전탄 발사', w: [900], t: { k: 'count', n: 15, slots: [1] } },
+    '99999': { n: '알 수 없음', w: [900], t: { k: 'conditional' } },
+  };
+  const weapons = {
+    900: { damage: 30, corrected: 100, attack_attribute: 1, attack_attribute_ratio: 80,
+           reload_max: 0, barrage_ID: [8], bullet_ID: [1400] },
+  };
+  const deps = (salvos) => ({
+    getBarrageSkill: (id) => table[id] || null,
+    getWeapon: (id) => weapons[id] || null,
+    getBarrage, getBullet,
+    stats: { firepower: 500, torpedo: 0, aviation: 0 },
+    ctx: { window: 90, salvosBySlot: salvos, airstrikes: 0 },
+  });
+  const empty = resolveBarrageDescriptors(['29081', '99999'], deps({}));   // nothing equipped
+  assert.deepEqual(empty.descriptors, []);
+  assert.equal(empty.inactive, 1, 'the count barrage read fine; this loadout just never fires it');
+  assert.equal(empty.unmodeled, 1, 'only the unreadable trigger is unmodelled');
+
+  const armed = resolveBarrageDescriptors(['29081', '99999'], deps({ 1: 30 }));
+  assert.equal(armed.descriptors.length, 1);
+  assert.equal(armed.inactive, 0);
+  assert.equal(armed.unmodeled, 1);
+});
+
+test('cadenceLabel keeps the proc chance beside the period', () => {
+  // 워싱턴: `20초마다` alone reads as 4.5 activations against a 발사/90초 of 2.8.
+  assert.equal(cadenceLabel({ k: 'timer', n: 20, d: 20 }, 7000), '20초마다 70%');
+  assert.equal(cadenceLabel({ k: 'timer', n: 20, d: 20 }), '20초마다');
+  assert.equal(cadenceLabel({ k: 'timer', n: 20, d: 20 }, 10000), '20초마다');
+  assert.equal(cadenceLabel({ k: 'count', n: 15, slots: [1] }, 7500), '주포 15회마다 75%');
+  assert.equal(cadenceLabel({ k: 'fire', n: 0 }, 100), '발사 시 1%');
+  assert.equal(cadenceLabel({ k: 'conditional' }, 7000), '', 'an unknown kind stays unlabelled');
+});
+
 test('resolveBarrageDescriptors fails safe when getBarrageSkill is not callable (Task 8 not yet landed, or a stale cache)', () => {
   const { descriptors, unmodeled } = resolveBarrageDescriptors(['29081', '99999'], {
     getWeapon: () => null,

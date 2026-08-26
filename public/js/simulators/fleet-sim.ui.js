@@ -783,9 +783,16 @@ function _buildWeaponBreakdownHTML(shipResult) {
         </tr>`).join('');
     // A barrage's activation count can be fractional (proc chance is an expected
     // value over the window), so it's formatted above rather than printed raw.
-    const unmodeled = shipResult.unmodeledBarrages
+    // Two different answers, so two different notes: the trigger could not be read
+    // at all, vs it was read and this loadout never fires it (unequipped ship,
+    // carrier, 대공 slot). One shared message called both a failure and made an
+    // empty or carrier card look broken.
+    const unmodeled = (shipResult.unmodeledBarrages
         ? `<p class="dmg-unmodeled-note">발동 조건을 계산할 수 없는 탄막 ${shipResult.unmodeledBarrages}개는 제외되었습니다.</p>`
-        : '';
+        : '')
+        + (shipResult.inactiveBarrages
+        ? `<p class="dmg-unmodeled-note">현재 편성에서 발동하지 않는 탄막 ${shipResult.inactiveBarrages}개는 제외되었습니다.</p>`
+        : '');
     return `<table class="dmg-weapon-table">
         <thead><tr>
             <th>무기</th><th>일격</th><th>장전</th><th title="90초 동안의 발사(살보) 횟수">발사/90초</th><th>DPS</th><th>명중</th><th>치명</th>
@@ -972,13 +979,14 @@ function _updateCardBreakdowns(damageResult) {
         const collapsibleInner = card.querySelector('.ship-stats-collapsible-inner');
         if (!collapsibleInner) continue;
 
-        // Remove existing breakdown table (and its 미모델 note sibling, if any) —
-        // _buildWeaponBreakdownHTML can return two sibling nodes now, and this
-        // patch path only ever removed the first one, orphaning a stale note
-        // on every recompute for a ship with unmodeledBarrages.
+        // Remove existing breakdown table AND every 미모델 note sibling —
+        // _buildWeaponBreakdownHTML returns up to three sibling nodes (table +
+        // an unreadable-trigger note + a no-activation note), and a patch path
+        // that removes fewer than it appends orphans a stale note on every
+        // recompute.
         const existing = collapsibleInner.querySelector('.dmg-weapon-table');
         if (existing) existing.remove();
-        collapsibleInner.querySelector('.dmg-unmodeled-note')?.remove();
+        collapsibleInner.querySelectorAll('.dmg-unmodeled-note').forEach((n) => n.remove());
 
         const shipResult = damageResult
             ? (damageResult.perShip.find(s => s.ref === slotConfig.gid) || null)

@@ -93,7 +93,10 @@ test('a fractional activation count is honoured (expected value, not a salvo cou
     attackAttribute: 'cannon', stat: 500, damage: 40, corrected: 100, ratio: 100,
     bulletsPerSalvo: 6, damageType: [1, 1, 1], reloadMax: 0, label: '탄막',
   };
-  const full = simulateAttacker(attacker, [{ ...base, activations: 2 }], target, { window: 90 });
-  const half = simulateAttacker(attacker, [{ ...base, activations: 1 }], target, { window: 90 });
-  assert.ok(Math.abs(full.total - half.total * 2) < 1e-9);
+  // A genuine fraction: with two integers a hidden Math.round would pass identically.
+  const out = simulateAttacker(attacker, [{ ...base, activations: 2.5 }], target, { window: 90 });
+  const row = out.perWeapon[0];
+  assert.equal(row.salvoCount, 2.5);
+  assert.ok(Math.abs(row.total - row.oneSalvoExpected * 2.5) < 1e-9);
+  assert.ok(Math.abs(out.total - row.oneSalvoExpected * 2.5) < 1e-9);
 });
