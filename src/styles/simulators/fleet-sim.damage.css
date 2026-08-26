@@ -205,9 +205,13 @@
 }
 
 /* A barrage (탄막) row reports a skill cadence in place of a reload time —
-   tint its weapon name so it reads as a distinct row kind at a glance. */
+   tint its weapon name so it reads as a distinct row kind at a glance.
+   --accent-blue is a FILL token and fails AA as text on --card-bg in dark
+   mode (~4.3:1, under 4.5:1); --accent-blue-text is the paired variant that
+   inverts per theme and clears 5:1 in both (see fleet-sim.stats.css:259-262
+   for the same trap hit earlier on the fleet-summary page-status-action). */
 .dmg-weapon-table .dmg-row-barrage td:first-child {
-  color: var(--accent-blue);
+  color: var(--accent-blue-text);
 }
 
 /* Barrage skills the extractor couldn't resolve are silently dropped from the

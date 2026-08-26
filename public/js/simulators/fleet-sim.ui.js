@@ -972,9 +972,13 @@ function _updateCardBreakdowns(damageResult) {
         const collapsibleInner = card.querySelector('.ship-stats-collapsible-inner');
         if (!collapsibleInner) continue;
 
-        // Remove existing breakdown table if any
+        // Remove existing breakdown table (and its 미모델 note sibling, if any) —
+        // _buildWeaponBreakdownHTML can return two sibling nodes now, and this
+        // patch path only ever removed the first one, orphaning a stale note
+        // on every recompute for a ship with unmodeledBarrages.
         const existing = collapsibleInner.querySelector('.dmg-weapon-table');
         if (existing) existing.remove();
+        collapsibleInner.querySelector('.dmg-unmodeled-note')?.remove();
 
         const shipResult = damageResult
             ? (damageResult.perShip.find(s => s.ref === slotConfig.gid) || null)
