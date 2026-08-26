@@ -215,8 +215,23 @@ test('resolveBarrageDescriptors builds one descriptor per fired weapon and count
   assert.equal(descriptors[0].cycleExtra, 0, 'a barrage has no gun fire cycle');
   assert.equal(descriptors[0].label, '탄막 · 전탄 발사 - 재블린I');
   assert.equal(descriptors[0].cadence, '주포 15회마다');
-  // The unknown kind counts as unmodelled; a skill missing from the table entirely
-  // is NOT a barrage the sim knows about and must not be counted.
+  // Both the unknown kind AND the id missing from the table count as unmodelled:
+  // activeBarrageSkillIds already filters to weapon_true skills, so every id passed
+  // in here IS a real barrage by R5's own definition — the table simply couldn't
+  // resolve two of the three (design doc §D step 4 / §A: an unresolved barrage
+  // skill is not silently dropped, it is counted).
+  assert.equal(unmodeled, 2);
+});
+
+test('resolveBarrageDescriptors counts a table-absent skill id as unmodeled on its own', () => {
+  const { descriptors, unmodeled } = resolveBarrageDescriptors(['404040'], {
+    getBarrageSkill: () => null,   // not in fleet_sim_barrages.json at all
+    getWeapon: () => null,
+    getBarrage, getBullet,
+    stats: { firepower: 500, torpedo: 0, aviation: 0 },
+    ctx: { window: 90, salvosBySlot: {}, airstrikes: 0 },
+  });
+  assert.deepEqual(descriptors, []);
   assert.equal(unmodeled, 1);
 });
 

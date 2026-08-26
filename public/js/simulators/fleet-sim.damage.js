@@ -166,10 +166,14 @@ export function cadenceLabel(t) {
 
 /**
  * Resolve a ship's barrage skills into WeaponDescriptors carrying a pre-resolved
- * activation count. A skill the table doesn't know is not a barrage this build
- * models at all and is NOT counted as unmodelled; a skill present but with an
- * unreadable cadence, or one whose weapons never resolve, IS — that is the
- * number the card surfaces.
+ * activation count. Every id in `skillIds` is already a `weapon_true` skill — R5's
+ * own definition of "barrage" — so ANY skill that produces no descriptor counts as
+ * unmodelled: table-absent, unreadable cadence, AND weapons that never resolve alike.
+ * The design doc is explicit (§D step 4: "the count of the ship's barrage skills that
+ * produced no descriptor"; §A: "Anything outside these kinds is not emitted; the page
+ * counts it under D3") — the extractor deliberately emits nothing rather than guess at
+ * a rate (submarine / conditional / untraced / no-readable-cadence skills), and that
+ * honesty is exactly why the gap must surface here instead of silently vanishing.
  *
  * FAILS SAFE if `deps.getBarrageSkill` isn't callable (Task 8's loader landing
  * after this adapter, or a stale cached fleet-sim.damage.js paired with a fresh
@@ -186,7 +190,7 @@ export function resolveBarrageDescriptors(skillIds, deps) {
     let unmodeled = 0;
     for (const sid of skillIds || []) {
         const rec = deps.getBarrageSkill(String(sid));
-        if (!rec) continue;
+        if (!rec) { unmodeled++; continue; }
         const n = barrageActivations(rec, deps.ctx);
         const cadence = cadenceLabel(rec.t);
         if (!(n > 0) || !cadence) { unmodeled++; continue; }
