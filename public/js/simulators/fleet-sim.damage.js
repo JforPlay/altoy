@@ -168,9 +168,20 @@ export function cadenceLabel(t) {
  * Resolve a ship's barrage skills into WeaponDescriptors carrying a pre-resolved
  * activation count. A skill the table doesn't know is not a barrage this build
  * models at all and is NOT counted as unmodelled; a skill present but with an
- * unreadable cadence IS — that is the number the card surfaces.
+ * unreadable cadence, or one whose weapons never resolve, IS — that is the
+ * number the card surfaces.
+ *
+ * FAILS SAFE if `deps.getBarrageSkill` isn't callable (Task 8's loader landing
+ * after this adapter, or a stale cached fleet-sim.damage.js paired with a fresh
+ * fleet-sim.data.js behind the network-first service worker): every requested
+ * skill counts as unmodelled instead of throwing, which would otherwise blank
+ * the whole damage panel (resolveShipWeapons -> simulateFleetDamage -> the
+ * panel's catch clears container.innerHTML for the entire fleet).
  */
 export function resolveBarrageDescriptors(skillIds, deps) {
+    if (typeof deps.getBarrageSkill !== 'function') {
+        return { descriptors: [], unmodeled: (skillIds || []).length };
+    }
     const descriptors = [];
     let unmodeled = 0;
     for (const sid of skillIds || []) {
@@ -179,6 +190,7 @@ export function resolveBarrageDescriptors(skillIds, deps) {
         const n = barrageActivations(rec, deps.ctx);
         const cadence = cadenceLabel(rec.t);
         if (!(n > 0) || !cadence) { unmodeled++; continue; }
+        let produced = false;
         for (const wid of rec.w || []) {
             const raw = deps.getWeapon(wid);
             if (!raw) continue;
@@ -195,7 +207,9 @@ export function resolveBarrageDescriptors(skillIds, deps) {
             d.activations = n;
             d.cadence = cadence;
             descriptors.push(d);
+            produced = true;
         }
+        if (!produced) unmodeled++;   // every weapon id in rec.w failed to resolve
     }
     return { descriptors, unmodeled };
 }
@@ -436,14 +450,23 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90) {
  * `requirement` is the raw game string ("Default", "Limit Break 1/2/3",
  * "Retrofit", "Devs 10", "Fate Simulation 5", …). The sim assumes max limit
  * break / max development, so the retrofit toggle is the only live gate.
+ *
+ * A skill is superseded only when its successor is ITSELF live under the
+ * current gates — not merely present in the list. 엘드릿지's 29022 (no gate)
+ * upgrades into 29023 (Retrofit-gated): with the retrofit toggle off, 29023
+ * fails its own gate, so 29022 must survive as the live rung. Checking
+ * "does the target exist" instead of "is the target eligible" silently drops
+ * BOTH ends of the chain whenever it crosses a gate boundary this way — 15
+ * ships have this shape, 11 of them losing real modelled damage.
  */
 export function activeBarrageSkillIds(ship, useRetrofit) {
     const skills = ship.skill || {};
+    const eligible = (sk) => (sk.requirement === 'Retrofit' ? !!useRetrofit : true);
     return Object.keys(skills).filter((sid) => {
         const sk = skills[sid];
-        if (!sk || !sk.weapon_true) return false;
-        if (sk.upgrade != null && skills[String(sk.upgrade)]) return false;   // superseded rung
-        return sk.requirement === 'Retrofit' ? !!useRetrofit : true;
+        if (!sk || !sk.weapon_true || !eligible(sk)) return false;
+        const target = sk.upgrade != null ? skills[String(sk.upgrade)] : null;
+        return !(target && eligible(target));   // superseded only if the successor is itself live
     });
 }
 

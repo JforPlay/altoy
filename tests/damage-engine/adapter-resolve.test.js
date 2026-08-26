@@ -1,7 +1,8 @@
 // tests/damage-engine/adapter-resolve.test.js
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { barrageBulletCount, attackAttributeKey, resolveWeaponDescriptor, mergeWeaponWithBase, effectiveProficiency }
+import { barrageBulletCount, attackAttributeKey, resolveWeaponDescriptor, mergeWeaponWithBase, effectiveProficiency,
+  salvosBySlot, activeBarrageSkillIds, cadenceLabel, resolveBarrageDescriptors }
   from '../../public/js/simulators/fleet-sim.damage.js';
 
 const approxArr = (a, b, eps = 1e-9) => a.length === b.length && a.every((x, i) => Math.abs(x - b[i]) < eps);
@@ -129,9 +130,6 @@ test('effectiveProficiency: missing data / no retrofit defaults to ×1', () => {
   assert.deepEqual(effectiveProficiency({ equipment_proficiency: [1.2] }, true), [1.2, 1, 1]);
 });
 
-import { salvosBySlot, activeBarrageSkillIds, cadenceLabel, resolveBarrageDescriptors }
-  from '../../public/js/simulators/fleet-sim.damage.js';
-
 test('activeBarrageSkillIds drops the superseded rung of an upgrade chain', () => {
   // 듀이's real shape: both rungs are listed, only the Limit Break 3 one fires.
   // Counting both would roughly double most destroyers' barrage damage.
@@ -157,6 +155,18 @@ test('activeBarrageSkillIds gates a Retrofit skill on the retrofit toggle', () =
   } };
   assert.deepEqual(activeBarrageSkillIds(ship, false), ['40020']);
   assert.deepEqual(activeBarrageSkillIds(ship, true).sort(), ['40010', '40020']);
+});
+
+test('activeBarrageSkillIds keeps the base rung when its successor is Retrofit-gated and the toggle is off (엘드릿지)', () => {
+  // Real shape: 29022 (no gate) upgrades into 29023 (Retrofit). "Does the target
+  // exist" would drop 29022 as superseded AND drop 29023 on the retrofit gate —
+  // net zero, with no unmodeled signal. The successor must be LIVE, not just listed.
+  const ship = { skill: {
+    29022: { id: 29022, upgrade: 29023, downgrade: null, requirement: 'Limit Break 3', weapon_true: true },
+    29023: { id: 29023, upgrade: null, downgrade: 29022, requirement: 'Retrofit', weapon_true: true },
+  } };
+  assert.deepEqual(activeBarrageSkillIds(ship, false), ['29022']);
+  assert.deepEqual(activeBarrageSkillIds(ship, true), ['29023']);
 });
 
 test('salvosBySlot keys the window salvo count by equip slot (1-based)', () => {
@@ -208,4 +218,30 @@ test('resolveBarrageDescriptors builds one descriptor per fired weapon and count
   // The unknown kind counts as unmodelled; a skill missing from the table entirely
   // is NOT a barrage the sim knows about and must not be counted.
   assert.equal(unmodeled, 1);
+});
+
+test('resolveBarrageDescriptors counts a skill unmodeled when every one of its weapon ids fails to resolve', () => {
+  const table = {
+    '50000': { n: '테스트', w: [999], t: { k: 'count', n: 15, slots: [1] } },
+  };
+  const { descriptors, unmodeled } = resolveBarrageDescriptors(['50000'], {
+    getBarrageSkill: (id) => table[id] || null,
+    getWeapon: () => null,   // every weapon id fails to resolve
+    getBarrage, getBullet,
+    stats: { firepower: 500, torpedo: 0, aviation: 0 },
+    ctx: { window: 90, salvosBySlot: { 1: 30 }, airstrikes: 0 },
+  });
+  assert.deepEqual(descriptors, []);
+  assert.equal(unmodeled, 1);
+});
+
+test('resolveBarrageDescriptors fails safe when getBarrageSkill is not callable (Task 8 not yet landed, or a stale cache)', () => {
+  const { descriptors, unmodeled } = resolveBarrageDescriptors(['29081', '99999'], {
+    getWeapon: () => null,
+    getBarrage, getBullet,
+    stats: { firepower: 500, torpedo: 0, aviation: 0 },
+    ctx: { window: 90, salvosBySlot: {}, airstrikes: 0 },
+  });
+  assert.deepEqual(descriptors, []);
+  assert.equal(unmodeled, 2);
 });
