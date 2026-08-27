@@ -44,6 +44,7 @@ const state = {
     expressionManifest: {},
     currentLightboxImages: [],
     currentLightboxIndex: 0,
+    lightboxObjectUrl: null,
     lightboxGeneration: 0,
     lightboxModal: null,
     lightboxImage: null,
@@ -103,6 +104,7 @@ function openLightbox(images, startIndex = 0) {
 }
 
 function closeLightbox() {
+    releaseLightboxObjectUrl();
     state.lightboxModal.classList.remove('active');
     state.lightboxModal.setAttribute('aria-hidden', 'true');
     unlockBodyScroll();
@@ -127,12 +129,29 @@ async function updateLightboxContent() {
     if (currentImg.overlay) {
         // Wait for the inline composite, then snapshot its <canvas> to a PNG —
         // a one-off encode on lightbox open, never on an expression switch.
+        // toBlob, NOT toDataURL: the canvas is up to 4096², and a synchronous
+        // encode of that freezes the main thread for seconds and leaves a
+        // 10–20 MB base64 string parked on the <img>.
         if (currentImg.overlay._composePromise) await currentImg.overlay._composePromise;
         if (gen !== state.lightboxGeneration) return; // superseded by newer navigation
         const cv = currentImg.overlay.querySelector('canvas.base-image');
-        if (currentImg.overlay._composed && cv) src = cv.toDataURL('image/png');
+        if (currentImg.overlay._composed && cv) {
+            const blob = await new Promise(resolve => cv.toBlob(resolve, 'image/png'));
+            if (gen !== state.lightboxGeneration) return;
+            if (blob) {
+                releaseLightboxObjectUrl();
+                src = state.lightboxObjectUrl = URL.createObjectURL(blob);
+            }
+        }
     }
     state.lightboxImage.src = src;
+}
+
+/** Free the composite blob URL, if the current lightbox image is one. */
+function releaseLightboxObjectUrl() {
+    if (!state.lightboxObjectUrl) return;
+    URL.revokeObjectURL(state.lightboxObjectUrl);
+    state.lightboxObjectUrl = null;
 }
 
 /**
@@ -188,6 +207,11 @@ function showNextImage() {
  * AND so the saved-image filename ends up specific.
  */
 function renderImageGallery(skin, container, skinName = '') {
+    // The previous skin's entries hold its .face-overlay-container nodes, which
+    // are about to be detached — each keeps an offscreen base canvas (up to
+    // 4096², ~64 MB) alive as long as this array references it.
+    state.currentLightboxImages = [];
+    releaseLightboxObjectUrl();
     const topNodes = [];
     const galleryImages = [];
     const skinId = skin['클뜯 id'];
@@ -518,8 +542,8 @@ async function composeOverlay(wrapper) {
 }
 
 /**
- * Composite a skin's base painting + its no-expression DEFAULT face into a PNG data
- * URL, for consumers that show the full art as a plain <img> (e.g. the skin-list
+ * Composite a skin's base painting + its no-expression DEFAULT face into a PNG
+ * object URL, for consumers that show the full art as a plain <img> (e.g. the skin-list
  * lightbox) and so can't host the detail viewer's interactive <canvas>. Reuses the
  * same base-decode + box/size placement as composeOverlay. The face is resolved via
  * the shared, game-faithful candidate chain (manifest `default` → '0' → smallest),
@@ -528,7 +552,7 @@ async function composeOverlay(wrapper) {
  * fall back to a plain URL.
  * @param {number|string} skinId
  * @param {{faces:string[], default?:string, box:number[], size:number[]}} manifestEntry
- * @returns {Promise<string|null>} PNG data URL, or null
+ * @returns {Promise<string|null>} PNG object URL the CALLER must revoke, or null
  */
 async function composeDefaultPainting(skinId, manifestEntry) {
     const candidates = pickFaceCandidates(manifestEntry, null);
@@ -558,7 +582,11 @@ async function composeDefaultPainting(skinId, manifestEntry) {
         if (face && box && size) {
             drawFaceComposite(ctx, face, box, size, facePatch);
         }
-        return canvas.toDataURL('image/png');
+        // toBlob, NOT toDataURL: these paintings run to 4096², where a synchronous
+        // encode freezes the main thread for seconds and hands back a 10–30 MB
+        // base64 string that then lives on the <img>.
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        return blob ? URL.createObjectURL(blob) : null;
     } catch (e) {
         console.warn('composeDefaultPainting failed', e);
         return null;
@@ -578,14 +606,6 @@ function addImageErrorHandlers(container) {
         }, { once: true });
     });
 }
-
-// Backwards-compatible global access
-window.SkinExpression = {
-    init,
-    setManifest,
-    renderImageGallery,
-    composeDefaultPainting
-};
 
 export {
     init,

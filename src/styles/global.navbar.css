@@ -70,6 +70,22 @@
   border-color: var(--highlight-strong);
 }
 
+/* Reserve the icon box. Material Symbols are ligature fonts, so before the font
+   loads each icon renders as its literal word ("light_mode", "search", "menu")
+   at fallback-font width — which wrapped .nav-menu to two rows and then snapped
+   back on font swap. That was the site-wide CLS source (measured 2026-08-25:
+   nav 59px -> 39px on every page). `font-display` does not help — invisible
+   fallback text still takes the fallback width.
+   Scoped to .navbar on purpose: `overflow: hidden` moves an inline-block's
+   baseline to its bottom margin edge, so the same rule applied site-wide would
+   nudge icon/text alignment in every component that uses these icons inline. */
+.navbar .material-symbols-outlined {
+  display: inline-block;
+  width: 1em;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .nav-menu {
   list-style: none;
   display: flex;

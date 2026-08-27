@@ -100,20 +100,6 @@ export function getHearingEntry(id) {
     return state.hearing?.[String(id)] || null;
 }
 
-// Mapping data is available to detail/compare paths but is not needed for first render.
-
-export async function loadEquipTypeData() {
-    return loadJsonState('equipTypeData', 'equipTypeDataPromise', 'data/mapping/equip_data_by_type.json', 'Failed to load equipment type data:');
-}
-
-export async function loadNationalityData() {
-    return loadJsonState('nationalityData', 'nationalityDataPromise', 'data/mapping/nationality_mapping.json', 'Failed to load nationality data:');
-}
-
-export async function loadShipTypeData() {
-    return loadJsonState('shipTypeData', 'shipTypeDataPromise', 'data/mapping/ship_type_mapping.json', 'Failed to load ship type data:');
-}
-
 export async function loadEquipCodeData() {
     return loadJsonState('equipCodeData', 'equipCodeDataPromise', 'data/mapping/equip_data_code.json', 'Failed to load equipment code data:');
 }

@@ -9,7 +9,7 @@
 import {
     createSearchIndex, ensureFuse, debounce, getUrlParam, setUrlParams,
     resolveUrl, showToast, closeModal, lockBodyScroll, unlockBodyScroll,
-    showElement, hideElement, renderStatus
+    showElement, hideElement, renderStatus, escapeHtml
 } from '../utils.js';
 import {
     setup as setupData,
@@ -52,11 +52,6 @@ const state = {
     filteredData: [],
     currentEquip: null,
     currentLevel: 0,
-
-    // Mapping data
-    equipTypeData: {},
-    nationalityData: {},
-    shipTypeData: {},
 
     // Filter state
     activeLabels: new Set(),
@@ -213,15 +208,15 @@ async function init() {
 function populateFilters() {
     const types = getUniqueTypes();
     typeFilter.innerHTML = '<option value="">모든 장비</option>' +
-        types.map(t => `<option value="${t.id}">${t.name2 || t.name}</option>`).join('');
+        types.map(t => `<option value="${t.id}">${escapeHtml(t.name2 || t.name)}</option>`).join('');
 
     const nations = getUniqueNationalities();
     nationalityFilter.innerHTML = '<option value="">모든 진영</option>' +
-        nations.map(n => `<option value="${n.id}">${n.name}</option>`).join('');
+        nations.map(n => `<option value="${n.id}">${escapeHtml(n.name)}</option>`).join('');
 
     const labels = getUniqueLabels();
     labelChips.innerHTML = labels.map(l =>
-        `<button class="chip" data-label="${l}">${l}</button>`
+        `<button class="chip" data-label="${escapeHtml(l)}">${escapeHtml(l)}</button>`
     ).join('');
 
     updateFilterStats();
@@ -545,7 +540,7 @@ function renderEquipGrid() {
         section.className = 'equip-type-section';
         section.innerHTML = `
             <div class="type-section-header section-title">
-                <h2>${typeName}</h2>
+                <h2>${escapeHtml(typeName)}</h2>
                 <span class="type-section-count">(${equips.length})</span>
             </div>
         `;
@@ -575,7 +570,7 @@ function renderEquipGrid() {
 
             let statsHtml = (equip.max_attrs || []).map(attr =>
                 `<span class="equip-stat-item">
-                    <span class="equip-stat-name">${attr.name}</span>
+                    <span class="equip-stat-name">${escapeHtml(attr.name)}</span>
                     <span class="equip-stat-value">${attr.value}</span>
                 </span>`
             ).join('');
@@ -588,14 +583,14 @@ function renderEquipGrid() {
 
             card.innerHTML = `
                 <div class="equip-icon-wrapper">
-                    <img class="equip-icon-bg-img" src="${bgUrl}" alt="" loading="lazy">
-                    ${iconUrl ? `<img class="equip-icon-img" src="${iconUrl}" alt="${equip.name}" loading="lazy">` : ''}
+                    <img class="equip-icon-bg-img" src="${escapeHtml(bgUrl)}" alt="" loading="lazy">
+                    ${iconUrl ? `<img class="equip-icon-img" src="${escapeHtml(iconUrl)}" alt="${escapeHtml(equip.name)}" loading="lazy">` : ''}
                 </div>
                 <div class="equip-card-info">
-                    <div class="equip-card-name">${equip.name}</div>
+                    <div class="equip-card-name">${escapeHtml(equip.name)}</div>
                     <div class="equip-card-meta">
-                        <span class="equip-rarity-badge rarity-${equip.rarity}">${equip.rarity_name}</span>
-                        ${equip.nation_code ? `<span class="equip-nation-code">${equip.nation_code}</span>` : ''}
+                        <span class="equip-rarity-badge rarity-${equip.rarity}">${escapeHtml(equip.rarity_name)}</span>
+                        ${equip.nation_code ? `<span class="equip-nation-code">${escapeHtml(equip.nation_code)}</span>` : ''}
                         ${equip.level_count > 1 ? `<span class="badge badge--neutral">+${equip.level_count - 1}</span>` : ''}
                     </div>
                     ${statsHtml ? `<div class="equip-card-stats">${statsHtml}</div>` : ''}
@@ -718,7 +713,7 @@ async function openSPWeaponDetail(spId) {
                     강화 단계
                 </div>
                 <table class="stats-table">
-                    <thead><tr><th>단계</th><th>${attr1Name}</th><th>${attr2Name}</th></tr></thead>
+                    <thead><tr><th>단계</th><th>${escapeHtml(attr1Name)}</th><th>${escapeHtml(attr2Name)}</th></tr></thead>
                     <tbody>${rows}</tbody>
                 </table>
             </div>`;
@@ -733,14 +728,14 @@ async function openSPWeaponDetail(spId) {
                 const origSkill = getSkillData(origId);
                 const upgSkill = getSkillData(upgId);
                 if (origSkill || upgSkill) {
-                    skillRows.push(`<tr><th>${origSkill?.name || `스킬 ${origId}`}</th><td>→ ${upgSkill?.name || `스킬 ${upgId}`}</td></tr>`);
+                    skillRows.push(`<tr><th>${escapeHtml(origSkill?.name || `스킬 ${origId}`)}</th><td>→ ${escapeHtml(upgSkill?.name || `스킬 ${upgId}`)}</td></tr>`);
                 }
             } else if (upgId) {
                 const skill = getSkillData(upgId);
                 if (skill) {
-                    const desc = skill.desc ? `<div class="sp-skill-desc">${skill.desc}</div>` : '';
-                    skillRows.push(`<tr><th>${skill.name}</th><td>추가 스킬${desc ? '' : ''}</td></tr>`);
-                    if (desc) skillRows.push(`<tr><td colspan="2" style="font-size:0.8rem;color:var(--text-secondary);padding:4px 8px;">${skill.desc}</td></tr>`);
+                    const desc = skill.desc ? `<div class="sp-skill-desc">${escapeHtml(skill.desc)}</div>` : '';
+                    skillRows.push(`<tr><th>${escapeHtml(skill.name)}</th><td>추가 스킬</td></tr>`);
+                    if (desc) skillRows.push(`<tr><td colspan="2" style="font-size:0.8rem;color:var(--text-secondary);padding:4px 8px;">${escapeHtml(skill.desc)}</td></tr>`);
                 }
             }
         }
@@ -762,10 +757,10 @@ async function openSPWeaponDetail(spId) {
         <div class="panel-detail-top">
             <div class="panel-detail-icon-wrapper">
                 <canvas id="detailIconCanvas" width="256" height="256" style="display:none"></canvas>
-                <img class="equip-icon-bg-img" src="${detailBgUrl}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:8px;">
-                ${iconUrl ? `<img src="${iconUrl}" alt="${spWeapon.name}" style="position:absolute;top:8%;left:8%;width:84%;height:84%;object-fit:contain;">` : ''}
+                <img class="equip-icon-bg-img" src="${escapeHtml(detailBgUrl)}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:8px;">
+                ${iconUrl ? `<img src="${escapeHtml(iconUrl)}" alt="${escapeHtml(spWeapon.name)}" style="position:absolute;top:8%;left:8%;width:84%;height:84%;object-fit:contain;">` : ''}
             </div>
-            <div class="panel-detail-name">${spWeapon.name}</div>
+            <div class="panel-detail-name">${escapeHtml(spWeapon.name)}</div>
             <div class="panel-detail-meta">
                 <span class="badge badge--neutral">특수 장비</span>
                 <span class="equip-rarity-badge rarity-${SP_RARITY_TO_EQUIP_CLASS[spWeapon.rarity] || ''}">${rarityName}</span>
@@ -779,8 +774,8 @@ async function openSPWeaponDetail(spId) {
             </div>
             <table class="stats-table">
                 <tbody>
-                    <tr><th>${attr1Name}</th><td>${maxLvl ? maxLvl.v1 : '-'}</td></tr>
-                    <tr><th>${attr2Name}</th><td>${maxLvl ? maxLvl.v2 : '-'}</td></tr>
+                    <tr><th>${escapeHtml(attr1Name)}</th><td>${maxLvl ? maxLvl.v1 : '-'}</td></tr>
+                    <tr><th>${escapeHtml(attr2Name)}</th><td>${maxLvl ? maxLvl.v2 : '-'}</td></tr>
                 </tbody>
             </table>
         </div>

@@ -7,7 +7,6 @@
    that change with the site's light/dark theme, ensuring visual harmony.
    ========================================================================== */
 
-@import url('../theme.css');
 
 /* Calendar palette — aliased onto the shared theme.css tokens so the page tracks
    the global light/dark scheme (matching 함순이 DB) instead of a bespoke

@@ -3,8 +3,7 @@
  * Shared data layer for the skin module group (list viewer, detail viewer, poll, etc.).
  * Loads a lightweight index and release dates on init, then lazy-fetches full
  * per-character data on demand (expression metadata comes from the shared
- * ../expression-manifest.js loader). Exposes both ES module exports and
- * window.SkinData for legacy access.
+ * ../expression-manifest.js loader).
  */
 import { fetchJSONWithCache, normalizeRomanNumerals, createSearchIndex, ensureFuse } from '../utils.js';
 import { mergeReleaseDates, formatReleaseDate } from './skin.dates.js';
@@ -267,19 +266,6 @@ function getAllCharacterNames() {
 function getCharacterNameByGid(gid) {
     return resolveCharByGid(state.gidMap, gid);
 }
-
-// Backwards-compatible global access
-window.SkinData = {
-    init,
-    searchCharacters,
-    getSkinsForCharacter,
-    getSkinByName,
-    loadCharacterData,
-    getAllCharacterNames,
-    getCharacterNameByGid,
-    getReleaseDate,
-    getSkinFilterData
-};
 
 export {
     init,

@@ -12,43 +12,10 @@
     line-height: 0; /* Remove inline gaps that could offset overlay */
 }
 
-.face-overlay-container img.base-image {
-    display: block;
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-    position: relative;
-    z-index: 1;
-}
-
-.face-overlay-container img.face-overlay {
-    position: absolute;
-    z-index: 10;
-    pointer-events: none;
-    background-color: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    transform-origin: top left;
-    max-width: none;
-    max-height: none;
-    transition: opacity var(--transition-base), transform var(--transition-base), filter var(--transition-base);
-}
-
-.face-overlay-container img.base-image:hover,
-.face-overlay-container img.face-overlay:hover {
-    transform: none;
-    filter: none;
-}
-
-.face-overlay-container img.base-image.gallery-top-banner {
-    aspect-ratio: auto; /* Use natural ratio so overlay percentages stay accurate */
-}
-
-.face-overlay-container:hover img.base-image,
-.face-overlay-container:hover img.face-overlay {
-    transform: none;
-    filter: none;
-}
+/* The composite is a single <canvas class="base-image"> (skin.expression.js sizes
+   it inline); the img.base-image / img.face-overlay pair this page used to render
+   is gone, so no rule here targets the canvas. expression.viewer.css keeps the
+   img-based rules — that page still builds two <img>s. */
 
 /* Expression Selector (New Top Layout) */
 .expression-selector-container {

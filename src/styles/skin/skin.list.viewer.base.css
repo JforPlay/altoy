@@ -449,3 +449,11 @@
   grid-column: 1 / -1;
 }
 
+/* CLS: the four .skin-section blocks ship `hidden` and FilterEngine.apply()
+   reveals the non-empty ones once the 2.4k records land. Reserving a viewport
+   here means that reveal happens into empty space instead of shoving the
+   headings and the footer around (CLS 0.361, measured 2026-08-25). Inert after
+   render — the page is far taller than 100vh. */
+.main-container {
+  min-height: 100vh;
+}

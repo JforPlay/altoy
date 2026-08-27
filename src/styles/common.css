@@ -6,7 +6,6 @@
    skin.common.css. Skin-only UI lives in skin/skin.common.css.
    Token source: theme.css (imported below).
    ================================================================= */
-@import url('./theme.css');
 
 /* --- Global Styles --- */
 html {

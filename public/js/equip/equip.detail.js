@@ -32,6 +32,16 @@ const AMMO_TYPE_NAMES = {
     11: '미사일',
 };
 
+/**
+ * Escape a game text field for innerHTML, dropping the Unity `<color=…>` wrapper
+ * two 장비 descriptions carry. Those tags are markup for the game's own renderer,
+ * not HTML — unescaped they parse as unknown elements and vanish, which is what
+ * they look like today; escaped without this they'd read as literal `<color=…>`.
+ */
+function escapeGameText(text) {
+    return escapeHtml(String(text ?? '').replace(/<\/?color(=[^>]*)?>/g, ''));
+}
+
 let state;
 /** Cached canvas from the last rendered icon (used for download) */
 let iconCanvas = null;
@@ -117,16 +127,16 @@ function renderDetail(equip) {
             </div>
             <div class="panel-detail-name">${equip.name}${hearingEntry?.alias ? `<span class="panel-detail-alias">${escapeHtml(hearingEntry.alias)}</span>` : ''}</div>
             <div class="panel-detail-meta">
-                <span class="badge badge--neutral">${equip.type_name2 || equip.type_name}</span>
-                <span class="equip-rarity-badge rarity-${equip.rarity}">${equip.rarity_name}</span>
+                <span class="badge badge--neutral">${escapeHtml(equip.type_name2 || equip.type_name)}</span>
+                <span class="equip-rarity-badge rarity-${equip.rarity}">${escapeHtml(equip.rarity_name)}</span>
                 ${equip.nation_name ? `<span class="panel-detail-nation-badge">
-                    ${equip.nation_image ? `<img src="${equip.nation_image}" alt="${equip.nation_name}">` : ''}
-                    ${equip.nation_name}
+                    ${equip.nation_image ? `<img src="${escapeHtml(equip.nation_image)}" alt="${escapeHtml(equip.nation_name)}">` : ''}
+                    ${escapeHtml(equip.nation_name)}
                 </span>` : ''}
             </div>
-            ${equip.speciality && equip.speciality !== '없음' ? `<div class="panel-detail-speciality">특성: ${replaceEquipCodes(equip.speciality)}</div>` : ''}
-            ${equip.label && equip.label.length > 0 ? `<div class="panel-detail-labels">${equip.label.map(l => `<span class="badge badge--neutral">${l}</span>`).join('')}</div>` : ''}
-            ${equip.descrip ? `<div class="panel-detail-descrip">${equip.descrip}</div>` : ''}
+            ${equip.speciality && equip.speciality !== '없음' ? `<div class="panel-detail-speciality">특성: ${escapeHtml(replaceEquipCodes(equip.speciality))}</div>` : ''}
+            ${equip.label && equip.label.length > 0 ? `<div class="panel-detail-labels">${equip.label.map(l => `<span class="badge badge--neutral">${escapeHtml(l)}</span>`).join('')}</div>` : ''}
+            ${equip.descrip ? `<div class="panel-detail-descrip">${escapeGameText(equip.descrip)}</div>` : ''}
             ${AIRCRAFT_TYPES.has(equip.type) ? `<a href="${resolveUrl(`simulators/sim-aircraft?equip=${equip.id}`)}" class="sim-link-btn btn btn-outline btn-sm"><span class="material-symbols-outlined">flight</span> 시뮬레이션</a>` : ''}
         </div>
     `;
@@ -182,7 +192,7 @@ function renderDetail(equip) {
     const ammoName = equip.ammo != null && equip.ammo !== 10 ? AMMO_TYPE_NAMES[equip.ammo] : null;
     if (level.damage || ammoName) {
         let weaponRows = '';
-        if (level.damage) weaponRows += `<tr><th>데미지</th><td id="damageValue">${replaceEquipCodes(level.damage)}</td></tr>`;
+        if (level.damage) weaponRows += `<tr><th>데미지</th><td id="damageValue">${escapeHtml(replaceEquipCodes(level.damage))}</td></tr>`;
         if (ammoName) weaponRows += `<tr><th>탄종</th><td>${ammoName}</td></tr>`;
         html += `
             <div class="stats-section">
@@ -222,8 +232,8 @@ function renderDetail(equip) {
                         <div class="ship-type-chips">
                             ${equip.part_main.map(st => `
                                 <span class="ship-type-chip">
-                                    ${st.icon ? `<img src="${st.icon}" alt="${st.name}">` : ''}
-                                    ${st.name}
+                                    ${st.icon ? `<img src="${escapeHtml(st.icon)}" alt="${escapeHtml(st.name)}">` : ''}
+                                    ${escapeHtml(st.name)}
                                 </span>
                             `).join('')}
                         </div>
@@ -235,8 +245,8 @@ function renderDetail(equip) {
                         <div class="ship-type-chips">
                             ${equip.part_sub.map(st => `
                                 <span class="ship-type-chip">
-                                    ${st.icon ? `<img src="${st.icon}" alt="${st.name}">` : ''}
-                                    ${st.name}
+                                    ${st.icon ? `<img src="${escapeHtml(st.icon)}" alt="${escapeHtml(st.name)}">` : ''}
+                                    ${escapeHtml(st.name)}
                                 </span>
                             `).join('')}
                         </div>
@@ -436,7 +446,7 @@ function renderWeaponParamsRows(wp, surfaceDps = null) {
     // Firing pattern (barrage timing)
     const firingPattern = getFiringPattern(wp);
     if (firingPattern) {
-        rows += `<tr><th>발사 패턴</th><td>${firingPattern}</td></tr>`;
+        rows += `<tr><th>발사 패턴</th><td>${escapeHtml(firingPattern)}</td></tr>`;
     }
 
     // Attack attribute ratio
@@ -538,14 +548,14 @@ function renderSkillSection(level) {
         const skillId = entry[0];
         const skill = getSkillData(skillId);
         if (!skill) continue;
-        rows += `<tr><th>${skill.name}</th><td>${skill.desc || ''}</td></tr>`;
+        rows += `<tr><th>${escapeHtml(skill.name)}</th><td>${escapeHtml(skill.desc || '')}</td></tr>`;
     }
 
     for (const entry of hiddenSkills) {
         const skillId = entry[0];
         const skill = getSkillData(skillId);
         if (!skill) continue;
-        rows += `<tr><th>${skill.name}</th><td>${skill.desc || ''}</td></tr>`;
+        rows += `<tr><th>${escapeHtml(skill.name)}</th><td>${escapeHtml(skill.desc || '')}</td></tr>`;
     }
 
     if (!rows) return '';
@@ -571,7 +581,7 @@ function renderStatsRows(equip, level) {
     let rows = equip.attr_info.map(attr => {
         const value = level[`attr_${attr.index}_value`] || 0;
         return `<tr>
-            <th>${attr.icon ? `<img class="stat-icon" src="${attr.icon}" alt="${attr.name}">` : ''}${attr.name}</th>
+            <th>${attr.icon ? `<img class="stat-icon" src="${escapeHtml(attr.icon)}" alt="${escapeHtml(attr.name)}">` : ''}${escapeHtml(attr.name)}</th>
             <td>${value}</td>
         </tr>`;
     }).join('');

@@ -2,8 +2,7 @@
  * skin.audio.js
  * Audio playback controller for skin voice lines.
  * Manages a single shared audio instance and synchronized volume sliders across
- * the skin detail and skin list pages. Exposed as both ES module exports and
- * window.SkinAudio for pages that import it non-modularly.
+ * the skin detail and skin list pages.
  */
 
 import { createIcon } from '../utils.js';
@@ -165,16 +164,6 @@ function attachVolumeListeners() {
 }
 
 // ===== Exports =====
-
-// Backwards-compatible global access for pages that load this file non-modularly
-window.SkinAudio = {
-    init,
-    stopCurrentAudio,
-    handlePlayClick,
-    createVolumeControlElement,
-    attachVolumeListeners,
-    updateVolumeIcon
-};
 
 export {
     init,

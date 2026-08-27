@@ -1,5 +1,3 @@
-@import url('../theme.css');
-
 /* ============================================
    Equipment Viewer - Main Styles
    ============================================ */
@@ -252,6 +250,14 @@ body {
     display: flex;
     flex-direction: column;
     gap: 0;
+}
+
+/* Reserve the grid before the first render — #app went 285px -> 842px once the
+   1,141 cards landed and shoved the footer out of the viewport (CLS 1.017,
+   measured 2026-08-25). :empty releases as soon as cards OR the "장비를 찾을 수
+   없습니다" status render, so no blank tail either way. */
+.equip-grid:empty {
+    min-height: 70vh;
 }
 
 .equip-type-section {

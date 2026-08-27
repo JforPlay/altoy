@@ -3,7 +3,6 @@
    Part of the shipgirl-stats style split (formerly shipgirl-stats.css, one monolith).
    The page imports each sibling in source order — keep rules in original order.
 ============================================================================= */
-@import url('../theme.css');
 
 /* ==========================================================================
    SHIPGIRL STATS

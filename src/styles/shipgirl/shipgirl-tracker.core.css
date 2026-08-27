@@ -1,5 +1,3 @@
-@import url('../theme.css');
-
 /* ==========================================================================
    SHIPGIRL TRACKER — CORE
    Toolbar, search, modals, chips, hidden utility
@@ -18,6 +16,18 @@ body {
     "Helvetica Neue", Arial, sans-serif;
   color: var(--text-primary);
   line-height: 1.6;
+}
+
+/* Reserve the card area until the cards exist: the container was 151px at first
+   paint and 628px+ once 880 cards landed, which shoved the footer out of the
+   viewport (CLS 0.895, measured 2026-08-25). Two selectors because there are two
+   pre-card states — :empty is the markup before JS runs, :has() is while
+   loadPageData's .page-status sits inside. Neither matches a "no matches" filter
+   result (renderVisibleCards only display:none's the cards, they stay children),
+   so that state doesn't get a tall blank under #tracker-empty. */
+#ship-list-container:empty,
+#ship-list-container:has(> .page-status) {
+  min-height: 70vh;
 }
 
 /* --- Page Header --- */

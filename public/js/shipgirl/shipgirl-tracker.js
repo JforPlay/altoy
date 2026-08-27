@@ -156,11 +156,8 @@ document.addEventListener('DOMContentLoaded', () => {
         parse: parseProgress,
         onRemoteChange: (next) => {
             applyProgress(next);
-            if (isProgressFilterActive()) {
-                applyFilters();
-            } else {
-                calculateAndDisplayScores();
-            }
+            if (isProgressFilterActive()) applyFilters();
+            calculateAndDisplayScores();
         },
     });
 
@@ -615,7 +612,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function setCardMask(card, mask) {
         writeMaskToCheckboxes(card, mask);
         autoSaveProgress();
-        if (isProgressFilterActive()) applyFilters(); else debouncedCalculateScores();
+        if (isProgressFilterActive()) applyFilters();
+        debouncedCalculateScores();
     }
 
     /**
@@ -1818,11 +1816,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         autoSaveProgress();
-        if (isProgressFilterActive()) {
-            applyFilters();
-        } else {
-            calculateAndDisplayScores();
-        }
+        if (isProgressFilterActive()) applyFilters();
+        calculateAndDisplayScores();
     }
 
     // ===== Confirmation Modal =====
@@ -2198,6 +2193,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * Applies all active filters to the ship list.
+     *
+     * Visibility only — it does NOT recompute fleet-tech scores. Scores are a
+     * function of progress/investment, never of the filter, so recomputing here
+     * rewrote 880 ptCells + 3 tables on every keystroke for an identical result.
+     * Callers that changed progress call calculateAndDisplayScores() themselves.
      */
     function applyFilters() {
         const searchQuery = document.getElementById('search-bar').value.toLowerCase();
@@ -2254,7 +2254,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         renderVisibleCards();
-        calculateAndDisplayScores();
         updateFilterChips();
         saveFiltersToStorage();
 
@@ -2337,12 +2336,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 maxFleetTech += (ship.pt_get ?? 0) + (ship.pt_level ?? 0) + (ship.pt_upgrage ?? 0);
             }
         });
-        container.appendChild(fragment);
         if (cachedElements.totalScoreMax) {
             cachedElements.totalScoreMax.textContent = maxFleetTech.toLocaleString();
         }
+        // Both of these write into the cards (2,640 innerHTML writes at full
+        // roster). Run them while the cards are still in the fragment — detached
+        // nodes cost no layout — and attach the finished tree in one go. Safe
+        // because neither reaches the document: getShipCards() reads shipCardById
+        // and renderInvestmentCells scopes every lookup to the card it's given.
         loadProgress();
         shipCardById.forEach((card, shipId) => renderInvestmentCells(card, shipId));
+        container.appendChild(fragment);
     }
 
     /**
@@ -2519,7 +2523,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (touched.has(card.dataset.shipId)) renderInvestmentCells(card, card.dataset.shipId);
                 });
                 updateInvestmentSummary();
-                applyFilters();   // re-renders + calls calculateAndDisplayScores itself
+                applyFilters();
+                calculateAndDisplayScores();
             },
         });
 
@@ -2529,11 +2534,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 handleCheckboxLogic(e.target);
                 coupleCardAfterChange(e.target.closest('.ship-card'), e.target.dataset.type, e.target.checked);
                 autoSaveProgress();
-                if (isProgressFilterActive()) {
-                    applyFilters();
-                } else {
-                    debouncedCalculateScores();
-                }
+                if (isProgressFilterActive()) applyFilters();
+                debouncedCalculateScores();
             }
         });
 

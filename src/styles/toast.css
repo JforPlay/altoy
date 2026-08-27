@@ -28,6 +28,7 @@
     pointer-events: auto;
     font-weight: 500;
     border-left: 4px solid transparent;
+    white-space: pre-line; /* a "\n" in the message is a deliberate line break */
 }
 
 .global-toast.show {

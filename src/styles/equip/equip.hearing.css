@@ -1,5 +1,3 @@
-@import url('../theme.css');
-
 /* equip.hearing.css — 청문회 mode of the equipment viewer (view toggle, grid
    commentary dot, 청문회 card, detail-panel commentary).
    NOTE: imported by equip-viewer.astro ALONGSIDE equip.style.css, which already

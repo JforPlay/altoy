@@ -140,17 +140,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const DEBOUNCE_DELAY = 300;
     const CHUNK_SIZE = 50;
 
-    // Faction normalization for current data (before re-processing)
-    const FACTION_NORMALIZE = {
-        'FFNF': 'FFNF (FF, iris libre)',
-        11: 'HNLMS',
-        111: 'ToLove',
-        112: 'BRS',
-        113: 'YUMIA',
-        114: 'DanMachi',
-        115: 'DateALive'
-    };
-
     // Gem to KRW conversion: 9900 gems = 121000 KRW = 1 깡트럭
     const GEMS_PER_TRUCK = 9900;
     const KRW_PER_TRUCK = 121000;
@@ -213,7 +202,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const fragment = document.createDocumentFragment();
             for (let i = section.appendIndex; i < end; i++) {
-                fragment.appendChild(section.entries[i].wrapper);
+                const entry = section.entries[i];
+                // Built here, not in buildAll: only what has actually been
+                // scrolled to needs to exist (2,421 cards ≈ 60k nodes otherwise,
+                // all of it before first paint for the 50 a chunk shows).
+                entry.wrapper ??= Renderer._createSkinBox(entry.skin);
+                fragment.appendChild(entry.wrapper);
             }
 
             // Remove sentinel before appending new batch
@@ -228,12 +222,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 container.appendChild(section.sentinel);
                 section.observer.observe(section.sentinel);
             } else {
-                section.observer.disconnect();
-            }
-        },
-
-        cleanup() {
-            for (const section of Object.values(this._sections)) {
                 section.observer.disconnect();
             }
         }
@@ -255,15 +243,6 @@ document.addEventListener('DOMContentLoaded', () => {
             DOM.progressBar.classList.remove('visible');
         }
     };
-
-    function normalizeFactions(skins) {
-        for (const skin of skins) {
-            const faction = skin['진영'];
-            if (faction in FACTION_NORMALIZE) {
-                skin['진영'] = FACTION_NORMALIZE[faction];
-            }
-        }
-    }
 
     function createGemPrice(value) {
         const fragment = document.createDocumentFragment();
@@ -609,7 +588,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         _updateCardState(skinId) {
             const entry = skinCardMap.get(skinId);
-            if (!entry) return;
+            if (!entry?.wrapper) return; // never scrolled to — built already owned/wanted
             const card = entry.wrapper.querySelector('.skin-box');
             if (!card) return;
 
@@ -639,6 +618,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== Lightbox =====
     const Lightbox = {
         _generation: 0,
+        _compositeUrl: null,
         _errorHandler: null,
 
         async open(skin) {
@@ -694,6 +674,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const composited = await composeDefaultPainting(skinId, manifestEntry);
                 if (gen !== this._generation) return;
                 if (composited) {
+                    this._releaseComposite();
+                    this._compositeUrl = composited;
                     DOM.popup.image.src = composited;
                     return;
                 }
@@ -731,6 +713,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             DOM.popup.image.src = '';
             DOM.popup.image.classList.remove('loading');
+            this._releaseComposite();
+        },
+
+        /** Free the composited painting's object URL (composeDefaultPainting's contract). */
+        _releaseComposite() {
+            if (!this._compositeUrl) return;
+            URL.revokeObjectURL(this._compositeUrl);
+            this._compositeUrl = null;
         }
     };
 
@@ -1246,8 +1236,10 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         /**
-         * Create all card wrappers and populate skinCardMap.
-         * Does NOT append to DOM — ChunkController handles that via FilterEngine.apply().
+         * Categorize every skin and populate skinCardMap. `wrapper` stays null
+         * until ChunkController appends the entry — _categorizeSkin also stamps
+         * `skin.isSold`, which FilterEngine needs for every record, but the card
+         * DOM is only ever needed for what is on screen.
          */
         buildAll(skins) {
             this._today = new Date();
@@ -1255,8 +1247,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             for (const skin of skins) {
                 const category = this._categorizeSkin(skin);
-                const wrapper = this._createSkinBox(skin);
-                skinCardMap.set(skin['클뜯 id'], { wrapper, category, skin });
+                skinCardMap.set(skin['클뜯 id'], { wrapper: null, category, skin });
             }
         }
     };
@@ -1420,9 +1411,6 @@ document.addEventListener('DOMContentLoaded', () => {
             releaseDates = releaseDateJson || {};
             isLoading = false;
 
-            // Normalize faction values for current data
-            normalizeFactions(allSkins);
-
             // Build ID→skin lookup map
             for (const skin of allSkins) {
                 skinById.set(skin['클뜯 id'], skin);
@@ -1447,41 +1435,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => {
             showErrorState(error);
         });
-
-    // ===== Cleanup =====
-    const cleanup = () => {
-        ChunkController.cleanup();
-        clearTimeout(progressBarTimer);
-        progressBarTimer = null;
-
-        DOM.search.removeEventListener('input', EventHandlers.handleSearch);
-        [DOM.filters.skinType, DOM.filters.period, DOM.filters.faction, DOM.filters.tag,
-         DOM.filters.exDialogue, DOM.filters.ownership, DOM.filters.sort]
-            .forEach(el => el.removeEventListener('change', EventHandlers.handleFilterChange));
-        rarityAllCheckbox.removeEventListener('change', EventHandlers.handleRarityAllChange);
-        cachedRarityCheckboxes.forEach(cb => cb.removeEventListener('change', EventHandlers.handleRarityChange));
-        DOM.buttons.clearAll.removeEventListener('click', EventHandlers.resetFilters);
-        DOM.buttons.filterToggle.removeEventListener('click', EventHandlers.toggleFilters);
-        window.removeEventListener('popstate', URLState.apply);
-        window.removeEventListener('storage', handleStorageSync);
-        document.removeEventListener('click', handleDocumentClick);
-        document.removeEventListener('keydown', handleEscape);
-
-        // Remove delegated listeners
-        Object.values(DOM.containers).forEach(c => c.removeEventListener('click', handleContainerClick));
-        Object.values(DOM.containers).forEach(c => c.removeEventListener('keydown', handleContainerKeydown));
-        DOM.cart.body.removeEventListener('click', handleCartClick);
-
-        Autocomplete.close();
-
-        if (DOM.progressBar) {
-            DOM.progressBar.classList.remove('visible');
-        }
-
-        console.log('Skin list viewer cleaned up successfully');
-    };
-
-    window.skinListViewerCleanup = cleanup;
 
     // ===== Event Listeners =====
     DOM.search.addEventListener('input', EventHandlers.handleSearch);
