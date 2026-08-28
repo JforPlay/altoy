@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadFullPosts() {
         try {
-            // ~30MB payload — IndexedDB cache cuts the second-visit cost to a
+            // ~1.1MB payload — IndexedDB cache cuts the second-visit cost to a
             // single keyed lookup vs a full network re-fetch.
             const data = await fetchJSONWithCache('data/juustagram_data.json');
             if (!isRecord(data)) throw new Error('Invalid Juustagram full data');
@@ -705,7 +705,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (lazyImageObserver) lazyImageObserver.disconnect();
         imagePreview.remove();
         // Release the bulky data maps so bfcache snapshots and long-lived tabs
-        // don't pin ~30MB of full posts data after navigation.
+        // don't pin ~1.1MB of full posts data after navigation.
         fullPostsData = null;
         fullPostsPromise = null;
         postsData = {};

@@ -1,4 +1,4 @@
-@import url('./theme.css');
+/* Tokens come from theme.css, imported by global.base.css just above this file. */
 
 /* Global Toast Notification */
 .global-toast-container {

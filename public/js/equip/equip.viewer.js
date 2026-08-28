@@ -13,17 +13,16 @@ import {
 } from '../utils.js';
 import {
     setup as setupData,
-    loadLiteData, loadSkillData, isInUpgradeTree,
+    loadLiteData, isInUpgradeTree,
     getEquipIconUrl, getRarityBgUrl, getSPWeaponIconUrl, getUniqueTypes, getUniqueNationalities, getUniqueLabels,
-    getFullEquipData, getSkillData, loadSPWeaponData, normalizeSPWeapons, getSPWeaponRawData,
-    ensureCompareData, SP_RARITY_NAMES,
+    getFullEquipData, loadSPWeaponData, normalizeSPWeapons,
+    ensureCompareData,
     loadHearingData, getHearingEntry
 } from './equip.data.js';
 import {
     setup as setupDetail,
     showDetailView, showSPWeaponDetail,
-    downloadEquipIcon,
-    setDetailPanelTitle
+    downloadEquipIcon
 } from './equip.detail.js';
 import {
     setup as setupCompare,

@@ -46,14 +46,6 @@ export function getFurniture(id) {
 }
 
 /**
- * Get theme definition by ID.
- * @param {number|string} id
- */
-export function getTheme(id) {
-    return state.themes[id] || null;
-}
-
-/**
  * Build URL for a furniture icon image.
  * @param {string} iconName — the `icon` field value from furniture data
  */

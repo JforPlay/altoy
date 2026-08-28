@@ -6,7 +6,7 @@
  * Cards are built once at load time; filtering rebuilds visible sets and appends in chunks of 50 via IntersectionObserver.
  */
 import { debounce, fetchJSONWithCache, getAllUrlParams, setUrlParams, resolveUrl, normalizeRomanNumerals, createSearchIndex, ensureFuse,
-    openModal, closeModal, setupModal, showToast, toggleElement, IMG_FALLBACKS,
+    openModal, setupModal, showToast, toggleElement, IMG_FALLBACKS,
     createIcon, createGemIconImg, lockBodyScroll, unlockBodyScroll, syncedStorage, renderStatus, loadPageData } from '../utils.js';
 import { loadReleaseDates } from './skin.data.js';
 import { formatReleaseDate, releaseSortKey } from './skin.dates.js';

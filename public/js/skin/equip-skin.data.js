@@ -137,4 +137,4 @@ class EquipSkinData {
     // Weapon resolution uses SimulationEngine.resolveWeapon() — no duplication here
 }
 
-export { EquipSkinData, EQUIP_TYPE_NAMES };
+export { EquipSkinData };

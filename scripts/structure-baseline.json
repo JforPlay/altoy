@@ -6,75 +6,11 @@
   "findings": {
     "multiModuleRoutes": [
       {
-        "id": "multi-module-route:src/pages/shipgirl/shipgirl-stats.astro",
-        "path": "src/pages/shipgirl/shipgirl-stats.astro",
-        "modules": [
-          "/js/shipgirl/shipgirl-stats.compare.js",
-          "/js/shipgirl/shipgirl-stats.dashboard.js",
-          "/js/shipgirl/shipgirl-stats.data.js",
-          "/js/shipgirl/shipgirl-stats.js",
-          "/js/shipgirl/shipgirl-stats.table.js"
-        ]
-      },
-      {
         "id": "multi-module-route:src/pages/shipgirl/shipgirl-tracker.astro",
         "path": "src/pages/shipgirl/shipgirl-tracker.astro",
         "modules": [
           "/js/shipgirl/shipgirl-tracker-utils.js",
           "/js/shipgirl/shipgirl-tracker.js"
-        ]
-      },
-      {
-        "id": "multi-module-route:src/pages/simulators/cross-fleet-barrages.astro",
-        "path": "src/pages/simulators/cross-fleet-barrages.astro",
-        "modules": [
-          "/js/simulators/cross-fleet.main.js",
-          "/js/simulators/sim.engine.bullet.js",
-          "/js/simulators/sim.engine.common.js",
-          "/js/simulators/sim.engine.oceanbg.js"
-        ]
-      },
-      {
-        "id": "multi-module-route:src/pages/simulators/fleet-sim.astro",
-        "path": "src/pages/simulators/fleet-sim.astro",
-        "modules": [
-          "/js/simulators/fleet-sim.calc.js",
-          "/js/simulators/fleet-sim.data.js",
-          "/js/simulators/fleet-sim.main.js",
-          "/js/simulators/fleet-sim.picker.js",
-          "/js/simulators/fleet-sim.ui.js"
-        ]
-      },
-      {
-        "id": "multi-module-route:src/pages/simulators/sim-aircraft.astro",
-        "path": "src/pages/simulators/sim-aircraft.astro",
-        "modules": [
-          "/js/simulators/sim.aircraft.data.js",
-          "/js/simulators/sim.aircraft.main.js",
-          "/js/simulators/sim.engine.bullet.js",
-          "/js/simulators/sim.engine.common.js",
-          "/js/simulators/sim.engine.oceanbg.js"
-        ]
-      },
-      {
-        "id": "multi-module-route:src/pages/simulators/sim-weapon.astro",
-        "path": "src/pages/simulators/sim-weapon.astro",
-        "modules": [
-          "/js/simulators/sim.engine.bullet.js",
-          "/js/simulators/sim.engine.common.js",
-          "/js/simulators/sim.engine.oceanbg.js",
-          "/js/simulators/sim.weapon.data.js",
-          "/js/simulators/sim.weapon.main.js"
-        ]
-      },
-      {
-        "id": "multi-module-route:src/pages/skin/skin-detail-viewer.astro",
-        "path": "src/pages/skin/skin-detail-viewer.astro",
-        "modules": [
-          "/js/skin/skin.audio.js",
-          "/js/skin/skin.data.js",
-          "/js/skin/skin.detail.viewer.js",
-          "/js/skin/skin.expression.js"
         ]
       },
       {
@@ -146,26 +82,6 @@
       }
     ],
     "globalAssignments": [
-      {
-        "id": "global-assignment:public/js/skin/skin.audio.js:window.SkinAudio",
-        "path": "public/js/skin/skin.audio.js",
-        "global": "window.SkinAudio"
-      },
-      {
-        "id": "global-assignment:public/js/skin/skin.data.js:window.SkinData",
-        "path": "public/js/skin/skin.data.js",
-        "global": "window.SkinData"
-      },
-      {
-        "id": "global-assignment:public/js/skin/skin.expression.js:window.SkinExpression",
-        "path": "public/js/skin/skin.expression.js",
-        "global": "window.SkinExpression"
-      },
-      {
-        "id": "global-assignment:public/js/skin/skin.list.viewer.js:window.skinListViewerCleanup",
-        "path": "public/js/skin/skin.list.viewer.js",
-        "global": "window.skinListViewerCleanup"
-      },
       {
         "id": "global-assignment:public/js/skin/skin.poll.js:window.skinPollCleanup",
         "path": "public/js/skin/skin.poll.js",

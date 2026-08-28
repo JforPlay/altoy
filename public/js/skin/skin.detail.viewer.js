@@ -4,7 +4,7 @@
  * Orchestrates three sub-modules: skin.data.js (data), skin.audio.js (audio), skin.expression.js (gallery).
  * Part of the skin module group.
  */
-import { getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl, normalizeRomanNumerals, createIcon, createGemIconImg, setupModal, openModal, closeModal, setupDropdown, loadPageData } from '../utils.js';
+import { getUrlParam, setUrlParams, hideElement, showElement, toggleElement, normalizeRomanNumerals, createIcon, createGemIconImg, setupModal, openModal, closeModal, setupDropdown, loadPageData } from '../utils.js';
 import { init as initSkinData, searchCharacters, getSkinsForCharacter, getSkinByName, getAllCharacterNames, getCharacterNameByGid, getReleaseDate, getSkinFilterData } from './skin.data.js';
 import { ensureExpressionManifest } from '../expression-manifest.js';
 import { init as initSkinAudio, stopCurrentAudio, handlePlayClick, createVolumeControlElement, attachVolumeListeners } from './skin.audio.js';
@@ -50,11 +50,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         elements.skinInfoBox,
         {
             contextLabel: 'Skin detail',
-            onError: () => { elements.charInput.placeholder = '데이터 로딩 실패'; },
+            // The comboboxes are only wired below, after a successful load — leave
+            // them enabled and typing is a silent no-op next to the 다시 시도 button.
+            onError: () => {
+                elements.charInput.placeholder = '데이터 로딩 실패';
+                elements.charInput.disabled = true;
+                elements.clearBtn.disabled = true;
+            },
         },
     );
     if (!dataLoaded) return;
     elements.charInput.placeholder = '함순이를 검색/선택해주세요...';
+    elements.charInput.disabled = false;
+    elements.clearBtn.disabled = false;
     hideElement(elements.skinInfoBox);
 
     // Event Listeners

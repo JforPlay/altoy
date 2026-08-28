@@ -163,7 +163,7 @@ export function clearAll() {
 }
 
 /** Sum the comfort value of all placed furniture items. */
-export function getComfort() {
+function getComfort() {
     let total = 0;
     for (const item of state.grid.placed) {
         if (!item) continue;

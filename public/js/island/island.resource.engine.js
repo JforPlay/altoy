@@ -22,7 +22,7 @@ import {
     setup as setupRender,
     renderCategoryFilter, renderRecipeList, renderRecipeDetail,
     renderEmptyDetail, renderEmptyChain, itemImg,
-    renderForestTree, renderForestDependencies
+    renderForestTree
 } from './island.resource.render.js';
 
 'use strict';

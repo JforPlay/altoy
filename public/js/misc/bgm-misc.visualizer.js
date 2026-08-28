@@ -15,6 +15,7 @@ export function createVisualizer(canvas, { barCount = 32 } = {}) {
     if (!ctx) return { start() {}, stop() {}, resize() {} };
 
     let rafId = null;
+    let running = false;
     let colors = null;
     let themeSubscribed = false;
 
@@ -67,6 +68,7 @@ export function createVisualizer(canvas, { barCount = 32 } = {}) {
     }
 
     function start() {
+        running = true;
         if (rafId != null) return;
         if (!colors) readColors();
         if (!themeSubscribed) {
@@ -78,6 +80,7 @@ export function createVisualizer(canvas, { barCount = 32 } = {}) {
     }
 
     function stop() {
+        running = false;
         if (rafId != null) {
             cancelAnimationFrame(rafId);
             rafId = null;
@@ -86,10 +89,17 @@ export function createVisualizer(canvas, { barCount = 32 } = {}) {
         if (colors) frame(0.4);
     }
 
+    // Pause the loop while the tab is hidden, and resume it when the tab comes
+    // back if the caller never called stop() — audio keeps playing in a hidden
+    // tab, so without the resume the bar stays frozen for the rest of the track.
     document.addEventListener('visibilitychange', () => {
-        if (document.hidden && rafId != null) {
-            cancelAnimationFrame(rafId);
-            rafId = null;
+        if (document.hidden) {
+            if (rafId != null) {
+                cancelAnimationFrame(rafId);
+                rafId = null;
+            }
+        } else if (running && rafId == null) {
+            loop();
         }
     });
 

@@ -52,14 +52,17 @@ export function clearTreeCache() {
 }
 
 /**
- * Add entry to cache with LRU eviction
- * Prevents unbounded memory growth by limiting cache size
+ * Add entry to cache with FIFO eviction
+ * Prevents unbounded memory growth by limiting cache size.
+ * FIFO, not LRU: object key order is insertion order and getFromCache does not
+ * re-insert on a hit. Fine at MAX_CACHE_SIZE 200 — the tree set is small enough
+ * that eviction is rare. Switch to a Map with re-insert on read if that changes.
  */
 function addToCache(key, value) {
     const cacheKeys = Object.keys(state.treeCache);
 
-    // If cache is full, remove oldest entry (first key). Silent — eviction
-    // is normal LRU behavior, not an error worth logging per call.
+    // If cache is full, drop the oldest inserted entry. Silent — eviction is
+    // normal behavior, not an error worth logging per call.
     if (cacheKeys.length >= CONSTANTS.MAX_CACHE_SIZE) {
         delete state.treeCache[cacheKeys[0]];
     }
