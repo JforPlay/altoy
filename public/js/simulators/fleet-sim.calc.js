@@ -38,8 +38,17 @@ export const DISPLAY_STATS = [
 const VITAL_STATS = ['firepower', 'aviation', 'torpedo', 'antiair', 'reload'];
 
 /**
- * Pick the non-zero vitals for one ship, resolving labels through DISPLAY_STATS
- * so the strip and the full grid can never disagree on wording.
+ * An offensive vital below this share of the ship's own biggest one is noise the
+ * ship never attacks with (경순 항공 32 / 뇌장 13 beside 대공 391) — five entries
+ * plus the reload chips then wrap the strip onto a second row. 장전 is exempt:
+ * it is a cadence stat in a different unit, so comparing it to 포격 is meaningless
+ * and would drop 장전 off any high-firepower battleship.
+ */
+const VITAL_MIN_SHARE = 0.15;
+
+/**
+ * Pick the non-zero, non-negligible vitals for one ship, resolving labels through
+ * DISPLAY_STATS so the strip and the full grid can never disagree on wording.
  *
  * @param {object|null} stats calcResult.stats, or null before a calc lands
  * @param {number} [max=5] hard cap on returned entries
@@ -47,11 +56,13 @@ const VITAL_STATS = ['firepower', 'aviation', 'torpedo', 'antiair', 'reload'];
  */
 export function pickVitalStats(stats, max = 5) {
     if (!stats) return [];
+    const peak = Math.max(...VITAL_STATS.map((k) => (k === 'reload' ? 0 : stats[k] || 0)));
     const out = [];
     for (const key of VITAL_STATS) {
         if (out.length >= max) break;
         const value = stats[key];
         if (!value) continue;
+        if (key !== 'reload' && value < peak * VITAL_MIN_SHARE) continue;
         const meta = DISPLAY_STATS.find((s) => s.key === key);
         if (!meta) continue;
         out.push({ key, label: meta.label, value: Math.floor(value) });

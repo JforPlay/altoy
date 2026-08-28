@@ -32,11 +32,25 @@ test('destroyer: four entries, capped at max', () => {
 
 test('all five vitals survive the default cap, 장전 included', () => {
     const out = pickVitalStats(stats({
-        firepower: 96, aviation: 40, torpedo: 402, antiair: 145, reload: 189,
+        firepower: 96, aviation: 120, torpedo: 402, antiair: 145, reload: 189,
     }));
     assert.equal(out.length, 5);
     // reload is last in VITAL_STATS, so a cap below 5 drops 장전 specifically —
     // the number this page exists to help you read.
+    assert.ok(out.some((v) => v.key === 'reload'));
+});
+
+test('negligible offensive stats are dropped so the strip stays on one line', () => {
+    // 차파예프: 항공 32 / 뇌장 13 next to 대공 391 are stats she never attacks with,
+    // and the two of them pushed the reload chips onto a second row.
+    const out = pickVitalStats(stats({
+        firepower: 357, aviation: 32, torpedo: 13, antiair: 391, reload: 204,
+    }));
+    assert.deepEqual(out.map((v) => v.key), ['firepower', 'antiair', 'reload']);
+});
+
+test('장전 survives beside a huge 포격 — it is never measured against the peak', () => {
+    const out = pickVitalStats(stats({ firepower: 1200, antiair: 313, reload: 150 }));
     assert.ok(out.some((v) => v.key === 'reload'));
 });
 

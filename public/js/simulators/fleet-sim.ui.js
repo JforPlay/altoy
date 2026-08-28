@@ -864,15 +864,31 @@ export async function renderDamagePanel(container) {
             tierSelect = `<span class="select-wrap"><select class="dmg-tier-select" data-action="dmg-tier" aria-label="난이도 티어">${opts}</select></span>`;
         }
     }
+    // A META boss's own always-on 받는 피해 skill is already inside every number
+    // below, so it is named here rather than left as an invisible multiplier —
+    // 요크타운's -60% otherwise reads as the fleet being bad.
+    const injure = result.target ? (result.target.injureRatio || 0) : 0;
+    const injureChip = injure
+        ? `<span class="dmg-target-injure${injure < 0 ? ' is-resist' : ''}">보스 스킬 · 받는 피해 ${injure > 0 ? '+' : ''}${Math.round(injure * 100)}%</span>`
+        : '';
     const targetSelectRow =
         `<div class="dmg-target-select">
             <span class="dmg-target-name">${escapeHtml(targetName)}</span>
             ${tierSelect}
             <button class="btn btn-sm btn-outline" data-action="dmg-open-picker">변경</button>
+            ${injureChip}
         </div>`;
 
     const missingNote = result.target && result.target.bossMissing
         ? `<div class="dmg-missing-note">저장된 보스 데이터를 찾을 수 없어 기본 타겟으로 계산했습니다.</div>`
+        : '';
+
+    // Same contract as the per-card 미모델 탄막 note: disclose what the sim skipped
+    // instead of letting the total read as complete. These are the boss's
+    // phase/stack/timer buffs — their trigger is precisely what is not modelled.
+    const unmodeledBuffs = result.target ? (result.target.unmodeledBuffs || 0) : 0;
+    const bossSkillNote = unmodeledBuffs
+        ? `<div class="dmg-missing-note">조건부로 발동하는 보스 스킬 ${unmodeledBuffs}개는 계산에 반영되지 않았습니다.</div>`
         : '';
 
     const windowField =
@@ -885,11 +901,10 @@ export async function renderDamagePanel(container) {
     // Clear-check row (uses the boss/preset HP the engine carried on the result).
     const cc = result.clearCheck;
     let clearCheckRow = '';
-    // Gated to a RESOLVED META target: the generic presets carry HP large enough
-    // that the verdict reads 미클리어 essentially always, which is noise rather
-    // than a check. bossMissing means we fell back to a preset, so the same
-    // applies there even though tgt.kind is still 'meta'.
-    if (cc && isMeta && !(result.target && result.target.bossMissing)) {
+    // Shown for the Arbiter presets as well as META bosses (user request): their
+    // HP is large but not out of reach — a 90s window against The Hermit IX's
+    // 1.9M sits right on the boundary, so the verdict is a real check, not noise.
+    if (cc) {
         const ttk = Number.isFinite(cc.ttkSeconds) ? `${cc.ttkSeconds.toFixed(1)}초` : '—';
         const verdict = cc.clears
             ? `<span class="dmg-clear-ok">${escapeHtml(String(tgt.window))}초 내 클리어 ✓</span>`
@@ -906,15 +921,21 @@ export async function renderDamagePanel(container) {
 
     // Editable enemy overrides
     const ov = tgt.overrides || {};
+    // The placeholder carries the value actually in use when the field is blank —
+    // a bare "기본" left the target's own 내구/레벨/회피/대공 unreadable, which is the
+    // one thing a boss panel has to show. result.target already resolved every
+    // default (preset adapt tier or META tier), so it IS what the sim just used.
     const editFields = [
+        ['hp', '내구'],
         ['level', '레벨'],
         ['evasion', '회피'],
         ['antiAir', '대공'],
         ['armorReduce', '경감'],
     ];
-    const editRow = windowField + editFields.map(([k, lab]) =>
-        `<label class="dmg-edit-label">${escapeHtml(lab)}<input class="dmg-edit-input" type="number" data-action="dmg-edit" data-field="${k}" value="${escapeHtml(String(ov[k] != null ? ov[k] : ''))}" placeholder="기본" /></label>`
-    ).join('');
+    const editRow = windowField + editFields.map(([k, lab]) => {
+        const shown = result.target && result.target[k] != null ? _fmt(result.target[k]) : '기본';
+        return `<label class="dmg-edit-label">${escapeHtml(lab)}<input class="dmg-edit-input" type="number" data-action="dmg-edit" data-field="${k}" value="${escapeHtml(String(ov[k] != null ? ov[k] : ''))}" placeholder="${escapeHtml(shown)}" /></label>`;
+    }).join('');
 
     // Per-ship rows
     const perShipRows = result.perShip.map((s) => {
@@ -923,6 +944,7 @@ export async function renderDamagePanel(container) {
         return `<div class="dmg-ship-row">
             <span class="dmg-ship-name">${name}</span>
             <span class="dmg-oneshot">일격 ${_fmt(s.oneShotExpected)}</span>
+            <span class="dmg-cumulative">누적 ${_fmt(s.total)}</span>
             <span class="dmg-dps">DPS ${_fmt(s.dps)}</span>
         </div>`;
     }).join('');
@@ -945,6 +967,7 @@ export async function renderDamagePanel(container) {
             </div>
             ${targetSelectRow}
             ${missingNote}
+            ${bossSkillNote}
             ${adaptRow}
             <div class="dmg-edit-row">${editRow}</div>
             <div class="dmg-ship-list">${perShipRows}</div>

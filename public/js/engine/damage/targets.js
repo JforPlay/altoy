@@ -51,6 +51,14 @@ export function makeTarget(presetKey, overrides = {}) {
  * Unknown/null tier → highest tier. Boss level is unreliable in the source
  * (fixed-stat tiers, no growth), so level<=0 defaults to 125 (neutral advantage
  * vs a maxed fleet); the 레벨 override can adjust it.
+ *
+ * injureRatio is the boss's OWN always-on 받는 피해 skill, baked in by WSL
+ * meta_boss_process.py from its enemy buff_list (8830 通用易伤 +20% on most of the
+ * roster, 요크타운's 基础减伤 -60%, 브리스톨 -20%). It feeds the existing
+ * (1 + injureRatio) term, so nothing about the formula changes — the field simply
+ * stops being hardcoded 0. unmodeledBuffs rides along as metadata: the count of
+ * phase/stack/timer buffs on the same boss whose conditions this sim does not
+ * model, so the panel can disclose them rather than quietly under-reporting.
  * @param {object} boss meta_bosses.json record { id, name, tiers:[...] }
  * @param {number|null} tier tier number to select
  * @param {object} overrides optional TargetProfile field overrides
@@ -71,8 +79,9 @@ export function makeMetaTarget(boss, tier, overrides = {}) {
     luck: overrides.luck ?? rec.luck,
     hp: overrides.hp ?? rec.hp,
     armorReduce: overrides.armorReduce ?? DEFAULT_ARMOR_REDUCE,
-    injureRatio: overrides.injureRatio ?? 0,
+    injureRatio: overrides.injureRatio ?? rec.injureRatio ?? 0,
     ammoReduce: overrides.ammoReduce ?? 0,
     adapt: null,
+    unmodeledBuffs: rec.unmodeledBuffs ?? 0,
   };
 }

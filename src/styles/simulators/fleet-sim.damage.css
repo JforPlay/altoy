@@ -81,6 +81,11 @@
   text-align: right;
 }
 
+/* 내구 runs to seven digits on an Arbiter preset — 5rem clips the placeholder. */
+.dmg-edit-input[data-field="hp"] {
+  width: 6.5rem;
+}
+
 .dmg-edit-input:focus {
   outline: none;
   border-color: var(--accent-blue);
@@ -117,6 +122,12 @@
 }
 
 .dmg-oneshot {
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* Per-ship 누적: the window total, sitting between 일격 and DPS. */
+.dmg-cumulative {
   color: var(--text-secondary);
   white-space: nowrap;
 }
@@ -244,6 +255,24 @@
     font-weight: 600;
     color: var(--text-primary);
 }
+
+/* The boss's own 받는 피해 skill, already folded into every number below.
+   Green = we hit harder, red = the boss resists — accent *-text variants, since
+   the plain accent tokens are fills and drop under 3:1 as text on a light card. */
+.dmg-target-injure {
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: var(--radius-sm);
+    color: var(--accent-green-text);
+    background: color-mix(in srgb, var(--accent-green) 14%, transparent);
+}
+
+.dmg-target-injure.is-resist {
+    color: var(--accent-red-text);
+    background: color-mix(in srgb, var(--danger-color) 14%, transparent);
+}
+
 .dmg-tier-select {
     padding: 0.15rem 0.4rem;
     border-radius: var(--radius-sm);
