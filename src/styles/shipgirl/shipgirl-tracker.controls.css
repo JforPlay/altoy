@@ -20,45 +20,6 @@
   margin-top: var(--spacing-md);
 }
 
-.modal-actions button {
-  border: none;
-  padding: 10px 24px;
-  border-radius: var(--radius-md);
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color var(--transition-fast), transform 0.1s, box-shadow var(--transition-fast);
-  box-shadow: var(--shadow-sm);
-}
-
-.modal-actions button:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
-}
-
-.modal-actions button:active {
-  transform: translateY(0);
-  box-shadow: var(--shadow-sm);
-}
-
-#modal-confirm-btn {
-  background-color: var(--success-color);
-  color: #fff;
-}
-
-#modal-confirm-btn:hover {
-  background-color: #229954;
-}
-
-#modal-cancel-btn {
-  background-color: var(--danger-color);
-  color: #fff;
-}
-
-#modal-cancel-btn:hover {
-  background-color: var(--danger-hover);
-}
-
 /* ===== Sheet import modal ===== */
 /* Every value the preview renders comes from a pasted file, so the JS writes it
    with textContent only — nothing here may rely on markup from that data. */

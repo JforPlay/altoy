@@ -12,7 +12,9 @@ import {
     replaceEquipCodes, getBulletTemplate, getSkillData, getWeaponName,
     getFiringPattern, formatLevel, getVisibleLevelCount, AIRCRAFT_TYPES,
     getMergedAircraftTemplate, getMergedWeaponProperties, getPrimaryWeaponProperty,
-    getHearingEntry, getTheoreticalSurfaceDps, ensureDetailData
+    getHearingEntry, getTheoreticalSurfaceDps, ensureDetailData, reloadMaxToSeconds,
+    getSPWeaponRawData, getSPWeaponIconUrl, loadSkillData,
+    SP_RARITY_NAMES, SP_RARITY_TO_EQUIP, SP_ATTR_NAMES
 } from './equip.data.js';
 import { formatDps } from './equip.compare.logic.js';
 import { renderHearingComment } from './equip.hearing-view.js';
@@ -100,6 +102,114 @@ export async function showDetailView(equipId) {
 
     renderDetail(equip);
     return equip;
+}
+
+// ===== SP (특수 장비) Detail =====
+
+/**
+ * Render the detail panel for an SP weapon. Separate from renderDetail because
+ * SP weapons have their own data shape (attr pairs, level progression, skill
+ * upgrades) and share none of the equip level/upgrade sections.
+ * Returns false when the weapon or the panel is missing; the caller opens the panel.
+ */
+export async function showSPWeaponDetail(spId) {
+    const spWeapon = getSPWeaponRawData(spId);
+    const panelContent = document.getElementById('detailPanelContent');
+    if (!spWeapon || !panelContent) return false;
+
+    await loadSkillData();
+
+    const iconUrl = getSPWeaponIconUrl(spWeapon.icon);
+    const maxLvl = spWeapon.levels ? spWeapon.levels[spWeapon.levels.length - 1] : null;
+    const attr1Name = SP_ATTR_NAMES[spWeapon.attr_1] || spWeapon.attr_1;
+    const attr2Name = SP_ATTR_NAMES[spWeapon.attr_2] || spWeapon.attr_2;
+    const rarityClass = SP_RARITY_TO_EQUIP[spWeapon.rarity] || '';
+    const rarityName = SP_RARITY_NAMES[spWeapon.rarity] || '';
+    const uniqueLabel = spWeapon.unique ? '전용' : '범용';
+
+    let levelsHTML = '';
+    if (spWeapon.levels && spWeapon.levels.length > 1) {
+        const rows = spWeapon.levels.map((lvl, i) =>
+            `<tr><td>+${i}</td><td>${lvl.v1}</td><td>${lvl.v2}</td></tr>`
+        ).join('');
+        levelsHTML = `
+            <div class="stats-section">
+                <div class="stats-section-title section-title section-title--sm">
+                    <span class="material-symbols-outlined">upgrade</span>
+                    강화 단계
+                </div>
+                <table class="stats-table">
+                    <thead><tr><th>단계</th><th>${escapeHtml(attr1Name)}</th><th>${escapeHtml(attr2Name)}</th></tr></thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>`;
+    }
+
+    // Only unique (전용) SP weapons have skill upgrades
+    let skillHTML = '';
+    if (spWeapon.skill_upgrade && spWeapon.skill_upgrade.length > 0) {
+        const skillRows = [];
+        for (const [origId, upgId] of spWeapon.skill_upgrade) {
+            if (origId && origId !== 0) {
+                const origSkill = getSkillData(origId);
+                const upgSkill = getSkillData(upgId);
+                if (origSkill || upgSkill) {
+                    skillRows.push(`<tr><th>${escapeHtml(origSkill?.name || `스킬 ${origId}`)}</th><td>→ ${escapeHtml(upgSkill?.name || `스킬 ${upgId}`)}</td></tr>`);
+                }
+            } else if (upgId) {
+                const skill = getSkillData(upgId);
+                if (skill) {
+                    skillRows.push(`<tr><th>${escapeHtml(skill.name)}</th><td>추가 스킬</td></tr>`);
+                    if (skill.desc) skillRows.push(`<tr><td colspan="2" class="sp-skill-desc">${escapeHtml(skill.desc)}</td></tr>`);
+                }
+            }
+        }
+        if (skillRows.length > 0) {
+            skillHTML = `
+                <div class="stats-section">
+                    <div class="stats-section-title section-title section-title--sm">
+                        <span class="material-symbols-outlined">auto_awesome</span>
+                        스킬
+                    </div>
+                    <table class="stats-table"><tbody>${skillRows.join('')}</tbody></table>
+                </div>`;
+        }
+    }
+
+    panelContent.innerHTML = `
+        <div class="panel-detail-top">
+            <div class="panel-detail-icon-wrapper sp-detail-icon">
+                <img class="equip-icon-bg-img" src="${escapeHtml(getRarityBgUrl(rarityClass || 3))}" alt="">
+                ${iconUrl ? `<img class="sp-detail-icon-img" src="${escapeHtml(iconUrl)}" alt="${escapeHtml(spWeapon.name)}">` : ''}
+            </div>
+            <div class="panel-detail-name">${escapeHtml(spWeapon.name)}</div>
+            <div class="panel-detail-meta">
+                <span class="badge badge--neutral">특수 장비</span>
+                <span class="equip-rarity-badge rarity-${rarityClass}">${rarityName}</span>
+                <span class="badge badge--neutral">${uniqueLabel}</span>
+            </div>
+        </div>
+        <div class="stats-section">
+            <div class="stats-section-title section-title section-title--sm">
+                <span class="material-symbols-outlined">bar_chart</span>
+                스탯 (최대 강화)
+            </div>
+            <table class="stats-table">
+                <tbody>
+                    <tr><th>${escapeHtml(attr1Name)}</th><td>${maxLvl ? maxLvl.v1 : '-'}</td></tr>
+                    <tr><th>${escapeHtml(attr2Name)}</th><td>${maxLvl ? maxLvl.v2 : '-'}</td></tr>
+                </tbody>
+            </table>
+        </div>
+        ${skillHTML}
+        ${levelsHTML}
+    `;
+    setDetailPanelTitle(spWeapon.name);
+
+    // SP weapons don't participate in the upgrade tree system
+    const researchLink = document.getElementById('detailResearchLink');
+    if (researchLink) researchLink.style.display = 'none';
+    return true;
 }
 
 // ===== Render Detail =====
@@ -437,10 +547,8 @@ function renderWeaponParamsRows(wp, surfaceDps = null) {
         rows += `<tr><th>대미지 수정 비율</th><td>${wp.corrected}%</td></tr>`;
     }
 
-    // Reload (reload_max / 150, floor to 2 decimals)
     if (wp.reload_max != null) {
-        const reload = Math.floor((wp.reload_max / 150) * 100) / 100;
-        rows += `<tr><th>무기 사속</th><td>${reload}s</td></tr>`;
+        rows += `<tr><th>무기 사속</th><td>${reloadMaxToSeconds(wp.reload_max)}s</td></tr>`;
     }
 
     // Firing pattern (barrage timing)
@@ -587,10 +695,9 @@ function renderStatsRows(equip, level) {
     }).join('');
 
     // Reload speed from the primary weapon
-    const reloadWp = getPrimaryWeaponProperty(equip, level);
-    if (reloadWp && reloadWp.reload_max != null) {
-        const reload = Math.floor((reloadWp.reload_max / 150) * 100) / 100;
-        rows += `<tr><th>사속</th><td>${reload}s</td></tr>`;
+    const reloadSeconds = reloadMaxToSeconds(getPrimaryWeaponProperty(equip, level)?.reload_max);
+    if (reloadSeconds != null) {
+        rows += `<tr><th>사속</th><td>${reloadSeconds}s</td></tr>`;
     }
 
     // Check for anti_siren in statistics data

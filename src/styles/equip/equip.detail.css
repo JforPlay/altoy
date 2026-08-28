@@ -111,6 +111,25 @@
     border-radius: var(--radius-lg);
 }
 
+/* SP (특수 장비) panel: no canvas composite — the icon sits inset on the rarity frame. */
+.sp-detail-icon-img {
+    position: absolute;
+    top: 8%;
+    left: 8%;
+    width: 84%;
+    height: 84%;
+    object-fit: contain;
+}
+
+/* Wins over `.stats-table td` (same specificity, later would not be enough
+   across files) — the description is secondary text inside a stats row. */
+.stats-table td.sp-skill-desc {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+    padding: 4px 8px;
+}
+
 .panel-detail-name {
     font-size: 1.1rem;
     font-weight: 700;

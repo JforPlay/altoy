@@ -322,6 +322,11 @@ body.dark-mode .popup-header {
   animation: dropdown-slide-in 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* utils.js setupDropdown toggles `.open`; older pages still set style.display. */
+.dropdown-content.open {
+  display: block;
+}
+
 @keyframes dropdown-slide-in {
   from {
     opacity: 0;
@@ -333,8 +338,13 @@ body.dark-mode .popup-header {
   }
 }
 
-.dropdown-content a {
+.dropdown-content a,
+.dropdown-content .dropdown-option {
   color: var(--text-primary);
+  width: 100%;
+  background: none;
+  border: none;
+  font: inherit;
   padding: 0.875rem 1rem;
   text-decoration: none;
   display: block;
@@ -344,23 +354,29 @@ body.dark-mode .popup-header {
   border-left: 3px solid transparent;
 }
 
-.dropdown-content a:hover {
+.dropdown-content a:hover,
+.dropdown-content .dropdown-option:hover,
+.dropdown-content .dropdown-option:focus-visible {
   background: linear-gradient(
     90deg,
     var(--primary-alpha-20) 0%,
     transparent 100%
   );
-  color: #ffffff;
+  /* NOT #fff: the hover fill is a 20%-alpha tint, so it stays light in light mode
+     and fixed white text vanishes on it (CLAUDE.md fill/text contrast rule). */
+  color: var(--text-primary);
   border-left-color: var(--accent-blue);
   padding-left: 1.25rem;
 }
 
-.dropdown-content a:focus {
+.dropdown-content a:focus,
+.dropdown-content .dropdown-option:focus-visible {
   outline: 2px solid var(--accent-blue);
   outline-offset: -2px;
 }
 
-.dropdown-content .no-results {
+.dropdown-content .no-results,
+.dropdown-content .dropdown-empty {
   color: var(--text-secondary);
   padding: 1.5rem;
   text-align: center;

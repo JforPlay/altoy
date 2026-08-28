@@ -96,8 +96,8 @@ function buildHearingCard(equip) {
     let statsHtml = (equip.max_attrs || []).map(attr =>
         `<span class="equip-stat-item"><span class="equip-stat-name">${escapeHtml(attr.name)}</span><span class="equip-stat-value">${escapeHtml(String(attr.value))}</span></span>`
     ).join('');
-    if (equip._reloadTime != null) {
-        statsHtml += `<span class="equip-stat-item equip-stat-reload"><span class="equip-stat-name">사속</span><span class="equip-stat-value">${equip._reloadTime}s</span></span>`;
+    if (equip.reload_time != null) {
+        statsHtml += `<span class="equip-stat-item equip-stat-reload"><span class="equip-stat-name">사속</span><span class="equip-stat-value">${equip.reload_time}s</span></span>`;
     }
 
     const card = document.createElement('div');

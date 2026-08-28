@@ -8,7 +8,7 @@
 
 import {
     createSearchIndex, ensureFuse, debounce, getUrlParam, setUrlParams,
-    resolveUrl, showToast, closeModal, lockBodyScroll, unlockBodyScroll,
+    resolveUrl, showToast, closeModal, lockBodyScroll, unlockBodyScroll, loadPageData,
     showElement, hideElement, renderStatus, escapeHtml
 } from '../utils.js';
 import {
@@ -16,12 +16,12 @@ import {
     loadLiteData, loadSkillData, isInUpgradeTree,
     getEquipIconUrl, getRarityBgUrl, getSPWeaponIconUrl, getUniqueTypes, getUniqueNationalities, getUniqueLabels,
     getFullEquipData, getSkillData, loadSPWeaponData, normalizeSPWeapons, getSPWeaponRawData,
-    ensureCompareData, ensureReloadData, SP_RARITY_NAMES,
+    ensureCompareData, SP_RARITY_NAMES,
     loadHearingData, getHearingEntry
 } from './equip.data.js';
 import {
     setup as setupDetail,
-    showDetailView,
+    showDetailView, showSPWeaponDetail,
     downloadEquipIcon,
     setDetailPanelTitle
 } from './equip.detail.js';
@@ -48,7 +48,9 @@ const state = {
     skillData: null,
     // Commentary (장비 청문회)
     hearing: {},
-    viewMode: 'grid',   // 'grid' | 'hearing'
+    // ?view= overrides this in handleRoute. The choice is intentionally NOT persisted
+    // (no localStorage) — a fresh window opens on the 청문회 default unless the URL says so.
+    viewMode: 'hearing',
     filteredData: [],
     currentEquip: null,
     currentLevel: 0,
@@ -112,12 +114,7 @@ const compareModeText = document.getElementById('compareModeText');
 const compareModeGo = document.getElementById('compareModeGo');
 const compareModeCancel = document.getElementById('compareModeCancel');
 
-state.elements = {
-    mainView, equipGrid, searchInput, typeFilter, nationalityFilter,
-    rarityChips, labelChips, loading, totalCount, filteredCount,
-    detailPanel, detailBackdrop, detailPanelContent,
-    compareModeBar, compareModeText
-};
+state.elements = { equipGrid };
 
 // Initialize sub-modules
 setupData(state);
@@ -132,71 +129,51 @@ setupHearingView(state, { sortEquips: sortEquipsInGroup });
  * compare modal, and URL routing. Detail/compare-only datasets are lazy-loaded.
  */
 async function init() {
-    try {
-        loading.style.display = 'block';
-
-        if ('scrollRestoration' in history) {
-            history.scrollRestoration = 'manual';
-        }
-
-        await Promise.all([
-            loadLiteData(),
-            loadSPWeaponData(),
-            loadHearingData(),
-        ]);
-
-        // SP weapons use a different data source but appear as regular cards in the grid
-        const spWeapons = normalizeSPWeapons();
-        if (spWeapons.length > 0) {
-            state.equipData.push(...spWeapons);
-            state.filteredData = [...state.equipData];
-        }
-
-        loading.style.display = 'none';
-
-        // Fold 별명 + 한줄평 into the search index so nicknames AND comment text match
-        for (const e of state.equipData) {
-            const h = getHearingEntry(e.id);
-            e._alias = h?.alias || '';
-            e._reviews = (h?.reviews || []).join(' ');
-        }
-
-        state.viewMode = resolveInitialViewMode();
-        updateViewToggleUI();
-
-        await ensureFuse();
-        state.searchIndex = createSearchIndex(state.equipData, {
-            // weighted so name/별명 stay primary; 한줄평 text is a secondary match source
-            keys: [
-                { name: 'name', weight: 3 },
-                { name: '_alias', weight: 2 },
-                { name: 'type_name', weight: 1 },
-                { name: 'type_name2', weight: 1 },
-                { name: 'nation_name', weight: 1 },
-                { name: 'nation_code', weight: 1 },
-                { name: '_reviews', weight: 0.5 },
-            ],
-            threshold: 0.3,
-        });
-
-        populateFilters();
-        setupEventListeners();
-        setupCompareModal();
-        handleRoute();
-        window.addEventListener('popstate', handleRoute);
-
-        // Eager background enrich: reload times fill into the grid once the heavy
-        // full/weapon-property data arrives, without blocking first paint. The rest
-        // of the detail/compare datasets stay lazy (ensureDetailData/ensureCompareData).
-        ensureReloadData().then((loaded) => {
-            if (loaded) renderCurrentView();
-        });
-
-    } catch (error) {
-        loading.style.display = 'none';
-        showToast(error.message || '초기화 오류', 'error');
-        console.error('Initialization error:', error);
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
     }
+
+    const loaded = await loadPageData(
+        () => Promise.all([loadLiteData(), loadSPWeaponData(), loadHearingData()]),
+        loading,
+        { contextLabel: 'Equip viewer' },
+    );
+    if (!loaded) return;
+
+    // SP weapons use a different data source but appear as regular cards in the grid
+    const spWeapons = normalizeSPWeapons();
+    if (spWeapons.length > 0) {
+        state.equipData.push(...spWeapons);
+        state.filteredData = [...state.equipData];
+    }
+
+    // Fold 별명 + 한줄평 into the search index so nicknames AND comment text match
+    for (const e of state.equipData) {
+        const h = getHearingEntry(e.id);
+        e._alias = h?.alias || '';
+        e._reviews = (h?.reviews || []).join(' ');
+    }
+
+    await ensureFuse();
+    state.searchIndex = createSearchIndex(state.equipData, {
+        // weighted so name/별명 stay primary; 한줄평 text is a secondary match source
+        keys: [
+            { name: 'name', weight: 3 },
+            { name: '_alias', weight: 2 },
+            { name: 'type_name', weight: 1 },
+            { name: 'type_name2', weight: 1 },
+            { name: 'nation_name', weight: 1 },
+            { name: 'nation_code', weight: 1 },
+            { name: '_reviews', weight: 0.5 },
+        ],
+        threshold: 0.3,
+    });
+
+    populateFilters();
+    setupEventListeners();
+    setupCompareModal();
+    handleRoute();
+    window.addEventListener('popstate', handleRoute);
 }
 
 // ===== Populate Filters =====
@@ -220,18 +197,6 @@ function populateFilters() {
     ).join('');
 
     updateFilterStats();
-}
-
-function refreshSortedView() {
-    renderCurrentView();
-
-    if (state.sortStat !== '_reload' || state.reloadEnriched) return;
-
-    ensureReloadData().then((loaded) => {
-        if (!loaded || state.sortStat !== '_reload') return;
-        renderCurrentView();
-        updateFilterStats();
-    });
 }
 
 // ===== Event Listeners =====
@@ -293,12 +258,12 @@ function setupEventListeners() {
     // Sort controls
     sortStat.addEventListener('change', () => {
         state.sortStat = sortStat.value;
-        refreshSortedView();
+        renderCurrentView();
     });
     sortDirection.addEventListener('click', () => {
         state.sortDirection = state.sortDirection === 'desc' ? 'asc' : 'desc';
         sortDirection.textContent = state.sortDirection === 'desc' ? '내림차순' : '오름차순';
-        if (state.sortStat) refreshSortedView();
+        if (state.sortStat) renderCurrentView();
     });
 
     // Detail panel close
@@ -423,17 +388,6 @@ function searchEquipment(searchTerm) {
 
 // ===== View Mode (그리드 / 청문회) =====
 
-/**
- * Resolve the initial mode: ?view= URL param → 'hearing' (default).
- * View choice is intentionally NOT persisted (no localStorage) — each fresh
- * window opens on the 청문회 default unless an explicit ?view= says otherwise.
- */
-function resolveInitialViewMode() {
-    const urlView = getUrlParam('view');
-    if (urlView === 'hearing' || urlView === 'grid') return urlView;
-    return 'hearing';
-}
-
 /** Dispatch to the active renderer. */
 function renderCurrentView() {
     updateHearingNote();
@@ -487,10 +441,10 @@ function sortEquipsInGroup(equips) {
         const withReload = [];
         const withoutReload = [];
         for (const e of equips) {
-            if (e._reloadTime != null) withReload.push(e);
+            if (e.reload_time != null) withReload.push(e);
             else withoutReload.push(e);
         }
-        withReload.sort((a, b) => mult * (a._reloadTime - b._reloadTime));
+        withReload.sort((a, b) => mult * (a.reload_time - b.reload_time));
         return [...withReload, ...withoutReload];
     }
 
@@ -574,10 +528,10 @@ function renderEquipGrid() {
                     <span class="equip-stat-value">${attr.value}</span>
                 </span>`
             ).join('');
-            if (equip._reloadTime != null) {
+            if (equip.reload_time != null) {
                 statsHtml += `<span class="equip-stat-item equip-stat-reload">
                     <span class="equip-stat-name">사속</span>
-                    <span class="equip-stat-value">${equip._reloadTime}s</span>
+                    <span class="equip-stat-value">${equip.reload_time}s</span>
                 </span>`;
             }
 
@@ -673,130 +627,14 @@ async function openDetailPanel(equipId) {
     lockBodyScroll();
 }
 
-/**
- * Open the detail panel for an SP (special) weapon.
- * Renders entirely in this function since SP weapons have a different
- * data shape (attr pairs, level progression, skill upgrades) than
- * standard equipment handled by equip.detail.js.
- */
+/** Open the detail panel for an SP (special) weapon; equip.detail.js renders it. */
 async function openSPWeaponDetail(spId) {
-    const spWeapon = getSPWeaponRawData(spId);
-    if (!spWeapon) return;
-
-    const panelContent = document.getElementById('detailPanelContent');
-    if (!panelContent) return;
-
-    await loadSkillData();
-
-    const SP_ATTR_NAMES = {
-        cannon: '포격', torpedo: '뇌장', antiaircraft: '대공', air: '항공',
-        reload: '장전', hit: '명중', dodge: '기동', durability: '내구',
-        speed: '속력', luck: '행운', antisub: '대잠',
-    };
-
-    const iconUrl = getSPWeaponIconUrl(spWeapon.icon);
-    const maxLvl = spWeapon.levels ? spWeapon.levels[spWeapon.levels.length - 1] : null;
-    const attr1Name = SP_ATTR_NAMES[spWeapon.attr_1] || spWeapon.attr_1;
-    const attr2Name = SP_ATTR_NAMES[spWeapon.attr_2] || spWeapon.attr_2;
-    const rarityName = SP_RARITY_NAMES[spWeapon.rarity] || '';
-    const uniqueLabel = spWeapon.unique ? '전용' : '범용';
-
-    let levelsHTML = '';
-    if (spWeapon.levels && spWeapon.levels.length > 1) {
-        const rows = spWeapon.levels.map((lvl, i) =>
-            `<tr><td>+${i}</td><td>${lvl.v1}</td><td>${lvl.v2}</td></tr>`
-        ).join('');
-        levelsHTML = `
-            <div class="stats-section">
-                <div class="stats-section-title section-title section-title--sm">
-                    <span class="material-symbols-outlined">upgrade</span>
-                    강화 단계
-                </div>
-                <table class="stats-table">
-                    <thead><tr><th>단계</th><th>${escapeHtml(attr1Name)}</th><th>${escapeHtml(attr2Name)}</th></tr></thead>
-                    <tbody>${rows}</tbody>
-                </table>
-            </div>`;
-    }
-
-    // Only unique (전용) SP weapons have skill upgrades
-    let skillHTML = '';
-    if (spWeapon.skill_upgrade && spWeapon.skill_upgrade.length > 0) {
-        const skillRows = [];
-        for (const [origId, upgId] of spWeapon.skill_upgrade) {
-            if (origId && origId !== 0) {
-                const origSkill = getSkillData(origId);
-                const upgSkill = getSkillData(upgId);
-                if (origSkill || upgSkill) {
-                    skillRows.push(`<tr><th>${escapeHtml(origSkill?.name || `스킬 ${origId}`)}</th><td>→ ${escapeHtml(upgSkill?.name || `스킬 ${upgId}`)}</td></tr>`);
-                }
-            } else if (upgId) {
-                const skill = getSkillData(upgId);
-                if (skill) {
-                    const desc = skill.desc ? `<div class="sp-skill-desc">${escapeHtml(skill.desc)}</div>` : '';
-                    skillRows.push(`<tr><th>${escapeHtml(skill.name)}</th><td>추가 스킬</td></tr>`);
-                    if (desc) skillRows.push(`<tr><td colspan="2" style="font-size:0.8rem;color:var(--text-secondary);padding:4px 8px;">${escapeHtml(skill.desc)}</td></tr>`);
-                }
-            }
-        }
-        if (skillRows.length > 0) {
-            skillHTML = `
-                <div class="stats-section">
-                    <div class="stats-section-title section-title section-title--sm">
-                        <span class="material-symbols-outlined">auto_awesome</span>
-                        스킬
-                    </div>
-                    <table class="stats-table"><tbody>${skillRows.join('')}</tbody></table>
-                </div>`;
-        }
-    }
-
-    const detailBgUrl = getRarityBgUrl(SP_RARITY_TO_EQUIP_CLASS[spWeapon.rarity] || 3);
-
-    let html = `
-        <div class="panel-detail-top">
-            <div class="panel-detail-icon-wrapper">
-                <canvas id="detailIconCanvas" width="256" height="256" style="display:none"></canvas>
-                <img class="equip-icon-bg-img" src="${escapeHtml(detailBgUrl)}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:8px;">
-                ${iconUrl ? `<img src="${escapeHtml(iconUrl)}" alt="${escapeHtml(spWeapon.name)}" style="position:absolute;top:8%;left:8%;width:84%;height:84%;object-fit:contain;">` : ''}
-            </div>
-            <div class="panel-detail-name">${escapeHtml(spWeapon.name)}</div>
-            <div class="panel-detail-meta">
-                <span class="badge badge--neutral">특수 장비</span>
-                <span class="equip-rarity-badge rarity-${SP_RARITY_TO_EQUIP_CLASS[spWeapon.rarity] || ''}">${rarityName}</span>
-                <span class="badge badge--neutral">${uniqueLabel}</span>
-            </div>
-        </div>
-        <div class="stats-section">
-            <div class="stats-section-title section-title section-title--sm">
-                <span class="material-symbols-outlined">bar_chart</span>
-                스탯 (최대 강화)
-            </div>
-            <table class="stats-table">
-                <tbody>
-                    <tr><th>${escapeHtml(attr1Name)}</th><td>${maxLvl ? maxLvl.v1 : '-'}</td></tr>
-                    <tr><th>${escapeHtml(attr2Name)}</th><td>${maxLvl ? maxLvl.v2 : '-'}</td></tr>
-                </tbody>
-            </table>
-        </div>
-        ${skillHTML}
-        ${levelsHTML}
-    `;
-
-    panelContent.innerHTML = html;
-    setDetailPanelTitle(spWeapon.name);
-
-    // SP weapons don't participate in the upgrade tree system
-    const researchLink = document.getElementById('detailResearchLink');
-    if (researchLink) researchLink.style.display = 'none';
+    if (!await showSPWeaponDetail(spId)) return;
 
     detailPanel.classList.add('open');
     detailBackdrop.classList.add('visible');
     lockBodyScroll();
 }
-
-/** SP rarity (2=R, 3=SR, 4=SSR) mapped to equip CSS rarity class (3, 4, 5) */
-const SP_RARITY_TO_EQUIP_CLASS = { 2: 3, 3: 4, 4: 5 };
 
 function closeDetailPanel() {
     detailPanel.classList.remove('open');
@@ -948,10 +786,8 @@ async function openCompareFromSelection() {
  */
 function handleRoute() {
     const viewParam = getUrlParam('view');
-    if (viewParam === 'hearing' || viewParam === 'grid') {
-        state.viewMode = viewParam;
-        updateViewToggleUI();
-    }
+    if (viewParam === 'hearing' || viewParam === 'grid') state.viewMode = viewParam;
+    updateViewToggleUI();
 
     const equipParam = getUrlParam('equip');
     const compareParam = getUrlParam('compare');

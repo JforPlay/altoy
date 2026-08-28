@@ -320,10 +320,10 @@ body {
 
 /* Rarity border accent */
 .equip-card.rarity-6 { border-left: 3px solid var(--rarity-ur); }
-.equip-card.rarity-5 { border-left: 3px solid #e8a320; }
-.equip-card.rarity-4 { border-left: 3px solid #b066d4; }
-.equip-card.rarity-3 { border-left: 3px solid #3c9be8; }
-.equip-card.rarity-2 { border-left: 3px solid #8a8a8a; }
+.equip-card.rarity-5 { border-left: 3px solid var(--rarity-ssr); }
+.equip-card.rarity-4 { border-left: 3px solid var(--rarity-sr); }
+.equip-card.rarity-3 { border-left: 3px solid var(--rarity-r); }
+.equip-card.rarity-2 { border-left: 3px solid var(--rarity-n); }
 
 /* ===== Card Icon ===== */
 .equip-icon-wrapper {
@@ -389,11 +389,13 @@ body {
     white-space: nowrap;
 }
 
-.equip-rarity-badge.rarity-6 { background: var(--rarity-ur-light); color: var(--rarity-ur-text); }
-.equip-rarity-badge.rarity-5 { background: #ffd666; color: #3d2e00; }
-.equip-rarity-badge.rarity-4 { background: #d3adf7; color: #2d1541; }
-.equip-rarity-badge.rarity-3 { background: #91caff; color: #0d2137; }
-.equip-rarity-badge.rarity-2 { background: #bfbfbf; color: var(--text-primary); }
+/* The site-wide rarity fill/text pairs (rarity.css uses the same tokens); this page
+   keeps numeric classes because the equip data carries the numeric rarity. */
+.equip-rarity-badge.rarity-6 { background: var(--rarity-ur);  color: var(--rarity-ur-text); }
+.equip-rarity-badge.rarity-5 { background: var(--rarity-ssr); color: var(--rarity-ssr-text); }
+.equip-rarity-badge.rarity-4 { background: var(--rarity-sr);  color: var(--rarity-sr-text); }
+.equip-rarity-badge.rarity-3 { background: var(--rarity-r);   color: var(--rarity-r-text); }
+.equip-rarity-badge.rarity-2 { background: var(--rarity-n);   color: var(--rarity-n-text); }
 
 .equip-nation-code {
     font-size: 0.7rem;

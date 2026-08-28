@@ -7,7 +7,7 @@
  */
 import { debounce, fetchJSONWithCache, getAllUrlParams, setUrlParams, resolveUrl, normalizeRomanNumerals, createSearchIndex, ensureFuse,
     openModal, closeModal, setupModal, showToast, toggleElement, IMG_FALLBACKS,
-    createIcon, createGemIconImg, lockBodyScroll, unlockBodyScroll, syncedStorage, renderStatus } from '../utils.js';
+    createIcon, createGemIconImg, lockBodyScroll, unlockBodyScroll, syncedStorage, renderStatus, loadPageData } from '../utils.js';
 import { loadReleaseDates } from './skin.data.js';
 import { formatReleaseDate, releaseSortKey } from './skin.dates.js';
 import { composeDefaultPainting } from './skin.expression.js';
@@ -121,7 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const allRarityInputs = Array.from(DOM.filters.rarities.querySelectorAll('input'));
     const rarityAllCheckbox = allRarityInputs.find(cb => cb.value === 'all');
     const cachedRarityCheckboxes = allRarityInputs.filter(cb => cb.value !== 'all');
-    const allSkinContainers = Object.values(DOM.containers);
 
     const FILTER_PARAMS = {
         TYPE: 'type',
@@ -145,8 +144,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const KRW_PER_TRUCK = 121000;
     const KRW_PER_GEM = KRW_PER_TRUCK / GEMS_PER_TRUCK;
 
-    // Tag display order for cart grouping
+    // Tag display order for cart/owned grouping. '기타' is the catch-all and is
+    // never matched against the raw tag string, so priority is TAG_ORDER minus it.
+    // L2D+ must precede L2D — the raw tag is a comma-joined string and `includes`
+    // would otherwise match the substring first.
     const TAG_ORDER = ['듀얼', 'L2D+', 'L2D', '쁘띠모션', '기타'];
+    const TAG_PRIORITY = TAG_ORDER.filter(t => t !== '기타');
+
+    /** The single tag a skin is grouped under. */
+    function primaryTag(skin) {
+        const rawTag = skin['스킨 태그'] || '';
+        return TAG_PRIORITY.find(t => rawTag.includes(t)) || '기타';
+    }
 
     // ===== Timer Management =====
     let progressBarTimer = null;
@@ -757,21 +766,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             DOM.cart.footer.style.display = '';
 
-            // Group by tag — pick the highest-priority tag found in the comma-separated string
-            // Order: L2D+ before L2D to avoid substring false match
-            const TAG_GROUP_ORDER = ['듀얼', 'L2D+', 'L2D', '쁘띠모션'];
             const groups = {};
             for (const skin of wantedSkins) {
-                const rawTag = skin['스킨 태그'] || '';
-                let tag = '기타';
-                for (const candidate of TAG_GROUP_ORDER) {
-                    if (rawTag.includes(candidate)) {
-                        tag = candidate;
-                        break;
-                    }
-                }
-                if (!groups[tag]) groups[tag] = [];
-                groups[tag].push(skin);
+                const tag = primaryTag(skin);
+                (groups[tag] ||= []).push(skin);
             }
 
             const fragment = document.createDocumentFragment();
@@ -1076,25 +1074,13 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         _groupByTag(skins) {
-            const TAG_GROUP_ORDER = ['듀얼', 'L2D+', 'L2D', '쁘띠모션'];
-            const TAG_DISPLAY_ORDER = ['듀얼', 'L2D+', 'L2D', '쁘띠모션', '기타'];
             const groups = new Map();
             for (const skin of skins) {
-                const rawTag = skin['스킨 태그'] || '';
-                let tag = '기타';
-                for (const candidate of TAG_GROUP_ORDER) {
-                    if (rawTag.includes(candidate)) {
-                        tag = candidate;
-                        break;
-                    }
-                }
+                const tag = primaryTag(skin);
                 if (!groups.has(tag)) groups.set(tag, []);
                 groups.get(tag).push(skin);
             }
-            // Sort by display order
-            return TAG_DISPLAY_ORDER
-                .filter(tag => groups.has(tag))
-                .map(tag => [tag, groups.get(tag)]);
+            return TAG_ORDER.filter(tag => groups.has(tag)).map(tag => [tag, groups.get(tag)]);
         },
 
         setGroupMode(mode) {
@@ -1379,62 +1365,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }, DEBOUNCE_DELAY);
 
     // ===== Data Initialization =====
-    const showLoadingState = () => {
-        isLoading = true;
-        allSkinContainers.forEach(container => {
-            renderStatus(container, '데이터 불러오는 중...', 'loading');
-        });
-    };
-
-    const showErrorState = (error) => {
+    // Status goes to #list-status, not the four section containers: those boot
+    // `.hidden` for CLS, so anything rendered inside them is invisible.
+    isLoading = true;
+    loadPageData(
+        () => Promise.all([
+            fetchJSONWithCache('data/skin/skin_voiceline_data_subset.json'),
+            loadReleaseDates(),
+        ]),
+        document.getElementById('list-status'),
+        { contextLabel: 'Skin list', loadingMessage: '데이터 불러오는 중...' },
+    ).then(async (result) => {
+        if (!result) return;
+        const [skinJson, releaseDateJson] = result;
+        allSkins = skinJson;
+        releaseDates = releaseDateJson || {};
         isLoading = false;
-        const msg = error.message || 'Unknown error';
-        allSkinContainers.forEach(container => {
-            const status = renderStatus(container, '데이터를 불러오는데 실패했습니다.', 'error');
-            if (!status) return;
-            const small = document.createElement('small');
-            small.className = 'page-status-msg';
-            small.textContent = msg;
-            status.appendChild(small);
-        });
-        console.error("Failed to load data:", error);
-    };
 
-    showLoadingState();
+        // Build ID→skin lookup map
+        for (const skin of allSkins) {
+            skinById.set(skin['클뜯 id'], skin);
+        }
 
-    Promise.all([
-        fetchJSONWithCache('data/skin/skin_voiceline_data_subset.json'),
-        loadReleaseDates()
-    ])
-        .then(async ([skinJson, releaseDateJson]) => {
-            allSkins = skinJson;
-            releaseDates = releaseDateJson || {};
-            isLoading = false;
+        // Create all card wrappers (not yet in DOM)
+        Renderer.buildAll(allSkins);
 
-            // Build ID→skin lookup map
-            for (const skin of allSkins) {
-                skinById.set(skin['클뜯 id'], skin);
-            }
+        // Initialize chunked rendering
+        ChunkController.init(Object.keys(DOM.sections));
 
-            // Create all card wrappers (not yet in DOM)
-            Renderer.buildAll(allSkins);
+        const uniqueNames = [...new Set(allSkins.map(skin => skin['한글 함순이 + 스킨 이름']))].sort();
+        await ensureFuse();
+        fuse = createSearchIndex(uniqueNames.map(name => ({ name })), fuseOptions);
 
-            // Initialize chunked rendering
-            ChunkController.init(Object.keys(DOM.sections));
+        // Initialize cart badge
+        CartManager.updateBadge();
+        OwnedShowcase.updateBadge();
 
-            const uniqueNames = [...new Set(allSkins.map(skin => skin['한글 함순이 + 스킨 이름']))].sort();
-            await ensureFuse();
-            fuse = createSearchIndex(uniqueNames.map(name => ({ name })), fuseOptions);
-
-            // Initialize cart badge
-            CartManager.updateBadge();
-            OwnedShowcase.updateBadge();
-
-            URLState.apply();
-        })
-        .catch(error => {
-            showErrorState(error);
-        });
+        URLState.apply();
+    });
 
     // ===== Event Listeners =====
     DOM.search.addEventListener('input', EventHandlers.handleSearch);

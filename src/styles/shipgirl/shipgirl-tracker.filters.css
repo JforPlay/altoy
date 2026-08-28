@@ -295,16 +295,24 @@
   left: 0;
 }
 
-.dropdown-content a {
+.dropdown-content a,
+.dropdown-content .dropdown-option {
   color: var(--text-primary);
   padding: 10px 14px;
   text-decoration: none;
   display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  font: inherit;
   cursor: pointer;
   transition: background-color var(--transition-fast);
 }
 
-.dropdown-content a:hover {
+.dropdown-content a:hover,
+.dropdown-content .dropdown-option:hover,
+.dropdown-content .dropdown-option:focus-visible {
   background-color: var(--section-bg);
 }
 

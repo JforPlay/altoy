@@ -35,37 +35,6 @@ const ShipgirlTrackerUtils = {
             }
         }
         return cleaned;
-    },
-
-    /**
-     * Filters the search dropdown based on user input.
-     * @param {HTMLInputElement} input - The search input element.
-     * @param {HTMLElement} dropdown - The dropdown element.
-     */
-    filterSearchDropdown(input, dropdown) {
-        const filter = input.value.toUpperCase();
-        const items = dropdown.getElementsByTagName('a');
-        for (let i = 0; i < items.length; i++) {
-            const txtValue = items[i].textContent || items[i].innerText;
-            items[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
-        }
-    },
-
-    /**
-     * Sets up the show/hide behavior for the search dropdown.
-     * @param {HTMLInputElement} input - The search input element.
-     * @param {HTMLElement} dropdown - The dropdown element.
-     */
-    setupDropdownToggle(input, dropdown) {
-        let hideTimeout;
-        input.addEventListener('focus', () => dropdown.style.display = 'block');
-        input.addEventListener('blur', () => {
-            // Delay hiding to allow click events on dropdown items.
-            clearTimeout(hideTimeout);
-            hideTimeout = setTimeout(() => {
-                dropdown.style.display = 'none';
-            }, 150);
-        });
     }
 };
 

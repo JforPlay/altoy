@@ -4,7 +4,7 @@
  * Orchestrates three sub-modules: skin.data.js (data), skin.audio.js (audio), skin.expression.js (gallery).
  * Part of the skin module group.
  */
-import { debounce, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl, normalizeRomanNumerals, createIcon, createGemIconImg, renderStatus, setupModal, openModal, closeModal } from '../utils.js';
+import { getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl, normalizeRomanNumerals, createIcon, createGemIconImg, setupModal, openModal, closeModal, setupDropdown, loadPageData } from '../utils.js';
 import { init as initSkinData, searchCharacters, getSkinsForCharacter, getSkinByName, getAllCharacterNames, getCharacterNameByGid, getReleaseDate, getSkinFilterData } from './skin.data.js';
 import { ensureExpressionManifest } from '../expression-manifest.js';
 import { init as initSkinAudio, stopCurrentAudio, handlePlayClick, createVolumeControlElement, attachVolumeListeners } from './skin.audio.js';
@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         skeleton: document.getElementById('loading-skeleton'),
         clearBtn: document.getElementById('clear-filters-btn')
     };
+    let charDropdown = null;
+    let skinDropdown = null;
     let skinRenderToken = 0;
     let isApplyingURLState = false;
     // Alternate voice bank (JP/CN or 기본/대체 CV) — sticky across skins,
@@ -37,16 +39,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Initialize Modules
     initSkinAudio();
     initSkinExpression();
-    const dataLoaded = await initSkinData();
-    
-    if (!dataLoaded) {
-        elements.charInput.placeholder = '데이터 로딩 실패';
-        elements.charInput.disabled = true;
-        elements.skinInput.disabled = true;
-        elements.clearBtn.disabled = true;
-        renderLoadError();
-        return;
-    }
+    // initSkinData reports failure by returning false; loadPageData wants a throw
+    // so it can render the standard error + 다시 시도 and retry in place.
+    showElement(elements.skinInfoBox);   // the box is the status host; it boots .hidden
+    const dataLoaded = await loadPageData(
+        async () => {
+            if (!await initSkinData()) throw new Error('스킨 데이터를 불러오지 못했습니다.');
+            return true;
+        },
+        elements.skinInfoBox,
+        {
+            contextLabel: 'Skin detail',
+            onError: () => { elements.charInput.placeholder = '데이터 로딩 실패'; },
+        },
+    );
+    if (!dataLoaded) return;
+    elements.charInput.placeholder = '함순이를 검색/선택해주세요...';
+    hideElement(elements.skinInfoBox);
 
     // Event Listeners
     setupDropdowns();
@@ -60,8 +69,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         elements.skinInput.placeholder = '함순이를 먼저 선택해주세요...';
         elements.skinInput.disabled = true;
         clearSkinDetails();
-        elements.charDropdown.style.display = 'none';
-        elements.skinDropdown.style.display = 'none';
+        skinDropdown?.setItems([]);
+        charDropdown?.close();
+        skinDropdown?.close();
         updateURLWithFilters();
     });
 
@@ -76,81 +86,35 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // ===== Search & Selection =====
 
+    /**
+     * Both comboboxes are utils.js `setupDropdown` (keyboard nav + ARIA). The
+     * character one keeps its Fuse/roman-numeral matcher via `filterItems`;
+     * the skin one is re-stocked whenever a character is picked.
+     */
     function setupDropdowns() {
-        // Character Search
-        const handleCharFilter = () => {
-            const results = searchCharacters(elements.charInput.value);
-            renderDropdown(elements.charDropdown, results, (name) => {
-                handleCharacterSelect(name);
-            });
-        };
-
-        elements.charInput.addEventListener('keyup', debounce(handleCharFilter, 200));
-        elements.charInput.addEventListener('focus', () => {
-            handleCharFilter();
-            elements.charDropdown.style.display = 'block';
-        });
-        elements.charInput.addEventListener('blur', () => {
-            setTimeout(() => elements.charDropdown.style.display = 'none', 200);
+        charDropdown = setupDropdown({
+            input: elements.charInput,
+            dropdown: elements.charDropdown,
+            items: getAllCharacterNames(),
+            getLabel: (name) => name,
+            filterItems: (query) => searchCharacters(query).map(res => res.item.name),
+            onSelect: handleCharacterSelect,
+            emptyMessage: '검색 결과가 없습니다',
         });
 
-        // Skin Search
-        elements.skinInput.addEventListener('focus', () => {
-            const charName = elements.charInput.value;
-            const skins = getSkinsForCharacter(charName);
-            if (!charName || skins.length === 0) {
-                renderNoResults(elements.skinDropdown, '함순이를 먼저 선택해주세요');
-            } else {
-                renderSimpleDropdown(elements.skinDropdown, skins, handleSkinSelect);
-            }
-            elements.skinDropdown.style.display = 'block';
+        skinDropdown = setupDropdown({
+            input: elements.skinInput,
+            dropdown: elements.skinDropdown,
+            items: [],
+            getLabel: (skin) => skin,
+            onSelect: handleSkinSelect,
+            emptyMessage: '함순이를 먼저 선택해주세요',
         });
-        elements.skinInput.addEventListener('blur', () => {
-            setTimeout(() => elements.skinDropdown.style.display = 'none', 200);
-        });
-    }
-
-    function renderDropdown(el, results, onSelect) {
-        el.innerHTML = '';
-        if (results.length === 0) {
-            renderNoResults(el, '검색 결과가 없습니다');
-            return;
-        }
-        results.forEach(res => {
-            const item = res.item;
-            const a = document.createElement('a');
-            a.href = '#';
-            a.role = 'option';
-            a.textContent = item.name; // Simplified highlighting for brevity
-            a.addEventListener('click', (event) => {
-                event.preventDefault();
-                onSelect(item.name);
-            });
-            el.appendChild(a);
-        });
-    }
-
-    function renderSimpleDropdown(el, items, onSelect) {
-        el.innerHTML = '';
-        items.forEach(item => {
-            const a = document.createElement('a');
-            a.href = '#';
-            a.role = 'option';
-            a.textContent = item;
-            a.addEventListener('click', (event) => {
-                event.preventDefault();
-                onSelect(item);
-            });
-            el.appendChild(a);
-        });
-    }
-
-    function renderNoResults(el, message) {
-        renderStatus(el, message, 'empty', { compact: true });
     }
 
     function handleCharacterSelect(name, clearSkin = true) {
         elements.charInput.value = name;
+        skinDropdown?.setItems(getSkinsForCharacter(name));
         if (clearSkin) {
             elements.skinInput.value = '';
             clearSkinDetails();
@@ -259,10 +223,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         item.append(label, value);
         return item;
-    }
-
-    function renderLoadError() {
-        renderSkinError('데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.');
     }
 
     function renderSkinError(message) {

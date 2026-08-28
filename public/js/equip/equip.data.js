@@ -12,7 +12,6 @@ import { weaponSalvoDuration } from '../engine/damage/salvo-timing.js';
 
 // State reference (set via setup)
 let state;
-let reloadEnrichPromise = null;
 let upgradeTemplatePromise = null;
 
 const DATA_CACHE_MAX_AGE = 24 * 60 * 60 * 1000;
@@ -168,7 +167,8 @@ export function isInUpgradeTree(equipId) {
 
 export async function ensureCompareData() {
     await Promise.all([
-        ensureReloadData(),
+        loadFullData(),
+        loadWeaponPropertyData(),
         loadStatisticsData(),
         loadEquipCodeData(),
         loadBulletTemplateData(),
@@ -184,26 +184,6 @@ export async function ensureDetailData() {
         loadWeaponNameData(),
         loadUpgradeTemplateData(),
     ]);
-}
-
-export async function ensureReloadData() {
-    if (state.reloadEnriched) return true;
-    if (reloadEnrichPromise) return reloadEnrichPromise;
-
-    reloadEnrichPromise = Promise.all([
-        loadFullData(),
-        loadWeaponPropertyData(),
-    ]).then(([fullData, weaponPropertyData]) => {
-        if (fullData && weaponPropertyData) {
-            enrichEquipDataWithReload();
-            state.reloadEnriched = true;
-        }
-        return !!state.reloadEnriched;
-    }).finally(() => {
-        reloadEnrichPromise = null;
-    });
-
-    return reloadEnrichPromise;
 }
 
 // ===== URL Helpers =====
@@ -606,8 +586,8 @@ export function getSkillData(skillId) {
 // SP weapons are a separate data source (spweapon_data.json) normalized to equip-lite format
 // for unified grid rendering. Type IDs use 900+ offset to avoid collision with regular types.
 
-/** SP weapon rarity is shifted: 2=R, 3=SR, 4=SSR */
-const SP_RARITY_TO_EQUIP = { 2: 3, 3: 4, 4: 5 };
+/** SP weapon rarity is shifted: 2=R, 3=SR, 4=SSR (also the equip CSS rarity class) */
+export const SP_RARITY_TO_EQUIP = { 2: 3, 3: 4, 4: 5 };
 export const SP_RARITY_NAMES = { 2: 'R', 3: 'SR', 4: 'SSR' };
 
 /** SP weapon type → display name mapping */
@@ -617,7 +597,7 @@ const SP_TYPE_NAMES = {
 };
 
 /** Attr key → Korean display name */
-const SP_ATTR_NAMES = {
+export const SP_ATTR_NAMES = {
     cannon: '포격', torpedo: '뇌장', antiaircraft: '대공', air: '항공',
     reload: '장전', hit: '명중', dodge: '기동', durability: '내구',
     speed: '속력', luck: '행운', antisub: '대잠',
@@ -679,46 +659,6 @@ export function normalizeSPWeapons() {
 export function getSPWeaponRawData(spId) {
     if (!state.spWeaponData || !state.spWeaponData.weapons) return null;
     return state.spWeaponData.weapons[String(spId)] || null;
-}
-
-/**
- * Compute reload time (seconds) for an equip entry from its max-level primary weapon.
- * Falls back to the base-level weapon's reload_max when the max-level value is null.
- * Weapon rows are looked up via getWeaponProperty, which already resolves base-chain inheritance.
- * Returns null if no reload_max is available.
- */
-function getEquipReloadTime(equipId) {
-    if (!state.fullEquipData || !state.weaponPropertyData) return null;
-    const full = state.fullEquipData[String(equipId)];
-    if (!full || !full.levels || full.levels.length === 0) return null;
-
-    const maxLevel = full.levels[full.levels.length - 1];
-    const maxWids = maxLevel.weapon_id;
-    if (!maxWids || !maxWids.length) return null;
-
-    const baseWids = full.levels[0].weapon_id || [];
-    const baseWp = getWeaponProperty(baseWids[0]);
-    const currentWp = getWeaponProperty(maxWids[0]);
-
-    if (!baseWp && !currentWp) return null;
-
-    const reloadMax = (currentWp && currentWp.reload_max != null)
-        ? currentWp.reload_max
-        : (baseWp ? baseWp.reload_max : null);
-
-    if (reloadMax == null) return null;
-    return Math.floor((reloadMax / 150) * 100) / 100;
-}
-
-/**
- * Enrich all lite entries with _reloadTime after full data and weapon_property are loaded.
- * Skips SP weapons (they don't have weapon_id-based reload).
- */
-export function enrichEquipDataWithReload() {
-    for (const equip of state.equipData) {
-        if (equip._isSPWeapon) continue;
-        equip._reloadTime = getEquipReloadTime(equip.id);
-    }
 }
 
 /** Replace <[CODE]> patterns in text using equip_data_code.json mapping */

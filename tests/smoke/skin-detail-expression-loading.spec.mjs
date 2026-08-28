@@ -97,7 +97,15 @@ async function waitForSearchShell(page) {
 }
 
 async function chooseCharacter(page) {
-    await page.locator('#character-search-input').focus();
+    const input = page.locator('#character-search-input');
+    const options = page.locator('#character-dropdown-content [role="option"]');
+    await input.focus();
+    // setupDropdown renders at most 50 of the ~880 names, so the fixture is only
+    // reachable by typing. Assert the set actually narrowed before picking, or the
+    // click could be satisfied by the unfiltered list.
+    const unfiltered = await options.count();
+    await input.fill(skinFixture.character);
+    await expect(options).not.toHaveCount(unfiltered);
     await page.locator('#character-dropdown-content').getByRole('option', {
         name: skinFixture.character,
         exact: true,

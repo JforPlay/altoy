@@ -6,7 +6,7 @@
  * faction tech bonus display, and cross-tab sync via the storage event (shares SAVE_KEY with research-tracker.js).
  */
 
-import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeModal, setupModal, showElement, hideElement, syncedStorage, escapeHtml, RARITY_TIERS_DESC as rarityOrder, requireElements, renderStatus, loadPageData } from '../utils.js';
+import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeModal, setupModal, showElement, hideElement, syncedStorage, escapeHtml, RARITY_TIERS_DESC as rarityOrder, requireElements, renderStatus, loadPageData, setupDropdown } from '../utils.js';
 import { parseInvestment, investedCost, sumInvestment, rosterTotal, applyCapChange, applyMaskChange, progressRung, stepRung, AFF_LABELS, SKL_LABELS, RUNG_LABELS, MEMO_MAX } from './tracker-investment.js';
 import { setupSheetImport } from './tracker-sheet-io.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Use utilities from external file
-    const { parseDatasetInt, filterSearchDropdown, setupDropdownToggle, parseProgress } = ShipgirlTrackerUtils;
+    const { parseDatasetInt, parseProgress } = ShipgirlTrackerUtils;
 
     // Progress (SAVE_KEY) is shared with research-tracker.js via cross-tab storage events.
     // syncedStorage handles persistence + cross-tab sync; onRemoteChange runs only when
@@ -622,7 +622,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * re-renders. Used by both the container `change` listener and bulkCheck (which
      * drives checkboxes directly via handleCheckboxLogic, bypassing that listener).
      */
-    function coupleCardAfterChange(card, changedType, nowChecked) {
+    function coupleCardAfterChange(card, changedType, nowChecked, deferSummary = false) {
         const gid = card.dataset.shipId;
         const { mask, cap } = applyMaskChange(
             getCardProgressState(card), getInv(gid).cap || 0,
@@ -630,7 +630,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (cap !== (getInv(gid).cap || 0)) setInv(gid, { cap });
         if (mask !== getCardProgressState(card)) writeMaskToCheckboxes(card, mask);
         renderInvestmentCells(card, gid);
-        updateInvestmentSummary();
+        // Bulk ops defer this — it is a whole-fleet recount, not a per-card one.
+        if (!deferSummary) updateInvestmentSummary();
     }
 
     /**
@@ -1768,8 +1769,9 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {boolean} shouldBeChecked - The desired state of the checkbox.
      */
     function bulkCheck(type, shouldBeChecked) {
+        const visible = new Set(filteredShipIds);
         getShipCards().forEach(card => {
-            if (filteredShipIds.includes(card.dataset.shipId)) {
+            if (visible.has(card.dataset.shipId)) {
                 if (type === 'all') {
                     // For 'all' type, we need to handle the checkboxes in the right order
                     // to ensure proper cascading logic
@@ -1812,9 +1814,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 // bulkCheck drives checkboxes directly (not through the container's
                 // change listener), so it needs its own call to the same coupling step.
-                coupleCardAfterChange(card, type === 'all' ? 'get' : type, shouldBeChecked);
+                coupleCardAfterChange(card, type === 'all' ? 'get' : type, shouldBeChecked, true);
             }
         });
+        updateInvestmentSummary();
         autoSaveProgress();
         if (isProgressFilterActive()) applyFilters();
         calculateAndDisplayScores();
@@ -2103,20 +2106,36 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Saves current filter selections to localStorage for persistence across page reloads.
      */
-    function saveFiltersToStorage() {
-        const filters = {
-            rarities: Array.from(document.querySelectorAll('#rarity-filter .st-rarity-chip.active')).map(c => c.value),
-            nationalities: Array.from(document.querySelectorAll('#nationality-filter input[data-filter-type="individual"]:checked')).map(cb => cb.value),
-            types: Array.from(document.querySelectorAll('#type-filter input[data-filter-type="individual"]:checked')).map(cb => cb.value),
-            progress: document.getElementById('progress-filter')?.value || 'all',
-            getAttr: document.getElementById('get-attr-filter')?.value || 'all',
-            levelAttr: document.getElementById('level-attr-filter')?.value || 'all',
-            fav: document.getElementById('fav-filter')?.value || 'all',
-            retro: document.getElementById('retro-filter')?.value || 'all',
+    /**
+     * Read every filter control once. The DOM stays the source of truth — this is
+     * just the one place the selectors live, so adding a filter is a single edit
+     * instead of the same 12-selector block copied into applyFilters and
+     * saveFiltersToStorage. `updateFilterChips` still reads the DOM directly: it
+     * needs each control's LABEL (option text / checkbox sibling), not its value.
+     */
+    function readFilterState() {
+        const selectValue = (id) => document.getElementById(id)?.value || 'all';
+        const checkedValues = (selector) =>
+            Array.from(document.querySelectorAll(selector)).map(el => el.value);
+        return {
+            search: document.getElementById('search-bar')?.value || '',
+            rarities: checkedValues('#rarity-filter .st-rarity-chip.active'),
+            nationalities: checkedValues('#nationality-filter input[data-filter-type="individual"]:checked'),
+            types: checkedValues('#type-filter input[data-filter-type="individual"]:checked'),
+            progress: selectValue('progress-filter'),
+            getAttr: selectValue('get-attr-filter'),
+            levelAttr: selectValue('level-attr-filter'),
+            fav: selectValue('fav-filter'),
+            retro: selectValue('retro-filter'),
             aff: filterValues('aff-filter'),
             skl: filterValues('skl-filter'),
-            memo: document.getElementById('memo-filter')?.value || 'all',
+            memo: selectValue('memo-filter'),
         };
+    }
+
+    function saveFiltersToStorage() {
+        // `search` is deliberately not persisted — the stored shape predates it.
+        const { search, ...filters } = readFilterState();
         setStorageItem(FILTER_KEY, JSON.stringify(filters));
     }
 
@@ -2200,20 +2219,15 @@ document.addEventListener('DOMContentLoaded', () => {
      * Callers that changed progress call calculateAndDisplayScores() themselves.
      */
     function applyFilters() {
-        const searchQuery = document.getElementById('search-bar').value.toLowerCase();
-        const progressFilter = document.getElementById('progress-filter').value;
-        const getAttrFilter = document.getElementById('get-attr-filter').value;
-        const levelAttrFilter = document.getElementById('level-attr-filter').value;
-        const favFilter = document.getElementById('fav-filter').value;
-        const retroFilter = document.getElementById('retro-filter').value;
-        const affFilter = filterValues('aff-filter').map(v => parseDatasetInt(v));
-        const sklFilter = filterValues('skl-filter').map(v => parseDatasetInt(v));
-        const memoFilter = document.getElementById('memo-filter').value;
-        const checkedNations = Array.from(document.querySelectorAll('#nationality-filter input[data-filter-type="individual"]:checked')).map(cb => parseDatasetInt(cb.value));
-        const checkedTypes = Array.from(document.querySelectorAll('#type-filter input[data-filter-type="individual"]:checked')).map(cb => parseDatasetInt(cb.value));
-
-        // Rarity: use chip-based approach instead of checkbox
-        const checkedRarities = Array.from(document.querySelectorAll('#rarity-filter .st-rarity-chip.active')).map(chip => chip.value);
+        const f = readFilterState();
+        const searchQuery = f.search.toLowerCase();
+        const { progress: progressFilter, getAttr: getAttrFilter, levelAttr: levelAttrFilter,
+                fav: favFilter, retro: retroFilter, memo: memoFilter,
+                rarities: checkedRarities } = f;
+        const affFilter = f.aff.map(v => parseDatasetInt(v));
+        const sklFilter = f.skl.map(v => parseDatasetInt(v));
+        const checkedNations = f.nationalities.map(v => parseDatasetInt(v));
+        const checkedTypes = f.types.map(v => parseDatasetInt(v));
 
         const isNationFilterActive = checkedNations.length > 0;
         const isTypeFilterActive = checkedTypes.length > 0;
@@ -2295,27 +2309,25 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupSearch() {
         const searchInput = document.getElementById('search-bar');
         const searchDropdown = document.getElementById('search-dropdown');
+        const allShipNames = Object.values(fullShipData)
+            .map(ship => ship.name).filter(Boolean)
+            .sort((a, b) => a.localeCompare(b));
 
-        // Populate dropdown with all ship names
-        const allShipNames = Object.values(fullShipData).map(ship => ship.name).filter(Boolean).sort((a, b) => a.localeCompare(b));
-        allShipNames.forEach(name => {
-            const a = document.createElement('a');
-            a.textContent = name;
-            a.addEventListener('click', () => {
+        // setupDropdown renders at most 50 options and owns keyboard + ARIA; the old
+        // bespoke version built all 880 <a> up front and toggled display on each keystroke.
+        setupDropdown({
+            input: searchInput,
+            dropdown: searchDropdown,
+            items: allShipNames,
+            getLabel: (name) => name,
+            onSelect: (name) => {
                 searchInput.value = name;
-                searchDropdown.style.display = 'none';
                 applyFilters();
-            });
-            searchDropdown.appendChild(a);
+            },
+            emptyMessage: '검색 결과가 없습니다',
         });
 
-        const debouncedSearch = debounce(() => {
-            filterSearchDropdown(searchInput, searchDropdown);
-            applyFilters();
-        }, 150);
-
-        searchInput.addEventListener('input', debouncedSearch);
-        setupDropdownToggle(searchInput, searchDropdown);
+        searchInput.addEventListener('input', debounce(applyFilters, 150));
     }
 
     /**

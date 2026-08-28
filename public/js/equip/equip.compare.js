@@ -12,7 +12,7 @@
  */
 
 import { openModal, setupModal, setUrlParams, escapeHtml } from '../utils.js';
-import { getEquipIconUrl, getRarityBgUrl, getFullEquipData, getLevelStatistics, replaceEquipCodes, getFiringPattern, getVisibleLevelCount, formatLevel, getMergedWeaponProperties, getPrimaryWeaponProperty, getTheoreticalSurfaceDps, ensureCompareData } from './equip.data.js';
+import { getEquipIconUrl, getRarityBgUrl, getFullEquipData, getLevelStatistics, replaceEquipCodes, getFiringPattern, getVisibleLevelCount, formatLevel, getMergedWeaponProperties, getPrimaryWeaponProperty, getTheoreticalSurfaceDps, ensureCompareData, reloadMaxToSeconds } from './equip.data.js';
 import { buildComparisonRows, compareRowFlags, formatDps } from './equip.compare.logic.js';
 
 let state;
@@ -285,9 +285,7 @@ function getAttrCell(equip, level, attrKey) {
 /** Get reload value (사속, seconds) from the primary weapon — standard path, matching
  *  the detail panel's 사속 row (never resolved through the aircraft chain). */
 function getReloadValue(equip, level) {
-    const wp = getPrimaryWeaponProperty(equip, level);
-    if (!wp || wp.reload_max == null) return null;
-    return Math.floor((wp.reload_max / 150) * 100) / 100;
+    return reloadMaxToSeconds(getPrimaryWeaponProperty(equip, level)?.reload_max);
 }
 
 /** First merged weapon property for a level — the one 데미지 수정배율 / 대갑 / 패턴 / DPS
