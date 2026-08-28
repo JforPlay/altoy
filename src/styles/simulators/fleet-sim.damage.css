@@ -51,7 +51,14 @@
 /* .dmg-armor-chip removed; emitter now uses .chip (canonical active = --accent-blue fill). */
 
 /* ===== Adapt buttons → canonical .btn-group + .is-active (button.css) ===== */
-/* .dmg-adapt-row carries .btn-group in markup, which owns layout + segment joins. */
+/* Two segmented groups (난이도, 적응) share the row; .btn-group owns the segment
+   joins inside each, so this only has to space and wrap them. */
+.dmg-adapt-row {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  align-items: center;
+}
 
 /* ===== Editable enemy-profile fields ===== */
 
@@ -93,27 +100,43 @@
 
 /* ===== Per-ship result rows ===== */
 
+/* ONE grid for the whole list (rows are display:contents) so the three number
+   columns are sized once and every row lands on the same edges. max-content, not
+   a fixed width: the columns then cost exactly what the digits need and the name
+   still gets the rest on a phone. */
 .dmg-ship-list {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) repeat(3, max-content);
+  column-gap: var(--spacing-sm);
+  row-gap: 2px;
+  font-size: 0.875rem;
 }
 
 .dmg-ship-row {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  font-size: 0.875rem;
-  padding: 3px var(--spacing-xs);
-  border-radius: var(--radius-sm);
+  display: contents;
 }
 
-.dmg-ship-row:hover {
+.dmg-ship-row > * {
+  padding: 3px 0;
+}
+
+/* The row generates no box, so the hover band is painted per cell; the outer two
+   carry the row's horizontal padding and its rounded ends. */
+.dmg-ship-row:hover > * {
   background: var(--section-bg);
 }
 
+.dmg-ship-row > :first-child {
+  padding-left: var(--spacing-xs);
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+}
+
+.dmg-ship-row > :last-child {
+  padding-right: var(--spacing-xs);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
 .dmg-ship-name {
-  flex: 1;
   font-weight: 500;
   color: var(--text-primary);
   white-space: nowrap;
@@ -121,21 +144,29 @@
   text-overflow: ellipsis;
 }
 
-.dmg-oneshot {
-  color: var(--text-secondary);
+/* Grid stretches the cell to the column, space-between then pins the label to the
+   left edge and the figure to the right — both align down the column. */
+.dmg-stat {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-xs);
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
-/* Per-ship 누적: the window total, sitting between 일격 and DPS. */
+.dmg-stat em {
+  font-style: normal;
+  color: var(--text-muted);
+}
+
+.dmg-oneshot,
 .dmg-cumulative {
   color: var(--text-secondary);
-  white-space: nowrap;
 }
 
 .dmg-dps {
   color: var(--text-primary);
   font-weight: 600;
-  white-space: nowrap;
 }
 
 /* ===== Fleet totals ===== */

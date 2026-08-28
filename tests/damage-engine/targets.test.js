@@ -41,3 +41,30 @@ test('unknown preset/tier throws', () => {
   assert.throws(() => makeTarget('bogus'));
   assert.throws(() => makeTarget('light', { adapt: 'nope' }));
 });
+
+test('difficulty defaults to 하드 and swaps hp + evasion only', () => {
+  // The user's stat sheets differ between 일반 and 하드 in exactly two columns;
+  // 대공/행운/장갑 are identical, which is why 대공 sits on the preset.
+  const hard = makeTarget('medium');
+  assert.equal(hard.difficulty, 'hard');
+  assert.equal(hard.evasion, 89);
+  assert.equal(hard.hp, 1839688);
+
+  const normal = makeTarget('medium', { difficulty: 'normal' });
+  assert.equal(normal.evasion, 84);
+  assert.equal(normal.hp, 1411293);
+  assert.equal(normal.antiAir, hard.antiAir);
+  assert.equal(normal.luck, hard.luck);
+  assert.equal(normal.armorType, hard.armorType);
+});
+
+test('difficulty and adapt tier compose', () => {
+  assert.equal(makeTarget('heavy', { difficulty: 'normal', adapt: 'noAdapt' }).hp, 1897169);
+  assert.equal(makeTarget('light', { difficulty: 'normal', adapt: 'full' }).hp, 844061);
+  // 대공 comes from the shared block, so it must not move with difficulty.
+  assert.equal(makeTarget('light', { difficulty: 'normal', adapt: 'full' }).antiAir, 337);
+});
+
+test('unknown difficulty throws', () => {
+  assert.throws(() => makeTarget('heavy', { difficulty: 'lunatic' }));
+});

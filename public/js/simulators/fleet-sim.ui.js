@@ -828,11 +828,11 @@ export async function renderDamagePanel(container) {
         [result, ...compareResults] = await Promise.all([
             simulateFleetDamage(state.ships, tgt.kind === 'meta'
                 ? { kind: 'meta', bossId: tgt.bossId, tier: tgt.tier, overrides: tgt.overrides, window: tgt.window }
-                : { presetKey: tgt.presetKey, overrides: { ...tgt.overrides, adapt: tgt.adapt }, window: tgt.window }),
+                : { presetKey: tgt.presetKey, overrides: { ...tgt.overrides, adapt: tgt.adapt, difficulty: tgt.difficulty }, window: tgt.window }),
             ...['light', 'medium', 'heavy'].map((k) =>
                 simulateFleetDamage(state.ships, {
                     presetKey: k,
-                    overrides: { ...tgt.overrides, adapt: tgt.adapt },
+                    overrides: { ...tgt.overrides, adapt: tgt.adapt, difficulty: tgt.difficulty },
                     window: tgt.window,
                 }).catch(() => null)
             ),
@@ -871,9 +871,15 @@ export async function renderDamagePanel(container) {
     const injureChip = injure
         ? `<span class="dmg-target-injure${injure < 0 ? ' is-resist' : ''}">보스 스킬 · 받는 피해 ${injure > 0 ? '+' : ''}${Math.round(injure * 100)}%</span>`
         : '';
+    // 장갑 종류 is the one target stat the panel never showed, yet every number in
+    // it goes through that weapon armor-mod (damageType[armorType-1]) — it decides
+    // which weapons are worth bringing more than 회피/대공 do.
+    const armorLabel = ['경장', '중형', '중장'][(result.target?.armorType || 0) - 1] || '';
+    const armorChip = armorLabel ? `<span class="badge badge--neutral">${armorLabel}</span>` : '';
     const targetSelectRow =
         `<div class="dmg-target-select">
             <span class="dmg-target-name">${escapeHtml(targetName)}</span>
+            ${armorChip}
             ${tierSelect}
             <button class="btn btn-sm btn-outline" data-action="dmg-open-picker">변경</button>
             ${injureChip}
@@ -912,12 +918,18 @@ export async function renderDamagePanel(container) {
         clearCheckRow = `<div class="dmg-clearcheck"><span class="dmg-clear-ttk">격파 예상 ${ttk}</span>${verdict}</div>`;
     }
 
-    // Adapt buttons — presets only (META has no 적응 tier)
+    // 난이도 + 적응 buttons — presets only (a META boss has neither; its tier select
+    // above is the equivalent). Only 내구 and 회피 differ between 일반 and 하드.
+    const diffLabels = { hard: '하드', normal: '일반' };
+    const diffBtns = isMeta ? '' : ['hard', 'normal'].map((d) =>
+        `<button class="btn btn-secondary btn-sm dmg-adapt-btn${d === (tgt.difficulty || 'hard') ? ' is-active' : ''}" data-action="dmg-difficulty" data-difficulty="${d}">${diffLabels[d]}</button>`
+    ).join('');
     const adaptLabels = { base: '기본', noAdapt: '무적응', full: '완전적응' };
     const adaptBtns = isMeta ? '' : ['base', 'noAdapt', 'full'].map((a) =>
         `<button class="btn btn-secondary btn-sm dmg-adapt-btn${a === tgt.adapt ? ' is-active' : ''}" data-action="dmg-adapt" data-adapt="${a}">${adaptLabels[a] || a}</button>`
     ).join('');
-    const adaptRow = isMeta ? '' : `<div class="dmg-adapt-row btn-group">${adaptBtns}</div>`;
+    const adaptRow = isMeta ? ''
+        : `<div class="dmg-adapt-row"><div class="btn-group">${diffBtns}</div><div class="btn-group">${adaptBtns}</div></div>`;
 
     // Editable enemy overrides
     const ov = tgt.overrides || {};
@@ -941,11 +953,13 @@ export async function renderDamagePanel(container) {
     const perShipRows = result.perShip.map((s) => {
         const ship = getShipByGid(s.ref);
         const name = ship ? escapeHtml(ship.name) : escapeHtml(String(s.ref));
+        // Label and value are separate elements so the shared grid can pin one to
+        // each edge of its column — a 5-digit 일격 otherwise shifts every number after it.
         return `<div class="dmg-ship-row">
             <span class="dmg-ship-name">${name}</span>
-            <span class="dmg-oneshot">일격 ${_fmt(s.oneShotExpected)}</span>
-            <span class="dmg-cumulative">누적 ${_fmt(s.total)}</span>
-            <span class="dmg-dps">DPS ${_fmt(s.dps)}</span>
+            <span class="dmg-stat dmg-oneshot"><em>일격</em>${_fmt(s.oneShotExpected)}</span>
+            <span class="dmg-stat dmg-cumulative"><em>누적</em>${_fmt(s.total)}</span>
+            <span class="dmg-stat dmg-dps"><em>DPS</em>${_fmt(s.dps)}</span>
         </div>`;
     }).join('');
 

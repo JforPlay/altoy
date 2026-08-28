@@ -152,7 +152,7 @@ export function encodeFleetConfig(state) {
     if (dt) {
         config.t = dt.kind === 'meta'
             ? { k: 'meta', b: dt.bossId, ti: dt.tier }
-            : { k: 'preset', p: dt.presetKey, ad: dt.adapt };
+            : { k: 'preset', p: dt.presetKey, ad: dt.adapt, df: dt.difficulty };
         if (dt.overrides && Object.keys(dt.overrides).length) config.t.o = dt.overrides;
         if (dt.window && dt.window !== 90) config.t.w = dt.window;
     }
@@ -190,7 +190,7 @@ function _decodeTarget(t) {
     if (!t || typeof t !== 'object') return null;
     const patch = t.k === 'meta'
         ? { kind: 'meta', bossId: t.b ?? null, tier: t.ti ?? null }
-        : { kind: 'preset', presetKey: t.p || 'heavy', adapt: t.ad || 'base' };
+        : { kind: 'preset', presetKey: t.p || 'heavy', adapt: t.ad || 'base', difficulty: t.df === 'normal' ? 'normal' : 'hard' };
     // Untrusted input — coerce overrides to finite numbers (matching the live
     // Number() edit path); drops non-numeric values (XSS/NaN guard).
     patch.overrides = {};

@@ -108,7 +108,7 @@ const state = {
  * (function declaration) so the state initializer above can call it.
  */
 function _loadDamageTarget() {
-    const fallback = { kind: 'preset', presetKey: 'heavy', adapt: 'base', bossId: null, tier: null, overrides: {}, window: 90 };
+    const fallback = { kind: 'preset', presetKey: 'heavy', adapt: 'base', difficulty: 'hard', bossId: null, tier: null, overrides: {}, window: 90 };
     const raw = getStorageItem('fleetSimDamageTarget', null);
     if (raw) {
         try {
@@ -355,6 +355,10 @@ function setupEventListeners() {
             }
             case 'dmg-adapt': {
                 setDamageTarget({ adapt: actionEl.dataset.adapt });
+                break;
+            }
+            case 'dmg-difficulty': {
+                setDamageTarget({ difficulty: actionEl.dataset.difficulty });
                 break;
             }
             case 'dmg-open-picker': {

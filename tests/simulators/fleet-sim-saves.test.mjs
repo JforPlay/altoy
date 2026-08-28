@@ -213,3 +213,19 @@ test('the damage target round-trips, with untrusted overrides coerced', () => {
     assert.equal(target.window, 120);
     assert.deepEqual(target.overrides, { armor: 5 });
 });
+
+test('preset difficulty round-trips; a payload older than the field reads 하드', () => {
+    const encoded = encodeFleetConfig({
+        fleets: [[]],
+        damageTarget: { kind: 'preset', presetKey: 'medium', adapt: 'full', difficulty: 'normal' },
+    });
+    assert.equal(decodeFleetConfig(encoded).target.difficulty, 'normal');
+
+    // Every link shared before the toggle existed meant the hardcoded stats,
+    // which were 하드 for two of the three presets.
+    const legacy = btoa(JSON.stringify({ s: [], t: { k: 'preset', p: 'medium', ad: 'base' } }));
+    assert.equal(decodeFleetConfig(legacy).target.difficulty, 'hard');
+    // Untrusted input: anything that is not 'normal' is 하드, never undefined.
+    const junk = btoa(JSON.stringify({ s: [], t: { k: 'preset', p: 'medium', df: { x: 1 } } }));
+    assert.equal(decodeFleetConfig(junk).target.difficulty, 'hard');
+});
