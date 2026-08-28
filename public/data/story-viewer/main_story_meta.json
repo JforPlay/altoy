@@ -1794,6 +1794,23 @@
     },
     "97": {
         "id": 97,
+        "name": "몽광의 아스트라리움",
+        "description": "「천 가지 말, 천 가지 모습. 현혹의 가면은 마음을 미혹시킨다. 여행자들은 이곳에 모이고, 아름다운 꿈은 이곳에서 피어오른다. 잘못된 갈림길에 들어선 여행자여, 환영한다——아스트라리움에.」",
+        "summary": "",
+        "shipnation": [
+            1
+        ],
+        "bgm": "theme-richard-white",
+        "link_event": [
+            98
+        ],
+        "chapter": 5,
+        "column": 61,
+        "row": 0,
+        "icon": "InterludeOne_4"
+    },
+    "98": {
+        "id": 98,
         "name": "기대해주세요",
         "description": "기대해주세요",
         "summary": "",
@@ -1801,7 +1818,7 @@
         "bgm": "",
         "link_event": "",
         "chapter": 0,
-        "column": 61,
+        "column": 62,
         "row": 0,
         "icon": ""
     }

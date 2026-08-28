@@ -543,6 +543,30 @@
         "name": "스페셜 커넥션?",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/101551.webp"
     },
+    "101560": {
+        "name": "콜렛",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/101560.webp"
+    },
+    "101561": {
+        "name": "풀 오토 메인터넌스",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/101561.webp"
+    },
+    "101570": {
+        "name": "해리슨",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/101570.webp"
+    },
+    "101571": {
+        "name": "플라잉 체이스 매치?",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/101571.webp"
+    },
+    "101580": {
+        "name": "존 로저스",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/101580.webp"
+    },
+    "101581": {
+        "name": "레이스걸 인터벌",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/101581.webp"
+    },
     "102010": {
         "name": "오마하",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/102010.webp"
@@ -922,6 +946,18 @@
     "102351": {
         "name": "서프라이징 게임",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/102351.webp"
+    },
+    "102360": {
+        "name": "빅스버그",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/102360.webp"
+    },
+    "102361": {
+        "name": "샤이닝 레이스 아이돌",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/102361.webp"
+    },
+    "102362": {
+        "name": "샤이닝 레이스 아이돌",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/102362.webp"
     },
     "10300010": {
         "name": "쿠온",
@@ -1915,6 +1951,14 @@
         "name": "휴식 미션",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/107171.webp"
     },
+    "107200": {
+        "name": "베닝턴",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/107200.webp"
+    },
+    "107201": {
+        "name": "선샤인 체이싱",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/107201.webp"
+    },
     "107220": {
         "name": "인디펜던스 ",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/107220.webp"
@@ -2551,6 +2595,10 @@
         "name": "목욕 후의 맑은 하늘",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/137061.webp"
     },
+    "137090": {
+        "name": "이심전심 트레이닝",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/137090.webp"
+    },
     "199010": {
         "name": "시애틀 ",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/199010.webp"
@@ -2614,6 +2662,10 @@
     "199042": {
         "name": "스프링 모니터링",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/199042.webp"
+    },
+    "199048": {
+        "name": "Vow mode",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/199048.webp"
     },
     "199050": {
         "name": "할포드",
@@ -3130,6 +3182,10 @@
     "202128": {
         "name": "클라다 링의 맹세",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/202128.webp"
+    },
+    "202129": {
+        "name": "벨파스트·改",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/202129.webp"
     },
     "202130": {
         "name": "아레투사",
@@ -4030,6 +4086,10 @@
     "207121": {
         "name": "나른한 메이드씨",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/207121.webp"
+    },
+    "207122": {
+        "name": "레이지 내비게이션",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/207122.webp"
     },
     "207130": {
         "name": "꼬마 포미더블",
@@ -5663,6 +5723,10 @@
         "name": "자색 토끼의 스나이핑 게임",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/305102.webp"
     },
+    "305103": {
+        "name": "그대만을 위해 응원하리",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/305103.webp"
+    },
     "305108": {
         "name": "등나무 꽃의 무결한 마음",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/305108.webp"
@@ -7174,6 +7238,10 @@
     "407041": {
         "name": "Schwarzes Kaninchen",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/407041.webp"
+    },
+    "407042": {
+        "name": "밤바람의 Verabredung",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/407042.webp"
     },
     "408010": {
         "name": "U-81",
@@ -10533,6 +10601,34 @@
     },
     "900547": {
         "name": "서리",
+        "icon": null
+    },
+    "900548": {
+        "name": "본험 리차드",
+        "icon": null
+    },
+    "900549": {
+        "name": "소브라지텔니·META",
+        "icon": null
+    },
+    "900550": {
+        "name": "새러토가·META",
+        "icon": null
+    },
+    "900551": {
+        "name": "에러 13세",
+        "icon": null
+    },
+    "900553": {
+        "name": "빅스버그",
+        "icon": null
+    },
+    "900554": {
+        "name": "콜렛",
+        "icon": null
+    },
+    "900555": {
+        "name": "베닝턴",
         "icon": null
     },
     "901010": {

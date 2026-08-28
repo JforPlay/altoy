@@ -23,7 +23,7 @@ import { syncedStorage } from './synced-storage.js';
  * Must stay in sync with public/sw.js CACHE_VERSION. Bumping just one
  * leaves the other cache stale on first visit. See CLAUDE.md "Cache & Data Versioning".
  */
-const DATA_VERSION = '1.70.0';
+const DATA_VERSION = '1.71.0';
 
 /**
  * localStorage keys that participate in Google Drive sync.
@@ -876,6 +876,8 @@ function setupModal(modalId, options = {}) {
  * @param {(query: string) => void} [config.onInputChange] - Fired on every input
  * @param {string} [config.emptyMessage='결과 없음'] - Shown when filter has no matches
  * @param {string} [config.optionSelector='.dropdown-option'] - For keyboard nav lookup
+ * @param {(query: string, items: T[]) => T[]} [config.filterItems] - Custom matcher;
+ *   replaces the default case-insensitive substring filter entirely.
  * @param {number} [config.maxResults=50] - Cap to avoid rendering huge lists
  * @returns {{ setItems(items): void, open(): void, close(): void, dispose(): void } | null}
  */
@@ -891,6 +893,7 @@ function setupDropdown(config) {
         emptyMessage = '결과 없음',
         optionSelector = '.dropdown-option',
         maxResults = 50,
+        filterItems,
     } = config || {};
 
     if (!input || !dropdown || typeof onSelect !== 'function') return null;
@@ -914,6 +917,9 @@ function setupDropdown(config) {
     const renderFn = typeof renderItem === 'function' ? renderItem : defaultRenderItem;
 
     function filter(query) {
+        // A page with its own matcher (Fuse, roman-numeral normalization) supplies
+        // filterItems; the default substring pass would otherwise drop its fuzzy hits.
+        if (typeof filterItems === 'function') return filterItems(query, currentItems);
         const trimmed = String(query || '').trim().toLowerCase();
         if (!trimmed) return currentItems;
         return currentItems.filter(item => {
@@ -1137,7 +1143,8 @@ function createSearchIndex(data, options = {}) {
  * Show a toast notification
  * @param {string} message - The message to display
  * @param {string} type - 'info', 'success', 'error' (default: 'info')
- * @param {number} duration - Duration in ms (default: 3000)
+ * @param {number} duration - Duration in ms (default: 3000); 0 = sticky until removed
+ * @returns {HTMLElement} the toast element (append a button / remove it yourself)
  */
 function showToast(message, type = 'info', duration = 3000) {
     let toastContainer = document.getElementById('global-toast-container');
@@ -1168,12 +1175,13 @@ function showToast(message, type = 'info', duration = 3000) {
         toast.classList.add('show');
     });
 
-    setTimeout(() => {
+    if (duration > 0) setTimeout(() => {
         toast.classList.remove('show');
         toast.addEventListener('transitionend', () => {
             toast.remove();
         });
     }, duration);
+    return toast;
 }
 
 /**

@@ -16265,6 +16265,457 @@
       }
     ]
   },
+  "20212": {
+    "grid": {
+      "rows": 6,
+      "cols": [
+        2,
+        3,
+        4
+      ]
+    },
+    "nodes": [
+      {
+        "id": 11501,
+        "row": 0,
+        "col": 3,
+        "kind": "stat",
+        "name": "함체 개수Ⅰ",
+        "icon": "hp_1",
+        "level": 1,
+        "star": 3,
+        "requires": [],
+        "useShip": true,
+        "cost": {
+          "gold": 600,
+          "items": [
+            {
+              "id": 18012,
+              "name": "순양함 개조 도면 T2",
+              "qty": 2
+            }
+          ]
+        },
+        "grant": {
+          "effect": [
+            {
+              "durability": 45
+            }
+          ],
+          "skill": null,
+          "skin": null,
+          "shipChange": null
+        }
+      },
+      {
+        "id": 11502,
+        "row": 0,
+        "col": 2,
+        "kind": "stat",
+        "name": "기동 강화Ⅰ",
+        "icon": "dd_1",
+        "level": 5,
+        "star": 3,
+        "requires": [
+          11501
+        ],
+        "useShip": false,
+        "cost": {
+          "gold": 800,
+          "items": [
+            {
+              "id": 18012,
+              "name": "순양함 개조 도면 T2",
+              "qty": 2
+            }
+          ]
+        },
+        "grant": {
+          "effect": [
+            {
+              "dodge": 5
+            }
+          ],
+          "skill": null,
+          "skin": null,
+          "shipChange": null
+        }
+      },
+      {
+        "id": 11503,
+        "row": 1,
+        "col": 3,
+        "kind": "stat",
+        "name": "주포 개수Ⅰ",
+        "icon": "mgup_1",
+        "level": 20,
+        "star": 4,
+        "requires": [
+          11501
+        ],
+        "useShip": false,
+        "cost": {
+          "gold": 1000,
+          "items": [
+            {
+              "id": 18012,
+              "name": "순양함 개조 도면 T2",
+              "qty": 3
+            }
+          ]
+        },
+        "grant": {
+          "effect": [
+            {
+              "equipment_proficiency_1": 0.05
+            }
+          ],
+          "skill": null,
+          "skin": null,
+          "shipChange": null
+        }
+      },
+      {
+        "id": 11504,
+        "row": 1,
+        "col": 4,
+        "kind": "stat",
+        "name": "포격 강화Ⅰ",
+        "icon": "cn_1",
+        "level": 25,
+        "star": 4,
+        "requires": [
+          11503
+        ],
+        "useShip": false,
+        "cost": {
+          "gold": 1500,
+          "items": [
+            {
+              "id": 18012,
+              "name": "순양함 개조 도면 T2",
+              "qty": 3
+            }
+          ]
+        },
+        "grant": {
+          "effect": [
+            {
+              "cannon": 10
+            }
+          ],
+          "skill": null,
+          "skin": null,
+          "shipChange": null
+        }
+      },
+      {
+        "id": 11505,
+        "row": 2,
+        "col": 3,
+        "kind": "stat",
+        "name": "함체 개수Ⅱ",
+        "icon": "hp_2",
+        "level": 35,
+        "star": 5,
+        "requires": [
+          11503
+        ],
+        "useShip": false,
+        "cost": {
+          "gold": 3600,
+          "items": [
+            {
+              "id": 18012,
+              "name": "순양함 개조 도면 T2",
+              "qty": 4
+            }
+          ]
+        },
+        "grant": {
+          "effect": [
+            {
+              "durability": 45
+            },
+            {
+              "durability": 75
+            }
+          ],
+          "skill": null,
+          "skin": null,
+          "shipChange": null
+        }
+      },
+      {
+        "id": 11506,
+        "row": 2,
+        "col": 2,
+        "kind": "stat",
+        "name": "기동 강화Ⅱ",
+        "icon": "dd_2",
+        "level": 40,
+        "star": 5,
+        "requires": [
+          11502,
+          11505
+        ],
+        "useShip": false,
+        "cost": {
+          "gold": 4000,
+          "items": [
+            {
+              "id": 18012,
+              "name": "순양함 개조 도면 T2",
+              "qty": 4
+            }
+          ]
+        },
+        "grant": {
+          "effect": [
+            {
+              "dodge": 5
+            },
+            {
+              "dodge": 10
+            }
+          ],
+          "skill": null,
+          "skin": null,
+          "shipChange": null
+        }
+      },
+      {
+        "id": 11507,
+        "row": 3,
+        "col": 3,
+        "kind": "stat",
+        "name": "주포 개수Ⅱ",
+        "icon": "mgup_2",
+        "level": 50,
+        "star": 5,
+        "requires": [
+          11505
+        ],
+        "useShip": false,
+        "cost": {
+          "gold": 5000,
+          "items": [
+            {
+              "id": 18013,
+              "name": "순양함 개조 도면 T3",
+              "qty": 2
+            }
+          ]
+        },
+        "grant": {
+          "effect": [
+            {
+              "equipment_proficiency_1": 0.05
+            },
+            {
+              "equipment_proficiency_1": 0.05
+            }
+          ],
+          "skill": null,
+          "skin": null,
+          "shipChange": null
+        }
+      },
+      {
+        "id": 11508,
+        "row": 3,
+        "col": 2,
+        "kind": "stat",
+        "name": "포격 강화Ⅱ",
+        "icon": "cn_2",
+        "level": 55,
+        "star": 5,
+        "requires": [
+          11507
+        ],
+        "useShip": false,
+        "cost": {
+          "gold": 6000,
+          "items": [
+            {
+              "id": 18013,
+              "name": "순양함 개조 도면 T3",
+              "qty": 3
+            }
+          ]
+        },
+        "grant": {
+          "effect": [
+            {
+              "cannon": 5
+            },
+            {
+              "cannon": 15
+            }
+          ],
+          "skill": null,
+          "skin": null,
+          "shipChange": null
+        }
+      },
+      {
+        "id": 11509,
+        "row": 4,
+        "col": 3,
+        "kind": "stat",
+        "name": "주포 개수Ⅱ",
+        "icon": "mgup_2",
+        "level": 70,
+        "star": 6,
+        "requires": [
+          11507
+        ],
+        "useShip": false,
+        "cost": {
+          "gold": 8000,
+          "items": [
+            {
+              "id": 18013,
+              "name": "순양함 개조 도면 T3",
+              "qty": 4
+            }
+          ]
+        },
+        "grant": {
+          "effect": [
+            {
+              "equipment_proficiency_1": 0.05
+            },
+            {
+              "equipment_proficiency_1": 0.05
+            }
+          ],
+          "skill": null,
+          "skin": null,
+          "shipChange": null
+        }
+      },
+      {
+        "id": 11510,
+        "row": 4,
+        "col": 4,
+        "kind": "stat",
+        "name": "포격 강화Ⅲ",
+        "icon": "Cn_3",
+        "level": 75,
+        "star": 6,
+        "requires": [
+          11504,
+          11509
+        ],
+        "useShip": false,
+        "cost": {
+          "gold": 15000,
+          "items": [
+            {
+              "id": 18013,
+              "name": "순양함 개조 도면 T3",
+              "qty": 6
+            },
+            {
+              "id": 17013,
+              "name": "함포 부속 T3",
+              "qty": 60
+            }
+          ]
+        },
+        "grant": {
+          "effect": [
+            {
+              "cannon": 5
+            },
+            {
+              "cannon": 10
+            },
+            {
+              "cannon": 15
+            }
+          ],
+          "skill": null,
+          "skin": null,
+          "shipChange": null
+        }
+      },
+      {
+        "id": 11511,
+        "row": 5,
+        "col": 3,
+        "kind": "modernization",
+        "name": "근대화 개수",
+        "icon": "mt_red",
+        "level": 85,
+        "star": 6,
+        "requires": [
+          11509,
+          11510
+        ],
+        "useShip": true,
+        "cost": {
+          "gold": 7500,
+          "items": [
+            {
+              "id": 59860,
+              "name": "메이드장의 굳건한 수호",
+              "qty": 1
+            }
+          ]
+        },
+        "grant": {
+          "effect": [
+            {
+              "antiaircraft": 60
+            }
+          ],
+          "skill": null,
+          "skin": 202129,
+          "shipChange": [
+            202124,
+            202994
+          ]
+        }
+      },
+      {
+        "id": 11512,
+        "row": 5,
+        "col": 2,
+        "kind": "skill",
+        "name": "전술 계발",
+        "icon": "skill_red",
+        "level": 90,
+        "star": 6,
+        "requires": [
+          11508,
+          11511
+        ],
+        "useShip": true,
+        "cost": {
+          "gold": 5000,
+          "items": [
+            {
+              "id": 18013,
+              "name": "순양함 개조 도면 T3",
+              "qty": 5
+            }
+          ]
+        },
+        "grant": {
+          "effect": [
+            {
+              "skill_id": 152650
+            }
+          ],
+          "skill": 152650,
+          "skin": null,
+          "shipChange": null
+        }
+      }
+    ]
+  },
   "20219": {
     "grid": {
       "rows": 6,

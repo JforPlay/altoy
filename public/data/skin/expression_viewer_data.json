@@ -3160,6 +3160,44 @@
     }
   },
   {
+    "id": "900555",
+    "name": "베닝턴",
+    "painting": {
+      "faces": [
+        "2",
+        "3",
+        "5",
+        "8",
+        "9",
+        "13",
+        "12",
+        "14",
+        "11",
+        "1",
+        "10",
+        "6",
+        "7",
+        "4",
+        "0"
+      ],
+      "box": [
+        733,
+        116,
+        158,
+        166
+      ],
+      "size": [
+        2048,
+        1078
+      ],
+      "default": "0",
+      "recovered_default": true,
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900555/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900555/painting_face_{faceId}.png"
+    },
+    "painting_n": null
+  },
+  {
     "id": "900273",
     "name": "베아른",
     "painting": {
@@ -3384,6 +3422,39 @@
     "painting_n": null
   },
   {
+    "id": "900553",
+    "name": "빅스버그",
+    "painting": {
+      "faces": [
+        "5",
+        "7",
+        "6",
+        "1",
+        "8",
+        "3",
+        "2",
+        "4",
+        "9",
+        "0"
+      ],
+      "box": [
+        294,
+        302,
+        333,
+        306
+      ],
+      "size": [
+        748,
+        2048
+      ],
+      "default": "0",
+      "recovered_default": true,
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900553/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900553/painting_face_{faceId}.png"
+    },
+    "painting_n": null
+  },
+  {
     "id": "900254",
     "name": "빅토리어스",
     "painting": {
@@ -3492,6 +3563,37 @@
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900439/painting_n.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900439/painting_n_face_{faceId}.png"
     }
+  },
+  {
+    "id": "900550",
+    "name": "새러토가·META",
+    "painting": {
+      "faces": [
+        "7",
+        "1",
+        "4",
+        "3",
+        "5",
+        "6",
+        "2",
+        "0"
+      ],
+      "box": [
+        2207,
+        1184,
+        232,
+        212
+      ],
+      "size": [
+        4216,
+        3096
+      ],
+      "default": "0",
+      "recovered_default": true,
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900550/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900550/painting_face_{faceId}.png"
+    },
+    "painting_n": null
   },
   {
     "id": "900317",
@@ -3771,6 +3873,37 @@
       "recovered_default": true,
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900207/painting.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900207/painting_face_{faceId}.png"
+    },
+    "painting_n": null
+  },
+  {
+    "id": "900549",
+    "name": "소브라지텔니·META",
+    "painting": {
+      "faces": [
+        "6",
+        "7",
+        "5",
+        "3",
+        "4",
+        "1",
+        "2",
+        "0"
+      ],
+      "box": [
+        1464,
+        704,
+        141,
+        139
+      ],
+      "size": [
+        3346,
+        2123
+      ],
+      "default": "0",
+      "recovered_default": true,
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900549/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900549/painting_face_{faceId}.png"
     },
     "painting_n": null
   },
@@ -6637,6 +6770,38 @@
       "recovered_default": true,
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900408/painting.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900408/painting_face_{faceId}.png"
+    },
+    "painting_n": null
+  },
+  {
+    "id": "900554",
+    "name": "콜렛",
+    "painting": {
+      "faces": [
+        "1",
+        "4",
+        "8",
+        "6",
+        "3",
+        "7",
+        "2",
+        "5",
+        "0"
+      ],
+      "box": [
+        443,
+        130,
+        348,
+        250
+      ],
+      "size": [
+        1216,
+        2048
+      ],
+      "default": "0",
+      "recovered_default": true,
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900554/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900554/painting_face_{faceId}.png"
     },
     "painting_n": null
   },

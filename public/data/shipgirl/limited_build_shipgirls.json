@@ -47,7 +47,32 @@
             "build_id": 4,
             "build_name": "기간 한정",
             "banner_type": 2,
-            "shipgirls": {}
+            "shipgirls": {
+                "10720": {
+                    "name": "베닝턴",
+                    "rarity": "SSR",
+                    "nationality": 1,
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/107200.webp"
+                },
+                "10236": {
+                    "name": "빅스버그",
+                    "rarity": "SSR",
+                    "nationality": 1,
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/102360.webp"
+                },
+                "10156": {
+                    "name": "콜렛",
+                    "rarity": "SSR",
+                    "nationality": 1,
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/101560.webp"
+                },
+                "10157": {
+                    "name": "해리슨",
+                    "rarity": "SR",
+                    "nationality": 1,
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/101570.webp"
+                }
+            }
         }
     ]
 }

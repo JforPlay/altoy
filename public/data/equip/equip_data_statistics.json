@@ -18750,6 +18750,98 @@
             15122
         ]
     },
+    "151220": {
+        "ammo": 10,
+        "ammo_icon": [],
+        "ammo_info": [],
+        "attribute_1": "durability",
+        "descrip": "콜렛이 가장 아끼는 애완동물. 벌써 13세라고 하니, 정해진 시간에 꼬박꼬박 먹이를 챙겨 주자.",
+        "equip_info": [
+            6
+        ],
+        "equip_parameters": [],
+        "hidden_skill_id": [],
+        "icon": "151220",
+        "id": 151220,
+        "label": [
+            "USS",
+            "DEV"
+        ],
+        "name": "에러 13세",
+        "nationality": 1,
+        "part_main": [],
+        "part_sub": [],
+        "property_rate": [],
+        "rarity": 5,
+        "skill_id": [
+            [
+                61130,
+                1
+            ]
+        ],
+        "speciality": "<[NA]>",
+        "tech": 0,
+        "torpedo_ammo": 0,
+        "type": 10,
+        "value_1": "250",
+        "value_2": 0,
+        "value_3": 0,
+        "weapon_id": []
+    },
+    "151221": {
+        "base": 151220,
+        "hidden_skill_id": [],
+        "id": 151221,
+        "value_1": "280"
+    },
+    "151222": {
+        "base": 151220,
+        "hidden_skill_id": [],
+        "id": 151222,
+        "value_1": "310"
+    },
+    "151223": {
+        "base": 151220,
+        "hidden_skill_id": [],
+        "id": 151223,
+        "value_1": "340"
+    },
+    "151224": {
+        "base": 151220,
+        "hidden_skill_id": [],
+        "id": 151224,
+        "value_1": "370"
+    },
+    "151225": {
+        "base": 151220,
+        "hidden_skill_id": [],
+        "id": 151225,
+        "value_1": "400"
+    },
+    "151226": {
+        "base": 151220,
+        "hidden_skill_id": [],
+        "id": 151226,
+        "value_1": "430"
+    },
+    "151227": {
+        "base": 151220,
+        "hidden_skill_id": [],
+        "id": 151227,
+        "value_1": "460"
+    },
+    "151228": {
+        "base": 151220,
+        "hidden_skill_id": [],
+        "id": 151228,
+        "value_1": "490"
+    },
+    "151229": {
+        "base": 151220,
+        "hidden_skill_id": [],
+        "id": 151229,
+        "value_1": "520"
+    },
     "15123": {
         "base": 15120,
         "damage": "93 x 3",
@@ -18758,6 +18850,33 @@
         "weapon_id": [
             15123
         ]
+    },
+    "151230": {
+        "base": 151220,
+        "hidden_skill_id": [],
+        "id": 151230,
+        "value_1": "550"
+    },
+    "151231": {
+        "anti_siren": 100,
+        "base": 151220,
+        "hidden_skill_id": [],
+        "id": 151231,
+        "value_1": "580"
+    },
+    "151232": {
+        "anti_siren": 200,
+        "base": 151220,
+        "hidden_skill_id": [],
+        "id": 151232,
+        "value_1": "610"
+    },
+    "151233": {
+        "anti_siren": 300,
+        "base": 151220,
+        "hidden_skill_id": [],
+        "id": 151233,
+        "value_1": "640"
     },
     "15124": {
         "base": 15120,
@@ -26432,6 +26551,57 @@
         "name": "专属弹幕-萨里II",
         "weapon_id": [
             171082
+        ]
+    },
+    "171091": {
+        "ammo": 10,
+        "ammo_icon": [],
+        "ammo_info": [],
+        "descrip": "스킬 탄막",
+        "equip_info": [],
+        "equip_parameters": [],
+        "hidden_skill_id": [],
+        "icon": "1",
+        "id": 171091,
+        "label": [],
+        "name": "专属弹幕-维克斯堡I",
+        "nationality": 0,
+        "part_main": [
+            1,
+            19,
+            20,
+            21
+        ],
+        "part_sub": [
+            2,
+            3,
+            4,
+            5,
+            8,
+            13,
+            18
+        ],
+        "property_rate": [],
+        "rarity": 1,
+        "skill_id": [],
+        "speciality": "<[NA]>",
+        "tech": 1,
+        "torpedo_ammo": 0,
+        "type": 1,
+        "value_1": "0",
+        "value_2": 0,
+        "value_3": 0,
+        "weapon_id": [
+            171091
+        ]
+    },
+    "171092": {
+        "base": 171091,
+        "hidden_skill_id": [],
+        "id": 171092,
+        "name": "专属弹幕-维克斯堡II",
+        "weapon_id": [
+            171092
         ]
     },
     "17120": {
@@ -141616,6 +141786,59 @@
         "name": "专属弹幕-纽伦堡METAII",
         "weapon_id": [
             61852
+        ]
+    },
+    "80681": {
+        "ammo": 10,
+        "ammo_icon": [],
+        "ammo_info": [],
+        "descrip": "스킬 탄막",
+        "equip_info": [],
+        "equip_parameters": [],
+        "hidden_skill_id": [],
+        "icon": "1",
+        "id": 80681,
+        "label": [],
+        "name": "专属弹幕-柯莱特I",
+        "nationality": 0,
+        "part_main": [
+            1,
+            19,
+            20,
+            21
+        ],
+        "part_sub": [
+            2,
+            3,
+            4,
+            5,
+            8,
+            13,
+            18
+        ],
+        "property_rate": [],
+        "rarity": 1,
+        "skill_id": [],
+        "speciality": "<[NA]>",
+        "tech": 1,
+        "torpedo_ammo": 0,
+        "type": 1,
+        "value_1": "0",
+        "value_2": 0,
+        "value_3": 0,
+        "weapon_id": [
+            171111,
+            171113
+        ]
+    },
+    "80682": {
+        "base": 80681,
+        "hidden_skill_id": [],
+        "id": 80682,
+        "name": "专属弹幕-柯莱特II",
+        "weapon_id": [
+            171112,
+            171113
         ]
     },
     "807": {

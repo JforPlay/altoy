@@ -12683,6 +12683,701 @@
         "limited": false
     },
     {
+        "id": 749,
+        "gid": 10156,
+        "sid": 101561,
+        "nationality": 1,
+        "type": 1,
+        "rarity": "SSR",
+        "skill": {
+            "152560": {
+                "id": 152560,
+                "parent": 152560,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": true
+            },
+            "152570": {
+                "id": 152570,
+                "parent": 152570,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "30671": {
+                "id": 30671,
+                "parent": 30671,
+                "upgrade": 30672,
+                "downgrade": null,
+                "requirement": "Limit Break 1",
+                "weapon_true": true
+            },
+            "30672": {
+                "id": 30672,
+                "parent": 30671,
+                "upgrade": null,
+                "downgrade": 30671,
+                "requirement": "Limit Break 3",
+                "weapon_true": true
+            }
+        },
+        "base": {
+            "101561": {
+                "health": 387,
+                "firepower": 27,
+                "torpedo": 70,
+                "antiair": 45,
+                "aviation": 0,
+                "reload": 84,
+                "accuracy": 76,
+                "evasion": 59,
+                "speed": 40.8,
+                "luck": 85,
+                "asw": 55
+            },
+            "101562": {
+                "health": 481,
+                "firepower": 34,
+                "torpedo": 87,
+                "antiair": 56,
+                "aviation": 0,
+                "reload": 84,
+                "accuracy": 76,
+                "evasion": 59,
+                "speed": 40.8,
+                "luck": 85,
+                "asw": 69
+            },
+            "101563": {
+                "health": 670,
+                "firepower": 47,
+                "torpedo": 122,
+                "antiair": 78,
+                "aviation": 0,
+                "reload": 84,
+                "accuracy": 76,
+                "evasion": 59,
+                "speed": 40.8,
+                "luck": 85,
+                "asw": 96
+            },
+            "101564": {
+                "health": 953,
+                "firepower": 67,
+                "torpedo": 174,
+                "antiair": 111,
+                "aviation": 0,
+                "reload": 84,
+                "accuracy": 76,
+                "evasion": 59,
+                "speed": 40.8,
+                "luck": 85,
+                "asw": 136
+            }
+        },
+        "growth": {
+            "101561": {
+                "health": 11021,
+                "firepower": 370,
+                "torpedo": 894,
+                "antiair": 978,
+                "aviation": 0,
+                "reload": 585,
+                "accuracy": 1175,
+                "evasion": 1095,
+                "speed": 0,
+                "luck": 0,
+                "asw": 614
+            },
+            "101562": {
+                "health": 11021,
+                "firepower": 370,
+                "torpedo": 894,
+                "antiair": 978,
+                "aviation": 0,
+                "reload": 585,
+                "accuracy": 1175,
+                "evasion": 1095,
+                "speed": 0,
+                "luck": 0,
+                "asw": 614
+            },
+            "101563": {
+                "health": 11021,
+                "firepower": 370,
+                "torpedo": 894,
+                "antiair": 978,
+                "aviation": 0,
+                "reload": 585,
+                "accuracy": 1175,
+                "evasion": 1095,
+                "speed": 0,
+                "luck": 0,
+                "asw": 614
+            },
+            "101564": {
+                "health": 11021,
+                "firepower": 370,
+                "torpedo": 894,
+                "antiair": 978,
+                "aviation": 0,
+                "reload": 585,
+                "accuracy": 1175,
+                "evasion": 1095,
+                "speed": 0,
+                "luck": 0,
+                "asw": 614
+            }
+        },
+        "enhance": {
+            "firepower": 26,
+            "torpedo": 69,
+            "reload": 63
+        },
+        "armor": 1,
+        "base_list": {
+            "101561": [
+                1,
+                1,
+                1
+            ],
+            "101562": [
+                1,
+                1,
+                1
+            ],
+            "101563": [
+                1,
+                2,
+                1
+            ],
+            "101564": [
+                1,
+                2,
+                1
+            ]
+        },
+        "description": [
+            "이벤트: 몽광의 아스트라리움"
+        ],
+        "name": "콜렛",
+        "gift_dislike": [
+            180004,
+            180008
+        ],
+        "skin_id": 101560,
+        "class_name": "알렌 M. 섬너급 ",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/101560.webp",
+        "equip_1": [
+            1
+        ],
+        "equip_2": [
+            5
+        ],
+        "equip_3": [
+            6
+        ],
+        "equip_4": [
+            10,
+            14
+        ],
+        "equip_5": [
+            10,
+            14
+        ],
+        "equipment_proficiency": [
+            1.35,
+            1.35,
+            1.6
+        ],
+        "equipment_proficiency_base": [
+            1.25,
+            1.25,
+            1.5
+        ],
+        "preload_count": [
+            0,
+            1,
+            0
+        ],
+        "timer": null,
+        "light": false,
+        "heavy": false,
+        "special": false,
+        "limited": false
+    },
+    {
+        "id": 750,
+        "gid": 10157,
+        "sid": 101571,
+        "nationality": 1,
+        "type": 1,
+        "rarity": "SR",
+        "skill": {
+            "152600": {
+                "id": 152600,
+                "parent": 152600,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 152601,
+                        "quota": 1,
+                        "time": 3
+                    },
+                    {
+                        "id": 152601
+                    }
+                ],
+                "trigger_cd": 5
+            },
+            "152610": {
+                "id": 152610,
+                "parent": 152610,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "20041": {
+                "id": 20041,
+                "parent": 20041,
+                "upgrade": 20042,
+                "downgrade": null,
+                "requirement": "Limit Break 1",
+                "weapon_true": true
+            },
+            "20042": {
+                "id": 20042,
+                "parent": 20041,
+                "upgrade": null,
+                "downgrade": 20041,
+                "requirement": "Limit Break 3",
+                "weapon_true": true
+            }
+        },
+        "base": {
+            "101571": {
+                "health": 343,
+                "firepower": 18,
+                "torpedo": 70,
+                "antiair": 43,
+                "aviation": 0,
+                "reload": 81,
+                "accuracy": 73,
+                "evasion": 59,
+                "speed": 42,
+                "luck": 75,
+                "asw": 56
+            },
+            "101572": {
+                "health": 427,
+                "firepower": 22,
+                "torpedo": 87,
+                "antiair": 54,
+                "aviation": 0,
+                "reload": 81,
+                "accuracy": 73,
+                "evasion": 59,
+                "speed": 42,
+                "luck": 75,
+                "asw": 70
+            },
+            "101573": {
+                "health": 594,
+                "firepower": 31,
+                "torpedo": 122,
+                "antiair": 75,
+                "aviation": 0,
+                "reload": 81,
+                "accuracy": 73,
+                "evasion": 59,
+                "speed": 42,
+                "luck": 75,
+                "asw": 97
+            },
+            "101574": {
+                "health": 845,
+                "firepower": 45,
+                "torpedo": 174,
+                "antiair": 106,
+                "aviation": 0,
+                "reload": 81,
+                "accuracy": 73,
+                "evasion": 59,
+                "speed": 42,
+                "luck": 75,
+                "asw": 139
+            }
+        },
+        "growth": {
+            "101571": {
+                "health": 9771,
+                "firepower": 249,
+                "torpedo": 894,
+                "antiair": 941,
+                "aviation": 0,
+                "reload": 562,
+                "accuracy": 1125,
+                "evasion": 1095,
+                "speed": 0,
+                "luck": 0,
+                "asw": 626
+            },
+            "101572": {
+                "health": 9771,
+                "firepower": 249,
+                "torpedo": 894,
+                "antiair": 941,
+                "aviation": 0,
+                "reload": 562,
+                "accuracy": 1125,
+                "evasion": 1095,
+                "speed": 0,
+                "luck": 0,
+                "asw": 626
+            },
+            "101573": {
+                "health": 9771,
+                "firepower": 249,
+                "torpedo": 894,
+                "antiair": 941,
+                "aviation": 0,
+                "reload": 562,
+                "accuracy": 1125,
+                "evasion": 1095,
+                "speed": 0,
+                "luck": 0,
+                "asw": 626
+            },
+            "101574": {
+                "health": 9771,
+                "firepower": 249,
+                "torpedo": 894,
+                "antiair": 941,
+                "aviation": 0,
+                "reload": 562,
+                "accuracy": 1125,
+                "evasion": 1095,
+                "speed": 0,
+                "luck": 0,
+                "asw": 626
+            }
+        },
+        "enhance": {
+            "firepower": 18,
+            "torpedo": 69,
+            "reload": 60
+        },
+        "armor": 1,
+        "base_list": {
+            "101571": [
+                1,
+                1,
+                1
+            ],
+            "101572": [
+                1,
+                1,
+                1
+            ],
+            "101573": [
+                1,
+                2,
+                1
+            ],
+            "101574": [
+                1,
+                2,
+                1
+            ]
+        },
+        "description": [
+            "이벤트: 몽광의 아스트라리움"
+        ],
+        "name": "해리슨",
+        "gift_dislike": [
+            180009,
+            180004
+        ],
+        "skin_id": 101570,
+        "class_name": "플레처급",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/101570.webp",
+        "equip_1": [
+            1
+        ],
+        "equip_2": [
+            5
+        ],
+        "equip_3": [
+            6
+        ],
+        "equip_4": [
+            10,
+            14
+        ],
+        "equip_5": [
+            10,
+            14
+        ],
+        "equipment_proficiency": [
+            1.25,
+            1.3,
+            1.3
+        ],
+        "equipment_proficiency_base": [
+            1.15,
+            1.2,
+            1.2
+        ],
+        "preload_count": [
+            0,
+            1,
+            0
+        ],
+        "timer": null,
+        "light": false,
+        "heavy": false,
+        "special": false,
+        "limited": false
+    },
+    {
+        "id": 753,
+        "gid": 10158,
+        "sid": 101581,
+        "nationality": 1,
+        "type": 1,
+        "rarity": "SR",
+        "skill": {
+            "152680": {
+                "id": 152680,
+                "parent": 152680,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "152690": {
+                "id": 152690,
+                "parent": 152690,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 152691,
+                        "time": 20
+                    }
+                ]
+            },
+            "20041": {
+                "id": 20041,
+                "parent": 20041,
+                "upgrade": 20042,
+                "downgrade": null,
+                "requirement": "Limit Break 1",
+                "weapon_true": true
+            },
+            "20042": {
+                "id": 20042,
+                "parent": 20041,
+                "upgrade": null,
+                "downgrade": 20041,
+                "requirement": "Limit Break 3",
+                "weapon_true": true
+            }
+        },
+        "base": {
+            "101581": {
+                "health": 361,
+                "firepower": 19,
+                "torpedo": 69,
+                "antiair": 45,
+                "aviation": 0,
+                "reload": 81,
+                "accuracy": 73,
+                "evasion": 59,
+                "speed": 42,
+                "luck": 86,
+                "asw": 56
+            },
+            "101582": {
+                "health": 449,
+                "firepower": 24,
+                "torpedo": 86,
+                "antiair": 56,
+                "aviation": 0,
+                "reload": 81,
+                "accuracy": 73,
+                "evasion": 59,
+                "speed": 42,
+                "luck": 86,
+                "asw": 70
+            },
+            "101583": {
+                "health": 625,
+                "firepower": 33,
+                "torpedo": 120,
+                "antiair": 78,
+                "aviation": 0,
+                "reload": 81,
+                "accuracy": 73,
+                "evasion": 59,
+                "speed": 42,
+                "luck": 86,
+                "asw": 98
+            },
+            "101584": {
+                "health": 890,
+                "firepower": 47,
+                "torpedo": 171,
+                "antiair": 112,
+                "aviation": 0,
+                "reload": 81,
+                "accuracy": 73,
+                "evasion": 59,
+                "speed": 42,
+                "luck": 86,
+                "asw": 139
+            }
+        },
+        "growth": {
+            "101581": {
+                "health": 10295,
+                "firepower": 258,
+                "torpedo": 886,
+                "antiair": 990,
+                "aviation": 0,
+                "reload": 562,
+                "accuracy": 1125,
+                "evasion": 1095,
+                "speed": 0,
+                "luck": 0,
+                "asw": 629
+            },
+            "101582": {
+                "health": 10295,
+                "firepower": 258,
+                "torpedo": 886,
+                "antiair": 990,
+                "aviation": 0,
+                "reload": 562,
+                "accuracy": 1125,
+                "evasion": 1095,
+                "speed": 0,
+                "luck": 0,
+                "asw": 629
+            },
+            "101583": {
+                "health": 10295,
+                "firepower": 258,
+                "torpedo": 886,
+                "antiair": 990,
+                "aviation": 0,
+                "reload": 562,
+                "accuracy": 1125,
+                "evasion": 1095,
+                "speed": 0,
+                "luck": 0,
+                "asw": 629
+            },
+            "101584": {
+                "health": 10295,
+                "firepower": 258,
+                "torpedo": 886,
+                "antiair": 990,
+                "aviation": 0,
+                "reload": 562,
+                "accuracy": 1125,
+                "evasion": 1095,
+                "speed": 0,
+                "luck": 0,
+                "asw": 629
+            }
+        },
+        "enhance": {
+            "firepower": 18,
+            "torpedo": 68,
+            "reload": 60
+        },
+        "armor": 1,
+        "base_list": {
+            "101581": [
+                1,
+                1,
+                1
+            ],
+            "101582": [
+                1,
+                1,
+                1
+            ],
+            "101583": [
+                1,
+                2,
+                1
+            ],
+            "101584": [
+                1,
+                2,
+                1
+            ]
+        },
+        "description": [
+            "이벤트: 몽광의 아스트라리움"
+        ],
+        "name": "존 로저스",
+        "gift_dislike": [
+            180006,
+            180004
+        ],
+        "skin_id": 101580,
+        "class_name": "플레처급",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/101580.webp",
+        "equip_1": [
+            1
+        ],
+        "equip_2": [
+            5
+        ],
+        "equip_3": [
+            6
+        ],
+        "equip_4": [
+            10,
+            14
+        ],
+        "equip_5": [
+            10,
+            14
+        ],
+        "equipment_proficiency": [
+            1.25,
+            1.3,
+            1.3
+        ],
+        "equipment_proficiency_base": [
+            1.15,
+            1.2,
+            1.2
+        ],
+        "preload_count": [
+            0,
+            1,
+            0
+        ],
+        "timer": null,
+        "light": false,
+        "heavy": false,
+        "special": false,
+        "limited": false
+    },
+    {
         "id": 29,
         "gid": 10201,
         "sid": 102011,
@@ -21123,6 +21818,231 @@
         "heavy": false,
         "special": false,
         "limited": true
+    },
+    {
+        "id": 751,
+        "gid": 10236,
+        "sid": 102361,
+        "nationality": 1,
+        "type": 2,
+        "rarity": "SSR",
+        "skill": {
+            "152580": {
+                "id": 152580,
+                "parent": 152580,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": true
+            },
+            "152590": {
+                "id": 152590,
+                "parent": 152590,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": true
+            },
+            "30681": {
+                "id": 30681,
+                "parent": 30681,
+                "upgrade": 30682,
+                "downgrade": null,
+                "requirement": "Limit Break 1",
+                "weapon_true": true
+            },
+            "30682": {
+                "id": 30682,
+                "parent": 30681,
+                "upgrade": null,
+                "downgrade": 30681,
+                "requirement": "Limit Break 3",
+                "weapon_true": true
+            }
+        },
+        "base": {
+            "102361": {
+                "health": 751,
+                "firepower": 31,
+                "torpedo": 0,
+                "antiair": 88,
+                "aviation": 0,
+                "reload": 71,
+                "accuracy": 56,
+                "evasion": 28,
+                "speed": 32.5,
+                "luck": 72,
+                "asw": 25
+            },
+            "102362": {
+                "health": 934,
+                "firepower": 39,
+                "torpedo": 0,
+                "antiair": 110,
+                "aviation": 0,
+                "reload": 71,
+                "accuracy": 56,
+                "evasion": 28,
+                "speed": 32.5,
+                "luck": 72,
+                "asw": 31
+            },
+            "102363": {
+                "health": 1300,
+                "firepower": 54,
+                "torpedo": 0,
+                "antiair": 153,
+                "aviation": 0,
+                "reload": 71,
+                "accuracy": 56,
+                "evasion": 28,
+                "speed": 32.5,
+                "luck": 72,
+                "asw": 43
+            },
+            "102364": {
+                "health": 1850,
+                "firepower": 77,
+                "torpedo": 0,
+                "antiair": 217,
+                "aviation": 0,
+                "reload": 71,
+                "accuracy": 56,
+                "evasion": 28,
+                "speed": 32.5,
+                "luck": 72,
+                "asw": 62
+            }
+        },
+        "growth": {
+            "102361": {
+                "health": 18618,
+                "firepower": 431,
+                "torpedo": 0,
+                "antiair": 1771,
+                "aviation": 0,
+                "reload": 492,
+                "accuracy": 828,
+                "evasion": 562,
+                "speed": 0,
+                "luck": 0,
+                "asw": 305
+            },
+            "102362": {
+                "health": 18618,
+                "firepower": 431,
+                "torpedo": 0,
+                "antiair": 1771,
+                "aviation": 0,
+                "reload": 492,
+                "accuracy": 828,
+                "evasion": 562,
+                "speed": 0,
+                "luck": 0,
+                "asw": 305
+            },
+            "102363": {
+                "health": 18618,
+                "firepower": 431,
+                "torpedo": 0,
+                "antiair": 1771,
+                "aviation": 0,
+                "reload": 492,
+                "accuracy": 828,
+                "evasion": 562,
+                "speed": 0,
+                "luck": 0,
+                "asw": 305
+            },
+            "102364": {
+                "health": 18618,
+                "firepower": 431,
+                "torpedo": 0,
+                "antiair": 1771,
+                "aviation": 0,
+                "reload": 492,
+                "accuracy": 828,
+                "evasion": 562,
+                "speed": 0,
+                "luck": 0,
+                "asw": 305
+            }
+        },
+        "enhance": {
+            "firepower": 31,
+            "reload": 53
+        },
+        "armor": 1,
+        "base_list": {
+            "102361": [
+                1,
+                1,
+                1
+            ],
+            "102362": [
+                1,
+                1,
+                1
+            ],
+            "102363": [
+                2,
+                1,
+                1
+            ],
+            "102364": [
+                2,
+                1,
+                1
+            ]
+        },
+        "description": [
+            "이벤트: 몽광의 아스트라리움"
+        ],
+        "name": "빅스버그",
+        "gift_dislike": [
+            180009,
+            180006
+        ],
+        "skin_id": 102360,
+        "class_name": "클리블랜드급",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/102360.webp",
+        "equip_1": [
+            2
+        ],
+        "equip_2": [
+            1
+        ],
+        "equip_3": [
+            6
+        ],
+        "equip_4": [
+            10,
+            14
+        ],
+        "equip_5": [
+            10,
+            14
+        ],
+        "equipment_proficiency": [
+            1.3,
+            0.75,
+            1.2
+        ],
+        "equipment_proficiency_base": [
+            1,
+            0.75,
+            1.2
+        ],
+        "preload_count": [
+            0,
+            0,
+            0
+        ],
+        "timer": null,
+        "light": false,
+        "heavy": false,
+        "special": false,
+        "limited": false
     },
     {
         "id": 39,
@@ -36723,6 +37643,218 @@
         ]
     },
     {
+        "id": 752,
+        "gid": 10720,
+        "sid": 107201,
+        "nationality": 1,
+        "type": 7,
+        "rarity": "SSR",
+        "skill": {
+            "152620": {
+                "id": 152620,
+                "parent": 152620,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "152630": {
+                "id": 152630,
+                "parent": 152630,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 152631
+                    }
+                ]
+            }
+        },
+        "base": {
+            "107201": {
+                "health": 1106,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 63,
+                "aviation": 83,
+                "reload": 48,
+                "accuracy": 30,
+                "evasion": 13,
+                "speed": 33,
+                "luck": 85,
+                "asw": 0
+            },
+            "107202": {
+                "health": 1376,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 78,
+                "aviation": 104,
+                "reload": 48,
+                "accuracy": 30,
+                "evasion": 13,
+                "speed": 33,
+                "luck": 85,
+                "asw": 0
+            },
+            "107203": {
+                "health": 1915,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 109,
+                "aviation": 145,
+                "reload": 48,
+                "accuracy": 30,
+                "evasion": 13,
+                "speed": 33,
+                "luck": 85,
+                "asw": 0
+            },
+            "107204": {
+                "health": 2725,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 155,
+                "aviation": 207,
+                "reload": 48,
+                "accuracy": 30,
+                "evasion": 13,
+                "speed": 33,
+                "luck": 85,
+                "asw": 0
+            }
+        },
+        "growth": {
+            "107201": {
+                "health": 29701,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 1329,
+                "aviation": 1022,
+                "reload": 333,
+                "accuracy": 437,
+                "evasion": 175,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            },
+            "107202": {
+                "health": 29701,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 1329,
+                "aviation": 1022,
+                "reload": 333,
+                "accuracy": 437,
+                "evasion": 175,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            },
+            "107203": {
+                "health": 29701,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 1329,
+                "aviation": 1022,
+                "reload": 333,
+                "accuracy": 437,
+                "evasion": 175,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            },
+            "107204": {
+                "health": 29701,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 1329,
+                "aviation": 1022,
+                "reload": 333,
+                "accuracy": 437,
+                "evasion": 175,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            }
+        },
+        "enhance": {
+            "aviation": 83,
+            "reload": 36
+        },
+        "armor": 2,
+        "base_list": {
+            "107201": [
+                1,
+                1,
+                1
+            ],
+            "107202": [
+                2,
+                1,
+                1
+            ],
+            "107203": [
+                2,
+                2,
+                1
+            ],
+            "107204": [
+                3,
+                3,
+                2
+            ]
+        },
+        "description": [
+            "이벤트: 몽광의 아스트라리움"
+        ],
+        "name": "베닝턴",
+        "gift_dislike": [
+            180004,
+            180006
+        ],
+        "skin_id": 107200,
+        "class_name": "에식스급",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/107200.webp",
+        "equip_1": [
+            7
+        ],
+        "equip_2": [
+            9
+        ],
+        "equip_3": [
+            8
+        ],
+        "equip_4": [
+            10
+        ],
+        "equip_5": [
+            10
+        ],
+        "equipment_proficiency": [
+            1.4,
+            1.3,
+            1.2
+        ],
+        "equipment_proficiency_base": [
+            1.25,
+            1.15,
+            1.05
+        ],
+        "preload_count": [
+            0,
+            0,
+            0
+        ],
+        "timer": null,
+        "light": false,
+        "heavy": false,
+        "special": false,
+        "limited": false
+    },
+    {
         "id": 377,
         "gid": 10722,
         "sid": 107221,
@@ -42479,7 +43611,7 @@
             "19980": {
                 "id": 19980,
                 "parent": 19980,
-                "upgrade": null,
+                "upgrade": 18980,
                 "downgrade": null,
                 "requirement": "Default",
                 "weapon_true": true,
@@ -42524,6 +43656,23 @@
                 "downgrade": 19001,
                 "requirement": "Devs 30",
                 "weapon_true": false
+            },
+            "18980": {
+                "id": 18980,
+                "parent": 19980,
+                "upgrade": null,
+                "downgrade": 19980,
+                "requirement": "Fate Simulation 5",
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 18986
+                    },
+                    {
+                        "id": 18987
+                    }
+                ],
+                "trigger_cd": 5
             }
         },
         "base": {
@@ -42637,6 +43786,7 @@
         "enhance": {
             "health": 2099,
             "antiair": 112,
+            "luck": 15,
             "firepower": 125,
             "reload": 40
         },
@@ -53955,7 +55105,7 @@
             "4101": {
                 "id": 4101,
                 "parent": 4101,
-                "upgrade": null,
+                "upgrade": 152640,
                 "downgrade": null,
                 "requirement": "Default",
                 "weapon_true": true,
@@ -53977,9 +55127,31 @@
             "29102": {
                 "id": 29102,
                 "parent": 29101,
-                "upgrade": null,
+                "upgrade": 29103,
                 "downgrade": 29101,
                 "requirement": "Limit Break 3",
+                "weapon_true": true
+            },
+            "152640": {
+                "id": 152640,
+                "parent": 4101,
+                "upgrade": null,
+                "downgrade": 4101,
+                "requirement": "Retrofit",
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 152641
+                    }
+                ],
+                "trigger_cd": 1
+            },
+            "29103": {
+                "id": 29103,
+                "parent": 29101,
+                "upgrade": null,
+                "downgrade": 29102,
+                "requirement": "Retrofit",
                 "weapon_true": true
             }
         },
@@ -54024,6 +55196,19 @@
                 "asw": 61
             },
             "202124": {
+                "health": 1689,
+                "firepower": 82,
+                "torpedo": 159,
+                "antiair": 136,
+                "aviation": 0,
+                "reload": 67,
+                "accuracy": 55,
+                "evasion": 28,
+                "speed": 32,
+                "luck": 88,
+                "asw": 87
+            },
+            "202994": {
                 "health": 1689,
                 "firepower": 82,
                 "torpedo": 159,
@@ -54089,6 +55274,19 @@
                 "speed": 0,
                 "luck": 0,
                 "asw": 418
+            },
+            "202994": {
+                "health": 17283,
+                "firepower": 457,
+                "torpedo": 834,
+                "antiair": 1183,
+                "aviation": 0,
+                "reload": 467,
+                "accuracy": 810,
+                "evasion": 641,
+                "speed": 0,
+                "luck": 0,
+                "asw": 418
             }
         },
         "enhance": {
@@ -54117,7 +55315,46 @@
                 1,
                 2,
                 1
+            ],
+            "202994": [
+                2,
+                2,
+                2
             ]
+        },
+        "retrofit": {
+            "id": 202994,
+            "bonus": {
+                "health": 165,
+                "evasion": 20,
+                "equipment_proficiency_1": 0.25,
+                "firepower": 60,
+                "antiair": 60
+            },
+            "skill": 11512,
+            "skin": 202129,
+            "armor": 1,
+            "hexagon": [],
+            "skill_id": 152650,
+            "equip_1": [
+                2
+            ],
+            "equip_2": [
+                5
+            ],
+            "equip_3": [
+                6
+            ],
+            "equip_4": [
+                10,
+                14
+            ],
+            "equip_5": [
+                10,
+                14
+            ],
+            "type": 2,
+            "weapon_true": false
         },
         "description": [
             "훈장 지원(랜덤 갱신)",
@@ -155083,7 +156320,7 @@
             "19950": {
                 "id": 19950,
                 "parent": 19950,
-                "upgrade": null,
+                "upgrade": 18950,
                 "downgrade": null,
                 "requirement": "Default",
                 "weapon_true": true,
@@ -155146,6 +156383,25 @@
                 "downgrade": 30491,
                 "requirement": "Devs 30",
                 "weapon_true": true
+            },
+            "18950": {
+                "id": 18950,
+                "parent": 19950,
+                "upgrade": null,
+                "downgrade": 19950,
+                "requirement": "Fate Simulation 5",
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 18952
+                    },
+                    {
+                        "id": 18951,
+                        "quota": 6,
+                        "time": 0.5
+                    }
+                ],
+                "trigger_cd": 3.5
             }
         },
         "base": {
@@ -155259,6 +156515,7 @@
         "enhance": {
             "health": 504,
             "antiair": 52,
+            "luck": 15,
             "firepower": 36,
             "torpedo": 128,
             "reload": 59
@@ -163979,7 +165236,7 @@
             "190000": {
                 "id": 190000,
                 "parent": 190000,
-                "upgrade": null,
+                "upgrade": 180000,
                 "downgrade": null,
                 "requirement": "Default",
                 "weapon_true": true,
@@ -164036,6 +165293,19 @@
                 "downgrade": 30501,
                 "requirement": "Devs 30",
                 "weapon_true": true
+            },
+            "180000": {
+                "id": 180000,
+                "parent": 190000,
+                "upgrade": null,
+                "downgrade": 190000,
+                "requirement": "Fate Simulation 5",
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 180003
+                    }
+                ]
             }
         },
         "base": {
@@ -164149,6 +165419,7 @@
         "enhance": {
             "health": 1200,
             "antiair": 106,
+            "luck": 15,
             "firepower": 48,
             "torpedo": 86,
             "reload": 53
@@ -187914,7 +189185,10 @@
             "META 연구실·월드 투어"
         ],
         "name": "뉘른베르크·META",
-        "gift_dislike": [],
+        "gift_dislike": [
+            180005,
+            180009
+        ],
         "skin_id": 9702130,
         "class_name": "뉘른베르크·META",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9702130.webp",

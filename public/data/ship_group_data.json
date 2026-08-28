@@ -1437,6 +1437,96 @@
         ],
         "rarity": "SR"
     },
+    "10156": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/101560.webp",
+        "name": "콜렛",
+        "add_get_attr": 2,
+        "add_get_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 1,
+        "add_level_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_level_value": 2,
+        "class": 10108,
+        "id": 10156,
+        "max_star": 6,
+        "pt_get": 12,
+        "pt_level": 18,
+        "pt_upgrage": 24,
+        "nationality": 1,
+        "type": 1,
+        "description": [
+            "이벤트: 몽광의 아스트라리움"
+        ],
+        "rarity": "SSR"
+    },
+    "10157": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/101570.webp",
+        "name": "해리슨",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 4,
+        "add_level_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_level_value": 1,
+        "class": 10104,
+        "id": 10157,
+        "max_star": 5,
+        "pt_get": 8,
+        "pt_level": 13,
+        "pt_upgrage": 17,
+        "nationality": 1,
+        "type": 1,
+        "description": [
+            "이벤트: 몽광의 아스트라리움"
+        ],
+        "rarity": "SR"
+    },
+    "10158": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/101580.webp",
+        "name": "존 로저스",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 12,
+        "add_level_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_level_value": 1,
+        "class": 10104,
+        "id": 10158,
+        "max_star": 5,
+        "pt_get": 8,
+        "pt_level": 13,
+        "pt_upgrage": 17,
+        "nationality": 1,
+        "type": 1,
+        "description": [
+            "이벤트: 몽광의 아스트라리움"
+        ],
+        "rarity": "SR"
+    },
     "10201": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/102010.webp",
         "name": "오마하",
@@ -2222,6 +2312,32 @@
             "이벤트: 창공에 울리는 소리"
         ],
         "rarity": "SR"
+    },
+    "10236": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/102360.webp",
+        "name": "빅스버그",
+        "add_get_attr": 4,
+        "add_get_shiptype": [
+            2
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 2,
+        "add_level_shiptype": [
+            2
+        ],
+        "add_level_value": 1,
+        "class": 10202,
+        "id": 10236,
+        "max_star": 6,
+        "pt_get": 12,
+        "pt_level": 18,
+        "pt_upgrage": 24,
+        "nationality": 1,
+        "type": 2,
+        "description": [
+            "이벤트: 몽광의 아스트라리움"
+        ],
+        "rarity": "SSR"
     },
     "10301": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/103010.webp",
@@ -3932,6 +4048,34 @@
         "type": 7,
         "description": [
             "메인 스테이지 해역13-4"
+        ],
+        "rarity": "SSR"
+    },
+    "10720": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/107200.webp",
+        "name": "베닝턴",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            6,
+            7
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 5,
+        "add_level_shiptype": [
+            6,
+            7
+        ],
+        "add_level_value": 2,
+        "class": 10705,
+        "id": 10720,
+        "max_star": 6,
+        "pt_get": 17,
+        "pt_level": 26,
+        "pt_upgrage": 35,
+        "nationality": 1,
+        "type": 7,
+        "description": [
+            "이벤트: 몽광의 아스트라리움"
         ],
         "rarity": "SSR"
     },
@@ -5863,7 +6007,8 @@
             "소형함 건조",
             "훈장 상점 교환(랜덤 갱신)"
         ],
-        "rarity": "SSR"
+        "rarity": "SSR",
+        "retrofit": true
     },
     "20213": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/202130.webp",

@@ -247,6 +247,11 @@
                 "year": 2026
             },
             {
+                "kind": "event",
+                "label": "플래시 웨이브: 서머 레이스",
+                "year": 2026
+            },
+            {
                 "kind": "scene",
                 "label": "AnniversaryIslandHotSpringScene"
             },
@@ -257,10 +262,6 @@
             {
                 "kind": "scene",
                 "label": "BlackFridayGiftPage"
-            },
-            {
-                "kind": "scene",
-                "label": "BlackFridayWithManualSignPage"
             }
         ],
         "year": 2022
@@ -2358,6 +2359,69 @@
         ],
         "year": null
     },
+    "battle-starcity-rhythm": {
+        "name": "battle-starcity-rhythm",
+        "cues": [
+            "星光洄游_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "星光洄游_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-starcity-rhythm/%E6%98%9F%E5%85%89%E6%B4%84%E6%B8%B8_AL.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
+            },
+            {
+                "kind": "map",
+                "label": "SP 「몽광의 아스트라리움」"
+            },
+            {
+                "kind": "opsi",
+                "label": "소형 정찰함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "중형 정찰함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "대형 정찰함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "소형 주력함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "중형 주력함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "대형 주력함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "소형 항공함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "중형 항공함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "대형 항공함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "엘리트 함대"
+            }
+        ],
+        "year": null
+    },
     "battle-starsea-elec": {
         "name": "battle-starsea-elec",
         "cues": [
@@ -2585,12 +2649,20 @@
                 "label": "성인 전의 동맹"
             },
             {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
+            },
+            {
                 "kind": "opsi",
                 "label": "적 기함"
             },
             {
                 "kind": "opsi",
                 "label": "보스 함대"
+            },
+            {
+                "kind": "event",
+                "label": "EP8-2 아스트라리움 외곽"
             }
         ],
         "year": null
@@ -3279,6 +3351,10 @@
                 "label": "창공에 울리는 소리"
             },
             {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
+            },
+            {
                 "kind": "map",
                 "label": "TS2 문명의 잔향"
             },
@@ -3289,10 +3365,6 @@
             {
                 "kind": "map",
                 "label": "TS2 수녀의 비가"
-            },
-            {
-                "kind": "map",
-                "label": "HTS2 수녀의 비가"
             }
         ],
         "year": null
@@ -4687,12 +4759,12 @@
                 "gid": 20602
             },
             {
-                "kind": "event",
-                "label": "EPS-5 매력을 무기삼아"
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
             },
             {
                 "kind": "event",
-                "label": "EPS-7 보물찾기 대모험"
+                "label": "EPS-5 매력을 무기삼아"
             }
         ],
         "year": 2026
@@ -6044,6 +6116,10 @@
                 "year": 2020
             },
             {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
+            },
+            {
                 "kind": "map",
                 "label": "SP1 집결한 StarLight"
             },
@@ -6082,10 +6158,6 @@
             {
                 "kind": "opsi",
                 "label": "중형 항공 함대"
-            },
-            {
-                "kind": "opsi",
-                "label": "대형 항공 함대"
             }
         ],
         "year": 2020
@@ -6973,6 +7045,26 @@
                 "kind": "login",
                 "label": "login_0401",
                 "year": 2026
+            },
+            {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
+            },
+            {
+                "kind": "event",
+                "label": "EP1-4 하층 구역"
+            },
+            {
+                "kind": "event",
+                "label": "EP3-2 보안 전문가 "
+            },
+            {
+                "kind": "event",
+                "label": "EP3-4 아스트라리움 구역으로"
+            },
+            {
+                "kind": "event",
+                "label": "EP5-1 공연장 사용 허가증"
             }
         ],
         "year": 2024
@@ -7890,6 +7982,18 @@
                 "kind": "event",
                 "label": "자동 보병 인형의 여행",
                 "year": 2026
+            },
+            {
+                "kind": "skin",
+                "label": "금단의 과실",
+                "year": 2026,
+                "gid": 1170001
+            },
+            {
+                "kind": "skin",
+                "label": "휴식의 한때",
+                "year": 2026,
+                "gid": 1170002
             },
             {
                 "kind": "scene",
@@ -10468,6 +10572,74 @@
         ],
         "year": 2024
     },
+    "story-cardrive-racing": {
+        "name": "story-cardrive-racing",
+        "cues": [
+            "滨海极速~夏日狂飙~_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "滨海极速~夏日狂飙~_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-cardrive-racing/%E6%BB%A8%E6%B5%B7%E6%9E%81%E9%80%9F~%E5%A4%8F%E6%97%A5%E7%8B%82%E9%A3%99~_AL.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "event",
+                "label": "플래시 웨이브: 서머 레이스",
+                "year": 2026
+            },
+            {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
+            },
+            {
+                "kind": "event",
+                "label": "EP6-3 하이 스피드 레이스"
+            },
+            {
+                "kind": "scene",
+                "label": "MedalAlbumRapidSeasidePage"
+            },
+            {
+                "kind": "scene",
+                "label": "MonopolyCar2026UI"
+            }
+        ],
+        "year": 2026
+    },
+    "story-cardrive-stand": {
+        "name": "story-cardrive-stand",
+        "cues": [
+            "日落海岸_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "日落海岸_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-cardrive-stand/%E6%97%A5%E8%90%BD%E6%B5%B7%E5%B2%B8_AL.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "event",
+                "label": "플래시 웨이브: 서머 레이스",
+                "year": 2026
+            },
+            {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
+            },
+            {
+                "kind": "event",
+                "label": "EP6-2 리차드의 계획"
+            },
+            {
+                "kind": "scene",
+                "label": "RapidSeasideMonopolyPage"
+            }
+        ],
+        "year": 2026
+    },
     "story-cccp-soft": {
         "name": "story-cccp-soft",
         "cues": [
@@ -10775,6 +10947,10 @@
                 "label": "창공에 울리는 소리"
             },
             {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
+            },
+            {
                 "kind": "event",
                 "label": "EP1-2 급변"
             },
@@ -10793,6 +10969,26 @@
             {
                 "kind": "event",
                 "label": "EP7-5 교차하는 마음"
+            },
+            {
+                "kind": "event",
+                "label": "EP2-1 지적"
+            },
+            {
+                "kind": "event",
+                "label": "EP2-5 등가교환"
+            },
+            {
+                "kind": "event",
+                "label": "EP4-1 아스트라리움 타워로 가는 방법"
+            },
+            {
+                "kind": "event",
+                "label": "EP4-2 공연 개최 허가증"
+            },
+            {
+                "kind": "event",
+                "label": "EP5-2 다음 계획"
             }
         ],
         "year": null
@@ -10824,6 +11020,10 @@
             {
                 "kind": "main",
                 "label": "창공에 울리는 소리"
+            },
+            {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
             },
             {
                 "kind": "event",
@@ -10974,6 +11174,11 @@
                 "year": 2026
             },
             {
+                "kind": "event",
+                "label": "플래시 웨이브: 서머 레이스",
+                "year": 2026
+            },
+            {
                 "kind": "scene",
                 "label": "AprilFoolDiscovery2026Page"
             },
@@ -11044,6 +11249,10 @@
                 "kind": "event",
                 "label": "심연 아래의 비밀",
                 "year": 2025
+            },
+            {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
             },
             {
                 "kind": "scene",
@@ -12377,6 +12586,11 @@
             {
                 "kind": "event",
                 "label": "유람자 모집 계획",
+                "year": 2026
+            },
+            {
+                "kind": "event",
+                "label": "플래시 웨이브: 서머 레이스",
                 "year": 2026
             },
             {
@@ -14453,6 +14667,10 @@
                 "label": "성인 전의 동맹"
             },
             {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
+            },
+            {
                 "kind": "map",
                 "label": "EXTRA 선을 넘는 실험 NO.1"
             },
@@ -14526,6 +14744,29 @@
             {
                 "kind": "opsi",
                 "label": "소형 주력 함대"
+            }
+        ],
+        "year": null
+    },
+    "story-thinking-philosophy": {
+        "name": "story-thinking-philosophy",
+        "cues": [
+            "思维迷宫_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "思维迷宫_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-thinking-philosophy/%E6%80%9D%E7%BB%B4%E8%BF%B7%E5%AE%AB_AL.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
+            },
+            {
+                "kind": "event",
+                "label": "EP1-2 골목길의 이상 현상"
             }
         ],
         "year": null
@@ -14872,6 +15113,10 @@
                 "label": "찾아온 손님"
             },
             {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
+            },
+            {
                 "kind": "map",
                 "label": "T1 스위트 트랩"
             },
@@ -14900,12 +15145,8 @@
                 "label": "SP 아크 트라이얼"
             },
             {
-                "kind": "opsi",
-                "label": "소형 정찰함대"
-            },
-            {
-                "kind": "opsi",
-                "label": "중형 정찰함대"
+                "kind": "map",
+                "label": "A1 아이돌과 명탐정"
             }
         ],
         "year": 2026
@@ -14993,6 +15234,69 @@
         ],
         "year": null
     },
+    "story-whiterichard-chasing": {
+        "name": "story-whiterichard-chasing",
+        "cues": [
+            "构建潘多拉_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "构建潘多拉_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-whiterichard-chasing/%E6%9E%84%E5%BB%BA%E6%BD%98%E5%A4%9A%E6%8B%89_AL.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
+            },
+            {
+                "kind": "map",
+                "label": "B1 페이스 오프"
+            },
+            {
+                "kind": "map",
+                "label": "B2 순백과 칠흑"
+            },
+            {
+                "kind": "map",
+                "label": "B3 빗속의 꽃바다"
+            },
+            {
+                "kind": "map",
+                "label": "D1 페이스 오프"
+            },
+            {
+                "kind": "map",
+                "label": "D2 순백과 칠흑"
+            },
+            {
+                "kind": "map",
+                "label": "D3 빗속의 꽃바다"
+            },
+            {
+                "kind": "opsi",
+                "label": "소형 정찰함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "중형 정찰함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "대형 정찰함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "소형 주력함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "중형 주력함대"
+            }
+        ],
+        "year": null
+    },
     "story-worldα-brokenlight": {
         "name": "story-worldα-brokenlight",
         "cues": [
@@ -15012,6 +15316,10 @@
             {
                 "kind": "main",
                 "label": "추억의 잔향"
+            },
+            {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
             },
             {
                 "kind": "map",
@@ -15048,10 +15356,6 @@
             {
                 "kind": "opsi",
                 "label": "대형 정찰함대"
-            },
-            {
-                "kind": "opsi",
-                "label": "소형 주력함대"
             }
         ],
         "year": null
@@ -15780,6 +16084,41 @@
         ],
         "year": null
     },
+    "theme-commander-ally": {
+        "name": "theme-commander-ally",
+        "cues": [
+            "量子死域的重逢_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "量子死域的重逢_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-commander-ally/%E9%87%8F%E5%AD%90%E6%AD%BB%E5%9F%9F%E7%9A%84%E9%87%8D%E9%80%A2_PX.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
+            },
+            {
+                "kind": "opsi",
+                "label": "보스 함대"
+            },
+            {
+                "kind": "event",
+                "label": "EP7-2 각성"
+            },
+            {
+                "kind": "event",
+                "label": "EP8-1 아스트라리움의 전투"
+            },
+            {
+                "kind": "scene",
+                "label": "StarsCityCollectPage"
+            }
+        ],
+        "year": null
+    },
     "theme-dailyfuture": {
         "name": "theme-dailyfuture",
         "cues": [
@@ -16011,6 +16350,14 @@
             {
                 "kind": "main",
                 "label": "깨워라 창홍의 바람"
+            },
+            {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
+            },
+            {
+                "kind": "event",
+                "label": "EX-2 탐색자의 비밀"
             },
             {
                 "kind": "scene",
@@ -16729,8 +17076,16 @@
                 "label": "휘광의 성에서 피어나라"
             },
             {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
+            },
+            {
                 "kind": "map",
                 "label": "EXTRA 휘광의 성에서 피어나라"
+            },
+            {
+                "kind": "event",
+                "label": "EP8-5 혼란"
             },
             {
                 "kind": "scene",
@@ -17029,6 +17384,10 @@
             {
                 "kind": "main",
                 "label": "강철의 날개와 바람"
+            },
+            {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
             },
             {
                 "kind": "opsi",
@@ -17484,6 +17843,14 @@
                 "year": 2026
             },
             {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
+            },
+            {
+                "kind": "event",
+                "label": "EP5-9 광고 홍보 허가증"
+            },
+            {
                 "kind": "scene",
                 "label": "SardiniaSPMainPage"
             },
@@ -17539,20 +17906,71 @@
                 "label": "창공에 울리는 소리"
             },
             {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
+            },
+            {
+                "kind": "map",
+                "label": "EXTRA 「판도라의 소원」"
+            },
+            {
                 "kind": "map",
                 "label": "A2 파멸의 노래"
             },
             {
                 "kind": "map",
                 "label": "C2 파멸의 노래"
+            }
+        ],
+        "year": null
+    },
+    "theme-richard-white": {
+        "name": "theme-richard-white",
+        "cues": [
+            "Shining White Days_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "Shining White Days_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-richard-white/Shining%20White%20Days_AL.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
             },
             {
-                "kind": "opsi",
-                "label": "소형 정찰 함대"
+                "kind": "event",
+                "label": "EP2-2 아이돌과 팬클럽"
             },
             {
-                "kind": "opsi",
-                "label": "중형 정찰 함대"
+                "kind": "event",
+                "label": "EP2-4 사건 현장 조사"
+            },
+            {
+                "kind": "event",
+                "label": "EP3-3 도둑에 대한 정보"
+            },
+            {
+                "kind": "event",
+                "label": "EP4-3 퇴근 불가"
+            },
+            {
+                "kind": "event",
+                "label": "EP5-5 무대 설비 허가증"
+            },
+            {
+                "kind": "event",
+                "label": "EP5-6 P.M 광장"
+            },
+            {
+                "kind": "event",
+                "label": "EX-4 toTheAfter"
+            },
+            {
+                "kind": "scene",
+                "label": "StarsCityPtPage"
             }
         ],
         "year": null
@@ -18135,6 +18553,29 @@
         ],
         "year": null
     },
+    "theme-suihuoproject": {
+        "name": "theme-suihuoproject",
+        "cues": [
+            "燧火漫天_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "燧火漫天_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-suihuoproject/%E7%87%A7%E7%81%AB%E6%BC%AB%E5%A4%A9_AL.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
+            },
+            {
+                "kind": "event",
+                "label": "EX-3 연합 원정"
+            }
+        ],
+        "year": null
+    },
     "theme-summersky": {
         "name": "theme-summersky",
         "cues": [
@@ -18344,6 +18785,10 @@
             {
                 "kind": "main",
                 "label": "높은 탑의 장미"
+            },
+            {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
             }
         ],
         "year": null
@@ -18945,8 +19390,16 @@
                 "label": "높은 탑의 장미"
             },
             {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
+            },
+            {
                 "kind": "opsi",
                 "label": "META전"
+            },
+            {
+                "kind": "event",
+                "label": "EP7-1 두 번째 꿈"
             }
         ],
         "year": null
@@ -18996,6 +19449,10 @@
                 "label": "회점의 전조"
             },
             {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
+            },
+            {
                 "kind": "map",
                 "label": "SP 융설 탐색 구역"
             },
@@ -19006,10 +19463,6 @@
             {
                 "kind": "map",
                 "label": "D3 합창"
-            },
-            {
-                "kind": "opsi",
-                "label": "소형 정찰 함대"
             }
         ],
         "year": null
@@ -19034,6 +19487,10 @@
             {
                 "kind": "main",
                 "label": "성인 전의 동맹"
+            },
+            {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
             }
         ],
         "year": 2025
@@ -19435,6 +19892,10 @@
                 "label": "환몽 간주곡"
             },
             {
+                "kind": "main",
+                "label": "몽광의 아스트라리움"
+            },
+            {
                 "kind": "map",
                 "label": "μSP \"공명의 Passion SP\""
             },
@@ -19461,10 +19922,6 @@
             {
                 "kind": "opsi",
                 "label": "중형 주력 함대"
-            },
-            {
-                "kind": "opsi",
-                "label": "대형 주력 함대"
             }
         ],
         "year": 2023
