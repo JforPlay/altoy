@@ -62,7 +62,7 @@ test('clicking a tile walks the 육성 레벨 ladder and the 목록 view agrees'
     const card = cardFor(page, gid);
     const tile = card.locator('.lr-tile');
 
-    // Up to 풀돌 from a known floor: step down to 0 first so the test doesn't
+    // Up to Lv120 from a known floor: step down to 0 first so the test doesn't
     // depend on whatever localStorage held.
     for (let i = 0; i < 5; i++) await tile.click({ modifiers: ['Shift'] });
     await expect(card).toHaveAttribute('data-wall', '0');
@@ -71,15 +71,59 @@ test('clicking a tile walks the 육성 레벨 ladder and the 목록 view agrees'
     await tile.click();
     await expect(card).toHaveAttribute('data-wall', '1');
     await expect(card).toHaveAttribute('data-wall-owned', '1');
+
+    // Rung 1 is 보유 alone — 풀돌 is off this ladder, so the step must not have
+    // set it. Checked here rather than at the top rung, where the forward rule
+    // legitimately turns all three on and the assertion would not discriminate.
+    await page.locator('#view-toggle-btn').click();
+    await expect(page.locator('#ship-list-container')).toHaveAttribute('data-view', 'ledger');
+    await expect(card.locator('[data-type="get"]')).toBeChecked();
+    await expect(card.locator('[data-type="upgrade"]')).not.toBeChecked();
+    await expect(card.locator('[data-type="level"]')).not.toBeChecked();
+
+    // Back to 요약 and up one more: rung 2 IS Lv120, and entering it from below
+    // applies the same forward rule the Lv120 checkbox does.
+    await page.locator('#view-toggle-btn').click();
+    await page.locator('#view-toggle-btn').click();
+    await expect(page.locator('#ship-list-container')).toHaveAttribute('data-view', 'wall');
     await tile.click();
     await expect(card).toHaveAttribute('data-wall', '2');
 
     // The wall wrote through to the shared card DOM, not to a private store.
     await page.locator('#view-toggle-btn').click();
-    await expect(page.locator('#ship-list-container')).toHaveAttribute('data-view', 'ledger');
     await expect(card.locator('[data-type="get"]')).toBeChecked();
     await expect(card.locator('[data-type="upgrade"]')).toBeChecked();
-    await expect(card.locator('[data-type="level"]')).not.toBeChecked();
+    await expect(card.locator('[data-type="level"]')).toBeChecked();
+});
+
+test('unchecking 풀돌 leaves Lv120 and the 성정 유닛 cap standing', async ({ page }) => {
+    // The headline of the decoupling: META / UR / research PR/DR ships reach
+    // Lv120 without 한계돌파. The pure rules are node-tested; this covers the
+    // DOM path they run through (handleCheckboxLogic -> coupleCardAfterChange
+    // -> renderInvestmentCells), which those tests cannot see.
+    await bootWall(page);
+    const gid = await firstGid(page);
+    const card = cardFor(page, gid);
+    await page.locator('#view-toggle-btn').click();   // → 목록
+    await expect(page.locator('#ship-list-container')).toHaveAttribute('data-view', 'ledger');
+
+    const cap120 = card.locator('[data-action="cap"][data-break="4"]');
+    const upgrade = card.locator('[data-type="upgrade"]');
+    await card.locator('[data-type="level"]').check();
+    await expect(upgrade).toBeChecked();                       // forward rule
+    await expect(cap120).toHaveAttribute('aria-pressed', 'true');
+
+    await upgrade.uncheck();
+    await expect(upgrade).not.toBeChecked();
+    await expect(card.locator('[data-type="level"]')).toBeChecked();
+    await expect(cap120).toHaveAttribute('aria-pressed', 'true');
+
+    // Survives a reload, i.e. it was persisted rather than only left in the DOM.
+    await page.reload();
+    await expect(page.locator('#ship-list-container .ship-card').first()).toBeVisible();
+    const reloaded = cardFor(page, gid);
+    await expect(reloaded.locator('[data-type="upgrade"]')).not.toBeChecked();
+    await expect(reloaded.locator('[data-type="level"]')).toBeChecked();
 });
 
 test('top of the ladder clamps and lights the 완료 colour', async ({ page }) => {
@@ -88,7 +132,7 @@ test('top of the ladder clamps and lights the 완료 colour', async ({ page }) =
     const card = cardFor(page, gid);
     const tile = card.locator('.lr-tile');
     for (let i = 0; i < 6; i++) await tile.click();
-    await expect(card).toHaveAttribute('data-wall', '4');
+    await expect(card).toHaveAttribute('data-wall', '3');
     await expect(card).toHaveAttribute('data-wall-top', '1');
     // Lv125 is cap 5, which the 육성 레벨 bar shows as both stops lit.
     await page.locator('#view-toggle-btn').click();
@@ -101,7 +145,7 @@ test('지표 toggle re-reads every tile against a different ladder', async ({ pa
     const card = cardFor(page, gid);
     const tile = card.locator('.lr-tile');
     for (let i = 0; i < 6; i++) await tile.click();
-    await expect(card).toHaveAttribute('data-wall', '4');   // 육성 레벨 maxed
+    await expect(card).toHaveAttribute('data-wall', '3');   // 육성 레벨 maxed
 
     // The accent is stamped on the grid AND the 지표 bar (siblings), so the tile
     // bars and the filled toggle segment resolve the same hue.
@@ -120,7 +164,8 @@ test('지표 toggle re-reads every tile against a different ladder', async ({ pa
     // ...but ownership is metric-independent, so it is NOT greyed.
     await expect(card).toHaveAttribute('data-wall-owned', '1');
 
-    // Stepping now writes 스작, and its ladder has 4 rungs, not 5.
+    // Stepping now writes 스작 — a different field, read and written through
+    // the same tile.
     for (let i = 0; i < 5; i++) await tile.click();
     await expect(card).toHaveAttribute('data-wall', '3');
     await expect(card).toHaveAttribute('data-wall-top', '1');
@@ -144,10 +189,10 @@ test('sort is descending, order-only, and holds still between presses', async ({
                 owned: c.dataset.wallOwned === '1',
             })));
     expect(ranks.length).toBeGreaterThan(50);
-    // order = (max - value) * 2 + (미획득 ? 1 : 0): a higher 지표 value never
+    // order = (max - value) * 2 + (미획득 ? 1 : 0), max 3 for 육성 레벨: a higher 지표 value never
     // sorts later, and an unowned ship never outranks an owned one that ties it.
     for (const { order, wall, owned } of ranks) {
-        expect(order).toBe((4 - wall) * 2 + (owned ? 0 : 1));
+        expect(order).toBe((3 - wall) * 2 + (owned ? 0 : 1));
     }
 
     // Stepping does NOT re-sort — the tile must stay put mid-sweep.
@@ -231,6 +276,6 @@ test('booting straight into a stored 요약 pref arrives sorted', async ({ page 
             })));
     expect(ranks.every(r => r.order !== '')).toBe(true);
     for (const { order, wall, owned } of ranks) {
-        expect(Number(order)).toBe((4 - wall) * 2 + (owned ? 0 : 1));
+        expect(Number(order)).toBe((3 - wall) * 2 + (owned ? 0 : 1));
     }
 });

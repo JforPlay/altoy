@@ -7,7 +7,7 @@
  */
 
 import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeModal, setupModal, showElement, hideElement, syncedStorage, escapeHtml, RARITY_TIERS_DESC as rarityOrder, requireElements, renderStatus, loadPageData, setupDropdown } from '../utils.js';
-import { parseInvestment, investedCost, sumInvestment, rosterTotal, applyCapChange, applyMaskChange, progressRung, stepRung, AFF_LABELS, SKL_LABELS, RUNG_LABELS, MEMO_MAX } from './tracker-investment.js';
+import { parseInvestment, investedCost, sumInvestment, rosterTotal, applyCapChange, applyMaskChange, progressRung, stepRung, PROGRESS_RUNGS, AFF_LABELS, SKL_LABELS, RUNG_LABELS, MEMO_MAX } from './tracker-investment.js';
 import { setupSheetImport } from './tracker-sheet-io.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
 import { createStatusMenu } from './shipgirl-tracker.status-menu.js';
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // write inv.skl/inv.aff through setInv, so the tile just reaches the same
     // setter with a different gesture.
     const WALL_METRICS = {
-        lv:  { name: '육성 레벨', max: 4, labels: RUNG_LABELS,
+        lv:  { name: '육성 레벨', max: PROGRESS_RUNGS.length - 1, labels: RUNG_LABELS,
                read: (mask, rec) => progressRung(mask, rec.cap || 0) },
         skl: { name: '스작',      max: 3, labels: SKL_LABELS,
                read: (mask, rec) => rec.skl || 0 },
@@ -1734,7 +1734,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (action.type === 'all' && !action.state) {
                     message += ` '모두 체크 해제' 실행 시 상한 해제(성정 유닛) 기록도 초기화됩니다.`;
                 } else if (action.type === 'level' && action.state) {
-                    message += ` '모두 Lv120 체크' 실행 시 상한 해제(성정 유닛) 기록도 Lv120(4돌파)으로 함께 설정됩니다.`;
+                    message += ` '모두 Lv120 체크' 실행 시 상한 해제(성정 유닛) 기록도 Lv120(4돌파)으로, 풀돌도 함께 설정됩니다. 풀돌 없이 Lv120인 함순이(META/UR/연구)는 이후 풀돌만 따로 해제해 주세요.`;
                 }
                 showConfirmationModal(message, () => bulkCheck(action.type, action.state));
             };

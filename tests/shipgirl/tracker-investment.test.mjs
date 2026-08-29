@@ -5,7 +5,7 @@ import {
     BREAK_LEVELS, applyCapChange, applyMaskChange, MEMO_MAX,
     PROGRESS_RUNGS, RUNG_LABELS, progressRung, stepRung,
 } from '../../public/js/shipgirl/tracker-investment.js';
-import { SHEET_PROGRESS } from '../../public/js/shipgirl/tracker-sheet-codec.js';
+import { SHEET_PROGRESS, SHEET_STATES } from '../../public/js/shipgirl/tracker-sheet-codec.js';
 
 test('parseInvestment: null/array/garbage -> {}', () => {
     assert.deepEqual(parseInvestment(null), {});
@@ -73,23 +73,24 @@ test('BREAK_LEVELS is the exported 5-break ladder', () => {
     assert.deepEqual(BREAK_LEVELS, [105, 110, 115, 120, 125]);
 });
 
-test('applyCapChange: cap>=1 forces get+upgrade; cap>=4 sets level, cap<4 clears it', () => {
+test('applyCapChange: cap>=1 forces get; cap>=4 sets level+풀돌, cap<4 clears level', () => {
     assert.deepEqual(applyCapChange(5, 4), { mask: 7, cap: 4 }); // 120 cap == Lv120 달성
     assert.deepEqual(applyCapChange(0, 5), { mask: 7, cap: 5 });
-    assert.deepEqual(applyCapChange(0, 2), { mask: 5, cap: 2 });
-    assert.deepEqual(applyCapChange(7, 3), { mask: 5, cap: 3 }); // level bit cleared
+    assert.deepEqual(applyCapChange(0, 2), { mask: 1, cap: 2 }); // partial cap: 보유 only
+    assert.deepEqual(applyCapChange(7, 3), { mask: 5, cap: 3 }); // level bit cleared, 풀돌 kept
     assert.deepEqual(applyCapChange(7, 4), { mask: 7, cap: 4 });
     assert.deepEqual(applyCapChange(5, 0), { mask: 5, cap: 0 }); // 풀돌 stays
+    // Clearing the cap never clears 풀돌 — the two are independent facts now.
+    assert.deepEqual(applyCapChange(3, 0), { mask: 1, cap: 0 });
 });
 
 test('applyMaskChange couples per changed control', () => {
-    // check 120 달성 -> cap>=4, get+upgrade forced
+    // check 120 달성 -> cap>=4, get+upgrade forced (the forward rule)
     assert.deepEqual(applyMaskChange(2, 0, 'level', true), { mask: 7, cap: 4 });
     assert.deepEqual(applyMaskChange(7, 5, 'level', true), { mask: 7, cap: 5 }); // cap 5 kept
-    // uncheck 120 달성 -> cap untouched
-    assert.deepEqual(applyMaskChange(5, 4, 'level', false), { mask: 5, cap: 4 });
-    // uncheck 풀돌 -> cap 0, level cleared
-    assert.deepEqual(applyMaskChange(3, 4, 'upgrade', false), { mask: 1, cap: 0 });
+    // uncheck 120 달성 -> the 유닛 breaks that bought it go with it
+    assert.deepEqual(applyMaskChange(5, 4, 'level', false), { mask: 5, cap: 0 });
+    assert.deepEqual(applyMaskChange(5, 0, 'level', false), { mask: 5, cap: 0 });
     // uncheck 보유 -> everything down (caller already cleared level/upgrade bits)
     assert.deepEqual(applyMaskChange(0, 3, 'get', false), { mask: 0, cap: 0 });
     // plain checks don't invent caps
@@ -97,49 +98,104 @@ test('applyMaskChange couples per changed control', () => {
     assert.deepEqual(applyMaskChange(5, 0, 'upgrade', true), { mask: 5, cap: 0 });
 });
 
+test('풀돌 is orthogonal: unchecking it leaves Lv120 and the cap alone', () => {
+    // The whole point. A META/UR/PR ship reaches Lv120 without 한계돌파, so
+    // dropping 풀돌 must not drop the level bit or the 성정 유닛 record with it.
+    assert.deepEqual(applyMaskChange(3, 4, 'upgrade', false), { mask: 3, cap: 4 });
+    assert.deepEqual(applyMaskChange(3, 5, 'upgrade', false), { mask: 3, cap: 5 });
+    // ...and that state survives any later touch on another control.
+    assert.deepEqual(applyMaskChange(3, 4, 'get', true), { mask: 3, cap: 4 });
+    assert.equal(progressRung(3, 4), 2); // still reads Lv120
+});
+
+test('a level bit with no cap survives — research-tracker interop', () => {
+    // research-tracker.js writes the same 3-bit mask but never writes a cap, so
+    // a Lv120 set there arrives here as {mask:3, cap:0}. It used to be wiped by
+    // the trailing `if (cap < 4) mask &= ~LEVEL`; nothing may clear it now.
+    for (const type of ['get', 'upgrade']) {
+        assert.deepEqual(applyMaskChange(3, 0, type, true), { mask: 3, cap: 0 }, type);
+    }
+    assert.equal(progressRung(3, 0), 2);
+});
+
 // ===== 요약 wall ladder =====
 
-test('PROGRESS_RUNGS is the single ladder the sheet codec also speaks', () => {
-    // One rung per sheet value. If these ever diverge, importing "120" and
-    // clicking the 120 stop stop meaning the same thing — the exact bug the
-    // shared table exists to prevent.
-    assert.equal(PROGRESS_RUNGS.length, SHEET_PROGRESS.length);
+test('PROGRESS_RUNGS is the level axis the sheet codec composes over', () => {
+    // The rungs measure level only; the sheet's 5 values are (rung × 풀돌)
+    // pairs. If SHEET_STATES ever names a rung the table doesn't have,
+    // importing "120" and clicking the 120 stop stop meaning the same thing —
+    // the exact bug the shared table exists to prevent.
     assert.equal(RUNG_LABELS.length, PROGRESS_RUNGS.length);
+    assert.equal(SHEET_STATES.length, SHEET_PROGRESS.length);
+    SHEET_STATES.forEach(({ rung }, i) => {
+        assert.ok(PROGRESS_RUNGS[rung], `sheet value ${SHEET_PROGRESS[i]} -> rung ${rung}`);
+    });
     // Every rung round-trips through progressRung.
     PROGRESS_RUNGS.forEach(({ mask, cap }, i) => {
         assert.equal(progressRung(mask, cap), i, `rung ${i}`);
     });
 });
 
-test('progressRung: reads off-ladder state by export priority', () => {
+test('the sheet still imports its five values to the masks it always did', () => {
+    // The sheet is import-only and stays unchanged, so this mapping is frozen:
+    // 미획득 / 획득 / 풀돌 / 120 / 125.
+    const composed = SHEET_STATES.map(({ rung, upgrade }) => ({
+        mask: PROGRESS_RUNGS[rung].mask | (upgrade ? 4 : 0),
+        cap: PROGRESS_RUNGS[rung].cap,
+    }));
+    assert.deepEqual(composed, [
+        { mask: 0, cap: 0 },
+        { mask: 1, cap: 0 },
+        { mask: 5, cap: 0 },
+        { mask: 7, cap: 4 },
+        { mask: 7, cap: 5 },
+    ]);
+});
+
+test('progressRung: level axis only, tolerant of off-ladder state', () => {
     assert.equal(progressRung(0, 0), 0);
     assert.equal(progressRung(1, 0), 1);          // 보유
-    assert.equal(progressRung(5, 0), 2);          // 풀돌
-    assert.equal(progressRung(7, 4), 3);          // Lv120
-    assert.equal(progressRung(7, 5), 4);          // Lv125
-    // Caps 1-3 are unsettable in the UI but importable — they read as 풀돌,
-    // never as a rung of their own and never off the ladder.
-    assert.equal(progressRung(5, 1), 2);
-    assert.equal(progressRung(5, 3), 2);
-    // cap 5 wins over a missing level bit; a cap-4 record without it does not.
-    assert.equal(progressRung(5, 5), 4);
-    assert.equal(progressRung(5, 4), 2);
+    assert.equal(progressRung(5, 0), 1);          // 풀돌 is off the ladder -> still 보유
+    assert.equal(progressRung(7, 4), 2);          // Lv120
+    assert.equal(progressRung(7, 5), 3);          // Lv125
+    assert.equal(progressRung(3, 4), 2);          // Lv120 without 풀돌 — the new state
+    // Caps 1-3 are unsettable in the UI but importable; they buy no rung.
+    assert.equal(progressRung(5, 1), 1);
+    assert.equal(progressRung(5, 3), 1);
+    // The Lv120 weld reads from either side, so a legacy record missing one
+    // half still lands on its rung instead of falling off the ladder.
+    assert.equal(progressRung(5, 4), 2);          // cap, no level bit
+    assert.equal(progressRung(3, 0), 2);          // level bit, no cap
+    assert.equal(progressRung(5, 5), 3);
     // Tolerates a missing cap entirely (undefined/null records).
     assert.equal(progressRung(1, undefined), 1);
-    assert.equal(progressRung(7, null), 3);
+    assert.equal(progressRung(7, null), 2);
 });
 
 test('stepRung: clamps at both ends and lands on canonical state', () => {
     assert.deepEqual(stepRung(0, 0, 1), { mask: 1, cap: 0, rung: 1 });
-    assert.deepEqual(stepRung(5, 0, 1), { mask: 7, cap: 4, rung: 3 });
-    assert.deepEqual(stepRung(7, 4, 1), { mask: 7, cap: 5, rung: 4 });
-    assert.deepEqual(stepRung(7, 5, 1), { mask: 7, cap: 5, rung: 4 }); // clamped at top
-    assert.deepEqual(stepRung(7, 5, -1), { mask: 7, cap: 4, rung: 3 });
+    assert.deepEqual(stepRung(1, 0, 1), { mask: 7, cap: 4, rung: 2 });
+    assert.deepEqual(stepRung(7, 4, 1), { mask: 7, cap: 5, rung: 3 });
+    assert.deepEqual(stepRung(7, 5, 1), { mask: 7, cap: 5, rung: 3 }); // clamped at top
+    assert.deepEqual(stepRung(7, 5, -1), { mask: 7, cap: 4, rung: 2 });
     assert.deepEqual(stepRung(0, 0, -1), { mask: 0, cap: 0, rung: 0 }); // clamped at bottom
-    // Stepping is what normalises an off-ladder cap: 110 reads as 풀돌, so up
-    // lands on Lv120 and drops the orphan cap rather than preserving it.
-    assert.deepEqual(stepRung(5, 2, 1), { mask: 7, cap: 4, rung: 3 });
-    assert.deepEqual(stepRung(5, 2, -1), { mask: 1, cap: 0, rung: 1 });
+    // Stepping normalises an off-ladder cap: 110 buys no rung, so up lands on
+    // Lv120 and drops the orphan cap rather than preserving it.
+    assert.deepEqual(stepRung(5, 2, 1), { mask: 7, cap: 4, rung: 2 });
+    assert.deepEqual(stepRung(5, 2, -1), { mask: 0, cap: 0, rung: 0 });
+});
+
+test('stepRung carries 풀돌 through, adds it going up into Lv120, clears it at 미획득', () => {
+    // A META ship the user deliberately un-풀돌'd must survive a wall sweep in
+    // both directions — trampling that is the bug the 4-rung ladder exists to
+    // avoid. mask 3 = 보유+Lv120, no 풀돌.
+    assert.deepEqual(stepRung(3, 4, -1), { mask: 1, cap: 0, rung: 1 }); // down: preserved
+    assert.deepEqual(stepRung(3, 4, 1), { mask: 3, cap: 5, rung: 3 });  // up:   preserved
+    assert.deepEqual(stepRung(3, 5, -1), { mask: 3, cap: 4, rung: 2 }); // 125 -> 120
+    // Entering Lv120 from below applies the same forward rule the checkbox does.
+    assert.deepEqual(stepRung(1, 0, 1), { mask: 7, cap: 4, rung: 2 });
+    // 미획득 clears everything — an unowned ship cannot be 풀돌.
+    assert.deepEqual(stepRung(5, 0, -1), { mask: 0, cap: 0, rung: 0 });
 });
 
 test('stepRung never mutates or aliases the shared table', () => {
@@ -150,13 +206,17 @@ test('stepRung never mutates or aliases the shared table', () => {
     assert.equal(JSON.stringify(PROGRESS_RUNGS), before);
 });
 
-test('every rung is a fixed point of applyCapChange', () => {
+test('every rung is a fixed point of applyCapChange on the level axis', () => {
     // The wall lands directly on PROGRESS_RUNGS states; the 육성 레벨 bar routes
     // the same states through applyCapChange. A rung that is not a fixed point
     // would make the two controls disagree about the same ship.
+    // applyCapChange may only ADD the 풀돌 bit (the forward rule); it may never
+    // change the rung or the cap.
+    const UPGRADE = 4;
     PROGRESS_RUNGS.forEach(({ mask, cap }, i) => {
         const coupled = applyCapChange(mask, cap);
-        assert.deepEqual(coupled, { mask, cap }, `rung ${i}`);
+        assert.equal(coupled.cap, cap, `rung ${i} cap`);
+        assert.equal(coupled.mask & ~UPGRADE, mask, `rung ${i} level bits`);
         assert.equal(progressRung(coupled.mask, coupled.cap), i, `rung ${i} round-trip`);
     });
 });

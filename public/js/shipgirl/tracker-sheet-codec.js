@@ -37,11 +37,27 @@ export const SHEET_SKL = ['스작 안함', '스작 예정', '스작 진행중', 
 const LEGACY_AFF = ['호감작'];
 const LEGACY_SKL = ['스작', '스작 예정', '스작 중', '스작 완료'];
 
-// Progress ladder → the FROZEN 3-bit mask (get=1, level=2, upgrade=4, shared
-// with research-tracker/fleet-sim) plus the cap it implies. IMPORTED, not
-// declared here: the wall's step gesture walks the same five states, and a
-// second copy is how the two drifted apart before. Only the display strings
-// above stay local — the sheet says 획득 where the site says 보유.
+// The 풀돌 bit of the FROZEN mask (get=1, level=2, upgrade=4).
+const UPGRADE = 4;
+
+/**
+ * SHEET_PROGRESS → that mask plus the cap it implies, expressed as a
+ * (level rung × 풀돌) pair. The rung indexes PROGRESS_RUNGS — IMPORTED, not
+ * re-declared, because the wall's step gesture walks the same level axis and a
+ * second copy is how the two drifted apart before.
+ *
+ * The pair, rather than a plain rung, is what lets 풀돌 be orthogonal on the
+ * site while the sheet keeps its single 5-value column. The sheet is
+ * import-only and stays as it is, so a sheet row saying `120` still sets 풀돌 —
+ * a user who cleared it on a META/UR/PR ship re-clears it after each import.
+ */
+export const SHEET_STATES = [
+    { rung: 0, upgrade: false },    // 미획득
+    { rung: 1, upgrade: false },    // 획득
+    { rung: 1, upgrade: true },     // 풀돌
+    { rung: 2, upgrade: true },     // 120
+    { rung: 3, upgrade: true },     // 125
+];
 
 // Sheet ID prefixes → dex band offset. Plain digits are the dex id as-is.
 const ID_BANDS = { Z: 10000, P: 20000, M: 30000 };
@@ -207,7 +223,11 @@ export function parseSheet(text, { ships } = {}) {
         if (progress) {
             const idx = PROGRESS_INDEX.get(squash(progress).toLowerCase());
             if (idx === undefined) bad = `획득/육성 여부 값을 알 수 없습니다: ${progress}`;
-            else { mask = PROGRESS_RUNGS[idx].mask; inv.cap = PROGRESS_RUNGS[idx].cap; }
+            else {
+                const { rung, upgrade } = SHEET_STATES[idx];
+                mask = PROGRESS_RUNGS[rung].mask | (upgrade ? UPGRADE : 0);
+                inv.cap = PROGRESS_RUNGS[rung].cap;
+            }
         }
 
         for (const [key, index, label] of [['skl', SKL_INDEX, '스작'], ['aff', AFF_INDEX, '호감작']]) {

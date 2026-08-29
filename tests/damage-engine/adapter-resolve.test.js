@@ -2,7 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { barrageBulletCount, attackAttributeKey, resolveWeaponDescriptor, mergeWeaponWithBase, effectiveProficiency,
-  salvosBySlot, activeBarrageSkillIds, hasFateSimulation, cadenceLabel, resolveBarrageDescriptors }
+  salvosBySlot, activeBarrageSkillIds, hasFateSimulation, cadenceLabel, resolveBarrageDescriptors, attachedSPBarrageIds }
   from '../../public/js/simulators/fleet-sim.damage.js';
 
 const approxArr = (a, b, eps = 1e-9) => a.length === b.length && a.every((x, i) => Math.abs(x - b[i]) < eps);
@@ -315,4 +315,24 @@ test('resolveBarrageDescriptors fails safe when getBarrageSkill is not callable 
   });
   assert.deepEqual(descriptors, []);
   assert.equal(unmodeled, 2);
+});
+
+test('attachedSPBarrageIds dedupes the per-level ladder and skips the ship own skills', () => {
+  // 10703's shape: the same pair repeated once per enhancement level, descending cooldown.
+  const ship = {
+    skill: { 14170: { weapon_true: true }, 14180: { weapon_true: true, requirement: 'Retrofit' } },
+    sp_weapon: {
+      attached_weapon_skill_id: [
+        { id: 1090141, time: 20 }, { id: 1090142, time: 20 },
+        { id: 1090141, time: 10 }, { id: 1090142, time: 10 },
+        { id: 14170 },   // already in ship.skill — activeBarrageSkillIds owns it
+      ],
+    },
+  };
+  assert.deepEqual(attachedSPBarrageIds(ship), ['1090141', '1090142']);
+  assert.deepEqual(attachedSPBarrageIds({ skill: {} }), []);
+  // 드레이크: one attached id, not among her own skills.
+  assert.deepEqual(
+    attachedSPBarrageIds({ skill: { 19300: {}, 18300: {} }, sp_weapon: { attached_weapon_skill_id: [{ id: 1019301, time: 10 }] } }),
+    ['1019301']);
 });

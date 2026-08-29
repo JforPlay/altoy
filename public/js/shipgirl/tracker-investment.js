@@ -22,24 +22,30 @@ export const MEMO_MAX = 500;
 const GET = 1, LEVEL = 2, UPGRADE = 4;
 
 /**
- * The one progress ladder, as (mask, cap) pairs. The sheet codec IMPORTS this
- * rather than declaring its own copy — the sheet's 미획득/획득/풀돌/120/125
- * column and the 요약 wall's step gesture are the same five states, and they
- * silently disagreed once already (importing `120` set the Lv120 bit; clicking
- * the 120 cap stop did not). Keep them one table.
+ * The one progress ladder, as (mask, cap) pairs. It measures the LEVEL axis
+ * only — 풀돌 is deliberately not a rung.
+ *
+ * 성정 유닛 is what buys Lv100→125 and every ship pays it, so `LEVEL bit ⟺
+ * cap >= 4` is a real identity and stays welded. 한계돌파 is not: META / UR /
+ * research PR/DR ships reach Lv100 without it, so a 풀돌-less Lv120 is a
+ * legitimate state and 풀돌 rides beside this table as an independent bit.
+ *
+ * The sheet codec still IMPORTS this rather than declaring its own copy — its
+ * five values are (rung × 풀돌) pairs composed over these four (SHEET_STATES in
+ * tracker-sheet-codec.js). They silently disagreed once already (importing
+ * `120` set the Lv120 bit; clicking the 120 cap stop did not). Keep one table.
  */
 export const PROGRESS_RUNGS = [
-    { mask: 0, cap: 0 },                        // 미획득
-    { mask: GET, cap: 0 },                      // 보유
-    { mask: GET | UPGRADE, cap: 0 },            // 풀돌
-    { mask: GET | UPGRADE | LEVEL, cap: 4 },    // Lv120
-    { mask: GET | UPGRADE | LEVEL, cap: 5 },    // Lv125
+    { mask: 0, cap: 0 },                // 미획득
+    { mask: GET, cap: 0 },              // 보유
+    { mask: GET | LEVEL, cap: 4 },      // Lv120
+    { mask: GET | LEVEL, cap: 5 },      // Lv125
 ];
 
 // Site wording for the rungs above — deliberately NOT the sheet's vocabulary
 // (the site says 보유 where the sheet says 획득), which is why the codec keeps
 // its own display strings while sharing the state table.
-export const RUNG_LABELS = ['미획득', '보유', '풀돌', 'Lv120', 'Lv125'];
+export const RUNG_LABELS = ['미획득', '보유', 'Lv120', 'Lv125'];
 
 // 성정 유닛(u1, item 15008) / 유닛II(u2, item 15012) per break, by rarity.
 // Source: AzurLaneLuaScripts KR sharecfg/ship_level.lua need_item_rarity2..6
@@ -137,28 +143,35 @@ export function rosterTotal(rarityByGid, capLimit = 5) {
     return { u1, u2 };
 }
 
-/** Coupling after the cap changed: breaks require MLB (풀돌+보유); the 120 cap and the
- *  Lv120 달성 bit are the same fact, so they move together in both directions. */
+/**
+ * Coupling after the cap changed. The 120 cap and the Lv120 달성 bit are the
+ * same fact, so they move together in both directions. 풀돌 only ever gets
+ * ADDED — reaching Lv120 implies it for the ~778 ordinary ships, and a user who
+ * cleared it on a META/UR/PR ship must not have it put back by an unrelated
+ * cap edit.
+ */
 export function applyCapChange(mask, newCap) {
     let m = mask;
-    if (newCap >= 1) m |= 5;       // get + upgrade
-    if (newCap >= 4) m |= 2;       // level on — a 120 cap IS Lv120 reached
-    else m &= ~2;                  // level off
+    if (newCap >= 1) m |= GET;
+    if (newCap >= 4) m |= GET | UPGRADE | LEVEL;
+    else m &= ~LEVEL;
     return { mask: m, cap: newCap };
 }
 
 /**
- * Which rung a ship sits on, tolerant of off-ladder state — the same priority
- * the sheet export uses. A cap of 1-3 (Lv105/110/115) has been unsettable since
- * the 육성 레벨 bar narrowed to 120/125, but older imports still carry it; it
- * reads as 풀돌 rather than falling off the ladder, and normalises on the next
- * step. Cap wins over the level bit only at 5, so a corrupt cap-4-without-level
- * record also degrades to the highest rung its mask actually justifies.
+ * Which rung a ship sits on, tolerant of off-ladder state. 풀돌 buys no rung —
+ * it is off this ladder — so a 풀돌-only record still reads 보유.
+ *
+ * The Lv120 weld is read from EITHER side so a record missing one half still
+ * lands on its rung: research-tracker.js writes the level bit but never a cap,
+ * and legacy imports can carry a cap with no bit. A cap of 1-3 (Lv105/110/115)
+ * has been unsettable since the 육성 레벨 bar narrowed to 120/125 — it buys no
+ * rung and normalises on the next step.
  */
 export function progressRung(mask, cap) {
-    if ((cap || 0) >= 5) return 4;
-    if (mask & LEVEL) return 3;
-    if (mask & UPGRADE) return 2;
+    const c = cap || 0;
+    if (c >= 5) return 3;
+    if (c >= 4 || (mask & LEVEL)) return 2;
     if (mask & GET) return 1;
     return 0;
 }
@@ -168,29 +181,44 @@ export function progressRung(mask, cap) {
  * state for the landing rung, so stepping is also what normalises an
  * off-ladder record. `rung` is returned so callers can detect a no-op at the
  * ends without recomputing.
+ *
+ * 풀돌 is off this ladder, so it rides every step untouched — trampling a
+ * deliberately un-풀돌'd META/UR/PR ship is exactly what the wall's sweep
+ * gesture must not do. Two exceptions: 미획득 clears it (an unowned ship cannot
+ * be 풀돌), and stepping UP into Lv120 from below applies the same forward rule
+ * the Lv120 checkbox does.
  */
 export function stepRung(mask, cap, dir) {
+    const from = progressRung(mask, cap);
     const rung = Math.min(
         PROGRESS_RUNGS.length - 1,
-        Math.max(0, progressRung(mask, cap) + (dir > 0 ? 1 : -1)));
-    return { ...PROGRESS_RUNGS[rung], rung };
+        Math.max(0, from + (dir > 0 ? 1 : -1)));
+    let upgrade = mask & UPGRADE;
+    if (rung === 0) upgrade = 0;
+    else if (rung >= 2 && from < 2) upgrade = UPGRADE;
+    return { mask: PROGRESS_RUNGS[rung].mask | upgrade, cap: PROGRESS_RUNGS[rung].cap, rung };
 }
 
 /**
  * Coupling after a progress checkbox changed. `mask` already reflects the change
  * (and handleCheckboxLogic's existing get-cascade). Rules:
- * - 120 달성 checked -> cap at least 4, MLB forced.
- * - 풀돌 or 보유 cleared -> no breaks possible -> cap 0 (which clears 120 달성).
+ * - Lv120 checked   -> cap at least 4, 보유+풀돌 forced (the forward rule: true
+ *                      for the ~778 ordinary ships, and the exceptions uncheck
+ *                      풀돌 afterwards, which now sticks).
+ * - Lv120 unchecked -> the 유닛 breaks that bought it go with it.
+ * - 보유 unchecked   -> no breaks possible -> cap 0.
+ *
+ * 풀돌 unchecked touches NOTHING else. That is the whole point: it is not a
+ * prerequisite for Lv120 on META / UR / research PR/DR ships. The old trailing
+ * `if (c < 4) m &= ~LEVEL` is gone with it — it silently wiped the Lv120 bit
+ * that research-tracker.js sets without a cap.
  */
 export function applyMaskChange(mask, cap, changedType, nowChecked) {
     let m = mask, c = cap;
-    if (changedType === 'level' && nowChecked) {
-        c = Math.max(c, 4);
-        m |= 5;
+    if (changedType === 'level') {
+        if (nowChecked) { c = Math.max(c, 4); m |= GET | UPGRADE; }
+        else if (c >= 4) c = 0;
     }
-    if ((changedType === 'upgrade' || changedType === 'get') && !nowChecked) {
-        c = 0;
-    }
-    if (c < 4) m &= ~2;
+    if (changedType === 'get' && !nowChecked) c = 0;
     return { mask: m, cap: c };
 }

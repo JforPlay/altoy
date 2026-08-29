@@ -249,7 +249,10 @@ export function resolveBarrageDescriptors(skillIds, deps) {
             const d = resolveWeaponDescriptor(weapon, deps.stats, {
                 getBarrage: deps.getBarrage,
                 getBullet: deps.getBullet,
-                label: `탄막 · ${rec.n}`,
+                // All 89 blank-name records are 전용 장비-attached skills: they have no
+                // `skill_data_template` entry at all (skill_1019301.lua is effects only),
+                // so the game itself has no name to show and the label belongs here.
+                label: `탄막 · ${rec.n || '전용 장비'}`,
                 mountCount: 1,      // the barrage expansion IS the bullet count
                 potential: 1,       // not equipment — no slot proficiency
                 reloadMaxOverride: 0,
@@ -529,7 +532,12 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageB
     const { weapons, airReloadMax } = _resolveEquippedWeapons(slotConfig, shipType, stats, baseList, prof, preload, defaults);
 
     // Barrage skills the ship actually has active. Two filters, and BOTH matter.
-    const skillIds = activeBarrageSkillIds(ship, useRetrofit, slotConfig.fate !== false);
+    // Plus the ones its 전용 장비 attaches — granted by the DEDICATED weapon only, so a
+    // generic SP weapon in that slot, or an emptied slot, grants nothing.
+    const dedicated = _data.getDedicatedSPWeapon(ship.gid);
+    const spEquipped = !!dedicated && Number(slotConfig.spWeapon?.id) === Number(dedicated.id);
+    const skillIds = activeBarrageSkillIds(ship, useRetrofit, slotConfig.fate !== false)
+        .concat(spEquipped ? attachedSPBarrageIds(ship) : []);
     const airstrikes = airReloadMax > 0
         ? _engine.countSalvos(_engine.calculateReloadTime(airReloadMax, stats.reload), 0, window)
         : 0;
@@ -599,6 +607,33 @@ export function liveSkillIds(ship, useRetrofit, useFate = true) {
 export function activeBarrageSkillIds(ship, useRetrofit, useFate = true) {
     const skills = ship?.skill || {};
     return liveSkillIds(ship, useRetrofit, useFate).filter((sid) => skills[sid].weapon_true);
+}
+
+/**
+ * Barrage skills the 전용 장비 ATTACHES on top of the ship's own list
+ * (`attached_weapon_skill_id`). Unlike `skill_upgrade` this one reaches the browser
+ * intact, so it needs nothing from the pipeline — but the raw field has two traps:
+ *
+ *  - it REPEATS once per enhancement level with a descending cooldown (10703 lists
+ *    its pair 10×, 1130001 lists 52 entries). `fleet_sim_barrages.json` already
+ *    holds each id's max-enhancement rung, so dedupe by id and ignore `time`
+ *    entirely — read naively one barrage counts up to 26 times.
+ *  - it RE-LISTS skills the ship already has (70204's 14170, 1100001's 110010),
+ *    which activeBarrageSkillIds has counted already.
+ *
+ * ponytail: the 17 ships listing several distinct ids are taken at face value —
+ * each id's cadence comes from the table, not from this field — which over-counts
+ * if any such pair is really alternative rungs rather than a simultaneous set.
+ * Needs a KR-text pass to split; ids with no record fall to the 미구현 note as usual.
+ */
+export function attachedSPBarrageIds(ship) {
+    const own = ship?.skill || {};
+    const ids = new Set();
+    for (const a of ship?.sp_weapon?.attached_weapon_skill_id || []) {
+        const id = String(a?.id ?? '');
+        if (id && !own[id]) ids.add(id);
+    }
+    return [...ids];
 }
 
 /** `requirement` is "Fate Simulation 3"/"…5" — the step, which none-vs-max ignores. */

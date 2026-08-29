@@ -294,10 +294,10 @@ function _buildIdentityHTML(slotIndex, ship, slotConfig) {
     if (hasFateSimulation(ship)) {
         const isFate = slotConfig.fate !== false;
         fateHTML = `
-            <label class="retrofit-toggle" title="운명 시뮬레이션 5단계 적용">
+            <label class="retrofit-toggle" title="운명 시뮬레이션 5단계(용골 max) 적용">
                 <input type="checkbox" data-action="toggle-fate" data-slot="${slotIndex}" ${isFate ? 'checked' : ''} />
                 <span class="toggle-track"></span>
-                <span class="toggle-label">운명</span>
+                <span class="toggle-label">용골 max</span>
             </label>`;
     }
 
