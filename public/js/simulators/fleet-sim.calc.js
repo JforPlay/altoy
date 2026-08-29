@@ -5,7 +5,13 @@
  */
 
 import { getStorageItem } from '../utils.js';
-import { getShipByGid, getEquipFullById, getWeaponProperty, getSPWeaponById, getEffectiveShipType } from './fleet-sim.data.js';
+import { getShipByGid, getEquipFullById, getWeaponProperty, getSPWeaponById, getEffectiveShipType, getSlotName } from './fleet-sim.data.js';
+import {
+    TECH_STAT_BY_ATTR_ID, shipTypeTechCaps, shipTypeTechFromProgress, effectiveShipTypeTech,
+} from './fleet-sim.tech.js';
+// Pure helper; fleet-sim.damage.js reaches back here only through a dynamic import(),
+// so this static edge does not close a cycle.
+import { mergeWeaponWithBase } from './fleet-sim.damage.js';
 
 // ===== State =====
 let state;
@@ -125,23 +131,11 @@ const BATTLE_ATTR_TO_STAT = {
 };
 
 /**
- * Map attrTypeData ID → ship stat key.
- * Used for fleet tech bonuses (add field references attrType IDs).
+ * Map attrTypeData ID → ship stat key, for BOTH fleet-tech systems (the 진영
+ * `add` table and 함종 `add_*_attr` share one id space). Single source in
+ * fleet-sim.tech.js — a second copy here drifted the two apart once already.
  */
-const ATTR_TYPE_ID_TO_STAT = {
-    1:  'health',
-    2:  'firepower',
-    3:  'torpedo',
-    4:  'antiair',
-    5:  'aviation',
-    6:  'reload',
-    // 7: armor — not a stat we track
-    8:  'accuracy',
-    9:  'evasion',
-    10: 'speed',
-    11: 'luck',
-    12: 'asw',
-};
+const ATTR_TYPE_ID_TO_STAT = TECH_STAT_BY_ATTR_ID;
 
 /**
  * Game's calcFloor: math.floor(x + 1e-9) (mathssupport.lua:190).
@@ -154,11 +148,18 @@ const RELOAD_K1 = 6;
 const RELOAD_K2 = 100;
 const RELOAD_K3 = 3.14;
 
-/** Carrier airstrike combined reload multiplier */
+/** 항공 지원 combined reload multiplier — battleconfig.lua AIR_ASSIST_RELOAD_RATIO = 220 × PERCENT */
 const AIR_ASSIST_RELOAD_RATIO = 2.2;
 
-/** Carrier ship types (CV, CVL) */
-const CARRIER_TYPES = new Set([6, 7]);
+/**
+ * weapon_property.type of an aircraft launcher that feeds the ship's 항공 지원
+ * (battleconst.lua EquipmentType.STRIKE_AIRCRAFT). The air assist is a property of
+ * the EQUIPPED WEAPON, not of the hull — battleplayerunit.lua AddWeapon files a
+ * weapon into `_hiveList` on this type alone. A ship-type test misses every 항전
+ * aviation slot, which then got a bare per-slot reload with no ×2.2 (키어사지 read
+ * 8.80s where the game shows ~19.4s). Mirrors STRIKE_AIRCRAFT_TYPE in fleet-sim.damage.js.
+ */
+const STRIKE_AIRCRAFT_TYPE = 10;
 
 /** Weapon slot labels by ship type */
 const SLOT_LABELS = {
@@ -324,21 +325,71 @@ export function calculateShipStats(slotConfig, fleetTechBonuses, fleetPassiveBuf
 // ===== Fleet Tech Bonuses =====
 
 /**
- * Calculate fleet tech bonuses based on shipgirlTrackerProgress in localStorage.
+ * Key for the 함종 기술 entry inside the calculateFleetTechBonuses() result.
+ * A string that can never collide with the numeric faction group ids 1–4, so
+ * _getFleetTechBonusForShip picks it up through the same bonusByShipType walk
+ * with no special case.
+ */
+export const SHIPTYPE_TECH_KEY = 'shiptype';
+
+/** The tracker's progress map, or null when the visitor has never used it. */
+function _trackerProgress() {
+    const raw = getStorageItem('shipgirlTrackerProgress', null);
+    if (!raw) return null;
+    try {
+        const parsed = JSON.parse(raw);
+        return parsed && typeof parsed === 'object' ? parsed : null;
+    } catch {
+        return null;
+    }
+}
+
+/** Roster ceiling for every (함종, 스탯) cell — memoised, ship_group_data never changes at runtime. */
+let _techCaps = null;
+export function getShipTypeTechCaps() {
+    if (!_techCaps) _techCaps = shipTypeTechCaps(state.shipGroupData);
+    return _techCaps;
+}
+
+/**
+ * 함종 기술: per-hull-type flat bonuses, tracker-derived and then overridden
+ * per cell by `state.techOverride` (owned by fleet-sim.main.js, see
+ * fleet-sim.tech.js for why the merge is per cell rather than per table).
+ * @returns {Object<number, Object<string, number>>} { shipType: { statKey: value } }
+ */
+export function calculateShipTypeTechBonuses() {
+    if (!state.shipGroupData) return {};
+    const derived = shipTypeTechFromProgress(state.shipGroupData, _trackerProgress());
+    return effectiveShipTypeTech(derived, state.techOverride || {}, getShipTypeTechCaps());
+}
+
+/**
+ * All fleet-tech bonuses that apply to this fleet: the four 진영 groups plus one
+ * synthetic SHIPTYPE_TECH_KEY entry for 함종 기술.
+ *
+ * Returns null only when NEITHER system has anything — a manual 함종 override
+ * with no tracker data is a perfectly valid state and must not read as "no data".
+ * @returns {object|null} { groupId|'shiptype': { name, level?, score?, bonusByShipType } }
+ */
+export function calculateFleetTechBonuses() {
+    const nation = _nationTechBonuses();
+    const byShipType = calculateShipTypeTechBonuses();
+    if (!nation && !Object.keys(byShipType).length) return null;
+    return {
+        ...(nation || {}),
+        [SHIPTYPE_TECH_KEY]: { name: '함종 기술', bonusByShipType: byShipType },
+    };
+}
+
+/**
+ * 진영 기술 based on shipgirlTrackerProgress in localStorage.
  * Reads progress bits, sums tech points per nationality, finds tech levels,
  * and builds bonus maps.
  * @returns {object|null} { groupId: { name, level, score, bonusByShipType } } or null
  */
-export function calculateFleetTechBonuses() {
-    const progressStr = getStorageItem('shipgirlTrackerProgress', null);
-    if (!progressStr) return null;
-
-    let progress;
-    try {
-        progress = JSON.parse(progressStr);
-    } catch {
-        return null;
-    }
+function _nationTechBonuses() {
+    const progress = _trackerProgress();
+    if (!progress) return null;
 
     if (!state.shipGroupData || !state.nationalityData || !state.fleetTechData) return null;
 
@@ -416,58 +467,148 @@ export function calculateFleetTechBonuses() {
 // ===== Passive Skill Resolution =====
 
 /**
+ * Fleet slot layout: 0–2 = 주력 (main), 3–5 = 전열 (vanguard). Mirrors the two
+ * card grids in fleet-sim.astro and `state.fleets`' own slot comment.
+ */
+const MAIN_SLOTS = 3;
+
+/**
+ * The flagship (기함) is the FIRST OCCUPIED main-fleet slot, not slot 0.
+ * battlefleetvo.lua appendMainUnit sets `_flagShip` on the first unit appended to
+ * `_mainList`, and the list is built from occupied slots — so a fleet with slot 0
+ * empty flags the next ship along.
+ * @returns {number} slot index, or -1 when the main fleet is empty
+ */
+function _flagshipSlot(allFleetShips) {
+    for (let i = 0; i < MAIN_SLOTS; i++) if (allFleetShips[i]) return i;
+    return -1;
+}
+
+/**
+ * Does a ship in `slot` receive a buff cast with `mode`?
+ *
+ * `vanguard`/`main`/`flagship` are the game's own TargetPlayerVanguardFleet /
+ * TargetPlayerMainFleet / TargetPlayerFlagShip tokens (battletargetchoise.lua),
+ * which is what the 지휘 skills (포술 지휘·선봉 등) use. They were extracted into
+ * the data but hit the old "unknown target mode" branch and were dropped — 88
+ * skills' worth of buffs that never reached a card.
+ */
+function _modeCoversSlot(mode, slot, allFleetShips) {
+    if (slot < 0) return false;
+    if (mode === 'vanguard') return slot >= MAIN_SLOTS;
+    if (mode === 'main') return slot < MAIN_SLOTS;
+    if (mode === 'flagship') return slot === _flagshipSlot(allFleetShips);
+    return false;
+}
+
+/** Target modes decided by fleet position — the ones _modeCoversSlot answers for. */
+const POSITIONAL_MODES = new Set(['vanguard', 'main', 'flagship']);
+
+/**
  * Resolve all passive skill buffs that apply to a target ship from all fleet members.
+ *
+ * `allFleetShips` MUST be positional — 6 entries, null for an empty slot — because
+ * vanguard/main/flagship targeting is decided by WHERE a ship sits. Passing a
+ * compacted list silently shifts ships between the two rows.
+ *
  * @param {object} targetShip - Ship data object (the ship receiving buffs)
- * @param {Array<object|null>} allFleetShips - Array of 6 ship data objects (null for empty slots)
+ * @param {Array<object|null>} allFleetShips - 6 ship data objects, null for empty slots
+ * @param {number} targetSlot - index of targetShip within allFleetShips
  * @returns {Array<{attr: string, value: number, type: string}>} Buff entries
  */
-export function resolvePassiveBuffs(targetShip, allFleetShips) {
+export function resolvePassiveBuffs(targetShip, allFleetShips, targetSlot = -1) {
     if (!targetShip || !allFleetShips || !state.passiveSkillData) return [];
 
     const buffs = [];
-    const targetType = targetShip.type;
 
-    for (const memberShip of allFleetShips) {
+    for (let slot = 0; slot < allFleetShips.length; slot++) {
+        const memberShip = allFleetShips[slot];
         if (!memberShip || !memberShip.skill) continue;
 
-        const isSelf = memberShip.gid === targetShip.gid;
+        // Slot identity, not gid: positions are what the fleet modes read, and a
+        // caller that lost them would otherwise silently match the wrong ship.
+        const isSelf = targetSlot >= 0 ? slot === targetSlot : memberShip.gid === targetShip.gid;
 
         for (const skillId of Object.keys(memberShip.skill)) {
             const passiveSkill = state.passiveSkillData[String(skillId)];
             if (!passiveSkill) continue;
 
-            // Check targeting rules
-            if (passiveSkill.target_mode === 'self') {
-                // Self-targeting: only apply to the ship that owns the skill
-                if (!isSelf) continue;
-            } else if (passiveSkill.target_mode === 'fleet') {
-                // Fleet-targeting: check ship type filter
-                if (passiveSkill.target_types && passiveSkill.target_types.length > 0) {
-                    if (!passiveSkill.target_types.includes(targetType)) continue;
-                }
-                // Check nationality filter
-                if (passiveSkill.target_nationality && passiveSkill.target_nationality.length > 0) {
-                    if (!passiveSkill.target_nationality.includes(targetShip.nationality)) continue;
-                }
-            } else {
-                // Unknown target mode — skip
-                continue;
-            }
-
-            // Get max level buffs
             const levelBuffs = _getMaxLevelBuffs(passiveSkill);
-            if (levelBuffs) {
-                for (const buff of levelBuffs) {
-                    // Per-buff target override (e.g., mixed self+fleet skills)
-                    if (buff.target === 'self' && !isSelf) continue;
-                    if (buff.target === 'fleet_except_self' && isSelf) continue;
-                    buffs.push({ attr: buff.attr, value: buff.value, type: buff.type });
-                }
+            if (!levelBuffs) continue;
+
+            for (const buff of levelBuffs) {
+                if (!_clauseApplies(buff, passiveSkill, targetShip, targetSlot, allFleetShips, isSelf)) continue;
+                buffs.push({ attr: buff.attr, value: buff.value, type: buff.type, src: buff.src });
             }
         }
     }
 
     return buffs;
+}
+
+/**
+ * Does one clause of a passive skill land on this ship?
+ *
+ * EVALUATED PER CLAUSE, NOT PER SKILL. One skill routinely mixes recipients —
+ * 펑셔널 기믹 BOOST raises 키어사지's OWN 화력/항공 and separately grants every
+ * carrier in the fleet 공습 선도 — and the skill-level `target_mode` / `target_types`
+ * are the BROADEST of its clauses. Gating on those first meant a 항전 failed her own
+ * skill's `types: [6,7]` carrier filter and lost the two stat buffs that were hers.
+ * The clause's own `target` / `types` win where present; otherwise it inherits the
+ * skill's, which the extractor only omits when they are identical.
+ */
+function _clauseApplies(buff, skill, targetShip, targetSlot, allFleetShips, isSelf) {
+    const mode = buff.target || skill.target_mode;
+
+    if (mode === 'self') return isSelf;
+    if (mode === 'fleet_except_self') { if (isSelf) return false; }
+    else if (POSITIONAL_MODES.has(mode)) {
+        if (!_modeCoversSlot(mode, targetSlot, allFleetShips)) return false;
+    } else if (mode !== 'fleet') {
+        return false;               // unknown mode — never guess a recipient
+    }
+
+    const types = buff.types || skill.target_types;
+    if (types && types.length > 0 && !types.includes(targetShip.type)) return false;
+
+    const nats = skill.target_nationality;
+    if (nats && nats.length > 0 && !nats.includes(targetShip.nationality)) return false;
+
+    return true;
+}
+
+/**
+ * Damage-multiplier totals from resolved passive buffs, as fractions.
+ *
+ * These are NOT ship stats: battleformulas.lua applies `damageRatioBullet` as a flat
+ * `× (1 + n)` on the finished damage (:156) and the by-attribute ones inside the
+ * weapon-type term (:124-128), so they must never be summed into 화력/항공.
+ *
+ * `src` marks a clause projected by a shared aura buff (BattleBuffField). Those do
+ * NOT stack — 공습 선도's own text says 「동일 스킬 효과는 중첩되지 않음」 — so two
+ * carriers granting it contribute the larger, not the sum.
+ *
+ * @returns {{bullet:number, cannon:number, air:number, torpedo:number}}
+ */
+export function sumDamageBuffs(buffs) {
+    const out = { bullet: 0, cannon: 0, air: 0, torpedo: 0 };
+    const bySrc = new Map();        // `${src}:${key}` → largest value seen
+    const KEY = {
+        damageRatioBullet: 'bullet',
+        damageRatioByCannon: 'cannon',
+        damageRatioByAir: 'air',
+        damageRatioByBulletTorpedo: 'torpedo',
+    };
+    for (const b of buffs || []) {
+        const key = KEY[b.attr];
+        if (!key) continue;
+        const value = b.value || 0;
+        if (b.src == null) { out[key] += value; continue; }
+        const k = `${b.src}:${key}`;
+        if (!(bySrc.get(k) >= value)) bySrc.set(k, value);
+    }
+    for (const [k, v] of bySrc) out[k.slice(k.indexOf(':') + 1)] += v;
+    return out;
 }
 
 // ===== Stat Highlighting =====
@@ -667,87 +808,115 @@ function _getMaxLevelBuffs(passiveSkill) {
 function _calculateReloads(ship, slotConfig, reloadStat) {
     const equips = slotConfig.equips || [];
     // Honor retrofit form — BBV/DDG/CA retrofits change the ship type, which flips
-    // both the carrier-vs-standard reload branch and the slot label set.
+    // the slot label set (and, on 이세/휴가, adds the aviation slot outright).
     const useRetrofit = slotConfig.retrofit !== false && !!ship.retrofit;
     const shipType = getEffectiveShipType(ship, useRetrofit);
+    // No entry for CV/CVL/SS-carrier hulls on purpose — their slot mix varies per
+    // ship, so the label comes from the ship's own allowed equip types instead of
+    // a bare 슬롯N (which is what a carrier's rows used to read).
+    const labels = SLOT_LABELS[shipType] || [];
+    const baseList = getShipBaseList(ship, useRetrofit) || [];
 
-    // Carrier types: combined airstrike calculation
-    if (CARRIER_TYPES.has(shipType)) {
-        return _calculateCarrierReload(equips, reloadStat);
-    }
-
-    // Standard weapons: calculate per slot (slots 0-2 only)
-    const labels = SLOT_LABELS[shipType] || ['슬롯1', '슬롯2', '슬롯3'];
-    const reloads = [];
-
-    for (let i = 0; i < 3; i++) {
-        const equipConfig = equips[i];
-        if (!equipConfig || !equipConfig.id) continue;
-
-        const reloadMax = _getWeaponReloadMax(equipConfig.id, equipConfig.level);
-        if (reloadMax == null) continue;
-
-        const seconds = _reloadFormula(reloadMax, reloadStat);
-        reloads.push({ label: labels[i], seconds });
-    }
-
-    return reloads;
-}
-
-/**
- * Calculate combined carrier airstrike reload.
- * Average the reload_max of aircraft in slots 0-2, multiply by AIR_ASSIST_RELOAD_RATIO.
- */
-function _calculateCarrierReload(equips, reloadStat) {
-    const reloadMaxValues = [];
+    // One row per slot, EXCEPT that every strike-aircraft slot collapses into the
+    // single 항공 지원 row they share. A 항전 has both kinds at once, so this can't
+    // be a carrier-or-not fork on the hull (see STRIKE_AIRCRAFT_TYPE).
+    const rows = [];              // { slot, label, seconds } — sorted back into slot order below
+    const hiveReloads = [];       // one entry per hive unit — base_list weighting, see below
+    let airSlot = -1;
 
     for (let i = 0; i < 3; i++) {
-        const equipConfig = equips[i];
-        if (!equipConfig || !equipConfig.id) continue;
+        const launchers = _slotLaunchers(ship, equips[i], i);
+        if (!launchers.length) continue;
 
-        const reloadMax = _getWeaponReloadMax(equipConfig.id, equipConfig.level);
-        if (reloadMax != null) {
-            reloadMaxValues.push(reloadMax);
+        const hives = launchers.filter((w) => w.type === STRIKE_AIRCRAFT_TYPE);
+        if (hives.length) {
+            // setWeapon instantiates base_list[slot] hives per launcher, and
+            // CaclulateAirAssistReloadMax averages over that list — so the mean is
+            // weighted by plane count (a 3/3/2 carrier weighs its slots 3:3:2).
+            const planes = baseList[i] ?? 1;
+            for (const hive of hives) {
+                if (hive.reload_max == null) continue;
+                for (let n = 0; n < planes; n++) hiveReloads.push(hive.reload_max);
+            }
+            if (airSlot < 0) airSlot = i;
+            continue;
         }
+
+        const reloadMax = launchers[0]?.reload_max;
+        if (reloadMax == null) continue;
+        rows.push({
+            slot: i,
+            label: labels[i] || getSlotName(ship, i, useRetrofit),
+            seconds: _reloadFormula(reloadMax, reloadStat),
+        });
     }
 
-    if (reloadMaxValues.length === 0) return [];
+    if (hiveReloads.length) {
+        const avg = hiveReloads.reduce((sum, v) => sum + v, 0) / hiveReloads.length;
+        rows.push({
+            slot: airSlot,
+            label: '항공',
+            seconds: _reloadFormula(avg * AIR_ASSIST_RELOAD_RATIO, reloadStat),
+        });
+    }
 
-    const avgReloadMax = reloadMaxValues.reduce((sum, v) => sum + v, 0) / reloadMaxValues.length;
-    const combined = avgReloadMax * AIR_ASSIST_RELOAD_RATIO;
-    const seconds = _reloadFormula(combined, reloadStat);
-
-    return [{ label: '항공기', seconds }];
+    return rows.sort((a, b) => a.slot - b.slot).map(({ label, seconds }) => ({ label, seconds }));
 }
 
 /**
- * Get the weapon's reload_max for an equipment at a given enhance level.
+ * The launchers a slot actually fires, INCLUDING the default equipment an empty
+ * slot falls back to.
+ *
+ * An empty slot is not an idle slot: battleplayerunit.lua setWeapon's else-branch
+ * arms `default_equip_list[slot]` instead, and ship.lua getAircraftReloadCD folds
+ * that same default into the dock's 항공 CD. Skipping it made a half-equipped
+ * carrier read far too fast — the defaults are slow (fighter 1800 / 뇌격기 3114 /
+ * 폭격기 3600 against a T3 plane's ~1639–2190), so 엔터프라이즈 with one plane
+ * equipped showed 22.3s where the game shows 37.2s.
+ *
+ * `default_equip_list` entries are WEAPON ids on the battle path (setWeapon hands
+ * them straight to CreateWeaponUnit), so they resolve through weapon_property
+ * directly and never through an equip's level table. The field is absent from
+ * older `ship_info_data.json` builds — then an empty slot stays empty, i.e. the
+ * previous behaviour, rather than guessing.
+ */
+function _slotLaunchers(ship, equipConfig, slotIndex) {
+    if (equipConfig && equipConfig.id) return _slotWeapons(equipConfig.id, equipConfig.level);
+
+    const defaultId = (ship.default_equip_list || [])[slotIndex];
+    if (!defaultId) return [];
+    const weapon = mergeWeaponWithBase(getWeaponProperty(defaultId), getWeaponProperty);
+    return weapon ? [weapon] : [];
+}
+
+/**
+ * Launcher weapon_property entries for an equipment at a given enhance level, in
+ * weapon_id order. An aircraft equip carries several (a STRIKE and an INTERCEPT
+ * variant of the same plane), and the caller needs the whole list to tell an
+ * air-assist slot from an ordinary one.
+ *
+ * MERGED WITH THE BASE, not raw: a levelled entry carries only {base,id,reload_max},
+ * so `type` lives on the template. Reading it raw makes every aircraft slot look
+ * like an ordinary weapon — the exact shape of the 항전 bug.
  * @param {number|string} equipId - Equipment base ID
  * @param {number} enhanceLevel - visible enhance level (+0..+13 typically)
- * @returns {number|null} reload_max value or null
  */
-function _getWeaponReloadMax(equipId, enhanceLevel) {
+function _slotWeapons(equipId, enhanceLevel) {
     const equipFull = getEquipFullById(equipId);
-    if (!equipFull || !equipFull.levels) return null;
+    if (!equipFull || !equipFull.levels) return [];
 
     // Data levels include base as index 0, so visible +13 maps to index 13.
     const levelIdx = Math.max(0, enhanceLevel || 0);
     const levelData = equipFull.levels[Math.min(levelIdx, equipFull.levels.length - 1)];
-    if (!levelData) return null;
+    if (!levelData) return [];
 
     // weapon_id can be null, empty array, a number, or an array of numbers
-    let weaponId = levelData.weapon_id;
-    if (!weaponId) return null;
-
-    if (Array.isArray(weaponId)) {
-        if (weaponId.length === 0) return null;
-        weaponId = weaponId[0]; // Use first weapon
-    }
-
-    const weapon = getWeaponProperty(weaponId);
-    if (!weapon) return null;
-
-    return weapon.reload_max ?? null;
+    const wid = levelData.weapon_id;
+    if (!wid) return [];
+    const ids = Array.isArray(wid) ? wid : [wid];
+    return ids
+        .map((id) => mergeWeaponWithBase(getWeaponProperty(id), getWeaponProperty))
+        .filter(Boolean);
 }
 
 /**

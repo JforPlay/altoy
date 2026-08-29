@@ -1,0 +1,119 @@
+/**
+ * Passive-buff targeting and the damage-multiplier class.
+ *
+ * Two things are load-bearing here and neither is obvious from the JSON:
+ *  - Targeting is decided PER CLAUSE. One skill mixes recipients (펑셔널 기믹 BOOST
+ *    raises 키어사지's own stats AND grants every carrier 공습 선도), and the
+ *    skill-level target_mode/target_types are the broadest of its clauses — so
+ *    gating on those first drops the clauses that were meant for the caster.
+ *  - vanguard/main/flagship are FLEET POSITIONS (slots 0–2 주력, 3–5 전열), which
+ *    is why the fleet array has to stay positional all the way down.
+ */
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { setup, resolvePassiveBuffs, sumDamageBuffs } from '../../public/js/simulators/fleet-sim.calc.js';
+
+const ship = (gid, type, skills, nationality = 1) => ({ gid, type, nationality, skill: Object.fromEntries(skills.map((s) => [s, {}])) });
+
+/** One-level passive table; resolvePassiveBuffs reads the highest level. */
+const table = (entries) => {
+    const out = {};
+    for (const [id, mode, clauses, extra] of entries) {
+        out[id] = { name: id, target_mode: mode, target_types: [], levels: { 1: clauses }, ...extra };
+    }
+    return out;
+};
+
+const withTable = (passiveSkillData) => setup({ passiveSkillData });
+const attrs = (buffs) => buffs.map((b) => b.attr).sort();
+
+test('vanguard targets slots 3–5, main targets 0–2', () => {
+    withTable(table([
+        ['1004', 'vanguard', [{ attr: 'cannonPower', value: 1500, type: 'ratio' }]],
+        ['1005', 'main', [{ attr: 'loadSpeed', value: 1500, type: 'ratio' }]],
+    ]));
+    const caster = ship(1, 1, ['1004', '1005']);
+    const front = ship(2, 1, []);
+    const fleet = [caster, null, null, front, null, null];
+
+    // slot 0 is 주력 → only the main-targeted 지휘 lands
+    assert.deepEqual(attrs(resolvePassiveBuffs(caster, fleet, 0)), ['loadSpeed']);
+    // slot 3 is 전열 → only the vanguard one
+    assert.deepEqual(attrs(resolvePassiveBuffs(front, fleet, 3)), ['cannonPower']);
+});
+
+test('the flagship is the first OCCUPIED main slot, not slot 0', () => {
+    withTable(table([['13810', 'flagship', [{ attr: 'antiAirPower', value: 1500, type: 'ratio' }]]]));
+    const caster = ship(1, 1, ['13810']);
+    const other = ship(2, 3, []);
+
+    // battlefleetvo.lua appendMainUnit flags the first unit APPENDED to _mainList,
+    // and the list only ever receives occupied slots.
+    const gap = [null, other, caster, null, null, null];
+    assert.deepEqual(attrs(resolvePassiveBuffs(other, gap, 1)), ['antiAirPower']);
+    assert.deepEqual(attrs(resolvePassiveBuffs(caster, gap, 2)), []);
+
+    // A vanguard-only fleet has no flagship at all.
+    const noMain = [null, null, null, caster, other, null];
+    assert.deepEqual(attrs(resolvePassiveBuffs(other, noMain, 4)), []);
+});
+
+test('a clause keeps its own recipient when the skill mode is broader', () => {
+    // 펑셔널 기믹 BOOST in miniature: two self clauses beside a carriers-only aura.
+    withTable(table([[
+        '19670',
+        'fleet',
+        [
+            { attr: 'cannonPower', value: 1000, type: 'ratio', target: 'self' },
+            { attr: 'airPower', value: 1000, type: 'ratio', target: 'self' },
+            { attr: 'damageRatioBullet', value: 0.15, type: 'flat', types: [6, 7], src: 1080 },
+        ],
+        { target_types: [6, 7] },
+    ]]));
+
+    const kearsarge = ship(19904, 10, ['19670']);   // 항전 — NOT a carrier type
+    const carrier = ship(10706, 7, []);
+    const fleet = [kearsarge, carrier, null, null, null, null];
+
+    // The caster is type 10, so the skill-level [6,7] filter would have excluded her
+    // from her own stat buffs — the bug this per-clause gate exists to prevent.
+    assert.deepEqual(attrs(resolvePassiveBuffs(kearsarge, fleet, 0)), ['airPower', 'cannonPower']);
+    // The carrier gets the aura and none of the caster's personal stats.
+    assert.deepEqual(attrs(resolvePassiveBuffs(carrier, fleet, 1)), ['damageRatioBullet']);
+});
+
+test('sumDamageBuffs keeps damage multipliers apart by attribute', () => {
+    const out = sumDamageBuffs([
+        { attr: 'damageRatioBullet', value: 0.1 },
+        { attr: 'damageRatioBullet', value: 0.2 },
+        { attr: 'damageRatioByCannon', value: 0.05 },
+        { attr: 'cannonPower', value: 1000 },        // a stat — must not leak in
+    ]);
+    assert.equal(Math.round(out.bullet * 100) / 100, 0.3);
+    assert.equal(out.cannon, 0.05);
+    assert.equal(out.air, 0);
+});
+
+test('a shared aura does NOT stack — the largest wins, not the sum', () => {
+    // 공습 선도's own text: 「동일 스킬 효과는 중첩되지 않음」. Two carriers granting
+    // buff 1080 must contribute 15%, not 30%; `src` is what makes them the same aura.
+    const out = sumDamageBuffs([
+        { attr: 'damageRatioBullet', value: 0.15, src: 1080 },
+        { attr: 'damageRatioBullet', value: 0.108, src: 1080 },
+    ]);
+    assert.equal(out.bullet, 0.15);
+
+    // Different auras still add, and an un-sourced buff adds on top of both.
+    const mixed = sumDamageBuffs([
+        { attr: 'damageRatioBullet', value: 0.15, src: 1080 },
+        { attr: 'damageRatioBullet', value: 0.1, src: 2000 },
+        { attr: 'damageRatioBullet', value: 0.05 },
+    ]);
+    assert.equal(Math.round(mixed.bullet * 100) / 100, 0.3);
+});
+
+test('an unknown target mode is dropped rather than guessed at', () => {
+    withTable(table([['9999', 'somethingNew', [{ attr: 'cannonPower', value: 100, type: 'ratio' }]]]));
+    const s = ship(1, 1, ['9999']);
+    assert.deepEqual(resolvePassiveBuffs(s, [s, null, null, null, null, null], 0), []);
+});

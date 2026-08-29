@@ -23,12 +23,16 @@ export function computeHitDamage(attacker, weapon, target) {
   const statScale = 1 + weapon.stat * weapon.ratio * RATIO_PERCENT;
   const base = statScale * correctedDmg + RANDOM_DAMAGE_EV;
 
-  // weapon-type modifier (cannon/torpedo default 1; air mitigated by enemy AA)
-  let typeMod = 1;
+  // Weapon-type modifier (battleformulas.lua :124-128): each attribute's term is
+  // 1 + the target's injureRatioBy<attr> + the attacker's damageRatioBy<attr>, and
+  // the air branch multiplies that by the AA mitigation. `attrDamageRatio` is the
+  // attacker half for THIS weapon's attribute (0 when nothing grants one).
+  const attrRatio = weapon.attrDamageRatio ?? 0;
   let airMitigation = 1;
+  let typeMod = 1 + attrRatio;
   if (weapon.attackAttribute === 'air') {
     airMitigation = AIR_MIT_CONST / (target.antiAir + AIR_MIT_CONST);
-    typeMod = airMitigation;
+    typeMod = airMitigation * (1 + attrRatio);
   }
 
   // armor effectiveness: damageType[armorType-1]
@@ -55,8 +59,14 @@ export function computeHitDamage(attacker, weapon, target) {
   const armorReduce = target.armorReduce ?? 0;
   const injureRatio = target.injureRatio ?? 0;
 
+  // `damageRatio` is the attacker's damageRatioBullet — a flat multiply on the
+  // finished product (battleformulas.lua :156), applied to every attribute alike.
+  // 공습 선도 lands here.
+  const damageRatio = weapon.damageRatio ?? 0;
+
   const expectedHit =
-    base * typeMod * (1 - armorReduce) * armorMod * critEV * (1 + injureRatio) * levelAdv;
+    base * typeMod * (1 - armorReduce) * armorMod * critEV
+    * (1 + damageRatio) * (1 + injureRatio) * levelAdv;
 
   return { base, armorMod, airMitigation, levelAdv, hitRate, critRate, critMult, expectedHit };
 }

@@ -13,6 +13,7 @@ import {
     calculateFleetTechBonuses,
     resolvePassiveBuffs,
     computeHighlights,
+    SHIPTYPE_TECH_KEY,
 } from './fleet-sim.calc.js';
 import { simulateFleetDamage, effectiveProficiency } from './fleet-sim.damage.js';
 import { ARMOR_PRESETS } from '../engine/damage/index.js';
@@ -136,7 +137,7 @@ export function renderFleet() {
         }
 
         const ship = fleetShips[i];
-        const passiveBuffs = ship ? resolvePassiveBuffs(ship, fleetShips) : [];
+        const passiveBuffs = ship ? resolvePassiveBuffs(ship, fleetShips, i) : [];
         const result = calculateShipStats(slotConfig, techBonuses, passiveBuffs);
 
         allResults.push(result);
@@ -634,13 +635,18 @@ function _renderTechBonuses(techBonuses) {
     const frag = document.createDocumentFragment();
 
     for (const [groupId, data] of Object.entries(techBonuses)) {
+        // 함종 기술 has no level and no pt threshold — it is a flat per-hull-type
+        // sum — so it reports how many hull types it is currently feeding instead
+        // of a fabricated Lv.undefined (0pt).
         const item = document.createElement('div');
         item.className = 'tech-bonus-item';
         const name = document.createElement('span');
         name.textContent = data.name || '';
         const value = document.createElement('span');
         value.className = 'tech-bonus-value';
-        value.textContent = `Lv.${data.level} (${data.score}pt)`;
+        value.textContent = groupId === SHIPTYPE_TECH_KEY
+            ? `${Object.keys(data.bonusByShipType || {}).length}개 함종`
+            : `Lv.${data.level} (${data.score}pt)`;
         item.append(name, value);
         frag.appendChild(item);
     }

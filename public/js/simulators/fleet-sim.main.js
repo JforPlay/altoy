@@ -38,7 +38,9 @@ import {
     getSPWeaponById,
 } from './fleet-sim.data.js';
 
-import { setup as setupCalc } from './fleet-sim.calc.js';
+import { setup as setupCalc, getShipTypeTechCaps } from './fleet-sim.calc.js';
+import { TECH_OVERRIDE_VERSION, parseTechOverride, shipTypeTechFromProgress } from './fleet-sim.tech.js';
+import { setupTechUI, openTechModal } from './fleet-sim.tech-ui.js';
 import { setup as setupUI, renderFleet, toggleStats, clearDamageCache } from './fleet-sim.ui.js';
 import { setup as setupPicker, openShipPicker, openEquipPicker, openSPWeaponPicker, openBossPicker } from './fleet-sim.picker.js';
 import { setup as setupEquipCodeUI, openEquipCodeModal } from './fleet-sim.equip-code-ui.js';
@@ -60,6 +62,21 @@ const savesStore = syncedStorage(STORAGE_KEY, {
         // .active is openModal's own open marker; reading style.display would
         // couple this to the fact that it shows modals with an inline style.
         if (modal && modal.classList.contains('active')) _renderSaveSlotList();
+    },
+});
+
+/**
+ * Hand-set 함종 기술 cells. Cross-tab because a visitor correcting their tech in
+ * one tab expects the other tab's cards to follow, exactly like fleetSimSaves.
+ * Not in SYNCED_KEYS: it is per-device calibration of an account-wide number the
+ * tracker already syncs, so pushing it to Drive would fight the derived value.
+ */
+const techStore = syncedStorage('fleetSimTechOverride', {
+    version: TECH_OVERRIDE_VERSION,
+    parse: parseTechOverride,
+    onRemoteChange: (next) => {
+        state.techOverride = next;
+        renderFleet();
     },
 });
 
@@ -87,6 +104,9 @@ const state = {
     shipGroupData: null,
     // Curated boss presets (src/data/fleet_sim_presets.json) — [] when absent
     presets: [],
+    // Hand-set 함종 기술 cells, { shipType: { statKey: value } }. Empty = fully
+    // tracker-derived; see fleet-sim.tech.js for why it merges per cell.
+    techOverride: {},
 
     // Mappings
     shipTypeData: {},
@@ -239,6 +259,9 @@ async function init() {
 
     // 2. Load all data
     await loadAllData();
+    // Overrides clamp against the roster ceiling, which needs ship_group_data —
+    // so they load after, never in the module-scope store construction.
+    state.techOverride = techStore.load();
 
     // 3. Restore from URL if fleet param present
     const fleetParam = getUrlParam('fleet');
@@ -253,6 +276,11 @@ async function init() {
     // cover the .modal-close button and .modal-backdrop clicks)
     setupModal('saveLoadModal', { restoreFocus: true });
     setupModal('presetModal', { restoreFocus: true });
+    setupTechUI(state, {
+        caps: getShipTypeTechCaps,
+        derived: () => shipTypeTechFromProgress(state.shipGroupData, _trackerProgress()),
+        onChange: () => { techStore.save(state.techOverride); renderFleet(); },
+    });
 
     // 6. Curated presets are optional content — the button stays hidden until
     // the file actually carries one, so an empty file ships no dead UI.
@@ -261,6 +289,18 @@ async function init() {
     // 7. Initial render
     _renderFleetTabs();
     renderFleet();
+}
+
+/** The tracker's raw progress map — the modal shows what it derives as placeholders. */
+function _trackerProgress() {
+    const raw = getStorageItem('shipgirlTrackerProgress', null);
+    if (!raw) return null;
+    try {
+        const parsed = JSON.parse(raw);
+        return parsed && typeof parsed === 'object' ? parsed : null;
+    } catch {
+        return null;
+    }
 }
 
 // ===== Event Listeners =====
@@ -289,6 +329,10 @@ function setupEventListeners() {
         const slot = _getSlot(actionEl);
 
         switch (action) {
+            case 'open-tech': {
+                openTechModal();
+                break;
+            }
             case 'switch-fleet': {
                 _switchFleet(parseInt(actionEl.dataset.fleet, 10));
                 break;

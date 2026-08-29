@@ -73,6 +73,16 @@ export function resolveWeaponDescriptor(weapon, stats, deps) {
         ? 0
         : weaponSalvoDuration(weapon.barrage_ID, deps.getBarrage) + (weapon.auto_aftercast || 0);
 
+    // Does the weapon open the battle reloading? battleweaponunit.lua InitialCD is a
+    // no-op unless `initial_over_heat == 1`, and the flag splits the roster cleanly:
+    // every 전함 주포 / 어뢰 / 미사일 carries it, no 부포 or 구축·경순·중순 주포 does.
+    // So a destroyer opens fire at t=0 and a battleship's first salvo is one reload in.
+    const startsOnCooldown = weapon.initial_over_heat === 1;
+    // Mounts flagged SetModifyInitialCD skip that opening cooldown — but only for the
+    // manual/charge classes, and never more of them than the slot actually has.
+    const preloaded = PRELOADABLE_TYPES.has(weapon.type) ? (deps.preloadCount || 0) : 0;
+    const preloadShare = mountCount > 0 ? Math.min(preloaded, mountCount) / mountCount : 0;
+
     return {
         attackAttribute,
         stat: stats[ATTR_KEY_TO_STAT[attackAttribute]] ?? 0,
@@ -86,6 +96,8 @@ export function resolveWeaponDescriptor(weapon, stats, deps) {
         reloadMax: deps.reloadMaxOverride ?? weapon.reload_max,
         cycleExtra,
         initialDelay: 0,
+        startsOnCooldown,
+        preloadShare,
         label: deps.label || '무기',
     };
 }
@@ -279,7 +291,45 @@ async function _ensureImports() {
     }
 }
 
-const CARRIER_TYPES = new Set([6, 7]);
+/**
+ * weapon_property.type for an aircraft launcher whose planes feed the ship's
+ * 항공 지원 (air assist). battleconst.lua EquipmentType.STRIKE_AIRCRAFT = 10.
+ *
+ * THE HIVE IS A PROPERTY OF THE EQUIPPED WEAPON, NEVER OF THE HULL. Keying it on
+ * "is the ship a CV/CVL" silently dropped every 항전/BBV aviation slot (키어사지,
+ * 이세·휴가 retrofit) and 할포드's: their launcher went down the surface path,
+ * where an airstrike launcher's `bullet_ID` is empty — its "bullets" are AIRCRAFT
+ * ids — so resolveWeaponDescriptor returned null and the slot did no damage at
+ * all. battleplayerunit.lua AddWeapon (:245) files a weapon into `_hiveList` on
+ * `type == STRIKE_AIRCRAFT` and on nothing else; the hull type never enters.
+ * INTERCEPT_AIRCRAFT (11, 수상기) is deliberately excluded — for a PLAYER unit it
+ * falls through to AddAutoWeapon and is not part of the strike (BattleUnit's own
+ * setWeapon pools both, but that path serves enemies).
+ */
+const STRIKE_AIRCRAFT_TYPE = 10;
+
+/**
+ * A plane's strafing autocannon (EquipmentType.ANTI_AIR). CreateWeaponUnit maps it
+ * to BattleAntiAirUnit, which only ever shoots aircraft, so it cannot contribute
+ * boss DPS — excluded exactly as the equip viewer's 이론 DPS does
+ * (equip.data.js AIRCRAFT_GUN_WEAPON_TYPE, validated against the AL wiki).
+ */
+const AIRCRAFT_GUN_TYPE = 4;
+
+/**
+ * Weapon types whose instances can be PRELOADED past the opening cooldown.
+ * battleplayerunit.lua setWeapon calls SetModifyInitialCD on the first
+ * `preload_count[slot]` instances, but only for these classes — the manual /
+ * charge queues (전함 주포, 어뢰, 미사일). A 부포 is never preloaded because it
+ * never starts on cooldown in the first place.
+ */
+const PRELOADABLE_TYPES = new Set([
+    16,  // MANUAL_TORPEDO — the 구축/경순 어뢰 slot
+    23,  // POINT_HIT_AND_LOCK — 전함 주포
+    27,  // DISPOSABLE_TORPEDO
+    31,  // MANUAL_MISSILE
+    33,  // MANUAL_METEOR
+]);
 
 /**
  * Slot weapon labels per ship type — anti-air (대공) slots are skipped for boss DPS.
@@ -298,141 +348,158 @@ const SLOT_LABELS = {
 };
 
 /**
- * Get the first weapon_id at a given enhance level from an equip's levels array.
+ * Merged launcher weapon_property entries for an equip at an enhance level, in
+ * weapon_id order. An equip can carry several — a fighter ships a STRIKE and an
+ * INTERCEPT variant of itself — and every entry is sparse, hence the base merge.
  */
-function _firstWeaponIdForEquip(equipId, enhanceLevel) {
-    const full = _data.getEquipFullById(equipId);
-    if (!full || !full.levels) return null;
-    const idx = Math.min(Math.max(0, enhanceLevel || 0), full.levels.length - 1);
-    let wid = full.levels[idx]?.weapon_id;
-    if (Array.isArray(wid)) wid = wid[0];
-    return wid || null;
-}
-
-/**
- * Get all weapon_ids (aircraft template ids) for a carrier equip at a given enhance level.
- * Number of ids = number of planes in the slot.
- */
-function _aircraftTemplateIdsForEquip(equipId, enhanceLevel) {
+function _launchersForEquip(equipId, enhanceLevel) {
     const full = _data.getEquipFullById(equipId);
     if (!full || !full.levels) return [];
     const idx = Math.min(Math.max(0, enhanceLevel || 0), full.levels.length - 1);
     const wid = full.levels[idx]?.weapon_id;
-    return Array.isArray(wid) ? wid : (wid ? [wid] : []);
+    const ids = Array.isArray(wid) ? wid : (wid != null ? [wid] : []);
+    const out = [];
+    for (const id of ids) {
+        const raw = _data.getWeaponProperty(id);
+        if (raw) out.push(mergeWeaponWithBase(raw, _data.getWeaponProperty));
+    }
+    return out;
 }
 
-/** Resolve a non-carrier ship's offensive weapons (slots 0–2, skipping 대공). */
-function _resolveSurfaceWeapons(slotConfig, shipType, stats, baseList, prof) {
-    const labels = SLOT_LABELS[shipType] || ['슬롯1', '슬롯2', '슬롯3'];
-    const out = [];
-    const equips = slotConfig.equips || [];
-    const deps = { getBarrage: _data.getBarrage, getBullet: _data.getBullet };
+/** The single launcher an empty slot's default equipment arms, if the data has one. */
+function _defaultLauncher(defaultId) {
+    if (!defaultId) return [];
+    const raw = _data.getWeaponProperty(defaultId);
+    if (!raw) return [];
+    const merged = mergeWeaponWithBase(raw, _data.getWeaponProperty);
+    return merged ? [merged] : [];
+}
 
-    for (let i = 0; i < 3; i++) {
-        const label = labels[i];
-        if (label === '대공') continue;             // anti-air excluded from boss DPS
-        const ec = equips[i];
-        if (!ec || !ec.id) continue;
-        const wid = _firstWeaponIdForEquip(ec.id, ec.level);
-        if (!wid) continue;
-        const raw = _data.getWeaponProperty(wid);
-        if (!raw) continue;
-        const weapon = mergeWeaponWithBase(raw, _data.getWeaponProperty);  // equip weapons are sparse
-        const d = resolveWeaponDescriptor(weapon, stats, {
-            ...deps,
-            label,
-            mountCount: baseList[i] ?? 1,   // 포좌: gun mounts firing per wave (×1 until base_list lands in data)
-            potential: prof[i] ?? 1,        // equipment_proficiency for this slot
+/**
+ * Ordnance descriptors for one strike launcher's planes.
+ *
+ * The launcher id IS the aircraft_template id (battlehiveunit.lua SpwanAircraft
+ * hands its own `_tmpData.id` to CreateAircraft), so one hop lands on the plane,
+ * whose weapon_ID[] holds the bombs / torpedoes / rockets it drops. Sub-weapons
+ * are sparse and merged with their base; strafing guns are dropped (see
+ * AIRCRAFT_GUN_TYPE). `reloadMax` is filled in by the caller with the combined
+ * air-assist figure — the airstrike's cadence, not each bomb's internal reload.
+ */
+function _aircraftOrdnance(launcher, stats, mountCount, potential) {
+    const ac = mergeWeaponWithBase(_data.getAircraftTemplate(launcher.id), _data.getAircraftTemplate);
+    if (!ac || !Array.isArray(ac.weapon_ID)) return [];
+
+    const out = [];
+    const seen = new Set();       // one descriptor per distinct sub-weapon
+    for (const sparseId of ac.weapon_ID) {
+        const sparse = _data.getWeaponProperty(sparseId);
+        if (!sparse) continue;
+        const baseId = sparse.base || sparseId;
+        if (seen.has(baseId)) continue;
+        seen.add(baseId);
+
+        const merged = mergeWeaponWithBase(sparse, _data.getWeaponProperty);
+        if (!merged || merged.type === AIRCRAFT_GUN_TYPE) continue;
+
+        const attackAttribute = attackAttributeKey(merged.attack_attribute);
+        if (!attackAttribute) continue;
+        const bulletId = Array.isArray(merged.bullet_ID) ? merged.bullet_ID[0] : merged.bullet_ID;
+        const bullet = _data.getBullet(bulletId);
+        if (!bullet) continue;
+        const barrageExpansion = barrageBulletCount(merged.barrage_ID, _data.getBarrage);
+        if (barrageExpansion === 0) continue;
+
+        out.push({
+            attackAttribute,
+            stat: stats[ATTR_KEY_TO_STAT[attackAttribute]] ?? 0,
+            damage: merged.damage,
+            corrected: merged.corrected,
+            ratio: merged.attack_attribute_ratio,
+            potential,
+            bulletsPerSalvo: barrageExpansion * mountCount,   // base_list planes each drop the barrage
+            damageType: bullet.damage_type,
+            ammoType: bullet.ammo_type,
+            reloadMax: 0,       // overwritten below with the combined air-assist reload
+            initialDelay: 0,
+            // The air assist ALWAYS opens on cooldown: BattleAllInStrike.InitialCD calls
+            // AddCDTimer(GetReloadTime()) flat, with no initial_over_heat test, and the
+            // hives themselves take EnterCoolDown() at CreateWeaponUnit. There is no
+            // preload_count path into it, so the first strike is one full cycle in.
+            startsOnCooldown: true,
+            preloadShare: 0,
+            label: '항공기',
         });
-        if (d) {
-            d.slotIndex = i;
-            out.push(d);
-        }
     }
     return out;
 }
 
 /**
- * Resolve a carrier's airstrike into air WeaponDescriptors.
+ * Resolve a ship's three equip slots into WeaponDescriptors.
  *
- * Model (per Lua battleplayerunit.lua): base_list[slot] = the ship's plane count
- * for that slot (scales with limit break). Each plane drops its sub-weapon's
- * barrage, so bulletsPerSalvo = barrage_expansion × base_list[slot]. Sub-weapon
- * entries are sparse and merged with their base (mergeWeaponWithBase) to recover
- * attack_attribute / barrage_ID / bullet_ID. equipment_proficiency feeds potential.
- * All airstrike descriptors share the combined air-assist reloadMax (avg × 2.2).
+ * Each slot is classified by WHAT IS IN IT, not by the hull: a strike-aircraft
+ * launcher joins the ship's air assist, anything else fires on its own reload.
+ * Both kinds coexist on one ship (항전 = 주포 + 항공), which is exactly what the
+ * old carrier-or-surface fork could not express.
  *
- * We dedupe sub-weapons by base id WITHIN a slot: base_list is the authoritative
- * plane count, so multiple aircraft_templates carrying the same sub-weapon are one
- * plane group sized by base_list (NOT multiplied per template — avoids a double count).
+ * The air assist's reload_max is the base_list-WEIGHTED mean of its launchers ×2.2
+ * (battleformulas.lua CaclulateAirAssistReloadMax, summed over `_hiveList`):
+ * setWeapon instantiates one hive per plane, `base_list[slot]` of them, so a 3/3/2
+ * carrier weighs its slots 3:3:2 and a plain mean of three slot values is wrong.
+ * Pushing one array entry per hive buys that weighting for free.
  *
- * PROVISIONAL: with base_list defaulting to ×1 (until the pipeline emits it) carrier
- * counts are low; the equip-template ↔ base_list relationship still wants an in-browser
- * check vs wiki CV DPS. Surface counts are unaffected.
+ * @returns {{weapons: object[], airReloadMax: number}} airReloadMax is 0 when the
+ *   ship has no hive — it also paces `air`-triggered barrages, and it must be
+ *   derived from the hives themselves rather than from a produced descriptor
+ *   (an ASW plane is a real hive whose ordnance is anti-sub, so it yields none).
  */
-function _resolveCarrierWeapons(slotConfig, stats, baseList, prof) {
+function _resolveEquippedWeapons(slotConfig, shipType, stats, baseList, prof, preload, defaults) {
+    const labels = SLOT_LABELS[shipType] || ['슬롯1', '슬롯2', '슬롯3'];
     const equips = slotConfig.equips || [];
-    const descriptors = [];
-    const reloadMaxes = [];
+    const deps = { getBarrage: _data.getBarrage, getBullet: _data.getBullet };
+    const surface = [];
+    const air = [];
+    const hiveReloads = [];       // one entry per hive unit — the ×base_list weighting
 
     for (let i = 0; i < 3; i++) {
         const ec = equips[i];
-        if (!ec || !ec.id) continue;
-        const mountCount = baseList[i] ?? 1;   // ship plane count for this slot (×1 until base_list in data)
+        const mountCount = baseList[i] ?? 1;   // 포좌/함재기 수: mounts or planes per wave
         const potential = prof[i] ?? 1;        // equipment_proficiency for this slot
-        const seen = new Set();                // one descriptor per distinct sub-weapon in this slot
+        // An empty slot still fires: setWeapon's else-branch arms
+        // default_equip_list[slot] (a WEAPON id on that path, so it resolves
+        // straight through weapon_property). Absent field ⇒ slot stays idle.
+        const launchers = (ec && ec.id)
+            ? _launchersForEquip(ec.id, ec.level)
+            : _defaultLauncher(defaults[i]);
+        if (!launchers.length) continue;
+        const hives = launchers.filter((w) => w.type === STRIKE_AIRCRAFT_TYPE);
 
-        // Airstrike reload = the AIRCRAFT reload (equip's weapon_id[0]), matching
-        // fleet-sim _calculateCarrierReload and the card header. The sub-weapon
-        // (bomb/strafing) reloads must NOT feed this — strafing-gun reload_max (~9500)
-        // would massively inflate the average (the 42.82s-vs-22.18s bug).
-        const acReloadWid = _firstWeaponIdForEquip(ec.id, ec.level);
-        const acReload = acReloadWid ? _data.getWeaponProperty(acReloadWid)?.reload_max : null;
-        if (acReload) reloadMaxes.push(acReload);
-
-        for (const acId of _aircraftTemplateIdsForEquip(ec.id, ec.level)) {
-            const ac = _data.getAircraftTemplate(acId);
-            if (!ac || !Array.isArray(ac.weapon_ID)) continue;
-
-            for (const sparseId of ac.weapon_ID) {
-                const sparse = _data.getWeaponProperty(sparseId);
-                if (!sparse) continue;
-                const merged = mergeWeaponWithBase(sparse, _data.getWeaponProperty);
-                if (!merged || !merged.attack_attribute) continue;
-
-                const baseId = sparse.base || sparseId;
-                if (seen.has(baseId)) continue;
-                seen.add(baseId);
-
-                const attackAttribute = attackAttributeKey(merged.attack_attribute);
-                if (!attackAttribute) continue;
-                const bulletId = Array.isArray(merged.bullet_ID) ? merged.bullet_ID[0] : merged.bullet_ID;
-                const bullet = _data.getBullet(bulletId);
-                if (!bullet) continue;
-                const barrageExpansion = barrageBulletCount(merged.barrage_ID, _data.getBarrage);
-                if (barrageExpansion === 0) continue;
-
-                descriptors.push({
-                    attackAttribute,
-                    stat: stats[ATTR_KEY_TO_STAT[attackAttribute]] ?? 0,
-                    damage: merged.damage,
-                    corrected: merged.corrected,
-                    ratio: merged.attack_attribute_ratio,
-                    potential,
-                    bulletsPerSalvo: barrageExpansion * mountCount,
-                    damageType: bullet.damage_type,
-                    ammoType: bullet.ammo_type,
-                    reloadMax: 0,       // overwritten with combined air-assist reload below
-                    initialDelay: 0,
-                    label: '항공기',
-                });
+        if (hives.length) {
+            for (const hive of hives) {
+                for (let n = 0; n < mountCount; n++) hiveReloads.push(hive.reload_max);
+                air.push(..._aircraftOrdnance(hive, stats, mountCount, potential));
             }
+            continue;
+        }
+
+        if (labels[i] === '대공') continue;     // anti-air excluded from boss DPS
+        const weapon = launchers[0];
+        if (!weapon) continue;
+        const d = resolveWeaponDescriptor(weapon, stats, {
+            ...deps,
+            label: labels[i],
+            preloadCount: preload[i] ?? 0,  // mounts that skip the opening cooldown
+            mountCount,
+            potential,
+        });
+        if (d) {
+            d.slotIndex = i;
+            surface.push(d);
         }
     }
 
-    const combined = _engine.calculateAirAssistReloadMax(reloadMaxes);
-    for (const d of descriptors) d.reloadMax = combined;
-    return descriptors;
+    const airReloadMax = _engine.calculateAirAssistReloadMax(hiveReloads);
+    for (const d of air) d.reloadMax = airReloadMax;
+    return { weapons: surface.concat(air), airReloadMax };
 }
 
 /**
@@ -448,21 +515,20 @@ function _resolveCarrierWeapons(slotConfig, stats, baseList, prof) {
  *   weapon data), and the count whose trigger read fine but yields zero activations for
  *   this loadout (unequipped ship, carrier, 대공-slot trigger).
  */
-export function resolveShipWeapons(slotConfig, ship, stats, window = 90) {
+export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageBuffs = null) {
     if (!_data) return { weapons: [], unmodeled: 0, inactive: 0 };   // needs _ensureImports() first — route external callers through simulateFleetDamage
     const useRetrofit = slotConfig.retrofit !== false && !!ship.retrofit;
     const shipType = _data.getEffectiveShipType(ship, useRetrofit);
     const baseList = (_calc.getShipBaseList(ship, useRetrofit)) || [];   // [s1,s2,s3] mount/plane count; ×1 fallback
     const prof = effectiveProficiency(ship, useRetrofit);               // max-LB efficiency + retrofit-toggle deltas
-    const isCarrier = CARRIER_TYPES.has(shipType);
-    const weapons = isCarrier
-        ? _resolveCarrierWeapons(slotConfig, stats, baseList, prof)
-        : _resolveSurfaceWeapons(slotConfig, shipType, stats, baseList, prof);
+    const preload = ship.preload_count || [];                          // [s1,s2,s3] mounts ready at t=0
+    const defaults = ship.default_equip_list || [];                    // empty-slot fallback; absent on older data
+    const { weapons, airReloadMax } = _resolveEquippedWeapons(slotConfig, shipType, stats, baseList, prof, preload, defaults);
 
     // Barrage skills the ship actually has active. Two filters, and BOTH matter.
     const skillIds = activeBarrageSkillIds(ship, useRetrofit);
-    const airstrikes = isCarrier && weapons.length
-        ? _engine.countSalvos(_engine.calculateReloadTime(weapons[0].reloadMax, stats.reload), 0, window)
+    const airstrikes = airReloadMax > 0
+        ? _engine.countSalvos(_engine.calculateReloadTime(airReloadMax, stats.reload), 0, window)
         : 0;
     const { descriptors, unmodeled, inactive } = resolveBarrageDescriptors(skillIds, {
         getBarrageSkill: _data.getBarrageSkill,
@@ -477,7 +543,18 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90) {
             airstrikes,
         },
     });
-    return { weapons: weapons.concat(descriptors), unmodeled, inactive };
+
+    // Damage multipliers ride EVERY weapon the ship fires, barrages included — the
+    // Lua reads them off the attacker at damage time, not off the weapon.
+    const all = weapons.concat(descriptors);
+    if (damageBuffs) {
+        const byAttr = { cannon: damageBuffs.cannon, torpedo: damageBuffs.torpedo, air: damageBuffs.air };
+        for (const d of all) {
+            d.damageRatio = damageBuffs.bullet || 0;
+            d.attrDamageRatio = byAttr[d.attackAttribute] || 0;
+        }
+    }
+    return { weapons: all, unmodeled, inactive };
 }
 
 /**
@@ -539,8 +616,10 @@ function _buildTarget(targetOpts) {
  * Compute fleet damage vs a target preset or META boss. Reuses fleet-sim.calc.js for
  * buffed stats (so equips/tech/affinity/passives are already applied).
  *
- * resolvePassiveBuffs(targetShip, allFleetShips) expects SHIP DATA OBJECTS
- * (from getShipByGid), NOT slot configs. Verified from fleet-sim.calc.js:384.
+ * resolvePassiveBuffs(targetShip, allFleetShips, slot) expects SHIP DATA OBJECTS
+ * (from getShipByGid), NOT slot configs, and the array must stay POSITIONAL —
+ * slots 0–2 are 주력 and 3–5 전열, so compacting it moves ships between the rows
+ * and mis-resolves every vanguard/main/flagship-targeted 지휘 skill.
  *
  * @param {Array} ships state.ships (6 slots, each { gid, level, ... } or null)
  * @param {{kind?:string, presetKey?:string, bossId?:number, tier?:number, overrides?:object, window?:number}} targetOpts
@@ -551,16 +630,19 @@ export async function simulateFleetDamage(ships, targetOpts) {
 
     const target = _buildTarget(targetOpts);
     const techBonuses = _calc.calculateFleetTechBonuses();
-    const present = (ships || []).filter(Boolean);
+    const slots = ships || [];
+    const fleetShips = slots.map((s) => (s && s.gid ? _data.getShipByGid(s.gid) : null));
     const window = targetOpts.window ?? 90;
 
     const engineShips = [];
     const barrageGapsByRef = new Map();
-    for (const slot of present) {
-        const computed = _computeStatsForSlot(slot, present, techBonuses);
+    for (let i = 0; i < slots.length; i++) {
+        const slot = slots[i];
+        if (!slot) continue;
+        const computed = _computeStatsForSlot(slot, i, fleetShips, techBonuses);
         if (!computed) continue;
-        const { ship, stats } = computed;
-        const { weapons, unmodeled, inactive } = resolveShipWeapons(slot, ship, stats, window);
+        const { ship, stats, damageBuffs } = computed;
+        const { weapons, unmodeled, inactive } = resolveShipWeapons(slot, ship, stats, window, damageBuffs);
         barrageGapsByRef.set(slot.gid, { unmodeled, inactive });
         engineShips.push({
             ref: slot.gid,
@@ -586,17 +668,19 @@ export async function simulateFleetDamage(ships, targetOpts) {
 
 /**
  * Helper: compute one slot's buffed stats + resolve its ship object.
- * resolvePassiveBuffs expects ship data objects for BOTH args (confirmed from calc.js:384).
+ * `fleetShips` is the positional 6-array of ship data objects (null = empty slot)
+ * and `slotIndex` says where this ship sits — both are what the vanguard/main/
+ * flagship target modes read.
  */
-function _computeStatsForSlot(slot, allPresent, techBonuses) {
-    const ship = _data.getShipByGid(slot.gid);
+function _computeStatsForSlot(slot, slotIndex, fleetShips, techBonuses) {
+    const ship = fleetShips[slotIndex];
     if (!ship) return null;
 
-    // resolvePassiveBuffs(targetShip, allFleetShips) — both args are ship data objects
-    const allShipObjects = allPresent.map((s) => _data.getShipByGid(s.gid)).filter(Boolean);
-    const passiveBuffs = _calc.resolvePassiveBuffs(ship, allShipObjects);
+    const passiveBuffs = _calc.resolvePassiveBuffs(ship, fleetShips, slotIndex);
 
     const res = _calc.calculateShipStats(slot, techBonuses, passiveBuffs);
     if (!res) return null;
-    return { ship, stats: res.stats };
+    // The same resolved list carries both kinds; calculateShipStats keeps the stat
+    // clauses and ignores the rest, sumDamageBuffs takes the damage multipliers.
+    return { ship, stats: res.stats, damageBuffs: _calc.sumDamageBuffs(passiveBuffs) };
 }

@@ -1,0 +1,129 @@
+/**
+ * 함종 기술 override modal + the summary panel header that opens it.
+ * Shell/scroll styling comes from Modal.astro + .scroll-styled; this file only
+ * owns the grid and the "this cell is hand-set" affordance.
+ */
+
+.summary-panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.summary-panel-head h3 {
+    margin: 0;
+}
+
+.summary-panel-head .btn .material-symbols-outlined {
+    font-size: 1.05rem;
+    margin-right: 0.25rem;
+}
+
+/* Pinned hint + footer with the grid scrolling between them; the dialog itself
+   stays at Modal.astro's max-height. */
+#techOverrideModal .c-modal-dialog {
+    display: flex;
+    flex-direction: column;
+    max-width: 46rem;
+}
+
+.tech-modal-hint {
+    margin: 0 0 0.75rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+}
+
+.tech-override-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.tech-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 0.75rem;
+    margin-top: 0.75rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.tech-type-block + .tech-type-block {
+    margin-top: 1rem;
+}
+
+.tech-type-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tech-type-head h4 {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.tech-cell-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+}
+
+.tech-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.45rem;
+    background: var(--highlight-subtle);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+}
+
+.tech-cell-label {
+    flex: 0 0 2.4rem;
+    color: var(--text-secondary);
+}
+
+.tech-cell input {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: 100%;
+    padding: 0.15rem 0.3rem;
+    background: var(--card-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font: inherit;
+    text-align: right;
+}
+
+/* A hand-set cell must be findable at a glance — that is the whole reason the
+   override is per cell rather than per table. Border + weight, never colour
+   alone. */
+.tech-cell.is-override {
+    border-color: var(--accent-blue);
+}
+
+.tech-cell.is-override input {
+    font-weight: 700;
+    border-color: var(--accent-blue);
+}
+
+.tech-cell-max {
+    flex: 0 0 auto;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 480px) {
+    .tech-cell-grid {
+        grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+    }
+}

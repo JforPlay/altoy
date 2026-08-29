@@ -21,6 +21,7 @@ import '../../styles/simulators/fleet-sim.pickers.css';
 import '../../styles/simulators/fleet-sim.responsive.css';
 import '../../styles/simulators/fleet-sim.interactions.css';
 import '../../styles/simulators/fleet-sim.damage.css';
+import '../../styles/simulators/fleet-sim.tech.css';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
@@ -127,7 +128,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             </div>
             <div class="fleet-summary-content">
                 <div id="fleet-tech-bonuses" class="summary-panel">
-                    <h3>함대 기술 보너스</h3>
+                    <div class="summary-panel-head">
+                        <h3>함대 기술 보너스</h3>
+                        <button type="button" class="btn btn-outline btn-sm" data-action="open-tech">
+                            <span class="material-symbols-outlined">tune</span>함종 기술 설정
+                        </button>
+                    </div>
                     <div class="tech-bonus-list"></div>
                 </div>
                 <div id="fleet-passive-skills" class="summary-panel">
@@ -202,6 +208,19 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <p class="page-status-msg">저장된 편성이 없습니다.</p>
                 </div>
             </div>
+        </div>
+    </Modal>
+
+    <!-- 함종 기술 override (per-hull-type fleet tech) -->
+    <Modal id="techOverrideModal" title="함종 기술">
+        <p class="tech-modal-hint">
+            함순이 획득 / Lv120 달성으로 얻는 <strong>함종별</strong> 보너스입니다.
+            육성 트래커 기록에서 자동으로 계산되며, 값을 직접 입력하면 그 항목만 덮어씁니다
+            (비우면 자동값으로 되돌아갑니다).
+        </p>
+        <div id="tech-override-body" class="tech-override-body scroll-styled"></div>
+        <div slot="footer" class="tech-modal-footer">
+            <button type="button" class="btn btn-secondary btn-sm" data-tech-reset="all">전체 초기화</button>
         </div>
     </Modal>
 

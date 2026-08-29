@@ -10,7 +10,7 @@ import { rollUpWeapon } from './timeline.js';
 
 export { computeHitDamage } from './formula.js';
 export { computeSalvo } from './salvo.js';
-export { countSalvos, rollUpWeapon } from './timeline.js';
+export { countSalvos, countSalvosWithPreload, rollUpWeapon } from './timeline.js';
 export { calculateReloadTime, calculateAirAssistReloadMax, weaponCycleInterval } from './reload.js';
 export { salvoFiringDuration, weaponSalvoDuration } from './salvo-timing.js';
 export { ARMOR_PRESETS, makeTarget, makeMetaTarget, DEFAULT_ADAPT, DEFAULT_ARMOR_REDUCE } from './targets.js';
@@ -35,14 +35,22 @@ export function simulateAttacker(attacker, weapons, target, opts = {}) {
     const reloadInterval = isBarrage ? 0 : calculateReloadTime(w.reloadMax, attacker.reload);
     // Salvos are spaced by the full fire cycle: reload + salvo firing time + 발사 후 경직 (cycleExtra,
     // a fixed time NOT scaled by the reload stat). reloadInterval is still reported raw for display.
+    // A weapon that starts the battle reloading opens one RAW reload in (no salvo
+    // firing time — battleweaponunit.lua InitialCD passes GetReloadTime() alone),
+    // and `preloadShare` is the mounts that skip it. Barrages are exempt: their
+    // cadence is a skill trigger, not a reload.
     const roll = isBarrage
       ? {
           salvoCount: w.activations,
           total: salvo.expectedSalvo * w.activations,
           dps: timeWindow > 0 ? (salvo.expectedSalvo * w.activations) / timeWindow : 0,
         }
-      : rollUpWeapon(salvo.expectedSalvo, weaponCycleInterval(w, attacker.reload),
-                     { initialDelay: w.initialDelay ?? 0, window: timeWindow });
+      : rollUpWeapon(salvo.expectedSalvo, weaponCycleInterval(w, attacker.reload), {
+          initialDelay: w.initialDelay ?? 0,
+          window: timeWindow,
+          coolStart: w.startsOnCooldown ? reloadInterval : 0,
+          preloadShare: w.preloadShare ?? 0,
+        });
     return {
       label: w.label,
       oneSalvoExpected: salvo.expectedSalvo,
