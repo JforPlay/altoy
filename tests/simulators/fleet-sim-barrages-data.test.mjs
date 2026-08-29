@@ -4,12 +4,20 @@ import { readFileSync } from 'node:fs';
 
 const KINDS = new Set(['count', 'timer', 'fire', 'air', 'once']);
 const data = JSON.parse(readFileSync(new URL('../../public/data/sim/fleet_sim_barrages.json', import.meta.url)));
+const ships = JSON.parse(readFileSync(new URL('../../public/data/ship_info_data.json', import.meta.url)));
+const displayed = new Set(Object.values(ships).flatMap((s) => Object.keys(s.skill || {})));
 
-test('every record carries a name, at least one weapon, and a known trigger kind', () => {
+// The table has two scopes: the skills a ship DISPLAYS and the ones its 전용 장비
+// grants, which are unreachable from `ship.skill`. 89 of the latter have no
+// `skill_data_template` entry, so there is no KR name to carry — that is honest
+// data, and a label fallback belongs in the browser, which knows the ship and the
+// weapon the record came from. A displayed skill must still be named.
+test('every record carries a weapon and a known trigger kind, and every displayed one a name', () => {
   const ids = Object.keys(data);
   assert.ok(ids.length > 400, `expected a few hundred barrage skills, got ${ids.length}`);
   for (const [sid, rec] of Object.entries(data)) {
-    assert.ok(rec.n && typeof rec.n === 'string', `${sid} has no KR name`);
+    assert.equal(typeof rec.n, 'string', `${sid} has no name field`);
+    if (displayed.has(sid)) assert.ok(rec.n, `${sid} is a displayed skill with no KR name`);
     assert.ok(Array.isArray(rec.w) && rec.w.length > 0, `${sid} fires no weapon`);
     assert.ok(KINDS.has(rec.t?.k), `${sid} has unknown kind ${rec.t?.k}`);
   }
