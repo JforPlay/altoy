@@ -14,6 +14,11 @@ export const RELOAD_K2 = 100;
 export const RELOAD_K3 = 3.14;
 export const AIR_ASSIST_RELOAD_RATIO = 2.2; // AIR_ASSIST_RELOAD_RATIO=220 × PERCENT
 
+// Fleet-sim battle clock: the timer starts before anything can fire (approach +
+// intro). Everything after this is firing time, so the usable window is the
+// fight's time limit minus this.
+export const BATTLE_START_DELAY = 2;
+
 // Damage scalars
 export const AIR_MIT_CONST = 150;      // DRATE[7]: air mitigation 150/(AA+150)
 export const LVL_ADV_CAP = 25;         // DRATE[1]

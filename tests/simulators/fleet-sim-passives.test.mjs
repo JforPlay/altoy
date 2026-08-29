@@ -117,3 +117,23 @@ test('an unknown target mode is dropped rather than guessed at', () => {
     const s = ship(1, 1, ['9999']);
     assert.deepEqual(resolvePassiveBuffs(s, [s, null, null, null, null, null], 0), []);
 });
+
+test('only the live rung of a chain buffs the fleet, and 운명 is a gate on it', () => {
+    // 4 research ships have a passive on both sides of a Fate Simulation step, and
+    // 3 more on both sides of a Retrofit one. Iterating ship.skill raw applied both.
+    withTable(table([
+        ['19440', 'self', [{ attr: 'cannonPower', value: 1500, type: 'ratio' }]],
+        ['18440', 'self', [{ attr: 'loadSpeed', value: 1500, type: 'ratio' }]],
+    ]));
+    const pr = {
+        gid: 19903, type: 1, nationality: 1, skill: {
+            19440: { upgrade: 18440, requirement: 'Default' },
+            18440: { downgrade: 19440, requirement: 'Fate Simulation 5' },
+        },
+    };
+    const fleet = [pr, null, null, null, null, null];
+
+    assert.deepEqual(attrs(resolvePassiveBuffs(pr, fleet, 0)), ['loadSpeed'], 'fate defaults to max');
+    assert.deepEqual(attrs(resolvePassiveBuffs(pr, fleet, 0, [{ fate: true }])), ['loadSpeed']);
+    assert.deepEqual(attrs(resolvePassiveBuffs(pr, fleet, 0, [{ fate: false }])), ['cannonPower']);
+});

@@ -100,3 +100,22 @@ test('a fractional activation count is honoured (expected value, not a salvo cou
   assert.ok(Math.abs(row.total - row.oneSalvoExpected * 2.5) < 1e-9);
   assert.ok(Math.abs(out.total - row.oneSalvoExpected * 2.5) < 1e-9);
 });
+
+test('simulateFleet exposes a cumulative-damage curve that agrees with its own total', () => {
+  const target = makeTarget('light');
+  const ships = [{ ref: 'a', profile: attacker, weapons: [cannon] }];
+  const r = simulateFleet(ships, target, { window: 90 });
+  assert.ok(Math.abs(r.damageAt(90) - r.total) < 1e-9);
+  assert.ok(r.damageAt(45) < r.total, 'half the window must deal less than the whole');
+  assert.ok(r.damageAt(0) > 0, 'a ready weapon fires at t=0');
+});
+
+test('a barrage re-rolled at a shorter window scales by the window it was resolved for', () => {
+  const target = makeTarget('light');
+  const barrage = { label: '탄막', bulletsPerSalvo: 1, damage: 100, coefficient: 1, attackAttribute: 'cannon',
+                    damageType: [1, 1, 1], activations: 8, activationWindow: 80 };
+  const full = simulateAttacker(attacker, [barrage], target, { window: 80 });
+  const half = simulateAttacker(attacker, [barrage], target, { window: 40 });
+  assert.equal(full.perWeapon[0].salvoCount, 8);
+  assert.equal(half.perWeapon[0].salvoCount, 4);
+});

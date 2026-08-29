@@ -11,7 +11,7 @@ import {
 } from './fleet-sim.tech.js';
 // Pure helper; fleet-sim.damage.js reaches back here only through a dynamic import(),
 // so this static edge does not close a cycle.
-import { mergeWeaponWithBase } from './fleet-sim.damage.js';
+import { mergeWeaponWithBase, liveSkillIds } from './fleet-sim.damage.js';
 
 // ===== State =====
 let state;
@@ -211,8 +211,14 @@ export function calculateShipStats(slotConfig, fleetTechBonuses, fleetPassiveBuf
     }
 
     // --- Step 2: Enhance ---
+    // 운명 시뮬레이션's ONLY stat is 행운 (+15 SSR / +25 UR, over its five steps), and
+    // it is the sole source of an `enhance.luck` — 853 of 886 ships have none and the
+    // 33 that do are exactly the ships carrying a Fate Simulation skill — so the
+    // toggle turns off precisely that term.
     const enhance = ship.enhance || {};
+    const useFate = slotConfig.fate !== false;
     for (const key of ALL_STAT_KEYS) {
+        if (key === 'luck' && !useFate) continue;
         stats[key] += (enhance[key] || 0);
     }
 
@@ -513,10 +519,17 @@ const POSITIONAL_MODES = new Set(['vanguard', 'main', 'flagship']);
  *
  * @param {object} targetShip - Ship data object (the ship receiving buffs)
  * @param {Array<object|null>} allFleetShips - 6 ship data objects, null for empty slots
+ * A ship lists every rung of an upgrade chain, so the caster's skills go through
+ * `liveSkillIds` — without it 하루나·改's base and retrofit rungs both buff the fleet,
+ * and the 운명 toggle would not reach the four research ships whose fate skill is a
+ * passive. `slotConfigs` carries each member's own 개장/운명 toggles; omit it and both
+ * default on, which is what a caller with no slot state (a preview) wants.
+ *
  * @param {number} targetSlot - index of targetShip within allFleetShips
+ * @param {Array<object|null>} [slotConfigs] - positional slot configs, same indexing
  * @returns {Array<{attr: string, value: number, type: string}>} Buff entries
  */
-export function resolvePassiveBuffs(targetShip, allFleetShips, targetSlot = -1) {
+export function resolvePassiveBuffs(targetShip, allFleetShips, targetSlot = -1, slotConfigs = null) {
     if (!targetShip || !allFleetShips || !state.passiveSkillData) return [];
 
     const buffs = [];
@@ -529,7 +542,8 @@ export function resolvePassiveBuffs(targetShip, allFleetShips, targetSlot = -1) 
         // caller that lost them would otherwise silently match the wrong ship.
         const isSelf = targetSlot >= 0 ? slot === targetSlot : memberShip.gid === targetShip.gid;
 
-        for (const skillId of Object.keys(memberShip.skill)) {
+        const cfg = slotConfigs?.[slot];
+        for (const skillId of liveSkillIds(memberShip, cfg?.retrofit !== false, cfg?.fate !== false)) {
             const passiveSkill = state.passiveSkillData[String(skillId)];
             if (!passiveSkill) continue;
 

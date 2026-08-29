@@ -23,7 +23,7 @@ import {
 import {
     MAX_SAVE_SLOTS, MAX_FLEETS, SAVES_VERSION, parseSaves, migrateSaves,
     serializeFleet, deserializeFleet, clampLevel,
-    encodeFleetConfig, decodeFleetConfig, presetCode,
+    encodeFleetConfig, decodeFleetConfig, presetCode, defaultWindow,
 } from './fleet-sim.saves.js';
 
 import {
@@ -39,6 +39,7 @@ import {
 } from './fleet-sim.data.js';
 
 import { setup as setupCalc, getShipTypeTechCaps } from './fleet-sim.calc.js';
+import { hasFateSimulation } from './fleet-sim.damage.js';
 import { TECH_OVERRIDE_VERSION, parseTechOverride, shipTypeTechFromProgress } from './fleet-sim.tech.js';
 import { setupTechUI, openTechModal } from './fleet-sim.tech-ui.js';
 import { setup as setupUI, renderFleet, toggleStats, clearDamageCache } from './fleet-sim.ui.js';
@@ -128,11 +129,14 @@ const state = {
  * (function declaration) so the state initializer above can call it.
  */
 function _loadDamageTarget() {
-    const fallback = { kind: 'preset', presetKey: 'heavy', adapt: 'base', difficulty: 'hard', bossId: null, tier: null, overrides: {}, window: 90 };
+    const fallback = { kind: 'preset', presetKey: 'heavy', adapt: 'base', difficulty: 'hard', bossId: null, tier: null, overrides: {}, window: defaultWindow('preset') };
     const raw = getStorageItem('fleetSimDamageTarget', null);
     if (raw) {
         try {
             const t = JSON.parse(raw);
+            // A META target persisted at the old shared 90 is carrying a default,
+            // not a choice — META runs 80s. Anything else the user typed stands.
+            if (t && t.kind === 'meta' && t.window === 90) t.window = defaultWindow('meta');
             if (t && (t.presetKey || t.bossId)) return { ...fallback, ...t, overrides: { ...(t.overrides || {}) } };
         } catch { /* malformed — fall through to defaults */ }
     }
@@ -450,6 +454,15 @@ function setupEventListeners() {
             }
         }
 
+        // 운명 시뮬레이션 toggle
+        if (action === 'toggle-fate' && slot !== -1) {
+            const slotConfig = state.ships[slot];
+            if (slotConfig) {
+                slotConfig.fate = actionEl.checked;
+                renderFleet();
+            }
+        }
+
         // Damage target: META tier select
         if (action === 'dmg-tier') {
             const tier = Number(actionEl.value);
@@ -609,6 +622,7 @@ function handleShipSelected(slotIndex, gid) {
         equips: new Array(5).fill(null),
         spWeapon: _defaultSPWeapon(ship),
         retrofit: ship?.retrofit ? true : undefined,
+        fate: hasFateSimulation(ship) ? true : undefined,
     };
     renderFleet();
 }
@@ -666,10 +680,12 @@ function handleSPWeaponSelected(slotIndex, spWeaponId, maxLevel) {
 }
 
 function handleTargetSelected(sel) {
+    // A new target is a different fight, so its own time limit comes with it —
+    // the 제한 시간 field stays editable for anyone who wants another number.
     if (sel.kind === 'meta') {
-        setDamageTarget({ kind: 'meta', bossId: sel.bossId, tier: sel.tier ?? null });
+        setDamageTarget({ kind: 'meta', bossId: sel.bossId, tier: sel.tier ?? null, window: defaultWindow('meta') });
     } else {
-        setDamageTarget({ kind: 'preset', presetKey: sel.presetKey });
+        setDamageTarget({ kind: 'preset', presetKey: sel.presetKey, window: defaultWindow('preset') });
     }
 }
 

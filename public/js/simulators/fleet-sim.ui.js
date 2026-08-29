@@ -15,8 +15,8 @@ import {
     computeHighlights,
     SHIPTYPE_TECH_KEY,
 } from './fleet-sim.calc.js';
-import { simulateFleetDamage, effectiveProficiency } from './fleet-sim.damage.js';
-import { ARMOR_PRESETS } from '../engine/damage/index.js';
+import { simulateFleetDamage, effectiveProficiency, hasFateSimulation } from './fleet-sim.damage.js';
+import { ARMOR_PRESETS, BATTLE_START_DELAY } from '../engine/damage/index.js';
 
 // ===== State =====
 let state;
@@ -137,7 +137,7 @@ export function renderFleet() {
         }
 
         const ship = fleetShips[i];
-        const passiveBuffs = ship ? resolvePassiveBuffs(ship, fleetShips, i) : [];
+        const passiveBuffs = ship ? resolvePassiveBuffs(ship, fleetShips, i, state.ships) : [];
         const result = calculateShipStats(slotConfig, techBonuses, passiveBuffs);
 
         allResults.push(result);
@@ -288,6 +288,19 @@ function _buildIdentityHTML(slotIndex, ship, slotConfig) {
             </label>`;
     }
 
+    // 운명 시뮬레이션 — none vs. all five steps. Only the 33 research ships that have
+    // one show it; its whole stat payload is 행운, the rest is the skill upgrades.
+    let fateHTML = '';
+    if (hasFateSimulation(ship)) {
+        const isFate = slotConfig.fate !== false;
+        fateHTML = `
+            <label class="retrofit-toggle" title="운명 시뮬레이션 5단계 적용">
+                <input type="checkbox" data-action="toggle-fate" data-slot="${slotIndex}" ${isFate ? 'checked' : ''} />
+                <span class="toggle-track"></span>
+                <span class="toggle-label">운명</span>
+            </label>`;
+    }
+
     const affinityOptions = AFFINITY_OPTIONS.map(opt =>
         `<option value="${opt.value}"${opt.value === affinity ? ' selected' : ''}>${opt.label}</option>`
     ).join('');
@@ -311,6 +324,7 @@ function _buildIdentityHTML(slotIndex, ship, slotConfig) {
                 <div class="ship-identity-bottom">
                     <div class="ship-type-nation" title="${safeTypeNation}">${safeTypeNation}</div>
                     ${retrofitHTML}
+                    ${fateHTML}
                 </div>
             </div>
             <div class="ship-identity-controls">
@@ -777,6 +791,9 @@ const _fmt = (n) => Math.round(n).toLocaleString('en-US');
  */
 function _buildWeaponBreakdownHTML(shipResult) {
     if (!shipResult || !Array.isArray(shipResult.perWeapon) || shipResult.perWeapon.length === 0) return '';
+    // Salvo counts are rolled up to the sim window, which is the kill time when
+    // the boss dies first — so the column header cannot say a fixed 90초.
+    const winLabel = (_lastDamageResult?.window ?? 90).toFixed(1).replace(/\.0$/, '');
     const rows = shipResult.perWeapon.map((w) => `
         <tr${w.cadence ? ' class="dmg-row-barrage"' : ''}>
             <td>${escapeHtml(w.label || '')}</td>
@@ -801,7 +818,7 @@ function _buildWeaponBreakdownHTML(shipResult) {
         : '');
     return `<table class="dmg-weapon-table">
         <thead><tr>
-            <th>무기</th><th>일격</th><th>장전</th><th title="90초 동안의 발사(살보) 횟수">발사/90초</th><th>DPS</th><th>명중</th><th>치명</th>
+            <th>무기</th><th>일격</th><th>장전</th><th title="${escapeHtml(winLabel)}초 동안의 발사(살보) 횟수">발사/${escapeHtml(winLabel)}초</th><th>DPS</th><th>명중</th><th>치명</th>
         </tr></thead>
         <tbody>${rows}</tbody>
     </table>${unmodeled}`;
@@ -912,6 +929,10 @@ export async function renderDamagePanel(container) {
 
     // Clear-check row (uses the boss/preset HP the engine carried on the result).
     const cc = result.clearCheck;
+    // What the fleet actually got to fire for: the limit minus the ~2s opening,
+    // cut short at the kill when the boss dies first. Every 누적/DPS below is over
+    // exactly this, which is the point — damage past the kill is not DPS.
+    const simWindow = (result.window ?? tgt.window).toFixed(1).replace(/\.0$/, '');
     let clearCheckRow = '';
     // Shown for the Arbiter presets as well as META bosses (user request): their
     // HP is large but not out of reach — a 90s window against The Hermit IX's
@@ -992,7 +1013,7 @@ export async function renderDamagePanel(container) {
             <div class="dmg-edit-row">${editRow}</div>
             <div class="dmg-ship-list">${perShipRows}</div>
             <div class="dmg-fleet-total">
-                <span class="dmg-total-label">함대 ${escapeHtml(String(tgt.window))}초 누적</span>
+                <span class="dmg-total-label" title="제한 시간에서 전투 시작 ${BATTLE_START_DELAY}초를 뺀 시간, 보스 격파 시 격파 시점까지">함대 ${escapeHtml(simWindow)}초 누적</span>
                 <strong class="dmg-total-val">${_fmt(result.total)}</strong>
                 <span class="dmg-total-label">함대 DPS</span>
                 <strong class="dmg-total-val">${_fmt(result.dps)}</strong>

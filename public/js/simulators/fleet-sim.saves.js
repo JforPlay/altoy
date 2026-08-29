@@ -47,6 +47,7 @@ export function serializeFleet(ships) {
             spWeapon: s.spWeapon ? { id: s.spWeapon.id, level: s.spWeapon.level } : null,
         };
         if (s.retrofit !== undefined) out.retrofit = s.retrofit;
+        if (s.fate !== undefined) out.fate = s.fate;
         return out;
     });
 }
@@ -78,6 +79,7 @@ export function deserializeFleet(savedShips) {
             slot.spWeapon = { id: spId, level: clampLevel(s.spWeapon.level, 0, 10, 0) };
         }
         if (s.retrofit !== undefined) slot.retrofit = s.retrofit;
+        if (s.fate !== undefined) slot.fate = s.fate;
         return slot;
     });
     while (ships.length < 6) ships.push(null);
@@ -104,6 +106,7 @@ function _encodeSlots(ships) {
             sp: s.spWeapon ? [s.spWeapon.id, s.spWeapon.level] : null,
         };
         if (s.retrofit !== undefined) o.r = s.retrofit ? 1 : 0;
+        if (s.fate !== undefined) o.f = s.fate ? 1 : 0;
         return o;
     });
 }
@@ -134,12 +137,21 @@ function _decodeSlots(saved, spMaxLevel) {
             slot.spWeapon = { id: spId, level: clampLevel(s.sp[1], 0, spMaxLevel(spId), 0) };
         }
         if (s.r !== undefined) slot.retrofit = s.r === 1;
+        if (s.f !== undefined) slot.fate = s.f === 1;
         return slot;
     });
     while (ships.length < 6) ships.push(null);
     ships.length = 6;
     return ships;
 }
+
+/**
+ * The fight's time limit by target kind. META joint-boss runs are 80s; the
+ * Operation Siren Arbiters are 90s. Shared with fleet-sim.main.js (the state
+ * default) and fleet-sim.damage.js (the sim window) so the wire format, the
+ * picker and the engine cannot drift apart.
+ */
+export const defaultWindow = (kind) => (kind === 'meta' ? 80 : 90);
 
 /** Encode state.fleets + the damage target into the ?fleet= base64 payload. */
 export function encodeFleetConfig(state) {
@@ -154,7 +166,7 @@ export function encodeFleetConfig(state) {
             ? { k: 'meta', b: dt.bossId, ti: dt.tier }
             : { k: 'preset', p: dt.presetKey, ad: dt.adapt, df: dt.difficulty };
         if (dt.overrides && Object.keys(dt.overrides).length) config.t.o = dt.overrides;
-        if (dt.window && dt.window !== 90) config.t.w = dt.window;
+        if (dt.window && dt.window !== defaultWindow(dt.kind)) config.t.w = dt.window;
     }
     return btoa(unescape(encodeURIComponent(JSON.stringify(config))));
 }
@@ -201,7 +213,7 @@ function _decodeTarget(t) {
         }
     }
     const w = Number(t.w);
-    patch.window = Number.isFinite(w) ? w : 90;
+    patch.window = Number.isFinite(w) ? w : defaultWindow(patch.kind);
     return patch;
 }
 

@@ -2,7 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { barrageBulletCount, attackAttributeKey, resolveWeaponDescriptor, mergeWeaponWithBase, effectiveProficiency,
-  salvosBySlot, activeBarrageSkillIds, cadenceLabel, resolveBarrageDescriptors }
+  salvosBySlot, activeBarrageSkillIds, hasFateSimulation, cadenceLabel, resolveBarrageDescriptors }
   from '../../public/js/simulators/fleet-sim.damage.js';
 
 const approxArr = (a, b, eps = 1e-9) => a.length === b.length && a.every((x, i) => Math.abs(x - b[i]) < eps);
@@ -167,6 +167,21 @@ test('activeBarrageSkillIds keeps the base rung when its successor is Retrofit-g
   } };
   assert.deepEqual(activeBarrageSkillIds(ship, false), ['29022']);
   assert.deepEqual(activeBarrageSkillIds(ship, true), ['29023']);
+});
+
+test('the 운명 toggle swaps a barrage between its base and fate rung (드레이크)', () => {
+  // Real shape: 단죄의 불꽃 19300 upgrades into 단죄의 불꽃 + 18300 at fate step 3.
+  // Off, the base rung must survive — the successor fails its own gate, exactly the
+  // 엘드릿지 case one gate over. Never both, or the barrage counts twice.
+  const drake = { skill: {
+    19300: { id: 19300, upgrade: 18300, downgrade: null, requirement: 'Default', weapon_true: true },
+    18300: { id: 18300, upgrade: null, downgrade: 19300, requirement: 'Fate Simulation 3', weapon_true: true },
+  } };
+  assert.deepEqual(activeBarrageSkillIds(drake, false, true), ['18300']);
+  assert.deepEqual(activeBarrageSkillIds(drake, false, false), ['19300']);
+  assert.deepEqual(activeBarrageSkillIds(drake, false), ['18300'], 'fate defaults to max');
+  assert.equal(hasFateSimulation(drake), true);
+  assert.equal(hasFateSimulation({ skill: { 19300: { requirement: 'Default' } } }), false);
 });
 
 test('salvosBySlot keys the window salvo count by equip slot (1-based)', () => {

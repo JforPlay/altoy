@@ -22,6 +22,7 @@
 import { ATTR_TO_KEY } from '../engine/damage/constants.js';
 import { weaponSalvoDuration } from '../engine/damage/salvo-timing.js';
 import { barrageActivations } from '../engine/damage/barrage.js';
+import { defaultWindow } from './fleet-sim.saves.js';
 import { weaponCycleInterval } from '../engine/damage/reload.js';
 import { countSalvos } from '../engine/damage/timeline.js';
 
@@ -254,6 +255,7 @@ export function resolveBarrageDescriptors(skillIds, deps) {
             });
             if (!d) continue;
             d.activations = n;
+            d.activationWindow = deps.ctx?.window ?? 0;   // the count is FOR this window
             d.cadence = cadence;
             descriptors.push(d);
             produced = true;
@@ -526,7 +528,7 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageB
     const { weapons, airReloadMax } = _resolveEquippedWeapons(slotConfig, shipType, stats, baseList, prof, preload, defaults);
 
     // Barrage skills the ship actually has active. Two filters, and BOTH matter.
-    const skillIds = activeBarrageSkillIds(ship, useRetrofit);
+    const skillIds = activeBarrageSkillIds(ship, useRetrofit, slotConfig.fate !== false);
     const airstrikes = airReloadMax > 0
         ? _engine.countSalvos(_engine.calculateReloadTime(airReloadMax, stats.reload), 0, window)
         : 0;
@@ -570,7 +572,7 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageB
  *
  * `requirement` is the raw game string ("Default", "Limit Break 1/2/3",
  * "Retrofit", "Devs 10", "Fate Simulation 5", …). The sim assumes max limit
- * break / max development, so the retrofit toggle is the only live gate.
+ * break / max development; 개장 and 운명 시뮬레이션 are the two live gates.
  *
  * A skill is superseded only when its successor is ITSELF live under the
  * current gates — not merely present in the list. 엘드릿지's 29022 (no gate)
@@ -580,15 +582,33 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageB
  * BOTH ends of the chain whenever it crosses a gate boundary this way — 15
  * ships have this shape, 11 of them losing real modelled damage.
  */
-export function activeBarrageSkillIds(ship, useRetrofit) {
-    const skills = ship.skill || {};
-    const eligible = (sk) => (sk.requirement === 'Retrofit' ? !!useRetrofit : true);
+export function liveSkillIds(ship, useRetrofit, useFate = true) {
+    const skills = ship?.skill || {};
+    const eligible = (sk) => (sk.requirement === 'Retrofit' ? !!useRetrofit
+        : isFateGated(sk) ? useFate !== false : true);
     return Object.keys(skills).filter((sid) => {
         const sk = skills[sid];
-        if (!sk || !sk.weapon_true || !eligible(sk)) return false;
+        if (!sk || !eligible(sk)) return false;
         const target = sk.upgrade != null ? skills[String(sk.upgrade)] : null;
         return !(target && eligible(target));   // superseded only if the successor is itself live
     });
+}
+
+/** The subset that actually fires a barrage. */
+export function activeBarrageSkillIds(ship, useRetrofit, useFate = true) {
+    const skills = ship?.skill || {};
+    return liveSkillIds(ship, useRetrofit, useFate).filter((sid) => skills[sid].weapon_true);
+}
+
+/** `requirement` is "Fate Simulation 3"/"…5" — the step, which none-vs-max ignores. */
+const isFateGated = (sk) => typeof sk?.requirement === 'string' && sk.requirement.startsWith('Fate Simulation');
+
+/**
+ * True when anything the ship has is gated behind 운명 시뮬레이션, which is what
+ * decides whether the card shows the toggle at all (33 research ships).
+ */
+export function hasFateSimulation(ship) {
+    return Object.values(ship?.skill || {}).some(isFateGated);
 }
 
 /**
@@ -632,14 +652,17 @@ export async function simulateFleetDamage(ships, targetOpts) {
     const techBonuses = _calc.calculateFleetTechBonuses();
     const slots = ships || [];
     const fleetShips = slots.map((s) => (s && s.gid ? _data.getShipByGid(s.gid) : null));
-    const window = targetOpts.window ?? 90;
+    // The user's 제한 시간 is the fight clock; the fleet cannot fire for all of it
+    // (approach + intro), so the sim window is that much shorter.
+    const limit = targetOpts.window ?? defaultWindow(targetOpts.kind);
+    const window = Math.max(1, limit - _engine.BATTLE_START_DELAY);
 
     const engineShips = [];
     const barrageGapsByRef = new Map();
     for (let i = 0; i < slots.length; i++) {
         const slot = slots[i];
         if (!slot) continue;
-        const computed = _computeStatsForSlot(slot, i, fleetShips, techBonuses);
+        const computed = _computeStatsForSlot(slot, i, fleetShips, techBonuses, slots);
         if (!computed) continue;
         const { ship, stats, damageBuffs } = computed;
         const { weapons, unmodeled, inactive } = resolveShipWeapons(slot, ship, stats, window, damageBuffs);
@@ -656,14 +679,29 @@ export async function simulateFleetDamage(ships, targetOpts) {
         });
     }
 
-    const sim = _engine.simulateFleet(engineShips, target, { window });
+    const full = _engine.simulateFleet(engineShips, target, { window });
+    const clearCheck = _engine.computeClearCheck({
+        damageAt: full.damageAt,
+        bossHp: target.hp,
+        timeLimit: limit,
+        startDelay: _engine.BATTLE_START_DELAY,
+    });
+
+    // The fight ends when the boss dies, so every figure is rolled up to THAT
+    // moment: a 90s roll-up against a boss that died at 40s reports overkill as
+    // if it were sustained damage, and its average hides the opening burst.
+    // The re-roll is arithmetic over descriptors that are already resolved.
+    const killAt = clearCheck.clears
+        ? Math.max(1, clearCheck.ttkSeconds - _engine.BATTLE_START_DELAY)
+        : window;
+    const sim = killAt < window ? _engine.simulateFleet(engineShips, target, { window: killAt }) : full;
+
     for (const s of sim.perShip) {
         const gaps = barrageGapsByRef.get(s.ref) || {};
         s.unmodeledBarrages = gaps.unmodeled || 0;
         s.inactiveBarrages = gaps.inactive || 0;
     }
-    const clearCheck = _engine.computeClearCheck({ fleetDps: sim.dps, bossHp: target.hp, timeLimit: window });
-    return { ...sim, target, clearCheck };
+    return { ...sim, target, clearCheck, timeLimit: limit };
 }
 
 /**
@@ -672,11 +710,11 @@ export async function simulateFleetDamage(ships, targetOpts) {
  * and `slotIndex` says where this ship sits — both are what the vanguard/main/
  * flagship target modes read.
  */
-function _computeStatsForSlot(slot, slotIndex, fleetShips, techBonuses) {
+function _computeStatsForSlot(slot, slotIndex, fleetShips, techBonuses, slots) {
     const ship = fleetShips[slotIndex];
     if (!ship) return null;
 
-    const passiveBuffs = _calc.resolvePassiveBuffs(ship, fleetShips, slotIndex);
+    const passiveBuffs = _calc.resolvePassiveBuffs(ship, fleetShips, slotIndex, slots);
 
     const res = _calc.calculateShipStats(slot, techBonuses, passiveBuffs);
     if (!res) return null;

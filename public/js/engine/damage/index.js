@@ -14,7 +14,35 @@ export { countSalvos, countSalvosWithPreload, rollUpWeapon } from './timeline.js
 export { calculateReloadTime, calculateAirAssistReloadMax, weaponCycleInterval } from './reload.js';
 export { salvoFiringDuration, weaponSalvoDuration } from './salvo-timing.js';
 export { ARMOR_PRESETS, makeTarget, makeMetaTarget, DEFAULT_ADAPT, DEFAULT_ARMOR_REDUCE } from './targets.js';
-export { computeClearCheck } from './clear-check.js';
+export { computeClearCheck, solveTimeToKill } from './clear-check.js';
+export { BATTLE_START_DELAY } from './constants.js';
+
+/**
+ * Roll one weapon's firing schedule up to time `t`.
+ *
+ * A barrage carries a pre-resolved activation count instead of a reload (its
+ * cadence is a skill trigger — see engine/damage/barrage.js), so it is scaled by
+ * how much of its resolution window `t` covers rather than re-counted. That
+ * matters because the caller re-rolls the whole fleet at the kill time.
+ */
+function rollSchedule(s, t) {
+  if (s.activations != null) {
+    const share = s.activationWindow > 0 ? Math.min(1, t / s.activationWindow) : 1;
+    const salvoCount = s.activations * share;
+    const total = s.expectedSalvo * salvoCount;
+    return { salvoCount, total, dps: t > 0 ? total / t : 0 };
+  }
+  return rollUpWeapon(s.expectedSalvo, s.cycle, {
+    initialDelay: s.initialDelay, window: t, coolStart: s.coolStart, preloadShare: s.preloadShare,
+  });
+}
+
+/** Cumulative expected damage over the first `t` seconds of firing. Monotone in t. */
+export function damageAtTime(schedules, t) {
+  let sum = 0;
+  for (const s of schedules) sum += rollSchedule(s, t).total;
+  return sum;
+}
 
 /**
  * Simulate one attacker (ship) firing all its weapons at a target over a window.
@@ -25,32 +53,32 @@ export { computeClearCheck } from './clear-check.js';
  */
 export function simulateAttacker(attacker, weapons, target, opts = {}) {
   const timeWindow = opts.window ?? 90;
+  const schedules = [];
   const perWeapon = weapons.map((w) => {
     const hit = computeHitDamage(attacker, w, target);
     const salvo = computeSalvo(hit, w.bulletsPerSalvo);
-    // A barrage carries a pre-resolved activation count (see engine/damage/barrage.js):
-    // its cadence comes from a skill trigger, not from the reload stat, so reload
-    // and the window roll-up are both bypassed.
     const isBarrage = w.activations != null;
     const reloadInterval = isBarrage ? 0 : calculateReloadTime(w.reloadMax, attacker.reload);
     // Salvos are spaced by the full fire cycle: reload + salvo firing time + 발사 후 경직 (cycleExtra,
     // a fixed time NOT scaled by the reload stat). reloadInterval is still reported raw for display.
     // A weapon that starts the battle reloading opens one RAW reload in (no salvo
     // firing time — battleweaponunit.lua InitialCD passes GetReloadTime() alone),
-    // and `preloadShare` is the mounts that skip it. Barrages are exempt: their
-    // cadence is a skill trigger, not a reload.
-    const roll = isBarrage
+    // and `preloadShare` is the mounts that skip it.
+    const schedule = isBarrage
       ? {
-          salvoCount: w.activations,
-          total: salvo.expectedSalvo * w.activations,
-          dps: timeWindow > 0 ? (salvo.expectedSalvo * w.activations) / timeWindow : 0,
+          expectedSalvo: salvo.expectedSalvo,
+          activations: w.activations,
+          activationWindow: w.activationWindow ?? timeWindow,
         }
-      : rollUpWeapon(salvo.expectedSalvo, weaponCycleInterval(w, attacker.reload), {
+      : {
+          expectedSalvo: salvo.expectedSalvo,
+          cycle: weaponCycleInterval(w, attacker.reload),
           initialDelay: w.initialDelay ?? 0,
-          window: timeWindow,
           coolStart: w.startsOnCooldown ? reloadInterval : 0,
           preloadShare: w.preloadShare ?? 0,
-        });
+        };
+    schedules.push(schedule);
+    const roll = rollSchedule(schedule, timeWindow);
     return {
       label: w.label,
       oneSalvoExpected: salvo.expectedSalvo,
@@ -69,11 +97,16 @@ export function simulateAttacker(attacker, weapons, target, opts = {}) {
   const oneShotExpected = perWeapon.reduce((s, w) => s + w.oneSalvoExpected, 0);
   const total = perWeapon.reduce((s, w) => s + w.total, 0);
   const dps = timeWindow > 0 ? total / timeWindow : 0;
-  return { perWeapon, oneShotExpected, total, dps };
+  return { perWeapon, oneShotExpected, total, dps, schedules };
 }
 
 /**
  * Simulate a fleet.
+ *
+ * `damageAt(t)` is the fleet's cumulative-damage curve, which is what lets a
+ * caller solve the kill time instead of dividing HP by an average — damage is
+ * front-loaded (preloaded mounts, the opening airstrike), so hp/avgDps overstates
+ * the time to kill.
  * @param {{ref:any, profile:object, weapons:object[]}[]} ships
  */
 export function simulateFleet(ships, target, opts = {}) {
@@ -81,5 +114,6 @@ export function simulateFleet(ships, target, opts = {}) {
   const perShip = ships.map((s) => ({ ref: s.ref, ...simulateAttacker(s.profile, s.weapons, target, opts) }));
   const total = perShip.reduce((s, x) => s + x.total, 0);
   const dps = timeWindow > 0 ? total / timeWindow : 0;
-  return { perShip, total, dps };
+  const schedules = perShip.flatMap((s) => s.schedules);
+  return { perShip, total, dps, window: timeWindow, damageAt: (t) => damageAtTime(schedules, t) };
 }
