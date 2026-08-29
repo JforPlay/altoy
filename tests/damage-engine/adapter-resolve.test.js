@@ -265,8 +265,8 @@ test('resolveBarrageDescriptors counts a skill unmodeled when every one of its w
   assert.equal(unmodeled, 1);
 });
 
-// "발동 조건을 계산할 수 없는" is the wrong thing to say about a barrage whose
-// condition was computed and came out zero — an unequipped ship, a carrier (no
+// "발동 조건이 아직 구현되지 않은" is the wrong thing to say about a barrage
+// whose condition IS implemented and computed to zero — an unequipped ship, a carrier (no
 // air descriptor carries a slotIndex, so salvosBySlot is empty), a 대공-slot
 // trigger. Both stay visible (D3), but they are different answers.
 test('resolveBarrageDescriptors counts a zero-activation barrage apart from an unreadable one', () => {

@@ -811,7 +811,7 @@ function _buildWeaponBreakdownHTML(shipResult) {
     // carrier, 대공 slot). One shared message called both a failure and made an
     // empty or carrier card look broken.
     const unmodeled = (shipResult.unmodeledBarrages
-        ? `<p class="dmg-unmodeled-note">발동 조건을 계산할 수 없는 탄막 ${shipResult.unmodeledBarrages}개는 제외되었습니다.</p>`
+        ? `<p class="dmg-unmodeled-note">발동 조건이 아직 구현되지 않은 탄막 ${shipResult.unmodeledBarrages}개는 제외되었습니다.</p>`
         : '')
         + (shipResult.inactiveBarrages
         ? `<p class="dmg-unmodeled-note">현재 편성에서 발동하지 않는 탄막 ${shipResult.inactiveBarrages}개는 제외되었습니다.</p>`
@@ -912,7 +912,7 @@ export async function renderDamagePanel(container) {
         ? `<div class="dmg-missing-note">저장된 보스 데이터를 찾을 수 없어 기본 타겟으로 계산했습니다.</div>`
         : '';
 
-    // Same contract as the per-card 미모델 탄막 note: disclose what the sim skipped
+    // Same contract as the per-card 미구현 탄막 note: disclose what the sim skipped
     // instead of letting the total read as complete. These are the boss's
     // phase/stack/timer buffs — their trigger is precisely what is not modelled.
     const unmodeledBuffs = result.target ? (result.target.unmodeledBuffs || 0) : 0;
@@ -1043,7 +1043,7 @@ function _updateCardBreakdowns(damageResult) {
         const collapsibleInner = card.querySelector('.ship-stats-collapsible-inner');
         if (!collapsibleInner) continue;
 
-        // Remove existing breakdown table AND every 미모델 note sibling —
+        // Remove existing breakdown table AND every unmodelled-barrage note sibling —
         // _buildWeaponBreakdownHTML returns up to three sibling nodes (table +
         // an unreadable-trigger note + a no-activation note), and a patch path
         // that removes fewer than it appends orphans a stale note on every

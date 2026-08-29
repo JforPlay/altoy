@@ -31,14 +31,13 @@ test('a timer barrage renders as a 탄막 row carrying its cadence, not a reload
   await expect(barrage.first().locator('td').nth(2)).toHaveText('20초마다 70%');
 });
 
-test('a second recompute does not duplicate the 미모델 note', async ({ page }) => {
+test('a second recompute does not duplicate the unmodelled-barrage note', async ({ page }) => {
   // 윌리엄 D 포터 is a DD (전열/front-row type) — slots 0-2 are 후열, so she must
   // go in a front-row slot (3-5) or the picker legitimately shows zero matches.
-  // She carries barrage gaps, unlike 워싱턴 above, which is the point:
-  // _buildWeaponBreakdownHTML's return can be [table, note, note] now, and the
-  // incremental patch in _updateCardBreakdowns must clean up EVERY sibling
-  // before re-appending, not just the table, or the notes orphan on every
-  // recompute after the first.
+  // She carries a barrage gap, unlike 워싱턴 above, which is the point:
+  // _buildWeaponBreakdownHTML returns [table, note] and the incremental patch in
+  // _updateCardBreakdowns must clean up EVERY sibling before re-appending, not
+  // just the table, or the note orphans on every recompute after the first.
   await page.goto(PAGE);
   await page.locator('.ship-card[data-slot="3"] .ship-card-add').click();
   await expect(page.locator('#ship-picker-grid .picker-item').first()).toBeVisible();
@@ -52,12 +51,15 @@ test('a second recompute does not duplicate the 미모델 note', async ({ page }
   const table = page.locator('.ship-card[data-slot="3"] .dmg-weapon-table');
   // Confirms the FIRST damage recompute has landed and this ship is actually a
   // note-bearing fixture — a ship with no barrage gaps (like 워싱턴) cannot
-  // exercise this at all. She shows BOTH notes: one barrage the table cannot
-  // read, and one whose trigger reads fine but counts weapon FIRES, which an
-  // unequipped card correctly has none of.
-  await expect(note).toHaveCount(2);
-  await expect(note.filter({ hasText: '발동 조건을 계산할 수 없는' })).toHaveCount(1);
-  await expect(note.filter({ hasText: '현재 편성에서 발동하지 않는' })).toHaveCount(1);
+  // exercise this at all.
+  //
+  // She used to show TWO notes, the second being a count barrage that reads fine
+  // but counts weapon FIRES an unequipped card had none of. Since
+  // `default_equip_list` reached `ship_info_data.json` an empty slot is no longer
+  // an idle slot - the card arms the ship's default guns and the count barrage
+  // activates - so that note is gone here, and is now hard to reach at all.
+  await expect(note).toHaveCount(1);
+  await expect(note).toHaveText(/발동 조건이 아직 구현되지 않은/);
 
   // Trigger a second recompute cycle without touching the ship itself. The
   // adapt row is rebuilt only inside renderDamagePanel's async completion, so
@@ -68,5 +70,5 @@ test('a second recompute does not duplicate the 미모델 note', async ({ page }
   await expect(fullAdaptBtn).toHaveClass(/is-active/);
 
   await expect(table).toHaveCount(1);
-  await expect(note).toHaveCount(2);
+  await expect(note).toHaveCount(1);
 });

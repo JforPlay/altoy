@@ -215,8 +215,9 @@ export function cadenceLabel(t, p) {
  * ZERO ACTIVATIONS IS NOT THE SAME ANSWER and is counted apart (`inactive`). The
  * trigger was read and the loadout simply never fires it: an unequipped ship (every
  * count/fire barrage), any CARRIER (no air descriptor carries a slotIndex, so
- * salvosBySlot is empty), a 대공-slot trigger. Calling those "발동 조건을 계산할 수
- * 없는" is wrong — the condition was computed and came out zero — and it made an
+ * salvosBySlot is empty), a 대공-slot trigger. Calling those "발동 조건이 아직
+ * 구현되지 않은" is wrong — the condition IS implemented, it computed to zero
+ * — and it made an
  * empty or carrier card look broken. Both stay visible, which is what D3 asks for.
  *
  * FAILS SAFE if `deps.getBarrageSkill` isn't callable (Task 8's loader landing
