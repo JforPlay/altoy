@@ -70,6 +70,17 @@
     flex-wrap: wrap;
   }
 
+  /* The open menu overlays the carousel, and the navbar tint (0.95/0.92 alpha) let
+     the artwork bleed through the whole list. Opaque while open; the closed bar keeps
+     its translucent look. Colors match the desktop mega-menu. */
+  .navbar:has(.nav-menu.active) {
+    background: #ffffff;
+  }
+
+  body.dark-mode .navbar:has(.nav-menu.active) {
+    background: #0a0a0a;
+  }
+
   /* Mobile Mega Menus - only customize mega-menu, let global.navbar.css handle nav-menu */
   .mega-menu {
     position: static;
