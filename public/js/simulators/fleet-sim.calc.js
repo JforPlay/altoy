@@ -5,6 +5,7 @@
  */
 
 import { getStorageItem } from '../utils.js';
+import { statTableKey } from '../ship-stat-table.js';
 import { getShipByGid, getEquipFullById, getWeaponProperty, getSPWeaponById, getEffectiveShipType, getSlotName } from './fleet-sim.data.js';
 import {
     TECH_STAT_BY_ATTR_ID, shipTypeTechCaps, shipTypeTechFromProgress, effectiveShipTypeTech,
@@ -781,25 +782,24 @@ export function computeHighlights(allStats) {
 // ===== Internal Helpers =====
 
 /**
- * Get stats for the selected limit break state.
- * @param {object} ship - Ship data
- * @param {string} field - 'base' or 'growth'
- * @param {boolean} useRetrofit - Whether to use retrofit stats (last key) or MLB (second-to-last for 5+ keys)
+ * Get one of a ship's per-LB stat tables for the selected 개조 state.
+ *
+ * The key comes from the shared ID-keyed rule (`statTableKey`) — picking it by
+ * key POSITION reads the wrong table on 5 ships, and both toggle states are
+ * affected: 카스미's 改 table sorts FIRST, so "second to last" gave her LB2
+ * (화력/뇌장 ~18% low) with 개조 off, and the 안샨-class second 改 table sorts
+ * LAST, so 개조 off took the 改 포좌 `[2,1,1]` over her own `[1,2,1]`.
+ *
+ * @param {object} ship - ship_info_data entry
+ * @param {string} field - 'base' | 'growth' | 'mounts' | 'base_list'
+ * @param {boolean} useRetrofit - resolve the 改 table when the ship has one
  */
 function _getStatsForLB(ship, field, useRetrofit) {
     const statObj = ship[field];
     if (!statObj) return null;
 
-    const keys = Object.keys(statObj);
-    if (keys.length === 0) return null;
-
-    // If retrofit OFF and ship has retrofit and 5+ keys, use second-to-last key (MLB without retrofit base changes)
-    if (!useRetrofit && ship.retrofit && keys.length >= 5) {
-        return statObj[keys[keys.length - 2]] || null;
-    }
-
-    // Default: last key = max (retrofit if available, MLB otherwise)
-    return statObj[keys[keys.length - 1]] || null;
+    const key = statTableKey(ship, useRetrofit);
+    return (key && statObj[key]) || null;
 }
 
 /**

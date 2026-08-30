@@ -10,6 +10,11 @@
 
 import { fetchJSON, fetchJSONWithCache, normalizeRomanNumerals } from '../utils.js';
 import { mergeReleaseDates, releaseSortKey } from '../skin/skin.dates.js';
+import { statTableKey } from '../ship-stat-table.js';
+
+// Re-export: the max-state table rule is shared with the fleet simulator, so it
+// lives in its own pure module. Callers keep importing it from here.
+export { statTableKey };
 
 // ===== Constants =====
 
@@ -152,29 +157,6 @@ export function ensureSkinData() {
 }
 
 // ===== Stat Calculation =====
-
-/**
- * Pick the `base`/`growth` table key for a ship's max state.
- *
- * Keyed by id, never by key POSITION: `retrofit.id` is not always the last key
- * (카스미's 改 table `301534` sorts first, and 안샨/푸슌/창춘/타이위안 each carry
- * two 改 tables), and the MLB table is always `sid + 3` (the three 부린 have a
- * lone `sid` key and fall through to it).
- *
- * @param {Object} ship - Entry from ship_info_data
- * @param {boolean} useRetrofit - resolve the 改 table when the ship has one
- * @returns {string} key into ship.base / ship.growth
- */
-export function statTableKey(ship, useRetrofit) {
-    if (useRetrofit && ship.retrofit && ship.base[ship.retrofit.id]) {
-        return String(ship.retrofit.id);
-    }
-    const mlbKey = String(ship.sid + 3);
-    if (ship.base[mlbKey]) return mlbKey;
-
-    const baseKeys = Object.keys(ship.base);
-    return baseKeys[baseKeys.length - 1];
-}
 
 /**
  * Compute Lv.120 stats for a single ship at max limit break with affinity bonus.

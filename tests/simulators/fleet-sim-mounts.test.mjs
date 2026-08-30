@@ -109,6 +109,23 @@ test('both 가스코뉴 resolve to the same 포좌 — the case that forces max(
     assert.equal(b, 2, '가스코뉴(μ장비) diverged from 가스코뉴 — see build_mounts');
 });
 
+test('the LB table is resolved by ID — 안샨 with 개조 off keeps her own 포좌', () => {
+    // 안샨/푸슌/창춘/타이위안 carry SIX tables: four of their own, then two 改 forms
+    // (미구-전열 `retrofit.id`, 미구-후열 one higher). The old positional rule read
+    // "second to last" with 개조 off and landed on the 改 전열 table, handing her the
+    // 改 포좌 [2,1,1] instead of her own [1,2,1] — main gun doubled, torpedoes halved.
+    // Only this class can see the regression through mounts: 카스미's 개조-off bug
+    // moves her base stats (LB2 instead of MLB) while her 포좌 stay [1,2,1].
+    for (const name of ['안샨', '푸슌', '창춘', '타이위안']) {
+        const ship = byName(name);
+        assert.equal(Object.keys(ship.base).length, 6, `${name}: expected 6 LB tables`);
+        assert.deepEqual(getShipBaseList(ship, false), ship.mounts[String(ship.sid + 3)],
+            `${name}: 개조 off must read her own MLB 포좌, not a 改 table`);
+        assert.deepEqual(getShipBaseList(ship, true), ship.mounts[String(ship.retrofit.id)],
+            `${name}: 개조 on must read the retrofit.id table`);
+    }
+});
+
 test('getShipBaseList prefers mounts and falls back to base_list', () => {
     const goetz = byName('괴츠 폰 베를리힝겐');
     assert.equal(getShipBaseList(goetz, true)[0], 3);
