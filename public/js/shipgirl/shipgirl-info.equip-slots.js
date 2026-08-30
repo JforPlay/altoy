@@ -23,7 +23,7 @@ export const DEVICE_EQUIP_TYPES = new Set([10, 14, 15, 17, 18]);
 // report a 함재기 (plane) count rather than a 포좌 (mount) count.
 export const AIRCRAFT_EQUIP_TYPES = new Set([7, 8, 9, 12]);
 
-const LIMIT_BREAK_NAMES = ['기본', '한계돌파 1', '한계돌파 2', '한계돌파 3'];
+import { limitBreakSteps } from '../ship-stat-table.js';
 
 /** True if the slot accepts at least one non-device (weapon) equip type. */
 export function slotIsWeapon(typeIds) {
@@ -61,20 +61,22 @@ export function formatEfficiency(profFinal, profBase = null, retrofitDelta = 0) 
 
 /**
  * 포좌/함재기 count string across limit-break stages.
- * The map is { sid: [s1,s2,s3] }; numeric sid keys are sorted ascending = LB
- * order (LB0 first). Constant → "포좌 N"; increasing → "포좌 a → b (stage)".
+ * The map is { sid: [s1,s2,s3] }; `limitBreakSteps` orders and names those keys,
+ * because ascending key order is NOT ladder order — 카스미's 改 table sorts
+ * first, so "the first key" was her 改 count and the stage name was the label one
+ * rung above the one that granted the mount. Constant → "포좌 N"; increasing →
+ * "포좌 a → b (stage)".
  */
-export function formatMountProgression(baseList, slotIndex, isAircraft = false) {
+export function formatMountProgression(ship, baseList, slotIndex, isAircraft = false) {
   const word = isAircraft ? '함재기' : '포좌';
-  const keys = Object.keys(baseList || {}).map(Number).sort((a, b) => a - b);
-  if (keys.length === 0) return `${word} 0`;
-  const counts = keys.map(k => baseList[String(k)][slotIndex]);
+  const steps = limitBreakSteps(ship, baseList).filter(s => baseList[s.key]);
+  if (steps.length === 0) return `${word} 0`;
+  const counts = steps.map(s => baseList[s.key][slotIndex]);
   const first = counts[0];
   const max = Math.max(...counts);
   if (max === first) return `${word} ${first}`;
-  const stageIdx = counts.findIndex(c => c === max);
-  const stageName = LIMIT_BREAK_NAMES[stageIdx] || `${stageIdx}차`;
-  return `${word} ${first} → ${max} (${stageName})`;
+  const at = steps[counts.findIndex(c => c === max)];
+  return `${word} ${first} → ${max} (${at.label})`;
 }
 
 /**
@@ -113,7 +115,7 @@ export function buildSlotViewModels(ship, getTypeName) {
       slotNo,
       typeName: typeIds.map(id => getTypeName(id)).join('/'),
       eff: formatEfficiency(p, profBase[slotIndex] ?? null, retrofitDelta),
-      mountText: formatMountProgression(baseList, slotIndex, aircraft),
+      mountText: formatMountProgression(ship, baseList, slotIndex, aircraft),
       retrofitTypeNote,
     });
   }

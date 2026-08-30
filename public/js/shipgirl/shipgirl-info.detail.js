@@ -25,6 +25,7 @@ import { showMapsModal } from './shipgirl-info.maps.js';
 import { renderRetrofitMap } from './shipgirl-info.retrofit.js';
 import { renderEquipSlotSection } from './shipgirl-info.equip-slots.js';
 import { resolveShip } from './shipgirl-info.resolve.js';
+import { limitBreakSteps, statTableKey } from '../ship-stat-table.js';
 
 'use strict';
 
@@ -43,8 +44,6 @@ const ARMOR_TYPES = {
     2: '중형장갑',
     3: '중장갑'
 };
-
-const LIMIT_BREAK_NAMES = ['기본', '한계돌파 1', '한계돌파 2', '한계돌파 3'];
 
 const UNAFFECTED_STATS = ['speed', 'luck'];
 
@@ -129,8 +128,10 @@ export async function showDetailView(shipName, gid) {
     state.currentFavorability = 'love';
     state.currentEnhancement = 'complete';
 
-    const limitBreakOptions = Object.keys(ship.base);
-    state.currentLimitBreak = limitBreakOptions[limitBreakOptions.length - 1];
+    // The max state is the 改 table when there is one, else MLB — the same rule
+    // the stats page and fleet-sim resolve with. "Last key" put 안샨 on her
+    // 미구-후열 form and 카스미 on her MLB rather than her 改.
+    state.currentLimitBreak = statTableKey(ship, true);
 
     state.elements.mainView.style.display = 'none';
     state.elements.detailView.style.display = 'block';
@@ -147,7 +148,7 @@ export async function showDetailView(shipName, gid) {
 // ===== Detail View Rendering =====
 
 function renderDetailView(ship) {
-    const limitBreakOptions = Object.keys(ship.base);
+    const limitBreakOptions = limitBreakSteps(ship);
     const nationalityInfo = state.nationalityData[String(ship.nationality)] || {
         name: ship.nationality,
         code: '',
@@ -335,9 +336,9 @@ function renderStatsSection(ship, limitBreakOptions) {
                     <div class="control-group">
                         <label for="limitBreakSelect">한계돌파</label>
                         <select id="limitBreakSelect">
-                            ${limitBreakOptions.map((key, index) => `
+                            ${limitBreakOptions.map(({ key, label }) => `
                                 <option value="${key}" ${key === state.currentLimitBreak ? 'selected' : ''}>
-                                    ${LIMIT_BREAK_NAMES[index] || `한계돌파 ${index}`}
+                                    ${label}
                                 </option>
                             `).join('')}
                         </select>
