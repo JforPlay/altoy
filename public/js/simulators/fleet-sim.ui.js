@@ -806,8 +806,8 @@ function _buildWeaponBreakdownHTML(shipResult) {
             <td>${w.cadence ? escapeHtml(w.cadence) : `${w.reloadInterval.toFixed(2)}s`}</td>
             <td>${w.salvoCount % 1 ? w.salvoCount.toFixed(1) : w.salvoCount}</td>
             <td>${w.excluded ? `<s>${_fmt(w.dps)}</s>` : _fmt(w.dps)}</td>
-            <td>${Math.round(w.hitRate * 100)}%</td>
-            <td>${Math.round(w.critRate * 100)}%</td>
+            <td>${w.hitRate == null ? '—' : `${Math.round(w.hitRate * 100)}%`}</td>
+            <td>${w.critRate == null ? '—' : `${Math.round(w.critRate * 100)}%`}</td>
         </tr>`).join('');
     // A barrage's activation count can be fractional (proc chance is an expected
     // value over the window), so it's formatted above rather than printed raw.
@@ -820,6 +820,12 @@ function _buildWeaponBreakdownHTML(shipResult) {
         : '')
         + (shipResult.inactiveBarrages
         ? `<p class="dmg-unmodeled-note">현재 편성에서 발동하지 않는 탄막 ${shipResult.inactiveBarrages}개는 제외되었습니다.</p>`
+        : '')
+        // A burn whose payload needs something the sim does not track (a share of the
+        // target's CURRENT hp — no reachable record uses one today). Its own note
+        // because it is a different gap from a barrage the table cannot read.
+        + (shipResult.unmodeledDots
+        ? `<p class="dmg-unmodeled-note">계산에 필요한 값이 없는 지속 피해 ${shipResult.unmodeledDots}개는 제외되었습니다.</p>`
         : '')
         // Third note, same D3 contract: the row is there, the damage is not, so say why.
         + (shipResult.perWeapon.some((w) => w.excluded)
@@ -899,10 +905,17 @@ export async function renderDamagePanel(container) {
     // A META boss's own always-on 받는 피해 skill is already inside every number
     // below, so it is named here rather than left as an invisible multiplier —
     // 요크타운's -60% otherwise reads as the fleet being bad.
-    const injure = result.target ? (result.target.injureRatio || 0) : 0;
-    const injureChip = injure
+    // The burn debuff half is split back out: it is already inside target.injureRatio
+    // (every number below includes it) but it is the FLEET's doing, not the boss's,
+    // and labelling it 보스 스킬 would say the opposite.
+    const injureFromDots = result.target ? (result.target.injureFromDots || 0) : 0;
+    const injure = (result.target ? (result.target.injureRatio || 0) : 0) - injureFromDots;
+    const injureChip = (injure
         ? `<span class="dmg-target-injure${injure < 0 ? ' is-resist' : ''}">보스 스킬 · 받는 피해 ${injure > 0 ? '+' : ''}${Math.round(injure * 100)}%</span>`
-        : '';
+        : '')
+        + (injureFromDots
+        ? `<span class="dmg-target-injure">지속 피해 · 받는 피해 +${Math.round(injureFromDots * 100)}%</span>`
+        : '');
     // 장갑 종류 is the one target stat the panel never showed, yet every number in
     // it goes through that weapon armor-mod (damageType[armorType-1]) — it decides
     // which weapons are worth bringing more than 회피/대공 do.

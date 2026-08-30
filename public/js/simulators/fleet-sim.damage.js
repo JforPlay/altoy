@@ -19,9 +19,10 @@
  * called in a browser context). The pure helpers below are safe to import in
  * Node unit tests because they only depend on engine/damage/constants.js.
  */
-import { ATTR_TO_KEY } from '../engine/damage/constants.js';
+import { ATTR_TO_KEY, PERCENT } from '../engine/damage/constants.js';
 import { weaponSalvoDuration } from '../engine/damage/salvo-timing.js';
 import { barrageActivations } from '../engine/damage/barrage.js';
+import { dotSchedule } from '../engine/damage/dot.js';
 import { defaultWindow } from './fleet-sim.saves.js';
 import { weaponCycleInterval } from '../engine/damage/reload.js';
 import { countSalvos } from '../engine/damage/timeline.js';
@@ -213,6 +214,10 @@ export function cadenceLabel(t, p) {
  * a rate (submarine / conditional / untraced / no-readable-cadence skills), and that
  * honesty is exactly why the gap must surface here instead of silently vanishing.
  *
+ * A 지속 피해 the barrage attaches rides along as its own descriptor (see
+ * resolveBarrageDot) — it is not weapon damage and takes no armor modifier, so it must
+ * never be folded into one of the rows above.
+ *
  * ZERO ACTIVATIONS IS NOT THE SAME ANSWER and is counted apart (`inactive`). The
  * trigger was read and the loadout simply never fires it: an unequipped ship (every
  * count/fire barrage), any CARRIER (no air descriptor carries a slotIndex, so
@@ -230,11 +235,13 @@ export function cadenceLabel(t, p) {
  */
 export function resolveBarrageDescriptors(skillIds, deps) {
     if (typeof deps.getBarrageSkill !== 'function') {
-        return { descriptors: [], unmodeled: (skillIds || []).length, inactive: 0 };
+        return { descriptors: [], unmodeled: (skillIds || []).length, inactive: 0, unmodeledDots: 0, dotInjure: {} };
     }
     const descriptors = [];
     let unmodeled = 0;
     let inactive = 0;
+    let unmodeledDots = 0;
+    const dotInjure = {};
     for (const sid of skillIds || []) {
         const rec = deps.getBarrageSkill(String(sid));
         if (!rec) { unmodeled++; continue; }
@@ -242,7 +249,7 @@ export function resolveBarrageDescriptors(skillIds, deps) {
         if (!cadence) { unmodeled++; continue; }        // unknown trigger kind
         const n = barrageActivations(rec, deps.ctx);
         if (!(n > 0)) { inactive++; continue; }         // read fine, this loadout never fires it
-        let produced = false;
+        const built = [];
         for (const wid of rec.w || []) {
             const raw = deps.getWeapon(wid);
             if (!raw) continue;
@@ -263,11 +270,100 @@ export function resolveBarrageDescriptors(skillIds, deps) {
             d.activationWindow = deps.ctx?.window ?? 0;   // the count is FOR this window
             d.cadence = cadence;
             descriptors.push(d);
-            produced = true;
+            built.push({ d, weapon });
         }
-        if (!produced) unmodeled++;   // every weapon id in rec.w failed to resolve
+        if (!built.length) { unmodeled++; continue; }   // every weapon id in rec.w failed to resolve
+        const burn = resolveBarrageDot(rec, built, n, deps);
+        if (!burn) continue;
+        if (burn.unmodeled) { unmodeledDots++; continue; }
+        descriptors.push(burn.descriptor);
+        // Two ships burning the same boss do not stack the debuff (every reachable
+        // buff has stack: 1), so the same buff id keeps its largest contribution
+        // rather than summing.
+        if (burn.injureRatio) {
+            dotInjure[burn.buffId] = Math.max(dotInjure[burn.buffId] || 0, burn.injureRatio);
+        }
     }
-    return { descriptors, unmodeled, inactive };
+    return { descriptors, unmodeled, inactive, unmodeledDots, dotInjure };
+}
+
+/**
+ * The burn (지속 피해) one barrage's bullets attach, as its own descriptor.
+ *
+ * A DOT is a property of the BULLET, not of the skill — bullet_template's
+ * `attach_buff` names the buff, its level and its attach chance — so this reads
+ * the weapons the barrage already resolved rather than walking anything new. That
+ * also keeps the two lanes aligned: a barrage the sim cannot model has no burn
+ * either, instead of a burn with no barrage under it.
+ *
+ * ONE burn per record, even when several of its weapons carry one. The buff does
+ * not stack, and battleunit.lua:976 AddBuff decides which survives: a HIGHER
+ * `group_level` removes and re-attaches (fresh igniteDMG from the new weapon),
+ * an equal or lower one only Stacks, refreshing the expiry and keeping the old
+ * numbers. So the highest group_level wins — 라이온's 200-damage g2 shell over
+ * her 20-damage g1 one — with weapon damage as the tiebreak.
+ *
+ * @returns {{descriptor:object, injureRatio:number, buffId:number}|{unmodeled:true}|null}
+ */
+export function resolveBarrageDot(rec, built, activations, deps) {
+    if (typeof deps.getDot !== 'function') return null;
+    let best = null;
+    for (const { d, weapon } of built) {
+        const bulletIds = weapon.bullet_ID || [];
+        const barrageIds = weapon.barrage_ID || [];
+        // barrage_ID and bullet_ID are parallel arrays on 1520 of the 1546 weapons
+        // a barrage record names, so the attach roll runs against the bullets of
+        // ITS OWN barrage rather than the whole volley. That matters because 130 of
+        // 161 burns attach on a chance: 1% over 20 bullets is 18%, over 5 it is 5%.
+        const parallel = barrageIds.length === bulletIds.length;
+        for (let i = 0; i < bulletIds.length; i++) {
+            const bullet = deps.getBullet(bulletIds[i]);
+            for (const attach of (bullet?.attach_buff || [])) {
+                const dot = attach && deps.getDot(attach.buff_id);
+                if (!dot) continue;
+                const cand = {
+                    dot, attach, d,
+                    bullets: parallel ? barrageBulletCount([barrageIds[i]], deps.getBarrage) : d.bulletsPerSalvo,
+                    groupLevel: attach.group_level ?? 1,
+                    dmg: d.damage * d.corrected,
+                };
+                if (!best || cand.groupLevel > best.groupLevel
+                    || (cand.groupLevel === best.groupLevel && cand.dmg > best.dmg)) best = cand;
+            }
+        }
+    }
+    if (!best) return null;
+    const window = deps.ctx?.window ?? 0;
+    const sched = dotSchedule(best.dot, {
+        window,
+        activations,
+        bullets: best.bullets,
+        hitRate: deps.hitRate ?? 1,
+        rant: best.attach.rant,
+        hitIgnore: !!best.attach.hit_ignore,
+        level: best.attach.buff_level,
+        // GetCorrectedDMG of the weapon that fired the bullet: damage x potential x
+        // corrected x 1%. A barrage weapon has no slot proficiency, so potential is 1.
+        correctedDmg: best.d.damage * best.d.corrected * PERCENT,
+        stat: deps.stats[ATTR_KEY_TO_STAT[best.dot.a]] ?? 0,
+    });
+    if (!sched) return { unmodeled: true };   // needs something the sim doesn't track
+    if (!(sched.ticks > 0)) return null;
+    return {
+        buffId: best.attach.buff_id,
+        // 받는 피해 riding the same buff, pro-rated by how much of the fight it is
+        // up. It multiplies what the WHOLE fleet does, so the caller lands it on the
+        // target rather than on this ship.
+        injureRatio: best.dot.inj ? best.dot.inj * (window > 0 ? sched.uptime / window : 0) : 0,
+        descriptor: {
+            tickDamage: sched.tickDamage,   // presence of this field IS the DOT lane marker
+            bulletsPerSalvo: 1,
+            activations: sched.ticks,
+            activationWindow: window,
+            cadence: `${sched.interval}초마다`,
+            label: `지속 피해 · ${rec.n || '전용 장비'}`,
+        },
+    };
 }
 
 // ===== Stateful resolution (wired to fleet-sim modules — browser only) =====
@@ -578,7 +674,8 @@ function _applyWeaponModifiers(weapons, mods) {
 /**
  * Resolve all in-scope weapons for one ship slot config, PLUS the ship's active
  * barrage skills (each expanded into its own WeaponDescriptor with a pre-resolved
- * `activations` count). Must be called from an async context after _ensureImports().
+ * `activations` count) and any 지속 피해 those barrages attach. Must be called from
+ * an async context after _ensureImports().
  * @param {object} slotConfig  { gid, level, retrofit, equips: [{id, level}, ...] }
  * @param {object} ship        Ship data object (from getShipByGid)
  * @param {object} stats       Buffed ship stats { firepower, torpedo, aviation, ... }
@@ -587,13 +684,17 @@ function _applyWeaponModifiers(weapons, mods) {
  * @param {number} [fleetSlot]   Fleet position 0–5; <3 is 주력 and holds its 부포 out of
  *   the boss total unless a SECONDARY_REACH_SKILLS skill is live. Defaults to the
  *   vanguard so a caller that doesn't know the row never silently drops damage.
- * @returns {{weapons: object[], unmodeled: number, inactive: number}} WeaponDescriptor[],
- *   the count of barrage skills that produced no descriptor (unreadable cadence, missing
- *   weapon data), and the count whose trigger read fine but yields zero activations for
- *   this loadout (unequipped ship, carrier, 대공-slot trigger).
+ * @param {number} [hitRate]     The (ship, target) hit rate — only the DOT lane reads it,
+ *   to size how often a burn actually attaches.
+ * @returns {{weapons: object[], unmodeled: number, inactive: number, unmodeledDots: number,
+ *   dotInjure: object}} WeaponDescriptor[], the count of barrage skills that produced no
+ *   descriptor (unreadable cadence, missing weapon data), the count whose trigger read fine
+ *   but yields zero activations for this loadout (unequipped ship, carrier, 대공-slot
+ *   trigger), the count of burns needing something the sim doesn't track, and the 받는 피해
+ *   each burn keeps up, keyed by buff id for the caller to land on the target.
  */
-export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageBuffs = null, fleetSlot = MAIN_SLOTS) {
-    if (!_data) return { weapons: [], unmodeled: 0, inactive: 0 };   // needs _ensureImports() first — route external callers through simulateFleetDamage
+export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageBuffs = null, fleetSlot = MAIN_SLOTS, hitRate = 1) {
+    if (!_data) return { weapons: [], unmodeled: 0, inactive: 0, unmodeledDots: 0, dotInjure: {} };   // needs _ensureImports() first — route external callers through simulateFleetDamage
     const useRetrofit = slotConfig.retrofit !== false && !!ship.retrofit;
     const shipType = _data.getEffectiveShipType(ship, useRetrofit);
     const baseList = (_calc.getShipBaseList(ship, useRetrofit)) || [];   // [s1,s2,s3] mount/plane count; ×1 fallback
@@ -619,12 +720,17 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageB
     const airstrikes = airReloadMax > 0
         ? _engine.countSalvos(_engine.calculateReloadTime(airReloadMax, stats.reload), 0, window)
         : 0;
-    const { descriptors, unmodeled, inactive } = resolveBarrageDescriptors(skillIds, {
+    const { descriptors, unmodeled, inactive, unmodeledDots, dotInjure } = resolveBarrageDescriptors(skillIds, {
         getBarrageSkill: _data.getBarrageSkill,
         getWeapon: _data.getWeaponProperty,
         getBarrage: _data.getBarrage,
         getBullet: _data.getBullet,
+        getDot: _data.getDot,
         stats,
+        // Only the DOT lane reads this: a burn attaches on a landed hit unless the
+        // bullet says hit_ignore, and it is the same (attacker, target) hit rate for
+        // every weapon, so it is resolved once per ship rather than per descriptor.
+        hitRate,
         ctx: {
             window,
             salvosBySlot: salvosBySlot(weapons, stats.reload, window),
@@ -639,6 +745,9 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageB
     if (damageBuffs) {
         const byAttr = { cannon: damageBuffs.cannon, torpedo: damageBuffs.torpedo, air: damageBuffs.air };
         for (const d of all) {
+            // A DOT tick takes none of these: HandleDirectDamage is outside the damage
+            // formula entirely, so a 주는 피해 buff cannot reach it.
+            if (d.tickDamage != null) continue;
             // Both are damageRatioBullet in the Lua — one granted to the ship, one to a
             // single equip slot — so they land on the same term. A barrage descriptor
             // has no slotIndex and correctly picks up only the ship-wide half.
@@ -646,7 +755,7 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageB
             d.attrDamageRatio = byAttr[d.attackAttribute] || 0;
         }
     }
-    return { weapons: all, unmodeled, inactive };
+    return { weapons: all, unmodeled, inactive, unmodeledDots, dotInjure };
 }
 
 /**
@@ -820,24 +929,41 @@ export async function simulateFleetDamage(ships, targetOpts) {
 
     const engineShips = [];
     const barrageGapsByRef = new Map();
+    const dotInjure = new Map();   // buff id -> largest 받는 피해 any ship's burn holds up
     for (let i = 0; i < slots.length; i++) {
         const slot = slots[i];
         if (!slot) continue;
         const computed = _computeStatsForSlot(slot, i, fleetShips, techBonuses, slots);
         if (!computed) continue;
         const { ship, stats, damageBuffs } = computed;
-        const { weapons, unmodeled, inactive } = resolveShipWeapons(slot, ship, stats, window, damageBuffs, i);
-        barrageGapsByRef.set(slot.gid, { unmodeled, inactive });
-        engineShips.push({
-            ref: slot.gid,
-            profile: {
-                accuracy: stats.accuracy,
-                luck:     stats.luck,
-                level:    slot.level || 125,
-                reload:   stats.reload,
-            },
-            weapons,
-        });
+        const profile = {
+            accuracy: stats.accuracy,
+            luck:     stats.luck,
+            level:    slot.level || 125,
+            reload:   stats.reload,
+        };
+        // The hit rate is a property of the (ship, target) pair, not of a weapon, so
+        // it resolves here and the DOT lane sizes its attach chance with it.
+        const { hitRate } = _engine.computeAccuracy(profile, target);
+        const { weapons, unmodeled, inactive, unmodeledDots, dotInjure: injure } =
+            resolveShipWeapons(slot, ship, stats, window, damageBuffs, i, hitRate);
+        barrageGapsByRef.set(slot.gid, { unmodeled, inactive, unmodeledDots });
+        for (const [buffId, value] of Object.entries(injure || {})) {
+            dotInjure.set(buffId, Math.max(dotInjure.get(buffId) || 0, value));
+        }
+        engineShips.push({ ref: slot.gid, profile, weapons });
+    }
+
+    // A burn's 받는 피해 multiplies what the whole fleet does, not just its own
+    // ticks, so it lands on the TARGET — the same term a META boss's own always-on
+    // skill already uses. Pro-rated by uptime at resolve time; added rather than
+    // overwritten so a boss keeps its own modifier.
+    const injureFromDots = [...dotInjure.values()].reduce((a, b) => a + b, 0);
+    if (injureFromDots) {
+        // Kept apart from the boss's own modifier so the panel can name each: one is
+        // the fight's baseline, the other is something the fleet brought.
+        target.injureFromDots = injureFromDots;
+        target.injureRatio = (target.injureRatio || 0) + injureFromDots;
     }
 
     const full = _engine.simulateFleet(engineShips, target, { window });
@@ -861,6 +987,7 @@ export async function simulateFleetDamage(ships, targetOpts) {
         const gaps = barrageGapsByRef.get(s.ref) || {};
         s.unmodeledBarrages = gaps.unmodeled || 0;
         s.inactiveBarrages = gaps.inactive || 0;
+        s.unmodeledDots = gaps.unmodeledDots || 0;
     }
     return { ...sim, target, clearCheck, timeLimit: limit };
 }

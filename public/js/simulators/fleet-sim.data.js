@@ -54,7 +54,8 @@ export async function loadAllData() {
 
     // Phase 2: Extended data (parallel, all cached — non-fatal failures)
     const [equipFullData, weaponPropertyData, passiveSkillData, fleetTechData, shipGroupData, spWeaponData,
-           barrageData, bulletData, aircraftData, metaBossData, presetData, barrageSkillData] = await Promise.all([
+           barrageData, bulletData, aircraftData, metaBossData, presetData, barrageSkillData,
+           dotData] = await Promise.all([
         _loadCached('data/equip/equip_data_full.json'),
         _loadCached('data/sim/weapon_property.json'),
         _loadCached('data/sim/fleet_sim_passive_skills.json'),
@@ -67,6 +68,7 @@ export async function loadAllData() {
         _loadCached('data/meta_bosses.json'),
         _loadCached('data/fleet_sim_presets.json'),
         _loadCached('data/sim/fleet_sim_barrages.json'),
+        _loadCached('data/sim/fleet_sim_dots.json'),
     ]);
 
     state.equipFullData = equipFullData;
@@ -80,6 +82,7 @@ export async function loadAllData() {
     state.aircraftData = aircraftData;
     state.metaBossData = metaBossData;
     state.barrageSkillData = barrageSkillData;
+    state.dotData = dotData;
     // Curated presets gate their own header button, so they load at boot rather
     // than on first modal open — an absent/short file just means no button.
     state.presets = Array.isArray(presetData?.presets) ? presetData.presets : [];
@@ -215,6 +218,15 @@ export function getPassiveSkill(skillId) {
 /** Barrage trigger record by skill id, or null when the table is absent/unknown. */
 export function getBarrageSkill(skillId) {
     return state.barrageSkillData ? (state.barrageSkillData[String(skillId)] || null) : null;
+}
+
+/**
+ * DOT (지속 피해) payload by BUFF id — the id a bullet's `attach_buff` names, not
+ * a skill id. bullet_template.json already ships attach_buff, so this table is
+ * only the half the page was missing: what the attached buff does.
+ */
+export function getDot(buffId) {
+    return state.dotData ? (state.dotData[String(buffId)] || null) : null;
 }
 
 // ===== URL Helpers =====

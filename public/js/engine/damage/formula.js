@@ -13,6 +13,31 @@ import {
 const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
 
 /**
+ * Everything that depends only on the (attacker, target) PAIR — hit rate, crit
+ * rate and level advantage — with no weapon involved. Split out because the DOT
+ * lane needs the hit rate to size a burn's attach chance before any weapon is
+ * picked (battledataproxylogic.lua:144 gates the attach on the shot landing),
+ * and a second copy of the accuracy formula would be free to drift.
+ */
+export function computeAccuracy(attacker, target) {
+  const lvlDiff = attacker.level - target.level;
+  const atkRating = Math.max(attacker.accuracy, 0);
+  const luckDelta = attacker.luck - (target.luck ?? 0) + lvlDiff;
+  return {
+    lvlDiff,
+    levelAdv: 1 + clamp(lvlDiff, -LVL_ADV_CAP, LVL_ADV_CAP) * LVL_ADV_FACTOR,
+    hitRate: clamp(
+      HIT_FLOOR + atkRating / (atkRating + target.evasion + HIT_DENOM_PAD) + luckDelta * LUCK_HIT_FACTOR,
+      HIT_FLOOR, 1,
+    ),
+    critRate: clamp(
+      DFT_CRIT_RATE + atkRating / (atkRating + target.evasion + CRIT_DENOM_PAD) + luckDelta * LUCK_CRIT_FACTOR,
+      0, 1,
+    ),
+  };
+}
+
+/**
  * @returns {{ base, armorMod, airMitigation, levelAdv, hitRate, critRate,
  *             critMult, expectedHit }} expectedHit = EV of ONE landed hit (incl crit),
  *           BEFORE hitRate is applied (salvo.js applies hitRate × bulletsPerSalvo).
@@ -38,21 +63,8 @@ export function computeHitDamage(attacker, weapon, target) {
   // armor effectiveness: damageType[armorType-1]
   const armorMod = weapon.damageType[target.armorType - 1] ?? 1;
 
-  // level advantage (clamped) + raw level diff for luck terms
-  const lvlDiff = attacker.level - target.level;
-  const levelAdv = 1 + clamp(lvlDiff, -LVL_ADV_CAP, LVL_ADV_CAP) * LVL_ADV_FACTOR;
-
-  // expected hit & crit
-  const atkRating = Math.max(attacker.accuracy, 0);
-  const luckDelta = attacker.luck - (target.luck ?? 0) + lvlDiff;
-  const hitRate = clamp(
-    HIT_FLOOR + atkRating / (atkRating + target.evasion + HIT_DENOM_PAD) + luckDelta * LUCK_HIT_FACTOR,
-    HIT_FLOOR, 1,
-  );
-  const critRate = clamp(
-    DFT_CRIT_RATE + atkRating / (atkRating + target.evasion + CRIT_DENOM_PAD) + luckDelta * LUCK_CRIT_FACTOR,
-    0, 1,
-  );
+  // level advantage (clamped) + expected hit & crit — all weapon-independent
+  const { levelAdv, hitRate, critRate } = computeAccuracy(attacker, target);
   const critMult = DFT_CRIT_EFFECT;
   const critEV = 1 + critRate * (critMult - 1);
 

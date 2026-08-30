@@ -29,6 +29,15 @@ export const ALL_STATS       = [...PRIMARY_STATS, ...SECONDARY_STATS];
 /** Special skin tag keys used for aggregation */
 export const SKIN_TAG_KEYS = ['L2D+', 'L2D', '듀얼', '쁘띠모션'];
 
+/**
+ * Displayed rarity of a retrofitted ship. The game bumps it one tier at display
+ * time — `ship.lua getRarity()` is `getConfig("rarity") + 1` when `isRemoulded()`
+ * — while the config rarity of the 改 ship id is unchanged (헬레나 102054 and
+ * 헬레나·改 102284 are both 4). The scale tops out at UR and no UR ship has a
+ * retrofit, so the bump never overflows.
+ */
+export const RETROFIT_RARITY = { N: 'R', R: 'SR', SR: 'SSR', SSR: 'UR' };
+
 // ===== State Reference (set via setup) =====
 
 let state;
@@ -51,19 +60,48 @@ export async function loadShipData() {
         nationalityData,
         shipTypeData,
         attrTypeData,
+        researchGoals,
     ] = await Promise.all([
         fetchJSONWithCache('data/ship_info_data.json'),
         fetchJSON('data/mapping/nationality_mapping.json'),
         fetchJSON('data/mapping/ship_type_mapping.json'),
         fetchJSON('data/mapping/attr_type_mapping.json'),
+        // PR/DR is a filter refinement, not page-critical — a miss just leaves the
+        // two research chips hidden (see updateResearchChips).
+        fetchJSONWithCache('data/shipgirl/fleet_tech_goal.json').catch(() => ({})),
     ]);
 
     state.shipInfoData    = shipInfoData;
     state.nationalityData = nationalityData;
     state.shipTypeData    = shipTypeData;
     state.attrTypeData    = attrTypeData;
+    state.researchTypeByName = buildResearchTypeMap(researchGoals);
 
     computeShipData();
+}
+
+/**
+ * Index fleet_tech_goal.json (keyed by KR ship name) as name → 'PR' | 'DR'.
+ *
+ * The join is by NAME because the goal file carries no gid — safe here only
+ * because both files come out of the same pipeline run and the roster is tiny
+ * and closed (47 ships, asserted 47/47 in tests/shipgirl/stats-retrofit.test.mjs).
+ *
+ * @param {Object} goals - raw fleet_tech_goal.json
+ * @returns {Map<string, string>} normalized name → rarity_type
+ */
+function buildResearchTypeMap(goals) {
+    const map = new Map();
+    for (const [name, goal] of Object.entries(goals || {})) {
+        const type = goal && goal.rarity_type;
+        if (type) map.set(researchNameKey(name), type);
+    }
+    return map;
+}
+
+/** Join key for the research roster: roman-normalized, whitespace-stripped. */
+function researchNameKey(name) {
+    return normalizeRomanNumerals(String(name)).replace(/\s+/g, '');
 }
 
 /**
@@ -116,19 +154,49 @@ export function ensureSkinData() {
 // ===== Stat Calculation =====
 
 /**
- * Compute Lv.120 stats for a single ship at max limit break with affinity bonus.
- * Formula: floor((base + growth * (120 - 1) / 1000 + enhance) * bonus)
+ * Pick the `base`/`growth` table key for a ship's max state.
+ *
+ * Keyed by id, never by key POSITION: `retrofit.id` is not always the last key
+ * (카스미's 改 table `301534` sorts first, and 안샨/푸슌/창춘/타이위안 each carry
+ * two 改 tables), and the MLB table is always `sid + 3` (the three 부린 have a
+ * lone `sid` key and fall through to it).
  *
  * @param {Object} ship - Entry from ship_info_data
+ * @param {boolean} useRetrofit - resolve the 改 table when the ship has one
+ * @returns {string} key into ship.base / ship.growth
+ */
+export function statTableKey(ship, useRetrofit) {
+    if (useRetrofit && ship.retrofit && ship.base[ship.retrofit.id]) {
+        return String(ship.retrofit.id);
+    }
+    const mlbKey = String(ship.sid + 3);
+    if (ship.base[mlbKey]) return mlbKey;
+
+    const baseKeys = Object.keys(ship.base);
+    return baseKeys[baseKeys.length - 1];
+}
+
+/**
+ * Compute Lv.120 stats for a single ship at max limit break with affinity bonus.
+ * Formula: floor((base + growth * (120 - 1) / 1000 + enhance) * affinity + 개조)
+ *
+ * The retrofit bonus is added AFTER the affinity multiply but BEFORE the floor —
+ * the game adds it in `getShipProperties` and floors once in `getProperties`
+ * (ship.lua:1046,1080-1094,1438), which is the order fleet-sim.calc.js uses too.
+ * `retrofit.bonus` keys are already canonical stat names; its
+ * `equipment_proficiency_*` entries drop out by not being in ALL_STATS.
+ *
+ * @param {Object} ship - Entry from ship_info_data
+ * @param {boolean} useRetrofit - apply the 개조 table + bonus
  * @returns {Object} Computed stat values keyed by stat name
  */
-function computeShipStats(ship) {
-    const baseKeys = Object.keys(ship.base);
-    const maxLBKey = baseKeys[baseKeys.length - 1];
+export function computeShipStats(ship, useRetrofit) {
+    const maxKey = statTableKey(ship, useRetrofit);
 
-    const base   = ship.base[maxLBKey]   || {};
-    const growth = ship.growth[maxLBKey] || {};
-    const enhance = ship.enhance          || {};
+    const base   = ship.base[maxKey]   || {};
+    const growth = ship.growth[maxKey] || {};
+    const enhance = ship.enhance        || {};
+    const retrofitBonus = (useRetrofit && ship.retrofit && ship.retrofit.bonus) || {};
 
     const result = {};
     for (const stat of ALL_STATS) {
@@ -137,7 +205,10 @@ function computeShipStats(ship) {
         const enhanceVal = enhance[stat] || 0;
         const bonus      = UNAFFECTED_STATS.has(stat) ? 1.0 : FAVORABILITY_BONUS;
 
-        result[stat] = Math.floor((baseVal + growthVal * (LEVEL - 1) / 1000 + enhanceVal) * bonus);
+        result[stat] = Math.floor(
+            (baseVal + growthVal * (LEVEL - 1) / 1000 + enhanceVal) * bonus
+            + (retrofitBonus[stat] || 0)
+        );
     }
     return result;
 }
@@ -278,8 +349,13 @@ function normalizeSkinName(rawName) {
 
 /**
  * Build the boot-required ship state:
- *   state.shipStats       Array<{ ship, combat, skin }>
+ *   state.shipStats       Array<{ ship, combat, rarity, displayName, research, skin }>
  *   state.shipStatsByName Map<name, entry>
+ *
+ * `combat` / `rarity` / `displayName` are all derived from the 개조 toggle and
+ * are (re)filled by recomputeCombatStats — every consumer reads `entry.rarity`,
+ * never `entry.ship.rarity`, so the toggle reaches the table, the charts and the
+ * compare modal through one field.
  */
 function computeShipData() {
     // skinFull is filled by computeSkinData after the skin tab first opens;
@@ -290,12 +366,17 @@ function computeShipData() {
 
         const entry = {
             ship,
-            combat:   computeShipStats(ship),
-            skin:     null,
-            skinFull: null,
+            combat:      null,
+            rarity:      ship.rarity,
+            displayName: ship.name,
+            isRetrofit:  !!ship.retrofit,
+            research:    state.researchTypeByName.get(researchNameKey(ship.name)) || null,
+            skin:        null,
+            skinFull:    null,
         };
         state.shipStats.push(entry);
     }
+    recomputeCombatStats();
 
     // Build name → entry map
     state.shipStatsByName = new Map();
@@ -435,6 +516,20 @@ export function getSkinTypeList() {
         if (t) set.add(t);
     }
     return [...set].sort((a, b) => a.localeCompare(b, 'ko'));
+}
+
+/**
+ * Re-derive every entry's 개조-dependent fields from state.useRetrofit.
+ * One pass over the roster; the mirror of recomputeSkinStats for the ship tab.
+ */
+export function recomputeCombatStats() {
+    const useRetrofit = state.useRetrofit !== false;
+    for (const entry of state.shipStats) {
+        const on = useRetrofit && entry.isRetrofit;
+        entry.combat      = computeShipStats(entry.ship, on);
+        entry.rarity      = on ? (RETROFIT_RARITY[entry.ship.rarity] || entry.ship.rarity) : entry.ship.rarity;
+        entry.displayName = on ? `${entry.ship.name}·改` : entry.ship.name;
+    }
 }
 
 /**

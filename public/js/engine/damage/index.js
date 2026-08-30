@@ -8,8 +8,9 @@ import { computeSalvo } from './salvo.js';
 import { calculateReloadTime, weaponCycleInterval } from './reload.js';
 import { rollUpWeapon } from './timeline.js';
 
-export { computeHitDamage } from './formula.js';
+export { computeHitDamage, computeAccuracy } from './formula.js';
 export { computeSalvo } from './salvo.js';
+export { dotSchedule, dotUptime, dotApplyChance } from './dot.js';
 export { countSalvos, countSalvosWithPreload, rollUpWeapon } from './timeline.js';
 export { calculateReloadTime, calculateAirAssistReloadMax, weaponCycleInterval } from './reload.js';
 export { salvoFiringDuration, weaponSalvoDuration } from './salvo-timing.js';
@@ -37,6 +38,9 @@ function rollSchedule(s, t) {
   });
 }
 
+/** Hit/crit fields a DOT tick has no answer for; null renders as — in the panel. */
+const DOT_HIT = { hitRate: null, critRate: null, critMult: null, armorMod: null, airMitigation: null };
+
 /** Cumulative expected damage over the first `t` seconds of firing. Monotone in t. */
 export function damageAtTime(schedules, t) {
   let sum = 0;
@@ -55,8 +59,15 @@ export function simulateAttacker(attacker, weapons, target, opts = {}) {
   const timeWindow = opts.window ?? 90;
   const schedules = [];
   const perWeapon = weapons.map((w) => {
-    const hit = computeHitDamage(attacker, w, target);
-    const salvo = computeSalvo(hit, w.bulletsPerSalvo);
+    // A DOT tick is DIRECT damage: HandleDirectDamage (battledataproxylogic.lua:173)
+    // reaches UpdateHP with no armor type, ammo type or damage-type lookup, so a
+    // burn skips the armor triple, the hit roll and the crit roll alike. Its tick
+    // value is already resolved (engine/damage/dot.js), leaving the engine only to
+    // schedule it. The null rates are what tells the panel to print — rather than
+    // 100%, which would claim a hit roll that never happened.
+    const isDot = w.tickDamage != null;
+    const hit = isDot ? DOT_HIT : computeHitDamage(attacker, w, target);
+    const salvo = isDot ? { expectedSalvo: w.tickDamage } : computeSalvo(hit, w.bulletsPerSalvo);
     const isBarrage = w.activations != null;
     const reloadInterval = isBarrage ? 0 : calculateReloadTime(w.reloadMax, attacker.reload);
     // Salvos are spaced by the full fire cycle: reload + salvo firing time + 발사 후 경직 (cycleExtra,
