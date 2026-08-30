@@ -349,13 +349,13 @@ function normalizeSkinName(rawName) {
 
 /**
  * Build the boot-required ship state:
- *   state.shipStats       Array<{ ship, combat, rarity, displayName, research, skin }>
+ *   state.shipStats       Array<{ ship, combat, rarity, shipType, displayName, research, skin }>
  *   state.shipStatsByName Map<name, entry>
  *
- * `combat` / `rarity` / `displayName` are all derived from the 개조 toggle and
- * are (re)filled by recomputeCombatStats — every consumer reads `entry.rarity`,
- * never `entry.ship.rarity`, so the toggle reaches the table, the charts and the
- * compare modal through one field.
+ * `combat` / `rarity` / `shipType` / `displayName` are all derived from the 개조
+ * toggle and are (re)filled by recomputeCombatStats — every consumer reads
+ * `entry.rarity` / `entry.shipType`, never the `entry.ship` fields, so the toggle
+ * reaches the table, the charts and the compare modal through those fields.
  */
 function computeShipData() {
     // skinFull is filled by computeSkinData after the skin tab first opens;
@@ -368,6 +368,7 @@ function computeShipData() {
             ship,
             combat:      null,
             rarity:      ship.rarity,
+            shipType:    ship.type,
             displayName: ship.name,
             isRetrofit:  !!ship.retrofit,
             research:    state.researchTypeByName.get(researchNameKey(ship.name)) || null,
@@ -519,15 +520,19 @@ export function getSkinTypeList() {
 }
 
 /**
- * Re-derive every entry's 개조-dependent fields from state.useRetrofit.
+ * Re-derive every entry's 개조-dependent fields from state.showRetrofit.
  * One pass over the roster; the mirror of recomputeSkinStats for the ship tab.
  */
 export function recomputeCombatStats() {
-    const useRetrofit = state.useRetrofit !== false;
+    const useRetrofit = state.showRetrofit !== false;
     for (const entry of state.shipStats) {
         const on = useRetrofit && entry.isRetrofit;
         entry.combat      = computeShipStats(entry.ship, on);
         entry.rarity      = on ? (RETROFIT_RARITY[entry.ship.rarity] || entry.ship.rarity) : entry.ship.rarity;
+        // 9 retrofits change 함종 — 모가미 경순→중순, 후소/야마시로/이세/휴가 전함→항전,
+        // and the four 안샨-class 구축→미구-전열 — so the 함종 filter and the
+        // 등급×함종 heatmap have to follow the toggle the same way 등급 does.
+        entry.shipType    = (on && entry.ship.retrofit.type) || entry.ship.type;
         entry.displayName = on ? `${entry.ship.name}·改` : entry.ship.name;
     }
 }

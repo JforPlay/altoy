@@ -55,7 +55,7 @@ export function updateCompareBar() {
         div.appendChild(createCompareImage(entry.ship, 'compare-bar-item-icon'));
 
         const name = document.createElement('span');
-        name.textContent = entry.ship.name;
+        name.textContent = entry.displayName;
         div.appendChild(name);
 
         fragment.appendChild(div);
@@ -196,12 +196,12 @@ function createCompareGrid(entries, colClass) {
 
         const name = document.createElement('div');
         name.className = 'ship-name';
-        name.textContent = entry.ship.name;
+        name.textContent = entry.displayName;
         header.appendChild(name);
 
         const rarity = document.createElement('span');
-        rarity.className = `table-rarity rarity-${sanitizeClassToken(entry.ship.rarity)}`;
-        rarity.textContent = entry.ship.rarity;
+        rarity.className = `table-rarity rarity-${sanitizeClassToken(entry.rarity)}`;
+        rarity.textContent = entry.rarity;
         header.appendChild(rarity);
 
         grid.appendChild(header);

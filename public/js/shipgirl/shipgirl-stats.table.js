@@ -74,13 +74,39 @@ export function setup(stateRef) {
     state.shipExpanded = false;
 }
 
+// ===== Cell Builders =====
+
+/**
+ * Render the 등급 cell: the effective rarity (개조-bumped when the toggle is on)
+ * plus a PR/DR marker for research ships. The two are separate badges because
+ * PR/DR refines a rarity rather than replacing it — a PR ship is still SSR.
+ *
+ * @param {HTMLElement} td
+ * @param {Object} entry - shipStats entry
+ */
+function appendRarityCell(td, entry) {
+    const rarity = entry.rarity ?? '';
+    const span = document.createElement('span');
+    span.className = `table-rarity rarity-${rarity}`;
+    span.textContent = rarity;
+    td.appendChild(span);
+
+    if (entry.research) {
+        const badge = document.createElement('span');
+        badge.className = 'table-research';
+        badge.dataset.research = entry.research;
+        badge.textContent = entry.research;
+        td.appendChild(badge);
+    }
+}
+
 // ===== Sort Helpers =====
 
 function getSortValue(entry, sortKey) {
     if (sortKey === 'name') return entry.ship.name;
-    if (sortKey === 'rarity') return RARITY_ORDER[entry.ship.rarity] ?? 0;
+    if (sortKey === 'rarity') return RARITY_ORDER[entry.rarity] ?? 0;
     if (sortKey === 'nationality') return getNationalityName(entry.ship.nationality);
-    if (sortKey === 'type') return getShipTypeName(entry.ship.type);
+    if (sortKey === 'type') return getShipTypeName(entry.shipType);
 
     if (sortKey.startsWith('skin.')) {
         const field = sortKey.slice(5);
@@ -296,7 +322,7 @@ export function renderShipTable() {
                     cb.className = 'compare-check';
                     cb.dataset.ship = shipId;
                     cb.checked = state.compareList.includes(shipId);
-                    cb.setAttribute('aria-label', `${entry.ship?.name ?? ''} 비교 선택`);
+                    cb.setAttribute('aria-label', `${entry.displayName} 비교 선택`);
                     td.appendChild(cb);
                     break;
                 }
@@ -312,24 +338,19 @@ export function renderShipTable() {
                 }
 
                 case 'name':
-                    td.textContent = entry.ship?.name ?? '';
+                    td.textContent = entry.displayName;
                     break;
 
-                case 'rarity': {
-                    const rarity = entry.ship?.rarity ?? '';
-                    const span = document.createElement('span');
-                    span.className = `table-rarity rarity-${rarity}`;
-                    span.textContent = rarity;
-                    td.appendChild(span);
+                case 'rarity':
+                    appendRarityCell(td, entry);
                     break;
-                }
 
                 case 'nationality':
                     td.textContent = getNationalityName(entry.ship?.nationality);
                     break;
 
                 case 'type':
-                    td.textContent = getShipTypeName(entry.ship?.type);
+                    td.textContent = getShipTypeName(entry.shipType);
                     break;
 
                 default: {
@@ -400,7 +421,7 @@ export function renderSkinTable() {
                     cb.className = 'compare-check';
                     cb.dataset.ship = shipId;
                     cb.checked = state.compareList.includes(shipId);
-                    cb.setAttribute('aria-label', `${entry.ship?.name ?? ''} 비교 선택`);
+                    cb.setAttribute('aria-label', `${entry.displayName} 비교 선택`);
                     td.appendChild(cb);
                     break;
                 }
@@ -416,17 +437,12 @@ export function renderSkinTable() {
                 }
 
                 case 'name':
-                    td.textContent = entry.ship?.name ?? '';
+                    td.textContent = entry.displayName;
                     break;
 
-                case 'rarity': {
-                    const rarity = entry.ship?.rarity ?? '';
-                    const span = document.createElement('span');
-                    span.className = `table-rarity rarity-${rarity}`;
-                    span.textContent = rarity;
-                    td.appendChild(span);
+                case 'rarity':
+                    appendRarityCell(td, entry);
                     break;
-                }
 
                 case 'nationality':
                     td.textContent = getNationalityName(entry.ship?.nationality);

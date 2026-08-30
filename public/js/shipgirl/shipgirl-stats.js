@@ -8,7 +8,7 @@
  */
 
 import { debounce, hideElement, showToast, setupScrollToTop, toggleElement, onThemeChange, renderStatus, loadPageData } from '../utils.js';
-import { setup as setupData, loadShipData, ensureSkinData, PRIMARY_STATS, getSkinTypeList, classifyGimmick, recomputeSkinStats } from './shipgirl-stats.data.js';
+import { setup as setupData, loadShipData, ensureSkinData, PRIMARY_STATS, getSkinTypeList, classifyGimmick, recomputeSkinStats, recomputeCombatStats } from './shipgirl-stats.data.js';
 import { setup as setupDashboard, ensureTreemapPlugin, renderShipDashboard, renderSkinDashboard, renderTopStatChart, destroyAllCharts } from './shipgirl-stats.dashboard.js';
 import { setup as setupTable, renderShipTable, renderSkinTable } from './shipgirl-stats.table.js';
 import { setup as setupCompare, updateCompareBar, openCompareModal } from './shipgirl-stats.compare.js';
@@ -28,6 +28,16 @@ const state = {
     activeTab: 'ship',
     skinDataReady: false,
     compareList: [],
+    // 개조 표시 — apply each retrofit ship's 改 stat table + bonus and bump its
+    // rarity/함종. Never changes the row count: the dashboards count the roster, so
+    // a second 改 row would double-count 108 ships in every aggregate.
+    showRetrofit: true,
+    // 개조 가능만 — narrow the roster to the ships that HAVE a retrofit. Kept
+    // independent of showRetrofit on purpose: the two answer different questions,
+    // and "the 108 개조 함순이 at their PRE-개조 stats" is a legitimate view.
+    retrofitOnly: false,
+    // name → 'PR' | 'DR' (populated by the data module)
+    researchTypeByName: new Map(),
     // Filter state
     rarityFilter: new Set(),
     gimmickFilter: new Set(),
@@ -63,6 +73,7 @@ async function init() {
     hideElement(document.getElementById('loading'));
 
     populateShipFilterDropdowns();
+    updateResearchChips();
     setupEventListeners();
     setupThresholdFilters();
     applyFilters();
@@ -334,13 +345,24 @@ function applyFilters() {
     }
 
     // 2. Rarity (multi-select; empty Set = all rarities)
+    // PR/DR share this Set with the five rarity chips, and the union is the whole
+    // dependency chain: PR ships ARE SSR, so SSR alone already selects them, while
+    // PR alone narrows to the 32 research SSRs. No chip-to-chip wiring needed.
     if (state.rarityFilter.size > 0) {
-        result = result.filter(entry => entry.ship && state.rarityFilter.has(entry.ship.rarity));
+        result = result.filter(entry =>
+            state.rarityFilter.has(entry.rarity)
+            || (entry.research && state.rarityFilter.has(entry.research))
+        );
+    }
+
+    // 2b. 개조 가능만 — roster narrowing, independent of 개조 표시
+    if (state.retrofitOnly) {
+        result = result.filter(entry => entry.isRetrofit);
     }
 
     // 3. Ship type
     if (shipType) {
-        result = result.filter(entry => entry.ship && String(entry.ship.type) === shipType);
+        result = result.filter(entry => String(entry.shipType) === shipType);
     }
 
     // 4. Nationality
@@ -458,6 +480,21 @@ function setupEventListeners() {
         state.shipPage = 1;
         state.skinPage = 1;
         applyFilters();
+    });
+
+    // 개조 표시 — re-derives combat/rarity/함종/displayName, then re-filters (a
+    // rarity chip selection can gain or lose the 108 retrofit ships when they move
+    // a tier).
+    setupToggleButton('retrofitShow', () => state.showRetrofit, (on) => {
+        state.showRetrofit = on;
+        recomputeCombatStats();
+        resetPagesAndFilter();
+    });
+
+    // 개조 가능만 — roster narrowing only; the stats are whatever 개조 표시 says.
+    setupToggleButton('retrofitOnly', () => state.retrofitOnly, (on) => {
+        state.retrofitOnly = on;
+        resetPagesAndFilter();
     });
 
     // Gimmick chips — multi-select chip group (skin tab)
@@ -583,8 +620,9 @@ function _setupCompareCheckboxes(tbodyId) {
  *  - empty selectedSet  → All mode: "전체" is .active, no category chip active.
  *  - 1+ (but not all) category chips → subset mode: "전체" loses .active (still clickable).
  *  - clicking "전체" clears the set (→ All mode).
- *  - clicking a category chip toggles it; if that selects every category, the set
- *    is cleared (collapse to All mode); if it empties the set, that is All mode too.
+ *  - clicking a category chip toggles it; if that selects every non-`data-sub`
+ *    category, the set is cleared (collapse to All mode); if it empties the set,
+ *    that is All mode too.
  *
  * @param {string} containerId  - id of the chip container
  * @param {string} attr         - dataset attribute holding each chip's value ('rarity' | 'gimmick')
@@ -598,6 +636,10 @@ function setupChipGroup(containerId, attr, selectedSet, onChange) {
     const chips = [...container.querySelectorAll('.chip')];
     const allChip = chips.find(c => !c.dataset[attr]);
     const catChips = chips.filter(c => c.dataset[attr]);
+    // A `data-sub` chip refines a category rather than adding one (PR ⊂ SSR,
+    // DR ⊂ UR), so it must not count toward the collapse-to-전체 rule — otherwise
+    // selecting all five rarity tiers no longer reads as "no filter".
+    const primaryChips = catChips.filter(c => !c.dataset.sub);
 
     function render() {
         const allMode = selectedSet.size === 0;
@@ -622,13 +664,58 @@ function setupChipGroup(containerId, attr, selectedSet, onChange) {
         } else {
             if (selectedSet.has(value)) selectedSet.delete(value);
             else selectedSet.add(value);
-            if (selectedSet.size === catChips.length) selectedSet.clear();
+            if (primaryChips.length && primaryChips.every(c => selectedSet.has(c.dataset[attr]))) {
+                selectedSet.clear();
+            }
         }
         render();
         onChange();
     });
 
     render();
+}
+
+/**
+ * Wire a standalone on/off toggle button: paints `.is-active` + aria-pressed from
+ * `read()` and hands the flipped value to `write()` on click.
+ *
+ * @param {string} id - button element id
+ * @param {Function} read - () => boolean, current state
+ * @param {Function} write - (next: boolean) => void, applies the change + re-renders
+ */
+function setupToggleButton(id, read, write) {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+
+    const render = () => {
+        const on = read();
+        btn.classList.toggle('is-active', on);
+        btn.setAttribute('aria-pressed', String(on));
+    };
+
+    btn.addEventListener('click', () => {
+        write(!read());
+        render();
+    });
+    render();
+}
+
+/** Return both tables to page 1, then re-filter and re-render. */
+function resetPagesAndFilter() {
+    state.shipPage = 1;
+    state.skinPage = 1;
+    applyFilters();
+}
+
+/**
+ * Hide the PR/DR chips when the research roster failed to load — an empty map
+ * would leave two chips that filter every ship away.
+ */
+function updateResearchChips() {
+    const show = state.researchTypeByName.size > 0;
+    document.querySelectorAll('#rarityChips .chip[data-sub="research"]').forEach(chip => {
+        toggleElement(chip, show);
+    });
 }
 
 /**

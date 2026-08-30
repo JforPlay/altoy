@@ -51,7 +51,7 @@
 
 .stats-table th {
     padding: 0.6rem 0.75rem;
-    text-align: left;
+    text-align: center;
     font-size: 0.78rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -87,6 +87,9 @@
 
 .stats-table td {
     padding: 0.5rem 0.75rem;
+    /* Every column centres — the label columns and the numeric ones alike, so the
+       header row and its cells share one axis instead of splitting left/right. */
+    text-align: center;
     vertical-align: middle;
     border-bottom: 1px solid var(--border-color);
     color: var(--text-primary);
@@ -112,7 +115,6 @@
 /* -- Table Cells & Badges -- */
 .col-compare {
     width: 2rem;
-    text-align: center;
 }
 
 .compare-check {
@@ -145,8 +147,26 @@
     color: var(--r-text);
 }
 
+/* PR/DR marker beside the 등급 badge. Outlined, not filled, because it refines
+   the rarity next to it rather than replacing it — a PR ship is still SSR. */
+.table-research {
+    display: inline-block;
+    margin-left: 0.3rem;
+    padding: 0.1rem 0.35rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    line-height: 1.4;
+    border-radius: 2rem;
+    white-space: nowrap;
+    border: 1px solid currentColor;
+    color: var(--rarity-ssr-fg);
+}
+
+.table-research[data-research="DR"] {
+    color: var(--rarity-ur-fg);
+}
+
 .stat-cell {
-    text-align: right;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
     font-weight: 500;

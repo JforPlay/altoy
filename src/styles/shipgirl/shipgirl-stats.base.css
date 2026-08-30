@@ -142,23 +142,29 @@ body {
     gap: var(--spacing-sm);
 }
 
-/* Inner .filter-bar rows: centered justify (bespoke to this page). */
+/* Inner .filter-bar rows stay centered in the card. */
 .filter-bar-inner .filter-bar {
     justify-content: center;
 }
 
-/* Summary strip merged into the top of the filter card */
+/* Summary strip merged into the top of the filter card: name search + the tab's own
+   counts, centered as one cluster over the centered filter rows below. The search
+   keeps flex: 1, so it stretches to its max-width first and only the leftover width
+   is what centers. The two summary-content blocks swap with the tab, so only one is
+   ever laid out. */
 .filter-summary {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     justify-content: center;
+    gap: var(--spacing-md);
     margin-bottom: var(--spacing-sm);
     padding-bottom: var(--spacing-sm);
     border-bottom: 1px solid var(--border-color);
 }
 
 .filter-summary .summary-content {
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 }
 
@@ -178,7 +184,7 @@ body {
 .filter-search {
     flex: 1;
     min-width: 10rem;
-    max-width: 18rem;
+    max-width: 34rem;
     padding: 0.5rem 0.75rem;
     font-size: 0.875rem;
     background: var(--input-bg);
@@ -225,6 +231,14 @@ body {
 }
 
 /* -- Filter Groups -- */
+/* The 개조 buttons sit between two native selects. Padding already matches
+   (.btn and .filter-select are both 0.5rem/0.875rem), but .btn's line-height: 1
+   gives a 14px line box against the select's ~18px, so the two render 4px apart.
+   Match the line box rather than hardcoding a height. */
+.filter-group .btn {
+    line-height: 1.3;
+}
+
 .filter-group {
     display: flex;
     align-items: center;
@@ -232,6 +246,10 @@ body {
 }
 
 .filter-group-label {
+    /* Breathing room between the group name and the controls it labels — the
+       .filter-group gap also spaces the controls from each other, so widening
+       that would loosen the button row too. */
+    margin-right: var(--spacing-sm);
     font-size: 0.7rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -251,4 +269,55 @@ body {
 /* Rarity-tier active-fill now comes from the shared `.chip--rarity` bridge in
    rarity.css (the grade chips carry `chip--rarity rarity-<grade>` in the markup).
    "전체" (data-rarity="") + gimmick chips keep the default --accent-blue. */
+
+/* Two rows: the five tiers across the top, PR/DR parked directly UNDER the tier
+   each one refines, so containment (PR are SSR, DR are UR) reads off the layout
+   instead of needing a legend.
+   `minmax(2.9rem, auto)` gives every column the same floor width — without it N
+   and R render half the width of SSR and the top row reads as debris rather than
+   a scale — while `auto` lets a column grow to the wider of its two chips, which
+   is what keeps PR square under SSR. The row gap is tight so the pair binds as
+   one block instead of looking like an accidental wrap. */
+.rarity-chips--tiered {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(2.9rem, auto));
+    column-gap: var(--spacing-xs);
+    row-gap: 0.3rem;
+    justify-content: start;
+}
+
+.rarity-chips--tiered .chip {
+    justify-content: center;
+    padding-inline: 0.4rem;
+}
+
+.rarity-chips--tiered .chip[data-rarity="PR"] { grid-area: 2 / 5; }
+.rarity-chips--tiered .chip[data-rarity="DR"] { grid-area: 2 / 6; }
+
+/* Hairline dropping from the parent tier into the row gap — makes the offset
+   second row read as deliberate subordination rather than a wrap. */
+.rarity-chips--tiered .chip[data-sub="research"] {
+    position: relative;
+}
+
+.rarity-chips--tiered .chip[data-sub="research"]::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    width: 1px;
+    height: 0.3rem;
+    background: var(--border-color);
+}
+
+/* PR/DR refine SSR/UR rather than adding tiers, so they take the same two fills
+   the research tracker sidebar uses and the pages read as one vocabulary. */
+.chip--research[data-rarity="PR"] {
+    --chip-accent: var(--rarity-ssr);
+    --chip-accent-text: var(--rarity-ssr-text);
+}
+.chip--research[data-rarity="DR"] {
+    --chip-accent: var(--rarity-ur);
+    --chip-accent-text: var(--rarity-ur-text);
+}
 

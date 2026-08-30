@@ -103,6 +103,14 @@
     transition: background var(--transition-fast);
 }
 
+/* One-line variant (총 : 886 명) — lives beside .summary-stat rather than in
+   base.css so it wins on source order instead of on specificity. */
+.summary-stat--inline {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.35rem;
+}
+
 .summary-stat-value {
     font-size: 1.35rem;
     font-weight: 700;

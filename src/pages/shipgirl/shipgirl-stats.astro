@@ -51,22 +51,29 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <!-- Filter bar -->
         <div class="filter-bar--card stats-filter-card">
             <div class="filter-summary">
+                <input type="search" id="searchInput" class="filter-search" placeholder="이름 검색..." aria-label="함순이 이름 검색">
                 <div id="shipSummaryContent" class="summary-content"></div>
                 <div id="skinSummaryContent" class="summary-content hidden"></div>
             </div>
             <div class="filter-bar-inner">
                 <div class="filter-bar">
-                    <input type="search" id="searchInput" class="filter-search" placeholder="이름 검색..." aria-label="함순이 이름 검색">
                     <div class="filter-group">
                         <span class="filter-group-label">등급</span>
-                        <div id="rarityChips" class="rarity-chips">
+                        <div id="rarityChips" class="rarity-chips rarity-chips--tiered">
                             <button type="button" class="chip active" data-rarity="" aria-pressed="true">전체</button>
                             <button type="button" class="chip chip--rarity rarity-N" data-rarity="N" aria-pressed="false">N</button>
                             <button type="button" class="chip chip--rarity rarity-R" data-rarity="R" aria-pressed="false">R</button>
                             <button type="button" class="chip chip--rarity rarity-SR" data-rarity="SR" aria-pressed="false">SR</button>
                             <button type="button" class="chip chip--rarity rarity-SSR" data-rarity="SSR" aria-pressed="false">SSR</button>
                             <button type="button" class="chip chip--rarity rarity-UR" data-rarity="UR" aria-pressed="false">UR</button>
+                            <button type="button" class="chip chip--research" data-rarity="PR" data-sub="research" aria-pressed="false" title="연구 도크 우수 설계도 (SSR)">PR</button>
+                            <button type="button" class="chip chip--research" data-rarity="DR" data-sub="research" aria-pressed="false" title="연구 도크 결전 설계도 (UR)">DR</button>
                         </div>
+                    </div>
+                    <div class="filter-group">
+                        <span class="filter-group-label">개조</span>
+                        <button type="button" id="retrofitShow" class="btn btn-secondary is-active" aria-pressed="true" title="개조 함순이의 개조 스탯·등급·함종을 반영합니다">개조 표시</button>
+                        <button type="button" id="retrofitOnly" class="btn btn-secondary" aria-pressed="false" title="개조가 가능한 함순이만 봅니다">개조 가능만</button>
                     </div>
                     <select id="shipTypeFilter" class="filter-select">
                         <option value="">모든 함종</option>

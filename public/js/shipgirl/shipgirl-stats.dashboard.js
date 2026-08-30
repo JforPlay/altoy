@@ -164,7 +164,7 @@ function _renderShipSummary(data) {
     const container = document.getElementById('shipSummaryContent');
     if (!container) return;
 
-    const rarityCounts = countBy(data, d => d.ship.rarity);
+    const rarityCounts = countBy(data, d => d.rarity);
 
     const tags = rarityOrder
         .filter(r => rarityCounts[r])
@@ -172,9 +172,10 @@ function _renderShipSummary(data) {
         .join('');
 
     container.innerHTML = `
-        <div class="summary-stat">
+        <div class="summary-stat summary-stat--inline">
+            <span class="summary-stat-label">총 :</span>
             <span class="summary-stat-value">${data.length}</span>
-            <span class="summary-stat-label">총 함순이</span>
+            <span class="summary-stat-label">명</span>
         </div>
         <div class="rarity-breakdown">${tags}</div>
     `;
@@ -185,7 +186,7 @@ function _renderShipTypeChart(data) {
     if (!canvas) return;
     destroyChart('shipType');
 
-    const counts = countBy(data, d => getShipTypeName(d.ship.type));
+    const counts = countBy(data, d => getShipTypeName(d.shipType));
     const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
     _sizeBarContainer(canvas, sorted.length);
     const colors = getChartColors();
@@ -245,7 +246,7 @@ export function renderTopStatChart() {
     createChart('topStat', canvas, {
         type: 'bar',
         data: {
-            labels: sorted.map(d => d.ship.name),
+            labels: sorted.map(d => d.displayName),
             datasets: [{
                 label: getAttrKoreanName(statKey),
                 data: sorted.map(d => d.combat[statKey] || 0),
@@ -277,7 +278,7 @@ function _renderRarityTypeHeatmap(data) {
     // Ship types present, ordered by overall count (busiest first).
     const typeTotals = new Map();
     for (const d of data) {
-        const t = getShipTypeName(d.ship.type);
+        const t = getShipTypeName(d.shipType);
         typeTotals.set(t, (typeTotals.get(t) || 0) + 1);
     }
     const types = [...typeTotals.keys()].sort((a, b) => typeTotals.get(b) - typeTotals.get(a));
@@ -285,7 +286,7 @@ function _renderRarityTypeHeatmap(data) {
     // Count per (rarity, type) cell.
     const counts = {};
     for (const d of data) {
-        const key = `${d.ship.rarity}|${getShipTypeName(d.ship.type)}`;
+        const key = `${d.rarity}|${getShipTypeName(d.shipType)}`;
         counts[key] = (counts[key] || 0) + 1;
     }
 
@@ -449,7 +450,7 @@ function _renderTopSkinChart(data) {
     createChart('topSkin', canvas, {
         type: 'bar',
         data: {
-            labels: sorted.map(d => d.ship.name),
+            labels: sorted.map(d => d.displayName),
             datasets: [{ data: sorted.map(d => d.skin.total), backgroundColor: colors.palette[2], borderRadius: 4 }],
         },
         options: defaultChartOptions(true),
@@ -671,15 +672,15 @@ function _renderSkinDensityChart(data) {
     for (const d of data) {
         const days = d.skin.daysSinceLast;
         if (days == null) continue;
-        const cells = cellsByRarity[d.ship.rarity];
+        const cells = cellsByRarity[d.rarity];
         if (!cells) continue;
         const key = `${days}|${d.skin.total}`;
         const cell = cells.get(key);
         if (cell) {
             cell.count++;
-            if (cell.names.length < 8) cell.names.push(d.ship.name);
+            if (cell.names.length < 8) cell.names.push(d.displayName);
         } else {
-            cells.set(key, { x: days, y: d.skin.total, count: 1, names: [d.ship.name] });
+            cells.set(key, { x: days, y: d.skin.total, count: 1, names: [d.displayName] });
         }
     }
 
