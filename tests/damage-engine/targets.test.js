@@ -68,3 +68,19 @@ test('difficulty and adapt tier compose', () => {
 test('unknown difficulty throws', () => {
   assert.throws(() => makeTarget('heavy', { difficulty: 'lunatic' }));
 });
+
+// --- label tags (battleunit.lua:461-462) ----------------------------------
+// The two tags every unit carries into battle, and the whole vocabulary the
+// 특수 종류 피해 term matches against.
+test('Arbiter presets carry their 함종 + 세이렌 tags', () => {
+  assert.deepEqual(makeTarget('light').tags, ['T_2', 'N_99']);    // Temperance XIV, CL
+  assert.deepEqual(makeTarget('medium').tags, ['T_3', 'N_99']);   // Strength VIII, CA
+  assert.deepEqual(makeTarget('heavy').tags, ['T_5', 'N_99']);    // The Hermit IX, BB
+});
+
+test('the tag ids agree with the shipClass beside them', () => {
+  const CLASS_TO_TYPE = { CL: 2, CA: 3, BB: 5 };
+  for (const [key, preset] of Object.entries(ARMOR_PRESETS)) {
+    assert.equal(preset.shipType, CLASS_TO_TYPE[preset.shipClass], key);
+  }
+});

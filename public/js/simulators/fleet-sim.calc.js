@@ -11,7 +11,9 @@ import {
 } from './fleet-sim.tech.js';
 // Pure helper; fleet-sim.damage.js reaches back here only through a dynamic import(),
 // so this static edge does not close a cycle.
-import { mergeWeaponWithBase, liveSkillIds } from './fleet-sim.damage.js';
+import {
+    mergeWeaponWithBase, liveSkillIds, spSkillUpgradePairs, applySPSkillUpgrade,
+} from './fleet-sim.damage.js';
 
 // ===== State =====
 let state;
@@ -547,7 +549,16 @@ export function resolvePassiveBuffs(targetShip, allFleetShips, targetSlot = -1, 
         const isSelf = targetSlot >= 0 ? slot === targetSlot : memberShip.gid === targetShip.gid;
 
         const cfg = slotConfigs?.[slot];
-        for (const skillId of liveSkillIds(memberShip, cfg?.retrofit !== false, cfg?.fate !== false)) {
+        // A maxed 전용 장비 replaces one of the ship's skills with an upgraded rung.
+        // The swap is scoped to THIS table — a pair whose successor has no passive
+        // record keeps the base rung rather than losing the buff (see
+        // applySPSkillUpgrade), so 13 of the 57 passive upgrades stay on their base.
+        const liveIds = applySPSkillUpgrade(
+            liveSkillIds(memberShip, cfg?.retrofit !== false, cfg?.fate !== false),
+            spSkillUpgradePairs(cfg?.spWeapon, getSPWeaponById),
+            (id) => !!state.passiveSkillData[String(id)],
+        );
+        for (const skillId of liveIds) {
             const passiveSkill = state.passiveSkillData[String(skillId)];
             if (!passiveSkill) continue;
 
@@ -662,6 +673,27 @@ export function sumWeaponModifiers(buffs) {
     return { reloadByWeaponType, damageBySlot };
 }
 
+/** Damage multipliers that apply to every shot alike, → their output key. */
+const FLAT_DAMAGE_KEY = {
+    damageRatioBullet: 'bullet',
+    damageRatioByCannon: 'cannon',
+    damageRatioByAir: 'air',
+    damageRatioByBulletTorpedo: 'torpedo',
+};
+
+/**
+ * Damage multipliers whose attr name carries its own INDEX, → the bucket they
+ * collect into. Each is keyed on something the engine only knows at damage time —
+ * the target's armor class, the target's label tags, the bullet's ammo type — so
+ * they cannot collapse to a single number the way the flat ones do. WSL
+ * `fleet_sim_skill_process.py` emits the attr name verbatim; the suffix IS the key.
+ */
+const INDEXED_DAMAGE_BUCKET = [
+    ['damageToArmorRateEnhance_', 'byArmor'],   // 대갑 타상 계수 — 1 경장 / 2 중형 / 3 중장
+    ['damageRatioByAmmoType_', 'byAmmo'],       // 탄약 종류 피해 — bullet.ammo_type
+    ['DMG_TAG_EHC_', 'byTag'],                  // 특수 종류 피해 — `T_<함종>` / `N_<진영>`
+];
+
 /**
  * Damage-multiplier totals from resolved passive buffs, as fractions.
  *
@@ -673,26 +705,32 @@ export function sumWeaponModifiers(buffs) {
  * NOT stack — 공습 선도's own text says 「동일 스킬 효과는 중첩되지 않음」 — so two
  * carriers granting it contribute the larger, not the sum.
  *
- * @returns {{bullet:number, cannon:number, air:number, torpedo:number}}
+ * @returns {{bullet:number, cannon:number, air:number, torpedo:number,
+ *            byArmor:object, byAmmo:object, byTag:object}}
  */
 export function sumDamageBuffs(buffs) {
-    const out = { bullet: 0, cannon: 0, air: 0, torpedo: 0 };
-    const bySrc = new Map();        // `${src}:${key}` → largest value seen
-    const KEY = {
-        damageRatioBullet: 'bullet',
-        damageRatioByCannon: 'cannon',
-        damageRatioByAir: 'air',
-        damageRatioByBulletTorpedo: 'torpedo',
+    const out = { bullet: 0, cannon: 0, air: 0, torpedo: 0, byArmor: {}, byAmmo: {}, byTag: {} };
+    const bySrc = new Map();        // `${src}:${attr}` → largest value seen
+    const land = (attr, value) => {
+        const flat = FLAT_DAMAGE_KEY[attr];
+        if (flat) { out[flat] += value; return; }
+        for (const [prefix, bucket] of INDEXED_DAMAGE_BUCKET) {
+            if (!attr.startsWith(prefix)) continue;
+            const key = attr.slice(prefix.length);
+            out[bucket][key] = (out[bucket][key] || 0) + value;
+            return;
+        }
     };
+    const known = (attr) => !!FLAT_DAMAGE_KEY[attr]
+        || INDEXED_DAMAGE_BUCKET.some(([prefix]) => attr.startsWith(prefix));
     for (const b of buffs || []) {
-        const key = KEY[b.attr];
-        if (!key) continue;
+        if (!b.attr || !known(b.attr)) continue;
         const value = b.value || 0;
-        if (b.src == null) { out[key] += value; continue; }
-        const k = `${b.src}:${key}`;
+        if (b.src == null) { land(b.attr, value); continue; }
+        const k = `${b.src}:${b.attr}`;
         if (!(bySrc.get(k) >= value)) bySrc.set(k, value);
     }
-    for (const [k, v] of bySrc) out[k.slice(k.indexOf(':') + 1)] += v;
+    for (const [k, v] of bySrc) land(k.slice(k.indexOf(':') + 1), v);
     return out;
 }
 

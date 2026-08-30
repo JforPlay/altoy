@@ -112,6 +112,40 @@ test('a shared aura does NOT stack — the largest wins, not the sum', () => {
     assert.equal(Math.round(mixed.bullet * 100) / 100, 0.3);
 });
 
+test('the indexed damage families collect by their own suffix', () => {
+    // Each of the three carries its key IN THE ATTR NAME, because the engine only
+    // resolves it at damage time — the target's armor class, the target's label
+    // tags, the bullet's ammo type. The pipeline emits the name verbatim.
+    const out = sumDamageBuffs([
+        { attr: 'damageToArmorRateEnhance_1', value: 0.15 },
+        { attr: 'damageToArmorRateEnhance_2', value: 0.15 },
+        { attr: 'damageToArmorRateEnhance_1', value: 0.1 },   // same class stacks
+        { attr: 'damageRatioByAmmoType_3', value: 0.25 },
+        { attr: 'DMG_TAG_EHC_T_5', value: 0.1 },
+        { attr: 'DMG_TAG_EHC_N_99', value: 0.1 },
+        { attr: 'DMG_TAG_EHC_YueKeCheng', value: 9 },         // a named mark, if one ever ships
+        { attr: 'cannonPower', value: 1000 },                 // a stat — must not leak in
+    ]);
+    assert.equal(Math.round(out.byArmor['1'] * 100) / 100, 0.25);
+    assert.equal(out.byArmor['2'], 0.15);
+    assert.equal(out.byArmor['3'], undefined);
+    assert.equal(out.byAmmo['3'], 0.25);
+    assert.equal(out.byTag.T_5, 0.1);
+    assert.equal(out.byTag.N_99, 0.1);
+    // A named mark keys off its own suffix, so it can never be mistaken for a tag
+    // the target carries — it simply matches nothing.
+    assert.equal(out.byTag.YueKeCheng, 9);
+    assert.equal(out.bullet, 0);
+});
+
+test('the aura rule covers the indexed families too', () => {
+    const out = sumDamageBuffs([
+        { attr: 'DMG_TAG_EHC_T_5', value: 0.15, src: 1080 },
+        { attr: 'DMG_TAG_EHC_T_5', value: 0.108, src: 1080 },
+    ]);
+    assert.equal(out.byTag.T_5, 0.15);
+});
+
 test('an unknown target mode is dropped rather than guessed at', () => {
     withTable(table([['9999', 'somethingNew', [{ attr: 'cannonPower', value: 100, type: 'ratio' }]]]));
     const s = ship(1, 1, ['9999']);

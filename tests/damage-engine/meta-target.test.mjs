@@ -63,3 +63,20 @@ test('an explicit injureRatio override still wins over the boss skill', () => {
   const boss = { ...BOSS, tiers: [{ ...BOSS.tiers[0], injureRatio: 0.2 }] };
   assert.equal(makeMetaTarget(boss, 1, { injureRatio: 0 }).injureRatio, 0);
 });
+
+test('carries the boss 함종 / 진영 as label tags', () => {
+  const t = makeMetaTarget({ ...BOSS, type: 1, nationality: 97 }, 1);
+  assert.deepEqual(t.tags, ['T_1', 'N_97']);
+});
+
+test('a boss the data has not typed yet emits no tag rather than T_undefined', () => {
+  assert.deepEqual(makeMetaTarget(BOSS, 1).tags, []);
+  assert.deepEqual(makeMetaTarget({ ...BOSS, nationality: 97 }, 1).tags, ['N_97']);
+});
+
+test('every shipped META boss is typed — a 함종 skill has to find its target', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const bosses = JSON.parse(await readFile(new URL('../../public/data/meta_bosses.json', import.meta.url), 'utf8'));
+  const untyped = Object.values(bosses).filter((b) => !b.type || !b.nationality);
+  assert.deepEqual(untyped.map((b) => b.name), []);
+});

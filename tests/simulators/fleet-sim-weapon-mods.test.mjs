@@ -71,8 +71,11 @@ test('the two attrs never leak into the stat total or the flat damage ratio', ()
     const goetz = byName('괴츠 폰 베를리힝겐');
     const buffs = resolvePassiveBuffs(goetz, fleetOf(goetz), 0);
 
-    // sumDamageBuffs maps damageRatio* only — a weapon-scoped row must contribute nothing.
-    assert.deepEqual(sumDamageBuffs(buffs), { bullet: 0, cannon: 0, air: 0, torpedo: 0 });
+    // sumDamageBuffs maps damageRatio* only — a weapon-scoped row must contribute
+    // nothing, to any bucket, flat or indexed.
+    assert.deepEqual(sumDamageBuffs(buffs), {
+        bullet: 0, cannon: 0, air: 0, torpedo: 0, byArmor: {}, byAmmo: {}, byTag: {},
+    });
 
     // ...and the names must stay distinct from every stat attr the calc loop reads.
     const statAttrs = new Set(['durability', 'cannonPower', 'airPower', 'torpedoPower',

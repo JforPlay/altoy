@@ -12,10 +12,16 @@
  * 레벨 is not in the sheets: 125 is a documented assumption (neutral vs a
  * level-125 fleet), adjustable through the 레벨 field.
  * armorType: 1=Light, 2=Medium, 3=Heavy.
+ *
+ * `shipType` / `nationality` are the numeric 함종 / 진영 behind the label tags every
+ * unit carries (see unitTags). Unlike the stats they are NOT scaled at runtime, so
+ * they are read straight from the Arbiters' own enemy records — 아비터·허밋·IX is
+ * type 5 / nationality 99 (세이렌), matching the shipClass beside it.
  */
 export const ARMOR_PRESETS = {
   light: {
-    name: 'Temperance XIV', shipClass: 'CL', armorType: 1, luck: 45, level: 125,
+    name: 'Temperance XIV', shipClass: 'CL', shipType: 2, nationality: 99,
+    armorType: 1, luck: 45, level: 125,
     antiAir: { base: 481, noAdapt: 626, full: 337 },
     difficulty: {
       hard: { evasion: 94, hp: { base: 1420678, noAdapt: 1846881, full: 994475 } },
@@ -23,7 +29,8 @@ export const ARMOR_PRESETS = {
     },
   },
   medium: {
-    name: 'Strength VIII', shipClass: 'CA', armorType: 2, luck: 45, level: 125,
+    name: 'Strength VIII', shipClass: 'CA', shipType: 3, nationality: 99,
+    armorType: 2, luck: 45, level: 125,
     antiAir: { base: 348, noAdapt: 452, full: 243 },
     difficulty: {
       hard: { evasion: 89, hp: { base: 1839688, noAdapt: 2391595, full: 1287782 } },
@@ -31,7 +38,8 @@ export const ARMOR_PRESETS = {
     },
   },
   heavy: {
-    name: 'The Hermit IX', shipClass: 'BB', armorType: 3, luck: 45, level: 125,
+    name: 'The Hermit IX', shipClass: 'BB', shipType: 5, nationality: 99,
+    armorType: 3, luck: 45, level: 125,
     antiAir: { base: 385, noAdapt: 501, full: 270 },
     difficulty: {
       hard: { evasion: 74, hp: { base: 1915376, noAdapt: 2489989, full: 1340763 } },
@@ -39,6 +47,21 @@ export const ARMOR_PRESETS = {
     },
   },
 };
+
+/**
+ * The label tags a unit carries into battle. `battleunit.lua:461-462` stamps
+ * exactly two on every unit at spawn — `N_<nationality>` and `T_<type>` — and
+ * they are the whole vocabulary GetTagAttr matches a 「구축함에게 주는 피해 +N%」
+ * skill against (engine/damage/formula.js, 특수 종류 피해). A missing id emits no
+ * tag rather than `T_undefined`, so a target the data has not described yet
+ * simply matches nothing.
+ */
+function unitTags(shipType, nationality) {
+  const tags = [];
+  if (shipType) tags.push(`T_${shipType}`);
+  if (nationality) tags.push(`N_${nationality}`);
+  return tags;
+}
 
 export const DEFAULT_ADAPT = 'base';        // base | noAdapt | full
 export const DEFAULT_DIFFICULTY = 'hard';  // hard | normal
@@ -67,6 +90,7 @@ export function makeTarget(presetKey, overrides = {}) {
     armorReduce: overrides.armorReduce ?? DEFAULT_ARMOR_REDUCE,
     injureRatio: overrides.injureRatio ?? 0,
     ammoReduce: overrides.ammoReduce ?? 0,
+    tags: unitTags(preset.shipType, preset.nationality),
     adapt: adaptKey,
     difficulty,
   };
@@ -108,6 +132,9 @@ export function makeMetaTarget(boss, tier, overrides = {}) {
     armorReduce: overrides.armorReduce ?? DEFAULT_ARMOR_REDUCE,
     injureRatio: overrides.injureRatio ?? rec.injureRatio ?? 0,
     ammoReduce: overrides.ammoReduce ?? 0,
+    // 함종 / 진영 sit on the BOSS, not the tier — they are an identity, constant
+    // across tiers, and WSL meta_boss_process.py fails the run if a tier disagrees.
+    tags: unitTags(boss.type, boss.nationality),
     adapt: null,
     unmodeledBuffs: rec.unmodeledBuffs ?? 0,
   };

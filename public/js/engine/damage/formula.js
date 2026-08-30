@@ -63,6 +63,32 @@ export function computeHitDamage(attacker, weapon, target) {
   // armor effectiveness: damageType[armorType-1]
   const armorMod = weapon.damageType[target.armorType - 1] ?? 1;
 
+  // 대갑 타상 계수 — its own multiply, NOT part of the armor-efficiency term above:
+  // battleformulas.lua:156 has `(damage_type[armor] + damageAmmoToArmorRateEnhance_N)`
+  // and `(1 + damageToArmorRateEnhance_N)` as two adjacent factors. Indexed by the
+  // TARGET's armor class, which is why it rides the descriptor as a map.
+  const armorEnhance = weapon.armorDamageRatio?.[target.armorType] ?? 0;
+
+  // 특수 종류 피해 — GetTagAttr (battleattr.lua:700) walks the TARGET's own label
+  // tags and multiplies one (1 + n) per tag the ATTACKER has an entry for. Every
+  // unit auto-carries exactly two (battleunit.lua:461-462 stamps `T_<함종>` and
+  // `N_<진영>` at spawn), and the terms COMPOUND rather than sum, so a fleet that
+  // buffs both of a boss's tags multiplies twice.
+  let tagMod = 1;
+  const tagRatios = weapon.tagDamageRatio;
+  if (tagRatios && target.tags) {
+    for (const tag of target.tags) {
+      const n = tagRatios[tag];
+      if (n) tagMod *= 1 + n;
+    }
+  }
+
+  // 탄약 종류 피해 — keyed on the BULLET's own ammo_type, so the attacker half is
+  // already resolved to a scalar by the caller. The defender half (`ammoReduce` =
+  // damageReduceFromAmmoType_N) is absent from the entire META + Arbiter roster and
+  // stays at its 0 default; it is read here so a future target that has one works.
+  const ammoMod = 1 + (weapon.ammoDamageRatio ?? 0) - (target.ammoReduce ?? 0);
+
   // level advantage (clamped) + expected hit & crit — all weapon-independent
   const { levelAdv, hitRate, critRate } = computeAccuracy(attacker, target);
   const critMult = DFT_CRIT_EFFECT;
@@ -76,9 +102,11 @@ export function computeHitDamage(attacker, weapon, target) {
   // 공습 선도 lands here.
   const damageRatio = weapon.damageRatio ?? 0;
 
+  // Factors in the Lua's own order (battleformulas.lua:156): 속성 → 감쇠 → 대갑 효율
+  // → 대갑 타상 → 치명 → 일반 타상 → 특수 종류 → 받는 피해 → 탄약 종류 → 등급 압제.
   const expectedHit =
-    base * typeMod * (1 - armorReduce) * armorMod * critEV
-    * (1 + damageRatio) * (1 + injureRatio) * levelAdv;
+    base * typeMod * (1 - armorReduce) * armorMod * (1 + armorEnhance) * critEV
+    * (1 + damageRatio) * tagMod * (1 + injureRatio) * ammoMod * levelAdv;
 
   return { base, armorMod, airMitigation, levelAdv, hitRate, critRate, critMult, expectedHit };
 }

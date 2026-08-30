@@ -714,9 +714,16 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageB
     const dedicated = _data.getDedicatedSPWeapon(ship.gid);
     const spEquipped = !!dedicated && Number(slotConfig.spWeapon?.id) === Number(dedicated.id);
     const hasBarrageRecord = (id) => !!_data.getBarrageSkill(String(id));
-    const skillIds = expandBarrageSkillIds(
-        ship, activeBarrageSkillIds(ship, useRetrofit, slotConfig.fate !== false), hasBarrageRecord,
-    ).concat(spEquipped ? attachedSPBarrageIds(ship) : []);
+    // A maxed 전용 장비 REPLACES one of the ship's skills with an upgraded rung, so
+    // the swap happens before supersession is expanded — 드레이크 fires 1019300
+    // 단죄의 불꽃·改, not the 19300 her card lists.
+    const liveBarrageIds = applySPSkillUpgrade(
+        activeBarrageSkillIds(ship, useRetrofit, slotConfig.fate !== false),
+        spSkillUpgradePairs(slotConfig.spWeapon, _data.getSPWeaponById),
+        hasBarrageRecord,
+    );
+    const skillIds = expandBarrageSkillIds(ship, liveBarrageIds, hasBarrageRecord)
+        .concat(spEquipped ? attachedSPBarrageIds(ship) : []);
     const airstrikes = airReloadMax > 0
         ? _engine.countSalvos(_engine.calculateReloadTime(airReloadMax, stats.reload), 0, window)
         : 0;
@@ -753,6 +760,12 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageB
             // has no slotIndex and correctly picks up only the ship-wide half.
             d.damageRatio = (damageBuffs.bullet || 0) + (d.slotDamageRatio || 0);
             d.attrDamageRatio = byAttr[d.attackAttribute] || 0;
+            // The armor and tag halves depend on the TARGET, so they ride the
+            // descriptor as maps and formula.js indexes them at damage time; the
+            // ammo half is fixed by this weapon's own bullet and resolves here.
+            d.armorDamageRatio = damageBuffs.byArmor;
+            d.tagDamageRatio = damageBuffs.byTag;
+            d.ammoDamageRatio = damageBuffs.byAmmo?.[d.ammoType] || 0;
         }
     }
     return { weapons: all, unmodeled, inactive, unmodeledDots, dotInjure };
@@ -791,6 +804,58 @@ export function liveSkillIds(ship, useRetrofit, useFate = true) {
         const target = sk.upgrade != null ? skills[String(sk.upgrade)] : null;
         return !(target && eligible(target));   // superseded only if the successor is itself live
     });
+}
+
+/**
+ * The `[[from, to]]` skill upgrades a ship's EQUIPPED 전용 장비 grants, or `[]`.
+ *
+ * The upgrade fires at MAX enhancement only, so an under-levelled weapon grants
+ * nothing. `level` is a 0-based index into `levels` (the same convention
+ * `_getSPWeaponStatBonuses` clamps against), so max is `levels.length - 1`.
+ *
+ * Only dedicated weapons carry pairs (228 of 228; 0 generics), so reading them off
+ * whatever is equipped needs no "is this the dedicated one" test of its own.
+ * @param {object} spConfig slotConfig.spWeapon — { id, level } | null
+ * @param {(id:(number|string))=>(object|null)} getSPWeaponById
+ */
+export function spSkillUpgradePairs(spConfig, getSPWeaponById) {
+    if (!spConfig || !spConfig.id) return [];
+    const w = getSPWeaponById(spConfig.id);
+    const pairs = w?.skill_upgrade;
+    if (!Array.isArray(pairs) || !pairs.length) return [];
+    const maxLevel = Math.max(0, (w.levels?.length || 0) - 1);
+    return (spConfig.level || 0) >= maxLevel ? pairs : [];
+}
+
+/**
+ * Swap live skill ids for the rungs a maxed 전용 장비 upgrades them into.
+ *
+ * THE SWAP IS PER-TABLE, never a blind id swap. 17 of the 230 pairs upgrade into a
+ * skill that has no record in the table being remapped — 드레이크's `1018300`
+ * 단죄의 불꽃·改+ and three other barrages are flat internal casts in `skill.json`
+ * with no level ladder and no weapon, so the barrage walk emits nothing for them by
+ * design. Swapping regardless would DELETE a modelled component; keeping the base
+ * rung lets the 「발동 조건이 아직 구현되지 않은 탄막 N개」 note carry it instead
+ * (D3: disclose, never silently under-report).
+ *
+ * Sources are read from the pair, never computed: `to - 1000000` covers only 111 of
+ * the 229 explicit pairs and the rest use other conventions (핫스 108090 → 108240,
+ * 2B 117010 → 117030, 건스웨이 150580 → 10150580). WSL `spweapon_data_process.py`
+ * takes the pair off the max-enhancement record, because the base record states the
+ * same upgrade with its SOURCE ZEROED — a zeroed source is skipped here too.
+ * @param {string[]} ids live skill ids
+ * @param {Array<Array<number|string>>} pairs from spSkillUpgradePairs
+ * @param {(id:string)=>boolean} hasRecord does the CONSUMING table know this id?
+ */
+export function applySPSkillUpgrade(ids, pairs, hasRecord) {
+    if (!pairs || !pairs.length) return ids;
+    const up = new Map();
+    for (const pair of pairs) {
+        const from = String(pair?.[0] ?? '');
+        const to = String(pair?.[1] ?? '');
+        if (from && from !== '0' && to && hasRecord(to)) up.set(from, to);
+    }
+    return up.size ? ids.map((id) => up.get(id) || id) : ids;
 }
 
 /**
