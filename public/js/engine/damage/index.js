@@ -77,9 +77,13 @@ export function simulateAttacker(attacker, weapons, target, opts = {}) {
           coolStart: w.startsOnCooldown ? reloadInterval : 0,
           preloadShare: w.preloadShare ?? 0,
         };
-    schedules.push(schedule);
+    // An `excluded` weapon still gets a full row (the caller shows what it WOULD
+    // do) but never reaches `schedules`, so it is out of both the ship total and
+    // the fleet's damageAt curve — i.e. out of the kill-time solve too.
+    if (!w.excluded) schedules.push(schedule);
     const roll = rollSchedule(schedule, timeWindow);
     return {
+      excluded: !!w.excluded,
       label: w.label,
       oneSalvoExpected: salvo.expectedSalvo,
       reloadInterval,
@@ -94,8 +98,9 @@ export function simulateAttacker(attacker, weapons, target, opts = {}) {
       cadence: w.cadence ?? null,
     };
   });
-  const oneShotExpected = perWeapon.reduce((s, w) => s + w.oneSalvoExpected, 0);
-  const total = perWeapon.reduce((s, w) => s + w.total, 0);
+  const counted = perWeapon.filter((w) => !w.excluded);
+  const oneShotExpected = counted.reduce((s, w) => s + w.oneSalvoExpected, 0);
+  const total = counted.reduce((s, w) => s + w.total, 0);
   const dps = timeWindow > 0 ? total / timeWindow : 0;
   return { perWeapon, oneShotExpected, total, dps, schedules };
 }

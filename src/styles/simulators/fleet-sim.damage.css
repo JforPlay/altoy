@@ -256,6 +256,13 @@
   color: var(--accent-blue-text);
 }
 
+/* A 주력함대 부포 is resolved and shown but held out of the total (it cannot reach
+   the boss — see SECONDARY_REACH_SKILLS in fleet-sim.damage.js). Muted rather than
+   hidden so the build still reads, with the DPS struck through by the <s> above. */
+.dmg-weapon-table .dmg-row-excluded td {
+  color: var(--text-muted);
+}
+
 /* Barrage skills the extractor couldn't resolve are silently dropped from the
    breakdown rather than guessed at (R5 design D3) — this note says so instead
    of the ship quietly under-reporting its damage. Muted, not warning-colored:

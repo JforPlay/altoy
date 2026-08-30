@@ -95,6 +95,7 @@ export function resolveWeaponDescriptor(weapon, stats, deps) {
         damageType: bullet.damage_type,
         ammoType: bullet.ammo_type,
         reloadMax: deps.reloadMaxOverride ?? weapon.reload_max,
+        weaponType: weapon.type,          // weapon_property.type — what a weaponReloadRatio keys on
         cycleExtra,
         initialDelay: 0,
         startsOnCooldown,
@@ -354,6 +355,42 @@ const SLOT_LABELS = {
 };
 
 /**
+ * Skills that give a MAIN-FLEET ship's 부포 the reach to fire on a boss.
+ *
+ * A back-row 부포 normally cannot: the main fleet sits at the bottom of the
+ * screen and every 구축포/경순포 the slot takes has a weapon `range` of 50–70
+ * (measured across all 159 of them), which the boss never enters. It still
+ * shreds trash mobs, so the game shows it working — but against the boss the
+ * slot's DPS is fiction, and on a BB it OUT-DPSes the 주포 ~7× because it
+ * reloads in ~3s against ~19s. Hence: resolved and displayed, never counted.
+ *
+ * The exceptions are runtime buffs that set the range to 80/95/105, so they
+ * cannot be read off the equipment — this is the full set from a sweep of all
+ * 3,155 skill templates for 부포/부무장 × 사거리/색적/조준 범위:
+ *
+ *   12120  비스마르크    부포 슬롯에 경순 주포 장착 시 사거리 상승
+ *   19740  플랑드르      내구 50% 미만 → 사거리 95
+ *   106320 타마키        사거리 80 (무조건)
+ *   151610 오미          「시의 흥」 5개 → 사거리 95
+ *   190110 발파라이소    20초 경과 / 부포 30회 발사 → 사거리 105
+ *
+ * Three of the five gate on a condition the sim does not model (an equip in the
+ * slot, an HP threshold, a stack timer); they count unconditionally by decision
+ * — the ship IS the exception, and a half-window credit would need a firing
+ * model the panel has no other use for.
+ *
+ * Carrier skills that extend a 부무장 slot (베아른 13340, 이글 13520, 프리츠
+ * 루메이 150760, 베아른·META 801220) are deliberately absent: SLOT_LABELS has no
+ * CV entry, so those slots are never labelled 부포 and were never dropped.
+ * 프리드리히 데어 그로세's 19220/18220 is a 부포 *탄막* — a barrage descriptor,
+ * which this never touches.
+ */
+const SECONDARY_REACH_SKILLS = new Set(['12120', '19740', '106320', '151610', '190110']);
+
+/** Fleet slots 0–2 are 주력 (back row); 3–5 are 전열. Mirrors MAIN_SLOTS in fleet-sim.calc.js. */
+const MAIN_SLOTS = 3;
+
+/**
  * Merged launcher weapon_property entries for an equip at an enhance level, in
  * weapon_id order. An equip can carry several — a fighter ships a STRIKE and an
  * INTERCEPT variant of itself — and every entry is sparse, hence the base merge.
@@ -458,7 +495,7 @@ function _aircraftOrdnance(launcher, stats, mountCount, potential) {
  *   derived from the hives themselves rather than from a produced descriptor
  *   (an ASW plane is a real hive whose ordnance is anti-sub, so it yields none).
  */
-function _resolveEquippedWeapons(slotConfig, shipType, stats, baseList, prof, preload, defaults) {
+function _resolveEquippedWeapons(slotConfig, shipType, stats, baseList, prof, preload, defaults, dropSecondary) {
     const labels = SLOT_LABELS[shipType] || ['슬롯1', '슬롯2', '슬롯3'];
     const equips = slotConfig.equips || [];
     const deps = { getBarrage: _data.getBarrage, getBullet: _data.getBullet };
@@ -499,6 +536,10 @@ function _resolveEquippedWeapons(slotConfig, shipType, stats, baseList, prof, pr
         });
         if (d) {
             d.slotIndex = i;
+            // Out of range of the boss, but still fired — so it keeps its row and
+            // keeps feeding onFire barrage triggers (the 탄막 it launches DO reach);
+            // only its own damage is held out of the total. See SECONDARY_REACH_SKILLS.
+            if (dropSecondary && labels[i] === '부포') d.excluded = true;
             surface.push(d);
         }
     }
@@ -509,6 +550,32 @@ function _resolveEquippedWeapons(slotConfig, shipType, stats, baseList, prof, pr
 }
 
 /**
+ * Fold a ship's weapon-scoped skill modifiers into its resolved descriptors.
+ *
+ * Two things the game scopes to a WEAPON rather than to the ship, both resolved
+ * by `sumWeaponModifiers` (fleet-sim.calc.js, which owns the allowlist saying
+ * WHICH skills last the whole battle):
+ *   reloadByWeaponType — scales that weapon's own reload_max, keyed on
+ *     `weapon_property.type`. NOT the 장전 stat: it multiplies the raw reload
+ *     before the stat formula ever sees it, which is why it lands here on
+ *     `reloadMax` rather than on `stats.reload`.
+ *   damageBySlot — a damageRatioBullet on one 1-based EQUIP SLOT, parked on the
+ *     descriptor and summed into `damageRatio` with the ship-wide multipliers.
+ *
+ * `cycleExtra` is deliberately untouched: 일제사 발사시간 + 발사 후 경직 are fixed
+ * spans of the firing animation, which no reload modifier scales.
+ */
+function _applyWeaponModifiers(weapons, mods) {
+    if (!mods) return;
+    for (const d of weapons) {
+        const reload = mods.reloadByWeaponType[d.weaponType];
+        if (reload) d.reloadMax = Math.max(0, d.reloadMax * (1 + reload));
+        const slotRatio = d.slotIndex != null ? mods.damageBySlot[d.slotIndex + 1] : undefined;
+        if (slotRatio) d.slotDamageRatio = slotRatio;
+    }
+}
+
+/**
  * Resolve all in-scope weapons for one ship slot config, PLUS the ship's active
  * barrage skills (each expanded into its own WeaponDescriptor with a pre-resolved
  * `activations` count). Must be called from an async context after _ensureImports().
@@ -516,12 +583,16 @@ function _resolveEquippedWeapons(slotConfig, shipType, stats, baseList, prof, pr
  * @param {object} ship        Ship data object (from getShipByGid)
  * @param {object} stats       Buffed ship stats { firepower, torpedo, aviation, ... }
  * @param {number} [window]    Battle time window in seconds (barrage activation counts need it)
+ * @param {object} [damageBuffs] Resolved damage multipliers riding every weapon
+ * @param {number} [fleetSlot]   Fleet position 0–5; <3 is 주력 and holds its 부포 out of
+ *   the boss total unless a SECONDARY_REACH_SKILLS skill is live. Defaults to the
+ *   vanguard so a caller that doesn't know the row never silently drops damage.
  * @returns {{weapons: object[], unmodeled: number, inactive: number}} WeaponDescriptor[],
  *   the count of barrage skills that produced no descriptor (unreadable cadence, missing
  *   weapon data), and the count whose trigger read fine but yields zero activations for
  *   this loadout (unequipped ship, carrier, 대공-slot trigger).
  */
-export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageBuffs = null) {
+export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageBuffs = null, fleetSlot = MAIN_SLOTS) {
     if (!_data) return { weapons: [], unmodeled: 0, inactive: 0 };   // needs _ensureImports() first — route external callers through simulateFleetDamage
     const useRetrofit = slotConfig.retrofit !== false && !!ship.retrofit;
     const shipType = _data.getEffectiveShipType(ship, useRetrofit);
@@ -529,7 +600,12 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageB
     const prof = effectiveProficiency(ship, useRetrofit);               // max-LB efficiency + retrofit-toggle deltas
     const preload = ship.preload_count || [];                          // [s1,s2,s3] mounts ready at t=0
     const defaults = ship.default_equip_list || [];                    // empty-slot fallback; absent on older data
-    const { weapons, airReloadMax } = _resolveEquippedWeapons(slotConfig, shipType, stats, baseList, prof, preload, defaults);
+    const dropSecondary = fleetSlot < MAIN_SLOTS && !hasSecondaryReach(ship, useRetrofit, slotConfig.fate !== false);
+    const { weapons, airReloadMax } = _resolveEquippedWeapons(slotConfig, shipType, stats, baseList, prof, preload, defaults, dropSecondary);
+    // BEFORE the barrage block, not after: salvosBySlot / salvosByAttr count a
+    // weapon's volleys off its own reloadMax, so a barrage triggered by 주포 발사
+    // would otherwise be counted against the unmodified cadence.
+    _applyWeaponModifiers(weapons, damageBuffs && damageBuffs.weaponMods);
 
     // Barrage skills the ship actually has active. Two filters, and BOTH matter.
     // Plus the ones its 전용 장비 attaches — granted by the DEDICATED weapon only, so a
@@ -561,7 +637,10 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageB
     if (damageBuffs) {
         const byAttr = { cannon: damageBuffs.cannon, torpedo: damageBuffs.torpedo, air: damageBuffs.air };
         for (const d of all) {
-            d.damageRatio = damageBuffs.bullet || 0;
+            // Both are damageRatioBullet in the Lua — one granted to the ship, one to a
+            // single equip slot — so they land on the same term. A barrage descriptor
+            // has no slotIndex and correctly picks up only the ship-wide half.
+            d.damageRatio = (damageBuffs.bullet || 0) + (d.slotDamageRatio || 0);
             d.attrDamageRatio = byAttr[d.attackAttribute] || 0;
         }
     }
@@ -601,6 +680,15 @@ export function liveSkillIds(ship, useRetrofit, useFate = true) {
         const target = sk.upgrade != null ? skills[String(sk.upgrade)] : null;
         return !(target && eligible(target));   // superseded only if the successor is itself live
     });
+}
+
+/**
+ * Does a live skill give this ship's 부포 boss reach? Rides the same liveness walk
+ * as the barrages (retrofit / fate gates, supersession), so a rung that is not in
+ * play cannot grant it. See SECONDARY_REACH_SKILLS for the roster and the sweep.
+ */
+export function hasSecondaryReach(ship, useRetrofit, useFate = true) {
+    return liveSkillIds(ship, useRetrofit, useFate).some((sid) => SECONDARY_REACH_SKILLS.has(sid));
 }
 
 /** The subset that actually fires a barrage. */
@@ -701,7 +789,7 @@ export async function simulateFleetDamage(ships, targetOpts) {
         const computed = _computeStatsForSlot(slot, i, fleetShips, techBonuses, slots);
         if (!computed) continue;
         const { ship, stats, damageBuffs } = computed;
-        const { weapons, unmodeled, inactive } = resolveShipWeapons(slot, ship, stats, window, damageBuffs);
+        const { weapons, unmodeled, inactive } = resolveShipWeapons(slot, ship, stats, window, damageBuffs, i);
         barrageGapsByRef.set(slot.gid, { unmodeled, inactive });
         engineShips.push({
             ref: slot.gid,
@@ -756,5 +844,12 @@ function _computeStatsForSlot(slot, slotIndex, fleetShips, techBonuses, slots) {
     if (!res) return null;
     // The same resolved list carries both kinds; calculateShipStats keeps the stat
     // clauses and ignores the rest, sumDamageBuffs takes the damage multipliers.
-    return { ship, stats: res.stats, damageBuffs: _calc.sumDamageBuffs(passiveBuffs) };
+    return {
+        ship,
+        stats: res.stats,
+        damageBuffs: {
+            ..._calc.sumDamageBuffs(passiveBuffs),
+            weaponMods: _calc.sumWeaponModifiers(passiveBuffs),
+        },
+    };
 }

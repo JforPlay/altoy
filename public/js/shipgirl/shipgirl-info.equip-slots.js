@@ -61,7 +61,7 @@ export function formatEfficiency(profFinal, profBase = null, retrofitDelta = 0) 
 
 /**
  * 포좌/함재기 count string across limit-break stages.
- * base_list is { sid: [s1,s2,s3] }; numeric sid keys are sorted ascending = LB
+ * The map is { sid: [s1,s2,s3] }; numeric sid keys are sorted ascending = LB
  * order (LB0 first). Constant → "포좌 N"; increasing → "포좌 a → b (stage)".
  */
 export function formatMountProgression(baseList, slotIndex, isAircraft = false) {
@@ -86,7 +86,10 @@ export function formatMountProgression(baseList, slotIndex, isAircraft = false) 
 export function buildSlotViewModels(ship, getTypeName) {
   const prof = ship.equipment_proficiency || [];           // MLB efficiency
   const profBase = ship.equipment_proficiency_base || [];  // LB0 efficiency (optional)
-  const baseList = ship.base_list || {};
+  // `mounts` is the firing 포좌 count; `base_list` is the weapon-unit count,
+  // which on a 전함 주포 slot is the charge-stack cap (주포 장전 상한) instead.
+  // See fleet-sim.calc.js getShipBaseList. Fallback keeps older data rendering.
+  const baseList = ship.mounts || ship.base_list || {};
   const out = [];
 
   for (let slotIndex = 0; slotIndex < 3; slotIndex++) {

@@ -794,13 +794,18 @@ function _buildWeaponBreakdownHTML(shipResult) {
     // Salvo counts are rolled up to the sim window, which is the kill time when
     // the boss dies first — so the column header cannot say a fixed 90초.
     const winLabel = (_lastDamageResult?.window ?? 90).toFixed(1).replace(/\.0$/, '');
+    // An excluded weapon (a 주력 함선's out-of-range 부포) keeps its row so the
+    // build stays legible, with the DPS struck through to say it is not in the total.
+    // The label carries the reason too: --text-muted vs the table's own colour is a
+    // 185/220 grey step that does not read at a glance, and dimming further would
+    // trade one unreadable thing for a contrast failure.
     const rows = shipResult.perWeapon.map((w) => `
-        <tr${w.cadence ? ' class="dmg-row-barrage"' : ''}>
-            <td>${escapeHtml(w.label || '')}</td>
+        <tr class="${w.cadence ? 'dmg-row-barrage' : ''}${w.excluded ? ' dmg-row-excluded' : ''}">
+            <td>${escapeHtml(w.label || '')}${w.excluded ? ' · 사거리 밖' : ''}</td>
             <td>${_fmt(w.oneSalvoExpected)}</td>
             <td>${w.cadence ? escapeHtml(w.cadence) : `${w.reloadInterval.toFixed(2)}s`}</td>
             <td>${w.salvoCount % 1 ? w.salvoCount.toFixed(1) : w.salvoCount}</td>
-            <td>${_fmt(w.dps)}</td>
+            <td>${w.excluded ? `<s>${_fmt(w.dps)}</s>` : _fmt(w.dps)}</td>
             <td>${Math.round(w.hitRate * 100)}%</td>
             <td>${Math.round(w.critRate * 100)}%</td>
         </tr>`).join('');
@@ -815,6 +820,10 @@ function _buildWeaponBreakdownHTML(shipResult) {
         : '')
         + (shipResult.inactiveBarrages
         ? `<p class="dmg-unmodeled-note">현재 편성에서 발동하지 않는 탄막 ${shipResult.inactiveBarrages}개는 제외되었습니다.</p>`
+        : '')
+        // Third note, same D3 contract: the row is there, the damage is not, so say why.
+        + (shipResult.perWeapon.some((w) => w.excluded)
+        ? '<p class="dmg-unmodeled-note">주력함대의 부포는 사거리가 짧아 보스에게 닿지 않으므로 합계에서 제외되었습니다.</p>'
         : '');
     return `<table class="dmg-weapon-table">
         <thead><tr>
@@ -1044,8 +1053,9 @@ function _updateCardBreakdowns(damageResult) {
         if (!collapsibleInner) continue;
 
         // Remove existing breakdown table AND every unmodelled-barrage note sibling —
-        // _buildWeaponBreakdownHTML returns up to three sibling nodes (table +
-        // an unreadable-trigger note + a no-activation note), and a patch path
+        // _buildWeaponBreakdownHTML returns up to four sibling nodes (table +
+        // an unreadable-trigger note + a no-activation note + an out-of-range
+        // 부포 note), and a patch path
         // that removes fewer than it appends orphans a stale note on every
         // recompute.
         const existing = collapsibleInner.querySelector('.dmg-weapon-table');

@@ -323,7 +323,11 @@ export function calculateShipStats(slotConfig, fleetTechBonuses, fleetPassiveBuf
     }
 
     // --- Reload calculation ---
-    const reloads = _calculateReloads(ship, slotConfig, stats.reload);
+    // The card's 장전 readout and the damage panel's 사속 column must agree, and
+    // they are two separate walks — so the weapon-scoped reload modifiers have to
+    // reach BOTH. Without this 괴츠 폰 베를리힝겐's header reads 20.11s beside a
+    // 9.69s 주포 row.
+    const reloads = _calculateReloads(ship, slotConfig, stats.reload, sumWeaponModifiers(fleetPassiveBuffs));
 
     return { stats, reloads, breakdown };
 }
@@ -552,7 +556,12 @@ export function resolvePassiveBuffs(targetShip, allFleetShips, targetSlot = -1, 
 
             for (const buff of levelBuffs) {
                 if (!_clauseApplies(buff, passiveSkill, targetShip, targetSlot, allFleetShips, isSelf)) continue;
-                buffs.push({ attr: buff.attr, value: buff.value, type: buff.type, src: buff.src });
+                // `skill` rides along because the weapon-scoped modifiers are gated per
+                // skill (PERMANENT_WEAPON_MOD_SKILLS) — no other consumer reads it.
+                buffs.push({
+                    attr: buff.attr, value: buff.value, type: buff.type, src: buff.src,
+                    skill: String(skillId), wtype: buff.wtype, slots: buff.slots,
+                });
             }
         }
     }
@@ -589,6 +598,68 @@ function _clauseApplies(buff, skill, targetShip, targetSlot, allFleetShips, isSe
     if (nats && nats.length > 0 && !nats.includes(targetShip.nationality)) return false;
 
     return true;
+}
+
+/**
+ * Skills whose weapon-scoped modifiers last the WHOLE battle.
+ *
+ * `fleet_sim_passive_skills.json` emits a `weaponReloadRatio` / `slotDamageRatio`
+ * for every skill that reaches one on a permanent buff — 34 displayed skills —
+ * but PERMANENT IN THE CONFIG IS NOT PERMANENT IN THE FIGHT. Most of those cut
+ * only the FIRST salvo (프린스 오브 웨일즈 -85%, 상 마르티뉴 -80%, 스트라스부르
+ * -50%, 체셔 -70%) or the first N, and a separate removal edge — which the config
+ * walk cannot see — tears the buff down after it. Honouring the file wholesale
+ * would hand a dozen battleships a permanent 80% reload cut.
+ *
+ * So this is an ALLOWLIST, read off each skill's own KR text:
+ *   152340 괴츠 폰 베를리힝겐  주포 장전 시간 50% 단축 AND that slot's 피해 -45%
+ *   18350 / 19350 샹파뉴       「S.P.」 전투 중 주포 장전 속도 40% 감소
+ *   15460 뤼초                 전투 개시 후, 주포 대미지 10% 증가
+ *
+ * 괴츠's two halves are a MATCHED PAIR and must never be split — the reload cut
+ * alone reports her ~1.8x too high. The same pairing keeps several
+ * verified-permanent entries OUT: 퍼시어스's +90% 항공 reload is real but comes
+ * with a free opening airstrike the sim does not model, and 비스마르크's 부포
+ * -35% rides a 부포 a main-fleet ship never lands on the boss anyway.
+ *
+ * NOT REACHABLE FROM HERE: 울리히 폰 후텐's identical pair (buff_15062/15063,
+ * "기함이 아니라면 주포 장전에 필요한 시간 50% 감소, 주포 대미지 45% 감소"). The
+ * game gates it on onUpperConsort/onLowerConsort — fleet ADJACENCY, a mechanic 15
+ * other ships also use (토사, 리벤지, 조프르, 키어사지 …) — so the extractor never
+ * emits it and modelling it is its own feature, not an allowlist entry.
+ */
+const PERMANENT_WEAPON_MOD_SKILLS = new Set(['152340', '18350', '19350', '15460']);
+
+/**
+ * Weapon-scoped modifier totals from resolved passive buffs.
+ *
+ * Neither kind is a ship stat. `weaponReloadRatio` scales ONE weapon class's own
+ * reload_max (battleweaponunit, keyed on `weapon_property.type` — 23 전함 주포,
+ * 16 어뢰) and is NOT the 장전 stat; `slotDamageRatio` is a damageRatioBullet
+ * riding a single EQUIP SLOT (1-based, the game's own `index`). Both carry their
+ * own attr names, so neither can reach `BATTLE_ATTR_TO_STAT` or `sumDamageBuffs`.
+ *
+ * `airAssist` reload mods are emitted by the pipeline but deliberately not read
+ * here: no allowlisted skill has one, and the carrier cycle is owned by the
+ * air-assist x2.2 average, which would need its own multiply.
+ *
+ * @returns {{reloadByWeaponType: Object<number, number>, damageBySlot: Object<number, number>}}
+ */
+export function sumWeaponModifiers(buffs) {
+    const reloadByWeaponType = {};
+    const damageBySlot = {};
+    for (const b of buffs || []) {
+        if (!PERMANENT_WEAPON_MOD_SKILLS.has(b.skill)) continue;
+        if (b.attr === 'weaponReloadRatio') {
+            if (typeof b.wtype !== 'number') continue;      // 'airAssist' — see above
+            reloadByWeaponType[b.wtype] = (reloadByWeaponType[b.wtype] || 0) + b.value;
+        } else if (b.attr === 'slotDamageRatio') {
+            for (const slot of b.slots || []) {
+                damageBySlot[slot] = (damageBySlot[slot] || 0) + b.value;
+            }
+        }
+    }
+    return { reloadByWeaponType, damageBySlot };
 }
 
 /**
@@ -694,13 +765,21 @@ function _getStatsForLB(ship, field, useRetrofit) {
 }
 
 /**
- * Resolve a ship's per-slot mount/plane count array (base_list) for its LB tier,
- * using the same selection as base/growth. Returns [slot1, slot2, slot3] or null.
- * base_list multiplies bullets-per-wave (gun mounts) / plane count; it is absent
- * from ship data until the pipeline emits it — callers must default to ×1.
+ * Resolve a ship's per-slot firing mount / plane count for its LB tier, using
+ * the same selection as base/growth. Returns [slot1, slot2, slot3] or null.
+ *
+ * `mounts` is the field to read: it multiplies bullets-per-wave. `base_list` is
+ * the per-slot weapon-UNIT count, which is the same number for an auto weapon
+ * but NOT for a 전함 주포 — there `setWeapon`'s units go into `_chargeList` and
+ * `ManualWeaponQueue` reloads only `parallel_max[0]` of them at a time, so
+ * base_list is the charge-stack cap (주포 장전 상한) and never multiplies
+ * bullets. WSL `ship_info_process.py build_mounts` resolves the real 포좌 from
+ * the `ship_data_breakout` ladder; the fallback keeps older cached ship data
+ * working (and callers still default to ×1 when both are absent).
  */
 export function getShipBaseList(ship, useRetrofit) {
-    return _getStatsForLB(ship, 'base_list', useRetrofit);
+    return _getStatsForLB(ship, 'mounts', useRetrofit)
+        ?? _getStatsForLB(ship, 'base_list', useRetrofit);
 }
 
 /**
@@ -817,9 +896,12 @@ function _getMaxLevelBuffs(passiveSkill) {
  * @param {object} ship - Ship data
  * @param {object} slotConfig - Slot configuration with equips
  * @param {number} reloadStat - Final calculated reload stat value
+ * @param {object} [weaponMods] - sumWeaponModifiers() result; scales a weapon class's
+ *   own reload_max BEFORE the stat formula (the 항공 row's `airAssist` mods are not
+ *   consumed — see sumWeaponModifiers).
  * @returns {Array<{label: string, seconds: number}>}
  */
-function _calculateReloads(ship, slotConfig, reloadStat) {
+function _calculateReloads(ship, slotConfig, reloadStat, weaponMods = null) {
     const equips = slotConfig.equips || [];
     // Honor retrofit form — BBV/DDG/CA retrofits change the ship type, which flips
     // the slot label set (and, on 이세/휴가, adds the aviation slot outright).
@@ -856,12 +938,14 @@ function _calculateReloads(ship, slotConfig, reloadStat) {
             continue;
         }
 
-        const reloadMax = launchers[0]?.reload_max;
+        const weapon = launchers[0];
+        const reloadMax = weapon?.reload_max;
         if (reloadMax == null) continue;
+        const mod = weaponMods ? (weaponMods.reloadByWeaponType[weapon.type] || 0) : 0;
         rows.push({
             slot: i,
             label: labels[i] || getSlotName(ship, i, useRetrofit),
-            seconds: _reloadFormula(reloadMax, reloadStat),
+            seconds: _reloadFormula(reloadMax * (1 + mod), reloadStat),
         });
     }
 
