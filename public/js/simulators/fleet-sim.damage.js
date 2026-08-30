@@ -612,8 +612,10 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageB
     // generic SP weapon in that slot, or an emptied slot, grants nothing.
     const dedicated = _data.getDedicatedSPWeapon(ship.gid);
     const spEquipped = !!dedicated && Number(slotConfig.spWeapon?.id) === Number(dedicated.id);
-    const skillIds = activeBarrageSkillIds(ship, useRetrofit, slotConfig.fate !== false)
-        .concat(spEquipped ? attachedSPBarrageIds(ship) : []);
+    const hasBarrageRecord = (id) => !!_data.getBarrageSkill(String(id));
+    const skillIds = expandBarrageSkillIds(
+        ship, activeBarrageSkillIds(ship, useRetrofit, slotConfig.fate !== false), hasBarrageRecord,
+    ).concat(spEquipped ? attachedSPBarrageIds(ship) : []);
     const airstrikes = airReloadMax > 0
         ? _engine.countSalvos(_engine.calculateReloadTime(airReloadMax, stats.reload), 0, window)
         : 0;
@@ -722,6 +724,41 @@ export function attachedSPBarrageIds(ship) {
         if (id && !own[id]) ids.add(id);
     }
     return [...ids];
+}
+
+/**
+ * Swap a displayed skill for the attached ids that actually fire, where the
+ * skill itself has no record.
+ *
+ * A displayed skill is not always the skill that fires. 알자스 150020 is a passive
+ * with no `skill_150020` entry at all — the engine applies it as `buff_150020`,
+ * whose cast edges name 150021/150022/150025/150026 — so the barrage table, which
+ * is keyed by the id that fires, has nothing under 150020 and her 주포 공격 시 탄막
+ * counted as 미구현. 270 ships sat there; `ship.skill[].attached_weapon_skill_id`
+ * is the game's own link and `ship_info_process.py` already emits it.
+ *
+ * MIRRORS THE PIPELINE'S SCOPE RULE EXACTLY: a skill that resolves under its own
+ * id is left alone, because the extractor never scoped its attached ids and they
+ * are as often extra volleys of the record it already has as they are separate
+ * barrages (키어사지 19681..19685 is one staggered barrage in five casts).
+ *
+ * Attached ids WITHOUT a record fall back to the parent rather than each counting
+ * itself, so 미구현 keeps its unit — one per barrage skill the player can see. The
+ * alternative reported 알자스 as "탄막 3개" for what her card shows as one skill,
+ * two of them alternate rungs of the barrage already listed above the note.
+ */
+export function expandBarrageSkillIds(ship, liveIds, hasRecord) {
+    const skills = ship?.skill || {};
+    const out = [];
+    for (const sid of liveIds) {
+        const attached = hasRecord(sid)
+            ? [] : (skills[sid]?.attached_weapon_skill_id || []);
+        const resolved = attached
+            .map((a) => String(a?.id ?? ''))
+            .filter((id) => id && hasRecord(id));
+        out.push(...(resolved.length ? resolved : [sid]));
+    }
+    return [...new Set(out)];
 }
 
 /** `requirement` is "Fate Simulation 3"/"…5" — the step, which none-vs-max ignores. */
