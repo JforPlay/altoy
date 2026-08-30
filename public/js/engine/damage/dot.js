@@ -41,7 +41,7 @@ export function dotApplyChance({ rant, bullets, hitRate = 1, hitIgnore = false }
 /**
  * Seconds the burn is up over `window`: the union of `applications` lifetimes
  * spread uniformly through it, which is the same uniform-in-time assumption
- * barrageActivations already makes for salvos. `life` 0 means the buff never
+ * the barrage simulator already makes for salvos. `life` 0 means the buff never
  * expires (3 of the 76 reachable buffs, 라이온's among them).
  *
  * The two regimes it has to get right are re-application faster than the burn

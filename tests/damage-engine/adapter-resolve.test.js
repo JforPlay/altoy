@@ -2,7 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { barrageBulletCount, attackAttributeKey, resolveWeaponDescriptor, mergeWeaponWithBase, effectiveProficiency,
-  salvosBySlot, activeBarrageSkillIds, hasFateSimulation, cadenceLabel, resolveBarrageDescriptors, attachedSPBarrageIds }
+  weaponEvents, activeBarrageSkillIds, hasFateSimulation, cadenceLabel, resolveBarrageDescriptors, attachedSPBarrageIds }
   from '../../public/js/simulators/fleet-sim.damage.js';
 
 const approxArr = (a, b, eps = 1e-9) => a.length === b.length && a.every((x, i) => Math.abs(x - b[i]) < eps);
@@ -184,135 +184,243 @@ test('the 운명 toggle swaps a barrage between its base and fate rung (드레�
   assert.equal(hasFateSimulation({ skill: { 19300: { requirement: 'Default' } } }), false);
 });
 
-test('salvosBySlot keys the window salvo count by equip slot (1-based)', () => {
-  // slot index in the data is 1-based; descriptors carry a 0-based slotIndex.
-  const descriptors = [
-    { slotIndex: 0, reloadMax: 240, cycleExtra: 0 },
-    { slotIndex: 1, reloadMax: 480, cycleExtra: 0 },
-  ];
-  const out = salvosBySlot(descriptors, 150, 90);
-  assert.ok(out[1] > out[2], 'the faster weapon must fire more often');
-  assert.ok(Number.isInteger(out[1]));
+test('weaponEvents emits ONE event per salvo carrying every name that salvo raises', () => {
+  // slotIndex is 0-based on the descriptor and 1-based on the event, matching the
+  // game's own `index` on a BattleBuffCount.
+  const events = weaponEvents([
+    { slotIndex: 0, weaponType: 23, reloadMax: 240, cycleExtra: 0, attackAttribute: 'cannon' },  // 전함 주포
+    { slotIndex: 1, weaponType: 3, reloadMax: 480, cycleExtra: 0, attackAttribute: 'torpedo' },
+    { slotIndex: 2, weaponType: 2, reloadMax: 240, cycleExtra: 0, attackAttribute: 'cannon' },   // 부포
+    { slotIndex: null, reloadMax: 240, cycleExtra: 0, attackAttribute: 'air' },   // aircraft ordnance
+  ], 150, 90, 12);
+
+  const slot1 = events.filter((e) => e.slot === 1);
+  const slot2 = events.filter((e) => e.slot === 2);
+  const slot3 = events.filter((e) => e.slot === 3);
+  const air = events.filter((e) => e.attr === 'air');
+  assert.ok(slot1.length > slot2.length, 'the faster weapon must fire more often');
+  // The names ride ONE event: an edge listing two of them must fire once per salvo,
+  // and one event per name is a silent 2-4x over-count. But the CLASSES are disjoint —
+  // each weapon subclass overrides TriggerBuffOnFire to raise exactly one name, so a
+  // 부포 salvo must be invisible to a 「주포 발사 시」 barrage on the 전함 주포 beside it.
+  assert.deepEqual(slot1[0].names, ['onChargeWeaponFire', 'onChargeWeaponReady', 'onWeaponSteday']);
+  assert.deepEqual(slot2[0].names, ['onTorpedoWeaponFire', 'onWeaponSteday']);
+  assert.deepEqual(slot3[0].names, ['onFire', 'onWeaponSteday']);
+  // MANUAL_MISSILE is on the charge class but forks inside TriggerBuffOnFire, and an
+  // AUTO_MISSILE is a torpedo-ATTRIBUTE weapon that is still a plain BattleWeaponUnit —
+  // which is why the split reads `type`, not `attackAttribute`. Both ride the SY-1.
+  const missile = weaponEvents([{ slotIndex: 0, weaponType: 31, reloadMax: 240, cycleExtra: 0, attackAttribute: 'torpedo' }], 150, 90, 0);
+  assert.deepEqual(missile[0].names, ['onManualMissileFire', 'onManualMissileReady', 'onWeaponSteday']);
+  const auto = weaponEvents([{ slotIndex: 0, weaponType: 32, reloadMax: 240, cycleExtra: 0, attackAttribute: 'torpedo' }], 150, 90, 0);
+  assert.deepEqual(auto[0].names, ['onFire', 'onWeaponSteday']);
+  assert.equal(air.length, Math.floor(90 / 12), 'the airstrike opens one cycle in, never at t=0');
+  // slot 1 is what the KR-text acceptance gate emits for an air event. Inert today
+  // (0 air-triggered edges in the graph declare an `index`), but production and the
+  // gate must not disagree about the event shape the gate is validating.
+  assert.equal(air[0].slot, 1);
+  // A descriptor with no slot is the air ordnance, which the airstrike schedule owns.
+  assert.equal(weaponEvents([{ slotIndex: null, reloadMax: 240, cycleExtra: 0 }], 150, 90, 0).length, 0);
 });
 
-test('cadenceLabel renders Korean from the machine trigger, and nothing for unknown kinds', () => {
-  assert.equal(cadenceLabel({ k: 'count', n: 15, slots: [1] }), '주포 15회마다');
-  assert.equal(cadenceLabel({ k: 'count', n: 10 }), '10회 발사마다');
-  assert.equal(cadenceLabel({ k: 'timer', n: 20, d: 20 }), '20초마다');
-  assert.equal(cadenceLabel({ k: 'timer', n: 20, d: 5 }), '5초 후 20초마다');
-  assert.equal(cadenceLabel({ k: 'fire', n: 12, d: 12 }), '발사 시 (재사용 12초)');
-  assert.equal(cadenceLabel({ k: 'air' }), '항공 공격 시');
-  assert.equal(cadenceLabel({ k: 'once' }), '전투 시작 시');
-  assert.equal(cadenceLabel({ k: 'nope' }), '');
+test('cadenceLabel renders Korean from the simulated row trigger', () => {
+  assert.equal(cadenceLabel({ trigger: 'onBattleBuffCount', countTarget: 15, slot: 1, slots: [1], period: 24 }), '주포 15회마다');
+  assert.equal(cadenceLabel({ trigger: 'onBattleBuffCount', countTarget: 10, slot: 2, slots: [2], period: 24 }), '10회 발사마다');
+  // 주포 only when slot 1 is the WHOLE list: 힌덴부르크 30062 counts [1, 3] and
+  // 얏센 24122 counts [1, 2], and reading the leading entry called both of them 주포.
+  assert.equal(cadenceLabel({ trigger: 'onBattleBuffCount', countTarget: 8, slot: 1, slots: [1, 3], period: 24 }), '8회 발사마다');
+  assert.equal(cadenceLabel({ trigger: 'onUpdate', period: 20, first: 20 }), '20초마다');
+  assert.equal(cadenceLabel({ trigger: 'onUpdate', period: 20, first: 5 }), '5초 후 20초마다');
+  assert.equal(cadenceLabel({ trigger: 'onAttach', period: 20, first: 20 }), '20초마다');
+  assert.equal(cadenceLabel({ trigger: 'onFire', period: 12, first: 12 }), '발사 시 (재사용 12.0초)');
+  assert.equal(cadenceLabel({ trigger: 'onFire', period: 0, first: 3 }), '발사 시');
+  assert.equal(cadenceLabel({ trigger: 'onTorpedoWeaponFire', period: 0, first: 20 }), '어뢰 발사 시');
+  assert.equal(cadenceLabel({ trigger: 'onAllInStrike', period: 0, first: 12 }), '항공 공격 시');
+  assert.equal(cadenceLabel({ trigger: 'onStartGame', period: 0, first: 0 }), '전투 시작 시');
+  assert.equal(cadenceLabel({ trigger: 'onAttach', period: 0, first: 0 }), '전투 시작 시');
+  assert.equal(cadenceLabel(null), '');
 });
 
-test('resolveBarrageDescriptors builds one descriptor per fired weapon and counts the rest', () => {
-  const table = {
-    '29081': { n: '전탄 발사 - 재블린I', w: [900], t: { k: 'count', n: 15, slots: [1] } },
-    '99999': { n: '알 수 없음', w: [901], t: { k: 'conditional' } },   // unknown kind
-  };
-  const weapons = {
-    900: { damage: 30, corrected: 100, attack_attribute: 1, attack_attribute_ratio: 80,
-           reload_max: 0, barrage_ID: [8], bullet_ID: [1400] },
-    901: { damage: 30, corrected: 100, attack_attribute: 1, attack_attribute_ratio: 80,
-           reload_max: 0, barrage_ID: [8], bullet_ID: [1400] },
-  };
-  const { descriptors, unmodeled } = resolveBarrageDescriptors(['29081', '99999', '404040'], {
-    getBarrageSkill: (id) => table[id] || null,
-    getWeapon: (id) => weapons[id] || null,
-    getBarrage, getBullet,
-    stats: { firepower: 500, torpedo: 0, aviation: 0 },
-    ctx: { window: 90, salvosBySlot: { 1: 30 }, airstrikes: 0 },
-  });
+// ---------------------------------------------------------------------------
+// resolveBarrageDescriptors now drives the battle simulator over a control-flow
+// graph, so these fixtures are graph nodes rather than trigger records.
+// ---------------------------------------------------------------------------
+
+/** 재블린-shaped: count 15 main-gun salvos, then fire weapon 900. */
+const countGraph = {
+  b: {
+    29081: { e: [
+      { ty: 'BattleBuffCount', tr: ['onFire'], a: { countType: 29080, countTarget: 15, index: [1] } },
+      { ty: 'BattleBuffCastSkill', tr: ['onBattleBuffCount'], a: { skill_id: 29081, countType: 29080 } },
+    ] },
+    // A gate on fleet state the sim cannot evaluate: the cast is blocked and the
+    // ROOT is disclosed, never counted as unconditional.
+    99999: { e: [
+      { ty: 'BattleBuffCastSkill', tr: ['onStartGame'], a: { skill_id: 99999, fleetAttr: 'ammo' } },
+    ] },
+    // Reads fine, fires on a torpedo this loadout does not carry.
+    88888: { e: [
+      { ty: 'BattleBuffCastSkill', tr: ['onTorpedoWeaponFire'], a: { skill_id: 29081 } },
+    ] },
+    // Fires a live barrage AND hides an onSink death-rattle the sim never raises.
+    77777: { e: [
+      { ty: 'BattleBuffCastSkill', tr: ['onStartGame'], a: { skill_id: 29081 } },
+      { ty: 'BattleBuffCastSkill', tr: ['onSink'], a: { skill_id: 99999 } },
+    ] },
+    // One weapon, two triggers — the DOT fixture.
+    66666: { e: [
+      { ty: 'BattleBuffCastSkill', tr: ['onStartGame'], a: { skill_id: 66666 } },
+      { ty: 'BattleBuffCastSkill', tr: ['onUpdate'], a: { skill_id: 66666, time: 30 } },
+    ] },
+  },
+  s: {
+    29081: { e: [{ ty: 'BattleSkillFire', a: { weapon_id: 900 } }] },
+    99999: { e: [{ ty: 'BattleSkillFire', a: { weapon_id: 901 } }] },
+    66666: { e: [{ ty: 'BattleSkillFire', a: { weapon_id: 902 } }] },
+  },
+};
+
+const barrageWeapons = {
+  900: { damage: 30, corrected: 100, attack_attribute: 1, attack_attribute_ratio: 80,
+         reload_max: 0, barrage_ID: [8], bullet_ID: [1400] },
+  901: { damage: 30, corrected: 100, attack_attribute: 1, attack_attribute_ratio: 80,
+         reload_max: 0, barrage_ID: [8], bullet_ID: [1400] },
+  902: { damage: 30, corrected: 100, attack_attribute: 1, attack_attribute_ratio: 80,
+         reload_max: 0, barrage_ID: [8], bullet_ID: [1401] },
+};
+
+const gunEvery3 = (window = 90) => {
+  const out = [];
+  for (let t = 3; t <= window; t += 3) {
+    out.push({ t, names: ['onFire', 'onChargeWeaponFire', 'onChargeWeaponReady', 'onWeaponSteday'],
+      slot: 1, attr: 'cannon' });
+  }
+  return out;
+};
+
+const simDeps = (over = {}) => ({
+  graph: countGraph,
+  getWeapon: (id) => barrageWeapons[id] || null,
+  getBarrage,
+  getBullet,
+  getSkillName: (id) => ({ 29081: '전탄 발사 - 재블린I' }[id] || ''),
+  stats: { firepower: 500, torpedo: 0, aviation: 0 },
+  simCtx: {
+    window: 90,
+    events: gunEvery3(),
+    unit: { equipTypes: [1, 6, 8], nationality: 1, shipType: 1, spEquipped: false, allyCount: 6, tags: [] },
+  },
+  ...over,
+});
+
+test('resolveBarrageDescriptors builds one descriptor per fired weapon and discloses the rest', () => {
+  const { descriptors, unmodeled, inactive } = resolveBarrageDescriptors(['29081', '99999'], simDeps());
   assert.equal(descriptors.length, 1);
-  assert.equal(descriptors[0].activations, 2);
+  assert.equal(descriptors[0].activations, 2, '30 salvos over the window, one barrage every 15');
   assert.equal(descriptors[0].potential, 1, 'a barrage is not equipment — no proficiency');
   assert.equal(descriptors[0].cycleExtra, 0, 'a barrage has no gun fire cycle');
   assert.equal(descriptors[0].label, '탄막 · 전탄 발사 - 재블린I');
   assert.equal(descriptors[0].cadence, '주포 15회마다');
-  // Both the unknown kind AND the id missing from the table count as unmodelled:
-  // activeBarrageSkillIds already filters to weapon_true skills, so every id passed
-  // in here IS a real barrage by R5's own definition — the table simply couldn't
-  // resolve two of the three (design doc §D step 4 / §A: an unresolved barrage
-  // skill is not silently dropped, it is counted).
-  assert.equal(unmodeled, 2);
+  assert.equal(descriptors[0].activationWindow, 90);
+  assert.equal(unmodeled, 1, 'the fleetAttr gate is unevaluable, so its root is disclosed');
+  assert.equal(inactive, 0);
 });
 
-test('resolveBarrageDescriptors counts a table-absent skill id as unmodeled on its own', () => {
-  const { descriptors, unmodeled } = resolveBarrageDescriptors(['404040'], {
-    getBarrageSkill: () => null,   // not in fleet_sim_barrages.json at all
-    getWeapon: () => null,
-    getBarrage, getBullet,
-    stats: { firepower: 500, torpedo: 0, aviation: 0 },
-    ctx: { window: 90, salvosBySlot: {}, airstrikes: 0 },
-  });
+// The two notes answer DIFFERENT questions. "발동 조건이 아직 구현되지 않은" is wrong
+// about a barrage whose condition was read and computed to zero — a 대공-slot
+// trigger, a torpedo trigger on a ship with no torpedo.
+test('resolveBarrageDescriptors counts a zero-activation barrage apart from a disclosed one', () => {
+  const { descriptors, unmodeled, inactive } = resolveBarrageDescriptors(['88888', '99999'], simDeps());
+  assert.deepEqual(descriptors, []);
+  assert.equal(inactive, 1, 'the torpedo trigger read fine; this loadout just never raises it');
+  assert.equal(unmodeled, 1, 'only the unevaluable gate is disclosed');
+});
+
+// A root the graph has no node for is a THIRD case, and it belongs with the first.
+// `expandBarrageSkillIds` returns the parent id unexpanded when nothing resolves, and
+// an attached 전용 장비 id is appended with no graph filter at all — such a root installs
+// nothing, so no condition is ever read and 「현재 편성에서 발동하지 않는」 asserts
+// something false about it. 76 ships reach this, 9 with no equipment fitted.
+test('resolveBarrageDescriptors discloses a root the graph has no node for', () => {
+  const { descriptors, unmodeled, inactive } = resolveBarrageDescriptors(['12345'], simDeps());
+  assert.deepEqual(descriptors, []);
+  assert.equal(unmodeled, 1, 'no node = the condition was never read = 미구현');
+  assert.equal(inactive, 0, 'and it must NOT claim the condition read and came out false');
+});
+
+test('resolveBarrageDescriptors counts a root unmodeled when every weapon it fired fails to resolve', () => {
+  const { descriptors, unmodeled } = resolveBarrageDescriptors(['29081'], simDeps({ getWeapon: () => null }));
   assert.deepEqual(descriptors, []);
   assert.equal(unmodeled, 1);
 });
 
-test('resolveBarrageDescriptors counts a skill unmodeled when every one of its weapon ids fails to resolve', () => {
-  const table = {
-    '50000': { n: '테스트', w: [999], t: { k: 'count', n: 15, slots: [1] } },
+// 키로프 14170: its 전용 장비 sibling casts the same skill at t=0 and the cast attaches
+// a buff whose BattleBuffCleanse strips 14170 outright. The rows are all there under
+// the sibling, so a "발동하지 않는" note beside them would be a lie.
+test('resolveBarrageDescriptors suppresses the zero-row note when a sibling fired the same weapons', () => {
+  const graph = {
+    b: {
+      // Cleansed at t=0 by the sibling's cast, so this root never reaches its own cast.
+      14170: { e: [{ ty: 'BattleBuffCastSkill', tr: ['onUpdate'], a: { skill_id: 14170, time: 20 } }] },
+      14171: { e: [{ ty: 'BattleBuffCastSkill', tr: ['onStartGame'], a: { skill_id: 14170 } }] },
+      14172: { e: [{ ty: 'BattleBuffCleanse', tr: ['onAttach'], a: { buff_id_list: [14170] } }] },
+    },
+    s: { 14170: { e: [{ ty: 'BattleSkillFire', a: { weapon_id: 900 } },
+      { ty: 'BattleSkillAddBuff', a: { buff_id: 14172 } }] } },
   };
-  const { descriptors, unmodeled } = resolveBarrageDescriptors(['50000'], {
-    getBarrageSkill: (id) => table[id] || null,
-    getWeapon: () => null,   // every weapon id fails to resolve
-    getBarrage, getBullet,
-    stats: { firepower: 500, torpedo: 0, aviation: 0 },
-    ctx: { window: 90, salvosBySlot: { 1: 30 }, airstrikes: 0 },
-  });
-  assert.deepEqual(descriptors, []);
-  assert.equal(unmodeled, 1);
+  const out = resolveBarrageDescriptors(['14170', '14171'], simDeps({ graph }));
+  assert.equal(out.descriptors.length, 1, 'the sibling carries the barrage');
+  assert.equal(out.inactive, 0, 'no note beside a row that IS this root barrage');
+  assert.equal(out.unmodeled, 0);
+
+  // ...but a root whose weapons nobody fired still gets its note.
+  const alone = resolveBarrageDescriptors(['88888'], simDeps());
+  assert.equal(alone.inactive, 1);
 });
 
-// "발동 조건이 아직 구현되지 않은" is the wrong thing to say about a barrage
-// whose condition IS implemented and computed to zero — an unequipped ship, a carrier (no
-// air descriptor carries a slotIndex, so salvosBySlot is empty), a 대공-slot
-// trigger. Both stay visible (D3), but they are different answers.
-test('resolveBarrageDescriptors counts a zero-activation barrage apart from an unreadable one', () => {
-  const table = {
-    '29081': { n: '전탄 발사', w: [900], t: { k: 'count', n: 15, slots: [1] } },
-    '99999': { n: '알 수 없음', w: [900], t: { k: 'conditional' } },
-  };
-  const weapons = {
-    900: { damage: 30, corrected: 100, attack_attribute: 1, attack_attribute_ratio: 80,
-           reload_max: 0, barrage_ID: [8], bullet_ID: [1400] },
-  };
-  const deps = (salvos) => ({
-    getBarrageSkill: (id) => table[id] || null,
-    getWeapon: (id) => weapons[id] || null,
-    getBarrage, getBullet,
-    stats: { firepower: 500, torpedo: 0, aviation: 0 },
-    ctx: { window: 90, salvosBySlot: salvos, airstrikes: 0 },
-  });
-  const empty = resolveBarrageDescriptors(['29081', '99999'], deps({}));   // nothing equipped
-  assert.deepEqual(empty.descriptors, []);
-  assert.equal(empty.inactive, 1, 'the count barrage read fine; this loadout just never fires it');
-  assert.equal(empty.unmodeled, 1, 'only the unreadable trigger is unmodelled');
-
-  const armed = resolveBarrageDescriptors(['29081', '99999'], deps({ 1: 30 }));
-  assert.equal(armed.descriptors.length, 1);
-  assert.equal(armed.inactive, 0);
-  assert.equal(armed.unmodeled, 1);
+// Task 5 raises `blocked` for a root whose only path to some weapon runs through a
+// trigger the sim never raises, and it does so UNIFORMLY — a skill with a live
+// barrage and an onSink death-rattle really does have an unmodelled half. 67 roots
+// are in that state at production scope; gating the note on "produced no rows" would
+// undo the rule at the last step.
+test('a root that fires AND hides an unraisable branch still gets its 미구현 note', () => {
+  const { descriptors, unmodeled, inactive } = resolveBarrageDescriptors(['77777'], simDeps());
+  assert.equal(descriptors.length, 1, 'the live half still contributes its row');
+  assert.equal(unmodeled, 1, 'the onSink half is disclosed beside it');
+  assert.equal(inactive, 0);
 });
 
-test('cadenceLabel keeps the proc chance beside the period', () => {
-  // 워싱턴: `20초마다` alone reads as 4.5 activations against a 발사/90초 of 2.8.
-  assert.equal(cadenceLabel({ k: 'timer', n: 20, d: 20 }, 7000), '20초마다 70%');
-  assert.equal(cadenceLabel({ k: 'timer', n: 20, d: 20 }), '20초마다');
-  assert.equal(cadenceLabel({ k: 'timer', n: 20, d: 20 }, 10000), '20초마다');
-  assert.equal(cadenceLabel({ k: 'count', n: 15, slots: [1] }, 7500), '주포 15회마다 75%');
-  assert.equal(cadenceLabel({ k: 'fire', n: 0 }, 100), '발사 시 1%');
-  assert.equal(cadenceLabel({ k: 'conditional' }, 7000), '', 'an unknown kind stays unlabelled');
+// One weapon under two triggers is two ROWS, and the burn is attached by the BULLET —
+// so it ticks off the weapon's whole schedule, not off whichever row won the group
+// tie-break. Four roster burns have this shape (뉴저지 14510 w64220, 아사마 151640
+// w169200, 마세나 151400 w168930, 알제리 13270 w69390) and under-counted by up to 4x.
+test('a burn on a weapon fired under two triggers counts BOTH schedules', () => {
+  // life 15.1 over a 3 s tick is 5 ticks per activation and the window never caps it,
+  // so the burn tick count IS the activation sum, readable straight off the assertion.
+  const dot = { a: 'cannon', int: 3, life: 15.1, dmg: 100 };
+  const deps = simDeps({
+    getBullet: (id) => (id === 1401
+      ? { damage_type: [1, 0.8, 0.5], ammo_type: 1,
+          attach_buff: [{ buff_id: 311, buff_level: 1, rant: 10000, hit_ignore: 1, group_level: 1 }] }
+      : getBullet(id)),
+    getDot: (id) => (String(id) === '311' ? dot : null),
+  });
+  const { descriptors } = resolveBarrageDescriptors(['66666'], deps);
+  const weaponRows = descriptors.filter((d) => d.tickDamage == null);
+  const burn = descriptors.find((d) => d.tickDamage != null);
+  assert.equal(weaponRows.length, 2, 'two triggers on one weapon are two rows');
+  const total = weaponRows.reduce((n, d) => n + d.activations, 0);
+  assert.equal(total, 4, 'onStartGame at t=0 plus onUpdate at 30/60/90');
+  assert.ok(burn, 'the barrage attaches a burn');
+  assert.equal(burn.activations, 20, 'floor(4 x 15.1 / 3) — the SUM, not one row');
+
+  // The single-trigger control: reading one row would have reported this instead.
+  const solo = { ...deps.graph, b: { ...deps.graph.b, 66666: { e: [deps.graph.b[66666].e[0]] } } };
+  const { descriptors: one } = resolveBarrageDescriptors(['66666'], simDeps({ ...deps, graph: solo }));
+  assert.equal(one.find((d) => d.tickDamage != null).activations, 5);
 });
 
-test('resolveBarrageDescriptors fails safe when getBarrageSkill is not callable (Task 8 not yet landed, or a stale cache)', () => {
-  const { descriptors, unmodeled } = resolveBarrageDescriptors(['29081', '99999'], {
-    getWeapon: () => null,
-    getBarrage, getBullet,
-    stats: { firepower: 500, torpedo: 0, aviation: 0 },
-    ctx: { window: 90, salvosBySlot: {}, airstrikes: 0 },
-  });
+test('resolveBarrageDescriptors fails safe when the graph never loaded', () => {
+  const { descriptors, unmodeled } = resolveBarrageDescriptors(['29081', '99999'], simDeps({ graph: null }));
   assert.deepEqual(descriptors, []);
   assert.equal(unmodeled, 2);
 });

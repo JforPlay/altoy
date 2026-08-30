@@ -22,7 +22,7 @@ export { BATTLE_START_DELAY } from './constants.js';
  * Roll one weapon's firing schedule up to time `t`.
  *
  * A barrage carries a pre-resolved activation count instead of a reload (its
- * cadence is a skill trigger — see engine/damage/barrage.js), so it is scaled by
+ * cadence is a skill trigger — see engine/damage/battle-sim.js), so it is scaled by
  * how much of its resolution window `t` covers rather than re-counted. That
  * matters because the caller re-rolls the whole fleet at the kill time.
  */

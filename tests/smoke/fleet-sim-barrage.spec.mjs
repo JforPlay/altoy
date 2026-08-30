@@ -31,17 +31,23 @@ test('a timer barrage renders as a 탄막 row carrying its cadence, not a reload
   const barrage = page.locator('.ship-card[data-slot="0"] .dmg-weapon-table .dmg-row-barrage');
   await expect(barrage.first()).toBeVisible();
   await expect(barrage.first().locator('td').nth(0)).toContainText('탄막 ·');
-  // The proc chance is part of the cadence: 펜실베이니아 rolls 60% every 20s, and
-  // without it the column contradicts the 발사/90초 beside it (90 / 20 != 2.6).
-  await expect(barrage.first().locator('td').nth(2)).toHaveText('20초마다 60%');
+  // The proc chance is NOT in the cadence any more: the simulator folds `rant` into
+  // the activation count itself (a failed roll costs no cooldown, so it widens the
+  // period rather than scaling a count), so a trailing 60% would state the same
+  // discount twice. 발사/90초 beside it is already 60% of 90/20.
+  await expect(barrage.first().locator('td').nth(2)).toHaveText('20초마다');
 });
 
 /**
  * A maxed 전용 특수 장비 REPLACES one of its ship's skills with an upgraded rung,
  * and the sim equips the dedicated weapon at max by default — so 워싱턴 fires
- * 1011000 영용포격+ (10초 후 20초마다), not the 11000 용감한 포격 (20초마다 70%)
- * her card lists. The two rungs have different cadences, which is what makes this
- * assertable at all: reading the base rung shows the proc chance instead.
+ * 1011000 영용포격+, not the 11000 용감한 포격 her card lists.
+ *
+ * The tell is her 경사 탄막 (weapon 165400, 「10초 후 20초마다」): ONLY the upgraded
+ * rung casts it, and it rides beside the 20초마다 rows the base rung also fires. That
+ * pair is the format ceiling this rework removed — 1011000 fires two barrages on two
+ * cadences and the old one-record-per-skill table could hold one, so the remap used to
+ * swap which half was modelled rather than adding the missing one.
  */
 test('a maxed 전용 장비 swaps the barrage rung it fires', async ({ page }) => {
   await page.goto(PAGE);
@@ -55,7 +61,14 @@ test('a maxed 전용 장비 swaps the barrage rung it fires', async ({ page }) =
 
   const barrage = page.locator('.ship-card[data-slot="0"] .dmg-weapon-table .dmg-row-barrage');
   await expect(barrage.first()).toBeVisible();
-  await expect(barrage.first().locator('td').nth(2)).toHaveText('10초 후 20초마다');
+  // Not `.first()`: the row order follows the sim's own, and the assertion is about
+  // WHICH barrages are present, not where the 경사 탄막 sorts among them.
+  await expect(barrage.filter({ hasText: '10초 후 20초마다' })).toHaveCount(1);
+  // EXACT, on the cadence cell: '20초마다' is a SUBSTRING of the '10초 후 20초마다' row
+  // asserted above, so a `hasText` filter on the row is satisfied by that row alone and
+  // passes with the base rung — the thing this line exists to check — entirely gone.
+  await expect(barrage.locator('td:nth-child(3)').filter({ hasText: /^\s*20초마다\s*$/ }).first())
+    .toBeVisible();
 });
 
 test('a second recompute does not duplicate the unmodelled-barrage note', async ({ page }) => {

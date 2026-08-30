@@ -21,11 +21,10 @@
  */
 import { ATTR_TO_KEY, PERCENT } from '../engine/damage/constants.js';
 import { weaponSalvoDuration } from '../engine/damage/salvo-timing.js';
-import { barrageActivations } from '../engine/damage/barrage.js';
+import { runBattleSim } from '../engine/damage/battle-sim.js';
 import { dotSchedule } from '../engine/damage/dot.js';
 import { defaultWindow } from './fleet-sim.saves.js';
 import { weaponCycleInterval } from '../engine/damage/reload.js';
-import { countSalvos } from '../engine/damage/timeline.js';
 
 // ===== Pure helpers (unit-testable, take data/lookups as params) =====
 
@@ -149,131 +148,278 @@ export function effectiveProficiency(ship, useRetrofit) {
 }
 
 /**
- * Window salvo count grouped by `keyOf(descriptor)`. Derived through
- * weaponCycleInterval so the count is the same one simulateAttacker computes,
- * not a second copy that can drift.
+ * The trigger names ONE salvo raises, keyed on the weapon class the engine would have
+ * instantiated for it.
+ *
+ * THE CLASSES ARE MUTUALLY EXCLUSIVE — never a union. `CreateWeaponUnit`
+ * (battleunitdatafunction.lua:266) switches on `weapon_property.type`, and each
+ * subclass overrides `TriggerBuffOnFire` to raise exactly ONE name:
+ *   BattleWeaponUnit          부포 / DD·CL·CA 주포   battleweaponunit.lua:688      onFire
+ *   BattlePointHitWeaponUnit  전함 주포              battlepointhitweaponunit.lua:191  onChargeWeaponFire
+ *   BattleTorpedoUnit         어뢰                   battletorpedounit.lua:11      onTorpedoWeaponFire
+ * Handing every cannon salvo both names removes the only thing separating a 전함 주포
+ * from the 부포 beside it, so every 부포 salvo trips every 「주포 발사 시」 barrage: 75
+ * BB-family hulls read 2088 activations against a true 566 at BB pace (주포 25 s, 부포
+ * 6 s, 78 s window) the last time this was conflated. The published
+ * graph is disjoint the same way: 696 onFire-only edges (695 carrying an `index`), 221
+ * charge-only (0 carrying one — ON_CHARGE_FIRE's payload is `{}`, so the CLASS is the
+ * filter and there is no equipIndex to filter on), and 0 edge listing both.
+ *
+ * `onWeaponSteday` rides EVERY salvo: no subclass overrides `TriggerBuffOnSteday`, and
+ * both DoAttack bodies call it (battleweaponunit.lua:666, battlepointhitweaponunit.lua:127).
+ * `onChargeWeaponReady` is the charge class alone, raised from handleCoolDown
+ * (battlepointhitweaponunit.lua:143 + :257) — the same cadence as its fire in auto battle.
+ *
+ * Keyed on `type`, NOT on `attackAttribute`: an AUTO_MISSILE (32) is a torpedo-attribute
+ * weapon that is still a plain BattleWeaponUnit, and a MANUAL_MISSILE (31) is a
+ * torpedo-attribute weapon on the charge class. Both ride the SY-1, the roster's only
+ * missile equip.
  */
-function _salvoCounts(descriptors, reloadStat, window, keyOf) {
-    const out = {};
+const CHARGE_SALVO = ['onChargeWeaponFire', 'onChargeWeaponReady', 'onWeaponSteday'];
+// TriggerBuffOnFire/OnReady fork on the type INSIDE the charge class. Neither name is in
+// the sim's RAISED set and no graph edge carries one, so a missile salvo correctly
+// raises onWeaponSteday alone rather than borrowing another class's trigger.
+const MISSILE_SALVO = ['onManualMissileFire', 'onManualMissileReady', 'onWeaponSteday'];
+const TORPEDO_SALVO = ['onTorpedoWeaponFire', 'onWeaponSteday'];
+const GUN_SALVO = ['onFire', 'onWeaponSteday'];
+const SALVO_TRIGGERS = new Map([
+    [23, CHARGE_SALVO],   // POINT_HIT_AND_LOCK — 전함 주포
+    [33, CHARGE_SALVO],   // MANUAL_METEOR
+    [31, MISSILE_SALVO],  // MANUAL_MISSILE
+    [3, TORPEDO_SALVO],   // TORPEDO
+    [16, TORPEDO_SALVO],  // MANUAL_TORPEDO — the 구축/경순 어뢰 slot
+    [27, TORPEDO_SALVO],  // DISPOSABLE_TORPEDO
+]);
+const salvoTriggers = (weaponType) => SALVO_TRIGGERS.get(weaponType) || GUN_SALVO;
+
+/**
+ * The weapon events the barrage simulator raises, off the same cadence the damage
+ * roll-up uses — `initialDelay + k x weaponCycleInterval`, so this is one schedule
+ * expressed as times rather than a second count that can drift.
+ *
+ * ONE event per salvo, carrying every name that salvo raises. Emitting one event per
+ * name would fire an edge listing two of them twice per salvo.
+ *
+ * Air events carry `slot: 1`, which is what the KR-text acceptance gate emits. Inert
+ * today — 0 of the graph's air-triggered edges declare an `index`, so there is nothing
+ * for a slot to be filtered against — but production and the gate disagreeing about the
+ * event shape is precisely the ships-vs-validated divergence that gate exists to catch.
+ *
+ * ponytail: coolStart / preloadShare are ignored, so a preloaded mount's first
+ * salvo sits at initialDelay like every other. That is parity with the per-slot salvo
+ * counts this replaces, not a new approximation; revisit only if a fixture needs it.
+ */
+export function weaponEvents(descriptors, reloadStat, window, airstrikeInterval) {
+    const out = [];
     for (const d of descriptors) {
         if (d.slotIndex == null) continue;
         const interval = weaponCycleInterval(d, reloadStat);
-        const k = keyOf(d);
-        out[k] = (out[k] || 0) + countSalvos(interval, d.initialDelay ?? 0, window);
+        if (!(interval > 0)) continue;
+        const names = salvoTriggers(d.weaponType);
+        for (let t = d.initialDelay ?? 0; t <= window; t += interval) {
+            out.push({ t, names, slot: d.slotIndex + 1, attr: d.attackAttribute });
+        }
+    }
+    if (airstrikeInterval > 0) {
+        const names = ['onAllInStrike', 'onAllInStrikeSteady', 'onAirAssistReady'];
+        for (let t = airstrikeInterval; t <= window; t += airstrikeInterval) out.push({ t, names, slot: 1, attr: 'air' });
     }
     return out;
 }
 
-/** Salvos per EQUIP SLOT, keyed 1-based to match the game's own `index` on BattleBuffCount. */
-export const salvosBySlot = (descriptors, reloadStat, window) =>
-    _salvoCounts(descriptors, reloadStat, window, (d) => d.slotIndex + 1);
-
 /**
- * Salvos per ATTACK ATTRIBUTE — what a trigger that names a weapon class filters
- * on (`t.a`). The class cannot ride a slot index: the torpedo slot moves by hull
- * (구축함 2번, 잠수함 1·2번), while the attribute is the same wherever it sits.
+ * Every weapon id one root buff can reach in the graph — what it COULD fire, as
+ * opposed to what a given loadout made it fire.
+ *
+ * Two callers: `expandBarrageSkillIds` (does this root have a barrage of its own, or
+ * does its barrage live on an attached id?) and the zero-row note in
+ * `resolveBarrageDescriptors` (did a sibling root already fire this root's barrage?).
+ * Cheap — the walk covers one root's own subgraph — and only run for the handful of
+ * ids that ask.
+ *
+ * Follows exactly the edges `battle-sim.js` follows, deliberately: a reachability
+ * answer that disagreed with the simulator's own would be worse than none. That
+ * includes not descending a REMOVAL edge's payload — a cleanse's `buff_id_list` is
+ * what it strips, not what it reaches.
  */
-export const salvosByAttr = (descriptors, reloadStat, window) =>
-    _salvoCounts(descriptors, reloadStat, window, (d) => d.attackAttribute);
-
-/**
- * Korean cadence text for a trigger. The DATA holds machine keys; Korean lives here.
- * `rant` is part of the cadence, not a footnote: without it 워싱턴 reads `20초마다`
- * beside `발사/90초 = 2.8`, and 90 / 20 does not give 2.8.
- */
-export function cadenceLabel(t, p) {
-    if (!t) return '';
-    let base = '';
-    if (t.k === 'count') {
-        base = (t.slots && t.slots.length === 1 && t.slots[0] === 1)
-            ? `주포 ${t.n}회마다`
-            : `${t.n}회 발사마다`;
-    } else if (t.k === 'timer') {
-        base = (t.d && t.d !== t.n) ? `${t.d}초 후 ${t.n}초마다` : `${t.n}초마다`;
-    } else if (t.k === 'fire') {
-        base = t.n ? `발사 시 (재사용 ${t.n}초)` : '발사 시';
-    } else if (t.k === 'air') {
-        base = '항공 공격 시';
-    } else if (t.k === 'once') {
-        base = '전투 시작 시';
-    } else {
-        return '';
+export function reachableWeapons(graph, rootId) {
+    const weapons = new Set();
+    if (!graph || !graph.b) return weapons;
+    const seenB = new Set();
+    const seenS = new Set();
+    const stack = [['b', String(rootId)]];
+    while (stack.length) {
+        const [kind, id] = stack.pop();
+        if (kind === 's') {
+            if (seenS.has(id)) continue;
+            seenS.add(id);
+            for (const e of graph.s[id]?.e || []) {
+                if ((e.ty === 'BattleSkillFire' || e.ty === 'BattleSkillFireSupport') && e.a.weapon_id != null) {
+                    weapons.add(e.a.weapon_id);
+                } else if (e.ty === 'BattleSkillAddBuff' && e.a.buff_id != null) {
+                    stack.push(['b', String(e.a.buff_id)]);
+                }
+            }
+            continue;
+        }
+        if (seenB.has(id)) continue;
+        seenB.add(id);
+        for (const e of graph.b[id]?.e || []) {
+            if (e.a.buff_id != null) stack.push(['b', String(e.a.buff_id)]);
+            for (const sid of [e.a.skill_id, ...(e.a.skill_id_list || [])]) {
+                if (sid != null) stack.push(['s', String(sid)]);
+            }
+        }
     }
-    // `p` is basis points (10000 = certain), and it is omitted at 10000.
-    return p != null && p < 10000 ? `${base} ${Math.round(p / 10) / 10}%` : base;
+    return weapons;
+}
+
+/** The trigger names a fire-class row can carry — one label, four spellings. */
+const FIRE_TRIGGERS = new Set(['onFire', 'onChargeWeaponFire', 'onChargeWeaponReady', 'onWeaponSteday']);
+const AIR_TRIGGERS = new Set(['onAllInStrike', 'onAllInStrikeSteady', 'onAirAssistReady']);
+
+/**
+ * Korean cadence text for one simulated barrage row. The DATA holds machine keys;
+ * Korean lives here, so relabelling stays a JS-only change.
+ *
+ * The proc chance is gone from the string on purpose: the sim folds `rant` into the
+ * activation count itself (a failed roll costs no cooldown, so it widens the period
+ * rather than scaling a count), so a trailing 「70%」 beside a period the sim already
+ * paid for would state the same discount twice.
+ */
+export function cadenceLabel(row) {
+    if (!row) return '';
+    const n = row.period;
+    if (row.trigger === 'onBattleBuffCount') {
+        // 주포 only when the counter watches slot 1 ALONE. 14 live roots count a
+        // multi-slot `index` (힌덴부르크 30062 [1,3], 얏센 24122 [1,2], the privateer
+        // family [1,2]), and reading the first entry called every one of them 주포.
+        const slots = row.slots || (row.slot != null ? [row.slot] : []);
+        return (slots.length === 1 && slots[0] === 1)
+            ? `주포 ${row.countTarget}회마다` : `${row.countTarget}회 발사마다`;
+    }
+    if (FIRE_TRIGGERS.has(row.trigger)) {
+        return n > 0 ? `발사 시 (재사용 ${n.toFixed(1)}초)` : '발사 시';
+    }
+    if (row.trigger === 'onTorpedoWeaponFire') {
+        return n > 0 ? `어뢰 발사 시 (재사용 ${n.toFixed(1)}초)` : '어뢰 발사 시';
+    }
+    if (AIR_TRIGGERS.has(row.trigger)) return '항공 공격 시';
+    if (row.trigger === 'onStartGame') return '전투 시작 시';
+    if (!(n > 0)) return '전투 시작 시';
+    return row.first != null && Math.abs(row.first - n) > 0.5
+        ? `${row.first.toFixed(0)}초 후 ${n.toFixed(0)}초마다`
+        : `${n.toFixed(0)}초마다`;
 }
 
 /**
  * Resolve a ship's barrage skills into WeaponDescriptors carrying a pre-resolved
- * activation count. Every id in `skillIds` is already a `weapon_true` skill — R5's
- * own definition of "barrage" — so ANY skill that produces no descriptor counts as
- * unmodelled: table-absent, unreadable cadence, AND weapons that never resolve alike.
- * The design doc is explicit (§D step 4: "the count of the ship's barrage skills that
- * produced no descriptor"; §A: "Anything outside these kinds is not emitted; the page
- * counts it under D3") — the extractor deliberately emits nothing rather than guess at
- * a rate (submarine / conditional / untraced / no-readable-cadence skills), and that
- * honesty is exactly why the gap must surface here instead of silently vanishing.
+ * activation count, by SIMULATING the game's buff/skill event bus over the published
+ * control-flow graph.
+ *
+ * ONE `runBattleSim` call for the whole ship, never one per root. Roots on one unit
+ * are not independent: they share tag state and counters, and 20 of them carry a
+ * `ship_tag_list` gate whose tag a SIBLING root stamps — run one at a time those
+ * always take their "tag absent" arm. The KR-text acceptance gate batches the same
+ * way, so a per-root loop here would ship a configuration nothing validated.
  *
  * A 지속 피해 the barrage attaches rides along as its own descriptor (see
- * resolveBarrageDot) — it is not weapon damage and takes no armor modifier, so it must
- * never be folded into one of the rows above.
+ * resolveBarrageDot) — it is not weapon damage and takes no armor modifier, so it
+ * must never be folded into one of the rows above.
  *
- * ZERO ACTIVATIONS IS NOT THE SAME ANSWER and is counted apart (`inactive`). The
- * trigger was read and the loadout simply never fires it: an unequipped ship (every
- * count/fire barrage), any CARRIER (no air descriptor carries a slotIndex, so
- * salvosBySlot is empty), a 대공-slot trigger. Calling those "발동 조건이 아직
- * 구현되지 않은" is wrong — the condition IS implemented, it computed to zero
- * — and it made an
- * empty or carrier card look broken. Both stay visible, which is what D3 asks for.
+ * THE TWO NOTES ANSWER DIFFERENT QUESTIONS AND MUST NEVER BE MERGED.
+ *   `blocked` (`unmodeled`) = the sim could not evaluate a gate, or the only path to
+ *     a weapon runs through a trigger it structurally never raises. The condition was
+ *     NOT read → 「발동 조건이 아직 구현되지 않은 탄막」.
+ *   zero rows, not blocked (`inactive`) = the condition read fine and this loadout
+ *     never fires it (a 대공-slot trigger, a torpedo trigger on a ship with no
+ *     torpedo) → 「현재 편성에서 발동하지 않는 탄막」.
+ * Saying either about the other is the conflation this whole lane exists to remove.
  *
- * FAILS SAFE if `deps.getBarrageSkill` isn't callable (Task 8's loader landing
- * after this adapter, or a stale cached fleet-sim.damage.js paired with a fresh
- * fleet-sim.data.js behind the network-first service worker): every requested
- * skill counts as unmodelled instead of throwing, which would otherwise blank
- * the whole damage panel (resolveShipWeapons -> simulateFleetDamage -> the
- * panel's catch clears container.innerHTML for the entire fleet).
+ * ZERO ROWS IS NOT ALWAYS A NOTE. A root whose every reachable weapon another live
+ * root already fired has not failed to fire — its barrage MOVED. 키로프's 14170 is
+ * the case: its 전용 장비 sibling 14171 casts the same skill_14170 at t=0, and that
+ * cast attaches buff_14172, whose `BattleBuffCleanse` strips buff_14170 outright. The
+ * rows are all there under the sibling's id, so a note beside them would tell the
+ * reader that a barrage they can SEE in the table did not fire.
+ *
+ * FAILS SAFE when the graph is absent (a failed phase-2 fetch, or a stale cached
+ * fleet-sim.damage.js paired with a fresh fleet-sim.data.js behind the service
+ * worker): every requested skill counts as unmodelled instead of throwing, which
+ * would otherwise blank the whole damage panel (resolveShipWeapons →
+ * simulateFleetDamage → the panel's catch clears container.innerHTML for the fleet).
  */
 export function resolveBarrageDescriptors(skillIds, deps) {
-    if (typeof deps.getBarrageSkill !== 'function') {
-        return { descriptors: [], unmodeled: (skillIds || []).length, inactive: 0, unmodeledDots: 0, dotInjure: {} };
+    const ids = (skillIds || []).map(String);
+    if (!deps.graph || !deps.graph.b) {
+        return { descriptors: [], unmodeled: ids.length, inactive: 0, unmodeledDots: 0, dotInjure: {} };
     }
+    const { fired, blocked } = runBattleSim(ids, deps.simCtx, deps.graph);
+    const blockedSet = new Set(blocked.map(String));
+    const byRoot = new Map();
+    const firedWeapons = new Set();
+    for (const row of fired) {
+        const k = String(row.skillId);
+        if (!byRoot.has(k)) byRoot.set(k, []);
+        byRoot.get(k).push(row);
+        firedWeapons.add(row.weaponId);
+    }
+
     const descriptors = [];
     let unmodeled = 0;
     let inactive = 0;
     let unmodeledDots = 0;
     const dotInjure = {};
-    for (const sid of skillIds || []) {
-        const rec = deps.getBarrageSkill(String(sid));
-        if (!rec) { unmodeled++; continue; }
-        const cadence = cadenceLabel(rec.t, rec.p);
-        if (!cadence) { unmodeled++; continue; }        // unknown trigger kind
-        const n = barrageActivations(rec, deps.ctx);
-        if (!(n > 0)) { inactive++; continue; }         // read fine, this loadout never fires it
+    for (const sid of ids) {
+        const rows = byRoot.get(sid) || [];
+        // UNIFORM, not narrowed to zero-row roots: a skill with a live barrage AND an
+        // onSink death-rattle really does have an unmodelled half, and 67 roots are in
+        // exactly that state at production scope. Gating the disclosure on "produced
+        // nothing" would undo at the last step the rule the simulator applies on purpose.
+        if (blockedSet.has(sid)) unmodeled++;
+        if (!rows.length) {
+            // A root the graph has no node for installs NOTHING — `addBuff` returns
+            // early, so it can neither fire nor be blocked, and no condition was ever
+            // read. That is 미구현, not 「이 편성에서 발동하지 않는」, which asserts the
+            // condition WAS read and came out false. 76 ships reach here (9 of them
+            // with no equipment at all, e.g. 알렌 M. 섬너 14280, 유미 110110): a root
+            // `expandBarrageSkillIds` returned unexpanded, or an attached 전용 장비 id
+            // that never had a node. Checked BEFORE the sibling test, which reads the
+            // same absent node and would call it inactive too.
+            if (!deps.graph.b[sid]) unmodeled++;
+            else if (!blockedSet.has(sid) && !_movedToSibling(sid, deps.graph, firedWeapons)) inactive++;
+            continue;
+        }
+        // A missing name is ordinary, not a 전용 장비 tell: most attached_weapon_skill_id
+        // ids simply have no `skill_data_template` entry of their own (the graph only
+        // names ROOT buff nodes, never a borrowed parent name), so the row stays
+        // labelled 탄막 instead of inventing an owner for it.
+        const name = deps.getSkillName ? deps.getSkillName(sid) : '';
+        const label = name ? `탄막 · ${name}` : '탄막';
         const built = [];
-        for (const wid of rec.w || []) {
-            const raw = deps.getWeapon(wid);
+        for (const row of rows) {
+            const raw = deps.getWeapon(row.weaponId);
             if (!raw) continue;
             const weapon = mergeWeaponWithBase(raw, deps.getWeapon);
             const d = resolveWeaponDescriptor(weapon, deps.stats, {
                 getBarrage: deps.getBarrage,
                 getBullet: deps.getBullet,
-                // All 89 blank-name records are 전용 장비-attached skills: they have no
-                // `skill_data_template` entry at all (skill_1019301.lua is effects only),
-                // so the game itself has no name to show and the label belongs here.
-                label: `탄막 · ${rec.n || '전용 장비'}`,
+                label,
                 mountCount: 1,      // the barrage expansion IS the bullet count
                 potential: 1,       // not equipment — no slot proficiency
                 reloadMaxOverride: 0,
             });
             if (!d) continue;
-            d.activations = n;
-            d.activationWindow = deps.ctx?.window ?? 0;   // the count is FOR this window
-            d.cadence = cadence;
+            d.activations = row.activations;
+            d.activationWindow = deps.simCtx?.window ?? 0;   // the count is FOR this window
+            d.cadence = cadenceLabel(row);
             descriptors.push(d);
-            built.push({ d, weapon });
+            built.push({ d, weapon, weaponId: row.weaponId });
         }
-        if (!built.length) { unmodeled++; continue; }   // every weapon id in rec.w failed to resolve
-        const burn = resolveBarrageDot(rec, built, n, deps);
+        // Every weapon the sim fired failed to resolve — but a root already disclosed
+        // for a blocked branch must not be counted twice.
+        if (!built.length) { if (!blockedSet.has(sid)) unmodeled++; continue; }
+        const burn = resolveBarrageDot(built, name, deps);
         if (!burn) continue;
         if (burn.unmodeled) { unmodeledDots++; continue; }
         descriptors.push(burn.descriptor);
@@ -288,6 +434,21 @@ export function resolveBarrageDescriptors(skillIds, deps) {
 }
 
 /**
+ * Did this root's barrage move to a sibling root that fired it?
+ *
+ * True only when the root reaches at least one weapon in the graph AND every one of
+ * them is already on the table under another root — a partial overlap keeps its note,
+ * because the half nobody fired is a real gap. Called only for a root that produced
+ * no rows of its own, so every hit in `firedWeapons` belongs to a sibling.
+ */
+function _movedToSibling(sid, graph, firedWeapons) {
+    const mine = reachableWeapons(graph, sid);
+    if (!mine.size) return false;
+    for (const w of mine) if (!firedWeapons.has(w)) return false;
+    return true;
+}
+
+/**
  * The burn (지속 피해) one barrage's bullets attach, as its own descriptor.
  *
  * A DOT is a property of the BULLET, not of the skill — bullet_template's
@@ -296,19 +457,31 @@ export function resolveBarrageDescriptors(skillIds, deps) {
  * also keeps the two lanes aligned: a barrage the sim cannot model has no burn
  * either, instead of a burn with no barrage under it.
  *
- * ONE burn per record, even when several of its weapons carry one. The buff does
+ * ONE burn per root skill, even when several of its weapons carry one. The buff does
  * not stack, and battleunit.lua:976 AddBuff decides which survives: a HIGHER
  * `group_level` removes and re-attaches (fresh igniteDMG from the new weapon),
  * an equal or lower one only Stacks, refreshing the expiry and keeping the old
  * numbers. So the highest group_level wins — 라이온's 200-damage g2 shell over
  * her 20-damage g1 one — with weapon damage as the tiebreak.
  *
+ * The tick count rides the WINNING weapon's own descriptor rather than one figure
+ * shared by the whole record: the sim gives every fired weapon its own activation
+ * count, and the burn is attached by exactly one of them.
+ *
  * @returns {{descriptor:object, injureRatio:number, buffId:number}|{unmodeled:true}|null}
  */
-export function resolveBarrageDot(rec, built, activations, deps) {
+export function resolveBarrageDot(built, name, deps) {
     if (typeof deps.getDot !== 'function') return null;
+    // ONE WEAPON CAN FIRE UNDER TWO TRIGGERS, and the burn is attached by the BULLET,
+    // so it ticks off that weapon's whole schedule rather than off whichever row won
+    // the group tie-break below. 63 same-weapon two-trigger pairs exist roster-wide and
+    // 4 carry a DOT (뉴저지 14510 w64220 1.00+1.00, 아사마 151640 w169200 1.00+3.00,
+    // 마세나 151400 w168930 0.40+2.60, 알제리 13270 w69390 5.53+1.00); reading one row
+    // under-counts those burns by up to 4x with no note on it.
+    const actsByWeapon = new Map();
+    for (const b of built) actsByWeapon.set(b.weaponId, (actsByWeapon.get(b.weaponId) || 0) + (b.d.activations || 0));
     let best = null;
-    for (const { d, weapon } of built) {
+    for (const { d, weapon, weaponId } of built) {
         const bulletIds = weapon.bullet_ID || [];
         const barrageIds = weapon.barrage_ID || [];
         // barrage_ID and bullet_ID are parallel arrays on 1520 of the 1546 weapons
@@ -322,7 +495,7 @@ export function resolveBarrageDot(rec, built, activations, deps) {
                 const dot = attach && deps.getDot(attach.buff_id);
                 if (!dot) continue;
                 const cand = {
-                    dot, attach, d,
+                    dot, attach, d, weaponId,
                     bullets: parallel ? barrageBulletCount([barrageIds[i]], deps.getBarrage) : d.bulletsPerSalvo,
                     groupLevel: attach.group_level ?? 1,
                     dmg: d.damage * d.corrected,
@@ -333,10 +506,10 @@ export function resolveBarrageDot(rec, built, activations, deps) {
         }
     }
     if (!best) return null;
-    const window = deps.ctx?.window ?? 0;
+    const window = deps.simCtx?.window ?? 0;
     const sched = dotSchedule(best.dot, {
         window,
-        activations,
+        activations: actsByWeapon.get(best.weaponId) ?? best.d.activations,
         bullets: best.bullets,
         hitRate: deps.hitRate ?? 1,
         rant: best.attach.rant,
@@ -361,7 +534,7 @@ export function resolveBarrageDot(rec, built, activations, deps) {
             activations: sched.ticks,
             activationWindow: window,
             cadence: `${sched.interval}초마다`,
-            label: `지속 피해 · ${rec.n || '전용 장비'}`,
+            label: name ? `지속 피해 · ${name}` : '지속 피해',
         },
     };
 }
@@ -703,9 +876,9 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageB
     const defaults = ship.default_equip_list || [];                    // empty-slot fallback; absent on older data
     const dropSecondary = fleetSlot < MAIN_SLOTS && !hasSecondaryReach(ship, useRetrofit, slotConfig.fate !== false);
     const { weapons, airReloadMax } = _resolveEquippedWeapons(slotConfig, shipType, stats, baseList, prof, preload, defaults, dropSecondary);
-    // BEFORE the barrage block, not after: salvosBySlot / salvosByAttr count a
-    // weapon's volleys off its own reloadMax, so a barrage triggered by 주포 발사
-    // would otherwise be counted against the unmodified cadence.
+    // BEFORE the barrage block, not after: weaponEvents spaces a weapon's salvos by
+    // its own reloadMax, so a barrage triggered by 주포 발사 would otherwise be paced
+    // against the unmodified cadence.
     _applyWeaponModifiers(weapons, damageBuffs && damageBuffs.weaponMods);
 
     // Barrage skills the ship actually has active. Two filters, and BOTH matter.
@@ -713,36 +886,49 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageB
     // generic SP weapon in that slot, or an emptied slot, grants nothing.
     const dedicated = _data.getDedicatedSPWeapon(ship.gid);
     const spEquipped = !!dedicated && Number(slotConfig.spWeapon?.id) === Number(dedicated.id);
-    const hasBarrageRecord = (id) => !!_data.getBarrageSkill(String(id));
+    const graph = _data.getGraph();
+    // The remap guard is now "does the simulator know this rung", i.e. does the graph
+    // carry the buff the engine's InitUnitSkill would install for it.
+    const inGraph = (id) => !!graph?.b?.[String(id)];
     // A maxed 전용 장비 REPLACES one of the ship's skills with an upgraded rung, so
     // the swap happens before supersession is expanded — 드레이크 fires 1019300
     // 단죄의 불꽃·改, not the 19300 her card lists.
     const liveBarrageIds = applySPSkillUpgrade(
         activeBarrageSkillIds(ship, useRetrofit, slotConfig.fate !== false),
         spSkillUpgradePairs(slotConfig.spWeapon, _data.getSPWeaponById),
-        hasBarrageRecord,
+        inGraph,
     );
-    const skillIds = expandBarrageSkillIds(ship, liveBarrageIds, hasBarrageRecord)
+    const skillIds = expandBarrageSkillIds(ship, liveBarrageIds, inGraph)
         .concat(spEquipped ? attachedSPBarrageIds(ship) : []);
-    const airstrikes = airReloadMax > 0
-        ? _engine.countSalvos(_engine.calculateReloadTime(airReloadMax, stats.reload), 0, window)
-        : 0;
+    const airInterval = airReloadMax > 0
+        ? _engine.calculateReloadTime(airReloadMax, stats.reload) : 0;
     const { descriptors, unmodeled, inactive, unmodeledDots, dotInjure } = resolveBarrageDescriptors(skillIds, {
-        getBarrageSkill: _data.getBarrageSkill,
+        graph,
         getWeapon: _data.getWeaponProperty,
         getBarrage: _data.getBarrage,
         getBullet: _data.getBullet,
         getDot: _data.getDot,
+        // The KR skill name is display text only — the sim needs none of it. It rides
+        // the graph's own root buff nodes (`n`, set by the pipeline off
+        // skill_data_template.json — never fetched here, 1.9 MB, pipeline-only), so a
+        // root with no name there falls through to the label's own bare-'탄막' default.
+        getSkillName: (id) => graph?.b?.[String(id)]?.n || '',
         stats,
         // Only the DOT lane reads this: a burn attaches on a landed hit unless the
         // bullet says hit_ignore, and it is the same (attacker, target) hit rate for
         // every weapon, so it is resolved once per ship rather than per descriptor.
         hitRate,
-        ctx: {
+        simCtx: {
             window,
-            salvosBySlot: salvosBySlot(weapons, stats.reload, window),
-            salvosByAttr: salvosByAttr(weapons, stats.reload, window),
-            airstrikes,
+            events: weaponEvents(weapons, stats.reload, window, airInterval),
+            unit: {
+                equipTypes: (slotConfig.equips || []).map((e) => _data.getEquipById(e?.id)?.type ?? 0),
+                nationality: ship.nationality,
+                shipType,
+                spEquipped,
+                allyCount: 6,
+                tags: [],
+            },
         },
     });
 
@@ -879,14 +1065,14 @@ export function activeBarrageSkillIds(ship, useRetrofit, useFate = true) {
  * intact, so it needs nothing from the pipeline — but the raw field has two traps:
  *
  *  - it REPEATS once per enhancement level with a descending cooldown (10703 lists
- *    its pair 10×, 1130001 lists 52 entries). `fleet_sim_barrages.json` already
- *    holds each id's max-enhancement rung, so dedupe by id and ignore `time`
- *    entirely — read naively one barrage counts up to 26 times.
+ *    its pair 10×, 1130001 lists 52 entries). The graph is already level-collapsed
+ *    to each id's max rung, so dedupe by id and ignore `time` entirely — read
+ *    naively one barrage counts up to 26 times.
  *  - it RE-LISTS skills the ship already has (70204's 14170, 1100001's 110010),
  *    which activeBarrageSkillIds has counted already.
  *
  * ponytail: the 17 ships listing several distinct ids are taken at face value —
- * each id's cadence comes from the table, not from this field — which over-counts
+ * each id's cadence comes from the simulator, not from this field — which over-counts
  * if any such pair is really alternative rungs rather than a simultaneous set.
  * Needs a KR-text pass to split; ids with no record fall to the 미구현 note as usual.
  */
@@ -902,24 +1088,28 @@ export function attachedSPBarrageIds(ship) {
 
 /**
  * Swap a displayed skill for the attached ids that actually fire, where the
- * skill itself has no record.
+ * simulator can model nothing under the skill's own id.
  *
- * A displayed skill is not always the skill that fires. 알자스 150020 is a passive
- * with no `skill_150020` entry at all — the engine applies it as `buff_150020`,
- * whose cast edges name 150021/150022/150025/150026 — so the barrage table, which
- * is keyed by the id that fires, has nothing under 150020 and her 주포 공격 시 탄막
- * counted as 미구현. 270 ships sat there; `ship.skill[].attached_weapon_skill_id`
- * is the game's own link and `ship_info_process.py` already emits it.
+ * Only the PRESENCE TEST moved: it used to ask whether the extractor emitted a record
+ * and now asks whether the graph carries the buff `InitUnitSkill` would install. The
+ * scope rule itself is unchanged and still load-bearing — a skill that resolves under
+ * its own id is left alone, because its attached ids are as often extra volleys of the
+ * barrage it already fires as they are separate ones (키어사지 19681..19685 is one
+ * staggered barrage in five casts). 알자스 150020, the case this was written for, no
+ * longer needs it either way: she has no `skill_150020`, but the sim starts at
+ * `buff_150020` and walks to 150021/150022/150025/150026 on its own.
  *
- * MIRRORS THE PIPELINE'S SCOPE RULE EXACTLY: a skill that resolves under its own
- * id is left alone, because the extractor never scoped its attached ids and they
- * are as often extra volleys of the record it already has as they are separate
- * barrages (키어사지 19681..19685 is one staggered barrage in five casts).
+ * DO NOT WIDEN THIS INTO AN UNCONDITIONAL FIELD READ. An attached id is not filtered by
+ * supersession, so appending one re-installs a rung `liveSkillIds` correctly dropped —
+ * and chain-mates share a `countType`, so the lower threshold trips first and resets the
+ * shared counter. 위치타·META lists 801301 (LB1) beside 801302 (LB3), both counting
+ * `countType 801300` at 12 and 8: installed together the live rung goes 3.00 → 6.00
+ * activations and a phantom 801301 row appears beside it. That is the same corruption
+ * the 아일윈 20011/20012 case documents, and `activeBarrageSkillIds` exists to prevent it.
  *
- * Attached ids WITHOUT a record fall back to the parent rather than each counting
- * itself, so 미구현 keeps its unit — one per barrage skill the player can see. The
- * alternative reported 알자스 as "탄막 3개" for what her card shows as one skill,
- * two of them alternate rungs of the barrage already listed above the note.
+ * Attached ids WITHOUT a graph node fall back to the parent rather than each counting
+ * itself, so 미구현 keeps its unit — one per barrage skill the player can see.
+ * @param {(id:string)=>boolean} hasRecord does the SIMULATOR know this id?
  */
 export function expandBarrageSkillIds(ship, liveIds, hasRecord) {
     const skills = ship?.skill || {};

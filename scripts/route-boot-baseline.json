@@ -26,10 +26,16 @@
           "brotli": 2297
         },
         {
-          "path": "/altoy/js/engine/damage/barrage.js",
-          "raw": 3621,
-          "gzip": 1746,
-          "brotli": 1626
+          "path": "/altoy/js/engine/damage/battle-sim.gates.js",
+          "raw": 8841,
+          "gzip": 3918,
+          "brotli": 3756
+        },
+        {
+          "path": "/altoy/js/engine/damage/battle-sim.js",
+          "raw": 34622,
+          "gzip": 13167,
+          "brotli": 12815
         },
         {
           "path": "/altoy/js/engine/damage/clear-check.js",
@@ -45,9 +51,9 @@
         },
         {
           "path": "/altoy/js/engine/damage/dot.js",
-          "raw": 4559,
-          "gzip": 2229,
-          "brotli": 2113
+          "raw": 4562,
+          "gzip": 2232,
+          "brotli": 2120
         },
         {
           "path": "/altoy/js/engine/damage/formula.js",
@@ -57,9 +63,9 @@
         },
         {
           "path": "/altoy/js/engine/damage/index.js",
-          "raw": 6457,
-          "gzip": 2505,
-          "brotli": 2392
+          "raw": 6460,
+          "gzip": 2508,
+          "brotli": 2395
         },
         {
           "path": "/altoy/js/engine/damage/reload.js",
@@ -141,15 +147,15 @@
         },
         {
           "path": "/altoy/js/simulators/fleet-sim.damage.js",
-          "raw": 55204,
-          "gzip": 19731,
-          "brotli": 19174
+          "raw": 63313,
+          "gzip": 22819,
+          "brotli": 22100
         },
         {
           "path": "/altoy/js/simulators/fleet-sim.data.js",
-          "raw": 15517,
-          "gzip": 4647,
-          "brotli": 4466
+          "raw": 15650,
+          "gzip": 4778,
+          "brotli": 4596
         },
         {
           "path": "/altoy/js/simulators/fleet-sim.equip-code-ui.js",
@@ -312,16 +318,16 @@
           "brotli": 347990
         },
         {
-          "path": "/altoy/data/sim/fleet_sim_barrages.json",
-          "raw": 106130,
-          "gzip": 21857,
-          "brotli": 20213
-        },
-        {
           "path": "/altoy/data/sim/fleet_sim_dots.json",
           "raw": 4656,
           "gzip": 797,
           "brotli": 778
+        },
+        {
+          "path": "/altoy/data/sim/fleet_sim_graph.json",
+          "raw": 1063545,
+          "gzip": 107656,
+          "brotli": 85583
         },
         {
           "path": "/altoy/data/sim/fleet_sim_passive_skills.json",
@@ -350,10 +356,10 @@
           "brotli": 7618
         },
         "js": {
-          "count": 31,
-          "raw": 454547,
-          "gzip": 150422,
-          "brotli": 143994
+          "count": 32,
+          "raw": 502637,
+          "gzip": 168986,
+          "brotli": 162005
         },
         "css": {
           "count": 3,
@@ -363,15 +369,15 @@
         },
         "json": {
           "count": 19,
-          "raw": 55296552,
-          "gzip": 2955139,
-          "brotli": 1903192
+          "raw": 56253967,
+          "gzip": 3040938,
+          "brotli": 1968562
         },
         "total": {
-          "count": 54,
-          "raw": 55880048,
-          "gzip": 3132492,
-          "brotli": 2072826
+          "count": 55,
+          "raw": 56885553,
+          "gzip": 3236855,
+          "brotli": 2156207
         }
       },
       "bytes": {
@@ -382,10 +388,10 @@
           "brotli": 7618
         },
         "js": {
-          "count": 31,
-          "raw": 454547,
-          "gzip": 150422,
-          "brotli": 143994
+          "count": 32,
+          "raw": 502637,
+          "gzip": 168986,
+          "brotli": 162005
         },
         "css": {
           "count": 3,
@@ -395,15 +401,15 @@
         },
         "json": {
           "count": 19,
-          "raw": 55296552,
-          "gzip": 2955139,
-          "brotli": 1903192
+          "raw": 56253967,
+          "gzip": 3040938,
+          "brotli": 1968562
         },
         "total": {
-          "count": 54,
-          "raw": 55880048,
-          "gzip": 3132492,
-          "brotli": 2072826
+          "count": 55,
+          "raw": 56885553,
+          "gzip": 3236855,
+          "brotli": 2156207
         }
       },
       "problems": []

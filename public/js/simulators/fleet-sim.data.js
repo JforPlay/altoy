@@ -54,8 +54,8 @@ export async function loadAllData() {
 
     // Phase 2: Extended data (parallel, all cached — non-fatal failures)
     const [equipFullData, weaponPropertyData, passiveSkillData, fleetTechData, shipGroupData, spWeaponData,
-           barrageData, bulletData, aircraftData, metaBossData, presetData, barrageSkillData,
-           dotData] = await Promise.all([
+           barrageData, bulletData, aircraftData, metaBossData, presetData,
+           dotData, battleGraph] = await Promise.all([
         _loadCached('data/equip/equip_data_full.json'),
         _loadCached('data/sim/weapon_property.json'),
         _loadCached('data/sim/fleet_sim_passive_skills.json'),
@@ -67,8 +67,8 @@ export async function loadAllData() {
         _loadCached('data/sim/aircraft_template.json'),
         _loadCached('data/meta_bosses.json'),
         _loadCached('data/fleet_sim_presets.json'),
-        _loadCached('data/sim/fleet_sim_barrages.json'),
         _loadCached('data/sim/fleet_sim_dots.json'),
+        _loadCached('data/sim/fleet_sim_graph.json'),
     ]);
 
     state.equipFullData = equipFullData;
@@ -81,8 +81,8 @@ export async function loadAllData() {
     state.bulletData = bulletData;
     state.aircraftData = aircraftData;
     state.metaBossData = metaBossData;
-    state.barrageSkillData = barrageSkillData;
     state.dotData = dotData;
+    state.battleGraph = battleGraph;
     // Curated presets gate their own header button, so they load at boot rather
     // than on first modal open — an absent/short file just means no button.
     state.presets = Array.isArray(presetData?.presets) ? presetData.presets : [];
@@ -215,9 +215,14 @@ export function getPassiveSkill(skillId) {
     return state.passiveSkillData[String(skillId)] || null;
 }
 
-/** Barrage trigger record by skill id, or null when the table is absent/unknown. */
-export function getBarrageSkill(skillId) {
-    return state.barrageSkillData ? (state.barrageSkillData[String(skillId)] || null) : null;
+/**
+ * The battle control-flow graph the barrage simulator runs — `{b, s}`, buff and
+ * skill nodes pruned to the effects that decide WHEN a barrage fires. Null until
+ * phase 2 finishes (or if the fetch failed), which `resolveBarrageDescriptors`
+ * reads as "no barrage is modellable" rather than throwing.
+ */
+export function getGraph() {
+    return state.battleGraph;
 }
 
 /**
