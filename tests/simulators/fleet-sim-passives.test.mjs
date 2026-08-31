@@ -13,7 +13,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { setup, resolvePassiveBuffs, sumDamageBuffs } from '../../public/js/simulators/fleet-sim.calc.js';
 
-const ship = (gid, type, skills, nationality = 1) => ({ gid, type, nationality, skill: Object.fromEntries(skills.map((s) => [s, {}])) });
+const ship = (gid, type, skills, nationality = 1, tagList = []) =>
+    ({ gid, type, nationality, tag_list: tagList, skill: Object.fromEntries(skills.map((s) => [s, {}])) });
 
 /** One-level passive table; resolvePassiveBuffs reads the highest level. */
 const table = (entries) => {
@@ -170,4 +171,56 @@ test('only the live rung of a chain buffs the fleet, and 운명 is a gate on it'
     assert.deepEqual(attrs(resolvePassiveBuffs(pr, fleet, 0)), ['loadSpeed'], 'fate defaults to max');
     assert.deepEqual(attrs(resolvePassiveBuffs(pr, fleet, 0, [{ fate: true }])), ['loadSpeed']);
     assert.deepEqual(attrs(resolvePassiveBuffs(pr, fleet, 0, [{ fate: false }])), ['cannonPower']);
+});
+
+// `ship_data_statistics[sid].tag_list` — battleplayerunit.lua:87 seeds these before
+// any buff runs, and 38 of the 49 skills carrying a `target_ship_tags` buff OTHER
+// ships, so before the seed 후부키's 「특형 네임쉽!」 raised the whole fleet's 화력.
+test('a target_ship_tags clause reaches only ships carrying one of the tags', () => {
+    withTable(table([['10960', 'fleet',
+        [{ attr: 'cannonPower', value: 3000, type: 'ratio' }],
+        { target_ship_tags: ['Special Type'] }]]));
+    const fubuki = ship(1, 1, ['10960'], 3, ['Special Type']);
+    const amazon = ship(2, 1, [], 2, ['B-Class']);
+    const fleet = [fubuki, amazon, null, null, null, null];
+
+    assert.deepEqual(attrs(resolvePassiveBuffs(fubuki, fleet, 0)), ['cannonPower']);
+    assert.deepEqual(attrs(resolvePassiveBuffs(amazon, fleet, 1)), []);
+});
+
+// ANY of the listed tags is enough — ContainsLabelTag returns on the first hit
+// (battleunit.lua:437). 6 skills list two, e.g. 16232 Essex-Class + Yorktown-Class.
+test('a multi-tag gate matches on any one of them, and no gate still reaches everyone', () => {
+    withTable(table([
+        ['16232', 'fleet', [{ attr: 'airPower', value: 1000, type: 'ratio' }],
+            { target_ship_tags: ['Essex-Class', 'Yorktown-Class'] }],
+        ['1000', 'fleet', [{ attr: 'loadSpeed', value: 1000, type: 'ratio' }]],
+    ]));
+    const essex = ship(1, 7, ['16232', '1000'], 1, ['Essex-Class']);
+    const yorktown = ship(2, 7, [], 1, ['Yorktown-Class']);
+    const other = ship(3, 7, [], 1, ['Lexington-Class']);
+    const fleet = [essex, yorktown, other, null, null, null];
+
+    assert.deepEqual(attrs(resolvePassiveBuffs(essex, fleet, 0)), ['airPower', 'loadSpeed']);
+    assert.deepEqual(attrs(resolvePassiveBuffs(yorktown, fleet, 1)), ['airPower', 'loadSpeed']);
+    // No tag of its own, so only the ungated skill reaches it.
+    assert.deepEqual(attrs(resolvePassiveBuffs(other, fleet, 2)), ['loadSpeed']);
+});
+
+// A tag this lane cannot answer must not flip the clause from "buffs everyone" to
+// "buffs nobody" in silence — that is the same over/under-report evalGate is
+// three-valued to avoid. UNEVALUABLE_SHIP_TAGS keeps today's behaviour and
+// fleet-sim-ship-tags.test.mjs pins the set so a NEW orphan fails loudly.
+test('an unevaluable tag leaves the clause unchanged rather than zeroing it', () => {
+    withTable(table([
+        ['102020', 'fleet', [{ attr: 'cannonPower', value: 3000, type: 'ratio' }],
+            { target_ship_tags: ['Bilibili'] }],
+        // 탄약 부족 is deliberately NOT on that list: a fresh sortie is not ammo-starved,
+        // so reading it as unset is certain and 2190's fleet-wide +15% stops applying.
+        ['2190', 'fleet', [{ attr: 'damageRatioBullet', value: 0.15, type: 'flat' }],
+            { target_ship_tags: ['danyaokuifa'] }],
+    ]));
+    const caster = ship(1, 1, ['102020', '2190'], 1, ['Z-Class']);
+    const fleet = [caster, null, null, null, null, null];
+    assert.deepEqual(attrs(resolvePassiveBuffs(caster, fleet, 0)), ['cannonPower']);
 });

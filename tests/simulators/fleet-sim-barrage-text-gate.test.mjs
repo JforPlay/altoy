@@ -23,6 +23,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { runBattleSim } from '../../public/js/engine/damage/battle-sim.js';
+import { unitTags } from '../../public/js/engine/damage/targets.js';
 
 const read = (p) => JSON.parse(readFileSync(new URL(p, import.meta.url)));
 const graph = read('../../public/data/sim/fleet_sim_graph.json');
@@ -240,6 +241,17 @@ function ctx() {
     } };
 }
 
+/**
+ * The probe wearing ONE ship's static tags. Everything else about the probe stays
+ * fixed — its 함종 / 진영 / loadout are the generic ones above — because only
+ * `ship_tag_list` reads the tag set, and varying the rest would move rows for
+ * reasons that have nothing to do with the seed.
+ */
+const shipCtx = (tagList) => ({
+  ...SIM_CTX,
+  unit: { ...SIM_CTX.unit, tags: unitTags(SIM_CTX.unit.shipType, SIM_CTX.unit.nationality, tagList) },
+});
+
 const SIM_CTX = ctx();
 
 // ---------------------------------------------------------------------------
@@ -428,7 +440,7 @@ function displayedScope() {
   const byShip = ships.map((s, i) => {
     const batches = shipBatches(s);
     for (const b of batches) for (const sid of b.owns) owner.set(sid, i);
-    return { name: s.name, batches };
+    return { name: s.name, tags: s.tag_list || [], batches };
   });
   return { owner, byShip };
 }
@@ -459,10 +471,11 @@ function spweaponScope(core) {
       owns.push(String(sid));
       owner.set(String(sid), i);
     }
-    if (!owns.length) return { name: s.name, batches: [] };
+    if (!owns.length) return { name: s.name, tags: s.tag_list || [], batches: [] };
     const sources = new Set(pairs.map((p) => String(p[0])));
     const siblings = shipBatches(s)[0].roots.filter((sid) => !sources.has(sid));
-    return { name: s.name, batches: [{ roots: [...new Set(owns.concat(siblings))], owns }] };
+    return { name: s.name, tags: s.tag_list || [],
+      batches: [{ roots: [...new Set(owns.concat(siblings))], owns }] };
   });
   return { owner, byShip };
 }
@@ -495,10 +508,11 @@ const SPW = spweaponScope(CORE);
 function simClaims(corpus, tally) {
   const out = [];
   corpus.byShip.forEach((ship, i) => {
+    const simCtx = shipCtx(ship.tags);
     for (const batch of ship.batches) {
       const mine = batch.owns.filter((sid) => corpus.owner.get(sid) === i);
       if (!mine.length) continue;      // another ship owns every root here
-      const { fired, blocked } = runBattleSim(batch.roots, SIM_CTX, graph);
+      const { fired, blocked } = runBattleSim(batch.roots, simCtx, graph);
       const blockedSet = new Set(blocked.map(String));
       const bySid = new Map();
       for (const row of fired) {
@@ -704,7 +718,17 @@ const BASELINE = {
   // 않는」 note doing its job rather than coverage lost. `silent` rising is normally
   // the failure this ratchet exists to catch; it is a win ONLY here, and only because
   // the bucket it drew from is `disclosed`.
-  displayed: { checked: 944, disclosed: 177, silent: 64 },
+  //
+  // MOVED again 2026-08-30 by the static-tag seed (§A): displayed silent 64 -> 62,
+  // every other count held. Exactly two roots left the silent bucket and both now fire
+  // in agreement with their own KR text — 나토리 17130 (needs her MLB `FullBurst2`) and
+  // 아카기(μ장비) 12740 (needs one of her own class tags). The move is small because the
+  // probe is ONE ship: a gate asking how many FLEET members carry a tag is still the
+  // one-ship approximation §A's "Known limit" records, and the 136 edges naming a tag
+  // nothing produces read absent as before. The passive lane is where the seed is worth
+  // something (38 class-gated skills stopped buffing the whole fleet), and this gate
+  // does not measure that lane.
+  displayed: { checked: 944, disclosed: 177, silent: 62 },
   spweapon: { checked: 90, disclosed: 49, silent: 190 },
 };
 

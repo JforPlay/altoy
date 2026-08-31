@@ -49,18 +49,25 @@ export const ARMOR_PRESETS = {
 };
 
 /**
- * The label tags a unit carries into battle. `battleunit.lua:461-462` stamps
- * exactly two on every unit at spawn — `N_<nationality>` and `T_<type>` — and
- * they are the whole vocabulary GetTagAttr matches a 「구축함에게 주는 피해 +N%」
- * skill against (engine/damage/formula.js, 특수 종류 피해). A missing id emits no
- * tag rather than `T_undefined`, so a target the data has not described yet
- * simply matches nothing.
+ * The label tags a unit carries into battle, from the two sources that are known
+ * before the fight starts.
+ *
+ * `battleunit.lua:461-462` stamps `N_<nationality>` and `T_<type>` on every unit at
+ * spawn — the whole vocabulary GetTagAttr matches a 「구축함에게 주는 피해 +N%」 skill
+ * against (engine/damage/formula.js, 특수 종류 피해). `battleplayerunit.lua:87` seeds
+ * the ship's own static `tag_list` (`Z-Class`, `Special Type`, …) before that, which
+ * is what a `ship_tag_list` gate tests. A missing id emits no tag rather than
+ * `T_undefined`, so a target the data has not described yet simply matches nothing.
+ *
+ * The third source, runtime `BattleBuffAddTag` stamps, is the battle sim's own
+ * multiset and does not belong here. (The fourth, the equipped SP weapon's labels —
+ * `battledataproxy.lua:1518` — is not in `spweapon_data.json` at all today.)
  */
-function unitTags(shipType, nationality) {
+export function unitTags(shipType, nationality, tagList = []) {
   const tags = [];
   if (shipType) tags.push(`T_${shipType}`);
   if (nationality) tags.push(`N_${nationality}`);
-  return tags;
+  return tags.concat(tagList);
 }
 
 export const DEFAULT_ADAPT = 'base';        // base | noAdapt | full

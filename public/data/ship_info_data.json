@@ -111,6 +111,7 @@
             104,
             104
         ],
+        "tag_list": [],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -229,6 +230,7 @@
             104,
             104
         ],
+        "tag_list": [],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -358,6 +360,7 @@
             104,
             104
         ],
+        "tag_list": [],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -602,6 +605,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Farragut-Class"
         ],
         "timer": null,
         "light": false,
@@ -921,6 +927,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Mahan-Class"
         ],
         "timer": "00:23:00",
         "light": true,
@@ -1368,6 +1377,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Mahan-Class"
+        ],
         "timer": "00:23:00",
         "light": true,
         "heavy": false,
@@ -1795,6 +1807,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Gridley-Class",
+            "Gridley"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -2103,6 +2119,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Gridley-Class"
         ],
         "timer": "00:25:00",
         "light": true,
@@ -2467,6 +2486,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Gridley-Class"
         ],
         "timer": "00:25:00",
         "light": true,
@@ -2895,6 +2917,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Gridley-Class"
+        ],
         "timer": "00:25:00",
         "light": true,
         "heavy": false,
@@ -3150,6 +3175,9 @@
             100,
             108,
             104
+        ],
+        "tag_list": [
+            "Fletcher-Class"
         ],
         "timer": "00:28:00",
         "light": true,
@@ -3490,6 +3518,10 @@
             108,
             104
         ],
+        "tag_list": [
+            "Fletcher-Class",
+            "WDP"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -3787,6 +3819,10 @@
             108,
             104
         ],
+        "tag_list": [
+            "Fletcher-Class",
+            "Little-Beavers"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -4068,6 +4104,10 @@
             100,
             108,
             104
+        ],
+        "tag_list": [
+            "Fletcher-Class",
+            "Little-Beavers"
         ],
         "timer": null,
         "light": false,
@@ -4383,6 +4423,10 @@
             100,
             108,
             104
+        ],
+        "tag_list": [
+            "Fletcher-Class",
+            "Little-Beavers"
         ],
         "timer": "00:28:00",
         "light": true,
@@ -4782,6 +4826,10 @@
             100,
             108,
             104
+        ],
+        "tag_list": [
+            "Fletcher-Class",
+            "Little-Beavers"
         ],
         "timer": "00:28:00",
         "light": true,
@@ -5201,6 +5249,10 @@
             108,
             104
         ],
+        "tag_list": [
+            "Fletcher-Class",
+            "Little-Beavers"
+        ],
         "timer": "00:28:00",
         "light": true,
         "heavy": false,
@@ -5582,6 +5634,9 @@
             108,
             104
         ],
+        "tag_list": [
+            "Benson-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -5881,6 +5936,9 @@
             100,
             108,
             104
+        ],
+        "tag_list": [
+            "Benson-Class"
         ],
         "timer": "00:27:00",
         "light": true,
@@ -6463,6 +6521,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Sims-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -6813,6 +6874,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Sims-Class"
         ],
         "timer": "00:26:00",
         "light": true,
@@ -7215,6 +7279,7 @@
             106,
             104
         ],
+        "tag_list": [],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -7503,6 +7568,9 @@
             108,
             104
         ],
+        "tag_list": [
+            "Benson-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -7747,6 +7815,9 @@
             100,
             108,
             104
+        ],
+        "tag_list": [
+            "Fletcher-Class"
         ],
         "timer": null,
         "light": false,
@@ -8013,6 +8084,9 @@
             100,
             108,
             104
+        ],
+        "tag_list": [
+            "Fletcher-Class"
         ],
         "timer": null,
         "light": false,
@@ -8350,6 +8424,9 @@
             108,
             104
         ],
+        "tag_list": [
+            "Fletcher-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -8617,6 +8694,9 @@
             108,
             104
         ],
+        "tag_list": [
+            "Fletcher-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -8863,6 +8943,9 @@
             108,
             104
         ],
+        "tag_list": [
+            "Fletcher-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -9107,6 +9190,9 @@
             100,
             108,
             104
+        ],
+        "tag_list": [
+            "Fletcher-Class"
         ],
         "timer": "00:28:00",
         "light": true,
@@ -9354,6 +9440,9 @@
             108,
             104
         ],
+        "tag_list": [
+            "Benson-Class"
+        ],
         "timer": "00:27:00",
         "light": true,
         "heavy": false,
@@ -9599,6 +9688,9 @@
             100,
             108,
             104
+        ],
+        "tag_list": [
+            "Benson-Class"
         ],
         "timer": "00:27:00",
         "light": true,
@@ -9847,6 +9939,9 @@
             108,
             104
         ],
+        "tag_list": [
+            "Fletcher-Class"
+        ],
         "timer": "00:28:00",
         "light": false,
         "heavy": false,
@@ -10094,6 +10189,9 @@
             108,
             104
         ],
+        "tag_list": [
+            "Fletcher-Class"
+        ],
         "timer": "00:28:00",
         "light": false,
         "heavy": false,
@@ -10338,6 +10436,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Farragut-Class"
         ],
         "timer": "00:20:00",
         "light": false,
@@ -10585,6 +10686,9 @@
             108,
             104
         ],
+        "tag_list": [
+            "Fletcher-Class"
+        ],
         "timer": "00:28:00",
         "light": true,
         "heavy": false,
@@ -10829,6 +10933,9 @@
             100,
             108,
             104
+        ],
+        "tag_list": [
+            "Fletcher-Class"
         ],
         "timer": "00:28:00",
         "light": true,
@@ -11076,6 +11183,9 @@
             100,
             108,
             104
+        ],
+        "tag_list": [
+            "Fletcher-Class"
         ],
         "timer": "00:28:00",
         "light": false,
@@ -11351,6 +11461,9 @@
             108,
             104
         ],
+        "tag_list": [
+            "Allen M. Sumner-class"
+        ],
         "timer": "00:29:00",
         "light": true,
         "heavy": false,
@@ -11612,6 +11725,9 @@
             108,
             104
         ],
+        "tag_list": [
+            "Allen M. Sumner-class"
+        ],
         "timer": "00:29:00",
         "light": false,
         "heavy": false,
@@ -11867,6 +11983,9 @@
             108,
             104
         ],
+        "tag_list": [
+            "Fletcher-Class"
+        ],
         "timer": "00:28:00",
         "light": false,
         "heavy": false,
@@ -12120,6 +12239,9 @@
             100,
             108,
             104
+        ],
+        "tag_list": [
+            "Fletcher-Class"
         ],
         "timer": null,
         "light": false,
@@ -12381,6 +12503,9 @@
             108,
             104
         ],
+        "tag_list": [
+            "Allen M. Sumner-class"
+        ],
         "timer": "00:29:00",
         "light": true,
         "heavy": false,
@@ -12641,6 +12766,9 @@
             108,
             104
         ],
+        "tag_list": [
+            "Allen M. Sumner-class"
+        ],
         "timer": "00:29:00",
         "light": true,
         "heavy": false,
@@ -12894,6 +13022,11 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Edsall-Class",
+            "Hammann",
+            "II"
         ],
         "timer": "00:15:00",
         "light": true,
@@ -13162,6 +13295,12 @@
             108,
             104
         ],
+        "tag_list": [
+            "Allen M. Sumner-class",
+            "Laffey II",
+            "Laffey",
+            "II"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -13415,6 +13554,9 @@
             108,
             104
         ],
+        "tag_list": [
+            "Fletcher-Class"
+        ],
         "timer": "00:28:00",
         "light": false,
         "heavy": false,
@@ -13667,6 +13809,9 @@
             100,
             108,
             104
+        ],
+        "tag_list": [
+            "Fletcher-Class"
         ],
         "timer": "00:28:00",
         "light": false,
@@ -13932,6 +14077,9 @@
             108,
             104
         ],
+        "tag_list": [
+            "Fletcher-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -14184,6 +14332,10 @@
             100,
             108,
             104
+        ],
+        "tag_list": [
+            "Allen M. Sumner-class",
+            "Collett"
         ],
         "timer": null,
         "light": false,
@@ -14449,6 +14601,9 @@
             108,
             104
         ],
+        "tag_list": [
+            "Fletcher-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -14708,6 +14863,9 @@
             108,
             104
         ],
+        "tag_list": [
+            "Fletcher-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -14956,6 +15114,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Omaha-Class"
         ],
         "timer": "01:05:00",
         "light": true,
@@ -15368,6 +15529,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Omaha-Class"
+        ],
         "timer": "01:05:00",
         "light": true,
         "heavy": true,
@@ -15776,6 +15940,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Brooklyn-Class"
+        ],
         "timer": "01:15:00",
         "light": true,
         "heavy": false,
@@ -16084,6 +16251,9 @@
             101,
             100,
             104
+        ],
+        "tag_list": [
+            "Brooklyn-Class"
         ],
         "timer": "01:15:00",
         "light": true,
@@ -16484,6 +16654,10 @@
             100,
             104
         ],
+        "tag_list": [
+            "Brooklyn-Class",
+            "Helena"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -16782,6 +16956,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Atlanta-Class"
         ],
         "timer": "01:10:00",
         "light": true,
@@ -17215,6 +17392,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Atlanta-Class"
         ],
         "timer": "01:10:00",
         "light": true,
@@ -17651,6 +17831,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Atlanta-Class"
+        ],
         "timer": "01:10:00",
         "light": true,
         "heavy": false,
@@ -17904,6 +18087,9 @@
             101,
             100,
             104
+        ],
+        "tag_list": [
+            "Cleveland-Class"
         ],
         "timer": null,
         "light": false,
@@ -18217,6 +18403,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Cleveland-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -18489,6 +18678,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Omaha-Class"
         ],
         "timer": null,
         "light": false,
@@ -18806,6 +18998,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Brooklyn-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -19099,6 +19294,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Brooklyn-Class"
+        ],
         "timer": "01:15:00",
         "light": true,
         "heavy": false,
@@ -19385,6 +19583,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Cleveland-Class"
+        ],
         "timer": "01:25:00",
         "light": true,
         "heavy": false,
@@ -19636,6 +19837,9 @@
             101,
             100,
             104
+        ],
+        "tag_list": [
+            "Cleveland-Class"
         ],
         "timer": "01:25:00",
         "light": true,
@@ -19906,6 +20110,10 @@
             106,
             104
         ],
+        "tag_list": [
+            "Omaha-Class",
+            "MemphisOrigin"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -20152,6 +20360,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Omaha-Class"
         ],
         "timer": "01:05:00",
         "light": true,
@@ -20404,6 +20615,13 @@
             100,
             104
         ],
+        "tag_list": [
+            "Brooklyn-Class",
+            "Helena-Chan",
+            "Helena",
+            "special",
+            "Little-series"
+        ],
         "timer": "01:10:00",
         "light": true,
         "heavy": false,
@@ -20654,6 +20872,12 @@
             101,
             100,
             104
+        ],
+        "tag_list": [
+            "Cleveland-Class",
+            "Cleveland-Chan",
+            "special",
+            "Little-series"
         ],
         "timer": "01:20:00",
         "light": true,
@@ -20910,6 +21134,13 @@
             107,
             104
         ],
+        "tag_list": [
+            "Atlanta-Class",
+            "Helena-Chan",
+            "Cleveland-Chan",
+            "special",
+            "Little-series"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -21158,6 +21389,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Atlanta-Class"
         ],
         "timer": null,
         "light": false,
@@ -21413,6 +21647,10 @@
             100,
             104
         ],
+        "tag_list": [
+            "Cleveland-Class",
+            "Birmingham"
+        ],
         "timer": "01:25:00",
         "light": false,
         "heavy": false,
@@ -21665,6 +21903,11 @@
             101,
             100,
             104
+        ],
+        "tag_list": [
+            "Cleveland-Class",
+            "μ",
+            "special"
         ],
         "timer": "01:25:00",
         "light": false,
@@ -21919,6 +22162,9 @@
             101,
             100,
             104
+        ],
+        "tag_list": [
+            "Cleveland-Class"
         ],
         "timer": "01:25:00",
         "light": false,
@@ -22206,6 +22452,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Atlanta-Class",
+            "Reno"
+        ],
         "timer": "01:10:00",
         "light": true,
         "heavy": false,
@@ -22453,6 +22703,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Omaha-Class"
         ],
         "timer": "01:05:00",
         "light": true,
@@ -22713,6 +22966,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Brooklyn-Class"
+        ],
         "timer": "01:15:00",
         "light": true,
         "heavy": false,
@@ -22970,6 +23226,9 @@
             101,
             100,
             104
+        ],
+        "tag_list": [
+            "Cleveland-Class"
         ],
         "timer": null,
         "light": false,
@@ -23244,6 +23503,11 @@
             100,
             104
         ],
+        "tag_list": [
+            "Brooklyn-Class",
+            "μ",
+            "special"
+        ],
         "timer": "01:15:00",
         "light": false,
         "heavy": false,
@@ -23508,6 +23772,10 @@
             100,
             104
         ],
+        "tag_list": [
+            "Fargo-Class",
+            "Fargo"
+        ],
         "timer": "01:26:00",
         "light": false,
         "heavy": false,
@@ -23771,6 +24039,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Cleveland-Class"
+        ],
         "timer": "01:25:00",
         "light": false,
         "heavy": false,
@@ -24029,6 +24300,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Cleveland-Class"
+        ],
         "timer": "01:25:00",
         "light": false,
         "heavy": false,
@@ -24280,6 +24554,9 @@
             101,
             100,
             104
+        ],
+        "tag_list": [
+            "Cleveland-Class"
         ],
         "timer": null,
         "light": false,
@@ -24543,6 +24820,9 @@
             102,
             100,
             104
+        ],
+        "tag_list": [
+            "Pensacola-Class"
         ],
         "timer": "01:20:00",
         "light": false,
@@ -24932,6 +25212,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Pensacola-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -25254,6 +25537,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Northampton-Class"
+        ],
         "timer": "01:40:00",
         "light": false,
         "heavy": true,
@@ -25555,6 +25841,9 @@
             102,
             100,
             104
+        ],
+        "tag_list": [
+            "Northampton-Class"
         ],
         "timer": "01:40:00",
         "light": false,
@@ -25875,6 +26164,9 @@
             102,
             100,
             104
+        ],
+        "tag_list": [
+            "Northampton-Class"
         ],
         "timer": "01:40:00",
         "light": false,
@@ -26216,6 +26508,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Portland-Class"
+        ],
         "timer": "01:50:00",
         "light": false,
         "heavy": true,
@@ -26523,6 +26818,10 @@
             102,
             100,
             104
+        ],
+        "tag_list": [
+            "Portland-Class",
+            "Indianapolis"
         ],
         "timer": "01:50:00",
         "light": false,
@@ -26845,6 +27144,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Astoria-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -27096,6 +27398,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Astoria-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -27346,6 +27651,9 @@
             102,
             100,
             104
+        ],
+        "tag_list": [
+            "Astoria-Class"
         ],
         "timer": null,
         "light": false,
@@ -27610,6 +27918,7 @@
             100,
             104
         ],
+        "tag_list": [],
         "timer": "02:30:00",
         "light": false,
         "heavy": true,
@@ -27859,6 +28168,9 @@
             102,
             100,
             104
+        ],
+        "tag_list": [
+            "Astoria-Class"
         ],
         "timer": null,
         "light": false,
@@ -28146,6 +28458,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Astoria-Class"
+        ],
         "timer": "01:56:00",
         "light": false,
         "heavy": false,
@@ -28396,6 +28711,9 @@
             102,
             100,
             104
+        ],
+        "tag_list": [
+            "Astoria-Class"
         ],
         "timer": "01:56:00",
         "light": false,
@@ -28663,6 +28981,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Baltimore-Class"
+        ],
         "timer": "02:00:00",
         "light": false,
         "heavy": false,
@@ -28920,6 +29241,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Baltimore-Class"
+        ],
         "timer": "02:00:00",
         "light": false,
         "heavy": true,
@@ -29170,6 +29494,11 @@
             102,
             100,
             104
+        ],
+        "tag_list": [
+            "Baltimore-Class",
+            "μ",
+            "special"
         ],
         "timer": "02:00:00",
         "light": false,
@@ -29437,6 +29766,10 @@
             100,
             104
         ],
+        "tag_list": [
+            "OregonCity-Class",
+            "NASELF"
+        ],
         "timer": "02:00:00",
         "light": false,
         "heavy": true,
@@ -29686,6 +30019,9 @@
             102,
             100,
             104
+        ],
+        "tag_list": [
+            "Northampton-Class"
         ],
         "timer": null,
         "light": false,
@@ -29943,6 +30279,10 @@
             100,
             104
         ],
+        "tag_list": [
+            "Baltimore-Class",
+            "Pittsburgh"
+        ],
         "timer": "02:00:00",
         "light": false,
         "heavy": false,
@@ -30194,6 +30534,11 @@
             102,
             106,
             104
+        ],
+        "tag_list": [
+            "special",
+            "Little-series",
+            "Anchorage"
         ],
         "timer": null,
         "light": false,
@@ -30451,6 +30796,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Constellation",
+            "Lexington-Class"
         ],
         "timer": "04:16:30",
         "light": false,
@@ -30722,6 +31071,9 @@
             103,
             100,
             104
+        ],
+        "tag_list": [
+            "Nevada-Class"
         ],
         "timer": "04:00:00",
         "light": false,
@@ -31242,6 +31594,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Nevada-Class"
+        ],
         "timer": "04:00:00",
         "light": false,
         "heavy": true,
@@ -31726,6 +32081,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Pennsylvania-Class"
+        ],
         "timer": "04:10:00",
         "light": false,
         "heavy": true,
@@ -32037,6 +32395,10 @@
             100,
             104
         ],
+        "tag_list": [
+            "Pennsylvania-Class",
+            "ArizonaHA"
+        ],
         "timer": "04:10:00",
         "light": false,
         "heavy": true,
@@ -32306,6 +32668,9 @@
             103,
             100,
             104
+        ],
+        "tag_list": [
+            "Tennessee-Class"
         ],
         "timer": "04:20:00",
         "light": false,
@@ -32598,6 +32963,9 @@
             103,
             100,
             104
+        ],
+        "tag_list": [
+            "Tennessee-Class"
         ],
         "timer": "04:20:00",
         "light": false,
@@ -32976,6 +33344,10 @@
             100,
             104
         ],
+        "tag_list": [
+            "Colorado-Class",
+            "Big Seven"
+        ],
         "timer": "04:25:00",
         "light": false,
         "heavy": false,
@@ -33297,6 +33669,10 @@
             103,
             100,
             104
+        ],
+        "tag_list": [
+            "Colorado-Class",
+            "Big Seven"
         ],
         "timer": "04:25:00",
         "light": false,
@@ -33621,6 +33997,10 @@
             100,
             104
         ],
+        "tag_list": [
+            "Colorado-Class",
+            "Big Seven"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -33898,6 +34278,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "North Carolina-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -34163,6 +34546,10 @@
             100,
             104
         ],
+        "tag_list": [
+            "North Carolina-Class",
+            "Washington"
+        ],
         "timer": "04:50:00",
         "light": false,
         "heavy": false,
@@ -34410,6 +34797,10 @@
             103,
             100,
             104
+        ],
+        "tag_list": [
+            "South Dakota-Class",
+            "South Dakota"
         ],
         "timer": null,
         "light": false,
@@ -34659,6 +35050,10 @@
             103,
             100,
             104
+        ],
+        "tag_list": [
+            "South Dakota-Class",
+            "Indiana"
         ],
         "timer": "05:00:00",
         "light": false,
@@ -34916,6 +35311,10 @@
             100,
             104
         ],
+        "tag_list": [
+            "Iowa-Class",
+            "New Jersey"
+        ],
         "timer": "06:30:00",
         "light": false,
         "heavy": true,
@@ -35170,6 +35569,9 @@
             103,
             100,
             104
+        ],
+        "tag_list": [
+            "South Dakota-Class"
         ],
         "timer": "05:00:00",
         "light": false,
@@ -35432,6 +35834,9 @@
             103,
             100,
             104
+        ],
+        "tag_list": [
+            "South Dakota-Class"
         ],
         "timer": "05:00:00",
         "light": false,
@@ -35726,6 +36131,9 @@
             109,
             111,
             104
+        ],
+        "tag_list": [
+            "Eagle Union-CVL"
         ],
         "timer": "02:15:00",
         "light": false,
@@ -36081,6 +36489,10 @@
             109,
             111,
             104
+        ],
+        "tag_list": [
+            "Bogue-Class",
+            "Eagle Union-CVL"
         ],
         "timer": "02:20:00",
         "light": false,
@@ -36571,6 +36983,9 @@
             110,
             104
         ],
+        "tag_list": [
+            "Eagle Union-CVL"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -36843,6 +37258,9 @@
             109,
             109,
             111
+        ],
+        "tag_list": [
+            "Eagle Union-CVL"
         ],
         "timer": "02:00:00",
         "light": false,
@@ -37332,6 +37750,9 @@
             111,
             111
         ],
+        "tag_list": [
+            "Lexington-Class"
+        ],
         "timer": "03:40:00",
         "light": false,
         "heavy": false,
@@ -37757,6 +38178,9 @@
             111,
             111
         ],
+        "tag_list": [
+            "Lexington-Class"
+        ],
         "timer": "03:40:00",
         "light": false,
         "heavy": false,
@@ -38076,6 +38500,9 @@
             110,
             111,
             111
+        ],
+        "tag_list": [
+            "Eagle Union-CVL"
         ],
         "timer": "02:40:00",
         "light": false,
@@ -38594,6 +39021,10 @@
             111,
             110
         ],
+        "tag_list": [
+            "Yorktown-Class",
+            "Yorktown"
+        ],
         "timer": "04:20:00",
         "light": false,
         "heavy": false,
@@ -38865,6 +39296,10 @@
             111,
             110
         ],
+        "tag_list": [
+            "Yorktown-Class",
+            "Enterprize"
+        ],
         "timer": "04:20:00",
         "light": false,
         "heavy": false,
@@ -39100,6 +39535,9 @@
             109,
             111,
             110
+        ],
+        "tag_list": [
+            "Yorktown-Class"
         ],
         "timer": "04:20:00",
         "light": false,
@@ -39365,6 +39803,7 @@
             111,
             110
         ],
+        "tag_list": [],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -39703,6 +40142,11 @@
             111,
             110
         ],
+        "tag_list": [
+            "Essex-Class",
+            "Essex-Class-No-Yorktown",
+            "DetectiveEssex"
+        ],
         "timer": "04:25:00",
         "light": false,
         "heavy": false,
@@ -39959,6 +40403,11 @@
             111,
             110
         ],
+        "tag_list": [
+            "Essex-Class",
+            "Yorktown II",
+            "Yorktown"
+        ],
         "timer": "04:25:00",
         "light": false,
         "heavy": true,
@@ -40201,6 +40650,10 @@
             109,
             111,
             110
+        ],
+        "tag_list": [
+            "Essex-Class",
+            "Essex-Class-No-Yorktown"
         ],
         "timer": "04:25:00",
         "light": false,
@@ -40445,6 +40898,10 @@
             111,
             110
         ],
+        "tag_list": [
+            "Essex-Class",
+            "Essex-Class-No-Yorktown"
+        ],
         "timer": "04:25:00",
         "light": false,
         "heavy": false,
@@ -40688,6 +41145,10 @@
             111,
             110
         ],
+        "tag_list": [
+            "Essex-Class",
+            "Essex-Class-No-Yorktown"
+        ],
         "timer": "04:25:00",
         "light": false,
         "heavy": false,
@@ -40930,6 +41391,10 @@
             109,
             111,
             110
+        ],
+        "tag_list": [
+            "Essex-Class",
+            "Essex-Class-No-Yorktown"
         ],
         "timer": "04:25:00",
         "light": false,
@@ -41175,6 +41640,12 @@
             111,
             110
         ],
+        "tag_list": [
+            "Essex-Class",
+            "Essex-Class-No-Yorktown",
+            "Lexington II",
+            "Lexington"
+        ],
         "timer": "04:25:00",
         "light": false,
         "heavy": false,
@@ -41416,6 +41887,10 @@
             109,
             111,
             110
+        ],
+        "tag_list": [
+            "Essex-Class",
+            "Essex-Class-No-Yorktown"
         ],
         "timer": null,
         "light": false,
@@ -41676,6 +42151,10 @@
             109,
             111,
             110
+        ],
+        "tag_list": [
+            "Essex-Class",
+            "Essex-Class-No-Yorktown"
         ],
         "timer": null,
         "light": false,
@@ -42021,6 +42500,10 @@
             110,
             104
         ],
+        "tag_list": [
+            "Independence-Class",
+            "Eagle Union-CVL"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -42263,6 +42746,11 @@
             110,
             104
         ],
+        "tag_list": [
+            "Independence-Class",
+            "Eagle Union-CVL",
+            "Princeton"
+        ],
         "timer": "02:06:40",
         "light": false,
         "heavy": false,
@@ -42498,6 +42986,11 @@
             109,
             110,
             104
+        ],
+        "tag_list": [
+            "Independence-Class",
+            "Eagle Union-CVL",
+            "Cowpens"
         ],
         "timer": "02:06:40",
         "light": false,
@@ -42735,6 +43228,10 @@
             109,
             110,
             104
+        ],
+        "tag_list": [
+            "Independence-Class",
+            "Eagle Union-CVL"
         ],
         "timer": null,
         "light": false,
@@ -42978,6 +43475,10 @@
             109,
             110,
             104
+        ],
+        "tag_list": [
+            "Independence-Class",
+            "Eagle Union-CVL"
         ],
         "timer": null,
         "light": false,
@@ -43226,6 +43727,11 @@
             109,
             110,
             104
+        ],
+        "tag_list": [
+            "Independence-Class",
+            "Eagle Union-CVL",
+            "SANJ_5"
         ],
         "timer": "02:06:40",
         "light": false,
@@ -43484,6 +43990,10 @@
             111,
             110
         ],
+        "tag_list": [
+            "Essex-Class",
+            "Essex-Class-No-Yorktown"
+        ],
         "timer": "04:25:00",
         "light": false,
         "heavy": false,
@@ -43708,6 +44218,12 @@
             109,
             111,
             110
+        ],
+        "tag_list": [
+            "Yorktown-Class",
+            "special",
+            "Enterprize",
+            "Little-series"
         ],
         "timer": "04:30:00",
         "light": false,
@@ -43959,6 +44475,9 @@
             140,
             140,
             100
+        ],
+        "tag_list": [
+            "Gato-Class"
         ],
         "timer": null,
         "light": false,
@@ -44249,6 +44768,10 @@
             140,
             100
         ],
+        "tag_list": [
+            "Gato-Class",
+            "Albacore"
+        ],
         "timer": "00:24:00",
         "light": false,
         "heavy": false,
@@ -44526,6 +45049,9 @@
             140,
             100
         ],
+        "tag_list": [
+            "Gato-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -44778,6 +45304,9 @@
             140,
             100
         ],
+        "tag_list": [
+            "Gato-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -45026,6 +45555,12 @@
             140,
             140,
             100
+        ],
+        "tag_list": [
+            "Gato-Class",
+            "μ",
+            "Albacore",
+            "special"
         ],
         "timer": "00:24:00",
         "light": false,
@@ -45278,6 +45813,9 @@
             140,
             140,
             100
+        ],
+        "tag_list": [
+            "Balao-Class"
         ],
         "timer": "00:25:00",
         "light": false,
@@ -45540,6 +46078,9 @@
             140,
             100
         ],
+        "tag_list": [
+            "Narwhal-Class"
+        ],
         "timer": "00:23:00",
         "light": false,
         "heavy": false,
@@ -45796,6 +46337,9 @@
             140,
             140,
             100
+        ],
+        "tag_list": [
+            "Gato-Class"
         ],
         "timer": "00:24:00",
         "light": false,
@@ -46056,6 +46600,9 @@
             140,
             100
         ],
+        "tag_list": [
+            "Gato-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -46309,6 +46856,7 @@
             104,
             104
         ],
+        "tag_list": [],
         "timer": "02:00:00",
         "light": true,
         "heavy": false,
@@ -46596,6 +47144,10 @@
             102,
             101,
             104
+        ],
+        "tag_list": [
+            "Alaska-Class",
+            "GUAM"
         ],
         "timer": "04:11:40",
         "light": false,
@@ -46887,6 +47439,9 @@
             104,
             104
         ],
+        "tag_list": [
+            "Plan-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -47175,6 +47730,9 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Plan-Class"
         ],
         "timer": null,
         "light": false,
@@ -47477,6 +48035,10 @@
             106,
             104
         ],
+        "tag_list": [
+            "Plan-Class",
+            "Anchorage"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -47764,6 +48326,9 @@
             103,
             109,
             104
+        ],
+        "tag_list": [
+            "Plan-Class"
         ],
         "timer": null,
         "light": false,
@@ -48076,6 +48641,10 @@
             108,
             104
         ],
+        "tag_list": [
+            "Plan-Class",
+            "Fletcher-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -48363,6 +48932,9 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Plan-Class"
         ],
         "timer": null,
         "light": false,
@@ -48690,6 +49262,7 @@
             106,
             104
         ],
+        "tag_list": [],
         "timer": "00:19:00",
         "light": true,
         "heavy": false,
@@ -49040,6 +49613,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "A-Class"
+        ],
         "timer": "00:19:00",
         "light": true,
         "heavy": false,
@@ -49336,6 +49912,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "A-Class"
+        ],
         "timer": "00:19:00",
         "light": true,
         "heavy": false,
@@ -49582,6 +50161,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "B-Class"
         ],
         "timer": "00:20:00",
         "light": true,
@@ -49973,6 +50555,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "B-Class"
         ],
         "timer": "00:20:00",
         "light": true,
@@ -50403,6 +50988,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "C-Class"
+        ],
         "timer": "00:21:00",
         "light": true,
         "heavy": false,
@@ -50818,6 +51406,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "C-Class"
+        ],
         "timer": "00:21:00",
         "light": true,
         "heavy": false,
@@ -51231,6 +51822,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "C-Class"
         ],
         "timer": "00:21:00",
         "light": true,
@@ -51646,6 +52240,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "F-Class"
+        ],
         "timer": "00:24:00",
         "light": true,
         "heavy": false,
@@ -52055,6 +52652,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "F-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -52379,6 +52979,9 @@
             100,
             108,
             104
+        ],
+        "tag_list": [
+            "G-Class"
         ],
         "timer": "00:25:00",
         "light": false,
@@ -52713,6 +53316,9 @@
             108,
             104
         ],
+        "tag_list": [
+            "G-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -53007,6 +53613,10 @@
             108,
             104
         ],
+        "tag_list": [
+            "G-Class",
+            "Griffin"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -53274,6 +53884,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "H-Class"
+        ],
         "timer": "00:26:00",
         "light": true,
         "heavy": false,
@@ -53519,6 +54132,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "H-Class"
         ],
         "timer": null,
         "light": false,
@@ -53826,6 +54442,10 @@
             100,
             108,
             104
+        ],
+        "tag_list": [
+            "J-Class",
+            "Jersey Skill"
         ],
         "timer": "00:27:00",
         "light": true,
@@ -54346,6 +54966,10 @@
             108,
             104
         ],
+        "tag_list": [
+            "J-Class",
+            "Jersey Skill"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -54655,6 +55279,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Old V-Class"
+        ],
         "timer": "00:18:00",
         "light": false,
         "heavy": false,
@@ -54901,6 +55528,10 @@
             108,
             104
         ],
+        "tag_list": [
+            "J-Class",
+            "Jersey Skill"
+        ],
         "timer": "00:27:00",
         "light": true,
         "heavy": false,
@@ -55146,6 +55777,9 @@
             100,
             108,
             104
+        ],
+        "tag_list": [
+            "J-Class"
         ],
         "timer": "00:27:00",
         "light": true,
@@ -55429,6 +56063,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "M-Class"
+        ],
         "timer": "00:29:00",
         "light": false,
         "heavy": false,
@@ -55674,6 +56311,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "M-Class"
         ],
         "timer": null,
         "light": false,
@@ -55921,6 +56561,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "E-Class"
+        ],
         "timer": "00:28:00",
         "light": false,
         "heavy": false,
@@ -56166,6 +56809,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Tribal-Class"
         ],
         "timer": "00:29:00",
         "light": true,
@@ -56419,6 +57065,9 @@
             100,
             108,
             104
+        ],
+        "tag_list": [
+            "I-Class"
         ],
         "timer": null,
         "light": false,
@@ -56674,6 +57323,11 @@
             108,
             104
         ],
+        "tag_list": [
+            "J-Class",
+            "Jervis",
+            "Jersey Skill"
+        ],
         "timer": "00:27:00",
         "light": true,
         "heavy": false,
@@ -56927,6 +57581,10 @@
             100,
             108,
             104
+        ],
+        "tag_list": [
+            "J-Class",
+            "Jersey Skill"
         ],
         "timer": "00:27:00",
         "light": true,
@@ -57188,6 +57846,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "H-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -57440,6 +58101,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Tribal-Class"
         ],
         "timer": "00:29:00",
         "light": false,
@@ -57713,6 +58377,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Battle-Class",
+            "Trafalgar"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -57965,6 +58633,9 @@
             100,
             108,
             104
+        ],
+        "tag_list": [
+            "G-Class"
         ],
         "timer": "00:25:00",
         "light": false,
@@ -58256,6 +58927,9 @@
             101,
             107,
             104
+        ],
+        "tag_list": [
+            "Leander-Class"
         ],
         "timer": "01:15:00",
         "light": true,
@@ -58698,6 +59372,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Leander-Class"
+        ],
         "timer": "01:15:00",
         "light": true,
         "heavy": false,
@@ -59040,6 +59717,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Leander-Class"
+        ],
         "timer": "01:15:00",
         "light": true,
         "heavy": false,
@@ -59367,6 +60047,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Dido-Class"
+        ],
         "timer": "00:55:00",
         "light": false,
         "heavy": false,
@@ -59622,6 +60305,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Town-Class"
         ],
         "timer": "01:25:00",
         "light": true,
@@ -59906,6 +60592,10 @@
             106,
             104
         ],
+        "tag_list": [
+            "Town-Class",
+            "Sheffield"
+        ],
         "timer": "01:25:00",
         "light": false,
         "heavy": false,
@@ -60161,6 +60851,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Town-Class"
         ],
         "timer": "01:25:00",
         "light": true,
@@ -60418,6 +61111,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Town-Class"
         ],
         "timer": "01:25:00",
         "light": false,
@@ -60678,6 +61374,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Town-Class"
         ],
         "timer": null,
         "light": false,
@@ -61047,6 +61746,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Town-Class"
+        ],
         "timer": "01:25:00",
         "light": true,
         "heavy": false,
@@ -61294,6 +61996,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Arethusa-Class"
         ],
         "timer": null,
         "light": false,
@@ -61604,6 +62309,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Arethusa-Class"
         ],
         "timer": null,
         "light": false,
@@ -61922,6 +62630,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Arethusa-Class"
+        ],
         "timer": "01:20:00",
         "light": true,
         "heavy": false,
@@ -62169,6 +62880,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Crown Colony-Class"
         ],
         "timer": null,
         "light": false,
@@ -62432,6 +63146,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Crown Colony-Class"
+        ],
         "timer": "01:22:00",
         "light": false,
         "heavy": false,
@@ -62685,6 +63402,11 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Town-Class",
+            "special",
+            "Little-series"
         ],
         "timer": "01:20:00",
         "light": true,
@@ -62986,6 +63708,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Town-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -63243,6 +63968,9 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Dido-Class"
         ],
         "timer": "00:55:00",
         "light": false,
@@ -63536,6 +64264,9 @@
             104,
             104
         ],
+        "tag_list": [
+            "Ceres-Class"
+        ],
         "timer": "01:07:00",
         "light": true,
         "heavy": false,
@@ -63828,6 +64559,9 @@
             104,
             104
         ],
+        "tag_list": [
+            "Ceres-Class"
+        ],
         "timer": "01:07:00",
         "light": true,
         "heavy": false,
@@ -64082,6 +64816,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Swiftsure-Class"
         ],
         "timer": "01:25:00",
         "light": true,
@@ -64339,6 +65076,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Dido-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -64594,6 +65334,12 @@
             106,
             104
         ],
+        "tag_list": [
+            "Town-Class",
+            "μ",
+            "special",
+            "Sheffield"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -64848,6 +65594,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Town-Class"
         ],
         "timer": "01:25:00",
         "light": true,
@@ -65139,6 +65888,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Dido-Class"
+        ],
         "timer": "00:55:00",
         "light": true,
         "heavy": false,
@@ -65406,6 +66158,11 @@
             106,
             104
         ],
+        "tag_list": [
+            "Dido-Class",
+            "μ",
+            "special"
+        ],
         "timer": "00:55:00",
         "light": false,
         "heavy": false,
@@ -65662,6 +66419,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Arethusa-Class"
         ],
         "timer": "01:20:00",
         "light": false,
@@ -65926,6 +66686,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Dido-Class"
+        ],
         "timer": "00:55:00",
         "light": true,
         "heavy": false,
@@ -66183,6 +66946,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Dido-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -66438,6 +67204,9 @@
             101,
             107,
             104
+        ],
+        "tag_list": [
+            "Emerald-Class"
         ],
         "timer": "01:07:00",
         "light": true,
@@ -66701,6 +67470,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Dido-Class"
+        ],
         "timer": "00:55:00",
         "light": false,
         "heavy": false,
@@ -66961,6 +67733,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Town-Class"
         ],
         "timer": "01:25:00",
         "light": false,
@@ -67224,6 +67999,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Dido-Class"
+        ],
         "timer": "00:55:00",
         "light": false,
         "heavy": false,
@@ -67478,6 +68256,10 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Crown Colony-Class",
+            "Trinidad"
         ],
         "timer": null,
         "light": false,
@@ -67739,6 +68521,10 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Swiftsure-Class",
+            "Superb"
         ],
         "timer": null,
         "light": false,
@@ -68065,6 +68851,9 @@
             102,
             107,
             104
+        ],
+        "tag_list": [
+            "County-Class"
         ],
         "timer": "01:30:00",
         "light": false,
@@ -68426,6 +69215,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "County-Class"
+        ],
         "timer": "01:30:00",
         "light": false,
         "heavy": true,
@@ -68727,6 +69519,9 @@
             102,
             107,
             104
+        ],
+        "tag_list": [
+            "County-Class"
         ],
         "timer": "01:30:00",
         "light": false,
@@ -69078,6 +69873,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "County-Class"
+        ],
         "timer": "01:30:00",
         "light": false,
         "heavy": true,
@@ -69375,6 +70173,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "County-Class"
+        ],
         "timer": "01:30:00",
         "light": false,
         "heavy": true,
@@ -69669,6 +70470,9 @@
             102,
             107,
             104
+        ],
+        "tag_list": [
+            "County-Class"
         ],
         "timer": "01:30:00",
         "light": false,
@@ -69976,6 +70780,9 @@
             102,
             107,
             104
+        ],
+        "tag_list": [
+            "York-Class"
         ],
         "timer": "01:45:00",
         "light": false,
@@ -70321,6 +71128,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "York-Class"
+        ],
         "timer": "01:45:00",
         "light": false,
         "heavy": false,
@@ -70601,6 +71411,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "County-Class"
+        ],
         "timer": "01:30:00",
         "light": false,
         "heavy": true,
@@ -70852,6 +71665,10 @@
             102,
             107,
             104
+        ],
+        "tag_list": [
+            "special",
+            "Little-series"
         ],
         "timer": null,
         "light": false,
@@ -71112,6 +71929,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "County-Class",
+            "Devonshire"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -71371,6 +72192,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Surrey-Class",
+            "Surrey"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -71618,6 +72443,9 @@
             103,
             100,
             104
+        ],
+        "tag_list": [
+            "Renown-Class"
         ],
         "timer": "04:10:00",
         "light": false,
@@ -71878,6 +72706,10 @@
             103,
             100,
             104
+        ],
+        "tag_list": [
+            "Renown-Class",
+            "bunao"
         ],
         "timer": "04:10:00",
         "light": false,
@@ -72173,6 +73005,7 @@
             100,
             104
         ],
+        "tag_list": [],
         "timer": "05:50:00",
         "light": false,
         "heavy": true,
@@ -72407,6 +73240,11 @@
             100,
             104
         ],
+        "tag_list": [
+            "Renown-Class",
+            "special",
+            "Little-series"
+        ],
         "timer": "04:10:00",
         "light": false,
         "heavy": true,
@@ -72636,6 +73474,11 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "QE-Class",
+            "QE",
+            "QE_1914"
         ],
         "timer": "04:10:00",
         "light": false,
@@ -73057,6 +73900,9 @@
             101,
             104
         ],
+        "tag_list": [
+            "QE-Class"
+        ],
         "timer": "04:10:00",
         "light": false,
         "heavy": true,
@@ -73380,6 +74226,10 @@
             101,
             104
         ],
+        "tag_list": [
+            "Nelson-Class",
+            "Big Seven"
+        ],
         "timer": "04:40:00",
         "light": false,
         "heavy": true,
@@ -73640,6 +74490,11 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Nelson-Class",
+            "Big Seven",
+            "luodeni"
         ],
         "timer": "04:40:00",
         "light": false,
@@ -73934,6 +74789,9 @@
             101,
             104
         ],
+        "tag_list": [
+            "KGV-Class"
+        ],
         "timer": "04:50:00",
         "light": false,
         "heavy": false,
@@ -74176,6 +75034,10 @@
             101,
             104
         ],
+        "tag_list": [
+            "KGV-Class",
+            "bunao"
+        ],
         "timer": "04:50:00",
         "light": false,
         "heavy": false,
@@ -74412,6 +75274,9 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "KGV-Class"
         ],
         "timer": "04:50:00",
         "light": false,
@@ -74662,6 +75527,9 @@
             101,
             104
         ],
+        "tag_list": [
+            "KGV-Class"
+        ],
         "timer": "04:50:00",
         "light": false,
         "heavy": true,
@@ -74897,6 +75765,9 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "QE-Class"
         ],
         "timer": "04:10:00",
         "light": false,
@@ -75134,6 +76005,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Revenge-Class",
+            "Revenge"
         ],
         "timer": "04:10:00",
         "light": false,
@@ -75381,6 +76256,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Vanguard"
+        ],
         "timer": "05:20:00",
         "light": false,
         "heavy": true,
@@ -75623,6 +76501,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Revenge-Class",
+            "Royal Oak"
         ],
         "timer": "04:10:00",
         "light": false,
@@ -75878,6 +76760,9 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Lion"
         ],
         "timer": "06:20:00",
         "light": false,
@@ -76151,6 +77036,9 @@
             114,
             114,
             104
+        ],
+        "tag_list": [
+            "Royal Fleet-CVL"
         ],
         "timer": "02:10:00",
         "light": false,
@@ -76610,6 +77498,10 @@
             114,
             104
         ],
+        "tag_list": [
+            "Royal Fleet-CVL",
+            "Argus"
+        ],
         "timer": "02:10:00",
         "light": true,
         "heavy": false,
@@ -76935,6 +77827,9 @@
             114,
             104
         ],
+        "tag_list": [
+            "Royal Fleet-CVL"
+        ],
         "timer": "02:30:00",
         "light": false,
         "heavy": false,
@@ -77220,6 +78115,10 @@
             113,
             114
         ],
+        "tag_list": [
+            "Centaur-Class",
+            "Royal Fleet-CVL"
+        ],
         "timer": "03:00:00",
         "light": false,
         "heavy": false,
@@ -77469,6 +78368,11 @@
             113,
             114,
             104
+        ],
+        "tag_list": [
+            "Bogue-Class",
+            "Attacker-Class",
+            "Royal Fleet-CVL"
         ],
         "timer": "02:20:00",
         "light": false,
@@ -77726,6 +78630,10 @@
             114,
             104
         ],
+        "tag_list": [
+            "Colossus-Class",
+            "Royal Fleet-CVL"
+        ],
         "timer": "02:30:00",
         "light": false,
         "heavy": false,
@@ -77972,6 +78880,10 @@
             113,
             114
         ],
+        "tag_list": [
+            "Centaur-Class",
+            "Royal Fleet-CVL"
+        ],
         "timer": "03:00:00",
         "light": false,
         "heavy": false,
@@ -78217,6 +79129,10 @@
             115,
             114
         ],
+        "tag_list": [
+            "Colossus-Class",
+            "Royal Fleet-CVL"
+        ],
         "timer": "02:30:00",
         "light": false,
         "heavy": false,
@@ -78459,6 +79375,7 @@
             114,
             115
         ],
+        "tag_list": [],
         "timer": "02:00:00",
         "light": false,
         "heavy": false,
@@ -78737,6 +79654,7 @@
             114,
             115
         ],
+        "tag_list": [],
         "timer": "04:00:00",
         "light": false,
         "heavy": false,
@@ -79004,6 +79922,10 @@
             113,
             114
         ],
+        "tag_list": [
+            "Illustrious-Class",
+            "Armor-CV"
+        ],
         "timer": "04:30:00",
         "light": false,
         "heavy": false,
@@ -79251,6 +80173,10 @@
             113,
             115,
             114
+        ],
+        "tag_list": [
+            "Illustrious-Class",
+            "Armor-CV"
         ],
         "timer": "04:30:00",
         "light": false,
@@ -79522,6 +80448,11 @@
             114,
             114
         ],
+        "tag_list": [
+            "Illustrious-Class",
+            "Armor-CV",
+            "Formidable"
+        ],
         "timer": "04:30:00",
         "light": false,
         "heavy": false,
@@ -79769,6 +80700,9 @@
             113,
             114,
             114
+        ],
+        "tag_list": [
+            "Courageous-Class"
         ],
         "timer": "03:50:00",
         "light": false,
@@ -80027,6 +80961,10 @@
             115,
             114
         ],
+        "tag_list": [
+            "Implacable-Class",
+            "Armor-CV"
+        ],
         "timer": "04:35:00",
         "light": false,
         "heavy": true,
@@ -80259,6 +81197,12 @@
             113,
             113,
             114
+        ],
+        "tag_list": [
+            "Illustrious-Class",
+            "Armor-CV",
+            "special",
+            "Little-series"
         ],
         "timer": "04:30:00",
         "light": false,
@@ -80493,6 +81437,12 @@
             113,
             113,
             114
+        ],
+        "tag_list": [
+            "Illustrious-Class",
+            "Armor-CV",
+            "μ",
+            "special"
         ],
         "timer": null,
         "light": false,
@@ -80737,6 +81687,10 @@
             113,
             114
         ],
+        "tag_list": [
+            "Illustrious-Class",
+            "Armor-CV"
+        ],
         "timer": "04:30:00",
         "light": false,
         "heavy": false,
@@ -80976,6 +81930,13 @@
             113,
             114,
             114
+        ],
+        "tag_list": [
+            "Illustrious-Class",
+            "Armor-CV",
+            "Formidable",
+            "special",
+            "Little-series"
         ],
         "timer": null,
         "light": false,
@@ -81219,6 +82180,13 @@
             114,
             114
         ],
+        "tag_list": [
+            "Illustrious-Class",
+            "Armor-CV",
+            "μ",
+            "special",
+            "Formidable"
+        ],
         "timer": "04:30:00",
         "light": false,
         "heavy": false,
@@ -81446,6 +82414,9 @@
             103,
             100,
             104
+        ],
+        "tag_list": [
+            "Erebus-Class"
         ],
         "timer": "01:00:00",
         "light": false,
@@ -81706,6 +82677,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Erebus-Class"
+        ],
         "timer": "01:00:00",
         "light": false,
         "heavy": true,
@@ -81962,6 +82936,9 @@
             103,
             100,
             104
+        ],
+        "tag_list": [
+            "Roberts-Class"
         ],
         "timer": "01:05:00",
         "light": false,
@@ -82266,6 +83243,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Plan-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -82556,6 +83536,10 @@
             101,
             104
         ],
+        "tag_list": [
+            "Plan-Class",
+            "KGV-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -82844,6 +83828,9 @@
             102,
             107,
             104
+        ],
+        "tag_list": [
+            "Plan-Class"
         ],
         "timer": null,
         "light": false,
@@ -83165,6 +84152,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Plan-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -83452,6 +84442,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Plan-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -83726,6 +84719,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Plan-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -83989,6 +84985,9 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Special Type"
         ],
         "timer": "00:23:00",
         "light": true,
@@ -84258,6 +85257,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Special Type"
+        ],
         "timer": "00:23:00",
         "light": false,
         "heavy": false,
@@ -84510,6 +85512,10 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Special Type",
+            "Musashi-Game"
         ],
         "timer": null,
         "light": false,
@@ -84813,6 +85819,9 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Special Type"
         ],
         "timer": "00:23:00",
         "light": true,
@@ -85333,6 +86342,10 @@
             106,
             104
         ],
+        "tag_list": [
+            "Special Type",
+            "Division 6"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -85600,6 +86613,10 @@
             106,
             104
         ],
+        "tag_list": [
+            "Special Type",
+            "Division 6"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -85844,6 +86861,10 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Special Type",
+            "Division 6"
         ],
         "timer": null,
         "light": false,
@@ -86115,6 +87136,10 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Special Type",
+            "Division 6"
         ],
         "timer": null,
         "light": false,
@@ -86478,6 +87503,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Shiratsuyu-Class"
         ],
         "timer": null,
         "light": false,
@@ -86871,6 +87899,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Shiratsuyu-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -87180,6 +88211,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Shiratsuyu-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -87487,6 +88521,10 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Kagero-Class",
+            "Yukikaze"
         ],
         "timer": "00:27:00",
         "light": false,
@@ -87797,6 +88835,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Kagero-Class"
         ],
         "timer": null,
         "light": false,
@@ -88156,6 +89197,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Kagero-Class",
+            "Shiranui"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -88470,6 +89515,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Kagero-Class"
+        ],
         "timer": "00:27:00",
         "light": false,
         "heavy": false,
@@ -88759,6 +89807,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Hatsuharu-Class"
+        ],
         "timer": "00:25:00",
         "light": true,
         "heavy": false,
@@ -89004,6 +90055,9 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Hatsuharu-Class"
         ],
         "timer": "00:25:00",
         "light": true,
@@ -89294,6 +90348,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Hatsuharu-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -89582,6 +90639,9 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Hatsuharu-Class"
         ],
         "timer": null,
         "light": false,
@@ -89872,6 +90932,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Hatsuharu-Class"
+        ],
         "timer": "00:25:00",
         "light": true,
         "heavy": false,
@@ -90126,6 +91189,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Kagero-Class"
+        ],
         "timer": "00:27:00",
         "light": false,
         "heavy": false,
@@ -90379,6 +91445,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Kagero-Class"
         ],
         "timer": "00:27:00",
         "light": false,
@@ -90642,6 +91711,9 @@
             100,
             108,
             104
+        ],
+        "tag_list": [
+            "Shimakaze-Class"
         ],
         "timer": "00:30:00",
         "light": false,
@@ -90932,6 +92004,9 @@
             105,
             104
         ],
+        "tag_list": [
+            "Kamikaze-Class"
+        ],
         "timer": "00:20:00",
         "light": true,
         "heavy": false,
@@ -91221,6 +92296,9 @@
             100,
             105,
             104
+        ],
+        "tag_list": [
+            "Kamikaze-Class"
         ],
         "timer": "00:20:00",
         "light": true,
@@ -91523,6 +92601,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Mutsuki-Class"
+        ],
         "timer": "00:21:00",
         "light": true,
         "heavy": false,
@@ -91824,6 +92905,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Mutsuki-Class"
+        ],
         "timer": "00:21:00",
         "light": true,
         "heavy": false,
@@ -92069,6 +93153,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Mutsuki-Class"
+        ],
         "timer": "00:21:00",
         "light": true,
         "heavy": false,
@@ -92313,6 +93400,9 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Mutsuki-Class"
         ],
         "timer": null,
         "light": false,
@@ -92629,6 +93719,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Mutsuki-Class"
+        ],
         "timer": "00:21:00",
         "light": true,
         "heavy": false,
@@ -92875,6 +93968,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Mutsuki-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -93119,6 +94215,9 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Mutsuki-Class"
         ],
         "timer": null,
         "light": false,
@@ -93426,6 +94525,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Shiratsuyu-Class"
+        ],
         "timer": "00:25:00",
         "light": true,
         "heavy": false,
@@ -93679,6 +94781,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Shiratsuyu-Class"
         ],
         "timer": null,
         "light": false,
@@ -93952,6 +95057,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Shiratsuyu-Class",
+            "Musashi-Game"
+        ],
         "timer": "00:25:00",
         "light": false,
         "heavy": false,
@@ -94206,6 +95315,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Yugumo-Class"
+        ],
         "timer": "00:27:00",
         "light": true,
         "heavy": false,
@@ -94458,6 +95570,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Akizuki-Class"
         ],
         "timer": null,
         "light": false,
@@ -94727,6 +95842,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Akizuki-Class",
+            "Musashi-Game"
+        ],
         "timer": "00:29:00",
         "light": false,
         "heavy": false,
@@ -94974,6 +96093,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Akizuki-Class"
+        ],
         "timer": "00:29:00",
         "light": false,
         "heavy": false,
@@ -95220,6 +96342,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Kagero-Class"
+        ],
         "timer": "00:27:00",
         "light": true,
         "heavy": false,
@@ -95465,6 +96590,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Kagero-Class"
         ],
         "timer": "00:27:00",
         "light": true,
@@ -95755,6 +96883,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Kagero-Class",
+            "Hamakaze"
+        ],
         "timer": "00:27:00",
         "light": true,
         "heavy": false,
@@ -96043,6 +97175,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Kagero-Class"
+        ],
         "timer": "00:27:00",
         "light": true,
         "heavy": false,
@@ -96297,6 +97432,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Asashio-Class",
+            "Division 8"
+        ],
         "timer": "00:28:00",
         "light": true,
         "heavy": false,
@@ -96541,6 +97680,10 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Asashio-Class",
+            "Division 8"
         ],
         "timer": "00:28:00",
         "light": true,
@@ -96787,6 +97930,10 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Asashio-Class",
+            "Division 8"
         ],
         "timer": null,
         "light": false,
@@ -97055,6 +98202,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Asashio-Class",
+            "Division 8"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -97308,6 +98459,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Special Type"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -97553,6 +98707,10 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Kamikaze-Class",
+            "Musashi-Game"
         ],
         "timer": "00:20:00",
         "light": true,
@@ -97807,6 +98965,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Yugumo-Class"
         ],
         "timer": null,
         "light": false,
@@ -98156,6 +99317,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Asashio-Class",
+            "pupu"
+        ],
         "timer": "00:28:00",
         "light": false,
         "heavy": false,
@@ -98402,6 +99567,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Akizuki-Class"
         ],
         "timer": "00:29:00",
         "light": false,
@@ -98657,6 +99825,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Yugumo-Class"
         ],
         "timer": "00:27:00",
         "light": false,
@@ -98931,6 +100102,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Akizuki-Class",
+            "Musashi-Game"
+        ],
         "timer": "00:29:00",
         "light": true,
         "heavy": false,
@@ -99176,6 +100351,9 @@
             100,
             105,
             104
+        ],
+        "tag_list": [
+            "Kamikaze-Class"
         ],
         "timer": "00:20:00",
         "light": true,
@@ -99432,6 +100610,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Kazagumo-Class"
+        ],
         "timer": "00:27:00",
         "light": false,
         "heavy": false,
@@ -99684,6 +100865,10 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Akizuki-Class",
+            "Musashi-Game"
         ],
         "timer": "00:29:00",
         "light": true,
@@ -99944,6 +101129,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Akizuki-Class",
+            "Musashi-Game"
+        ],
         "timer": "00:29:00",
         "light": false,
         "heavy": false,
@@ -100197,6 +101386,9 @@
             105,
             104
         ],
+        "tag_list": [
+            "Kamikaze-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -100449,6 +101641,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Yugumo-Class"
         ],
         "timer": "00:27:00",
         "light": false,
@@ -100708,6 +101903,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Yugumo-Class"
         ],
         "timer": null,
         "light": false,
@@ -100976,6 +102174,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Yugumo-Class"
         ],
         "timer": null,
         "light": false,
@@ -101333,6 +102534,7 @@
             105,
             104
         ],
+        "tag_list": [],
         "timer": "01:12:00",
         "light": true,
         "heavy": false,
@@ -101592,6 +102794,9 @@
             101,
             107,
             104
+        ],
+        "tag_list": [
+            "Nagara-Class"
         ],
         "timer": "01:05:00",
         "light": true,
@@ -101885,6 +103090,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Nagara-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -102167,6 +103375,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Nagara-Class",
+            "FullBurst2"
+        ],
         "timer": "01:05:00",
         "light": false,
         "heavy": false,
@@ -102428,6 +103640,9 @@
             101,
             107,
             104
+        ],
+        "tag_list": [
+            "Nagara-Class"
         ],
         "timer": "01:05:00",
         "light": true,
@@ -102721,6 +103936,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Nagara-Class",
+            "Musashi-Game"
+        ],
         "timer": "01:05:00",
         "light": false,
         "heavy": false,
@@ -103009,6 +104228,9 @@
             101,
             107,
             104
+        ],
+        "tag_list": [
+            "Nagara-Class"
         ],
         "timer": null,
         "light": false,
@@ -103438,6 +104660,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Mogami-Class"
+        ],
         "timer": "01:48:00",
         "light": false,
         "heavy": false,
@@ -103714,6 +104939,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Mogami-Class"
         ],
         "timer": "01:48:00",
         "light": false,
@@ -104016,6 +105244,9 @@
             101,
             105,
             104
+        ],
+        "tag_list": [
+            "Sendai-Class"
         ],
         "timer": null,
         "light": false,
@@ -104328,6 +105559,10 @@
             105,
             104
         ],
+        "tag_list": [
+            "Sendai-Class",
+            "Musashi-Game"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -104597,6 +105832,9 @@
             105,
             104
         ],
+        "tag_list": [
+            "Sendai-Class"
+        ],
         "timer": "01:20:00",
         "light": true,
         "heavy": false,
@@ -104851,6 +106089,10 @@
             101,
             107,
             104
+        ],
+        "tag_list": [
+            "Agano-Class",
+            "Agano"
         ],
         "timer": null,
         "light": false,
@@ -105142,6 +106384,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Agano-Class",
+            "Noshiro"
+        ],
         "timer": "01:20:00",
         "light": false,
         "heavy": false,
@@ -105403,6 +106649,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Agano-Class",
+            "Musashi-Game"
+        ],
         "timer": "01:20:00",
         "light": true,
         "heavy": false,
@@ -105662,6 +106912,12 @@
             101,
             107,
             104
+        ],
+        "tag_list": [
+            "Agano-Class",
+            "μ",
+            "special",
+            "Noshiro"
         ],
         "timer": "01:20:00",
         "light": false,
@@ -105933,6 +107189,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Watarase"
+        ],
         "timer": "01:22:00",
         "light": false,
         "heavy": false,
@@ -106201,6 +107460,9 @@
             105,
             104
         ],
+        "tag_list": [
+            "Sendai-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -106462,6 +107724,9 @@
             105,
             104
         ],
+        "tag_list": [
+            "Sendai-Class"
+        ],
         "timer": "01:22:00",
         "light": false,
         "heavy": false,
@@ -106717,6 +107982,9 @@
             105,
             104
         ],
+        "tag_list": [
+            "Sendai-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -106971,6 +108239,9 @@
             101,
             105,
             104
+        ],
+        "tag_list": [
+            "Sendai-Class"
         ],
         "timer": "01:20:00",
         "light": false,
@@ -107258,6 +108529,9 @@
             102,
             107,
             104
+        ],
+        "tag_list": [
+            "Furutaka-Class"
         ],
         "timer": null,
         "light": false,
@@ -107601,6 +108875,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Furutaka-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -107901,6 +109178,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Aoba-Class"
+        ],
         "timer": "01:30:00",
         "light": false,
         "heavy": true,
@@ -108145,6 +109425,9 @@
             102,
             107,
             104
+        ],
+        "tag_list": [
+            "Aoba-Class"
         ],
         "timer": "01:30:00",
         "light": false,
@@ -108409,6 +109692,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Tone-Class"
+        ],
         "timer": "02:05:00",
         "light": false,
         "heavy": true,
@@ -108666,6 +109952,9 @@
             102,
             106,
             104
+        ],
+        "tag_list": [
+            "Myoko-Class"
         ],
         "timer": null,
         "light": false,
@@ -109005,6 +110294,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Myoko-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -109294,6 +110586,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Myoko-Class"
+        ],
         "timer": "01:55:00",
         "light": false,
         "heavy": false,
@@ -109573,6 +110868,11 @@
             102,
             106,
             104
+        ],
+        "tag_list": [
+            "Myoko-Class",
+            "Musashi-Game",
+            "Haguro"
         ],
         "timer": "01:55:00",
         "light": false,
@@ -109871,6 +111171,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Takao-Class"
+        ],
         "timer": "02:05:00",
         "light": false,
         "heavy": true,
@@ -110143,6 +111446,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Takao-Class"
+        ],
         "timer": "02:05:00",
         "light": false,
         "heavy": false,
@@ -110400,6 +111706,9 @@
             102,
             107,
             104
+        ],
+        "tag_list": [
+            "Takao-Class"
         ],
         "timer": null,
         "light": false,
@@ -110688,6 +111997,9 @@
             105,
             104
         ],
+        "tag_list": [
+            "Takao-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -110973,6 +112285,9 @@
             102,
             106,
             104
+        ],
+        "tag_list": [
+            "Mogami-Class"
         ],
         "timer": "01:48:00",
         "light": false,
@@ -111261,6 +112576,9 @@
             102,
             106,
             104
+        ],
+        "tag_list": [
+            "Mogami-Class"
         ],
         "timer": null,
         "light": false,
@@ -111591,6 +112909,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Unzen-Class",
+            "yunxianzhiyuan"
+        ],
         "timer": "02:11:00",
         "light": false,
         "heavy": false,
@@ -111853,6 +113175,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Ibuki-Class"
+        ],
         "timer": "02:10:00",
         "light": false,
         "heavy": false,
@@ -112105,6 +113430,11 @@
             107,
             104
         ],
+        "tag_list": [
+            "Unzen-Class",
+            "yunxianzhiyuan",
+            "special"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -112334,6 +113664,10 @@
             101,
             104
         ],
+        "tag_list": [
+            "Kongo-Class",
+            "Musashi-Game"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -112562,6 +113896,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Kongo-Class",
+            "Musashi-Game"
         ],
         "timer": "04:10:00",
         "light": false,
@@ -112815,6 +114153,10 @@
             101,
             104
         ],
+        "tag_list": [
+            "Kongo-Class",
+            "Musashi-Game"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -113049,6 +114391,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Kongo-Class",
+            "Musashi-Game"
         ],
         "timer": "04:10:00",
         "light": false,
@@ -113297,6 +114643,9 @@
             101,
             104
         ],
+        "tag_list": [
+            "Amagi-Class"
+        ],
         "timer": "04:25:00",
         "light": false,
         "heavy": false,
@@ -113533,6 +114882,11 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Kongo-Class",
+            "special",
+            "Little-series"
         ],
         "timer": "04:05:00",
         "light": false,
@@ -113787,6 +115141,11 @@
             101,
             104
         ],
+        "tag_list": [
+            "Amagi-Class",
+            "special",
+            "Little-series"
+        ],
         "timer": "04:25:00",
         "light": false,
         "heavy": true,
@@ -114027,6 +115386,12 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Kongo-Class",
+            "Musashi-Game",
+            "μ",
+            "special"
         ],
         "timer": "04:10:00",
         "light": false,
@@ -114355,6 +115720,9 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Fuso-Class"
         ],
         "timer": null,
         "light": false,
@@ -114699,6 +116067,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Fuso-Class",
+            "Musashi-Game"
         ],
         "timer": null,
         "light": false,
@@ -115056,6 +116428,9 @@
             101,
             104
         ],
+        "tag_list": [
+            "Ise-Class"
+        ],
         "timer": "04:25:00",
         "light": false,
         "heavy": true,
@@ -115396,6 +116771,9 @@
             101,
             104
         ],
+        "tag_list": [
+            "Ise-Class"
+        ],
         "timer": "04:25:00",
         "light": false,
         "heavy": true,
@@ -115634,6 +117012,11 @@
             101,
             104
         ],
+        "tag_list": [
+            "Nagato-Class",
+            "Big Seven",
+            "Musashi-Game"
+        ],
         "timer": "04:20:00",
         "light": false,
         "heavy": false,
@@ -115862,6 +117245,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Nagato-Class",
+            "Big Seven"
         ],
         "timer": null,
         "light": false,
@@ -116105,6 +117492,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Tosa-Class",
+            "Kaga"
         ],
         "timer": "04:30:00",
         "light": false,
@@ -116361,6 +117752,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Tosa-Class",
+            "Tosa"
         ],
         "timer": "04:30:00",
         "light": false,
@@ -116625,6 +118020,11 @@
             101,
             104
         ],
+        "tag_list": [
+            "Yamato-Class",
+            "Musashi",
+            "Musashi-Game"
+        ],
         "timer": "05:15:00",
         "light": false,
         "heavy": true,
@@ -116861,6 +118261,10 @@
             103,
             101,
             100
+        ],
+        "tag_list": [
+            "Mikasa",
+            "Musashi-Game"
         ],
         "timer": "03:30:00",
         "light": false,
@@ -117099,6 +118503,9 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Kii-Class"
         ],
         "timer": "04:20:00",
         "light": false,
@@ -117349,6 +118756,10 @@
             101,
             104
         ],
+        "tag_list": [
+            "Kii-Class",
+            "Owari"
+        ],
         "timer": "04:20:00",
         "light": false,
         "heavy": false,
@@ -117587,6 +118998,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Kii-Class",
+            "Suruga"
         ],
         "timer": "04:20:00",
         "light": false,
@@ -117829,6 +119244,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Kii-Class",
+            "Oumi"
         ],
         "timer": "04:20:00",
         "light": false,
@@ -118074,6 +119493,13 @@
             101,
             104
         ],
+        "tag_list": [
+            "Yamato-Class",
+            "Musashi",
+            "Little-Musashi",
+            "special",
+            "Little-series"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -118301,6 +119727,10 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "Hiyo-class",
+            "Hiyō"
         ],
         "timer": null,
         "light": false,
@@ -118561,6 +119991,10 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "Hiyo-class",
+            "Jun'yō"
         ],
         "timer": null,
         "light": false,
@@ -118849,6 +120283,7 @@
             117,
             118
         ],
+        "tag_list": [],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -119117,6 +120552,10 @@
             117,
             118,
             104
+        ],
+        "tag_list": [
+            "Zuihou",
+            "Shouhou-Class"
         ],
         "timer": "02:22:00",
         "light": false,
@@ -119388,6 +120827,9 @@
             119,
             118,
             104
+        ],
+        "tag_list": [
+            "Shouhou-Class"
         ],
         "timer": null,
         "light": false,
@@ -119678,6 +121120,7 @@
             119,
             104
         ],
+        "tag_list": [],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -119915,6 +121358,10 @@
             117,
             118,
             104
+        ],
+        "tag_list": [
+            "Ryuhou",
+            "Musashi-Game"
         ],
         "timer": "02:22:00",
         "light": false,
@@ -120165,6 +121612,10 @@
             119,
             104
         ],
+        "tag_list": [
+            "Zuihou-Class",
+            "Musashi-Game"
+        ],
         "timer": "02:15:00",
         "light": false,
         "heavy": false,
@@ -120414,6 +121865,10 @@
             119,
             104
         ],
+        "tag_list": [
+            "Zuihou-Class",
+            "Musashi-Game"
+        ],
         "timer": "02:15:00",
         "light": false,
         "heavy": false,
@@ -120647,6 +122102,13 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "Amagi-Class",
+            "1st-airfleet",
+            "Akagi",
+            "Musashi-Game",
+            "AkagiOrigin"
         ],
         "timer": null,
         "light": false,
@@ -120902,6 +122364,12 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "Tosa-Class",
+            "1st-airfleet",
+            "Kaga",
+            "Musashi-Game"
         ],
         "timer": null,
         "light": false,
@@ -121198,6 +122666,10 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "2nd-airfleet",
+            "Souryu"
         ],
         "timer": null,
         "light": false,
@@ -121514,6 +122986,10 @@
             119,
             118
         ],
+        "tag_list": [
+            "2nd-airfleet",
+            "Hiryu"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -121803,6 +123279,11 @@
             119,
             118
         ],
+        "tag_list": [
+            "5th-airfleet",
+            "Shokaku",
+            "Musashi-Game"
+        ],
         "timer": "04:30:00",
         "light": false,
         "heavy": false,
@@ -122057,6 +123538,10 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "5th-airfleet",
+            "Zuikaku"
         ],
         "timer": "04:30:00",
         "light": false,
@@ -122345,6 +123830,9 @@
             119,
             118
         ],
+        "tag_list": [
+            "Armor-CV"
+        ],
         "timer": "04:45:00",
         "light": false,
         "heavy": false,
@@ -122603,6 +124091,9 @@
             119,
             118
         ],
+        "tag_list": [
+            "Shinano"
+        ],
         "timer": "05:15:00",
         "light": false,
         "heavy": true,
@@ -122836,6 +124327,13 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "Amagi-Class",
+            "1st-airfleet",
+            "special",
+            "Akagi",
+            "Little-series"
         ],
         "timer": "04:35:00",
         "light": false,
@@ -123084,6 +124582,13 @@
             119,
             118
         ],
+        "tag_list": [
+            "Amagi-Class",
+            "1st-airfleet",
+            "μ",
+            "special",
+            "Akagi"
+        ],
         "timer": "04:40:00",
         "light": false,
         "heavy": false,
@@ -123331,6 +124836,11 @@
             119,
             118
         ],
+        "tag_list": [
+            "Armor-CV",
+            "μ",
+            "special"
+        ],
         "timer": "04:45:00",
         "light": false,
         "heavy": false,
@@ -123570,6 +125080,9 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "Unryū-Class"
         ],
         "timer": "04:20:00",
         "light": false,
@@ -123815,6 +125328,12 @@
             119,
             118
         ],
+        "tag_list": [
+            "Armor-CV",
+            "special",
+            "Taiho-chan",
+            "Little-series"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -124049,6 +125568,12 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "Shinano",
+            "special",
+            "Shinano-chan",
+            "Little-series"
         ],
         "timer": null,
         "light": false,
@@ -124293,6 +125818,10 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "Amagi",
+            "Amagicv"
         ],
         "timer": "04:40:00",
         "light": false,
@@ -124544,6 +126073,9 @@
             119,
             118
         ],
+        "tag_list": [
+            "Hakuhou"
+        ],
         "timer": "05:00:00",
         "light": false,
         "heavy": false,
@@ -124777,6 +126309,9 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "Unryū-Class"
         ],
         "timer": "04:20:00",
         "light": false,
@@ -125048,6 +126583,9 @@
             140,
             100
         ],
+        "tag_list": [
+            "I Type-submarine"
+        ],
         "timer": "00:30:00",
         "light": false,
         "heavy": false,
@@ -125298,6 +126836,9 @@
             140,
             140,
             100
+        ],
+        "tag_list": [
+            "I Type-submarine"
         ],
         "timer": "00:30:00",
         "light": false,
@@ -125567,6 +127108,9 @@
             140,
             100
         ],
+        "tag_list": [
+            "I Type-submarine"
+        ],
         "timer": "00:30:00",
         "light": false,
         "heavy": false,
@@ -125818,6 +127362,9 @@
             140,
             100
         ],
+        "tag_list": [
+            "I Type-submarine"
+        ],
         "timer": "00:30:00",
         "light": false,
         "heavy": false,
@@ -126068,6 +127615,9 @@
             140,
             140,
             100
+        ],
+        "tag_list": [
+            "I Type-submarine"
         ],
         "timer": "00:30:00",
         "light": false,
@@ -126324,6 +127874,9 @@
             140,
             140,
             100
+        ],
+        "tag_list": [
+            "I Type-submarine"
         ],
         "timer": "00:30:00",
         "light": false,
@@ -126583,6 +128136,9 @@
             104,
             104
         ],
+        "tag_list": [
+            "Akashi"
+        ],
         "timer": "01:35:00",
         "light": true,
         "heavy": false,
@@ -126838,6 +128394,9 @@
             140,
             144
         ],
+        "tag_list": [
+            "I Type-submarine"
+        ],
         "timer": "00:34:00",
         "light": false,
         "heavy": false,
@@ -127091,6 +128650,10 @@
             140,
             140,
             144
+        ],
+        "tag_list": [
+            "I Type-submarine",
+            "I404"
         ],
         "timer": null,
         "light": false,
@@ -127347,6 +128910,9 @@
             100,
             104,
             100
+        ],
+        "tag_list": [
+            "Kashino"
         ],
         "timer": "01:30:00",
         "light": false,
@@ -127663,6 +129229,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Plan-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -127952,6 +129521,9 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Plan-Class"
         ],
         "timer": null,
         "light": false,
@@ -128254,6 +129826,9 @@
             102,
             106,
             104
+        ],
+        "tag_list": [
+            "Plan-Class"
         ],
         "timer": null,
         "light": false,
@@ -128564,6 +130139,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Plan-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -128859,6 +130437,9 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "Plan-Class"
         ],
         "timer": null,
         "light": false,
@@ -129164,6 +130745,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Plan-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -129451,6 +131035,9 @@
             101,
             104
         ],
+        "tag_list": [
+            "Plan-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -129734,6 +131321,10 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Plan-Class",
+            "Takahashi"
         ],
         "timer": null,
         "light": false,
@@ -130048,6 +131639,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Z-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -130346,6 +131940,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Z-Class"
+        ],
         "timer": "00:29:00",
         "light": true,
         "heavy": false,
@@ -130598,6 +132195,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Z-Class"
         ],
         "timer": null,
         "light": false,
@@ -130857,6 +132457,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Z-Class"
         ],
         "timer": "00:28:00",
         "light": false,
@@ -131123,6 +132726,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Z-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -131382,6 +132988,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Z-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -131634,6 +133243,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Z-Class"
         ],
         "timer": "00:28:00",
         "light": false,
@@ -131888,6 +133500,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Z-Class"
         ],
         "timer": "00:28:00",
         "light": true,
@@ -132147,6 +133762,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Z-Class"
         ],
         "timer": null,
         "light": false,
@@ -132413,6 +134031,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Z-Class"
+        ],
         "timer": "00:31:00",
         "light": true,
         "heavy": false,
@@ -132658,6 +134279,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Z-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -132902,6 +134526,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Z-Class"
         ],
         "timer": null,
         "light": false,
@@ -133207,6 +134834,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Z-Class"
+        ],
         "timer": "00:33:00",
         "light": false,
         "heavy": false,
@@ -133470,6 +135100,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Z-Class",
+            "Z24"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -133724,6 +135358,9 @@
             101,
             107,
             104
+        ],
+        "tag_list": [
+            "Z-Class"
         ],
         "timer": "00:33:00",
         "light": false,
@@ -133986,6 +135623,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Z-Class"
+        ],
         "timer": "00:33:00",
         "light": false,
         "heavy": false,
@@ -134246,6 +135886,10 @@
             101,
             107,
             104
+        ],
+        "tag_list": [
+            "Z-Class",
+            "Z28"
         ],
         "timer": null,
         "light": false,
@@ -134512,6 +136156,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Z-Class"
+        ],
         "timer": "00:35:00",
         "light": false,
         "heavy": false,
@@ -134762,6 +136409,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Z-Class"
         ],
         "timer": "00:35:00",
         "light": false,
@@ -135015,6 +136665,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Z-Class"
         ],
         "timer": null,
         "light": false,
@@ -135290,6 +136943,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Z-Class"
+        ],
         "timer": "00:39:00",
         "light": false,
         "heavy": false,
@@ -135542,6 +137198,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Z-Class"
         ],
         "timer": "00:39:00",
         "light": false,
@@ -135814,6 +137473,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Z-Class",
+            "Z52"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -136085,6 +137748,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Z-Class"
+        ],
         "timer": "00:40:00",
         "light": true,
         "heavy": false,
@@ -136352,6 +138018,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Konigsberg-Class"
         ],
         "timer": "01:10:00",
         "light": true,
@@ -136755,6 +138424,10 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Konigsberg-Class",
+            "Karlsruhe"
         ],
         "timer": "01:10:00",
         "light": true,
@@ -137229,6 +138902,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Konigsberg-Class"
+        ],
         "timer": "01:10:00",
         "light": true,
         "heavy": true,
@@ -137636,6 +139312,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Leipzig-Class"
+        ],
         "timer": "01:20:00",
         "light": true,
         "heavy": true,
@@ -137896,6 +139575,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Leipzig-Class"
         ],
         "timer": "01:20:00",
         "light": true,
@@ -138218,6 +139900,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "M1"
+        ],
         "timer": "01:20:00",
         "light": true,
         "heavy": false,
@@ -138484,6 +140169,10 @@
             100,
             106
         ],
+        "tag_list": [
+            "Emden",
+            "SOTP"
+        ],
         "timer": "01:19:00",
         "light": true,
         "heavy": false,
@@ -138748,6 +140437,10 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Elbing",
+            "SOTP"
         ],
         "timer": "01:17:00",
         "light": true,
@@ -139019,6 +140712,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "M2"
+        ],
         "timer": "01:20:00",
         "light": true,
         "heavy": false,
@@ -139273,6 +140969,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Duisburg"
         ],
         "timer": "01:20:00",
         "light": false,
@@ -139625,6 +141324,11 @@
             106,
             104
         ],
+        "tag_list": [
+            "Admiral Hipper-Class",
+            "Admiral Hipper",
+            "Hipper Sister"
+        ],
         "timer": "02:00:00",
         "light": false,
         "heavy": false,
@@ -139890,6 +141594,10 @@
             106,
             104
         ],
+        "tag_list": [
+            "Admiral Hipper-Class",
+            "Hipper Sister"
+        ],
         "timer": "02:00:00",
         "light": false,
         "heavy": true,
@@ -140149,6 +141857,10 @@
             102,
             106,
             104
+        ],
+        "tag_list": [
+            "Admiral Hipper-Class",
+            "Hipper Sister"
         ],
         "timer": "02:00:00",
         "light": false,
@@ -140416,6 +142128,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Deutschland-Class"
+        ],
         "timer": "01:55:00",
         "light": false,
         "heavy": true,
@@ -140662,6 +142377,9 @@
             102,
             107,
             104
+        ],
+        "tag_list": [
+            "Deutschland-Class"
         ],
         "timer": null,
         "light": false,
@@ -140916,6 +142634,13 @@
             102,
             106,
             104
+        ],
+        "tag_list": [
+            "Admiral Hipper-Class",
+            "Admiral Hipper",
+            "μ",
+            "special",
+            "Hipper Sister"
         ],
         "timer": "02:00:00",
         "light": false,
@@ -141175,6 +142900,11 @@
             102,
             107,
             104
+        ],
+        "tag_list": [
+            "μ",
+            "Roonμ",
+            "special"
         ],
         "timer": null,
         "light": false,
@@ -141449,6 +143179,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "P1"
+        ],
         "timer": "02:05:00",
         "light": false,
         "heavy": true,
@@ -141704,6 +143437,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "P2"
+        ],
         "timer": "02:05:00",
         "light": false,
         "heavy": true,
@@ -141957,6 +143693,10 @@
             101,
             448
         ],
+        "tag_list": [
+            "Roon-class",
+            "SOTP"
+        ],
         "timer": "01:55:00",
         "light": false,
         "heavy": true,
@@ -142201,6 +143941,12 @@
             102,
             106,
             104
+        ],
+        "tag_list": [
+            "Admiral Hipper-Class",
+            "special",
+            "Little-series",
+            "Hipper Sister"
         ],
         "timer": null,
         "light": false,
@@ -142454,6 +144200,11 @@
             102,
             107,
             104
+        ],
+        "tag_list": [
+            "Deutschland-Class",
+            "special",
+            "Little-series"
         ],
         "timer": null,
         "light": false,
@@ -142714,6 +144465,9 @@
             102,
             106,
             104
+        ],
+        "tag_list": [
+            "P3"
         ],
         "timer": "02:05:00",
         "light": false,
@@ -142976,6 +144730,13 @@
             106,
             104
         ],
+        "tag_list": [
+            "Admiral Hipper-Class",
+            "μ",
+            "special",
+            "μPrinzEugen",
+            "Hipper Sister"
+        ],
         "timer": "02:00:00",
         "light": false,
         "heavy": false,
@@ -143223,6 +144984,11 @@
             102,
             100,
             104
+        ],
+        "tag_list": [
+            "special",
+            "O-Class",
+            "Little-series"
         ],
         "timer": null,
         "light": false,
@@ -143496,6 +145262,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "P4"
+        ],
         "timer": "02:05:00",
         "light": false,
         "heavy": false,
@@ -143752,6 +145521,9 @@
             101,
             104
         ],
+        "tag_list": [
+            "Scharnhorst-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -144000,6 +145772,9 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Scharnhorst-Class"
         ],
         "timer": null,
         "light": false,
@@ -144254,6 +146029,11 @@
             101,
             100
         ],
+        "tag_list": [
+            "Moltke-Class",
+            "SOTP",
+            "Seydlitz"
+        ],
         "timer": "04:35:00",
         "light": false,
         "heavy": true,
@@ -144506,6 +146286,11 @@
             101,
             100
         ],
+        "tag_list": [
+            "Derfflinger-class",
+            "SOTP",
+            "Lützow"
+        ],
         "timer": "04:35:00",
         "light": false,
         "heavy": true,
@@ -144748,6 +146533,9 @@
             103,
             101,
             100
+        ],
+        "tag_list": [
+            "O-Class"
         ],
         "timer": "05:05:00",
         "light": false,
@@ -144998,6 +146786,10 @@
             101,
             100
         ],
+        "tag_list": [
+            "O-Class",
+            "Alvitr"
+        ],
         "timer": "05:05:00",
         "light": false,
         "heavy": false,
@@ -145240,6 +147032,9 @@
             103,
             101,
             100
+        ],
+        "tag_list": [
+            "Admiral Zenker"
         ],
         "timer": "04:55:00",
         "light": false,
@@ -145504,6 +147299,10 @@
             101,
             104
         ],
+        "tag_list": [
+            "Bismarck-Class",
+            "Bismarck"
+        ],
         "timer": "06:00:00",
         "light": false,
         "heavy": false,
@@ -145755,6 +147554,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Bismarck-Class",
+            "Tirpitz"
         ],
         "timer": "06:00:00",
         "light": false,
@@ -146008,6 +147811,9 @@
             101,
             104
         ],
+        "tag_list": [
+            "H39"
+        ],
         "timer": "06:00:00",
         "light": false,
         "heavy": true,
@@ -146246,6 +148052,11 @@
             103,
             101,
             100
+        ],
+        "tag_list": [
+            "Helgoland-Class",
+            "Thüringen",
+            "SOTP"
         ],
         "timer": null,
         "light": false,
@@ -146515,6 +148326,11 @@
             101,
             104
         ],
+        "tag_list": [
+            "Bismarck",
+            "BismarckZwei",
+            "BSMZ"
+        ],
         "timer": "06:00:00",
         "light": false,
         "heavy": true,
@@ -146761,6 +148577,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "special",
+            "Little-series"
         ],
         "timer": null,
         "light": false,
@@ -147025,6 +148845,10 @@
             101,
             104
         ],
+        "tag_list": [
+            "H39",
+            "Berlichingen"
+        ],
         "timer": "06:00:00",
         "light": false,
         "heavy": false,
@@ -147270,6 +149094,9 @@
             123,
             104
         ],
+        "tag_list": [
+            "Weser"
+        ],
         "timer": "02:22:00",
         "light": false,
         "heavy": false,
@@ -147506,6 +149333,9 @@
             121,
             123,
             104
+        ],
+        "tag_list": [
+            "Elbe"
         ],
         "timer": "02:20:00",
         "light": false,
@@ -147749,6 +149579,9 @@
             121,
             123,
             104
+        ],
+        "tag_list": [
+            "Jade"
         ],
         "timer": null,
         "light": false,
@@ -148004,6 +149837,9 @@
             123,
             123
         ],
+        "tag_list": [
+            "Graf Zeppelin-Class"
+        ],
         "timer": "04:35:00",
         "light": false,
         "heavy": false,
@@ -148245,6 +150081,11 @@
             121,
             123,
             123
+        ],
+        "tag_list": [
+            "Graf Zeppelin-Class",
+            "special",
+            "Little-series"
         ],
         "timer": "04:30:00",
         "light": false,
@@ -148501,6 +150342,9 @@
             123,
             123
         ],
+        "tag_list": [
+            "Graf Zeppelin-Class"
+        ],
         "timer": "04:35:00",
         "light": false,
         "heavy": false,
@@ -148752,6 +150596,9 @@
             121,
             123,
             104
+        ],
+        "tag_list": [
+            "Rumey"
         ],
         "timer": "04:40:20",
         "light": false,
@@ -149016,6 +150863,9 @@
             140,
             140,
             100
+        ],
+        "tag_list": [
+            "U-boat"
         ],
         "timer": "00:12:00",
         "light": false,
@@ -149286,6 +151136,9 @@
             140,
             140,
             100
+        ],
+        "tag_list": [
+            "U-boat"
         ],
         "timer": "00:11:00",
         "light": false,
@@ -149564,6 +151417,9 @@
             140,
             100
         ],
+        "tag_list": [
+            "U-boat"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -149831,6 +151687,9 @@
             140,
             100
         ],
+        "tag_list": [
+            "U-boat"
+        ],
         "timer": "00:13:00",
         "light": false,
         "heavy": false,
@@ -150083,6 +151942,9 @@
             140,
             140,
             100
+        ],
+        "tag_list": [
+            "U-boat"
         ],
         "timer": "00:11:00",
         "light": false,
@@ -150348,6 +152210,9 @@
             140,
             100
         ],
+        "tag_list": [
+            "U-boat"
+        ],
         "timer": "00:12:00",
         "light": false,
         "heavy": false,
@@ -150598,6 +152463,9 @@
             140,
             140,
             100
+        ],
+        "tag_list": [
+            "U-boat"
         ],
         "timer": "00:11:00",
         "light": false,
@@ -150852,6 +152720,9 @@
             140,
             140,
             100
+        ],
+        "tag_list": [
+            "U-boat"
         ],
         "timer": "00:11:00",
         "light": false,
@@ -151124,6 +152995,9 @@
             140,
             100
         ],
+        "tag_list": [
+            "U-boat"
+        ],
         "timer": "00:12:00",
         "light": false,
         "heavy": false,
@@ -151380,6 +153254,9 @@
             140,
             100
         ],
+        "tag_list": [
+            "U-boat"
+        ],
         "timer": "00:11:00",
         "light": false,
         "heavy": false,
@@ -151630,6 +153507,9 @@
             140,
             140,
             100
+        ],
+        "tag_list": [
+            "U-boat"
         ],
         "timer": null,
         "light": false,
@@ -151882,6 +153762,9 @@
             140,
             140,
             100
+        ],
+        "tag_list": [
+            "U-boat"
         ],
         "timer": null,
         "light": false,
@@ -152138,6 +154021,9 @@
             140,
             140,
             100
+        ],
+        "tag_list": [
+            "U-boat"
         ],
         "timer": "00:11:00",
         "light": false,
@@ -152407,6 +154293,9 @@
             140,
             100
         ],
+        "tag_list": [
+            "U-boat"
+        ],
         "timer": "00:13:00",
         "light": false,
         "heavy": false,
@@ -152656,6 +154545,10 @@
             140,
             140,
             104
+        ],
+        "tag_list": [
+            "U-boat",
+            "U-2501"
         ],
         "timer": null,
         "light": false,
@@ -152965,6 +154858,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Plan-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -153263,6 +155159,9 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Plan-Class"
         ],
         "timer": null,
         "light": false,
@@ -153572,6 +155471,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Plan-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -153855,6 +155757,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Plan-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -154133,6 +156038,10 @@
             100,
             104
         ],
+        "tag_list": [
+            "Plan-Class",
+            "O-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -154409,6 +156318,9 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "Plan-Class"
         ],
         "timer": null,
         "light": false,
@@ -154697,6 +156609,9 @@
             103,
             107,
             104
+        ],
+        "tag_list": [
+            "Plan-Class"
         ],
         "timer": null,
         "light": false,
@@ -155022,6 +156937,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Plan-Class",
+            "Z-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -155313,6 +157232,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Plan-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -155595,6 +157517,9 @@
             101,
             104
         ],
+        "tag_list": [
+            "Plan-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -155864,6 +157789,9 @@
             121,
             123,
             122
+        ],
+        "tag_list": [
+            "Plan-Class"
         ],
         "timer": null,
         "light": false,
@@ -156296,6 +158224,10 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Qinglong",
+            "Anshan-Class"
         ],
         "timer": null,
         "light": false,
@@ -156733,6 +158665,11 @@
             107,
             104
         ],
+        "tag_list": [
+            "Zhuque",
+            "Anshan-Class",
+            "Fubo's Plan"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -157164,6 +159101,10 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Baihu",
+            "Anshan-Class"
         ],
         "timer": "00:32:00",
         "light": false,
@@ -157598,6 +159539,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Xuanwu",
+            "Anshan-Class"
+        ],
         "timer": "00:32:00",
         "light": false,
         "heavy": false,
@@ -157852,6 +159797,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Lung Wu"
+        ],
         "timer": "00:33:00",
         "light": true,
         "heavy": false,
@@ -158105,6 +160053,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Hu Pen"
         ],
         "timer": "00:33:00",
         "light": true,
@@ -158368,6 +160319,11 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Fei Yuen",
+            "Chang Feng-Class",
+            "Fubo's Plan"
         ],
         "timer": null,
         "light": false,
@@ -158634,6 +160590,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Chang Feng",
+            "Chang Feng-Class"
+        ],
         "timer": "00:33:00",
         "light": true,
         "heavy": false,
@@ -158892,6 +160852,11 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Fu Po",
+            "Chang Feng-Class",
+            "Fubo's Plan"
         ],
         "timer": null,
         "light": false,
@@ -159233,6 +161198,9 @@
             101,
             104
         ],
+        "tag_list": [
+            "Yat sen"
+        ],
         "timer": "00:40:00",
         "light": true,
         "heavy": false,
@@ -159552,6 +161520,10 @@
             105,
             104
         ],
+        "tag_list": [
+            "Ning Hai-Class",
+            "Ning Hai"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -159870,6 +161842,10 @@
             101,
             105,
             104
+        ],
+        "tag_list": [
+            "Ning Hai-Class",
+            "Ping Hai"
         ],
         "timer": null,
         "light": false,
@@ -160232,6 +162208,10 @@
             100,
             105
         ],
+        "tag_list": [
+            "Chaoho-Class",
+            "YingSwei"
+        ],
         "timer": "00:38:00",
         "light": false,
         "heavy": false,
@@ -160593,6 +162573,10 @@
             100,
             105
         ],
+        "tag_list": [
+            "Chaoho-Class",
+            "ChaoHo"
+        ],
         "timer": "00:38:00",
         "light": false,
         "heavy": false,
@@ -160852,6 +162836,9 @@
             102,
             100,
             448
+        ],
+        "tag_list": [
+            "Hai Tien-Class"
         ],
         "timer": null,
         "light": false,
@@ -161119,6 +163106,9 @@
             100,
             448
         ],
+        "tag_list": [
+            "Hai Tien-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -161373,6 +163363,9 @@
             100,
             105
         ],
+        "tag_list": [
+            "Chi An"
+        ],
         "timer": "00:38:00",
         "light": true,
         "heavy": false,
@@ -161625,6 +163618,10 @@
             101,
             100,
             105
+        ],
+        "tag_list": [
+            "Hai Yung-Class",
+            "Hai Yung"
         ],
         "timer": "00:40:00",
         "light": true,
@@ -161879,6 +163876,10 @@
             100,
             105
         ],
+        "tag_list": [
+            "Hai Yung-Class",
+            "Hai Chou"
+        ],
         "timer": "00:40:00",
         "light": true,
         "heavy": false,
@@ -162129,6 +164130,9 @@
             102,
             101,
             105
+        ],
+        "tag_list": [
+            "Chien Wu"
         ],
         "timer": "01:30:00",
         "light": false,
@@ -162402,6 +164406,9 @@
             101,
             105
         ],
+        "tag_list": [
+            "Chang Wu"
+        ],
         "timer": "01:30:00",
         "light": true,
         "heavy": false,
@@ -162646,6 +164653,9 @@
             103,
             100,
             104
+        ],
+        "tag_list": [
+            "Huan Ch'ang"
         ],
         "timer": "04:10:00",
         "light": false,
@@ -162979,6 +164989,9 @@
             152,
             104
         ],
+        "tag_list": [
+            "Chen Hai"
+        ],
         "timer": "02:00:00",
         "light": false,
         "heavy": false,
@@ -163296,6 +165309,9 @@
             152,
             104
         ],
+        "tag_list": [
+            "Hwah Jahi"
+        ],
         "timer": "02:10:00",
         "light": false,
         "heavy": false,
@@ -163540,6 +165556,9 @@
             100,
             100,
             100
+        ],
+        "tag_list": [
+            "Ting An"
         ],
         "timer": null,
         "light": false,
@@ -163837,6 +165856,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Plan-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -164110,6 +166132,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Soldati-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -164363,6 +166388,9 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Poeti-Class"
         ],
         "timer": "00:32:00",
         "light": true,
@@ -164624,6 +166652,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Maestrale-Class"
+        ],
         "timer": "00:30:40",
         "light": true,
         "heavy": false,
@@ -164884,6 +166915,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Maestrale-Class"
+        ],
         "timer": "00:30:40",
         "light": true,
         "heavy": false,
@@ -165137,6 +167171,9 @@
             100,
             105,
             104
+        ],
+        "tag_list": [
+            "Navigatori-Class"
         ],
         "timer": "00:29:40",
         "light": true,
@@ -165397,6 +167434,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Capitani Romani-class"
         ],
         "timer": "00:32:00",
         "light": true,
@@ -165668,6 +167708,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Poeti-Class"
+        ],
         "timer": "00:32:00",
         "light": true,
         "heavy": false,
@@ -165920,6 +167963,9 @@
             100,
             105,
             104
+        ],
+        "tag_list": [
+            "Navigatori-Class"
         ],
         "timer": null,
         "light": false,
@@ -166182,6 +168228,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Capitani Romani-class"
+        ],
         "timer": "00:32:00",
         "light": true,
         "heavy": false,
@@ -166435,6 +168484,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Poeti-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -166687,6 +168739,9 @@
             100,
             105,
             104
+        ],
+        "tag_list": [
+            "Navigatori-Class"
         ],
         "timer": null,
         "light": false,
@@ -166977,6 +169032,10 @@
             106,
             104
         ],
+        "tag_list": [
+            "Condottieri-Class",
+            "V"
+        ],
         "timer": "01:26:00",
         "light": true,
         "heavy": false,
@@ -167240,6 +169299,10 @@
             106,
             104
         ],
+        "tag_list": [
+            "Condottieri-Class",
+            "V"
+        ],
         "timer": "01:26:00",
         "light": true,
         "heavy": false,
@@ -167494,6 +169557,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Giussano-Class"
         ],
         "timer": "01:26:00",
         "light": false,
@@ -167756,6 +169822,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Giussano-Class"
+        ],
         "timer": "01:26:00",
         "light": false,
         "heavy": false,
@@ -168001,6 +170070,9 @@
             102,
             105,
             104
+        ],
+        "tag_list": [
+            "Trento-Class"
         ],
         "timer": null,
         "light": false,
@@ -168267,6 +170339,10 @@
             100,
             104
         ],
+        "tag_list": [
+            "Zara",
+            "Zara-Class"
+        ],
         "timer": "01:55:00",
         "light": false,
         "heavy": false,
@@ -168531,6 +170607,10 @@
             102,
             100,
             104
+        ],
+        "tag_list": [
+            "Pola",
+            "Zara-Class"
         ],
         "timer": "01:55:00",
         "light": false,
@@ -168802,6 +170882,9 @@
             105,
             104
         ],
+        "tag_list": [
+            "Trento-Class"
+        ],
         "timer": "01:54:00",
         "light": false,
         "heavy": true,
@@ -169054,6 +171137,9 @@
             102,
             105,
             104
+        ],
+        "tag_list": [
+            "Bolzano-Class"
         ],
         "timer": "01:54:00",
         "light": false,
@@ -169311,6 +171397,10 @@
             100,
             104
         ],
+        "tag_list": [
+            "Gorizia",
+            "Zara-Class"
+        ],
         "timer": "01:55:00",
         "light": false,
         "heavy": true,
@@ -169555,6 +171645,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Vittorio Veneto-Class",
+            "Vittorio Veneto"
         ],
         "timer": "05:15:00",
         "light": false,
@@ -169818,6 +171912,9 @@
             101,
             104
         ],
+        "tag_list": [
+            "Vittorio Veneto-Class"
+        ],
         "timer": "05:15:00",
         "light": false,
         "heavy": false,
@@ -170061,6 +172158,9 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Vittorio Veneto-Class"
         ],
         "timer": "05:15:00",
         "light": false,
@@ -170309,6 +172409,9 @@
             103,
             100,
             104
+        ],
+        "tag_list": [
+            "Conte di Cavour-Class"
         ],
         "timer": null,
         "light": false,
@@ -170561,6 +172664,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "Conte di Cavour-Class"
+        ],
         "timer": "04:15:00",
         "light": false,
         "heavy": false,
@@ -170796,6 +172902,9 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Andrea Doria-class"
         ],
         "timer": "04:15:00",
         "light": false,
@@ -171050,6 +173159,9 @@
             101,
             104
         ],
+        "tag_list": [
+            "Raffaello"
+        ],
         "timer": "05:40:10",
         "light": false,
         "heavy": false,
@@ -171290,6 +173402,9 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Francesco Caracciolo"
         ],
         "timer": "04:15:00",
         "light": false,
@@ -171535,6 +173650,9 @@
             148,
             149
         ],
+        "tag_list": [
+            "Aquila"
+        ],
         "timer": "04:35:00",
         "light": false,
         "heavy": false,
@@ -171776,6 +173894,9 @@
             148,
             150,
             149
+        ],
+        "tag_list": [
+            "Impero"
         ],
         "timer": "05:15:00",
         "light": false,
@@ -172025,6 +174146,9 @@
             140,
             140,
             100
+        ],
+        "tag_list": [
+            "Brin-Class"
         ],
         "timer": null,
         "light": false,
@@ -172290,6 +174414,9 @@
             140,
             140,
             100
+        ],
+        "tag_list": [
+            "Marconi-class"
         ],
         "timer": "00:12:00",
         "light": false,
@@ -172561,6 +174688,10 @@
             140,
             140,
             100
+        ],
+        "tag_list": [
+            "Marconi-class",
+            "Baracca"
         ],
         "timer": "00:12:00",
         "light": false,
@@ -172846,6 +174977,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Plan-Class",
+            "MarcoPolo"
         ],
         "timer": null,
         "light": false,
@@ -173143,6 +175278,10 @@
             102,
             101,
             104
+        ],
+        "tag_list": [
+            "Plan-Class",
+            "Napoli"
         ],
         "timer": null,
         "light": false,
@@ -173454,6 +175593,10 @@
             108,
             104
         ],
+        "tag_list": [
+            "Plan-Class",
+            "VittorioCuniberti"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -173727,6 +175870,10 @@
             106,
             104
         ],
+        "tag_list": [
+            "Gnevny-Class",
+            "Northern Union-DD"
+        ],
         "timer": "00:32:00",
         "light": true,
         "heavy": false,
@@ -173980,6 +176127,10 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Leningrad-Class",
+            "Northern Union-DD"
         ],
         "timer": null,
         "light": false,
@@ -174259,6 +176410,11 @@
             106,
             104
         ],
+        "tag_list": [
+            "Tashkent",
+            "Northern Union-DD",
+            "Tashkent1"
+        ],
         "timer": "00:42:00",
         "light": true,
         "heavy": false,
@@ -174519,6 +176675,12 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Tashkent",
+            "Northern Union-DD",
+            "μ",
+            "special"
         ],
         "timer": "00:42:00",
         "light": false,
@@ -174787,6 +176949,10 @@
             106,
             104
         ],
+        "tag_list": [
+            "Gnevny-Class",
+            "Northern Union-DD"
+        ],
         "timer": "00:32:00",
         "light": true,
         "heavy": false,
@@ -175041,6 +177207,10 @@
             106,
             104
         ],
+        "tag_list": [
+            "Gnevny-Class",
+            "Northern Union-DD"
+        ],
         "timer": "00:32:00",
         "light": true,
         "heavy": false,
@@ -175294,6 +177464,10 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Gnevny-Class",
+            "Northern Union-DD"
         ],
         "timer": null,
         "light": false,
@@ -175561,6 +177735,10 @@
             106,
             104
         ],
+        "tag_list": [
+            "Storozhevoy-class",
+            "Northern Union-DD"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -175826,6 +178004,11 @@
             106,
             104
         ],
+        "tag_list": [
+            "Kiev-Class",
+            "Northern Union-DD",
+            "Northern Union Anshan-DD"
+        ],
         "timer": "00:42:00",
         "light": true,
         "heavy": false,
@@ -176079,6 +178262,10 @@
             106,
             104
         ],
+        "tag_list": [
+            "Ognevoy-class",
+            "Northern Union-DD"
+        ],
         "timer": "00:41:00",
         "light": false,
         "heavy": false,
@@ -176331,6 +178518,10 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Storozhevoy-class",
+            "Northern Union-DD"
         ],
         "timer": null,
         "light": false,
@@ -176590,6 +178781,11 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Ognevoy-class",
+            "Northern Union-DD",
+            "Ozornoy"
         ],
         "timer": "00:41:00",
         "light": false,
@@ -176858,6 +179054,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Northern Union-CL"
         ],
         "timer": "01:17:00",
         "light": true,
@@ -177187,6 +179386,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Northern Union-CL"
+        ],
         "timer": "01:17:00",
         "light": true,
         "heavy": false,
@@ -177452,6 +179654,10 @@
             101,
             100,
             104
+        ],
+        "tag_list": [
+            "Chapayev-Class",
+            "Northern Union-CL"
         ],
         "timer": "01:26:00",
         "light": true,
@@ -177740,6 +179946,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Northern Union-CL"
+        ],
         "timer": "01:32:00",
         "light": true,
         "heavy": false,
@@ -177991,6 +180200,10 @@
             101,
             100,
             104
+        ],
+        "tag_list": [
+            "Chapayev-Class",
+            "Northern Union-CL"
         ],
         "timer": "01:26:00",
         "light": true,
@@ -178247,6 +180460,10 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Northern Union-CL",
+            "Omaha-Class"
         ],
         "timer": "01:05:00",
         "light": true,
@@ -178509,6 +180726,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Northern Union-CL"
         ],
         "timer": "01:32:00",
         "light": true,
@@ -178782,6 +181002,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Northern Union-CL"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -179043,6 +181266,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Northern Union-CL"
+        ],
         "timer": "01:20:00",
         "light": false,
         "heavy": false,
@@ -179303,6 +181529,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Northern Union-CL"
         ],
         "timer": null,
         "light": false,
@@ -179566,6 +181795,10 @@
             102,
             106,
             104
+        ],
+        "tag_list": [
+            "Northern Union-CA",
+            "Hipper Sister"
         ],
         "timer": "02:00:00",
         "light": false,
@@ -179831,6 +182064,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Northern Union-CA"
+        ],
         "timer": "02:05:00",
         "light": false,
         "heavy": true,
@@ -180089,6 +182325,10 @@
             100,
             104
         ],
+        "tag_list": [
+            "Northern Union-CA",
+            "MOSKVA"
+        ],
         "timer": "04:00:00",
         "light": false,
         "heavy": false,
@@ -180339,6 +182579,10 @@
             101,
             104
         ],
+        "tag_list": [
+            "Gangut-Class",
+            "Northern Union-BB"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -180583,6 +182827,11 @@
             100,
             104
         ],
+        "tag_list": [
+            "Sovetsky Soyuz-Class",
+            "Northern Union-BB",
+            "Sovetsky Soyuz"
+        ],
         "timer": "06:23:00",
         "light": false,
         "heavy": false,
@@ -180819,6 +183068,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Sovetsky Soyuz-Class",
+            "Northern Union-BB"
         ],
         "timer": "06:23:00",
         "light": false,
@@ -181076,6 +183329,10 @@
             101,
             104
         ],
+        "tag_list": [
+            "Sovetsky Soyuz-Class",
+            "Northern Union-BB"
+        ],
         "timer": "06:23:00",
         "light": false,
         "heavy": true,
@@ -181313,6 +183570,10 @@
             101,
             104
         ],
+        "tag_list": [
+            "Arkhangelsk",
+            "Northern Union-BB"
+        ],
         "timer": "04:10:00",
         "light": false,
         "heavy": true,
@@ -181549,6 +183810,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Gangut-Class",
+            "Northern Union-BB"
         ],
         "timer": "03:40:00",
         "light": false,
@@ -181792,6 +184057,10 @@
             101,
             104
         ],
+        "tag_list": [
+            "Gangut-Class",
+            "Northern Union-BB"
+        ],
         "timer": "03:40:00",
         "light": false,
         "heavy": false,
@@ -182027,6 +184296,9 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Northern Union-BB"
         ],
         "timer": "05:50:00",
         "light": false,
@@ -182283,6 +184555,9 @@
             155,
             154
         ],
+        "tag_list": [
+            "Volga"
+        ],
         "timer": "04:47:53",
         "light": false,
         "heavy": false,
@@ -182537,6 +184812,9 @@
             102,
             101,
             104
+        ],
+        "tag_list": [
+            "Kronshtadt"
         ],
         "timer": "04:42:50",
         "light": false,
@@ -182819,6 +185097,9 @@
             119,
             118
         ],
+        "tag_list": [
+            "Plan-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -183090,6 +185371,9 @@
             153,
             155,
             154
+        ],
+        "tag_list": [
+            "Plan-Class"
         ],
         "timer": null,
         "light": false,
@@ -183391,6 +185675,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Plan-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -183663,6 +185950,9 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Le Fantasque-Class"
         ],
         "timer": null,
         "light": false,
@@ -183974,6 +186264,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "L'Adroit-Class"
+        ],
         "timer": "00:23:00",
         "light": true,
         "heavy": false,
@@ -184239,6 +186532,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Le Hardi-Class"
         ],
         "timer": "00:26:00",
         "light": false,
@@ -184513,6 +186809,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Le Hardi-Class"
+        ],
         "timer": "00:26:00",
         "light": false,
         "heavy": false,
@@ -184775,6 +187074,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Le Hardi-Class"
+        ],
         "timer": "00:26:00",
         "light": false,
         "heavy": false,
@@ -185034,6 +187336,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "Le Hardi-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -185288,6 +187593,10 @@
             106,
             104
         ],
+        "tag_list": [
+            "Le Fantasque-Class",
+            "Le Terrible"
+        ],
         "timer": "00:33:00",
         "light": true,
         "heavy": false,
@@ -185533,6 +187842,9 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Vauquelin-Class"
         ],
         "timer": "00:26:00",
         "light": true,
@@ -185785,6 +188097,11 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Le Hardi-Class",
+            "μ",
+            "special"
         ],
         "timer": null,
         "light": false,
@@ -186104,6 +188421,9 @@
             105,
             104
         ],
+        "tag_list": [
+            "Bertin"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -186360,6 +188680,7 @@
             105,
             104
         ],
+        "tag_list": [],
         "timer": "01:26:00",
         "light": true,
         "heavy": false,
@@ -186626,6 +188947,7 @@
             106,
             104
         ],
+        "tag_list": [],
         "timer": "01:26:00",
         "light": false,
         "heavy": false,
@@ -186887,6 +189209,9 @@
             105,
             104
         ],
+        "tag_list": [
+            "Duguay Trouin-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -187140,6 +189465,7 @@
             106,
             104
         ],
+        "tag_list": [],
         "timer": "01:45:00",
         "light": false,
         "heavy": false,
@@ -187423,6 +189749,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Brennus"
+        ],
         "timer": "01:50:00",
         "light": false,
         "heavy": false,
@@ -187676,6 +190005,7 @@
             106,
             104
         ],
+        "tag_list": [],
         "timer": "01:45:00",
         "light": false,
         "heavy": false,
@@ -187917,6 +190247,9 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Masséna"
         ],
         "timer": "04:05:00",
         "light": false,
@@ -188177,6 +190510,11 @@
             101,
             104
         ],
+        "tag_list": [
+            "Richelieu-Class",
+            "Richelieu",
+            "PRE"
+        ],
         "timer": "05:50:00",
         "light": false,
         "heavy": true,
@@ -188413,6 +190751,9 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Lyon-Class"
         ],
         "timer": "04:15:00",
         "light": false,
@@ -188681,6 +191022,11 @@
             101,
             104
         ],
+        "tag_list": [
+            "Alsace",
+            "AlsaceHA",
+            "PRE"
+        ],
         "timer": "06:12:20",
         "light": false,
         "heavy": false,
@@ -188916,6 +191262,9 @@
             109,
             110,
             104
+        ],
+        "tag_list": [
+            "Independence-Class"
         ],
         "timer": "02:06:40",
         "light": false,
@@ -189158,6 +191507,9 @@
             113,
             115,
             114
+        ],
+        "tag_list": [
+            "Colossus-Class"
         ],
         "timer": "02:30:00",
         "light": false,
@@ -189409,6 +191761,7 @@
             126,
             127
         ],
+        "tag_list": [],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -189642,6 +191995,9 @@
             125,
             126,
             127
+        ],
+        "tag_list": [
+            "Joffre-Class"
         ],
         "timer": "04:35:00",
         "light": false,
@@ -189908,6 +192264,7 @@
             140,
             102
         ],
+        "tag_list": [],
         "timer": "00:35:00",
         "light": false,
         "heavy": false,
@@ -190158,6 +192515,9 @@
             102,
             101,
             104
+        ],
+        "tag_list": [
+            "Cherbourg"
         ],
         "timer": "04:05:00",
         "light": false,
@@ -190467,6 +192827,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Plan-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -190756,6 +193119,10 @@
             101,
             104
         ],
+        "tag_list": [
+            "Plan-Class",
+            "PRE"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -191035,6 +193402,9 @@
             102,
             100,
             104
+        ],
+        "tag_list": [
+            "Plan-Class"
         ],
         "timer": null,
         "light": false,
@@ -191332,6 +193702,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Plan-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -191615,6 +193988,9 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Plan-Class"
         ],
         "timer": null,
         "light": false,
@@ -191926,6 +194302,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "L'Adroit-Class"
+        ],
         "timer": "00:23:00",
         "light": true,
         "heavy": false,
@@ -192171,6 +194550,9 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Vauquelin-Class"
         ],
         "timer": "00:26:00",
         "light": true,
@@ -192418,6 +194800,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "Vauquelin-Class"
+        ],
         "timer": "00:26:00",
         "light": true,
         "heavy": false,
@@ -192662,6 +195047,9 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Vauquelin-Class"
         ],
         "timer": null,
         "light": false,
@@ -192915,6 +195303,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Le Hardi-Class"
         ],
         "timer": "00:26:00",
         "light": false,
@@ -193174,6 +195565,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "Le Hardi-Class"
         ],
         "timer": null,
         "light": false,
@@ -193436,6 +195830,10 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Mogador-Class",
+            "Mogador"
         ],
         "timer": null,
         "light": false,
@@ -193710,6 +196108,10 @@
             106,
             104
         ],
+        "tag_list": [
+            "Le Fantasque-Class",
+            "LeMalin"
+        ],
         "timer": "00:33:00",
         "light": false,
         "heavy": false,
@@ -193976,6 +196378,11 @@
             106,
             104
         ],
+        "tag_list": [
+            "Le Fantasque-Class",
+            "μ",
+            "special"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -194234,6 +196641,10 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Le Fantasque-Class",
+            "buqu"
         ],
         "timer": "00:33:00",
         "light": true,
@@ -194501,6 +196912,10 @@
             106,
             104
         ],
+        "tag_list": [
+            "Le Fantasque-Class",
+            "guogan"
+        ],
         "timer": "00:33:00",
         "light": true,
         "heavy": false,
@@ -194756,6 +197171,9 @@
             101,
             105,
             104
+        ],
+        "tag_list": [
+            "La Galissonnière-Class"
         ],
         "timer": null,
         "light": false,
@@ -195019,6 +197437,9 @@
             105,
             104
         ],
+        "tag_list": [
+            "La Galissonnière-Class"
+        ],
         "timer": "01:26:00",
         "light": true,
         "heavy": false,
@@ -195273,6 +197694,7 @@
             106,
             104
         ],
+        "tag_list": [],
         "timer": "01:45:00",
         "light": false,
         "heavy": true,
@@ -195553,6 +197975,7 @@
             106,
             104
         ],
+        "tag_list": [],
         "timer": "01:55:00",
         "light": false,
         "heavy": true,
@@ -195813,6 +198236,7 @@
             106,
             104
         ],
+        "tag_list": [],
         "timer": "01:45:00",
         "light": false,
         "heavy": true,
@@ -196070,6 +198494,10 @@
             101,
             104
         ],
+        "tag_list": [
+            "Dunkerque-Class",
+            "PRE"
+        ],
         "timer": "04:05:00",
         "light": false,
         "heavy": true,
@@ -196311,6 +198739,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Dunkerque-Class",
+            "PRE"
         ],
         "timer": "04:05:00",
         "light": false,
@@ -196568,6 +199000,10 @@
             101,
             104
         ],
+        "tag_list": [
+            "Richelieu-Class",
+            "PRE"
+        ],
         "timer": "05:50:00",
         "light": false,
         "heavy": false,
@@ -196818,6 +199254,10 @@
             101,
             104
         ],
+        "tag_list": [
+            "Richelieu-Class",
+            "PRE"
+        ],
         "timer": "05:50:00",
         "light": false,
         "heavy": false,
@@ -197054,6 +199494,11 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "Richelieu-Class",
+            "μ",
+            "special"
         ],
         "timer": "05:50:00",
         "light": false,
@@ -197297,6 +199742,9 @@
             125,
             126,
             127
+        ],
+        "tag_list": [
+            "Joffre-Class"
         ],
         "timer": "04:35:00",
         "light": false,
@@ -197597,6 +200045,10 @@
             101,
             104
         ],
+        "tag_list": [
+            "Plan-Class",
+            "Richelieu-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -197868,6 +200320,10 @@
             101,
             104
         ],
+        "tag_list": [
+            "Plan-Class",
+            "PRE"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -198120,6 +200576,9 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Admiralen-Class"
         ],
         "timer": "00:26:00",
         "light": false,
@@ -198382,6 +200841,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "De Zeven Provinciën-Class"
         ],
         "timer": "01:25:00",
         "light": false,
@@ -198667,6 +201129,9 @@
             101,
             104
         ],
+        "tag_list": [
+            "Plan-Class"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -198936,6 +201401,11 @@
             101,
             104
         ],
+        "tag_list": [
+            "Plan-Class",
+            "ValSkill",
+            "Valparaiso"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -199186,6 +201656,9 @@
             100,
             100
         ],
+        "tag_list": [
+            "RoyalFortune"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -199433,6 +201906,7 @@
             100,
             100
         ],
+        "tag_list": [],
         "timer": "04:26:21",
         "light": false,
         "heavy": true,
@@ -199708,6 +202182,7 @@
             100,
             100
         ],
+        "tag_list": [],
         "timer": "01:26:18",
         "light": true,
         "heavy": false,
@@ -199983,6 +202458,7 @@
             100,
             100
         ],
+        "tag_list": [],
         "timer": "00:31:01",
         "light": false,
         "heavy": false,
@@ -200246,6 +202722,7 @@
             100,
             100
         ],
+        "tag_list": [],
         "timer": "00:28:36",
         "light": false,
         "heavy": false,
@@ -200509,6 +202986,7 @@
             100,
             100
         ],
+        "tag_list": [],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -200756,6 +203234,7 @@
             100,
             100
         ],
+        "tag_list": [],
         "timer": "04:42:30",
         "light": false,
         "heavy": false,
@@ -201034,6 +203513,9 @@
             100,
             100
         ],
+        "tag_list": [
+            "Fancy"
+        ],
         "timer": "01:39:21",
         "light": false,
         "heavy": false,
@@ -201309,6 +203791,7 @@
             100,
             100
         ],
+        "tag_list": [],
         "timer": "00:28:13",
         "light": false,
         "heavy": false,
@@ -201576,6 +204059,9 @@
             100,
             100,
             100
+        ],
+        "tag_list": [
+            "Portsmouth"
         ],
         "timer": "00:28:14",
         "light": false,
@@ -201849,6 +204335,7 @@
             100,
             100
         ],
+        "tag_list": [],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -202101,6 +204588,9 @@
             158,
             100,
             100
+        ],
+        "tag_list": [
+            "Queen Anne"
         ],
         "timer": "04:46:10",
         "light": false,
@@ -202375,6 +204865,9 @@
             100,
             100
         ],
+        "tag_list": [
+            "Lyme"
+        ],
         "timer": "00:28:14",
         "light": false,
         "heavy": false,
@@ -202621,6 +205114,9 @@
             158,
             100,
             100
+        ],
+        "tag_list": [
+            "Pearl"
         ],
         "timer": "04:46:02",
         "light": false,
@@ -202885,6 +205381,7 @@
             100,
             100
         ],
+        "tag_list": [],
         "timer": "00:28:37",
         "light": false,
         "heavy": false,
@@ -203163,6 +205660,7 @@
             100,
             100
         ],
+        "tag_list": [],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -203418,6 +205916,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "HunterMETA"
         ],
         "timer": null,
         "light": false,
@@ -203697,6 +206198,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "FortuneMETA"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -203952,6 +206456,9 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "HatakazeMETA"
         ],
         "timer": null,
         "light": false,
@@ -204209,6 +206716,9 @@
             108,
             104
         ],
+        "tag_list": [
+            "KimberlyMETA"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -204464,6 +206974,9 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "VampireMETA"
         ],
         "timer": null,
         "light": false,
@@ -204725,6 +207238,11 @@
             100,
             107,
             104
+        ],
+        "tag_list": [
+            "KasumiMETA",
+            "KasumiHA",
+            "TOC"
         ],
         "timer": null,
         "light": false,
@@ -205043,6 +207561,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "GrenvilleMETA"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -205314,6 +207835,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "KawakazeMETA"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -205578,6 +208102,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "YūdachiMETA"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -205834,6 +208361,9 @@
             107,
             104
         ],
+        "tag_list": [
+            "DeweyMETA"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -206089,6 +208619,9 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "CarabiniereMETA"
         ],
         "timer": null,
         "light": false,
@@ -206353,6 +208886,9 @@
             100,
             108,
             104
+        ],
+        "tag_list": [
+            "BristolMETA"
         ],
         "timer": null,
         "light": false,
@@ -206624,6 +209160,10 @@
             100,
             104
         ],
+        "tag_list": [
+            "HelenaMETA",
+            "Helena"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -206891,6 +209431,10 @@
             106,
             104
         ],
+        "tag_list": [
+            "MemphisMETA",
+            "TOC"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -207150,6 +209694,10 @@
             106,
             104
         ],
+        "tag_list": [
+            "Sheffield.META",
+            "Sheffield"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -207408,6 +209956,9 @@
             101,
             105,
             104
+        ],
+        "tag_list": [
+            "La Galissonnière.META"
         ],
         "timer": null,
         "light": false,
@@ -207681,6 +210232,11 @@
             105,
             104
         ],
+        "tag_list": [
+            "Jintsū.META",
+            "Musashi-Game",
+            "TOC"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -207953,6 +210509,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "KirovMETA"
         ],
         "timer": null,
         "light": false,
@@ -208231,6 +210790,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "PamiatMerkuriaMETA"
+        ],
         "timer": "01:17:00",
         "light": false,
         "heavy": false,
@@ -208486,6 +211048,9 @@
             101,
             100,
             104
+        ],
+        "tag_list": [
+            "BoiseMETA"
         ],
         "timer": null,
         "light": false,
@@ -208757,6 +211322,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "ClevelandMETA"
+        ],
         "timer": "01:25:00",
         "light": false,
         "heavy": false,
@@ -209027,6 +211595,9 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "KölnMETA"
         ],
         "timer": null,
         "light": false,
@@ -209301,6 +211872,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "RegensburgMETA"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -209566,6 +212140,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "KonigsbergMETA"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -209825,6 +212402,7 @@
             106,
             104
         ],
+        "tag_list": [],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -210095,6 +212673,9 @@
             102,
             105,
             104
+        ],
+        "tag_list": [
+            "TrentoMETA"
         ],
         "timer": null,
         "light": false,
@@ -210371,6 +212952,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "AlgérieMETA"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -210627,6 +213211,9 @@
             102,
             106,
             104
+        ],
+        "tag_list": [
+            "FochMETA"
         ],
         "timer": null,
         "light": false,
@@ -210899,6 +213486,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "WichitaMETA"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -211169,6 +213759,11 @@
             106,
             104
         ],
+        "tag_list": [
+            "Admiral Hipper.META",
+            "Admiral Hipper",
+            "Hipper Sister"
+        ],
         "timer": "02:00:00",
         "light": false,
         "heavy": false,
@@ -211431,6 +214026,9 @@
             102,
             105,
             104
+        ],
+        "tag_list": [
+            "Bolzano.META"
         ],
         "timer": null,
         "light": false,
@@ -211696,6 +214294,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "GneisenauMETA",
+            "Gneisenau"
         ],
         "timer": null,
         "light": false,
@@ -211967,6 +214569,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "ScharnhorstMETA",
+            "Scharnhorst"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -212235,6 +214841,10 @@
             103,
             100,
             104
+        ],
+        "tag_list": [
+            "RepulseMETA",
+            "bunao"
         ],
         "timer": null,
         "light": false,
@@ -212506,6 +215116,9 @@
             103,
             100,
             104
+        ],
+        "tag_list": [
+            "RenownMETA"
         ],
         "timer": null,
         "light": false,
@@ -212781,6 +215394,9 @@
             101,
             104
         ],
+        "tag_list": [
+            "HieiMETA"
+        ],
         "timer": "04:10:00",
         "light": false,
         "heavy": false,
@@ -213035,6 +215651,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "DunkerqueMETA",
+            "PRE"
         ],
         "timer": null,
         "light": false,
@@ -213306,6 +215926,10 @@
             101,
             104
         ],
+        "tag_list": [
+            "FusoMETA",
+            "Fuso"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -213575,6 +216199,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "YamashiroMETA",
+            "Yamashiro"
         ],
         "timer": null,
         "light": false,
@@ -213847,6 +216475,10 @@
             103,
             100,
             104
+        ],
+        "tag_list": [
+            "ArizonaMETA",
+            "TOC"
         ],
         "timer": null,
         "light": false,
@@ -214122,6 +216754,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "QE",
+            "QEMETA"
         ],
         "timer": null,
         "light": false,
@@ -214399,6 +217035,12 @@
             101,
             104
         ],
+        "tag_list": [
+            "Big Seven",
+            "luodeni",
+            "RodneyMETA",
+            "TOC"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -214674,6 +217316,11 @@
             101,
             104
         ],
+        "tag_list": [
+            "NagatoMETA",
+            "Big Seven",
+            "Musashi-Game"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -214928,6 +217575,9 @@
             103,
             100,
             104
+        ],
+        "tag_list": [
+            "GCMETA"
         ],
         "timer": null,
         "light": false,
@@ -215199,6 +217849,7 @@
             100,
             104
         ],
+        "tag_list": [],
         "timer": "04:15:00",
         "light": false,
         "heavy": false,
@@ -215454,6 +218105,7 @@
             100,
             104
         ],
+        "tag_list": [],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -215723,6 +218375,7 @@
             100,
             104
         ],
+        "tag_list": [],
         "timer": "04:10:00",
         "light": false,
         "heavy": false,
@@ -215986,6 +218639,10 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "HiyoMETA",
+            "Hiyō"
         ],
         "timer": null,
         "light": false,
@@ -216251,6 +218908,10 @@
             119,
             118
         ],
+        "tag_list": [
+            "JunyoMETA",
+            "Jun'yō"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -216512,6 +219173,10 @@
             109,
             110,
             104
+        ],
+        "tag_list": [
+            "PrincetonMETA",
+            "Princeton"
         ],
         "timer": null,
         "light": false,
@@ -216778,6 +219443,7 @@
             117,
             118
         ],
+        "tag_list": [],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -217045,6 +219711,9 @@
             121,
             123,
             104
+        ],
+        "tag_list": [
+            "ElbeMETA"
         ],
         "timer": "02:22:00",
         "light": false,
@@ -217329,6 +219998,10 @@
             119,
             118
         ],
+        "tag_list": [
+            "HiryuMETA",
+            "Hiryu"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -217601,6 +220274,10 @@
             114,
             114,
             115
+        ],
+        "tag_list": [
+            "Ark Royal.META",
+            "Ark Royal"
         ],
         "timer": null,
         "light": false,
@@ -217880,6 +220557,10 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "SouryuMETA",
+            "Souryu"
         ],
         "timer": null,
         "light": false,
@@ -218169,6 +220850,10 @@
             126,
             101
         ],
+        "tag_list": [
+            "BéarnMETA",
+            "Béarn"
+        ],
         "timer": "02:00:00",
         "light": false,
         "heavy": false,
@@ -218430,6 +221115,9 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "Armor-CV"
         ],
         "timer": null,
         "light": false,
@@ -218693,6 +221381,9 @@
             109,
             111,
             110
+        ],
+        "tag_list": [
+            "HornetMETA"
         ],
         "timer": null,
         "light": false,
@@ -218962,6 +221653,9 @@
             114,
             114
         ],
+        "tag_list": [
+            "GloriousMETA"
+        ],
         "timer": "03:50:00",
         "light": false,
         "heavy": false,
@@ -219223,6 +221917,11 @@
             109,
             111,
             110
+        ],
+        "tag_list": [
+            "YorktownMETA",
+            "TOC",
+            "Yorktown"
         ],
         "timer": null,
         "light": false,
@@ -219506,6 +222205,9 @@
             140,
             100
         ],
+        "tag_list": [
+            "U-556META"
+        ],
         "timer": "00:13:00",
         "light": false,
         "heavy": false,
@@ -219784,6 +222486,9 @@
             104,
             104
         ],
+        "tag_list": [
+            "TOC"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -220038,6 +222743,7 @@
             100,
             104
         ],
+        "tag_list": [],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -220268,6 +222974,7 @@
             106,
             104
         ],
+        "tag_list": [],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -220496,6 +223203,7 @@
             107,
             104
         ],
+        "tag_list": [],
         "timer": "02:38:00",
         "light": false,
         "heavy": false,
@@ -220724,6 +223432,7 @@
             106,
             104
         ],
+        "tag_list": [],
         "timer": "02:24:00",
         "light": false,
         "heavy": false,
@@ -220948,6 +223657,9 @@
             109,
             111,
             111
+        ],
+        "tag_list": [
+            "VertGH"
         ],
         "timer": null,
         "light": false,
@@ -221195,6 +223907,7 @@
             106,
             104
         ],
+        "tag_list": [],
         "timer": "02:44:00",
         "light": false,
         "heavy": false,
@@ -221431,6 +224144,7 @@
             107,
             104
         ],
+        "tag_list": [],
         "timer": "02:40:00",
         "light": false,
         "heavy": false,
@@ -221667,6 +224381,7 @@
             106,
             104
         ],
+        "tag_list": [],
         "timer": "02:26:00",
         "light": false,
         "heavy": false,
@@ -221899,6 +224614,9 @@
             109,
             111,
             111
+        ],
+        "tag_list": [
+            "VertGH"
         ],
         "timer": "02:47:00",
         "light": false,
@@ -222136,6 +224854,7 @@
             107,
             104
         ],
+        "tag_list": [],
         "timer": "02:05:00",
         "light": false,
         "heavy": false,
@@ -222372,6 +225091,7 @@
             106,
             104
         ],
+        "tag_list": [],
         "timer": "00:23:00",
         "light": false,
         "heavy": false,
@@ -222628,6 +225348,7 @@
             106,
             104
         ],
+        "tag_list": [],
         "timer": "01:48:00",
         "light": false,
         "heavy": false,
@@ -222862,6 +225583,9 @@
             117,
             119,
             104
+        ],
+        "tag_list": [
+            "Uruuru"
         ],
         "timer": "02:25:00",
         "light": false,
@@ -223098,6 +225822,9 @@
             118,
             104
         ],
+        "tag_list": [
+            "Saraana"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -223331,6 +226058,7 @@
             110,
             110
         ],
+        "tag_list": [],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -223573,6 +226301,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "KizunaAI"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -223806,6 +226537,9 @@
             100,
             104
         ],
+        "tag_list": [
+            "KizunaAI"
+        ],
         "timer": "01:55:00",
         "light": false,
         "heavy": false,
@@ -224038,6 +226772,9 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "KizunaAI"
         ],
         "timer": "04:30:00",
         "light": false,
@@ -224274,6 +227011,9 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "KizunaAI"
         ],
         "timer": "04:50:00",
         "light": false,
@@ -224512,6 +227252,9 @@
             107,
             118
         ],
+        "tag_list": [
+            "hololive"
+        ],
         "timer": "00:17:30",
         "light": false,
         "heavy": false,
@@ -224744,6 +227487,9 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "hololive"
         ],
         "timer": "01:25:00",
         "light": false,
@@ -224992,6 +227738,9 @@
             140,
             100
         ],
+        "tag_list": [
+            "hololive"
+        ],
         "timer": "00:20:00",
         "light": false,
         "heavy": false,
@@ -225228,6 +227977,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "hololive"
+        ],
         "timer": "00:12:00",
         "light": false,
         "heavy": false,
@@ -225460,6 +228212,9 @@
             102,
             100,
             104
+        ],
+        "tag_list": [
+            "hololive"
         ],
         "timer": "03:22:00",
         "light": false,
@@ -225704,6 +228459,9 @@
             118,
             104
         ],
+        "tag_list": [
+            "hololive"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -225942,6 +228700,9 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "hololive"
         ],
         "timer": null,
         "light": false,
@@ -226204,6 +228965,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "DOAXVV"
+        ],
         "timer": "02:40:06",
         "light": false,
         "heavy": false,
@@ -226464,6 +229228,9 @@
             101,
             104
         ],
+        "tag_list": [
+            "DOAXVV"
+        ],
         "timer": "02:35:25",
         "light": false,
         "heavy": false,
@@ -226718,6 +229485,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "DOAXVV"
+        ],
         "timer": "02:33:43",
         "light": false,
         "heavy": false,
@@ -226966,6 +229736,10 @@
             100,
             104
         ],
+        "tag_list": [
+            "DOAXVV",
+            "Misaki"
+        ],
         "timer": "02:41:47",
         "light": false,
         "heavy": false,
@@ -227213,6 +229987,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "DOAXVV",
+            "Nagisa"
         ],
         "timer": "02:38:25",
         "light": false,
@@ -227465,6 +230243,9 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "DOAXVV"
         ],
         "timer": null,
         "light": false,
@@ -227732,6 +230513,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "DOAXVV"
+        ],
         "timer": "02:31:40",
         "light": false,
         "heavy": false,
@@ -227980,6 +230764,9 @@
             117,
             118,
             104
+        ],
+        "tag_list": [
+            "DOAXVV"
         ],
         "timer": "03:03:36",
         "light": false,
@@ -228265,6 +231052,9 @@
             101,
             104
         ],
+        "tag_list": [
+            "DOAXVV"
+        ],
         "timer": "02:44:00",
         "light": false,
         "heavy": false,
@@ -228518,6 +231308,10 @@
             117,
             118,
             119
+        ],
+        "tag_list": [
+            "DOAXVV",
+            "Elise"
         ],
         "timer": "02:45:00",
         "light": false,
@@ -228782,6 +231576,9 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "DOAXVV"
         ],
         "timer": null,
         "light": false,
@@ -229052,6 +231849,10 @@
             106,
             104
         ],
+        "tag_list": [
+            "DOAXVV",
+            "Shandy"
+        ],
         "timer": "02:35:00",
         "light": false,
         "heavy": false,
@@ -229300,6 +232101,9 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "DOAXVV"
         ],
         "timer": "03:03:00",
         "light": false,
@@ -229553,6 +232357,9 @@
             140,
             100
         ],
+        "tag_list": [
+            "DOAXVV"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -229801,6 +232608,12 @@
             100,
             104
         ],
+        "tag_list": [
+            "DOAXVV",
+            "YKNE1",
+            "YKNE2",
+            "YKNE3"
+        ],
         "timer": "02:32:00",
         "light": false,
         "heavy": false,
@@ -230047,6 +232860,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "IMAS"
+        ],
         "timer": "01:07:10",
         "light": false,
         "heavy": false,
@@ -230288,6 +233104,9 @@
             119,
             118
         ],
+        "tag_list": [
+            "IMAS"
+        ],
         "timer": "06:15:00",
         "light": false,
         "heavy": false,
@@ -230527,6 +233346,9 @@
             103,
             100,
             104
+        ],
+        "tag_list": [
+            "IMAS"
         ],
         "timer": "01:24:10",
         "light": false,
@@ -230780,6 +233602,9 @@
             102,
             100,
             104
+        ],
+        "tag_list": [
+            "IMAS"
         ],
         "timer": "01:59:50",
         "light": false,
@@ -231039,6 +233864,9 @@
             104,
             100
         ],
+        "tag_list": [
+            "IMAS"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -231273,6 +234101,9 @@
             140,
             100
         ],
+        "tag_list": [
+            "IMAS"
+        ],
         "timer": "00:08:42",
         "light": false,
         "heavy": false,
@@ -231506,6 +234337,9 @@
             140,
             140,
             100
+        ],
+        "tag_list": [
+            "IMAS"
         ],
         "timer": "00:08:42",
         "light": false,
@@ -231781,6 +234615,11 @@
             107,
             104
         ],
+        "tag_list": [
+            "SSSS",
+            "RIKKA",
+            "3IN1"
+        ],
         "timer": "00:35:30",
         "light": false,
         "heavy": false,
@@ -232037,6 +234876,9 @@
             101,
             104
         ],
+        "tag_list": [
+            "SSSS"
+        ],
         "timer": "01:25:02",
         "light": false,
         "heavy": false,
@@ -232288,6 +235130,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "SSSS"
+        ],
         "timer": "00:38:45",
         "light": false,
         "heavy": false,
@@ -232536,6 +235381,9 @@
             102,
             106,
             104
+        ],
+        "tag_list": [
+            "SSSS"
         ],
         "timer": "01:01:49",
         "light": false,
@@ -232795,6 +235643,12 @@
             100,
             104
         ],
+        "tag_list": [
+            "SSSS",
+            "YUME",
+            "DYNA",
+            "3IN1"
+        ],
         "timer": "01:04:11",
         "light": false,
         "heavy": false,
@@ -233046,6 +235900,10 @@
             119,
             118
         ],
+        "tag_list": [
+            "SSSS",
+            "DYNA"
+        ],
         "timer": "01:37:42",
         "light": false,
         "heavy": false,
@@ -233293,6 +236151,10 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "SSSS",
+            "DYNA"
         ],
         "timer": null,
         "light": false,
@@ -233545,6 +236407,10 @@
             101,
             104
         ],
+        "tag_list": [
+            "SSSS",
+            "DYNA"
+        ],
         "timer": "06:15:09",
         "light": false,
         "heavy": false,
@@ -233793,6 +236659,11 @@
             100,
             104,
             100
+        ],
+        "tag_list": [
+            "SSSS",
+            "HIME",
+            "DYNA"
         ],
         "timer": "01:31:40",
         "light": false,
@@ -234055,6 +236926,10 @@
             101,
             107,
             104
+        ],
+        "tag_list": [
+            "RYZA",
+            "RyzaSelf"
         ],
         "timer": "01:16:00",
         "light": false,
@@ -234323,6 +237198,10 @@
             118,
             118
         ],
+        "tag_list": [
+            "RYZA",
+            "KlaudiaHA"
+        ],
         "timer": "02:23:00",
         "light": false,
         "heavy": false,
@@ -234589,6 +237468,9 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "RYZA"
         ],
         "timer": "06:15:00",
         "light": false,
@@ -234880,6 +237762,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "RYZA"
+        ],
         "timer": "01:30:00",
         "light": false,
         "heavy": false,
@@ -235134,6 +238019,10 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "RYZA",
+            "serri_spw_off"
         ],
         "timer": "04:20:00",
         "light": false,
@@ -235396,6 +238285,10 @@
             102,
             101,
             104
+        ],
+        "tag_list": [
+            "RYZA",
+            "KalaSelf"
         ],
         "timer": null,
         "light": false,
@@ -235714,6 +238607,10 @@
             106,
             104
         ],
+        "tag_list": [
+            "Asuka",
+            "Senran"
+        ],
         "timer": "02:30:00",
         "light": false,
         "heavy": false,
@@ -235984,6 +238881,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Senran",
+            "Ikaruga"
+        ],
         "timer": "02:35:00",
         "light": false,
         "heavy": false,
@@ -236238,6 +239139,9 @@
             140,
             100
         ],
+        "tag_list": [
+            "Senran"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -236484,6 +239388,9 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "Senran"
         ],
         "timer": "02:33:20",
         "light": false,
@@ -236743,6 +239650,9 @@
             101,
             104
         ],
+        "tag_list": [
+            "Senran"
+        ],
         "timer": "02:38:20",
         "light": false,
         "heavy": false,
@@ -237001,6 +239911,10 @@
             118,
             104
         ],
+        "tag_list": [
+            "Senran",
+            "Murasaki"
+        ],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -237253,6 +240167,10 @@
             107,
             104
         ],
+        "tag_list": [
+            "Senran",
+            "yuuyaki"
+        ],
         "timer": "02:30:00",
         "light": false,
         "heavy": false,
@@ -237498,6 +240416,11 @@
             102,
             100,
             104
+        ],
+        "tag_list": [
+            "To LOVE-Ru",
+            "Deviluke",
+            "Lala"
         ],
         "timer": "02:28:00",
         "light": false,
@@ -237747,6 +240670,11 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "To LOVE-Ru",
+            "Deviluke",
+            "Nana"
         ],
         "timer": "01:53:20",
         "light": false,
@@ -238015,6 +240943,11 @@
             106,
             104
         ],
+        "tag_list": [
+            "To LOVE-Ru",
+            "Deviluke",
+            "Momo"
+        ],
         "timer": "02:10:02",
         "light": false,
         "heavy": false,
@@ -238281,6 +241214,9 @@
             101,
             104
         ],
+        "tag_list": [
+            "To LOVE-Ru"
+        ],
         "timer": "02:05:00",
         "light": false,
         "heavy": false,
@@ -238536,6 +241472,10 @@
             101,
             104
         ],
+        "tag_list": [
+            "To LOVE-Ru",
+            "ToloveHaruna"
+        ],
         "timer": "02:11:40",
         "light": false,
         "heavy": false,
@@ -238787,6 +241727,10 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "To LOVE-Ru",
+            "Toloveyui"
         ],
         "timer": null,
         "light": false,
@@ -239047,6 +241991,9 @@
             103,
             101,
             104
+        ],
+        "tag_list": [
+            "BRS"
         ],
         "timer": null,
         "light": false,
@@ -239315,6 +242262,10 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "BRS",
+            "DM"
         ],
         "timer": null,
         "light": false,
@@ -239887,6 +242838,10 @@
             118,
             104
         ],
+        "tag_list": [
+            "Yumia",
+            "YumiaSelf"
+        ],
         "timer": "02:23:00",
         "light": false,
         "heavy": false,
@@ -240159,6 +243114,10 @@
             101,
             106,
             104
+        ],
+        "tag_list": [
+            "Yumia",
+            "Isla"
         ],
         "timer": "01:16:00",
         "light": false,
@@ -240440,6 +243399,10 @@
             101,
             104
         ],
+        "tag_list": [
+            "Yumia",
+            "Nina"
+        ],
         "timer": "06:15:00",
         "light": false,
         "heavy": false,
@@ -240706,6 +243669,10 @@
             100,
             106,
             104
+        ],
+        "tag_list": [
+            "Yumia",
+            "Lenja"
         ],
         "timer": "00:25:50",
         "light": false,
@@ -240986,6 +243953,7 @@
             104,
             104
         ],
+        "tag_list": [],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -241258,6 +244226,7 @@
             106,
             104
         ],
+        "tag_list": [],
         "timer": null,
         "light": false,
         "heavy": false,
@@ -241514,6 +244483,10 @@
             102,
             100,
             104
+        ],
+        "tag_list": [
+            "DAL",
+            "Yatogami Tōka"
         ],
         "timer": "01:08:20",
         "light": false,
@@ -241782,6 +244755,9 @@
             119,
             118
         ],
+        "tag_list": [
+            "DAL"
+        ],
         "timer": "02:13:50",
         "light": false,
         "heavy": false,
@@ -242044,6 +245020,9 @@
             101,
             104
         ],
+        "tag_list": [
+            "DAL"
+        ],
         "timer": "03:05:10",
         "light": false,
         "heavy": false,
@@ -242291,6 +245270,9 @@
             117,
             119,
             118
+        ],
+        "tag_list": [
+            "DAL"
         ],
         "timer": null,
         "light": false,
@@ -242551,6 +245533,10 @@
             101,
             100,
             104
+        ],
+        "tag_list": [
+            "DAL",
+            "Kurumi Tokisaki"
         ],
         "timer": null,
         "light": false,
@@ -242833,6 +245819,9 @@
             106,
             104
         ],
+        "tag_list": [
+            "DAL"
+        ],
         "timer": "02:50:40",
         "light": false,
         "heavy": false,
@@ -243096,6 +246085,9 @@
             102,
             100,
             104
+        ],
+        "tag_list": [
+            "NieR"
         ],
         "timer": null,
         "light": false,
@@ -243365,6 +246357,9 @@
             101,
             100,
             104
+        ],
+        "tag_list": [
+            "NieR"
         ],
         "timer": null,
         "light": false,

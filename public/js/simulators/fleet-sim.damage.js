@@ -25,6 +25,7 @@ import { runBattleSim } from '../engine/damage/battle-sim.js';
 import { dotSchedule } from '../engine/damage/dot.js';
 import { defaultWindow } from './fleet-sim.saves.js';
 import { weaponCycleInterval } from '../engine/damage/reload.js';
+import { unitTags } from '../engine/damage/targets.js';
 
 // ===== Pure helpers (unit-testable, take data/lookups as params) =====
 
@@ -933,7 +934,12 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageB
                 shipType,
                 spEquipped,
                 allyCount: 6,
-                tags: [],
+                // Static tags only. The runtime half — BattleBuffAddTag stamps — is
+                // the sim's own multiset, which this seeds rather than replaces.
+                // A gate naming a tag that is neither static nor stamped by any graph
+                // edge (136 of the 463 check_target edges) still reads absent and is
+                // blocked in silence, exactly as it was before the seed.
+                tags: unitTags(shipType, ship.nationality, ship.tag_list),
             },
         },
     });

@@ -582,6 +582,31 @@ export function resolvePassiveBuffs(targetShip, allFleetShips, targetSlot = -1, 
 }
 
 /**
+ * Tags a `target_ship_tags` gate names that this lane cannot answer, so the clause
+ * passes rather than newly buffing nobody.
+ *
+ * Two reasons, one behaviour. Four are stamped mid-battle by `BattleBuffAddTag`
+ * (`P3_Harmony`, `keluoladuogai`, `dadan`, `QE_supplicate`) — the battle sim models
+ * that multiset, the passive lane does not. Three are not producible from KR data at
+ * all: `noSeydlitz` is a fleet-composition tag nothing stamps, `Bilibili` is the
+ * collab leader tag no KR roster entry carries, and `danyaochongzu` (탄약 충족) rides
+ * buff `201`, attached outside the Lua battle layer — so whether a META or Operation
+ * Siren run receives it is not derivable and the honest answer is "unchanged".
+ *
+ * Its opposite `danyaokuifa` (탄약 부족) is deliberately ABSENT from this list: a
+ * fresh sortie is not ammo-starved, so reading it as unset is certain, and `2190`'s
+ * fleet-wide +15% 주는 피해 correctly stops applying.
+ *
+ * `tests/simulators/fleet-sim-ship-tags.test.mjs` pins this against the roster and
+ * the graph, so a data refresh that introduces a NEW orphan fails there instead of
+ * quietly zeroing a live buff.
+ */
+export const UNEVALUABLE_SHIP_TAGS = new Set([
+    'Bilibili', 'P3_Harmony', 'QE_supplicate', 'dadan', 'danyaochongzu',
+    'keluoladuogai', 'noSeydlitz',
+]);
+
+/**
  * Does one clause of a passive skill land on this ship?
  *
  * EVALUATED PER CLAUSE, NOT PER SKILL. One skill routinely mixes recipients —
@@ -608,6 +633,15 @@ function _clauseApplies(buff, skill, targetShip, targetSlot, allFleetShips, isSe
 
     const nats = skill.target_nationality;
     if (nats && nats.length > 0 && !nats.includes(targetShip.nationality)) return false;
+
+    // Skill-level only, like target_nationality — the extractor emits no per-clause
+    // variant. ANY of the listed tags is enough (ContainsLabelTag returns on the first
+    // hit, battleunit.lua:437), which is the opposite of the equip-label gate's
+    // all-must-match in battle-sim.gates.js.
+    const stags = skill.target_ship_tags;
+    if (stags && stags.length > 0
+        && !stags.some((t) => UNEVALUABLE_SHIP_TAGS.has(t))
+        && !stags.some((t) => (targetShip.tag_list || []).includes(t))) return false;
 
     return true;
 }
