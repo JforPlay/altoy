@@ -112,3 +112,62 @@ test('a second recompute does not duplicate the unmodelled-barrage note', async 
   await expect(table).toHaveCount(1);
   await expect(note).toHaveCount(1);
 });
+
+/**
+ * The `label` gate reaches the browser, which is the one thing the node tests cannot
+ * see: `evalGate` is pure and its own suite feeds it a hand-built unit, so a bug where
+ * `equipLabels` never gets onto `simCtx.unit` would leave every one of them green while
+ * silently blocking all 113 label edges in production.
+ *
+ * 꼬마 아마기 14480 사전 방비 is the fixture, picked by simulating every SP-weapon-less
+ * ship twice — once with every label in the graph, once with none — and taking the one
+ * whose whole barrage output is the difference: weapon 64090 or nothing at all. Her
+ * gate is `["BB", "MG", "AP"]`, so it also exercises the ALL-must-match rule: 410mm
+ * 연장포 (삼식탄) is `[IJN, BB, MG, HE]` and 시제형 410mm 3연장포 is `[IJN, BB, MG, AP]`,
+ * two 전함 주포 for the same slot differing in one label.
+ *
+ * Two things make a fixture unusable here and both cost a rewrite before this one:
+ * a 전용 특수 장비 (the sim fits it at max, and its skill remap swaps the rung for one
+ * gated on a DIFFERENT label — 포미더블 팔로워 윙 `["Albacore"]` becomes 팔로워 윙+
+ * `["HMS"]`), and a gated cast whose target skill the graph does not carry, which is
+ * most of the 113 (샌 재신토 17390 flips its gate and renders the same rows either way,
+ * because the rows come from an ungated sibling branch).
+ *
+ * The "before" half anchors on the WEAPON rows, not the barrage ones: with the gate
+ * shut she has no barrage at all, so an absence assertion would have nothing of its
+ * own to wait for and would pass before the sim had run.
+ */
+test('a label-gated barrage appears only once the equip carrying that label is fitted', async ({ page }) => {
+  await page.goto(PAGE);
+  // 꼬마 아마기 is a 전함 — 후열, so slots 0-2.
+  await page.locator('.ship-card[data-slot="0"] .ship-card-add').click();
+  await expect(page.locator('#ship-picker-grid .picker-item').first()).toBeVisible();
+  const unfilteredShips = await page.locator('#ship-picker-grid .picker-item').count();
+  await page.locator('#ship-picker-search').fill('꼬마 아마기');
+  await expect(page.locator('#ship-picker-grid .picker-item')).not.toHaveCount(unfilteredShips);
+  await page.locator('#ship-picker-grid .picker-item').first().click();
+  await page.locator('.ship-card[data-slot="0"] .stats-toggle').click();
+
+  const barrage = page.locator('.ship-card[data-slot="0"] .dmg-weapon-table .dmg-row-barrage');
+  const fitMainGun = async (name) => {
+    await page.locator('.ship-card[data-slot="0"] .equip-slot[data-equip-index="0"]').click();
+    await expect(page.locator('#equip-picker-grid .picker-item').first()).toBeVisible();
+    const unfiltered = await page.locator('#equip-picker-grid .picker-item').count();
+    await page.locator('#equip-picker-search').fill('410mm');
+    await expect(page.locator('#equip-picker-grid .picker-item')).not.toHaveCount(unfiltered);
+    // Pick by NAME, not `.first()`: once a slot is filled the grid leads with a
+    // 장착 해제 entry that the search box does not filter out, so `.first()` unequips
+    // the slot and the second fit silently becomes a removal.
+    await page.locator('#equip-picker-grid .picker-item', { hasText: name }).first().click();
+  };
+
+  // The HE gun is one label short of the gate. Its own weapon row is what says the
+  // breakdown has rendered, so the absence below means the gate and not "not yet".
+  const rows = page.locator('.ship-card[data-slot="0"] .dmg-weapon-table tbody tr');
+  await fitMainGun('삼식탄');
+  await expect(rows.first()).toBeVisible();
+  await expect(barrage.filter({ hasText: '사전 방비' })).toHaveCount(0);
+
+  await fitMainGun('시제형 410mm 3연장포');
+  await expect(barrage.filter({ hasText: '사전 방비' })).toHaveCount(1);
+});

@@ -29,7 +29,7 @@
  */
 export const KNOWN_GATE_KEYS = new Set([
   'check_target', 'minTargetNumber', 'maxTargetNumber', 'check_weapon',
-  'minWeaponNumber', 'maxWeaponNumber', 'type', 'ship_tag_list', 'ship_type_list',
+  'minWeaponNumber', 'maxWeaponNumber', 'type', 'label', 'ship_tag_list', 'ship_type_list',
   'nationality', 'hpUpperBound', 'hpLowerBound', 'hpOutInterval', 'hpSigned',
   'check_spweapon', 'exceptCaster',
   // Carried but not a condition on the caster at all — see the doc comment below.
@@ -65,14 +65,14 @@ const UNKNOWN_KEYS = [
   'effectAttachData', 'killer', 'damageReason', 'deathCause', 'dungeonTypeList',
   'attrCompare', 'attrInterval', 'attrLowerBound', 'attrUpperBound', 'targetMaxHPRatio',
   'be_hit_condition', 'cloak', 'check_target_gap', 'armor_type', 'weaponType',
-  // check_weapon sub-filters `GetEquipmentList` also applies (both 100% co-occur
-  // with check_weapon in the published graph): `label` requires the equipped
-  // ITEM's own label tags (battlebuffcastskill.lua reads
-  // `GetWeaponDataFromID(id).label`) to contain every string listed; `weapon_group`
-  // requires the item's equip-template `group` id (a weapon-family id finer than
-  // `type`, e.g. one gun lineage) to be in the list. UnitCtx only carries the
-  // coarse `equipTypes` numbers — no per-item label or group id exists to check.
-  'label', 'weapon_group',
+  // The one check_weapon sub-filter still unanswerable (19 edges, 100% co-occurring
+  // with check_weapon): `weapon_group` requires the item's equip-TEMPLATE `group` id
+  // — a weapon-family id finer than `type`, e.g. one gun lineage — to be in the list.
+  // `equip_data_lite` does not carry it, and its `compare_group` is a DIFFERENT field
+  // that agrees on 0 of 1006 base records, so it cannot substitute. Emitting `group`
+  // into the lite file is the fix if the 19 edges ever matter. (Its sibling `label`
+  // moved into the evaluated set — see the check_weapon loop.)
+  'weapon_group',
   // onFoeAircraftDying's sibling of `killer` (battlebuffeffect.lua
   // onFoeAircraftDying): the shot-down aircraft must be inside the fleet's AA
   // weapon's effective range (`not GetFleetAntiAirWeapon():IsOutOfRange(unit)`) —
@@ -130,13 +130,28 @@ export function evalGate(a, unit, tags) {
     if (!ok) return false;
   }
 
+  // GetEquipmentList (battlebuffcastskill.lua:261) walks the equip slots and drops a
+  // slot on the FIRST failing sub-filter, in this order. Every filter is optional and
+  // an absent one passes; the `label` list is ALL-must-match (a table.contains per
+  // label, `break` on the first miss) — the opposite of ContainsLabelTag's ANY, which
+  // is why this cannot share _matchCount's `.some()`.
   if (a.check_weapon) {
     const types = arr(a.type);
     const slots = arr(a.index);
+    const labels = arr(a.label).map(String);
+    const equipLabels = unit.equipLabels || [];
     let n = 0;
     for (let i = 0; i < (unit.equipTypes || []).length; i++) {
+      // `if not slot3[slot4].equipment then slot6 = false` — an empty slot is dropped
+      // before any filter is consulted. equipTypes is 0 there (every real equip has a
+      // non-zero type), so this is the sentinel. Without it a bare minWeaponNumber
+      // passes on an unequipped ship; no published edge has that shape today, but
+      // that is a property of the current data, not of the rule.
+      if (!unit.equipTypes[i]) continue;
       if (slots.length && !slots.includes(i + 1)) continue;
-      if (!types.length || types.includes(unit.equipTypes[i])) n += 1;
+      if (types.length && !types.includes(unit.equipTypes[i])) continue;
+      if (labels.length && !labels.every((t) => (equipLabels[i] || []).includes(t))) continue;
+      n += 1;
     }
     if (n < (a.minWeaponNumber || 0)) return false;
     if (a.maxWeaponNumber != null && n > a.maxWeaponNumber) return false;

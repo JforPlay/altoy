@@ -84,6 +84,44 @@ test('check_weapon honours the 1-based index slot restriction', () => {
   assert.equal(evalGate({ check_weapon: true, type: [11], index: [3], minWeaponNumber: 1 }, u, new Set()), true);
 });
 
+// The 113 `label` edges (100% co-occurring with check_weapon, and none of them
+// carrying a `type`). GetEquipmentList requires EVERY listed label on the item —
+// a table.contains per label with a break on the first miss — so this is the
+// opposite of ContainsLabelTag's ANY and must not reuse _matchCount's `.some()`.
+test('check_weapon requires ALL of the listed labels on one slot', () => {
+  const u = unit({ equipTypes: [1, 3, 11], equipLabels: [['CL', 'MG'], ['DD', 'MG'], ['USS', 'CV']] });
+  const g = (label, extra = {}) => ({ check_weapon: true, label, minWeaponNumber: 1, ...extra });
+  assert.equal(evalGate(g(['CL', 'MG']), u, new Set()), true);
+  assert.equal(evalGate(g(['MG']), u, new Set()), true);
+  // 'CL' and 'HE' each sit on a slot, but no ONE slot carries both.
+  assert.equal(evalGate(g(['CL', 'HE']), u, new Set()), false);
+  assert.equal(evalGate(g(['SN']), u, new Set()), false);
+  // The label filter composes with the slot filter rather than replacing it.
+  assert.equal(evalGate(g(['DD', 'MG'], { index: [2] }), u, new Set()), true);
+  assert.equal(evalGate(g(['DD', 'MG'], { index: [1] }), u, new Set()), false);
+  // maxWeaponNumber: 0 is the "no such equip" arm and must still work off labels.
+  assert.equal(evalGate({ check_weapon: true, label: ['MG'], maxWeaponNumber: 0 }, u, new Set()), false);
+  assert.equal(evalGate({ check_weapon: true, label: ['SN'], maxWeaponNumber: 0 }, u, new Set()), true);
+});
+
+// A unit ctx with no equipLabels at all cannot satisfy a label gate. It is
+// indistinguishable from an all-empty loadout by design — the empty-slot rule below
+// already makes both count zero slots.
+test('a label gate finds nothing when the unit carries no labels', () => {
+  assert.equal(evalGate({ check_weapon: true, label: ['MG'], minWeaponNumber: 1 }, unit(), new Set()), false);
+});
+
+// GetEquipmentList drops an equipment-less slot BEFORE any sub-filter, so a bare
+// minWeaponNumber must not be satisfied by empty slots. equipTypes is 0 there; every
+// real equip has a non-zero type (890/890).
+test('check_weapon does not count empty slots', () => {
+  const empty = unit({ equipTypes: [0, 0, 0], equipLabels: [[], [], []] });
+  assert.equal(evalGate({ check_weapon: true, minWeaponNumber: 1 }, empty, new Set()), false);
+  assert.equal(evalGate({ check_weapon: true, minWeaponNumber: 1 }, unit(), new Set()), true);
+  // ...and an empty slot cannot fill a maxWeaponNumber: 0 lockout either way.
+  assert.equal(evalGate({ check_weapon: true, maxWeaponNumber: 0 }, empty, new Set()), true);
+});
+
 // hp is pinned at 1, so an out-of-interval test with a bare lower bound sits exactly on
 // the boundary where the Lua's two non-strict comparisons diverge from a naive negation.
 test('the out-of-interval test is the Lua formula, not the negation of the in-test', () => {

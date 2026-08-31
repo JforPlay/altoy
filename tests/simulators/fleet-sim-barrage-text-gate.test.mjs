@@ -199,6 +199,27 @@ function rowCadence(row) {
  * with the weapon fitted, and switching it off would silently drop those rows out of
  * the gate's coverage rather than check them.
  */
+/**
+ * The probe's three equip slots, taken from REAL records rather than bare type
+ * numbers, because `label` is now an evaluated gate and a labelless equip does not
+ * exist — all 890 carry one. Left as three numbers, every one of the 113 `label`
+ * edges would fail on a fixture that cannot occur, parking them in `silent` where
+ * the ratchet can never score them again.
+ *
+ * They are the nationality the probe already declares (3 = IJN) at the types it
+ * already declared, so the fixture is one coherent ship rather than a tuned one:
+ *   31080 100mm 2연장 98식 고각포改  type 1  [IJN, DD, MG, HE]
+ *   36360 96식 25mm 3연장 폭풍피격기포 type 6  [IJN, ST, AA]
+ *   38240 류세이                      type 8  [IJN, CV, TB]
+ * A label set this ship does not carry (CL, RN, SN, FFNF …) still fails, and that
+ * is an honest 「현재 편성에서 발동하지 않는」 — the probe is one build, not a union.
+ */
+const EQUIPS = [
+  { type: 1, label: ['IJN', 'DD', 'MG', 'HE'] },
+  { type: 6, label: ['IJN', 'ST', 'AA'] },
+  { type: 8, label: ['IJN', 'CV', 'TB'] },
+];
+
 function ctx() {
   const window = 78;
   const events = [];
@@ -213,7 +234,10 @@ function ctx() {
     events.push({ t, names: ['onAllInStrike', 'onAllInStrikeSteady', 'onAirAssistReady'], slot: 1, attr: 'air' });
   }
   return { window, events,
-    unit: { equipTypes: [1, 6, 8], nationality: 3, shipType: 4, spEquipped: true, allyCount: 6, tags: [] } };
+    unit: {
+      equipTypes: EQUIPS.map((e) => e.type), equipLabels: EQUIPS.map((e) => e.label),
+      nationality: 3, shipType: 4, spEquipped: true, allyCount: 6, tags: [],
+    } };
 }
 
 const SIM_CTX = ctx();
@@ -545,6 +569,18 @@ const _COUNT_CONFIG = 'config counter vs description: countTarget paired by coun
   + 'gunner hull and can only reduce) explains it';
 
 const TEXT_CORRECTIONS = {
+  // The stated opening belongs to a clause the LOADOUT rejects — the 인디애나 150290
+  // class, now reachable because `label` is evaluated instead of disclosed.
+  '18620|d': '펠릭스 슐츠 약한 자에게는 고통뿐+: the text states one cadence and then a '
+    + 'conditional rewrite of it — 「전투 중 20초마다 특수 탄막」 … 「경순양함 주포를 장착한 '
+    + '경우 … 발동 간격이 10초가 되며, 전투 시작 3초 후에 1회 발동」 — and the graph is the same '
+    + 'shape: three cast edges off 18620, {time:20, label:[DD,MG]}, {time:10, label:[CL,MG]} and '
+    + 'the {time:3, quota:1, label:[CL,MG]} opener. The probe carries a DD main gun, so it takes '
+    + 'the 20s arm exactly as the text says, while the 3s opening belongs to the CL arm. `openings` is '
+    + 'scraped per SKILL, so it demands the opener stated by one clause of a row produced by the other — the same '
+    + 'thing 인디애나 150290 does, and the reason the `d` check is gated on `num` at all. Not '
+    + 'visible before the label gate was evaluated: every arm was unknown, so the whole root was '
+    + 'disclosed with no rows to score',
   // 전탄 발사 / 특수 탄막 count families — text and counter disagree per ship.
   '21191|cadence': _COUNT_CONFIG,   // 엔터프라이즈(경순) 15 vs 12
   '21192|cadence': _COUNT_CONFIG,   // 엔터프라이즈(경순) 10 vs 8
@@ -658,8 +694,18 @@ const TEXT_CORRECTIONS = {
  * three counts are pinned, in both corpora, rather than `checked` alone.
  */
 const BASELINE = {
-  displayed: { checked: 925, disclosed: 204, silent: 58 },
-  spweapon: { checked: 89, disclosed: 53, silent: 187 },
+  // MOVED 2026-08-30 by the `label` gate (§C of the conditional-buffs spec): the 113
+  // label edges stopped returning 'unknown' and started reading the loadout. Both
+  // corpora moved the same way and every move is a gain:
+  //   displayed  checked 925 -> 944, disclosed 204 -> 177, silent 58 -> 64
+  //   전용 장비   checked  89 ->  90, disclosed  53 ->  49, silent 187 -> 190
+  // 27 roots left `disclosed` — 19 now produce scored rows, and the rest read as
+  // honestly inactive for THIS probe's loadout, which is the 「현재 편성에서 발동하지
+  // 않는」 note doing its job rather than coverage lost. `silent` rising is normally
+  // the failure this ratchet exists to catch; it is a win ONLY here, and only because
+  // the bucket it drew from is `disclosed`.
+  displayed: { checked: 944, disclosed: 177, silent: 64 },
+  spweapon: { checked: 90, disclosed: 49, silent: 190 },
 };
 
 function assertCoverage(which, got) {

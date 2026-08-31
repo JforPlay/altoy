@@ -884,6 +884,7 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageB
     // Barrage skills the ship actually has active. Two filters, and BOTH matter.
     // Plus the ones its 전용 장비 attaches — granted by the DEDICATED weapon only, so a
     // generic SP weapon in that slot, or an emptied slot, grants nothing.
+    const equipRecords = (slotConfig.equips || []).map((e) => _data.getEquipById(e?.id));
     const dedicated = _data.getDedicatedSPWeapon(ship.gid);
     const spEquipped = !!dedicated && Number(slotConfig.spWeapon?.id) === Number(dedicated.id);
     const graph = _data.getGraph();
@@ -922,7 +923,12 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageB
             window,
             events: weaponEvents(weapons, stats.reload, window, airInterval),
             unit: {
-                equipTypes: (slotConfig.equips || []).map((e) => _data.getEquipById(e?.id)?.type ?? 0),
+                equipTypes: equipRecords.map((e) => e?.type ?? 0),
+                // The gate's own field: GetEquipmentList reads
+                // equip_data_statistics[id].label, which equip_data_lite mirrors on
+                // 890/890 records. Labels are level-invariant, so the base record is
+                // the right read even though the slot holds a tier id.
+                equipLabels: equipRecords.map((e) => e?.label || []),
                 nationality: ship.nationality,
                 shipType,
                 spEquipped,
