@@ -29,7 +29,11 @@
  */
 export const KNOWN_GATE_KEYS = new Set([
   'check_target', 'minTargetNumber', 'maxTargetNumber', 'check_weapon',
-  'minWeaponNumber', 'maxWeaponNumber', 'type', 'label', 'ship_tag_list', 'ship_type_list',
+  // 'index' is check_weapon's slot filter, read by the loop below. The graph carries
+  // it as a per-type KEEP arg rather than a gate arg, so it never reaches the
+  // published-graph test's `seen` set — but the 숙련도 install gates emit it plainly,
+  // and a key missing from here silently PASSES.
+  'minWeaponNumber', 'maxWeaponNumber', 'type', 'index', 'label', 'ship_tag_list', 'ship_type_list',
   'nationality', 'hpUpperBound', 'hpLowerBound', 'hpOutInterval', 'hpSigned',
   'check_spweapon', 'exceptCaster',
   // Carried but not a condition on the caster at all — see the doc comment below.

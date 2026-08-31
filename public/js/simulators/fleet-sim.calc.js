@@ -573,6 +573,12 @@ export function resolvePassiveBuffs(targetShip, allFleetShips, targetSlot = -1, 
                 buffs.push({
                     attr: buff.attr, value: buff.value, type: buff.type, src: buff.src,
                     skill: String(skillId), wtype: buff.wtype, slots: buff.slots,
+                    // 숙련도 only: the equip labels it is scoped to and the install
+                    // gates gating it. Both are matched against the LOADOUT, which
+                    // lives two modules away in fleet-sim.damage.js, so they have to
+                    // survive this hop — dropping them silently applies the buff to
+                    // every weapon, unconditionally.
+                    labels: buff.labels, gates: buff.gates,
                 });
             }
         }
@@ -689,12 +695,28 @@ const PERMANENT_WEAPON_MOD_SKILLS = new Set(['152340', '18350', '19350', '15460'
  * here: no allowlisted skill has one, and the carrier cycle is owned by the
  * air-assist x2.2 average, which would need its own multiply.
  *
- * @returns {{reloadByWeaponType: Object<number, number>, damageBySlot: Object<number, number>}}
+ * `proficiencyRatio` (숙련도) is the third, and it is returned VERBATIM rather than
+ * summed — its `slots` / `labels` filters name a loadout this function cannot see, so
+ * the matching belongs where the equips are in hand (`_applyWeaponModifiers`,
+ * fleet-sim.damage.js). It is also the one kind that does NOT pass through
+ * PERMANENT_WEAPON_MOD_SKILLS: that allowlist exists because a reload cut is usually
+ * a FIRST-salvo effect torn down by a removal edge the config walk cannot see, and
+ * proficiency is not shaped that way. Every reachable skill states its clause as an
+ * equipment condition with no duration on it (「경순양함 주포를 장착한 경우, 주포 보정이
+ * 상승」), and the `labels`/`slots` filter IS that condition — so an unconditional
+ * apply to the weapons it names is what the game does. The one buff that could have
+ * needed a duration, the 3-stack kill ladder buff_151051, never reaches here: the
+ * extractor drops `onStack` effects on a stacking buff rather than ship a 1-of-N value.
+ *
+ * @returns {{reloadByWeaponType: Object<number, number>, damageBySlot: Object<number, number>,
+ *   proficiency: Array<{value: number, slots?: number[], labels?: string[]}>}}
  */
 export function sumWeaponModifiers(buffs) {
     const reloadByWeaponType = {};
     const damageBySlot = {};
+    const proficiency = [];
     for (const b of buffs || []) {
+        if (b.attr === 'proficiencyRatio') { proficiency.push(b); continue; }
         if (!PERMANENT_WEAPON_MOD_SKILLS.has(b.skill)) continue;
         if (b.attr === 'weaponReloadRatio') {
             if (typeof b.wtype !== 'number') continue;      // 'airAssist' — see above
@@ -705,7 +727,7 @@ export function sumWeaponModifiers(buffs) {
             }
         }
     }
-    return { reloadByWeaponType, damageBySlot };
+    return { reloadByWeaponType, damageBySlot, proficiency };
 }
 
 /** Damage multipliers that apply to every shot alike, → their output key. */

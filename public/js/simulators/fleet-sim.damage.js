@@ -26,6 +26,7 @@ import { dotSchedule } from '../engine/damage/dot.js';
 import { defaultWindow } from './fleet-sim.saves.js';
 import { weaponCycleInterval } from '../engine/damage/reload.js';
 import { unitTags } from '../engine/damage/targets.js';
+import { evalGate } from '../engine/damage/battle-sim.gates.js';
 
 // ===== Pure helpers (unit-testable, take data/lookups as params) =====
 
@@ -789,7 +790,10 @@ function _resolveEquippedWeapons(slotConfig, shipType, stats, baseList, prof, pr
         if (hives.length) {
             for (const hive of hives) {
                 for (let n = 0; n < mountCount; n++) hiveReloads.push(hive.reload_max);
-                air.push(..._aircraftOrdnance(hive, stats, mountCount, potential));
+                for (const d of _aircraftOrdnance(hive, stats, mountCount, potential)) {
+                    d.equipSlot = i;
+                    air.push(d);
+                }
             }
             continue;
         }
@@ -806,6 +810,7 @@ function _resolveEquippedWeapons(slotConfig, shipType, stats, baseList, prof, pr
         });
         if (d) {
             d.slotIndex = i;
+            d.equipSlot = i;
             // Out of range of the boss, but still fired — so it keeps its row and
             // keeps feeding onFire barrage triggers (the 탄막 it launches DO reach);
             // only its own damage is held out of the total. See SECONDARY_REACH_SKILLS.
@@ -831,17 +836,55 @@ function _resolveEquippedWeapons(slotConfig, shipType, stats, baseList, prof, pr
  *     `reloadMax` rather than on `stats.reload`.
  *   damageBySlot — a damageRatioBullet on one 1-based EQUIP SLOT, parked on the
  *     descriptor and summed into `damageRatio` with the ship-wide multipliers.
+ *   proficiency — 숙련도, ADDED to the weapon's own potential factor, which
+ *     multiplies its damage 1:1 (battleformulas.lua:202). Matched here rather than
+ *     summed in sumWeaponModifiers because its filters name the LOADOUT.
  *
  * `cycleExtra` is deliberately untouched: 일제사 발사시간 + 발사 후 경직 are fixed
  * spans of the firing animation, which no reload modifier scales.
+ *
+ * The proficiency match mirrors `calcEnhancement` (battlebuffaddproficiency.lua)
+ * filter for filter: EVERY listed label must sit on the equipped item — the Lua loop
+ * breaks on the first miss, the opposite of ContainsLabelTag's ANY — and the 1-based
+ * `index` must contain the weapon's own equip slot. Both filters are optional, and no
+ * record today omits both. It keys on `equipSlot`, NOT on `slotIndex`, because
+ * `slotIndex` is surface-only (it drives weaponEvents and the 부포 exclusion, and an
+ * air row carrying one would start raising gun-salvo triggers on its own reload) —
+ * yet a carrier is exactly what most label-gated proficiency skills are written for.
+ *
+ * The `gates` a 숙련도 row carries are the game's own condition on INSTALLING the
+ * skill, evaluated here through the same `evalGate` the barrage sim uses. The
+ * extractor reads a skill straight off its `skill_<id>` record, but the game usually
+ * reaches that record through a gated self-cast on `buff_<id>` — 엠덴 15510's +25% is
+ * 「부무장 슬롯에 경순양함 주포 장비 시」, and 21 of the 47 roster-reachable 숙련도
+ * skills are conditional the same way. A row applies when it carries no gate, or when
+ * ANY of its gates reads exactly `true`: an `'unknown'` gate BLOCKS, so a condition
+ * the sim cannot answer under-reports visibly rather than over-reporting in silence.
+ * Only the 숙련도 rows are gated; doing it to every attr in the file is the
+ * 104-record over-report parked in dev/icebox, with a much larger blast radius.
+ *
+ * KNOWN LIMIT, and the opposite of the check_weapon gate's: an EMPTY slot still
+ * carries a weapon in game (setWeapon arms default_equip_list[slot] and hands it
+ * GetWeaponDataFromID(id).label), so a label-gated buff can reach it there and cannot
+ * here — those 35 default ids are absent from equip_data_lite entirely. Emitting their
+ * labels is the fix if it ever matters; a slot-gated buff already reaches them.
  */
-function _applyWeaponModifiers(weapons, mods) {
+export function _applyWeaponModifiers(weapons, mods, equipLabels = [], unit = null) {
     if (!mods) return;
+    const tags = new Set(unit?.tags || []);
     for (const d of weapons) {
         const reload = mods.reloadByWeaponType[d.weaponType];
         if (reload) d.reloadMax = Math.max(0, d.reloadMax * (1 + reload));
         const slotRatio = d.slotIndex != null ? mods.damageBySlot[d.slotIndex + 1] : undefined;
         if (slotRatio) d.slotDamageRatio = slotRatio;
+        if (d.equipSlot == null) continue;               // barrage rows hold no equipment
+        const labels = equipLabels[d.equipSlot] || [];
+        for (const p of mods.proficiency || []) {
+            if (p.slots && !p.slots.includes(d.equipSlot + 1)) continue;
+            if (p.labels && !p.labels.every((t) => labels.includes(t))) continue;
+            if (p.gates && !p.gates.some((g) => evalGate(g, unit, tags) === true)) continue;
+            d.potential = Math.max(0, (d.potential ?? 1) + p.value);
+        }
     }
 }
 
@@ -877,17 +920,40 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageB
     const defaults = ship.default_equip_list || [];                    // empty-slot fallback; absent on older data
     const dropSecondary = fleetSlot < MAIN_SLOTS && !hasSecondaryReach(ship, useRetrofit, slotConfig.fate !== false);
     const { weapons, airReloadMax } = _resolveEquippedWeapons(slotConfig, shipType, stats, baseList, prof, preload, defaults, dropSecondary);
+    const equipRecords = (slotConfig.equips || []).map((e) => _data.getEquipById(e?.id));
+    // The gate's own field: GetEquipmentList reads equip_data_statistics[id].label,
+    // which equip_data_lite mirrors on 890/890 records. Labels are level-invariant, so
+    // the base record is the right read even though the slot holds a tier id. Read by
+    // both the check_weapon `label` gate and the 숙련도 match above.
+    const equipLabels = equipRecords.map((e) => e?.label || []);
+    // The 전용 장비 half is needed by the 숙련도 gates below as well as by the barrage
+    // block, so it is resolved before either — granted by the DEDICATED weapon only, so
+    // a generic SP weapon in that slot, or an emptied slot, grants nothing.
+    const dedicated = _data.getDedicatedSPWeapon(ship.gid);
+    const spEquipped = !!dedicated && Number(slotConfig.spWeapon?.id) === Number(dedicated.id);
+    // ONE unit ctx for both gate readers: the 숙련도 install gates here and the barrage
+    // sim's own check_* gates below.
+    const unit = {
+        equipTypes: equipRecords.map((e) => e?.type ?? 0),
+        equipLabels,
+        nationality: ship.nationality,
+        shipType,
+        spEquipped,
+        allyCount: 6,
+        // Static tags only. The runtime half — BattleBuffAddTag stamps — is
+        // the sim's own multiset, which this seeds rather than replaces.
+        // A gate naming a tag that is neither static nor stamped by any graph
+        // edge (136 of the 463 check_target edges) still reads absent and is
+        // blocked in silence, exactly as it was before the seed.
+        tags: unitTags(shipType, ship.nationality, ship.tag_list),
+    };
     // BEFORE the barrage block, not after: weaponEvents spaces a weapon's salvos by
     // its own reloadMax, so a barrage triggered by 주포 발사 would otherwise be paced
     // against the unmodified cadence.
-    _applyWeaponModifiers(weapons, damageBuffs && damageBuffs.weaponMods);
+    _applyWeaponModifiers(weapons, damageBuffs && damageBuffs.weaponMods, equipLabels, unit);
 
     // Barrage skills the ship actually has active. Two filters, and BOTH matter.
-    // Plus the ones its 전용 장비 attaches — granted by the DEDICATED weapon only, so a
-    // generic SP weapon in that slot, or an emptied slot, grants nothing.
-    const equipRecords = (slotConfig.equips || []).map((e) => _data.getEquipById(e?.id));
-    const dedicated = _data.getDedicatedSPWeapon(ship.gid);
-    const spEquipped = !!dedicated && Number(slotConfig.spWeapon?.id) === Number(dedicated.id);
+    // Plus the ones its 전용 장비 attaches.
     const graph = _data.getGraph();
     // The remap guard is now "does the simulator know this rung", i.e. does the graph
     // carry the buff the engine's InitUnitSkill would install for it.
@@ -923,24 +989,7 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageB
         simCtx: {
             window,
             events: weaponEvents(weapons, stats.reload, window, airInterval),
-            unit: {
-                equipTypes: equipRecords.map((e) => e?.type ?? 0),
-                // The gate's own field: GetEquipmentList reads
-                // equip_data_statistics[id].label, which equip_data_lite mirrors on
-                // 890/890 records. Labels are level-invariant, so the base record is
-                // the right read even though the slot holds a tier id.
-                equipLabels: equipRecords.map((e) => e?.label || []),
-                nationality: ship.nationality,
-                shipType,
-                spEquipped,
-                allyCount: 6,
-                // Static tags only. The runtime half — BattleBuffAddTag stamps — is
-                // the sim's own multiset, which this seeds rather than replaces.
-                // A gate naming a tag that is neither static nor stamped by any graph
-                // edge (136 of the 463 check_target edges) still reads absent and is
-                // blocked in silence, exactly as it was before the seed.
-                tags: unitTags(shipType, ship.nationality, ship.tag_list),
-            },
+            unit,
         },
     });
 
