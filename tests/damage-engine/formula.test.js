@@ -100,3 +100,20 @@ test('the three terms multiply together and with damageRatioBullet', () => {
 test('a weapon carrying none of them is unchanged', () => {
   assert.equal(computeHitDamage(attacker, cannon, { ...lightTgt, tags: ['T_5', 'N_99'] }).expectedHit, bare);
 });
+
+// 항공 저항 관통 (battleformulas.lua:128). The pierce ADDS to the mitigation inside the
+// SAME min(), so it is not a separate factor — and the cap it shares exists for this
+// half alone, since 150/(AA+150) is below 1 for any positive AA.
+test('airResistPierce adds to the mitigation and shares its cap', () => {
+  const air = { ...cannon, attackAttribute: 'air' };
+  const tgt = { ...lightTgt, antiAir: 386 };      // 소류·META Tier 15
+  const bare = computeHitDamage(attacker, air, tgt);
+  assert.ok(approx(bare.airMitigation, 0.27985, 1e-4));            // 150/536, no pierce
+  const pierced = computeHitDamage(attacker, { ...air, airResistPierce: 0.1 }, tgt);
+  assert.ok(approx(pierced.airMitigation, 0.37985, 1e-4));         // + BASE_ARP, NOT ×
+  assert.ok(approx(pierced.expectedHit / bare.expectedHit, 1.3574, 1e-3));
+  // the cap is min(), so a pierce big enough cannot push the term past 1
+  assert.equal(computeHitDamage(attacker, { ...air, airResistPierce: 5 }, tgt).airMitigation, 1);
+  // and it must never touch a non-air weapon
+  assert.equal(computeHitDamage(attacker, { ...cannon, airResistPierce: 0.1 }, tgt).airMitigation, 1);
+});

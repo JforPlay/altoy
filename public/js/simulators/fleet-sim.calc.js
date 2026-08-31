@@ -637,11 +637,17 @@ function _clauseApplies(buff, skill, targetShip, targetSlot, allFleetShips, isSe
     const types = buff.types || skill.target_types;
     if (types && types.length > 0 && !types.includes(targetShip.type)) return false;
 
-    const nats = skill.target_nationality;
+    // Per clause, exactly like `types` above: the skill-level value is the UNION over
+    // every clause, so using it as the filter for all of them scopes each clause to the
+    // broadest one. 소유즈 17600 states two — 「아군 노스 유니온 소속 함선」의 포격·뇌장·항공,
+    // and 「아군 항공모함·경항공모함」이 주는 피해 with no nationality at all — so the union
+    // [7] was withholding the carrier clause from every non-노스 유니온 carrier. An empty
+    // `nats` is a real answer (this clause is unfiltered) and must not fall back.
+    const nats = buff.nats || skill.target_nationality;
     if (nats && nats.length > 0 && !nats.includes(targetShip.nationality)) return false;
 
-    // Skill-level only, like target_nationality — the extractor emits no per-clause
-    // variant. ANY of the listed tags is enough (ContainsLabelTag returns on the first
+    // Skill-level only — the extractor emits no per-clause variant for tags (it does for
+    // nationality, above). ANY of the listed tags is enough (ContainsLabelTag returns on the first
     // hit, battleunit.lua:437), which is the opposite of the equip-label gate's
     // all-must-match in battle-sim.gates.js.
     const stags = skill.target_ship_tags;

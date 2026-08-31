@@ -56,7 +56,14 @@ export function computeHitDamage(attacker, weapon, target) {
   let airMitigation = 1;
   let typeMod = 1 + attrRatio;
   if (weapon.attackAttribute === 'air') {
-    airMitigation = AIR_MIT_CONST / (target.antiAir + AIR_MIT_CONST);
+    // 항공 저항 관통 rides the SAME min() as the mitigation, not a separate factor:
+    // min(150/(AA+150) + airResistPierce, 1). The cap is the Lua's own and cannot
+    // bind on the mitigation alone (it is < 1 for any positive AA), so it exists
+    // for the pierce half. Who gets a pierce is the caller's call — the engine has
+    // no hull types — and 0 leaves the term exactly as it was.
+    airMitigation = Math.min(
+      AIR_MIT_CONST / (target.antiAir + AIR_MIT_CONST) + (weapon.airResistPierce ?? 0), 1,
+    );
     typeMod = airMitigation * (1 + attrRatio);
   }
 

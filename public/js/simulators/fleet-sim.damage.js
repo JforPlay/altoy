@@ -2,7 +2,7 @@
  * Fleet-sim damage adapter. Resolves equipped weapons into engine
  * WeaponDescriptors and bridges fleet-sim state → the page-agnostic
  * damage engine (public/js/engine/damage/). The exported pure helpers
- * (barrageBulletCount, attackAttributeKey, resolveWeaponDescriptor) take
+ * (barrageBulletCount, attackAttributeKey, resolveWeaponDescriptors) take
  * data/lookups as params so they're unit-testable without the DOM.
  *
  * AIRCRAFT NOTE: aircraft_template.weapon_ID entries are *sparse* weapon
@@ -19,7 +19,7 @@
  * called in a browser context). The pure helpers below are safe to import in
  * Node unit tests because they only depend on engine/damage/constants.js.
  */
-import { ATTR_TO_KEY, PERCENT } from '../engine/damage/constants.js';
+import { ATTR_TO_KEY, PERCENT, BASE_ARP } from '../engine/damage/constants.js';
 import { weaponSalvoDuration } from '../engine/damage/salvo-timing.js';
 import { runBattleSim } from '../engine/damage/battle-sim.js';
 import { dotSchedule } from '../engine/damage/dot.js';
@@ -51,20 +51,55 @@ export function barrageBulletCount(barrageIds, getBarrage) {
 const ATTR_KEY_TO_STAT = { cannon: 'firepower', torpedo: 'torpedo', air: 'aviation' };
 
 /**
- * Build a WeaponDescriptor from a weapon_property entry + computed stats.
- * Returns null if the weapon is anti-air/anti-sub or its bullet is missing.
+ * `ShipType.CloakShipTypeList` (shiptype.lua:248) — 경항모 6 / 정규항모 7 / 미구-후열 21.
+ * The only hulls that get a cloak component, hence the only ones that ever hold
+ * 항공 저항 관통. See the BASE_ARP block in `resolveShipWeapons`.
+ */
+export const CLOAK_HULL_TYPES = new Set([6, 7, 21]);
+
+/**
+ * Build the WeaponDescriptors one fired weapon produces, with the weapon_property
+ * entry each one came from.
+ *
+ * A LIST, because a weapon does not always mean one gun. A STRIKE_AIRCRAFT weapon
+ * fires PLANES, not bullets — `battlehiveunit.lua SingleFire` spawns one aircraft per
+ * barrage bullet and the damage is on the ordnance those planes drop — so it yields
+ * one descriptor per sub-weapon, and a weapon that resolves to nothing yields none.
+ * The fork lives HERE rather than at the call sites because it is a property of the
+ * weapon, not of who fired it: both callers (an equipped slot, a barrage skill) reach
+ * hives, and the barrage half silently returned null for two years, zeroing the
+ * signature skill airstrike of 34 항모 and 9 경항모.
+ *
+ * The paired `weapon` is what the DOT lane must read `bullet_ID`/`barrage_ID` off —
+ * for a hive that is the ordnance, never the bulletless launcher.
+ *
  * @param {object} weapon weapon_property entry (may be sparse; call with merged data)
  * @param {object} stats computed ship stats { firepower, torpedo, aviation, ... }
- * @param {{getBarrage, getBullet, label?, reloadMaxOverride?}} deps
+ * @param {{getBarrage, getBullet, getWeapon?, getAircraft?, label?, reloadMaxOverride?}} deps
+ * @returns {{d: object, weapon: object}[]}
  */
-export function resolveWeaponDescriptor(weapon, stats, deps) {
-    if (!weapon) return null;
-    const attackAttribute = attackAttributeKey(weapon.attack_attribute);
-    if (!attackAttribute) return null;
+export function resolveWeaponDescriptors(weapon, stats, deps) {
+    if (!weapon) return [];
+    if (weapon.type === STRIKE_AIRCRAFT_TYPE) return _hiveOrdnance(weapon, stats, deps);
 
+    // Does this weapon fire PLANES instead of bullets? Asked of the DATA, never of a
+    // type table. STRIKE_AIRCRAFT (10) carries an EMPTY bullet_ID; INTERCEPT_AIRCRAFT
+    // (11) fills it with AIRCRAFT ids — battleplayerunit.lua AddWeapon (:243) sends 11
+    // to AddAutoWeapon instead of _hiveList, so it is rightly out of the air assist,
+    // but a SKILL that fires one still spawns planes and the damage is on the ordnance
+    // they drop. So the tell is 'no bullet resolves', and BOTH orderings matter:
+    //   - after the bullet lookup, because 1537 weapons carry an aircraft_template
+    //     entry AND a real bullet, so asking about the aircraft first diverts real guns;
+    //   - before attack_attribute, because the LAUNCHER's own attribute is 0 on 20 of
+    //     the 33 skill-fired bombers (다이호 67310, 시나노 69930, 류조 67690 …) and only
+    //     its ordnance carries the real one. A fighter falls out here on its own: its
+    //     sole sub-weapon is a strafing gun, which _hiveOrdnance drops.
     const bulletId = Array.isArray(weapon.bullet_ID) ? weapon.bullet_ID[0] : weapon.bullet_ID;
     const bullet = deps.getBullet(bulletId);
-    if (!bullet) return null;
+    if (!bullet) return _hiveOrdnance(weapon, stats, deps);
+
+    const attackAttribute = attackAttributeKey(weapon.attack_attribute);
+    if (!attackAttribute) return [];
 
     // bullets/volley = base_list[slot] (mounts/planes per wave) × barrage expansion.
     const mountCount = deps.mountCount ?? 1;
@@ -86,13 +121,14 @@ export function resolveWeaponDescriptor(weapon, stats, deps) {
     const preloaded = PRELOADABLE_TYPES.has(weapon.type) ? (deps.preloadCount || 0) : 0;
     const preloadShare = mountCount > 0 ? Math.min(preloaded, mountCount) / mountCount : 0;
 
-    return {
+    return [{ weapon, d: {
         attackAttribute,
         stat: stats[ATTR_KEY_TO_STAT[attackAttribute]] ?? 0,
         damage: weapon.damage,
         corrected: weapon.corrected,
         ratio: weapon.attack_attribute_ratio,
         potential: deps.potential ?? 1,   // equipment_proficiency (slot efficiency %)
+        mounts: mountCount,               // 포좌/함재기 수 — display only, bulletsPerSalvo already folds it in
         bulletsPerSalvo,
         damageType: bullet.damage_type,
         ammoType: bullet.ammo_type,
@@ -103,7 +139,7 @@ export function resolveWeaponDescriptor(weapon, stats, deps) {
         startsOnCooldown,
         preloadShare,
         label: deps.label || '무기',
-    };
+    } }];
 }
 
 /**
@@ -403,20 +439,23 @@ export function resolveBarrageDescriptors(skillIds, deps) {
             const raw = deps.getWeapon(row.weaponId);
             if (!raw) continue;
             const weapon = mergeWeaponWithBase(raw, deps.getWeapon);
-            const d = resolveWeaponDescriptor(weapon, deps.stats, {
-                getBarrage: deps.getBarrage,
-                getBullet: deps.getBullet,
+            // A skill can fire a hive as readily as a gun (나히모프 19810, 프리츠
+            // 루메이 150750): the list absorbs the difference, and the paired weapon is
+            // the ordnance the DOT lane needs rather than the bulletless launcher.
+            const resolved = resolveWeaponDescriptors(weapon, deps.stats, {
+                ...deps,
                 label,
                 mountCount: 1,      // the barrage expansion IS the bullet count
                 potential: 1,       // not equipment — no slot proficiency
                 reloadMaxOverride: 0,
             });
-            if (!d) continue;
-            d.activations = row.activations;
-            d.activationWindow = deps.simCtx?.window ?? 0;   // the count is FOR this window
-            d.cadence = cadenceLabel(row);
-            descriptors.push(d);
-            built.push({ d, weapon, weaponId: row.weaponId });
+            for (const { d, weapon: src } of resolved) {
+                d.activations = row.activations;
+                d.activationWindow = deps.simCtx?.window ?? 0;   // the count is FOR this window
+                d.cadence = cadenceLabel(row);
+                descriptors.push(d);
+                built.push({ d, weapon: src, weaponId: row.weaponId, row });
+            }
         }
         // Every weapon the sim fired failed to resolve — but a root already disclosed
         // for a blocked branch must not be counted twice.
@@ -480,8 +519,19 @@ export function resolveBarrageDot(built, name, deps) {
     // 4 carry a DOT (뉴저지 14510 w64220 1.00+1.00, 아사마 151640 w169200 1.00+3.00,
     // 마세나 151400 w168930 0.40+2.60, 알제리 13270 w69390 5.53+1.00); reading one row
     // under-counts those burns by up to 4x with no note on it.
+    // Summed per ROW, not per descriptor: a hive expands into one descriptor per
+    // ordnance and every one of them carries its row's full activation count, so
+    // keying on the descriptor would multiply a burn by the plane's payload count.
+    // No graph hive carries a DOT today (9 multi-ordnance, 10 with a burn, disjoint),
+    // which is exactly why this would have gone unnoticed.
     const actsByWeapon = new Map();
-    for (const b of built) actsByWeapon.set(b.weaponId, (actsByWeapon.get(b.weaponId) || 0) + (b.d.activations || 0));
+    const countedRows = new Set();
+    for (const b of built) {
+        const row = b.row ?? b;   // no row (hand-built): each entry is its own occasion
+        if (countedRows.has(row)) continue;
+        countedRows.add(row);
+        actsByWeapon.set(b.weaponId, (actsByWeapon.get(b.weaponId) || 0) + (b.d.activations || 0));
+    }
     let best = null;
     for (const { d, weapon, weaponId } of built) {
         const bulletIds = weapon.bullet_ID || [];
@@ -577,7 +627,7 @@ async function _ensureImports() {
  * "is the ship a CV/CVL" silently dropped every 항전/BBV aviation slot (키어사지,
  * 이세·휴가 retrofit) and 할포드's: their launcher went down the surface path,
  * where an airstrike launcher's `bullet_ID` is empty — its "bullets" are AIRCRAFT
- * ids — so resolveWeaponDescriptor returned null and the slot did no damage at
+ * ids — so the slot resolved to no descriptor and did no damage at
  * all. battleplayerunit.lua AddWeapon (:245) files a weapon into `_hiveList` on
  * `type == STRIKE_AIRCRAFT` and on nothing else; the hull type never enters.
  * INTERCEPT_AIRCRAFT (11, 수상기) is deliberately excluded — for a PLAYER unit it
@@ -698,42 +748,55 @@ function _defaultLauncher(defaultId) {
  * are sparse and merged with their base; strafing guns are dropped (see
  * AIRCRAFT_GUN_TYPE). `reloadMax` is filled in by the caller with the combined
  * air-assist figure — the airstrike's cadence, not each bomb's internal reload.
+ *
+ * The plane count is `mountCount x the hive's OWN barrage expansion`: setWeapon
+ * instantiates `base_list[slot]` hives and each SingleFire spawns one aircraft per
+ * barrage bullet. The second factor is 1 on all 1,684 equipped launchers (asserted by
+ * tests/simulators/fleet-sim-airstrike.test.mjs), which is why it went unnoticed until
+ * a skill hive — where `base_list` does not apply and the barrage IS the count —
+ * needed it.
+ *
+ * Reached only through `resolveWeaponDescriptors`, which owns the type-10 fork.
  */
-function _aircraftOrdnance(launcher, stats, mountCount, potential) {
-    const ac = mergeWeaponWithBase(_data.getAircraftTemplate(launcher.id), _data.getAircraftTemplate);
+function _hiveOrdnance(launcher, stats, deps) {
+    if (typeof deps.getAircraft !== 'function') return [];
+    const ac = mergeWeaponWithBase(deps.getAircraft(launcher.id), deps.getAircraft);
     if (!ac || !Array.isArray(ac.weapon_ID)) return [];
+    const mountCount = (deps.mountCount ?? 1) * barrageBulletCount(launcher.barrage_ID, deps.getBarrage);
+    const potential = deps.potential ?? 1;
 
     const out = [];
     const seen = new Set();       // one descriptor per distinct sub-weapon
     for (const sparseId of ac.weapon_ID) {
-        const sparse = _data.getWeaponProperty(sparseId);
+        const sparse = deps.getWeapon(sparseId);
         if (!sparse) continue;
         const baseId = sparse.base || sparseId;
         if (seen.has(baseId)) continue;
         seen.add(baseId);
 
-        const merged = mergeWeaponWithBase(sparse, _data.getWeaponProperty);
+        const merged = mergeWeaponWithBase(sparse, deps.getWeapon);
         if (!merged || merged.type === AIRCRAFT_GUN_TYPE) continue;
 
         const attackAttribute = attackAttributeKey(merged.attack_attribute);
         if (!attackAttribute) continue;
         const bulletId = Array.isArray(merged.bullet_ID) ? merged.bullet_ID[0] : merged.bullet_ID;
-        const bullet = _data.getBullet(bulletId);
+        const bullet = deps.getBullet(bulletId);
         if (!bullet) continue;
-        const barrageExpansion = barrageBulletCount(merged.barrage_ID, _data.getBarrage);
+        const barrageExpansion = barrageBulletCount(merged.barrage_ID, deps.getBarrage);
         if (barrageExpansion === 0) continue;
 
-        out.push({
+        out.push({ weapon: merged, d: {
             attackAttribute,
             stat: stats[ATTR_KEY_TO_STAT[attackAttribute]] ?? 0,
             damage: merged.damage,
             corrected: merged.corrected,
             ratio: merged.attack_attribute_ratio,
             potential,
+            mounts: mountCount,                              // 함재기 수 = base_list planes x the hive's own barrage
             bulletsPerSalvo: barrageExpansion * mountCount,   // base_list planes each drop the barrage
             damageType: bullet.damage_type,
             ammoType: bullet.ammo_type,
-            reloadMax: 0,       // overwritten below with the combined air-assist reload
+            reloadMax: 0,       // the caller fills in the combined air-assist reload
             initialDelay: 0,
             // The air assist ALWAYS opens on cooldown: BattleAllInStrike.InitialCD calls
             // AddCDTimer(GetReloadTime()) flat, with no initial_over_heat test, and the
@@ -741,8 +804,8 @@ function _aircraftOrdnance(launcher, stats, mountCount, potential) {
             // preload_count path into it, so the first strike is one full cycle in.
             startsOnCooldown: true,
             preloadShare: 0,
-            label: '항공기',
-        });
+            label: deps.label || '항공기',
+        } });
     }
     return out;
 }
@@ -769,7 +832,12 @@ function _aircraftOrdnance(launcher, stats, mountCount, potential) {
 function _resolveEquippedWeapons(slotConfig, shipType, stats, baseList, prof, preload, defaults, dropSecondary) {
     const labels = SLOT_LABELS[shipType] || ['슬롯1', '슬롯2', '슬롯3'];
     const equips = slotConfig.equips || [];
-    const deps = { getBarrage: _data.getBarrage, getBullet: _data.getBullet };
+    const deps = {
+        getBarrage: _data.getBarrage,
+        getBullet: _data.getBullet,
+        getWeapon: _data.getWeaponProperty,
+        getAircraft: _data.getAircraftTemplate,
+    };
     const surface = [];
     const air = [];
     const hiveReloads = [];       // one entry per hive unit — the ×base_list weighting
@@ -787,10 +855,14 @@ function _resolveEquippedWeapons(slotConfig, shipType, stats, baseList, prof, pr
         if (!launchers.length) continue;
         const hives = launchers.filter((w) => w.type === STRIKE_AIRCRAFT_TYPE);
 
+        // The hive fork survives here for a reason the descriptor list cannot absorb:
+        // the air assist pools its launchers' reload (one entry per hive unit, the
+        // ×base_list weighting) and its ordnance is paced by that pooled figure rather
+        // than by any weapon's own — which is also why these never take a `slotIndex`.
         if (hives.length) {
             for (const hive of hives) {
                 for (let n = 0; n < mountCount; n++) hiveReloads.push(hive.reload_max);
-                for (const d of _aircraftOrdnance(hive, stats, mountCount, potential)) {
+                for (const { d } of resolveWeaponDescriptors(hive, stats, { ...deps, mountCount, potential })) {
                     d.equipSlot = i;
                     air.push(d);
                 }
@@ -799,16 +871,13 @@ function _resolveEquippedWeapons(slotConfig, shipType, stats, baseList, prof, pr
         }
 
         if (labels[i] === '대공') continue;     // anti-air excluded from boss DPS
-        const weapon = launchers[0];
-        if (!weapon) continue;
-        const d = resolveWeaponDescriptor(weapon, stats, {
+        for (const { d } of resolveWeaponDescriptors(launchers[0], stats, {
             ...deps,
             label: labels[i],
             preloadCount: preload[i] ?? 0,  // mounts that skip the opening cooldown
             mountCount,
             potential,
-        });
-        if (d) {
+        })) {
             d.slotIndex = i;
             d.equipSlot = i;
             // Out of range of the boss, but still fired — so it keeps its row and
@@ -975,6 +1044,7 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageB
         getWeapon: _data.getWeaponProperty,
         getBarrage: _data.getBarrage,
         getBullet: _data.getBullet,
+        getAircraft: _data.getAircraftTemplate,
         getDot: _data.getDot,
         // The KR skill name is display text only — the sim needs none of it. It rides
         // the graph's own root buff nodes (`n`, set by the pipeline off
@@ -996,6 +1066,21 @@ export function resolveShipWeapons(slotConfig, ship, stats, window = 90, damageB
     // Damage multipliers ride EVERY weapon the ship fires, barrages included — the
     // Lua reads them off the attacker at damage time, not off the weapon.
     const all = weapons.concat(descriptors);
+
+    // 항공 저항 관통 (battleformulas.lua:128) is gated on `airResistPierceActive`, which
+    // ONLY Cloak() raises (battleattr.lua:166) — and the cloak component is attached to
+    // CloakShipTypeList hulls alone (battlefleetvo.lua:685, no weather gate; the
+    // all-MainShipType path beside it is night-weather only). Its constructor cloaks
+    // immediately, so a 항모/경항모 starts the battle with pierce live, and it effectively
+    // never lapses: uncloaking needs exposure to reach dodge+50 while a strike adds only
+    // CLOAK_STRIKE_ADDITIVE 6 against a continuous CLOAK_RECOVERY 5/s drain. Keyed on the
+    // HULL, never on the attribute — 항공전함 carries aircraft and is not a cloak hull.
+    if (CLOAK_HULL_TYPES.has(shipType)) {
+        for (const d of all) {
+            // A DOT tick bypasses the damage formula entirely, so the air term never reaches it.
+            if (d.attackAttribute === 'air' && d.tickDamage == null) d.airResistPierce = BASE_ARP;
+        }
+    }
     if (damageBuffs) {
         const byAttr = { cannon: damageBuffs.cannon, torpedo: damageBuffs.torpedo, air: damageBuffs.air };
         for (const d of all) {

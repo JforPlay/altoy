@@ -1,7 +1,7 @@
 // tests/damage-engine/adapter-resolve.test.js
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { barrageBulletCount, attackAttributeKey, resolveWeaponDescriptor, mergeWeaponWithBase, effectiveProficiency,
+import { barrageBulletCount, attackAttributeKey, resolveWeaponDescriptors, mergeWeaponWithBase, effectiveProficiency,
   weaponEvents, activeBarrageSkillIds, hasFateSimulation, cadenceLabel, resolveBarrageDescriptors, attachedSPBarrageIds }
   from '../../public/js/simulators/fleet-sim.damage.js';
 
@@ -33,13 +33,14 @@ test('attackAttributeKey maps 1/2/4; excludes anti-air(3)/anti-sub(5)', () => {
   assert.equal(attackAttributeKey(5), null);
 });
 
-test('resolveWeaponDescriptor builds a full descriptor; returns null for anti-air', () => {
+test('resolveWeaponDescriptors builds a full descriptor; yields none for anti-air', () => {
   const weapon = {
     damage: 45, corrected: 110, attack_attribute: 1, attack_attribute_ratio: 100,
     reload_max: 240, barrage_ID: [8], bullet_ID: [1400],
   };
   const stats = { firepower: 500, torpedo: 300, aviation: 0 };
-  const d = resolveWeaponDescriptor(weapon, stats, { getBarrage, getBullet, label: '주포' });
+  const [{ d, weapon: src }] = resolveWeaponDescriptors(weapon, stats, { getBarrage, getBullet, label: '주포' });
+  assert.equal(src, weapon);   // a gun is its own source — the DOT lane reads bullets off this
   assert.equal(d.attackAttribute, 'cannon');
   assert.equal(d.stat, 500);               // firepower
   assert.equal(d.damage, 45);
@@ -51,20 +52,20 @@ test('resolveWeaponDescriptor builds a full descriptor; returns null for anti-ai
   assert.equal(d.reloadMax, 240);
   assert.equal(d.label, '주포');
 
-  const aa = resolveWeaponDescriptor({ ...weapon, attack_attribute: 3 }, stats, { getBarrage, getBullet });
-  assert.equal(aa, null);
+  const aa = resolveWeaponDescriptors({ ...weapon, attack_attribute: 3 }, stats, { getBarrage, getBullet });
+  assert.deepEqual(aa, []);
 });
 
-test('resolveWeaponDescriptor applies mountCount (포좌) and potential (efficiency); defaults to 1', () => {
+test('resolveWeaponDescriptors applies mountCount (포좌) and potential (efficiency); defaults to 1', () => {
   const weapon = {
     damage: 45, corrected: 110, attack_attribute: 1, attack_attribute_ratio: 100,
     reload_max: 240, barrage_ID: [8], bullet_ID: [1400],   // barrage 8 → 6 bullets/wave
   };
   const stats = { firepower: 500, torpedo: 300, aviation: 0 };
-  const d = resolveWeaponDescriptor(weapon, stats, { getBarrage, getBullet, mountCount: 3, potential: 2 });
+  const [{ d }] = resolveWeaponDescriptors(weapon, stats, { getBarrage, getBullet, mountCount: 3, potential: 2 });
   assert.equal(d.bulletsPerSalvo, 18);   // 6 × 3 mounts
   assert.equal(d.potential, 2);          // equipment_proficiency
-  const d1 = resolveWeaponDescriptor(weapon, stats, { getBarrage, getBullet });
+  const [{ d: d1 }] = resolveWeaponDescriptors(weapon, stats, { getBarrage, getBullet });
   assert.equal(d1.bulletsPerSalvo, 6);   // mountCount defaults to ×1
   assert.equal(d1.potential, 1);
 });

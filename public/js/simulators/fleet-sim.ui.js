@@ -786,6 +786,21 @@ function _getNationalityName(natId) {
 const _fmt = (n) => Math.round(n).toLocaleString('en-US');
 
 /**
+ * How one salvo is composed: 함재기/포좌 count x shots each.
+ *
+ * Both numbers are already inside `oneSalvoExpected`, so this is read-only
+ * detail — but it is the only place the plane count per slot is visible, and
+ * that count moves with 한계돌파 (프리츠 루메이 2/2/1 -> 4/4/1), so a build that
+ * looks wrong can be checked here instead of guessed at.
+ */
+function _volleyLabel(w) {
+    if (!w.mounts || !w.bulletsPerSalvo) return '';
+    const each = w.bulletsPerSalvo / w.mounts;
+    const title = `함재기·포좌 ${w.mounts} × 1기당 ${each % 1 ? each.toFixed(1) : each}발 = ${w.bulletsPerSalvo}발`;
+    return ` <span class="dmg-volley" title="${escapeHtml(title)}">${w.mounts}×${each % 1 ? each.toFixed(1) : each}</span>`;
+}
+
+/**
  * Build per-weapon breakdown table HTML for a ship's damage result.
  * Shown inside the stats collapsible. Returns empty string if no data.
  */
@@ -801,7 +816,7 @@ function _buildWeaponBreakdownHTML(shipResult) {
     // trade one unreadable thing for a contrast failure.
     const rows = shipResult.perWeapon.map((w) => `
         <tr class="${w.cadence ? 'dmg-row-barrage' : ''}${w.excluded ? ' dmg-row-excluded' : ''}">
-            <td>${escapeHtml(w.label || '')}${w.excluded ? ' · 사거리 밖' : ''}</td>
+            <td>${escapeHtml(w.label || '')}${_volleyLabel(w)}${w.excluded ? ' · 사거리 밖' : ''}</td>
             <td>${_fmt(w.oneSalvoExpected)}</td>
             <td>${w.cadence ? escapeHtml(w.cadence) : `${w.reloadInterval.toFixed(2)}s`}</td>
             <td>${w.salvoCount % 1 ? w.salvoCount.toFixed(1) : w.salvoCount}</td>

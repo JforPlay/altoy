@@ -256,6 +256,15 @@
   color: var(--accent-blue-text);
 }
 
+/* Volley composition (함재기·포좌 수 × 1기당 발수) beside the weapon name. Muted and
+   smaller: it is reference detail already folded into 일격, and it must not compete
+   with the barrage row's own --accent-blue-text name above. */
+.dmg-weapon-table .dmg-volley {
+  color: var(--text-muted);
+  font-size: 0.85em;
+  white-space: nowrap;
+}
+
 /* A 주력함대 부포 is resolved and shown but held out of the total (it cannot reach
    the boss — see SECONDARY_REACH_SKILLS in fleet-sim.damage.js). Muted rather than
    hidden so the build still reads, with the DPS struck through by the <s> above. */

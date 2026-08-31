@@ -96,6 +96,10 @@ export function simulateAttacker(attacker, weapons, target, opts = {}) {
     return {
       excluded: !!w.excluded,
       label: w.label,
+      // Display only: how the volley is composed (mounts/planes x shots each). A DOT
+      // row has neither, and null renders as a blank cell rather than a fake 1.
+      mounts: w.mounts ?? null,
+      bulletsPerSalvo: w.bulletsPerSalvo ?? null,
       oneSalvoExpected: salvo.expectedSalvo,
       reloadInterval,
       salvoCount: roll.salvoCount,

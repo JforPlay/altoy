@@ -21,6 +21,7 @@ export const BATTLE_START_DELAY = 2;
 
 // Damage scalars
 export const AIR_MIT_CONST = 150;      // DRATE[7]: air mitigation 150/(AA+150)
+export const BASE_ARP = 0.1;           // battleconfig.lua:393 — 항공 저항 관통, added to the term above
 export const LVL_ADV_CAP = 25;         // DRATE[1]
 export const LVL_ADV_FACTOR = 0.02;    // DRATE[2]
 export const RANDOM_DAMAGE_EV = 1;     // E[random(0..2)] = 1 (battleconfig.lua:20-21)
