@@ -23,7 +23,7 @@ import { syncedStorage } from './synced-storage.js';
  * Must stay in sync with public/sw.js CACHE_VERSION. Bumping just one
  * leaves the other cache stale on first visit. See CLAUDE.md "Cache & Data Versioning".
  */
-const DATA_VERSION = '1.82.0';
+const DATA_VERSION = '1.82.1';
 
 /**
  * localStorage keys that participate in Google Drive sync.
@@ -1279,20 +1279,23 @@ function dataUrlToBlob(dataUrl) {
  * composite lightboxes) don't reliably surface the long-press "Save Image"
  * menu on mobile — iOS Safari and Chrome Android frequently show no menu at
  * all for large data URLs. Converting to a Blob → object URL → `<a download>`
- * is the reliable cross-platform save path. Data URLs are decoded directly
- * (CSP blocks fetch on `data:`); http(s) sources go through fetch.
+ * is the reliable cross-platform save path. Data URLs are decoded directly and
+ * blob: URLs are anchored as-is (CSP `connect-src` blocks fetch on both);
+ * http(s) sources go through fetch.
  *
- * @param {string} src - image URL (data: or http(s))
+ * @param {string} src - image URL (blob:, data: or http(s))
  * @param {string} [filename='image.png'] - suggested filename
  * @returns {Promise<boolean>} resolves true on success
  */
 async function downloadImage(src, filename = 'image.png') {
     if (!src) return false;
     try {
-        const blob = src.startsWith('data:')
-            ? dataUrlToBlob(src)
-            : await (await fetch(src)).blob();
-        const url = URL.createObjectURL(blob);
+        // A blob: URL is already an object URL — anchor it as-is. fetch()ing one
+        // violates CSP connect-src, and its creator owns revocation.
+        const isObjectUrl = src.startsWith('blob:');
+        const url = isObjectUrl
+            ? src
+            : URL.createObjectURL(src.startsWith('data:') ? dataUrlToBlob(src) : await (await fetch(src)).blob());
         const a = document.createElement('a');
         a.href = url;
         a.download = filename;
@@ -1300,7 +1303,7 @@ async function downloadImage(src, filename = 'image.png') {
         a.click();
         a.remove();
         // Revoke on next tick so the browser has finished kicking off the download.
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        if (!isObjectUrl) setTimeout(() => URL.revokeObjectURL(url), 1000);
         return true;
     } catch (e) {
         console.warn('Image download failed', e);
