@@ -31,8 +31,11 @@
     flex-wrap: wrap;
   }
 
+  /* Two buttons per row. A bare flex:1 packed three onto row 1 and orphaned the
+     fourth; a 50% basis pairs them off, and the 추천 편성 button being hidden
+     (3 buttons) just leaves the last one full-width on row 2. */
   .fleet-sim-page .header-actions .btn {
-    flex: 1;
+    flex: 1 1 calc(50% - var(--spacing-sm) / 2);
     justify-content: center;
   }
 
@@ -58,14 +61,27 @@
     grid-template-columns: auto auto minmax(0, 1fr) auto;
   }
 
-  /* justify-self: start keeps the panel at its content width. Spanning to the
-     card edge, its minmax(92px, auto) control column absorbed the whole span and
-     stretched the 호감도 select to ~180px. */
+  /* Full card width, laid out as one flex row rather than the desktop
+     label/control grid: indented at column 3 the panel left a dead L-shaped void
+     under the drag handle and portrait, and its two stacked rows made the card
+     taller than the portrait needed. Restoring .config-group to flex undoes the
+     `display: contents` hoist, so each label stays welded to its own control. */
   .ship-identity-controls {
     grid-row: 2;
-    grid-column: 3 / -1;
-    justify-self: start;
-    justify-items: start;
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+  }
+
+  .ship-identity-controls .config-group { display: flex; }
+
+  .ship-identity-controls .level-stepper,
+  .ship-identity-controls .select-wrap,
+  .ship-identity-controls .config-select {
+    width: auto;
   }
 
   .ship-card-actions {
@@ -94,6 +110,58 @@
 
   .equip-slot {
     max-width: 52px;
+  }
+
+  /* 간략 보기: one 7-column grid over the whole card, so the portrait tile is
+     exactly the size of the six equip tiles beside it. The equip grid's own
+     inner gaps match the outer ones, so its six 1fr columns land on the outer
+     tracks rather than merely inside them. */
+  .fleet-grid[data-view="compact"] .ship-card:not(.ship-card--empty) {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    align-items: start;
+    gap: 2px;
+  }
+
+  /* min-width: 0 — the ship name is nowrap, so without it the identity track's
+     automatic minimum size is the full name width and track 1 outgrows the six
+     equip tracks it is supposed to match. */
+  .fleet-grid[data-view="compact"] .ship-card-identity {
+    width: auto;
+    min-width: 0;
+  }
+
+  .fleet-grid[data-view="compact"] .ship-portrait-wrap {
+    width: 100%;
+  }
+
+  .fleet-grid[data-view="compact"] .ship-portrait {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  /* The name's percentage width has to resolve against the tile, so the wrapper
+     between it and the identity column needs stretching first — left at its
+     shrink-to-fit width the name kept its full intrinsic box and spilled over
+     the equip tiles beside it. Desktop compact gets away with a flat
+     max-width: 64px, which needs no containing block. */
+  .fleet-grid[data-view="compact"] .ship-identity-main {
+    width: 100%;
+  }
+
+  .fleet-grid[data-view="compact"] .ship-name {
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .fleet-grid[data-view="compact"] .equip-slots-grid {
+    grid-column: 2 / -1;
+  }
+
+  .fleet-grid[data-view="compact"] .equip-slot {
+    max-width: none;
   }
 
   /* Full-screen picker modals on mobile */

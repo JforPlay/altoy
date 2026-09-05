@@ -306,9 +306,9 @@ function _buildIdentityHTML(slotIndex, ship, slotConfig) {
     ).join('');
 
     return `
-        <div class="ship-card-identity" data-level="${escapeHtml(String(level))}" data-rarity="${escapeHtml(rarityGrade)}">
+        <div class="ship-card-identity" data-rarity="${escapeHtml(rarityGrade)}">
             <span class="material-symbols-outlined drag-handle" title="드래그하여 이동">drag_indicator</span>
-            <div class="ship-portrait-wrap">
+            <div class="ship-portrait-wrap" data-level="${escapeHtml(String(level))}">
                 <img class="ship-portrait"
                      src="${portraitUrl}"
                      alt="${safeShipName}"

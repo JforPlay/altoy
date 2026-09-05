@@ -650,20 +650,21 @@
   max-width: 64px;
 }
 
-/* Printed from the data-level attribute rather than by absolutely positioning a
-   deeply nested element. `top`, not `bottom`: the portrait starts at y=0 in this
-   column, so the offset is stable no matter how the name below wraps. The value
-   is a clamped integer, so there is nothing to escape. */
-.fleet-grid[data-view="compact"] .ship-card-identity::after {
+/* Printed from the wrap's own data-level rather than by absolutely positioning a
+   deeply nested element. It rides the portrait's bottom-left corner, mirroring
+   the rarity chip opposite it — a fit box, not a band across the whole tile, so
+   it survives the portrait going fluid on mobile. The value is a clamped
+   integer, so there is nothing to escape. */
+.fleet-grid[data-view="compact"] .ship-portrait-wrap::after {
   content: 'Lv.' attr(data-level);
   position: absolute;
-  top: 44px;
-  left: 0;
-  right: 0;
-  text-align: center;
+  bottom: 3px;
+  left: 3px;
+  padding: 0 4px;
+  border-radius: var(--radius-sm);
   font-size: 0.6rem;
   font-weight: 700;
-  line-height: 1.4;
+  line-height: 1.5;
   color: #fff;
   background: var(--overlay-intense);
   font-variant-numeric: tabular-nums;

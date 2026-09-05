@@ -19,8 +19,9 @@
  *   - the level stepper and 호감도 select share one grid column, so their
  *     edges line up by construction rather than by two intrinsic widths
  *     happening to agree
- *   - the identity row exposes data-level/data-rarity (for the compact view
- *     to read), and the dead .ship-name-group wrapper is gone
+ *   - the portrait wrap exposes data-level and the identity row data-rarity
+ *     (both for the compact view to read), and the dead .ship-name-group
+ *     wrapper is gone
  *   - every select-wrap select suppresses the native OS chevron, including
  *     the damage panel's .dmg-tier-select — not just the config selects the
  *     original rule was scoped to
@@ -35,7 +36,7 @@
  *   - 간략 보기 (compact view) collapses a card to one row: portrait then 6
  *     equip squares, left to right
  *   - compact view hides the controls/captions/vitals but keeps the ship
- *     name and still prints the level, via the identity row's data-level
+ *     name and still prints the level, via the portrait wrap's data-level
  *   - the chosen view persists across a reload
  *   - at a 390px viewport in the default view, the identity row reflows onto
  *     two rows so the ship name column keeps a real, readable width instead
@@ -212,7 +213,7 @@ test('identity exposes the level for the compact view, and the dead name wrapper
     await page.goto(PAGE);
     await addShip(page);
     const card = page.locator('.ship-card[data-slot="0"]');
-    await expect(card.locator('.ship-card-identity')).toHaveAttribute('data-level', /^\d+$/);
+    await expect(card.locator('.ship-portrait-wrap')).toHaveAttribute('data-level', /^\d+$/);
     // Compact view hides the rarity badge's row, so the grade also has to reach
     // the identity element for the portrait border to carry it there.
     await expect(card.locator('.ship-card-identity')).toHaveAttribute('data-rarity', /^(N|R|SR|SSR|UR)$/);
@@ -403,10 +404,10 @@ test('compact view hides the controls and captions but keeps the level', async (
     // The ship name must survive — a shared screenshot is unreadable without it.
     await expect(card.locator('.ship-name')).toBeVisible();
 
-    // The level lives in the hidden stepper, so compact prints it from
-    // data-level via content: attr(). ::after is not a DOM node, so read the
-    // computed style rather than locating it.
-    const printed = await card.locator('.ship-card-identity')
+    // The level lives in the hidden stepper, so compact prints it from the
+    // portrait wrap's data-level via content: attr(). ::after is not a DOM node,
+    // so read the computed style rather than locating it.
+    const printed = await card.locator('.ship-portrait-wrap')
         .evaluate((el) => getComputedStyle(el, '::after').content);
     expect(printed).toMatch(/\d/);
 });
@@ -439,5 +440,27 @@ test.describe('mobile identity row (390px)', () => {
         // 80 sits well clear of that collapse and well under the real ~140px
         // the reflowed column measures.
         expect(box.width).toBeGreaterThan(80);
+    });
+
+    test('간략 보기 sizes the portrait tile like the equip tiles, and the name stays inside it', async ({ page }) => {
+        await page.goto(PAGE);
+        await addShip(page);
+        await page.locator('#view-toggle-btn').click();
+
+        // One evaluate, not three boundingBox() round-trips: a page still
+        // settling moves the target between separate layout snapshots.
+        const g = await page.locator('.ship-card[data-slot="0"]').evaluate((el) => {
+            const w = (n) => n.getBoundingClientRect().width;
+            return {
+                portrait: w(el.querySelector('.ship-portrait')),
+                equips: [...el.querySelectorAll('.equip-slot-icon-box')].map(w),
+                name: w(el.querySelector('.ship-name')),
+            };
+        });
+        // Pre-fix the portrait was a fixed 64px against ~45px equip squares.
+        for (const e of g.equips) expect(Math.abs(e - g.portrait)).toBeLessThan(2);
+        // And the name, at width:auto inside a shrink-to-fit wrapper, kept its
+        // full intrinsic box and spilled across the equip tiles beside it.
+        expect(g.name).toBeLessThanOrEqual(g.portrait + 1);
     });
 });
