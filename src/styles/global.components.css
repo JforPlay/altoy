@@ -354,6 +354,14 @@ body.dark-mode .popup-header {
   border-left: 3px solid transparent;
 }
 
+/* This `display: block` outranks the UA `[hidden]{display:none}`, so an option
+   hidden via el.hidden stayed visible (juustagram's search filtered nothing).
+   Same guard as badge.css / chip.css. */
+.dropdown-content a[hidden],
+.dropdown-content .dropdown-option[hidden] {
+  display: none;
+}
+
 .dropdown-content a:hover,
 .dropdown-content .dropdown-option:hover,
 .dropdown-content .dropdown-option:focus-visible {

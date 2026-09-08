@@ -23,7 +23,7 @@ import { syncedStorage } from './synced-storage.js';
  * Must stay in sync with public/sw.js CACHE_VERSION. Bumping just one
  * leaves the other cache stale on first visit. See CLAUDE.md "Cache & Data Versioning".
  */
-const DATA_VERSION = '1.82.2';
+const DATA_VERSION = '1.82.3';
 
 /**
  * localStorage keys that participate in Google Drive sync.
@@ -975,6 +975,14 @@ function setupDropdown(config) {
             event.preventDefault();
             open();
             getOptions()[0]?.focus();
+        } else if (event.key === 'Enter') {
+            // Typing then Enter is the fast path a combobox is expected to have:
+            // commit the top match instead of leaving the query unapplied.
+            const first = getOptions()[0];
+            if (first) {
+                event.preventDefault();
+                first.click();
+            }
         } else if (event.key === 'Escape') {
             close();
         }

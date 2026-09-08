@@ -12,7 +12,7 @@ import {
     requireElements,
     renderStatus,
     observeLazyImages,
-    debounce,
+    setupDropdown,
 } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -211,149 +211,54 @@ document.addEventListener('DOMContentLoaded', () => {
                 .filter(Boolean))
         )].sort();
 
-        populateDropdown(authorSearchInput, authorDropdown, allAuthors, (author) => {
-            currentFilters.author = author;
-            authorSearchInput.value = author;
-            populateGallery();
+        const authorControl = setupDropdown({
+            input: authorSearchInput,
+            dropdown: authorDropdown,
+            items: allAuthors,
+            onSelect: (author) => {
+                currentFilters.author = author;
+                authorSearchInput.value = author;
+                populateGallery();
+            },
+            onInputChange: (value) => clearFilterIfBlank('author', value),
         });
 
-        populateDropdown(mentionedSearchInput, mentionedDropdown, allMentioned, (name) => {
-            currentFilters.mentioned = name;
-            mentionedSearchInput.value = name;
-            populateGallery();
+        const mentionedControl = setupDropdown({
+            input: mentionedSearchInput,
+            dropdown: mentionedDropdown,
+            items: allMentioned,
+            onSelect: (name) => {
+                currentFilters.mentioned = name;
+                mentionedSearchInput.value = name;
+                populateGallery();
+            },
+            onInputChange: (value) => clearFilterIfBlank('mentioned', value),
         });
-
-        setupDropdownToggle(authorSearchInput, authorDropdown, 'author');
-        setupDropdownToggle(mentionedSearchInput, mentionedDropdown, 'mentioned');
 
         clearFiltersBtn.addEventListener('click', () => {
             currentFilters.author = '';
             currentFilters.mentioned = '';
             authorSearchInput.value = '';
             mentionedSearchInput.value = '';
-            filterDropdown(authorSearchInput, authorDropdown);
-            filterDropdown(mentionedSearchInput, mentionedDropdown);
+            // setItems re-renders each list unfiltered against the now-empty input.
+            authorControl?.setItems(allAuthors);
+            mentionedControl?.setItems(allMentioned);
             populateGallery();
             authorSearchInput.focus();
         });
     }
 
     /**
-     * Populate a dropdown element with selectable button items.
+     * Clear an active filter when its search box is emptied by hand,
+     * so deleting the query restores the unfiltered gallery.
      *
-     * @param {HTMLElement} dropdownElement - The dropdown container to populate
-     * @param {Array<string>} items - Array of item names to display
-     * @param {(item: string) => void} onSelectCallback - Function to call when an item is selected
+     * @param {'author'|'mentioned'} key - The currentFilters key to clear
+     * @param {string} value - Current input value
      */
-    function populateDropdown(input, dropdownElement, items, onSelectCallback) {
-        clearElement(dropdownElement);
-        items.forEach(item => {
-            const button = document.createElement('button');
-            button.type = 'button';
-            button.className = 'dropdown-option';
-            button.setAttribute('role', 'option');
-            button.textContent = item;
-            button.addEventListener('click', () => {
-                onSelectCallback(item);
-                closeDropdown(input, dropdownElement);
-            });
-            dropdownElement.appendChild(button);
-        });
-    }
-
-    /**
-     * Filter dropdown items based on input text (live search).
-     *
-     * @param {HTMLInputElement} input - The search input element
-     * @param {HTMLElement} dropdown - The dropdown to filter
-     */
-    function filterDropdown(input, dropdown) {
-        const filter = input.value.trim().toUpperCase();
-        const items = dropdown.querySelectorAll('.dropdown-option');
-
-        items.forEach(item => {
-            const textValue = item.textContent || '';
-            item.hidden = filter !== '' && !textValue.toUpperCase().includes(filter);
-        });
-    }
-
-    function getVisibleDropdownOptions(dropdown) {
-        return [...dropdown.querySelectorAll('.dropdown-option')]
-            .filter(option => !option.hidden);
-    }
-
-    function openDropdown(input, dropdown) {
-        dropdown.classList.add('open');
-        input.setAttribute('aria-expanded', 'true');
-    }
-
-    function closeDropdown(input, dropdown) {
-        dropdown.classList.remove('open');
-        if (input) input.setAttribute('aria-expanded', 'false');
-    }
-
-    /**
-     * Setup dropdown toggle behavior and keyboard navigation.
-     *
-     * @param {HTMLInputElement} input - The input that triggers the dropdown
-     * @param {HTMLElement} dropdown - The dropdown to show/hide
-     * @param {'author'|'mentioned'} filterKey - The currentFilters key controlled by this input
-     */
-    function setupDropdownToggle(input, dropdown, filterKey) {
-        const container = dropdown.closest('.dropdown-container');
-
-        input.setAttribute('role', 'combobox');
-        input.setAttribute('aria-autocomplete', 'list');
-        input.setAttribute('aria-controls', dropdown.id);
-        input.setAttribute('aria-expanded', 'false');
-
-        // Debounce only the substring filter — opening the dropdown and
-        // clearing an active filter must stay synchronous so the UI feels
-        // instant on the first keystroke.
-        const debouncedFilter = debounce(() => filterDropdown(input, dropdown), 100);
-        input.addEventListener('focus', () => openDropdown(input, dropdown));
-        input.addEventListener('input', () => {
-            debouncedFilter();
-            openDropdown(input, dropdown);
-
-            if (input.value.trim() === '' && currentFilters[filterKey]) {
-                currentFilters[filterKey] = '';
-                populateGallery();
-            }
-        });
-        input.addEventListener('keydown', (event) => {
-            if (event.key === 'ArrowDown') {
-                event.preventDefault();
-                openDropdown(input, dropdown);
-                getVisibleDropdownOptions(dropdown)[0]?.focus();
-            } else if (event.key === 'Escape') {
-                closeDropdown(input, dropdown);
-            }
-        });
-
-        dropdown.addEventListener('keydown', (event) => {
-            const options = getVisibleDropdownOptions(dropdown);
-            const currentIndex = options.indexOf(document.activeElement);
-
-            if (event.key === 'ArrowDown') {
-                event.preventDefault();
-                options[Math.min(currentIndex + 1, options.length - 1)]?.focus();
-            } else if (event.key === 'ArrowUp') {
-                event.preventDefault();
-                if (currentIndex <= 0) input.focus();
-                else options[currentIndex - 1]?.focus();
-            } else if (event.key === 'Escape') {
-                event.preventDefault();
-                closeDropdown(input, dropdown);
-                input.focus();
-            }
-        });
-
-        container?.addEventListener('focusout', (event) => {
-            if (!container.contains(event.relatedTarget)) {
-                closeDropdown(input, dropdown);
-            }
-        });
+    function clearFilterIfBlank(key, value) {
+        if (value.trim() !== '' || !currentFilters[key]) return;
+        currentFilters[key] = '';
+        populateGallery();
     }
 
     // ===== Gallery Display & Post Filtering =====

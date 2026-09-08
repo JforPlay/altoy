@@ -521,21 +521,35 @@
 .equip-slot-badge {
   position: absolute;
   background: var(--overlay-intense);
-  font-size: 0.7rem;
+  font-size: 0.58rem;
   font-weight: 700;
-  padding: 1px 5px;
-  line-height: 1.4;
+  padding: 0 3px;
+  line-height: 1.35;
   font-variant-numeric: tabular-nums;
   transition: background var(--transition-fast);
   z-index: 2;
 }
 
+/* The enhance badge is a click target (it opens the level popover), so it keeps
+   the roomier pre-shrink box on desktop and only follows the efficiency badge
+   down on touch widths, where the whole tile is the target anyway. */
 .equip-enhance-badge {
   bottom: 0;
   right: 0;
   color: var(--rarity-ssr);
   border-radius: var(--radius-xs) 0 var(--radius-xs) 0;
   cursor: pointer;
+  font-size: 0.7rem;
+  padding: 1px 5px;
+  line-height: 1.4;
+}
+
+@media (max-width: 640px) {
+  .equip-enhance-badge {
+    font-size: 0.58rem;
+    padding: 0 3px;
+    line-height: 1.35;
+  }
 }
 
 .equip-eff-badge {
@@ -658,13 +672,13 @@
 .fleet-grid[data-view="compact"] .ship-portrait-wrap::after {
   content: 'Lv.' attr(data-level);
   position: absolute;
-  bottom: 3px;
-  left: 3px;
-  padding: 0 4px;
+  bottom: 2px;
+  left: 2px;
+  padding: 0 3px;
   border-radius: var(--radius-sm);
-  font-size: 0.6rem;
+  font-size: 0.5rem;
   font-weight: 700;
-  line-height: 1.5;
+  line-height: 1.45;
   color: #fff;
   background: var(--overlay-intense);
   font-variant-numeric: tabular-nums;
