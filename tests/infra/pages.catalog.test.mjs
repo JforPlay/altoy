@@ -59,9 +59,12 @@ test('every NAV_STRUCTURE key resolves in the catalog (Layout.astro build-throw,
 test('nav placement is exactly one menu slot per catalog page', () => {
     // CLAUDE.md: adding a page = a PAGE_CATALOG entry AND its key in NAV_STRUCTURE.
     // If a page is ever intentionally search-only, exempt it here explicitly.
+    // CN_PREVIEW: unreleased-in-KR content, reached from the homepage bento tile
+    // and Ctrl+K only (user decision 2026-09-10) — it stays out of the navbar.
+    const SEARCH_ONLY = new Set(['CN_PREVIEW']);
     const navKeys = NAV_STRUCTURE.flatMap((m) => m.key ? [m.key] : m.columns.flatMap((c) => c.keys));
     assert.equal(new Set(navKeys).size, navKeys.length, 'a key appears in NAV_STRUCTURE more than once');
-    const missing = PAGE_CATALOG.map((p) => p.key).filter((k) => !navKeys.includes(k));
+    const missing = PAGE_CATALOG.map((p) => p.key).filter((k) => !navKeys.includes(k) && !SEARCH_ONLY.has(k));
     assert.deepEqual(missing, [], 'catalog pages missing from the navbar');
 });
 

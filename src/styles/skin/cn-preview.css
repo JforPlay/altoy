@@ -1,0 +1,161 @@
+/* =============================================================================
+   cn-preview.css — (스포주의) 중섭패치 미리보기
+   Page-unique rules only. Header/panels mirror shipgirl-build-sim (flat
+   --primary-color title, card panels); the skin detail area reuses the skin
+   detail viewer's own stylesheets (gallery / expression / voice table), which
+   the page imports beside this file.
+============================================================================= */
+
+.cn-preview-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1rem 3rem;
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+/* ===== Header (build-sim pattern) ===== */
+
+.cn-preview-page .header-title-container { --page-header-gap: 0.55rem; }
+.cn-preview-page .header-title-container .material-symbols-outlined { font-size: 1.5rem; }
+.cn-preview-page .page-header h1 { color: var(--primary-color); margin: 0; font-size: 1.5rem; }
+.cn-preview-page .page-header-subtitle { margin: 0.3rem 0 0; }
+
+.cn-preview-disclaimer {
+    margin: 0.4rem 0 0;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+/* ===== View toggle ===== */
+
+.cn-view-toggle { margin: 1.5rem 0; }
+.cn-view-toggle .btn { min-width: 9rem; }
+
+/* ===== Panels ===== */
+
+.cn-panel {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-md);
+}
+
+.cn-panel > h2 {
+    margin: 0 0 1.5rem;
+    font-size: 1.5rem;
+    color: var(--text-primary);
+}
+
+@media (max-width: 600px) {
+    .cn-panel { padding: 1rem; }
+}
+
+/* ===== Ship cards ===== */
+
+.cn-preview-grid { --grid-min: 320px; }
+
+.cn-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.cn-card-art {
+    aspect-ratio: 4 / 3;
+    background: var(--overlay-06);
+    display: grid;
+    place-items: center;
+}
+
+.cn-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.cn-card-body { padding: 0.75rem 1rem 1rem; display: grid; gap: 0.5rem; }
+.cn-card-title { margin: 0; font-size: 1.1rem; }
+.cn-card-sub { margin: 0; color: var(--text-secondary); font-size: 0.9rem; }
+.cn-card-badges { display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; }
+.cn-card-meta { margin: 0; color: var(--text-muted); font-size: 0.8rem; }
+.cn-card-skin-btn { justify-self: start; }
+
+.cn-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+}
+.cn-stat { display: flex; justify-content: space-between; gap: 0.25rem; }
+.cn-stat-label { color: var(--text-secondary); }
+
+.cn-skills { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
+.cn-skill { display: flex; gap: 0.5rem; font-size: 0.85rem; }
+.cn-skill p { margin: 0.15rem 0 0; color: var(--text-secondary); }
+.cn-skill-icon { width: 40px; height: 40px; flex: none; border-radius: var(--radius-sm); }
+
+/* ===== Skin picker ===== */
+
+.cn-skin-picker { --grid-min: 150px; margin-bottom: 2rem; }
+
+.cn-skin-tile {
+    display: grid;
+    gap: 0.3rem;
+    justify-items: center;
+    padding: 0.5rem;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font: inherit;
+    text-align: center;
+    cursor: pointer;
+}
+
+.cn-skin-tile.is-active {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-blue) 35%, transparent);
+}
+
+.cn-skin-tile-art {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+    background: var(--overlay-06);
+}
+
+.cn-skin-tile-name { font-weight: 600; font-size: 0.95rem; }
+.cn-skin-tile-ship { color: var(--text-secondary); font-size: 0.8rem; }
+
+/* ===== Skin detail (viewer classes do the rest) ===== */
+
+/* Stand-in for common.css `.card` — that sheet also repaints <body> with the
+   accent-only --bg-primary token, which on this default-theme page wiped the
+   global gradient to white in dark mode, so it is not imported here. */
+.cn-box {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+}
+
+.cn-skin-detail { display: grid; gap: 1rem; }
+.cn-skin-title { margin: 0; font-size: 1.3rem; }
+.cn-skin-desc {
+    margin: 0;
+    padding: 1rem 1.25rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    white-space: pre-line;
+    line-height: 1.7;
+}
+.cn-skin-detail .text-content-area { margin-top: 0; }
