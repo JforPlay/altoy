@@ -8703,6 +8703,36 @@
         "rarity": "N",
         "retrofit": true
     },
+    "30119": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp",
+        "name": "아마츠카제",
+        "add_get_attr": 9,
+        "add_get_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 3,
+        "add_level_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_level_value": 1,
+        "class": 30105,
+        "id": 30119,
+        "max_star": 6,
+        "pt_get": 9,
+        "pt_level": 13,
+        "pt_upgrage": 18,
+        "nationality": 3,
+        "type": 1,
+        "description": [
+            "이벤트: 거물의 예고장"
+        ],
+        "rarity": "SSR"
+    },
     "30120": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301200.webp",
         "name": "노와키",
@@ -13660,7 +13690,8 @@
         "nationality": 4,
         "type": 1,
         "description": [
-            "이벤트: 웰컴 투 동심 학원"
+            "이벤트: 웰컴 투 동심 학원",
+            "연습 상점(랜덤 출현)"
         ],
         "rarity": "SR"
     },

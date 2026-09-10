@@ -61659,7 +61659,14 @@
             "skill": 11512,
             "skin": 202129,
             "armor": 1,
-            "hexagon": [],
+            "hexagon": [
+                "B",
+                "A",
+                "E",
+                "B",
+                "B",
+                "B"
+            ],
             "skill_id": 152650,
             "equip_1": [
                 2
@@ -89274,6 +89281,263 @@
                 }
             ]
         ]
+    },
+    {
+        "id": 169,
+        "gid": 30119,
+        "sid": 301191,
+        "nationality": 3,
+        "type": 1,
+        "rarity": "SSR",
+        "skill": {
+            "152750": {
+                "id": 152750,
+                "parent": 152750,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": true
+            },
+            "152760": {
+                "id": 152760,
+                "parent": 152760,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "30701": {
+                "id": 30701,
+                "parent": 30701,
+                "upgrade": 30702,
+                "downgrade": null,
+                "requirement": "Limit Break 1",
+                "weapon_true": true
+            },
+            "30702": {
+                "id": 30702,
+                "parent": 30701,
+                "upgrade": null,
+                "downgrade": 30701,
+                "requirement": "Limit Break 3",
+                "weapon_true": true
+            }
+        },
+        "base": {
+            "301191": {
+                "health": 359,
+                "firepower": 13,
+                "torpedo": 105,
+                "antiair": 30,
+                "aviation": 0,
+                "reload": 82,
+                "accuracy": 71,
+                "evasion": 71,
+                "speed": 42.6,
+                "luck": 70,
+                "asw": 52
+            },
+            "301192": {
+                "health": 447,
+                "firepower": 16,
+                "torpedo": 131,
+                "antiair": 37,
+                "aviation": 0,
+                "reload": 82,
+                "accuracy": 71,
+                "evasion": 71,
+                "speed": 42.6,
+                "luck": 70,
+                "asw": 65
+            },
+            "301193": {
+                "health": 622,
+                "firepower": 22,
+                "torpedo": 183,
+                "antiair": 52,
+                "aviation": 0,
+                "reload": 82,
+                "accuracy": 71,
+                "evasion": 71,
+                "speed": 42.6,
+                "luck": 70,
+                "asw": 90
+            },
+            "301194": {
+                "health": 884,
+                "firepower": 32,
+                "torpedo": 261,
+                "antiair": 74,
+                "aviation": 0,
+                "reload": 82,
+                "accuracy": 71,
+                "evasion": 71,
+                "speed": 42.6,
+                "luck": 70,
+                "asw": 129
+            }
+        },
+        "growth": {
+            "301191": {
+                "health": 10221,
+                "firepower": 177,
+                "torpedo": 1261,
+                "antiair": 656,
+                "aviation": 0,
+                "reload": 571,
+                "accuracy": 1100,
+                "evasion": 1320,
+                "speed": 0,
+                "luck": 0,
+                "asw": 586
+            },
+            "301192": {
+                "health": 10221,
+                "firepower": 177,
+                "torpedo": 1261,
+                "antiair": 656,
+                "aviation": 0,
+                "reload": 571,
+                "accuracy": 1100,
+                "evasion": 1320,
+                "speed": 0,
+                "luck": 0,
+                "asw": 586
+            },
+            "301193": {
+                "health": 10221,
+                "firepower": 177,
+                "torpedo": 1261,
+                "antiair": 656,
+                "aviation": 0,
+                "reload": 571,
+                "accuracy": 1100,
+                "evasion": 1320,
+                "speed": 0,
+                "luck": 0,
+                "asw": 586
+            },
+            "301194": {
+                "health": 10221,
+                "firepower": 177,
+                "torpedo": 1261,
+                "antiair": 656,
+                "aviation": 0,
+                "reload": 571,
+                "accuracy": 1100,
+                "evasion": 1320,
+                "speed": 0,
+                "luck": 0,
+                "asw": 586
+            }
+        },
+        "enhance": {
+            "firepower": 13,
+            "torpedo": 104,
+            "reload": 61
+        },
+        "armor": 1,
+        "base_list": {
+            "301191": [
+                1,
+                1,
+                1
+            ],
+            "301192": [
+                1,
+                1,
+                1
+            ],
+            "301193": [
+                1,
+                2,
+                1
+            ],
+            "301194": [
+                1,
+                2,
+                1
+            ]
+        },
+        "mounts": {
+            "301191": [
+                1,
+                1,
+                1
+            ],
+            "301192": [
+                1,
+                1,
+                1
+            ],
+            "301193": [
+                1,
+                2,
+                1
+            ],
+            "301194": [
+                1,
+                2,
+                1
+            ]
+        },
+        "description": [
+            "이벤트: 거물의 예고장"
+        ],
+        "name": "아마츠카제",
+        "gift_dislike": [
+            180005,
+            180003
+        ],
+        "skin_id": 301190,
+        "class_name": "카게로급",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/301190.webp",
+        "equip_1": [
+            1
+        ],
+        "equip_2": [
+            5
+        ],
+        "equip_3": [
+            6
+        ],
+        "equip_4": [
+            10,
+            14
+        ],
+        "equip_5": [
+            10,
+            14
+        ],
+        "equipment_proficiency": [
+            0.75,
+            1.5,
+            0.75
+        ],
+        "equipment_proficiency_base": [
+            0.7,
+            1.3,
+            0.7
+        ],
+        "preload_count": [
+            0,
+            1,
+            0
+        ],
+        "default_equip_list": [
+            100,
+            107,
+            104
+        ],
+        "tag_list": [
+            "Kagero-Class",
+            "Amatsukaze"
+        ],
+        "timer": null,
+        "light": false,
+        "heavy": false,
+        "special": false,
+        "limited": false
     },
     {
         "id": 170,
@@ -136619,7 +136883,8 @@
             ]
         },
         "description": [
-            "이벤트: 웰컴 투 동심 학원"
+            "이벤트: 웰컴 투 동심 학원",
+            "연습 상점(랜덤 출현)"
         ],
         "name": "Z43",
         "gift_dislike": [

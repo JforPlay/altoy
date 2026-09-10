@@ -100728,6 +100728,834 @@
             ]
         }
     },
+    "아마츠카제": {
+        "373": {
+            "id": 373,
+            "type": null,
+            "unlock_desc": "캐릭터 획득",
+            "ship_group": 30119,
+            "name": "「알현」",
+            "trigger_type": 1,
+            "trigger_param": "",
+            "kr_name": "아마츠카제",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp",
+            "ship_name": "Amatsukaze",
+            "scripts": [
+                {
+                    "flag": 0,
+                    "id": 11059,
+                    "option": "",
+                    "param": "지휘관, 있지? 얼른 대답해!",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11060,
+                    "option": "",
+                    "param": "해줬으면 하는 게 있어! 당장에 말이야!",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11061,
+                    "option": [
+                        [
+                            1,
+                            "내 일정을?"
+                        ]
+                    ],
+                    "param": "오늘부터 한 달 뒤까지의 일정을 전부 정리해서 나한테 제출해.",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11062,
+                    "option": "",
+                    "param": "내 일정을?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 1,
+                    "id": 11063,
+                    "option": "",
+                    "param": "그래, 상세할수록 좋아.",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11064,
+                    "option": "",
+                    "param": "주간이든 일간이든 형식은 자유롭게 제출해도 되지만",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11065,
+                    "option": "",
+                    "param": "언제 회의를 하는지, 언제 순찰을 돌 건지, 언제 서류 작업이나 휴식을 취하는지…… 확실하게 적도록 해!",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11066,
+                    "option": [
+                        [
+                            2,
+                            "어디에 쓰려고?"
+                        ]
+                    ],
+                    "param": "애매모호하게 얼렁뚱땅 넘어가는 건 금지야!",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11067,
+                    "option": "",
+                    "param": "어디에 쓰려고?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 11068,
+                    "option": "",
+                    "param": "그런 건 신경 쓸 필요 없어!",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11069,
+                    "option": "",
+                    "param": "다 생각이 있어서 그러는 거야!",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11070,
+                    "option": "",
+                    "param": "고작 그 정도도 못해주는 거야?",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11071,
+                    "option": "",
+                    "param": "어쨌든 난 전달했어.",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11072,
+                    "option": "",
+                    "param": "예정표가 있으면 지휘관이 나를 알현하는 일정도 조정하기 편해질 거 아니야.",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11073,
+                    "option": [
+                        [
+                            3,
+                            "알현이라니……"
+                        ]
+                    ],
+                    "param": "쓸데없는 일에 시간을 낭비하면 곤란하잖아.",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 11074,
+                    "option": "",
+                    "param": "알현이라니……",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 3,
+                    "id": 11075,
+                    "option": "",
+                    "param": "뭐야! 일정을 맞춘다면 네가 나한테 맞추는 게 당연하지!",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 11076,
+                    "option": "",
+                    "param": "모처럼 기회를 만들어주고 있는 거잖아! 영광스럽게 여기라고.",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 11077,
+                    "option": "",
+                    "param": "게다가……",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 11078,
+                    "option": "",
+                    "param": "갑자기 일정이 다 차버리면, 나만 괜히 기다리게 되잖아! 그러면 준비해둔 게 다 허사가 되어버릴 거고!",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 11079,
+                    "option": "",
+                    "param": "그러니까 미리 확인하는 거야. 어때, 합리적이지?",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 11080,
+                    "option": "",
+                    "param": "됐으니까 얼른 스케줄표나 정리해 와.",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 11081,
+                    "option": "",
+                    "param": "혼자 처리하기 어려우면 다른 사람한테 부탁해도 되니까",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 11082,
+                    "option": "",
+                    "param": "누구한테 도움을 받든 반드시 오늘 중으로 제출하도록 해.",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 11083,
+                    "option": "",
+                    "param": "오늘 안에 안 정하면 내일 일정을 못 정하잖아! 그게 안 정해지면 그 뒤 일도 전부 엉망진창이 될 거고!",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 11084,
+                    "option": "",
+                    "param": "지휘관, 나를 너무 오래 기다리게 만들지 마!",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                }
+            ]
+        },
+        "374": {
+            "id": 374,
+            "type": null,
+            "unlock_desc": "호감도 사랑 달성",
+            "ship_group": 30119,
+            "name": "우쭐대지 마!",
+            "trigger_type": 2,
+            "trigger_param": "100",
+            "kr_name": "아마츠카제",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp",
+            "ship_name": "Amatsukaze",
+            "scripts": [
+                {
+                    "flag": 0,
+                    "id": 11085,
+                    "option": "",
+                    "param": "아까 만났을 때 기운이 없어 보이던데",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11086,
+                    "option": "",
+                    "param": "보나마나 또 식사를 제때 안 챙겨 먹은 거겠지. 아니면 또 밤을 새운 거야?",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11087,
+                    "option": "",
+                    "param": "어차피 둘 다겠지?!",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11088,
+                    "option": [
+                        [
+                            1,
+                            "요즘 좀 바빠서……"
+                        ]
+                    ],
+                    "param": "어때? 정답이지?",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11089,
+                    "option": "",
+                    "param": "요즘 좀 바빠서……",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 1,
+                    "id": 11090,
+                    "option": "",
+                    "param": "안 돼. 네가 쓰러지면 누가 내 대화 상대가 되어주고, 내가 누구를 부려먹겠어?",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11091,
+                    "option": "",
+                    "param": "당장 책상 위에 놓인 상자를 열어봐.",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11092,
+                    "option": "",
+                    "param": "과자가 보이지? 내가 아끼는 과자야.",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11093,
+                    "option": "",
+                    "param": "지금 당장 전부 다 먹어 치우도록 해. 이건 명령이야. 에너지를 제대로 보충해.",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11094,
+                    "option": [
+                        [
+                            2,
+                            "먹여주지 않을래?"
+                        ]
+                    ],
+                    "param": "이런 기회는 좀처럼 없으니까 순순히 받아들여.",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11095,
+                    "option": "",
+                    "param": "먹여주지 않을래?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 11096,
+                    "option": "",
+                    "param": "응? 왜 꼭 이럴 때가 되어서만 내 소중함을 떠올리는 거야?",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11097,
+                    "option": "",
+                    "param": "네가 기운이 없다는 점을 참작해서 특별히 딱 한 번만 해줄게.",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11098,
+                    "option": [
+                        [
+                            3,
+                            "그럼 무릎베개도…"
+                        ]
+                    ],
+                    "param": "그 밖에 부탁할 게 더 있으면 한번에 말해!",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 11099,
+                    "option": "",
+                    "param": "그럼 먹여줄 때 무릎베개도 해주면 안 될까?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 3,
+                    "id": 11100,
+                    "option": "",
+                    "param": "뭐, 딱히 상관없어……",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 11101,
+                    "option": [
+                        [
+                            4,
+                            "머리도 쓰다듬어주지 않을래?"
+                        ]
+                    ],
+                    "param": "다른 건?",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11102,
+                    "option": "",
+                    "param": "머리도 쓰다듬어주지 않을래?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 4,
+                    "id": 11103,
+                    "option": "",
+                    "param": "좋아, 머리 쓰다듬어주는 것쯤이야 딱히……",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11104,
+                    "option": "",
+                    "param": "무릎베개에 먹여주는 것뿐만 아니라 쓰다듬어주기까지……",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11105,
+                    "option": "",
+                    "param": "이런 파렴치한 부탁을 나한테 하다니!",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11106,
+                    "option": "",
+                    "param": "너… 일부러 그런 거지!",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11107,
+                    "option": "",
+                    "param": "하지만 한 번 승낙한 이상 절대 철회할 수는 없지……",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11108,
+                    "option": "",
+                    "param": "그러니까 순순히! 거기서 기다리고 있어!",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                }
+            ]
+        },
+        "375": {
+            "id": 375,
+            "type": null,
+            "unlock_desc": "서약 완료",
+            "ship_group": 30119,
+            "name": "진정한 센스",
+            "trigger_type": 2,
+            "trigger_param": "150",
+            "kr_name": "아마츠카제",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp",
+            "ship_name": "Amatsukaze",
+            "scripts": [
+                {
+                    "flag": 0,
+                    "id": 11109,
+                    "option": "",
+                    "param": "저기, 지휘관……",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11110,
+                    "option": "",
+                    "param": "쉬는 장소를 더 예쁘고 마음에 들게 꾸미면",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11111,
+                    "option": [
+                        [
+                            1,
+                            "그렇겠지"
+                        ]
+                    ],
+                    "param": "휴식 효율도 더 높아지겠지?",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11112,
+                    "option": "",
+                    "param": "그렇겠지.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 1,
+                    "id": 11113,
+                    "option": "",
+                    "param": "좋아. 그럼 문제없겠네.",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11114,
+                    "option": "",
+                    "param": "방금 벽지를 밝은 색상으로 도배했거든.",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11115,
+                    "option": "",
+                    "param": "겸사겸사 벽 쪽 선반에 반짝반짝 빛나는 장식도 몇 개 걸어뒀어.",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11116,
+                    "option": "",
+                    "param": "이제 책상 위에도 반짝이는 오브제를 놓아두려고 하는데",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11117,
+                    "option": [
+                        [
+                            2,
+                            "다이아몬드"
+                        ],
+                        [
+                            3,
+                            "자수정"
+                        ]
+                    ],
+                    "param": "지휘관, 다이아몬드랑 자수정 중에 어느 쪽이 좋아?",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11118,
+                    "option": "",
+                    "param": "다이아몬드가 좋아.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 11119,
+                    "option": "",
+                    "param": "화려하게 빛나는 다이아몬드 말이지? 보고만 있어도 기분이 한결 밝아지긴 하지.",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 11120,
+                    "option": "",
+                    "param": "자수정이 좋아.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 3,
+                    "id": 11121,
+                    "option": "",
+                    "param": "자수정은 신비로운 보라색으로 마음을 차분하고 편안하게 해주지.",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11122,
+                    "option": "",
+                    "param": "방 구석에 예쁜 문양을 비춰주는 플로어 램프를 놓으면……",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11123,
+                    "option": [
+                        [
+                            4,
+                            "인테리어 바꾸는 거 도와주러 갈까?"
+                        ]
+                    ],
+                    "param": "이제 절반쯤은 완성된 것 같아!",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11124,
+                    "option": "",
+                    "param": "인테리어 바꾸는 거 도와주러 갈까?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 4,
+                    "id": 11125,
+                    "option": "",
+                    "param": "온다고? 내 방에 온다는 거야?",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11126,
+                    "option": "",
+                    "param": "그럴 필요 없어! 난 지금 지휘관 방에 있거든~!",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11127,
+                    "option": "",
+                    "param": "방 인테리어가 지휘관의 센스를 충분히 반영하지 못하는 것 같아서",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11128,
+                    "option": "",
+                    "param": "내가 겸사겸사! 인테리어를 몽땅 바꿔줬지!",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11129,
+                    "option": "",
+                    "param": "후후, 이 정도로 반짝여야 이 모항의 지휘관이 사는 방이라고 할 수 있겠지!",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11130,
+                    "option": "",
+                    "param": "누가 물어보면 전부 이 아마츠카제가 골라준 거라고 말하도록 해.",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11131,
+                    "option": "",
+                    "param": "나의 엄청난 센스를 감사히 여기라구!",
+                    "ship_group": 30119,
+                    "type": 1,
+                    "kr_name": "아마츠카제",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+                }
+            ]
+        }
+    },
     "뤼초": {
         "38": {
             "id": 38,

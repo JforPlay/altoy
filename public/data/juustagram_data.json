@@ -29872,6 +29872,22 @@
         "op_reply2": "",
         "reply2_shipgirl": null
     },
+    "668": {
+        "id": 668,
+        "ship_group": 30119,
+        "message": "",
+        "name": "Amatsukaze",
+        "picture_persist": "",
+        "shipgirl_names": [
+            30119
+        ],
+        "op_option1": "",
+        "op_reply1": "",
+        "reply1_shipgirl": null,
+        "op_option2": "",
+        "op_reply2": "",
+        "reply2_shipgirl": null
+    },
     "67": {
         "id": 67,
         "ship_group": 20603,
