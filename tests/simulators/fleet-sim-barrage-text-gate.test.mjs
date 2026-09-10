@@ -603,6 +603,8 @@ const TEXT_CORRECTIONS = {
   '22251|cadence': _COUNT_CONFIG,   // 모가미/미쿠마 12 vs 9
   '22252|cadence': _COUNT_CONFIG,   // 모가미/미쿠마 8 vs 6
   '30512|cadence': _COUNT_CONFIG,   // 르 아르디 10 vs 15 (config is the LOWER one here)
+  '30701|cadence': _COUNT_CONFIG,   // 아마츠카제 15 vs 12 (data update 2026-09-10)
+  '30702|cadence': _COUNT_CONFIG,   // 아마츠카제 10 vs 8
   // The config states the threshold in a different UNIT from the prose.
   '150160|cadence': 'Z47 스탬프 피버: 「[특수 탄막 - Z47]을 2회 발동할 때마다」 counts activations '
     + 'of ANOTHER barrage, while the config implements it as a main-gun salvo counter — '
@@ -728,7 +730,8 @@ const BASELINE = {
   // nothing produces read absent as before. The passive lane is where the seed is worth
   // something (38 class-gated skills stopped buffing the whole fleet), and this gate
   // does not measure that lane.
-  displayed: { checked: 944, disclosed: 177, silent: 62 },
+  displayed: { checked: 947, disclosed: 177, silent: 62    // 2026-09-10: +3 checked from 아마츠카제 (data update)
+  },
   spweapon: { checked: 90, disclosed: 49, silent: 190 },
 };
 
