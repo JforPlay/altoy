@@ -1489,7 +1489,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dropdownControlsContainer.className = 'dropdown-controls-container';
 
         const dropdownFilters = [
-            { id: 'progress-filter', label: '체크 상태', options: { all: '체크여부 - 전체', checked: '하나라도 체크됨', unchecked: '체크 안됨' } },
+            { id: 'progress-filter', label: '육성도 체크 상태', options: { all: '체크여부 - 전체', unchecked: '전부 체크안됨', checked: '하나라도 체크됨', partial: '하나라도 체크안됨', full: '전부 체크됨' } },
             { id: 'get-attr-filter', label: '입수 스탯', data: attrTypeData, allOptionText: '입수스탯 - 전체', prefix: '입수: ' },
             { id: 'level-attr-filter', label: '120렙 스탯', data: attrTypeData, allOptionText: '120스탯 - 전체', prefix: '120렙: ' },
             { id: 'fav-filter', label: '즐겨찾기', options: { all: '즐겨찾기 - 전체', fav: '즐겨찾기만' } },
@@ -2004,7 +2004,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Progress chip
         const progressEl = document.getElementById('progress-filter');
         if (progressEl && progressEl.value !== 'all') {
-            const text = progressEl.value === 'checked' ? '체크됨' : '미체크';
+            const text = progressEl.options[progressEl.selectedIndex].text;
             chips.push({ label: text, type: 'progress', value: progressEl.value });
         }
 
@@ -2236,15 +2236,13 @@ document.addEventListener('DOMContentLoaded', () => {
         filteredShipIds = Object.keys(fullShipData).filter(shipId => {
             const ship = fullShipData[shipId];
 
-            const state = getCardProgressState(shipCardById.get(shipId));
-            const isAnyChecked = state > 0;
-
-            let progressMatch = true;
-            if (progressFilter === 'checked') {
-                progressMatch = isAnyChecked;
-            } else if (progressFilter === 'unchecked') {
-                progressMatch = !isAnyChecked;
-            }
+            const state = getCardProgressState(shipCardById.get(shipId)); // bits: get=1, level=2, upgrade=4
+            const progressMatch = {
+                checked: state > 0,
+                unchecked: state === 0,
+                partial: state < 7,
+                full: state === 7,
+            }[progressFilter] ?? true;
 
             const searchMatch = !searchQuery || (ship.name && ship.name.toLowerCase().includes(searchQuery));
             const natMatch = !isNationFilterActive || checkedNations.includes(ship.nationality);
