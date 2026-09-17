@@ -7453,5 +7453,53 @@
         "일": "15",
         "group_id": "20115",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/201150.webp"
+    },
+    {
+        "ID": "747",
+        "룽섭 이름": "아마츠카제",
+        "레어도": "SSR",
+        "함종": "구축",
+        "진영": "사쿠라 엠파이어",
+        "연": "1939",
+        "월": "10",
+        "일": "19",
+        "group_id": "30119",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301190.webp"
+    },
+    {
+        "ID": "748",
+        "룽섭 이름": "타이거",
+        "레어도": "UR",
+        "함종": "경순",
+        "진영": "로열 네이비",
+        "연": "1945",
+        "월": "10",
+        "일": "25",
+        "group_id": "20238",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/202380.webp"
+    },
+    {
+        "ID": "749",
+        "룽섭 이름": "이14",
+        "레어도": "SSR",
+        "함종": "잠수항모",
+        "진영": "사쿠라 엠파이어",
+        "연": "1944",
+        "월": "3",
+        "일": "14",
+        "group_id": "31703",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/317030.webp"
+    },
+    {
+        "ID": "750",
+        "룽섭 이름": "헤이스티",
+        "레어도": "SR",
+        "함종": "구축",
+        "진영": "로열 네이비",
+        "연": "1936",
+        "월": "5",
+        "일": "5",
+        "group_id": "20140",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/201400.webp"
     }
 ]

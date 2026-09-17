@@ -730,9 +730,14 @@ const BASELINE = {
   // nothing produces read absent as before. The passive lane is where the seed is worth
   // something (38 class-gated skills stopped buffing the whole fleet), and this gate
   // does not measure that lane.
-  displayed: { checked: 947, disclosed: 177, silent: 62    // 2026-09-10: +3 checked from 아마츠카제 (data update)
+  //
+  // MOVED 2026-09-17 by the 새러토가·META data update — corpus growth only. Bucket
+  // membership was diffed against the pre-update data: no existing root changed bucket;
+  // the five new zero-row roots are all new 전용 장비 ids (disclosed 1012953 / 1090510,
+  // silent 1014200 / 1019171 / 1090511).
+  displayed: { checked: 948, disclosed: 177, silent: 62    // 2026-09-10: +3 아마츠카제; 2026-09-17: +1
   },
-  spweapon: { checked: 90, disclosed: 49, silent: 190 },
+  spweapon: { checked: 93, disclosed: 51, silent: 193 },
 };
 
 function assertCoverage(which, got) {

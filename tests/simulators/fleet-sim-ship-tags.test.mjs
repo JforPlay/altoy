@@ -32,8 +32,8 @@ const stampedTags = new Set(
 );
 
 test('the pipeline still emits tag_list, and it covers the roster', () => {
-    assert.equal(ships.length, 887);   // 886 + 아마츠카제 (data update 2026-09-10)
-    // 51 ships genuinely have none; a pipeline that dropped the field reads 887.
+    assert.equal(ships.length, 888);   // 886 + 아마츠카제 (2026-09-10) + 새러토가·META (2026-09-17)
+    // 51 ships genuinely have none; a pipeline that dropped the field reads 888.
     const without = ships.filter((s) => !(s.tag_list || []).length).length;
     assert.equal(without, 51);
     for (const name of ['Z-Class', 'Special Type', 'Fletcher-Class', 'Anshan-Class']) {

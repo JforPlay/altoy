@@ -119,10 +119,10 @@ test('an identity never lists the same skill twice for one source', () => {
     }
 });
 
-test('all 23 META bosses carry their skill text', () => {
+test('all 24 META bosses carry their skill text', () => {   // +새러토가·META 2026-09-17
     const meta = identities.filter(([, r]) => r.app.some((a) => a.src === 'meta'));
     const withSkills = meta.filter(([, r]) => (r.skills || []).some((s) => s.src === 'meta'));
-    assert.equal(withSkills.length, 23, `${withSkills.length}/${meta.length} META bosses have skills`);
+    assert.equal(withSkills.length, 24, `${withSkills.length}/${meta.length} META bosses have skills`);
 });
 
 test('한계 챌린지 별자리 pairs both carry the mechanic that names both ships', () => {

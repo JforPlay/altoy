@@ -163,7 +163,8 @@ for (const [id, s] of Object.entries(passives)) {
 
 test('the emitted 숙련도 corpus keeps its shape', () => {
   const skills = new Set(profRows.map((r) => r.id));
-  assert.equal(skills.size, 109, 'skills carrying a 숙련도 row');
+  // 109 + 1019170 (data update 2026-09-17, a new 전용 장비 rung; label-scoped, ungated).
+  assert.equal(skills.size, 110, 'skills carrying a 숙련도 row');
   // Every record names at least one filter. A record with neither would buff every
   // weapon on the ship, which the matcher supports but no game record asks for —
   // if one appears, look at it before assuming the branch is right for it.
@@ -189,7 +190,7 @@ test('every install-gate key emitted is one evalGate knows about', () => {
 
 test('the gated share of the corpus is pinned', () => {
   const gated = new Set(profRows.filter((r) => r.b.gates?.length).map((r) => r.id));
-  // 29 of the 109 install themselves through a gated self-cast on buff_<id>. A DROP
+  // 29 of the 110 install themselves through a gated self-cast on buff_<id>. A DROP
   // here means the lookup stopped finding them and the sim is back to applying an
   // equipment-conditional buff unconditionally — the failure this whole gate exists
   // to prevent, and one that no other assertion can see.
