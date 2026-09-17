@@ -2017,7 +2017,8 @@
             },
             {
                 "kind": "event",
-                "label": "Fight! 도시 구직 대작전!"
+                "label": "Fight! 도시 구직 대작전!",
+                "year": 2026
             },
             {
                 "kind": "main",
@@ -7042,13 +7043,14 @@
                 "year": 2024
             },
             {
-                "kind": "login",
-                "label": "login_0401",
+                "kind": "event",
+                "label": "Fight! 도시 구직 대작전!",
                 "year": 2026
             },
             {
-                "kind": "event",
-                "label": "Fight! 도시 구직 대작전!"
+                "kind": "login",
+                "label": "login_0401",
+                "year": 2026
             },
             {
                 "kind": "main",
@@ -10952,7 +10954,8 @@
         "usage": [
             {
                 "kind": "event",
-                "label": "Fight! 도시 구직 대작전!"
+                "label": "Fight! 도시 구직 대작전!",
+                "year": 2026
             },
             {
                 "kind": "main",
@@ -10999,7 +11002,7 @@
                 "label": "EP4-2 공연 개최 허가증"
             }
         ],
-        "year": null
+        "year": 2026
     },
     "story-dailyfuture-upspeed": {
         "name": "story-dailyfuture-upspeed",
@@ -11102,7 +11105,8 @@
             },
             {
                 "kind": "event",
-                "label": "Fight! 도시 구직 대작전!"
+                "label": "Fight! 도시 구직 대작전!",
+                "year": 2026
             },
             {
                 "kind": "main",
@@ -12134,7 +12138,8 @@
         "usage": [
             {
                 "kind": "event",
-                "label": "Fight! 도시 구직 대작전!"
+                "label": "Fight! 도시 구직 대작전!",
+                "year": 2026
             },
             {
                 "kind": "main",
@@ -12173,7 +12178,7 @@
                 "label": "EP4-8 이사회 회의"
             }
         ],
-        "year": null
+        "year": 2026
     },
     "story-midgard": {
         "name": "story-midgard",
@@ -12267,7 +12272,8 @@
             },
             {
                 "kind": "event",
-                "label": "Fight! 도시 구직 대작전!"
+                "label": "Fight! 도시 구직 대작전!",
+                "year": 2026
             },
             {
                 "kind": "main",
@@ -12615,7 +12621,8 @@
             },
             {
                 "kind": "event",
-                "label": "Fight! 도시 구직 대작전!"
+                "label": "Fight! 도시 구직 대작전!",
+                "year": 2026
             },
             {
                 "kind": "scene",
@@ -13774,7 +13781,8 @@
             },
             {
                 "kind": "event",
-                "label": "Fight! 도시 구직 대작전!"
+                "label": "Fight! 도시 구직 대작전!",
+                "year": 2026
             },
             {
                 "kind": "main",
@@ -14563,7 +14571,8 @@
             },
             {
                 "kind": "event",
-                "label": "Fight! 도시 구직 대작전!"
+                "label": "Fight! 도시 구직 대작전!",
+                "year": 2026
             },
             {
                 "kind": "main",
