@@ -9,6 +9,7 @@ import {
     fetchJSONWithCache,
     createImgElement,
     IMG_FALLBACKS,
+    dataForToyUrl,
     requireElements,
     renderStatus,
     observeLazyImages,
@@ -143,6 +144,12 @@ document.addEventListener('DOMContentLoaded', () => {
             eager: true,
             fallback: placeholderIcon,
         });
+    }
+
+    /** Post picture: the data_for_toy mirror when the pipeline fetched it, else the game CDN URL. */
+    function postPictureUrl(post) {
+        if (post.picture) return dataForToyUrl(post.picture);
+        return typeof post.picture_persist === 'string' ? post.picture_persist.trim() : '';
     }
 
     function createSafeImage(src, alt, options = {}) {
@@ -293,9 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        const visiblePostEntries = postEntries.filter(([, post]) =>
-            typeof post.picture_persist === 'string' && post.picture_persist.trim() !== ''
-        );
+        const visiblePostEntries = postEntries.filter(([, post]) => postPictureUrl(post) !== '');
 
         if (visiblePostEntries.length === 0) {
             renderStatus(galleryView, '필터와 일치하는 게시물이 없습니다.', 'empty');
@@ -315,7 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
             button.setAttribute('aria-label', `${authorData.name} 게시물 보기`);
             button.setAttribute('aria-pressed', 'false');
 
-            const img = createGalleryImage(post.picture_persist, `Post by ${authorData.name}`, index < 12);
+            const img = createGalleryImage(postPictureUrl(post), `Post by ${authorData.name}`, index < 12);
             button.appendChild(img);
             fragment.appendChild(button);
         });
@@ -410,7 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
         authorInfo.appendChild(authorText);
         header.appendChild(authorInfo);
 
-        const image = createSafeImage(post.picture_persist, `Post image by ${authorData.name}`, {
+        const image = createSafeImage(postPictureUrl(post), `Post image by ${authorData.name}`, {
             className: 'post-image',
             eager: true,
             fallback: IMG_FALLBACKS.DETAIL,
