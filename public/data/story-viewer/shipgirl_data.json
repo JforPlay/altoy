@@ -8907,6 +8907,10 @@
         "name": "향기로운 무희",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/802013.webp"
     },
+    "802014": {
+        "name": "빛나는 \"마법\"",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/802014.webp"
+    },
     "802019": {
         "name": "에밀 베르탱·改",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/802019.webp"
@@ -10643,6 +10647,10 @@
         "name": "베닝턴",
         "icon": null
     },
+    "900556": {
+        "name": "？？？",
+        "icon": null
+    },
     "901010": {
         "name": "르 마르스 ",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/901010.webp"
@@ -11278,6 +11286,10 @@
     "9707080": {
         "name": "요크타운·META",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9707080.webp"
+    },
+    "9707100": {
+        "name": "새러토가·META",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9707100.webp"
     },
     "9708010": {
         "name": "U-556·META",

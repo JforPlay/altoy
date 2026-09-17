@@ -22623,6 +22623,34 @@
         ],
         "rarity": "SSR"
     },
+    "970710": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9707100.webp",
+        "name": "새러토가·META",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            6,
+            7
+        ],
+        "add_get_value": 2,
+        "add_level_attr": 5,
+        "add_level_shiptype": [
+            6,
+            7
+        ],
+        "add_level_value": 1,
+        "class": 970710,
+        "id": 970710,
+        "max_star": 6,
+        "pt_get": 19,
+        "pt_level": 29,
+        "pt_upgrage": 39,
+        "nationality": 97,
+        "type": 7,
+        "description": [
+            "META 연구실·정보 동기화"
+        ],
+        "rarity": "SSR"
+    },
     "970801": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9708010.webp",
         "name": "U-556·META",

@@ -11242,6 +11242,68 @@
             ]
         }
     },
+    "1013070": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/13070.webp",
+        "name": "인트레피드",
+        "weapon_true": true,
+        "trigger_cd": 6,
+        "position": "후열",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/107110.webp",
+        "class_name": "에식스급",
+        "skill_id": 1013070,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 184651
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184681
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 184660
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184690
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
     "16250": {
         "requirement": "Default",
         "weapon_true": true,
@@ -19812,6 +19874,126 @@
                     "targetAniEffect": "",
                     "target_choise": "TargetNil",
                     "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "1012950": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/12950.webp",
+        "name": "글로스터",
+        "weapon_true": true,
+        "attached_weapon_skill_id": [
+            {
+                "id": 1012953,
+                "quota": 1,
+                "time": 3
+            },
+            {
+                "id": 1012953,
+                "time": 20
+            },
+            {
+                "id": 1012953,
+                "quota": 1
+            }
+        ],
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/202100.webp",
+        "class_name": "글로스터급 ",
+        "skill_id": 1012950,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 1012952
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184481
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire",
+                    "quota": 1,
+                    "time": 3
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184481
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire",
+                    "time": 20
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184481
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire",
+                    "quota": 1
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 1012952
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184490
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire",
+                    "quota": 1,
+                    "time": 3
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184490
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire",
+                    "time": 20
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184490
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire",
+                    "quota": 1
                 }
             ]
         }
@@ -43349,6 +43531,75 @@
             ]
         }
     },
+    "1019170": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/19170.webp",
+        "name": "키타카제",
+        "weapon_true": true,
+        "attached_weapon_skill_id": [
+            {
+                "id": 1019171,
+                "time": 10
+            }
+        ],
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/399030.webp",
+        "class_name": "키타카제급",
+        "skill_id": 1019170,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 1019171
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184731
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire",
+                    "time": 10
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 1019171
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184740
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire",
+                    "time": 10
+                }
+            ]
+        }
+    },
     "19210": {
         "requirement": "Default",
         "weapon_true": true,
@@ -54622,6 +54873,56 @@
                     "arg_list": {
                         "emitter": "BattleBulletEmitter",
                         "weapon_id": 73412
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "1090510": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/3610.webp",
+        "name": "U-73",
+        "weapon_true": true,
+        "attached_weapon_skill_id": [
+            {
+                "id": 1090511
+            }
+        ],
+        "position": "잠수",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/408050.webp",
+        "class_name": "ⅦB형",
+        "skill_id": 1090510,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 184561
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 184570
                     },
                     "casterAniEffect": "",
                     "targetAniEffect": "",
@@ -98231,6 +98532,212 @@
                     "targetAniEffect": "",
                     "target_choise": "TargetHarmRandomByWeight",
                     "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "802370": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "attached_weapon_skill_id": [
+            {
+                "id": 802372
+            },
+            {
+                "id": 802371,
+                "time": 10
+            }
+        ],
+        "trigger_cd": 3,
+        "name": "새러토가·META",
+        "position": "후열",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9707100.webp",
+        "class_name": "새러토가·META",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/802370.webp",
+        "skill_id": 802370,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 161791
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 1,
+                        "weapon_id": 161791
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 802371
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 161811
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 161821
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 802373
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 802372
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 161791
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire",
+                    "time": 10
+                },
+                {
+                    "arg_list": {
+                        "delay": 1,
+                        "weapon_id": 161791
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire",
+                    "time": 10
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 161800
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 1,
+                        "weapon_id": 161800
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 802371
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 161820
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 161830
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 802373
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 802372
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 161800
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire",
+                    "time": 10
+                },
+                {
+                    "arg_list": {
+                        "delay": 1,
+                        "weapon_id": 161800
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire",
+                    "time": 10
                 }
             ]
         }

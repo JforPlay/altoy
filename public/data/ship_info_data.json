@@ -40614,6 +40614,20 @@
             180005
         ],
         "skin_id": 107110,
+        "sp_weapon": {
+            "icon": "15580",
+            "name": "인트레피드 파워",
+            "skill_upgrade": [
+                [
+                    0,
+                    1013070
+                ]
+            ],
+            "attribute_1": "air",
+            "attribute_2": "reload",
+            "weapon_true": true,
+            "trigger_cd": 6
+        },
         "class_name": "에식스급",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/107110.webp",
         "equip_1": [
@@ -54445,7 +54459,8 @@
         ],
         "tag_list": [
             "J-Class",
-            "Jersey Skill"
+            "Jersey Skill",
+            "Javelin"
         ],
         "timer": "00:27:00",
         "light": true,
@@ -61071,6 +61086,34 @@
             180005
         ],
         "skin_id": 202100,
+        "sp_weapon": {
+            "icon": "15640",
+            "name": "교육 담당의 수완",
+            "skill_upgrade": [
+                [
+                    0,
+                    1012950
+                ]
+            ],
+            "attribute_1": "cannon",
+            "attribute_2": "reload",
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 1012953,
+                    "quota": 1,
+                    "time": 3
+                },
+                {
+                    "id": 1012953,
+                    "time": 20
+                },
+                {
+                    "id": 1012953,
+                    "quota": 1
+                }
+            ]
+        },
         "class_name": "글로스터급 ",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/202100.webp",
         "equip_1": [
@@ -130052,6 +130095,25 @@
             180006
         ],
         "skin_id": 399030,
+        "sp_weapon": {
+            "icon": "15660",
+            "name": "지금은 경계 중",
+            "skill_upgrade": [
+                [
+                    0,
+                    1019170
+                ]
+            ],
+            "attribute_1": "cannon",
+            "attribute_2": "durability",
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 1019171,
+                    "time": 10
+                }
+            ]
+        },
         "class_name": "키타카제급",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/399030.webp",
         "equip_1": [
@@ -152171,6 +152233,24 @@
             180004
         ],
         "skin_id": 408050,
+        "sp_weapon": {
+            "icon": "15620",
+            "name": "이걸로 속도를 확인해 봐",
+            "skill_upgrade": [
+                [
+                    0,
+                    1090510
+                ]
+            ],
+            "attribute_1": "torpedo",
+            "attribute_2": "hit",
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 1090511
+                }
+            ]
+        },
         "class_name": "ⅦB형",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/408050.webp",
         "equip_1": [
@@ -182019,6 +182099,19 @@
             180005
         ],
         "skin_id": 703010,
+        "sp_weapon": {
+            "icon": "15600",
+            "name": "흔들리지 않는 임팩트",
+            "skill_upgrade": [
+                [
+                    0,
+                    1014200
+                ]
+            ],
+            "attribute_1": "cannon",
+            "attribute_2": "hit",
+            "weapon_true": false
+        },
         "class_name": "탈린",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/703010.webp",
         "equip_1": [
@@ -222187,6 +222280,281 @@
             "YorktownMETA",
             "TOC",
             "Yorktown"
+        ],
+        "timer": null,
+        "light": false,
+        "heavy": false,
+        "special": false,
+        "limited": false
+    },
+    {
+        "id": 30064,
+        "gid": 970710,
+        "sid": 9707101,
+        "nationality": 97,
+        "type": 7,
+        "rarity": "SSR",
+        "skill": {
+            "802401": {
+                "id": 802401,
+                "parent": 802401,
+                "upgrade": 802402,
+                "downgrade": null,
+                "requirement": "Limit Break 1",
+                "weapon_true": false
+            },
+            "802402": {
+                "id": 802402,
+                "parent": 802401,
+                "upgrade": null,
+                "downgrade": 802401,
+                "requirement": "Limit Break 3",
+                "weapon_true": false
+            },
+            "802370": {
+                "id": 802370,
+                "parent": 802370,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 802372
+                    },
+                    {
+                        "id": 802371,
+                        "time": 10
+                    }
+                ],
+                "trigger_cd": 3
+            },
+            "802380": {
+                "id": 802380,
+                "parent": 802380,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "802390": {
+                "id": 802390,
+                "parent": 802390,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            }
+        },
+        "base": {
+            "9707101": {
+                "health": 1233,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 68,
+                "aviation": 85,
+                "reload": 48,
+                "accuracy": 25,
+                "evasion": 10,
+                "speed": 33,
+                "luck": 66,
+                "asw": 0
+            },
+            "9707102": {
+                "health": 1534,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 85,
+                "aviation": 106,
+                "reload": 48,
+                "accuracy": 25,
+                "evasion": 10,
+                "speed": 33,
+                "luck": 66,
+                "asw": 0
+            },
+            "9707103": {
+                "health": 2135,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 118,
+                "aviation": 148,
+                "reload": 48,
+                "accuracy": 25,
+                "evasion": 10,
+                "speed": 33,
+                "luck": 66,
+                "asw": 0
+            },
+            "9707104": {
+                "health": 3037,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 168,
+                "aviation": 212,
+                "reload": 48,
+                "accuracy": 25,
+                "evasion": 10,
+                "speed": 33,
+                "luck": 66,
+                "asw": 0
+            }
+        },
+        "growth": {
+            "9707101": {
+                "health": 22486,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 863,
+                "aviation": 1038,
+                "reload": 332,
+                "accuracy": 348,
+                "evasion": 270,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            },
+            "9707102": {
+                "health": 22486,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 863,
+                "aviation": 1038,
+                "reload": 332,
+                "accuracy": 348,
+                "evasion": 270,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            },
+            "9707103": {
+                "health": 22486,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 863,
+                "aviation": 1038,
+                "reload": 332,
+                "accuracy": 348,
+                "evasion": 270,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            },
+            "9707104": {
+                "health": 22486,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 863,
+                "aviation": 1038,
+                "reload": 332,
+                "accuracy": 348,
+                "evasion": 270,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            }
+        },
+        "enhance": {
+            "health": 1203,
+            "antiair": 67,
+            "accuracy": 24,
+            "evasion": 10,
+            "reload": 36,
+            "aviation": 84
+        },
+        "armor": 2,
+        "base_list": {
+            "9707101": [
+                1,
+                1,
+                1
+            ],
+            "9707102": [
+                2,
+                1,
+                1
+            ],
+            "9707103": [
+                2,
+                2,
+                1
+            ],
+            "9707104": [
+                3,
+                3,
+                2
+            ]
+        },
+        "mounts": {
+            "9707101": [
+                1,
+                1,
+                1
+            ],
+            "9707102": [
+                2,
+                1,
+                1
+            ],
+            "9707103": [
+                2,
+                2,
+                1
+            ],
+            "9707104": [
+                3,
+                3,
+                2
+            ]
+        },
+        "description": [
+            "META 연구실·정보 동기화"
+        ],
+        "name": "새러토가·META",
+        "gift_dislike": [
+            180004,
+            180006
+        ],
+        "skin_id": 9707100,
+        "class_name": "새러토가·META",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9707100.webp",
+        "equip_1": [
+            7
+        ],
+        "equip_2": [
+            9
+        ],
+        "equip_3": [
+            8
+        ],
+        "equip_4": [
+            10
+        ],
+        "equip_5": [
+            10
+        ],
+        "equipment_proficiency": [
+            1.25,
+            1.4,
+            1.4
+        ],
+        "equipment_proficiency_base": [
+            1.1,
+            1.25,
+            1.25
+        ],
+        "preload_count": [
+            0,
+            0,
+            0
+        ],
+        "default_equip_list": [
+            109,
+            111,
+            110
+        ],
+        "tag_list": [
+            "SaratogaMETA"
         ],
         "timer": null,
         "light": false,

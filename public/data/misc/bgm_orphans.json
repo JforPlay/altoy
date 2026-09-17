@@ -2016,6 +2016,10 @@
                 "year": 2025
             },
             {
+                "kind": "event",
+                "label": "Fight! 도시 구직 대작전!"
+            },
+            {
                 "kind": "main",
                 "label": "깨워라 창홍의 바람"
             },
@@ -2050,10 +2054,6 @@
             {
                 "kind": "opsi",
                 "label": "엘리트 함대"
-            },
-            {
-                "kind": "event",
-                "label": "EP5-2 이른 아침의 잔해"
             }
         ],
         "year": 2024
@@ -7047,6 +7047,10 @@
                 "year": 2026
             },
             {
+                "kind": "event",
+                "label": "Fight! 도시 구직 대작전!"
+            },
+            {
                 "kind": "main",
                 "label": "몽광의 아스트라리움"
             },
@@ -10947,6 +10951,10 @@
         ],
         "usage": [
             {
+                "kind": "event",
+                "label": "Fight! 도시 구직 대작전!"
+            },
+            {
                 "kind": "main",
                 "label": "창공에 울리는 소리"
             },
@@ -10989,10 +10997,6 @@
             {
                 "kind": "event",
                 "label": "EP4-2 공연 개최 허가증"
-            },
-            {
-                "kind": "event",
-                "label": "EP5-2 다음 계획"
             }
         ],
         "year": null
@@ -11097,6 +11101,10 @@
                 "year": 2026
             },
             {
+                "kind": "event",
+                "label": "Fight! 도시 구직 대작전!"
+            },
+            {
                 "kind": "main",
                 "label": "은빛 정상의 안개"
             },
@@ -11107,10 +11115,6 @@
             {
                 "kind": "main",
                 "label": "저편에 핀 꽃의 향기"
-            },
-            {
-                "kind": "main",
-                "label": "저편에서의 메아리"
             }
         ],
         "year": 2024
@@ -11325,6 +11329,10 @@
                 "kind": "event",
                 "label": "드림 랜드의 드림 휴일",
                 "year": 2024
+            },
+            {
+                "kind": "scene",
+                "label": "ShiningMagicSignPage"
             },
             {
                 "kind": "scene",
@@ -12125,6 +12133,10 @@
         ],
         "usage": [
             {
+                "kind": "event",
+                "label": "Fight! 도시 구직 대작전!"
+            },
+            {
                 "kind": "main",
                 "label": "주염단장"
             },
@@ -12252,6 +12264,10 @@
                 "kind": "event",
                 "label": "템페스타와 자유 군도",
                 "year": 2025
+            },
+            {
+                "kind": "event",
+                "label": "Fight! 도시 구직 대작전!"
             },
             {
                 "kind": "main",
@@ -12598,6 +12614,10 @@
                 "year": 2026
             },
             {
+                "kind": "event",
+                "label": "Fight! 도시 구직 대작전!"
+            },
+            {
                 "kind": "scene",
                 "label": "SleeplessCityPage"
             },
@@ -12870,7 +12890,7 @@
             },
             {
                 "kind": "scene",
-                "label": "SkinMagazinePage5"
+                "label": "ShadowCityOmenPage"
             }
         ],
         "year": 2024
@@ -13753,6 +13773,10 @@
                 "year": 2024
             },
             {
+                "kind": "event",
+                "label": "Fight! 도시 구직 대작전!"
+            },
+            {
                 "kind": "main",
                 "label": "휘광의 성에서 피어나라"
             },
@@ -14538,6 +14562,10 @@
                 "year": 2025
             },
             {
+                "kind": "event",
+                "label": "Fight! 도시 구직 대작전!"
+            },
+            {
                 "kind": "main",
                 "label": "높은 탑의 장미"
             },
@@ -14564,10 +14592,6 @@
             {
                 "kind": "map",
                 "label": "T5 별밤의 격전"
-            },
-            {
-                "kind": "map",
-                "label": "T6 승리의 일격"
             }
         ],
         "year": 2023

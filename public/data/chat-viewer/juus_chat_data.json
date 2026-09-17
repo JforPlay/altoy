@@ -101556,6 +101556,863 @@
             ]
         }
     },
+    "다이호": {
+        "376": {
+            "id": 376,
+            "type": null,
+            "unlock_desc": "캐릭터 획득",
+            "ship_group": 30707,
+            "name": "멀쩡한 도시락",
+            "trigger_type": 1,
+            "trigger_param": "",
+            "kr_name": "다이호",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp",
+            "ship_name": "OutrangeTH",
+            "scripts": [
+                {
+                    "flag": 0,
+                    "id": 11132,
+                    "option": "",
+                    "param": "지휘관님♥",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11133,
+                    "option": "",
+                    "param": "다이호가 오늘은 지휘관님을 위해 사랑을 듬뿍 담아 도시락을 만들었답니다.",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11134,
+                    "option": "",
+                    "param": "업무에 방해가 되면 안 되니까, 집무실 문 앞에 두었어요.",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11135,
+                    "option": "",
+                    "param": "그럼, 볼일이 있어서 먼저 실례할게요.",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11136,
+                    "option": [
+                        [
+                            1,
+                            "정말 간 건가?"
+                        ]
+                    ],
+                    "param": "가져가는 거 잊지 마세요~",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11137,
+                    "option": "",
+                    "param": "정말 간 건가? 문밖에서 거친 숨소리가 들리는 것 같은데…",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 1,
+                    "id": 11138,
+                    "option": "",
+                    "param": "225",
+                    "ship_group": 30707,
+                    "type": 4,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11139,
+                    "option": "",
+                    "param": "후후후, 그건 환청일 거예요~",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11140,
+                    "option": "",
+                    "param": "지금 배가 너무 고프셔서 그런 소리가 들린 거 아닐까요?",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11141,
+                    "option": "",
+                    "param": "어서 다이호의 도시락을 열어 보세요.",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11142,
+                    "option": [
+                        [
+                            2,
+                            "유난히 적극적이네"
+                        ]
+                    ],
+                    "param": "그리고 남김없이 전부 드셔 주세요♡",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11143,
+                    "option": "",
+                    "param": "오늘따라 유난히 적극적이네.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 11144,
+                    "option": "",
+                    "param": "이 도시락… 정말 괜찮은 거 맞아?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 11145,
+                    "option": "",
+                    "param": "물론이죠. 정성들여 만든 도시락이랍니다!",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11146,
+                    "option": "",
+                    "param": "조금 위험한 걸 넣을 뻔하긴 했지만……",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11147,
+                    "option": "",
+                    "param": "다이호가 그만 깜빡하고~ 그 위험한 걸 전부 먹어버렸답니다.",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11148,
+                    "option": "",
+                    "param": "그랬더니 지금…… 몸이 달아올라서……",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11149,
+                    "option": "",
+                    "param": "지휘관님께…… 조금 폐를 끼치게 될 것 같아요♥",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11150,
+                    "option": "",
+                    "param": "100",
+                    "ship_group": 30707,
+                    "type": 4,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11151,
+                    "option": "",
+                    "param": "그보다 지휘관님께서 이따가 하실 「격렬한 업무」를 견디실 수 있을지 조금 걱정돼서……",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11152,
+                    "option": [
+                        [
+                            3,
+                            "체력 보강에 좋은 게 뭐야?"
+                        ]
+                    ],
+                    "param": "도시락에는 체력 보강에 좋은 것도 넣어 두었답니다.",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 11153,
+                    "option": "",
+                    "param": "체력 보강에 좋은 게 뭐야?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 3,
+                    "id": 11154,
+                    "option": "",
+                    "param": "지휘관님을 하루 종일 힘이 넘치게 해줄, 아주 특별한 재료랍니다♥",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 11155,
+                    "option": "",
+                    "param": "그러니 지휘관님, 더 이상 망설이지 마세요!",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 11156,
+                    "option": "",
+                    "param": "어서 문을 열어주세요.",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 11157,
+                    "option": "",
+                    "param": "그리고…",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 11158,
+                    "option": "",
+                    "param": "다이호에게 한 입씩, 전~부 먹여 주세요~♥",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                }
+            ]
+        },
+        "377": {
+            "id": 377,
+            "type": null,
+            "unlock_desc": "호감도 사랑 달성",
+            "ship_group": 30707,
+            "name": "맞혀 보실래요?",
+            "trigger_type": 2,
+            "trigger_param": "100",
+            "kr_name": "다이호",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp",
+            "ship_name": "OutrangeTH",
+            "scripts": [
+                {
+                    "flag": 0,
+                    "id": 11159,
+                    "option": "",
+                    "param": "지휘관님♡",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11160,
+                    "option": "",
+                    "param": "다이호, 조금 외로워졌어요.",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11161,
+                    "option": "",
+                    "param": "다이호가 지금 무슨 생각을 하고 있는지 맞혀 보세요.",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11162,
+                    "option": [
+                        [
+                            1,
+                            "혹시 나?"
+                        ],
+                        [
+                            2,
+                            "진지한 생각"
+                        ],
+                        [
+                            3,
+                            "바나나!"
+                        ]
+                    ],
+                    "param": "맞히시면 상을 드릴게요~",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11163,
+                    "option": "",
+                    "param": "혹시 내 생각 하고 있어?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 1,
+                    "id": 11164,
+                    "option": "",
+                    "param": "정답이에요~♡",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11165,
+                    "option": "",
+                    "param": "진지한 생각이라도 하는 중이야?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 11166,
+                    "option": "",
+                    "param": "후후후, 들켜버렸네요.",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11167,
+                    "option": "",
+                    "param": "다이호는 지금 지휘관님을 와앙 깨물어 버리고 싶은 충동을 필사적으로 참고 있답니다~♡",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 11168,
+                    "option": "",
+                    "param": "지금 바나나 생각 하는 거 맞지?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 3,
+                    "id": 11169,
+                    "option": "",
+                    "param": "지휘관님께서 그러길 바라신다면 그렇게 할게요♪",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11170,
+                    "option": "",
+                    "param": "이렇게 정확하게 다이호의 마음을 맞히시다니, 지휘관님은 역시 운명의 단짝이에요♡",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11171,
+                    "option": "",
+                    "param": "그러니……",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11172,
+                    "option": "",
+                    "param": "지금 당장 지휘관님과 평생을 함께할 준비를 해야겠어요!",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11173,
+                    "option": "",
+                    "param": "지휘관님, 어서 와서 웨딩드레스를 같이 골라 주세요!",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11174,
+                    "option": [
+                        [
+                            4,
+                            "……그래, 그래."
+                        ]
+                    ],
+                    "param": "기다리고 있을게요~",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11175,
+                    "option": "",
+                    "param": "……그래, 그래.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 4,
+                    "id": 11176,
+                    "option": "",
+                    "param": "지휘관님…… 설마…… 설마…… 허락해 주실 줄이야…!",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11177,
+                    "option": "",
+                    "param": "312",
+                    "ship_group": 30707,
+                    "type": 4,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11178,
+                    "option": "",
+                    "param": "으흑…… 잠시 눈물 좀 닦을게요……",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11179,
+                    "option": "",
+                    "param": "후우, 다이호, 부활했답니다!",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11180,
+                    "option": "",
+                    "param": "고르기만 하시면 돼요. 다른 건 아무것도 신경 쓰실 필요 없어요.",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11181,
+                    "option": "",
+                    "param": "지휘관님께서 골라 주신 것이 다이호에게는 유일한 정답이니까요.",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11182,
+                    "option": "",
+                    "param": "어서 와 주세요, 지휘관님~",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11183,
+                    "option": "",
+                    "param": "지휘관님께서 골라 주신 거면 뭐든 입을게요.",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11184,
+                    "option": "",
+                    "param": "지휘관님께서 좋아하시는 거라면 전부 사버릴게요.",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 11185,
+                    "option": "",
+                    "param": "탈의실에서 기다리고 있을게요~♡",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                }
+            ]
+        },
+        "378": {
+            "id": 378,
+            "type": null,
+            "unlock_desc": "서약 완료",
+            "ship_group": 30707,
+            "name": "금지어?",
+            "trigger_type": 2,
+            "trigger_param": "150",
+            "kr_name": "다이호",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp",
+            "ship_name": "OutrangeTH",
+            "scripts": [
+                {
+                    "flag": 0,
+                    "id": 11186,
+                    "option": "",
+                    "param": "지휘관님~",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11187,
+                    "option": "",
+                    "param": "다이호, 지금 너무 배가 고파요~ 목도 마르고요~!",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11188,
+                    "option": "",
+                    "param": "과자랑 음료를 다이호의 방으로 가져다주실 수 있을까요~?",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 11189,
+                    "option": [
+                        [
+                            1,
+                            "이따가 가져다줄게"
+                        ]
+                    ],
+                    "param": "지휘관님께서 좋아하시는 거라면 뭐든 괜찮답니다~",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11190,
+                    "option": "",
+                    "param": "이따가 가져다줄게.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 1,
+                    "id": 11191,
+                    "option": "",
+                    "param": "후후, 죄송해요. 도저히 참을 수가 없어서……",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11192,
+                    "option": "",
+                    "param": "지휘관님의 사랑을 더, 더 많이 받고 싶거든요~",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11193,
+                    "option": "",
+                    "param": "아, 맞다. 오는 김에 ■■■도 가지고 와주시겠어요?",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11194,
+                    "option": "",
+                    "param": "오는 김에 ■■■도 부탁드려도 될까요?",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11195,
+                    "option": "",
+                    "param": "어라…… 왜 이렇게 뜨는 거지?",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11196,
+                    "option": "",
+                    "param": "그럼 ■■■을 사다 주세요.",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 11197,
+                    "option": [
+                        [
+                            2,
+                            "금지어에 걸린 것 같은데?"
+                        ]
+                    ],
+                    "param": "음…… 스마트폰이 고장 난 걸까요?",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11198,
+                    "option": "",
+                    "param": "금지어에 걸린 것 같은데?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 11199,
+                    "option": "",
+                    "param": "괜찮아, 무슨 뜻인지 이해했어.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 11200,
+                    "option": "",
+                    "param": "후후후, 역시 지휘관님은 다이호와 완벽하게 마음이 통하네요♡",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11201,
+                    "option": "",
+                    "param": "하지만… 지금 마음이 바뀌었어요.",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11202,
+                    "option": "",
+                    "param": "■■■이 없어도 괜찮아요♥",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11203,
+                    "option": "",
+                    "param": "지휘관님께서 와 주시는 것만으로 충분하답니다.",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11204,
+                    "option": "",
+                    "param": "다이호…… 더는 참을 수 없어요♥",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11205,
+                    "option": "",
+                    "param": "지금 당장 지휘관님의 사랑을 느끼고 싶어서 견딜 수가 없어요♥",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11206,
+                    "option": "",
+                    "param": "어서 방으로 돌아와 주세요.",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11207,
+                    "option": "",
+                    "param": "아주 특별한 서프라이즈를 준비해 두고 기다리고 있을게요♥",
+                    "ship_group": 30707,
+                    "type": 1,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 11208,
+                    "option": "",
+                    "param": "307",
+                    "ship_group": 30707,
+                    "type": 4,
+                    "kr_name": "다이호",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp"
+                }
+            ]
+        }
+    },
     "뤼초": {
         "38": {
             "id": 38,
