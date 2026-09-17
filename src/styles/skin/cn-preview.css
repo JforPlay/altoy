@@ -159,3 +159,14 @@
     line-height: 1.7;
 }
 .cn-skin-detail .text-content-area { margin-top: 0; }
+
+/* Volume control: the viewer sheet paints it with --bg-tertiary / --border-light /
+   --accent-color, which only the accent theme defines — on this default-theme page
+   the track and thumb backgrounds were invalid, i.e. transparent. */
+.cn-preview-page .volume-control-container { background: var(--card-bg); }
+/* id selector: must outrank the viewer's `body.dark-mode .volume-slider` */
+#cn-preview-page .volume-slider {
+    background: color-mix(in srgb, var(--text-primary) 30%, transparent);
+}
+.cn-preview-page .volume-slider::-webkit-slider-thumb { background: var(--accent-blue); }
+.cn-preview-page .volume-slider::-moz-range-thumb { background: var(--accent-blue); }
