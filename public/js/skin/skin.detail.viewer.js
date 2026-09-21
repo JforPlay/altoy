@@ -286,8 +286,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         elements.skinRail.replaceChildren();
         names.forEach(name => elements.skinRail.appendChild(createSkinRow(name, tags.get(name) || [])));
-        if (railCount) railCount.textContent = names.length > 0 ? `스킨 ${names.length}개` : '';
+        renderRailCount(names.length);
         markActiveRow();
+    }
+
+    /**
+     * The skin list's section header. The figure goes in its own <strong> so the
+     * stylesheet can give it the full ink while 스킨 / 개 stay quiet — the line is
+     * the only thing separating the navigation block above from the rows below,
+     * and as one flat muted string it read as just another row. Emptied rather
+     * than blanked so the sheet's `:empty { display: none }` still fires.
+     */
+    function renderRailCount(count) {
+        if (!railCount) return;
+        railCount.replaceChildren();
+        if (count <= 0) return;
+        const figure = document.createElement('strong');
+        figure.textContent = String(count);
+        railCount.append('스킨 ', figure, '개');
     }
 
     /** One rail entry: a truncating name plus its 기믹 badges, on a single line. */
@@ -741,12 +757,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     function buildPlayerBar() {
         if (!playerBar) return null;
 
-        const stop = document.createElement('button');
-        stop.type = 'button';
-        stop.className = 'sdv-player-stop';
-        stop.setAttribute('aria-label', '재생 중지');
-        stop.appendChild(createIcon('fas fa-stop'));
-        stop.addEventListener('click', () => stopCurrentAudio());
+        // A four-bar level meter, not a stop button. The red stop disc was a
+        // permanent alarm-coloured control that did nothing 95% of the time and
+        // duplicated the row button (which already toggles to stop). The meter
+        // answers the question the bar is actually asked — is something playing —
+        // by moving, and stays a <button> only so stopping is still reachable once
+        // the row that started it has scrolled away.
+        const wave = document.createElement('button');
+        wave.type = 'button';
+        wave.className = 'sdv-player-wave';
+        wave.setAttribute('aria-label', '재생 중지');
+        wave.title = '재생 중지';
+        for (let i = 0; i < 4; i++) wave.appendChild(document.createElement('span'));
+        wave.addEventListener('click', () => stopCurrentAudio());
 
         const label = document.createElement('span');
         label.className = 'sdv-player-label';
@@ -766,7 +789,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const row = document.createElement('div');
         row.className = 'sdv-player-row';
-        row.append(stop, label, time, volume);
+        row.append(wave, label, time, volume);
 
         const fill = document.createElement('div');
         fill.className = 'sdv-player-fill';
@@ -783,7 +806,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         playerBar.replaceChildren(row, track);
         attachVolumeListeners();
 
-        return { label, track, fill, time };
+        return { label, track, fill, time, wave };
     }
 
     /**
@@ -793,8 +816,11 @@ document.addEventListener('DOMContentLoaded', async () => {
      * bottom edge jumped under the reader and the volume slider was unreachable
      * until something was already playing.
      */
-    function onPlaybackChange({ label, currentTime, duration }) {
+    function onPlaybackChange({ playing, label, currentTime, duration }) {
         if (!player) return;
+        // `playing` is passed by the audio module rather than read off the element
+        // (play() resolves async, so audio.paused is still true on this tick).
+        player.wave.classList.toggle('is-playing', !!playing);
         player.label.textContent = label || PLAYER_IDLE_LABEL;
         const percent = duration > 0 ? Math.round(Math.min(currentTime / duration, 1) * 100) : 0;
         player.fill.style.width = `${percent}%`;
@@ -836,7 +862,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 currentSkinName = '';
                 elements.charInput.value = '';
                 elements.skinRail.replaceChildren();
-                if (railCount) railCount.textContent = '';
+                renderRailCount(0);
                 clearSkinDetails();
                 return;
             }

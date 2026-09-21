@@ -61,6 +61,11 @@ const FACE_GRID_THRESHOLD = 8;
 // Whether the 표정 dock stays unfolded. A UI-only preference, so plain storage —
 // not syncedStorage, which is for data other tabs must agree on.
 const DOCK_PIN_KEY = 'sdvFaceDockPinned';
+// Hover intent. Unfolding is immediate; FOLDING waits, because the card sits over
+// artwork people are dragging the pointer across and a zero-delay fold made it
+// flicker shut on every near-miss. Long enough to cross the card's own corner,
+// short enough that a deliberate exit still feels like one.
+const DOCK_FOLD_DELAY = 420;
 
 // ===== State =====
 
@@ -73,6 +78,7 @@ const state = {
     faceId: null,   // shared across 전체 and 확대: they show one expression
     skinName: '',
     dockPinned: false,   // 표정 dock unfolded regardless of hover
+    dockFoldTimer: 0,    // pending hover-intent fold (see DOCK_FOLD_DELAY)
     railObserver: null,  // defers off-screen rail thumbs (see railThumb)
     gridObserver: null   // same, for the 전체 표정 grid
 };
@@ -118,8 +124,13 @@ function initStage() {
     // over the art is only ever about 표정.
     const shelf = buildShelf();
     dock?.appendChild(shelf.root);
+    // Where the dock lives when the fullscreen viewer is NOT borrowing it. Read
+    // now, before anything can move it — openViewer relocates the live element
+    // rather than building a second rail, and closeViewer has to put it back.
+    const dockHome = dock?.parentNode || null;
+    wireDockIntent(dock, shelf.root);
 
-    state.els = { stage, assetRail, assets, dock, tools, art, view, fit, label, fullBtn, shelf };
+    state.els = { stage, assetRail, assets, dock, dockHome, tools, art, view, fit, label, fullBtn, shelf };
     state.viewer = buildViewer();
     state.grid = buildFaceGrid();
     setDockPin(getStorageItem(DOCK_PIN_KEY, false) === true);
@@ -374,7 +385,10 @@ function renderLabel() {
  * no hover and the thumbnail row is display:none until something opens it.
  */
 function buildShelf() {
-    const root = el('div', 'sdv-dock-group sdv-dock-faces');
+    // The CARD is this group, not #stage-dock: the dock is a pointer-transparent
+    // frame spanning the stage band, so the glass material rides the thing that
+    // actually has edges.
+    const root = el('div', 'sdv-dock-group sdv-glass');
 
     const head = el('div', 'sdv-face-head');
     const prev = stepButton(-1, '이전 표정');
@@ -401,8 +415,41 @@ function buildShelf() {
     rail.addEventListener('scroll', () => updateFade(wrap, rail));
     wrap.append(rail, fade);
 
-    root.append(head, wrap);
+    // Tiles ABOVE the controls. The card is anchored by its bottom edge, so it
+    // grows upward: with the control row last, 「‹ 표정 3 / 21 › 전체 표정」 stays at a
+    // fixed y no matter what the fold does. Head-first meant unfolding threw that
+    // row 86px up the screen the instant the pointer touched the card — which is
+    // why 전체 표정 was effectively unclickable on a hover-to-open dock. The mobile
+    // block flips this back with `order`, where nothing is anchored.
+    root.append(wrap, head);
     return { root, count, all, pin, wrap, rail };
+}
+
+/**
+ * Hover intent for the fold. `mouseenter`/`mouseleave` rather than the pointer
+ * events: those fire for touch too, so a tap would open the card and then close
+ * it 420ms later. Touch never needs this anyway — below the console breakpoint
+ * the rail is permanently open in CSS, and the pin is the affordance above it.
+ */
+function wireDockIntent(dock, card) {
+    if (!dock || !card) return;
+    card.addEventListener('mouseenter', () => setDockOpen(true));
+    card.addEventListener('mouseleave', () => setDockOpen(false));
+}
+
+/** Open at once, fold on a timer. Pinned and fullscreen ignore both. */
+function setDockOpen(on) {
+    clearTimeout(state.dockFoldTimer);
+    const dock = state.els?.dock;
+    if (!dock) return;
+    if (on) {
+        dock.classList.add('is-open');
+        // The rail has no scrollport until it is displayed, so the "scrolls
+        // further" hint is wrong until layout has run.
+        requestAnimationFrame(() => updateFade(state.els.shelf.wrap, state.els.shelf.rail));
+        return;
+    }
+    state.dockFoldTimer = setTimeout(() => dock.classList.remove('is-open'), DOCK_FOLD_DELAY);
 }
 
 /**
@@ -587,8 +634,6 @@ function renderFaceSelection() {
     state.grid.body.querySelectorAll('.sdv-facegrid-tile').forEach(tile => {
         tile.classList.toggle('is-active', tile.dataset.faceId === state.faceId);
     });
-    if (state.viewer.count) state.viewer.count.textContent = `표정 ${at + 1} / ${total}`;
-
     keepTileInView(state.els.shelf.rail);
 }
 
@@ -718,14 +763,16 @@ function buildViewer() {
     const body = el('div', 'sdv-viewer-body');
     body.appendChild(fit);
 
-    const count = el('span', 'sdv-viewer-count');
+    // No stepper of its own: openViewer moves the live 표정 dock in here, and that
+    // card already carries ‹ 표정 n / N › plus the thumbnail rail. A second counter
+    // beside it would be two widgets reporting one number.
     const note = el('span', 'sdv-viewer-note');
     note.textContent = '선택한 표정 그대로 저장됩니다';
     const foot = el('div', 'sdv-viewer-foot');
-    foot.append(stepButton(-1, '이전 표정'), count, stepButton(1, '다음 표정'), note);
+    foot.append(note);
 
     root.replaceChildren(head, body, foot);
-    return { root, name, meta, body, fit, count, foot };
+    return { root, name, meta, body, fit, foot };
 }
 
 /**
@@ -736,9 +783,27 @@ function buildViewer() {
  */
 function openViewer() {
     if (!state.assets[state.active] || isOpen(state.viewer.root)) return;
+    adoptDock(true);
     renderViewer();
     showElement(state.viewer.root);
     lockBodyScroll();
+}
+
+/**
+ * Lend the 표정 dock to the fullscreen viewer, or take it back. The live element
+ * moves — a copy would mean a second IntersectionObserver and a second set of up
+ * to 21 face PNGs for one selection. `.is-fullscreen` drops it out of its fixed
+ * frame and holds it unfolded; the pending fold timer is dropped with it, or it
+ * would fire mid-lightbox and collapse a rail that has nothing to uncover.
+ */
+function adoptDock(toViewer) {
+    const { dock, dockHome } = state.els || {};
+    if (!dock) return;
+    clearTimeout(state.dockFoldTimer);
+    dock.classList.toggle('is-fullscreen', toViewer);
+    dock.classList.remove('is-open');
+    if (toViewer) state.viewer.foot.prepend(dock);
+    else dockHome?.appendChild(dock);
 }
 
 function renderViewer() {
@@ -757,6 +822,7 @@ function renderViewer() {
 function closeViewer() {
     if (!isOpen(state.viewer?.root)) return;
     hideElement(state.viewer.root);
+    adoptDock(false);
     const asset = state.assets[state.active];
     if (asset?.node) state.els.fit.replaceChildren(asset.node);
     unlockBodyScroll();

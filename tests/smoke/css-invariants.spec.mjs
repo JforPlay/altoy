@@ -5,6 +5,7 @@
  * gradient; an override page does NOT inherit it (no bleed); mainpage keeps its
  * glass tokens after scoping. Rides `npm run test:smoke` (needs a prior build).
  */
+import { readFileSync } from 'node:fs';
 import { test, expect } from '@playwright/test';
 import { PAGE_CATALOG } from '../../public/js/pages.catalog.js';
 
@@ -542,6 +543,65 @@ test('skin-detail-viewer: nothing but the navbar sits above the art', async ({ p
     // Both panes start at the same y, right under the sticky navbar (measured 64px).
     expect(probe.stageTop, 'a band crept in above the art').toBeLessThanOrEqual(72);
     expect(Math.abs(probe.stageTop - probe.headTop), 'rail and stage must start on the same line').toBeLessThan(2);
+});
+
+// The two things floating on the stage's right edge must stay reachable and stay
+// apart. Both halves shipped broken and NOTHING caught either one — the build,
+// the token check and every other spec pass with an unclickable button.
+//
+//  1. .sdv-voice is position: sticky, which ALWAYS forms a stacking context, so
+//     the collapse handle's own z-index cannot lift it above the stage. When
+//     .sdv-art-view carried a (redundant) z-index: 1, the handle was painted
+//     under the artwork across the full stage width and could not be clicked at
+//     all. Hit-test it rather than trusting its rect.
+//  2. The 일러 column hangs from the stage's top edge and the handle centres with
+//     a max() floor under it. Centring alone collided on any viewport shorter
+//     than ~1020px, so this runs at a laptop-realistic height, not just 1080.
+//
+// A SKIN MUST BE ON THE STAGE. Written against the bare page this test passed
+// with the bug forcibly restored, because with nothing selected .sdv-art is
+// `.hidden` and the element that does the burying never renders — a guard that
+// cannot fail. The fixture is derived from the committed index rather than named,
+// the way skin-detail-expression-loading.spec.mjs does it (smoke runs after a
+// build, so the split artifact is on disk).
+const skinDeepLink = (() => {
+    const index = JSON.parse(readFileSync(
+        new URL('../../public/data/skin/skin_voiceline_index.json', import.meta.url), 'utf8'));
+    for (const [character, entry] of Object.entries(index.characters || {})) {
+        const skin = entry?.skins?.[0]?.name;
+        if (!skin || /[ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ]/.test(character)) continue;
+        return `${pathFor('skin-detail-viewer')}?${new URLSearchParams({ character, skin })}`;
+    }
+    throw new Error('css-invariants: no skin fixture available');
+})();
+
+test('skin-detail-viewer: the drawer handle is hittable and clear of the 일러 column', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(skinDeepLink, { waitUntil: 'load' });
+    // The burial only exists once the art is really on the stage.
+    await expect(page.locator('#loading-skeleton')).toBeHidden();
+    await expect(page.locator('.sdv-art-view')).toBeVisible();
+
+    const probe = await page.evaluate(() => {
+        const toggle = document.querySelector('.sdv-voice-toggle');
+        const assets = document.querySelector('.sdv-assets');
+        if (!toggle || !assets) return null;
+        const t = toggle.getBoundingClientRect();
+        const a = assets.getBoundingClientRect();
+        const at = document.elementFromPoint(t.x + t.width / 2, t.y + t.height / 2);
+        return {
+            // `contains` because the hit lands on the chevron <i>, not the button.
+            hitsToggle: !!at && toggle.contains(at),
+            hitTag: at ? `${at.tagName}.${at.className}` : null,
+            assetsShown: a.height > 0,
+            gap: Math.round(t.top - a.bottom),
+        };
+    });
+    expect(probe, 'skin-detail-viewer console missing').not.toBeNull();
+    expect(probe.hitsToggle,
+        `the 대사 collapse handle is buried under ${probe.hitTag} — check stacking contexts, not rects`).toBe(true);
+    expect(probe.assetsShown, 'no 일러 column on the stage — the fixture selected no skin, so this test proves nothing').toBe(true);
+    expect(probe.gap, 'the 일러 column and the drawer handle are touching again').toBeGreaterThanOrEqual(8);
 });
 
 // --- Wave-2 chip + filter-bar unification (Task 1) ---------------------------

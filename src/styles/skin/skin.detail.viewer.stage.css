@@ -68,9 +68,15 @@
         var(--sdv-shelf);
 }
 
+/* NO z-index. A child already paints above its own parent's background, so the
+   `z-index: 1` this carried bought nothing — while costing the voice drawer's
+   collapse handle entirely: a positive z-index puts an element in the root
+   stacking context's positive layer, above every `z-index: auto` positioned
+   element regardless of DOM order, and this box spans the full stage width. The
+   handle (sealed inside .sdv-voice's sticky stacking context) was painted under
+   the artwork and could not be clicked at all. */
 .sdv-art-view {
     position: relative;
-    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -175,16 +181,19 @@
    horizontal version sat at the bottom of a viewport-tall stage and ended up a
    screen below a 150×150 SD sprite.
 
-   `top: 50%` inside .sdv-stage is safe only because --sdv-art-cap bounds the art
-   at 1.35 screens, so the column can never travel further than ~180px from the
-   viewport centre. Raise that cap and this needs to become sticky.
+   It HANGS FROM THE TOP, just under the caption, rather than being centred on the
+   art. Centred, it shared the vertical middle of the right edge with the voice
+   drawer's collapse handle — the two ended up 1px apart. Anchoring it to a
+   constant offset also makes its extent predictable, which is the whole basis of
+   the handle's own clearance rule (--sdv-assets-span in the console sheet):
+   a centred column's bottom edge moves with the viewport, so nothing could be
+   positioned clear of it.
 ============================================================================= */
 
 .sdv-assets {
     position: absolute;
-    top: 50%;
+    top: var(--sdv-assets-top);
     right: 14px;
-    transform: translateY(-50%);
     z-index: 3;
     padding: 5px;
     border-radius: var(--sdv-r-lg);
@@ -269,60 +278,84 @@
 
    FOLDED by default: the control row alone (‹ 표정 3 / 21 › · 전체 표정 · pin) covers
    ~0.5% of the rendered image, against ~7.9% unfolded. The thumbnail row appears
-   on hover, on keyboard focus, or when pinned. The pin is not a nicety — touch
-   has no hover, so without it the strip could never be opened at all.
+   on hover (with an intent delay owned by the module), on keyboard focus, or when
+   pinned. The pin is not a nicety — touch has no hover, so without it the strip
+   could never be opened at all.
 
-   Sticky rather than absolute so it follows a painting that runs past the fold;
-   the negative top margin is what lets it overlap the art instead of reserving
-   its own band. It must stay OUTSIDE .sdv-art: sticky inside an `overflow:
-   hidden` ancestor pins to a box that never scrolls.
+   FIXED, not sticky. Sticky kept it in flow, so unfolding it grew the page by
+   89px and — because .sdv-art is centred inside a flex column that the dock
+   shares — dragged the artwork with it every time the pointer crossed the card.
+   Out of flow, the fold cannot move a single pixel of the page. The offsets come
+   from the console's own column tokens (--sdv-voice-w re-resolves to 0 when the
+   drawer collapses), so the card is centred on the ART, not on the viewport.
 ============================================================================= */
 
+/* A positioning FRAME spanning the stage's column band, not the card itself:
+   `pointer-events: none` so a full-width fixed strip can never swallow a click
+   meant for the art. The glass, the padding and the fit-content width all belong
+   to the card below, which is what the module tags .sdv-glass. */
 .sdv-dock {
-    position: sticky;
+    position: fixed;
+    left: var(--sdv-rail-w);
+    right: var(--sdv-voice-w);
     bottom: 18px;
     z-index: 4;
     display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 6px;
-    width: fit-content;
-    max-width: calc(100% - 40px);
-    margin: -150px auto 18px;
-    padding: 5px 6px;
-    border-radius: var(--sdv-r-lg);
-    transition: padding var(--transition-fast);
+    justify-content: center;
+    pointer-events: none;
 }
 
+/* Padding is CONSTANT across folded and open. It used to grow with the fold, and
+   on a card anchored by its bottom edge every extra pixel of padding shoved the
+   control row upward — out from under the cursor that was reaching for it. */
 .sdv-dock-group {
+    pointer-events: auto;
     display: flex;
     flex-direction: column;
     gap: 6px;
+    width: fit-content;
+    /* percentages resolve against the frame, which IS the band */
+    max-width: calc(100% - 28px);
     min-width: 0;
-}
-
-.sdv-dock-faces {
-    flex: 1 1 auto;
+    padding: 7px 8px;
+    border-radius: var(--sdv-r-lg);
 }
 
 /* --- Folding ---------------------------------------------------------------
    `display: none` rather than a clipped height, so `width: fit-content` shrinks
    the card to its control row: at height 0 the tile row still laid out and the
-   folded pill stayed as wide as the open one. */
+   folded pill stayed as wide as the open one.
+
+   `.is-open` is set by the module on a hover-intent timer, NOT by `:hover` here —
+   a bare :hover folded the instant the pointer slipped off the card, which made
+   the whole thing feel like it was fleeing the mouse. :focus-within stays as the
+   keyboard path, where there is no dwell to measure. */
 .sdv-dock .sdv-face-rail-wrap {
     display: none;
 }
 
-.sdv-dock:hover,
-.sdv-dock:focus-within,
-.sdv-dock.is-pinned {
-    padding: 8px 9px 9px;
+.sdv-dock.is-open .sdv-face-rail-wrap,
+.sdv-dock.is-pinned .sdv-face-rail-wrap,
+.sdv-dock-group:focus-within .sdv-face-rail-wrap {
+    display: block;
 }
 
-.sdv-dock:hover .sdv-face-rail-wrap,
-.sdv-dock:focus-within .sdv-face-rail-wrap,
-.sdv-dock.is-pinned .sdv-face-rail-wrap {
+/* --- In the fullscreen viewer -----------------------------------------------
+   The module MOVES this element into the viewer's foot rather than building a
+   second strip, so there is one rail and one set of 21 thumbnails on the page.
+   Always open: a lightbox has the room and there is nothing left to cover. */
+.sdv-dock.is-fullscreen {
+    position: static;
+    pointer-events: auto;
+}
+
+.sdv-dock.is-fullscreen .sdv-face-rail-wrap {
     display: block;
+}
+
+/* Nothing to pin to — the dock cannot fold in here. */
+.sdv-dock.is-fullscreen .sdv-face-pin {
+    display: none;
 }
 
 /* =============================================================================
@@ -657,13 +690,8 @@
     border-top: 1px solid var(--highlight-soft);
 }
 
-.sdv-viewer-count {
-    min-width: 88px;
-    font-size: 0.82rem;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-    text-align: center;
-}
+/* No .sdv-viewer-count here: the viewer's own stepper was dropped when the live
+   표정 dock started moving into its foot, and that card already prints the count. */
 
 .sdv-viewer-note {
     margin-left: 6px;
@@ -713,12 +741,19 @@
     }
 
     /* Always open and full width: there is no hover to unfold it with, and a
-       fit-content card centred on a 390px screen would be a sliver. */
+       fit-content card centred on a 390px screen would be a sliver. Back into
+       flow, so the frame stops being a frame and the card stops being glass.
+       These resets live HERE and not in console.css's media block because @media
+       adds no specificity and stage.css is bundled last. */
     .sdv-dock {
         position: static;
+        display: block;
+        pointer-events: auto;
+    }
+
+    .sdv-dock-group {
         width: auto;
         max-width: none;
-        margin: 0;
         padding: 8px var(--spacing-md) 10px;
         border: 0;
         border-top: 1px solid var(--highlight-soft);
@@ -731,6 +766,13 @@
 
     .sdv-dock .sdv-face-rail-wrap {
         display: block;
+    }
+
+    /* Controls back ABOVE the strip. Tiles-over-controls is a consequence of the
+       desktop card growing upward from a pinned bottom edge; in normal flow it
+       just reads backwards. */
+    .sdv-face-head {
+        order: -1;
     }
 
     .sdv-face-pin {

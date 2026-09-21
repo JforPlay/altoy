@@ -16,7 +16,7 @@
    vocabulary it renders into is:
      #player-bar.sdv-player
        > .sdv-player-row
-           > button.sdv-player-stop
+           > button.sdv-player-wave > span x4
            > .sdv-player-label
            > .sdv-player-time
            > input[type="range"].sdv-player-volume
@@ -264,32 +264,62 @@
   gap: var(--spacing-sm);
 }
 
-/* The one round control on the page — the avatars/dots exception to the
-   rectangular-chip rule. */
-.sdv-player-stop {
+/* --- Level meter -------------------------------------------------------------
+   Four bars that idle low and flat, and dance while audio plays. This replaced a
+   solid --danger-color stop disc: a permanently alarm-coloured control that was
+   inert most of the time and duplicated the row's own play/stop toggle. It is
+   still a <button> (clicking stops playback, useful once the row that started it
+   has scrolled out of the list) but it reads as an indicator, which is what the
+   bar is actually looked at for. */
+.sdv-player-wave {
   flex-shrink: 0;
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
+  align-items: flex-end;
+  gap: 2px;
+  width: 22px;
+  height: 16px;
   padding: 0;
-  background: var(--danger-color);
-  color: #fff;
+  background: none;
   border: 0;
-  border-radius: var(--radius-full);
-  font-size: 0.7rem;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: filter var(--transition-fast);
 }
 
-.sdv-player-stop:hover {
-  filter: brightness(1.08);
+.sdv-player-wave > span {
+  width: 3px;
+  height: 22%;
+  border-radius: 1px;
+  background: var(--text-muted);
+  transition: height var(--transition-fast), background var(--transition-fast);
 }
 
-.sdv-player-stop:focus-visible {
+.sdv-player-wave.is-playing > span {
+  background: var(--accent-blue);
+  animation: sdv-player-wave 900ms ease-in-out infinite;
+}
+
+/* Staggered so the four bars read as a waveform rather than as one blinking
+   block. Prime-ish offsets: an even split would resynchronise every cycle. */
+.sdv-player-wave.is-playing > span:nth-child(2) { animation-delay: 170ms; }
+.sdv-player-wave.is-playing > span:nth-child(3) { animation-delay: 420ms; }
+.sdv-player-wave.is-playing > span:nth-child(4) { animation-delay: 260ms; }
+
+.sdv-player-wave:hover > span {
+  background: var(--text-secondary);
+}
+
+.sdv-player-wave.is-playing:hover > span {
+  background: var(--danger-color);
+}
+
+.sdv-player-wave:focus-visible {
   outline: none;
   box-shadow: var(--focus-ring);
+}
+
+@keyframes sdv-player-wave {
+  0%, 100% { height: 22%; }
+  50% { height: 100%; }
 }
 
 .sdv-player-label {
@@ -351,8 +381,15 @@
   .sdv-bank-btn,
   .sdv-line,
   .play-voice-btn,
-  .sdv-player-stop,
+  .sdv-player-wave > span,
   .sdv-player-fill {
     transition: none;
+  }
+
+  /* The meter still has to say "playing", so it holds a raised, tinted bar
+     instead of animating. */
+  .sdv-player-wave.is-playing > span {
+    animation: none;
+    height: 70%;
   }
 }

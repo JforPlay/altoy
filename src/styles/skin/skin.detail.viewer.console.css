@@ -193,6 +193,17 @@ body.dark-mode .sdv-page.main-container {
      becomes a mile of scroll. */
   --sdv-art-cap: calc(1.35 * var(--sdv-pane-h));
 
+  /* The 일러 column hangs from the stage's top edge (stage.css .sdv-assets), which
+     makes its extent a CONSTANT rather than something that moves with the
+     viewport — and that is what lets the voice handle below position itself clear
+     of it. The span is the tallest the column can ever be: ASSET_DEFS caps it at
+     six cards (전체 · 확대 · 깔끔 · SD · 아이콘 · 쥬스타), each a 42px thumbnail over its
+     name, plus gaps, padding and border. Measured at 373px on 벨파스트·改 and
+     최고의 봉사 — the only two six-card shapes — and rounded up by 1. Re-measure if
+     the card metrics change. */
+  --sdv-assets-top: 78px;
+  --sdv-assets-span: 374px;
+
   display: grid;
   grid-template-columns: var(--sdv-rail-w) minmax(0, 1fr) var(--sdv-voice-w);
   align-items: start;
@@ -212,12 +223,15 @@ body.dark-mode .sdv-page.main-container {
   height: var(--sdv-pane-h);
 }
 
-/* Collapsed voice column. The third track goes to 0 and the panel clips itself,
-   so its border and its collapse handle vanish with it; #voice-peek (a
-   page-level sibling, unreachable by any combinator from here) is revealed by
-   the controller toggling .hidden on it. */
+/* Collapsed voice column. Done by re-resolving the WIDTH TOKEN rather than by
+   restating the template: the token is what the fixed 표정 dock offsets its right
+   edge from (stage.css), so a hard `0` in the template here would collapse the
+   column while leaving the dock centred as if the drawer were still open.
+   The panel clips itself, so its border and its collapse handle vanish with it;
+   #voice-peek (a page-level sibling, unreachable by any combinator from here) is
+   revealed by the controller toggling .hidden on it. */
 .sdv-console.voice-closed {
-  grid-template-columns: var(--sdv-rail-w) minmax(0, 1fr) 0;
+  --sdv-voice-w: 0px;
 }
 
 .voice-closed .sdv-voice {
@@ -242,17 +256,35 @@ body.dark-mode .sdv-page.main-container {
   border-right: 1px solid var(--sdv-hair);
 }
 
-/* A section label for the column, not a landing-page title — the navbar already
-   says where you are, and this line is competing with a skin list. */
+/* The page's masthead. It shipped as a 0.69rem muted micro-label on the theory
+   that the navbar already says where you are — but the rail head is the first
+   thing the eye lands on and a caption-sized title made the whole column read as
+   chrome. Two weights on one line instead: the subject at full ink, the mode
+   after a hairline slash at muted, so it is prominent without becoming a banner.
+   The slash is a pseudo-element so the two halves stay separate text nodes. */
 .sdv-title {
   flex: 1;
   min-width: 0;
   margin: 0;
-  font-size: 0.69rem;
-  font-weight: 700;
-  line-height: 1.3;
-  letter-spacing: 0.045em;
+  font-size: 0.97rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.sdv-title-sub {
+  font-weight: 600;
   color: var(--text-muted);
+}
+
+/* --sdv-hair is a 0.11-alpha rule colour and would be invisible as a glyph, so
+   the slash takes the muted ink at a lighter weight instead. */
+.sdv-title-sub::before {
+  content: '/';
+  margin: 0 0.34em;
+  font-weight: 400;
+  opacity: 0.6;
 }
 
 /* --- 찾아보기 · 랜덤 ----------------------------------------------------------
@@ -291,15 +323,38 @@ body.dark-mode .sdv-page.main-container {
 }
 
 /* --- Skin list --------------------------------------------------------------- */
-/* A caption for the group below, so it takes no rule of its own. */
+/* The list's section header, and the only thing separating the navigation block
+   above from the skins below. At 0.67rem muted it was indistinguishable from the
+   rail rows it introduces, so it now reads as a real header: a sized label whose
+   COUNT carries the full ink, followed by a rule that runs out to the edge. The
+   rule replaces the head's own bottom border for this group — a divider that
+   carries a label is one element, not two. */
 .sdv-rail-count {
+  display: flex;
+  align-items: center;
+  gap: 9px;
   margin: 0;
-  padding: 13px 14px 5px;
+  padding: 14px 14px 7px;
   border: 0;
-  font-size: 0.67rem;
+  font-size: 0.76rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.005em;
   color: var(--text-muted);
+}
+
+/* The controller writes the number into its own <strong> so the figure can carry
+   the emphasis while 스킨 / 개 stay quiet. */
+.sdv-rail-count strong {
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+
+.sdv-rail-count::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--sdv-hair);
 }
 
 .sdv-rail-count:empty {
@@ -527,8 +582,18 @@ body.dark-mode .sdv-skin-tag {
    Contents (tabs, rows, player) are styled in skin.detail.viewer.voice.css. */
 /* NOT `position: relative` — it would beat the sticky rule above it at equal
    specificity and drop the player bar under the fold. `sticky` is equally a
-   containing block for the absolutely positioned collapse handle below. */
+   containing block for the absolutely positioned collapse handle below.
+
+   The z-index is load-bearing, not decoration. `position: sticky` ALWAYS forms a
+   stacking context, so the collapse handle's own z-index is sealed inside this
+   subtree and cannot lift it above anything on the stage — and the handle hangs
+   OUTSIDE this box (translate -100%), over the art. Without a z-index here the
+   whole column painted at layer 0 and the handle sat under .sdv-art-view: not
+   merely hard to hit, but unhittable — elementFromPoint at its centre returned
+   the artwork. Above the stage's 3/4 floaters; they never overlap this column
+   horizontally, so nothing is hidden by it. */
 .sdv-voice {
+  z-index: 5;
   display: flex;
   flex-direction: column;
   background: var(--bg-secondary);
@@ -546,10 +611,19 @@ body.dark-mode .sdv-skin-tag {
 
 /* Slim vertical tab riding the column's left edge. It sits OUTSIDE the column
    (translate -100%) so it stays grabbable, and is clipped away by
-   `.voice-closed .sdv-voice { overflow: hidden }` when the column collapses. */
+   `.voice-closed .sdv-voice { overflow: hidden }` when the column collapses.
+
+   The `max()` is a COLLISION FLOOR, not a style choice. The 일러 column hangs from
+   the stage's top edge and can run --sdv-assets-span tall; this handle wants to
+   be centred. Centring alone is fine on a 1080 screen but not on the ~900px
+   viewport a 1080 laptop actually gives you — there the midpoint lands inside the
+   column, which is the 1px seam this round set out to remove. So: centre when
+   there is room, otherwise sit just under the column's maximum extent. The
+   addend is the clearance (16px) plus half this tab's own height (28px), since
+   `top` addresses its centre through the translate. */
 .sdv-voice-toggle {
   position: absolute;
-  top: 50%;
+  top: max(calc(var(--sdv-assets-top) + var(--sdv-assets-span) + 44px), 50%);
   left: 0;
   transform: translate(-100%, -50%);
   z-index: var(--z-base);
