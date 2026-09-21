@@ -1,90 +1,204 @@
 /**
  * skin.detail.viewer.js
- * Page controller for the skin detail viewer — character + skin selection, voice lines, gallery.
- * Orchestrates three sub-modules: skin.data.js (data), skin.audio.js (audio), skin.expression.js (gallery).
+ * Page controller for the skin detail console (/skin/skin-detail-viewer/).
+ *
+ * Owns the data wiring of the three-pane console: the 함순이 combobox + skin rail
+ * (left), the stage header (middle), and the voice drawer + player bar (right).
+ * The art itself belongs to skin.detail.stage.js and the merged 찾아보기/랜덤 modal
+ * to skin.detail.search.js; both are imported from here because the page keeps
+ * exactly ONE page-level module tag (structure-check baseline).
+ *
  * Part of the skin module group.
  */
-import { getUrlParam, setUrlParams, hideElement, showElement, toggleElement, normalizeRomanNumerals, createIcon, createGemIconImg, setupModal, openModal, closeModal, setupDropdown, loadPageData } from '../utils.js';
-import { init as initSkinData, searchCharacters, getSkinsForCharacter, getSkinByName, getAllCharacterNames, getCharacterNameByGid, getReleaseDate, getSkinFilterData } from './skin.data.js';
+import {
+    getUrlParam,
+    setUrlParams,
+    showElement,
+    hideElement,
+    toggleElement,
+    normalizeRomanNumerals,
+    createIcon,
+    setupDropdown,
+    loadPageData,
+    renderStatus,
+    requireElements,
+    getStorageItem,
+    setStorageItem,
+} from '../utils.js';
+import {
+    init as initSkinData,
+    searchCharacters,
+    getSkinsForCharacter,
+    getSkinByName,
+    getAllCharacterNames,
+    getCharacterNameByGid,
+    getReleaseDate,
+    getSkinFilterData,
+} from './skin.data.js';
 import { ensureExpressionManifest } from '../expression-manifest.js';
-import { init as initSkinAudio, stopCurrentAudio, handlePlayClick, createVolumeControlElement, attachVolumeListeners } from './skin.audio.js';
-import { init as initSkinExpression, setManifest, renderImageGallery } from './skin.expression.js';
-import { VOICE_MODE_DEFAULT, VOICE_MODE_ALT, voiceToggleLabels, effectiveVoiceMode, resolveVoiceSrc } from './skin.voice-alt.js';
+import {
+    init as initSkinAudio,
+    stopCurrentAudio,
+    handlePlayClick,
+    subscribePlayback,
+    createVolumeControlElement,
+    attachVolumeListeners,
+} from './skin.audio.js';
+import { initStage, renderStage, clearStage } from './skin.detail.stage.js';
+import { initSearchModal } from './skin.detail.search.js';
+import {
+    VOICE_MODE_DEFAULT,
+    VOICE_MODE_ALT,
+    voiceToggleLabels,
+    effectiveVoiceMode,
+    resolveVoiceSrc,
+} from './skin.voice-alt.js';
+
+// UI-only preference (drawer open/closed), so plain storage rather than syncedStorage.
+const VOICE_OPEN_KEY = 'skinDetailVoiceOpen';
+
+// Voice drawer tabs, in render order. A tab with no lines is never rendered.
+const TAB_ORDER = ['normal', 'oath', 'asmr'];
+const TAB_LABELS = { normal: '대사', oath: '서약', asmr: 'ASMR' };
+
+// Rarity palette classes from src/styles/rarity.css. Listed so the stage badge can
+// drop the previous skin's tier without wiping classes the markup put there.
+const RARITY_CLASSES = ['rarity-N', 'rarity-R', 'rarity-SR', 'rarity-SSR', 'rarity-UR'];
+
+const EMPTY_STAGE_MESSAGE = '함순이와 스킨을 고르면 일러스트가 나옵니다.';
+const PLAYER_IDLE_LABEL = '재생 중인 대사가 없습니다';
+
+/**
+ * 기믹 tag → [hue slug, short label]. The slug is what
+ * `.sdv-skin-tag[data-gm]` hangs its colour on (skin.detail.viewer.console.css);
+ * slugs rather than the Korean strings so a selector cannot break on an upstream
+ * rename or on the parentheses in 「특수배경 (움짤)」.
+ *
+ * The short label is display-only, and only the long tags have one: a rail row is
+ * ONE line, so 「특수배경 (움짤)」 beside 「L2D」 left 「어두침침 …」 of a skin name. The
+ * full tag stays as the chip's title and is what the 기믹 filter matches on.
+ * An unlisted tag renders in full, in the neutral chip.
+ */
+const GIMMICKS = {
+    '배경': ['bg'],
+    '특수배경 (움짤)': ['anim', '움짤'],
+    'L2D': ['l2d'],
+    'L2D+': ['l2d'],
+    '쁘띠모션': ['petit', '쁘띠'],
+    '브금': ['bgm'],
+    '듀얼': ['dual'],
+    '중파 일러': ['dmg', '중파'],
+    '입막음': ['dmg'],
+    'ASMR': ['asmr'],
+};
 
 document.addEventListener('DOMContentLoaded', async () => {
 
-    // DOM Elements
+    // ===== Elements =====
+
+    // Required: the DOM contract ids this controller reads or writes. A miss here
+    // is a markup regression, so bail loudly rather than half-render the console.
     const elements = {
         charInput: document.getElementById('character-search-input'),
         charDropdown: document.getElementById('character-dropdown-content'),
-        skinInput: document.getElementById('skin-search-input'),
-        skinDropdown: document.getElementById('skin-dropdown-content'),
-        skinInfoBox: document.getElementById('skin-info-box'),
-        imageGallery: document.getElementById('image-gallery'),
-        textContent: document.getElementById('text-content-area'),
-        oathTable: document.getElementById('oath-table-area'),
-        asmrTable: document.getElementById('asmr-table-area'),
-        skeleton: document.getElementById('loading-skeleton'),
-        clearBtn: document.getElementById('clear-filters-btn')
+        skinRail: document.getElementById('skin-rail'),
+        skinTitle: document.getElementById('skin-title'),
+        skinRarity: document.getElementById('skin-rarity'),
+        skinMeta: document.getElementById('skin-meta'),
+        stage: document.getElementById('skin-stage'),
+        voiceTabs: document.getElementById('voice-tabs'),
+        voiceList: document.getElementById('voice-list'),
     };
-    let charDropdown = null;
-    let skinDropdown = null;
+    if (!requireElements(elements, 'Skin detail')) return;
+
+    // Optional: decorative or collapsible chrome. Each is null-guarded so a
+    // markup rename degrades that one affordance instead of the whole page.
+    const consoleEl = document.querySelector('.sdv-console');
+    const railCount = document.getElementById('skin-rail-count');
+    const voiceDesc = document.getElementById('voice-desc');
+    const voiceBank = document.getElementById('voice-bank');
+    const voiceToggle = document.getElementById('voice-toggle');
+    const voicePeek = document.getElementById('voice-peek');
+    const playerBar = document.getElementById('player-bar');
+    const skeleton = document.getElementById('loading-skeleton');
+    const browseBtn = document.getElementById('skin-browse-btn');
+
+    // ===== State =====
+
     let skinRenderToken = 0;
     let isApplyingURLState = false;
     // Alternate voice bank (JP/CN or 기본/대체 CV) — sticky across skins,
     // clamped per-skin via effectiveVoiceMode.
     let voiceMode = VOICE_MODE_DEFAULT;
     let currentVoiceSkin = null;
+    let currentCharName = '';
+    let currentSkinName = '';
+    let activeTab = 'normal';
+    let voiceOpen = true;
+    // charName -> (skinName -> 기믹 tags), built once from the index on first rail render.
+    let skinTagsByChar = null;
 
-    // Initialize Modules
+    // ===== Boot =====
+
     initSkinAudio();
-    initSkinExpression();
+    initStage();
+
+    // Loading / empty / error states live in a node of THIS controller's own,
+    // parked inside the stage column. `renderStatus` replaces its container's
+    // children, and `initStage` has already filled #skin-stage with the art frame
+    // it keeps a live reference to — writing a status straight into #skin-stage
+    // would detach that frame for good.
+    const statusHost = document.createElement('div');
+    statusHost.className = 'sdv-stage-status';
+    elements.stage.appendChild(statusHost);
+
+    const player = buildPlayerBar();
+    subscribePlayback(onPlaybackChange);
+
+    if (browseBtn) browseBtn.disabled = true;
+
     // initSkinData reports failure by returning false; loadPageData wants a throw
     // so it can render the standard error + 다시 시도 and retry in place.
-    showElement(elements.skinInfoBox);   // the box is the status host; it boots .hidden
     const dataLoaded = await loadPageData(
         async () => {
             if (!await initSkinData()) throw new Error('스킨 데이터를 불러오지 못했습니다.');
             return true;
         },
-        elements.skinInfoBox,
+        statusHost,
         {
             contextLabel: 'Skin detail',
-            // The comboboxes are only wired below, after a successful load — leave
-            // them enabled and typing is a silent no-op next to the 다시 시도 button.
+            // The combobox is only wired below, after a successful load — leave it
+            // enabled and typing is a silent no-op next to the 다시 시도 button.
             onError: () => {
                 elements.charInput.placeholder = '데이터 로딩 실패';
                 elements.charInput.disabled = true;
-                elements.clearBtn.disabled = true;
+                if (browseBtn) browseBtn.disabled = true;
             },
         },
     );
     if (!dataLoaded) return;
     elements.charInput.placeholder = '함순이를 검색/선택해주세요...';
     elements.charInput.disabled = false;
-    elements.clearBtn.disabled = false;
-    hideElement(elements.skinInfoBox);
+    if (browseBtn) browseBtn.disabled = false;
 
-    // Event Listeners
-    setupDropdowns();
-    [elements.textContent, elements.oathTable, elements.asmrTable].forEach(container => {
-        container.addEventListener('click', handlePlayClick);
+    setupCharacterDropdown();
+    initSearchModal({
+        onPick: (charName, skinName) => {
+            selectCharacter(charName, false);
+            selectSkin(skinName);
+        },
     });
 
-    elements.clearBtn.addEventListener('click', () => {
-        elements.charInput.value = '';
-        elements.skinInput.value = '';
-        elements.skinInput.placeholder = '함순이를 먼저 선택해주세요...';
-        elements.skinInput.disabled = true;
-        clearSkinDetails();
-        skinDropdown?.setItems([]);
-        charDropdown?.close();
-        skinDropdown?.close();
-        updateURLWithFilters();
-    });
+    elements.skinRail.addEventListener('click', onRailClick);
+    elements.voiceTabs.addEventListener('click', onTabClick);
+    elements.voiceList.addEventListener('click', handlePlayClick);
+    if (voiceDesc) voiceDesc.addEventListener('click', handlePlayClick);
 
-    // Random Skin Feature
-    setupRandomSkin();
+    // The markup declares role="tablist" on #voice-tabs; the panel it drives is
+    // filled here, so its role is set here.
+    elements.voiceList.setAttribute('role', 'tabpanel');
+
+    setupVoiceCollapse();
 
     window.addEventListener('popstate', applyFiltersFromURL);
 
@@ -92,270 +206,460 @@ document.addEventListener('DOMContentLoaded', async () => {
     // render against fully-attached delegated handlers.
     applyFiltersFromURL();
 
-    // ===== Search & Selection =====
+    // ===== Character + skin selection =====
 
     /**
-     * Both comboboxes are utils.js `setupDropdown` (keyboard nav + ARIA). The
-     * character one keeps its Fuse/roman-numeral matcher via `filterItems`;
-     * the skin one is re-stocked whenever a character is picked.
+     * The 함순이 combobox is utils.js `setupDropdown` (keyboard nav + ARIA) with the
+     * page's Fuse/roman-numeral matcher via `filterItems`. There is no second
+     * combobox any more: skins are a rail, which is what removed the stale-filter
+     * bug where the new character's skins were filtered by the old skin's name.
      */
-    function setupDropdowns() {
-        charDropdown = setupDropdown({
+    function setupCharacterDropdown() {
+        setupDropdown({
             input: elements.charInput,
             dropdown: elements.charDropdown,
             items: getAllCharacterNames(),
             getLabel: (name) => name,
             filterItems: (query) => searchCharacters(query).map(res => res.item.name),
-            onSelect: handleCharacterSelect,
+            onSelect: (name) => selectCharacter(name),
             emptyMessage: '검색 결과가 없습니다',
-        });
-
-        skinDropdown = setupDropdown({
-            input: elements.skinInput,
-            dropdown: elements.skinDropdown,
-            items: [],
-            getLabel: (skin) => skin,
-            onSelect: handleSkinSelect,
-            emptyMessage: '함순이를 먼저 선택해주세요',
         });
     }
 
-    function handleCharacterSelect(name, clearSkin = true) {
+    /**
+     * Pick a 함순이: restock the rail and (unless a skin pick follows immediately,
+     * as on a deep link or a modal pick) drop whatever skin was on the stage.
+     */
+    function selectCharacter(name, clearSkin = true) {
+        currentCharName = name;
         elements.charInput.value = name;
-        skinDropdown?.setItems(getSkinsForCharacter(name));
         if (clearSkin) {
-            elements.skinInput.value = '';
+            currentSkinName = '';
             clearSkinDetails();
         }
-        elements.skinInput.disabled = false;
-        elements.skinInput.placeholder = '스킨을 검색/선택해주세요';
+        renderSkinRail(name);
         updateURLWithFilters();
     }
 
-    function handleSkinSelect(skinName) {
-        elements.skinInput.value = skinName;
+    function selectSkin(skinName) {
+        if (!skinName) return;
+        currentSkinName = skinName;
+        markActiveRow();
         displaySkinDetails(skinName);
         updateURLWithFilters();
     }
 
+    function onRailClick(event) {
+        const row = event.target.closest('.sdv-skin-row');
+        if (!row || !elements.skinRail.contains(row)) return;
+        selectSkin(row.dataset.skin);
+    }
+
+    // ===== Skin rail =====
+
     /**
-     * Fetch full skin data by name, then render info box, image gallery, and voice lines.
-     * Shows a skeleton loader while data is in flight.
+     * 기믹 badges per skin, indexed by character on first use.
+     * `getSkinFilterData()` already applies the index's tag rule (comma-separated,
+     * with `X` and bare digits excluded), so this reuses it instead of re-deriving
+     * the rule beside it. Keys are roman-normalized because the index keys are raw
+     * while every lookup here comes from the normalized name list.
+     */
+    function skinTagsFor(charName) {
+        if (!skinTagsByChar) {
+            skinTagsByChar = new Map();
+            getSkinFilterData().pool.forEach((row) => {
+                const key = normalizeRomanNumerals(row.charName);
+                let bucket = skinTagsByChar.get(key);
+                if (!bucket) {
+                    bucket = new Map();
+                    skinTagsByChar.set(key, bucket);
+                }
+                bucket.set(row.skinName, row.tagList);
+            });
+        }
+        return skinTagsByChar.get(normalizeRomanNumerals(charName)) || new Map();
+    }
+
+    function renderSkinRail(charName) {
+        const names = getSkinsForCharacter(charName);
+        const tags = skinTagsFor(charName);
+
+        elements.skinRail.replaceChildren();
+        names.forEach(name => elements.skinRail.appendChild(createSkinRow(name, tags.get(name) || [])));
+        if (railCount) railCount.textContent = names.length > 0 ? `스킨 ${names.length}개` : '';
+        markActiveRow();
+    }
+
+    /** One rail entry: a truncating name plus its 기믹 badges, on a single line. */
+    function createSkinRow(skinName, tagList) {
+        const row = document.createElement('button');
+        row.type = 'button';
+        row.className = 'sdv-skin-row';
+        row.dataset.skin = skinName;
+        row.title = skinName;
+
+        const name = document.createElement('span');
+        name.className = 'sdv-skin-name';
+        name.textContent = skinName;
+        row.appendChild(name);
+
+        if (tagList.length > 0) {
+            const tags = document.createElement('span');
+            tags.className = 'sdv-skin-tags';
+            tagList.forEach((tag) => {
+                const [slug, short] = GIMMICKS[tag] || [];
+                const badge = document.createElement('span');
+                // `.badge` supplies the shape; the slug picks the hue.
+                badge.className = 'badge sdv-skin-tag';
+                if (slug) badge.dataset.gm = slug;
+                if (short) badge.title = tag;
+                badge.textContent = short || tag;
+                tags.appendChild(badge);
+            });
+            row.appendChild(tags);
+        }
+        return row;
+    }
+
+    function markActiveRow() {
+        elements.skinRail.querySelectorAll('.sdv-skin-row').forEach((row) => {
+            if (row.dataset.skin === currentSkinName) row.setAttribute('aria-current', 'true');
+            else row.removeAttribute('aria-current');
+        });
+    }
+
+    // ===== Stage =====
+
+    /**
+     * Fetch the full skin record plus the expression manifest, then hand the art to
+     * the stage module and rebuild the header and voice drawer.
+     *
+     * The manifest fetch belongs HERE and nowhere earlier: the R13 loading boundary
+     * says the search shell must not request expression metadata, so the first skin
+     * pick is what starts it (tests/smoke/skin-detail-expression-loading.spec.mjs).
+     * The render token drops a response whose selection has already been replaced.
      */
     async function displaySkinDetails(skinName) {
         const renderToken = ++skinRenderToken;
-        showElement(elements.skeleton);
+        showElement(skeleton);
 
         let skin = null;
         let manifest = null;
         try {
             [skin, manifest] = await Promise.all([
                 getSkinByName(skinName),
-                ensureExpressionManifest()
+                ensureExpressionManifest(),
             ]);
         } catch (error) {
             console.error('Failed to load skin details', error);
         }
         if (renderToken !== skinRenderToken) return;
         if (!skin) {
-            hideElement(elements.skeleton);
-            renderSkinError('스킨 정보를 불러올 수 없습니다.');
+            hideElement(skeleton);
+            clearStage();
+            clearStageHeader();
+            renderStatus(statusHost, '스킨 정보를 불러올 수 없습니다.', 'error');
             return;
         }
 
-        setManifest(manifest);
-
         requestAnimationFrame(() => {
             if (renderToken !== skinRenderToken) return;
-            // Render Info
-            renderSkinInfoBox(skin);
-            // Render Gallery
-            renderImageGallery(skin, elements.imageGallery, skinName);
-            // Render Voice Lines
-            renderVoiceLines(skin);
-
-            hideElement(elements.skeleton);
+            renderStatus(statusHost, '');
+            renderStageHeader(skin, skinName);
+            renderStage(skin, manifest, skinName);
+            renderVoicePanel(skin);
+            hideElement(skeleton);
         });
     }
 
+    /** Title, rarity badge, and the single metadata line above the art. */
+    function renderStageHeader(skin, skinName) {
+        elements.skinTitle.textContent = skinName;
+
+        const rarity = skin['레어도'] || '';
+        elements.skinRarity.classList.remove(...RARITY_CLASSES);
+        elements.skinRarity.classList.add('badge', 'rarity-badge');
+        if (rarity) elements.skinRarity.classList.add(`rarity-${rarity}`);
+        elements.skinRarity.textContent = rarity;
+        toggleElement(elements.skinRarity, Boolean(rarity));
+
+        const parts = [];
+        if (skin['기간']) parts.push(skin['기간']);
+        if (skin['스킨 타입 - 한글']) parts.push(skin['스킨 타입 - 한글']);
+        const release = getReleaseDate(skin['클뜯 id']);
+        if (release) parts.push(`출시 ${release}`);
+        if (skin['재화']) parts.push(`재화 ${Number(skin['재화']).toLocaleString()}`);
+        elements.skinMeta.textContent = parts.join(' · ');
+        toggleElement(elements.skinMeta, parts.length > 0);
+    }
+
+    function clearStageHeader() {
+        elements.skinTitle.textContent = '';
+        elements.skinRarity.textContent = '';
+        elements.skinRarity.classList.remove(...RARITY_CLASSES);
+        hideElement(elements.skinRarity);
+        elements.skinMeta.textContent = '';
+        hideElement(elements.skinMeta);
+    }
+
+    /** Drop everything skin-scoped and return the stage to its empty state. */
     function clearSkinDetails() {
         skinRenderToken += 1;
-        hideElement(elements.skinInfoBox);
-        hideElement(elements.imageGallery);
-        hideElement(elements.textContent);
-        hideElement(elements.oathTable);
-        hideElement(elements.asmrTable);
-        hideElement(elements.skeleton);
-        elements.skinInfoBox.replaceChildren();
-        elements.imageGallery.replaceChildren();
-        elements.textContent.replaceChildren();
-        elements.oathTable.replaceChildren();
-        elements.asmrTable.replaceChildren();
+        currentVoiceSkin = null;
         stopCurrentAudio();
+        clearStage();
+        clearStageHeader();
+        elements.voiceTabs.replaceChildren();
+        elements.voiceList.replaceChildren();
+        voiceBank?.replaceChildren();
+        // `.sdv-voice-desc:empty` collapses the block, so emptying it is enough.
+        voiceDesc?.replaceChildren();
+        hideElement(skeleton);
+        renderStatus(statusHost, EMPTY_STAGE_MESSAGE, 'empty');
     }
 
-    function renderSkinInfoBox(skin) {
-        elements.skinInfoBox.replaceChildren();
-        if (skin['재화']) {
-            const item = document.createElement('div');
-            item.className = 'info-item';
-
-            const value = document.createElement('span');
-            value.className = 'info-value';
-            value.textContent = Number(skin['재화']).toLocaleString();
-
-            item.append(createGemIconImg(), value);
-            elements.skinInfoBox.appendChild(item);
-        }
-        if (skin['기간']) elements.skinInfoBox.appendChild(createInfoItem('상시:', skin['기간']));
-        if (skin['스킨 타입 - 한글']) elements.skinInfoBox.appendChild(createInfoItem('타입:', skin['스킨 타입 - 한글']));
-        if (skin['스킨 태그']) elements.skinInfoBox.appendChild(createInfoItem('태그:', skin['스킨 태그']));
-
-        const releaseDate = getReleaseDate(skin['클뜯 id']);
-        if (releaseDate) elements.skinInfoBox.appendChild(createInfoItem('출시:', releaseDate));
-
-        toggleElement(elements.skinInfoBox, elements.skinInfoBox.childElementCount > 0);
-    }
-
-    function createInfoItem(labelText, valueText) {
-        const item = document.createElement('div');
-        item.className = 'info-item';
-
-        const label = document.createElement('strong');
-        label.className = 'info-label';
-        label.textContent = labelText;
-
-        const value = document.createElement('span');
-        value.className = 'info-value';
-        value.textContent = valueText;
-
-        item.append(label, value);
-        return item;
-    }
-
-    function renderSkinError(message) {
-        elements.skinInfoBox.replaceChildren();
-        const error = document.createElement('div');
-        error.className = 'skin-detail-error';
-        error.textContent = message;
-        elements.skinInfoBox.appendChild(error);
-        showElement(elements.skinInfoBox);
-    }
+    // ===== Voice drawer =====
 
     /**
-     * Render the voice line tables (normal, oath, ASMR) for a skin.
-     * Attaches delegated play-click and volume listeners via skin.audio.js exports.
+     * Rebuild tabs, descriptions and the active line list.
+     * Called both on a new skin and on a bank-toggle flip, so it takes the skin
+     * from `currentVoiceSkin` when re-rendering in place.
      */
-    function renderVoiceLines(skin) {
+    function renderVoicePanel(skin = currentVoiceSkin) {
+        if (!skin) return;
         currentVoiceSkin = skin;
-        renderVoiceTables(skin);
-        renderAsmrSection(skin);
-        attachVolumeListeners();
-    }
 
-    /**
-     * Render the normal + oath tables for the current voice mode. Split from
-     * renderVoiceLines so the bank toggle can re-render without collapsing the
-     * ASMR illustration state (the ASMR bank has no alt recordings anyway).
-     */
-    function renderVoiceTables(skin) {
         const altKind = skin['voice_alt_kind'] || '';
         const mode = effectiveVoiceMode(altKind, voiceMode);
-        const { normal, oath } = collectVoiceLines(skin);
-        const toggle = altKind ? createVoiceToggle(altKind) : null;
+        const groups = collectVoiceGroups(skin);
+        const available = TAB_ORDER.filter(key => groups[key].length > 0);
+        // Keep the reader's tab across skins when the new skin still has it.
+        if (!available.includes(activeTab)) activeTab = available[0] || 'normal';
 
-        // Render Normal
-        elements.textContent.replaceChildren();
-        const descriptions = renderDescriptions(skin, mode);
-        if (descriptions) elements.textContent.appendChild(descriptions);
-        if (normal.length > 0) {
-            elements.textContent.appendChild(createVoiceTable('대사 모음', normal, mode, toggle));
-        }
-        if (elements.textContent.childElementCount > 0) {
-            showElement(elements.textContent);
-        } else {
-            hideElement(elements.textContent);
-        }
-
-        // Render Oath — hosts the toggle only when the normal table is absent
-        elements.oathTable.replaceChildren();
-        if (oath.length > 0 && skin['ex_chat_status'] === 1) {
-            elements.oathTable.appendChild(
-                createVoiceTable('서약 대사', oath, mode, normal.length === 0 ? toggle : null)
-            );
-            showElement(elements.oathTable);
-        } else {
-            hideElement(elements.oathTable);
-        }
+        renderVoiceTabs(available, groups);
+        renderVoiceBank(altKind);
+        renderVoiceDesc(skin, mode);
+        // The ASMR bank has no alternate recordings, so it always plays the
+        // default one instead of rendering every row disabled under 대체 CV.
+        renderVoiceList(groups[activeTab] || [], activeTab === 'asmr' ? VOICE_MODE_DEFAULT : mode, skin);
     }
 
-    /** Segmented control switching between the default and alternate voice bank. */
-    function createVoiceToggle(kind) {
+    function renderVoiceTabs(available, groups) {
+        elements.voiceTabs.replaceChildren();
+        available.forEach((key) => {
+            const tab = document.createElement('button');
+            tab.type = 'button';
+            tab.className = 'sdv-tab';
+            tab.dataset.tab = key;
+            tab.setAttribute('role', 'tab');
+            tab.setAttribute('aria-selected', String(key === activeTab));
+            tab.textContent = `${TAB_LABELS[key]} ${groups[key].length}`;
+            elements.voiceTabs.appendChild(tab);
+        });
+    }
+
+    function onTabClick(event) {
+        const tab = event.target.closest('.sdv-tab');
+        if (!tab || tab.dataset.tab === activeTab) return;
+        activeTab = tab.dataset.tab;
+        renderVoicePanel();
+    }
+
+    /**
+     * Segmented control switching between the default and alternate voice bank,
+     * in its own `#voice-bank` slot beside the tabs. Empty for the skins that have
+     * no alternate bank, which is most of them.
+     */
+    function renderVoiceBank(kind) {
+        if (!voiceBank) return;
+        voiceBank.replaceChildren();
+        if (!kind) return;
+
         const labels = voiceToggleLabels(kind);
-        const group = document.createElement('div');
-        group.className = 'btn-group voice-bank-toggle';
-        group.setAttribute('role', 'group');
-        group.setAttribute('aria-label', '음성 선택');
+        voiceBank.setAttribute('role', 'group');
+        voiceBank.setAttribute('aria-label', '음성 선택');
 
         [[VOICE_MODE_DEFAULT, labels.default], [VOICE_MODE_ALT, labels.alt]].forEach(([mode, label]) => {
             const button = document.createElement('button');
             button.type = 'button';
-            button.className = 'btn btn-secondary btn-sm' + (voiceMode === mode ? ' is-active' : '');
+            button.className = 'sdv-bank-btn';
+            button.setAttribute('aria-selected', String(voiceMode === mode));
             button.textContent = label;
             button.addEventListener('click', () => {
                 if (voiceMode === mode) return;
                 voiceMode = mode;
                 stopCurrentAudio();
-                renderVoiceTables(currentVoiceSkin);
-                attachVolumeListeners();
+                renderVoicePanel();
             });
-            group.appendChild(button);
+            voiceBank.appendChild(button);
         });
-        return group;
     }
 
-    function renderDescriptions(skin, mode = VOICE_MODE_DEFAULT) {
-        const items = [];
-        if (skin['설명']) {
-            items.push(createDescriptionItem('설명', skin['설명']));
+    function renderVoiceList(lines, mode, skin) {
+        elements.voiceList.replaceChildren();
+        if (activeTab === 'asmr') {
+            const illustration = createAsmrIllustration(skin);
+            if (illustration) elements.voiceList.append(...illustration);
         }
-        if (skin['자기소개'] && skin['자기소개'].voiceline) {
-            const selfIntroSrc = skin['자기소개'].voicelink
-                ? resolveVoiceSrc({ src: skin['자기소개'].voicelink, altSrc: skin['자기소개'].voicelink_alt || '' }, mode)
-                : '';
-            const selfIntro = createDescriptionItem('자기소개', skin['자기소개'].voiceline, selfIntroSrc);
-            selfIntro.classList.add('self-intro');
-            items.push(selfIntro);
-        }
-        if (items.length === 0) return null;
+        lines.forEach(line => elements.voiceList.appendChild(createVoiceRow(line, mode)));
+    }
 
-        const panel = document.createElement('div');
-        panel.className = 'descriptions-panel';
-        panel.append(...items);
-        return panel;
+    /** One drawer row: label, clamped text, play button. */
+    function createVoiceRow(line, mode) {
+        const row = document.createElement('div');
+        row.className = 'sdv-line';
+        // The text clamps to two lines, so the full string lives on the row.
+        if (line.text) row.title = line.text;
+
+        const label = document.createElement('span');
+        label.className = 'sdv-line-label';
+        label.textContent = line.label;
+
+        // A div, not a p: the row is a centered grid and `.sdv-line-text` carries
+        // no margin reset, so a paragraph's UA margins would inflate every row.
+        const text = document.createElement('div');
+        text.className = 'sdv-line-text';
+        text.textContent = line.text;
+
+        const src = resolveVoiceSrc(line, mode);
+        // Partial alt packs: a line the alt bank never recorded stays visible
+        // but disabled — never silently plays the other bank.
+        const missingAlt = mode === VOICE_MODE_ALT && !src && !!line.src;
+        row.append(
+            label,
+            text,
+            createPlayButton(src, line.label, missingAlt ? '대체 음성이 없는 대사입니다' : ''),
+        );
+        return row;
     }
 
     /**
-     * Build DOM-safe description and voice-line nodes.
-     * Priority keys (입수시, 상세확인, etc.) render first; _ex keys go to oath section.
+     * `data-src` keeps skin.audio.js `handlePlayClick` working untouched;
+     * `data-label` is what the player bar names the running track with.
+     */
+    function createPlayButton(src, label = '', missingTitle = '') {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'btn btn-icon play-voice-btn';
+        button.setAttribute('aria-label', src ? '대사 재생' : (missingTitle || '대사 음성 없음'));
+        if (src) {
+            button.dataset.src = src;
+            button.dataset.label = label;
+        } else {
+            button.disabled = true;
+            if (missingTitle) button.title = missingTitle;
+        }
+        button.appendChild(createIcon('fas fa-play'));
+        return button;
+    }
+
+    function renderVoiceDesc(skin, mode) {
+        if (!voiceDesc) return;
+        voiceDesc.replaceChildren();
+
+        const items = [];
+        if (skin['설명']) items.push(createDescriptionItem('설명', skin['설명']));
+        const intro = skin['자기소개'];
+        if (intro && intro.voiceline) {
+            const src = intro.voicelink
+                ? resolveVoiceSrc({ src: intro.voicelink, altSrc: intro.voicelink_alt || '' }, mode)
+                : '';
+            const item = createDescriptionItem('자기소개', intro.voiceline, src);
+            item.classList.add('sdv-desc-intro');
+            items.push(item);
+        }
+
+        // The block collapses itself via `.sdv-voice-desc:empty`, so there is no
+        // visibility class to keep in sync here.
+        voiceDesc.append(...items);
+    }
+
+    /**
+     * One description entry. Plain block elements with no UA margins of their own,
+     * so the pair inherits `.sdv-voice-desc`'s typography instead of needing a
+     * heading scale the drawer has no room for.
      */
     function createDescriptionItem(titleText, bodyText, voiceSrc = '') {
         const item = document.createElement('div');
-        item.className = 'description-item';
+        item.className = 'sdv-desc-item';
 
-        const title = document.createElement('h2');
+        const title = document.createElement('strong');
+        title.className = 'sdv-desc-title';
         title.textContent = titleText;
 
-        const body = document.createElement('p');
-        const span = document.createElement('span');
-        span.textContent = bodyText;
-        body.appendChild(span);
-        if (voiceSrc) body.appendChild(createPlayButton(voiceSrc));
+        const body = document.createElement('span');
+        body.className = 'sdv-desc-text';
+        body.textContent = bodyText;
 
         item.append(title, body);
+        if (voiceSrc) item.appendChild(createPlayButton(voiceSrc, titleText));
         return item;
     }
 
+    /**
+     * ASMR illustration toggle, rendered at the head of the ASMR tab so it sits in
+     * the same scroll region as the lines it belongs to.
+     * @returns {HTMLElement[]|null} [button, container] or null when the skin has none
+     */
+    function createAsmrIllustration(skin) {
+        const asmrPainting = skin['ASMR 일러'];
+        if (!asmrPainting) return null;
+
+        const toggleBtn = document.createElement('button');
+        toggleBtn.type = 'button';
+        toggleBtn.className = 'btn btn-secondary btn-sm sdv-asmr-toggle';
+        toggleBtn.setAttribute('aria-expanded', 'false');
+
+        const toggleLabel = document.createElement('span');
+        toggleLabel.textContent = 'ASMR 일러스트 보기';
+        toggleBtn.append(createIcon('fas fa-image'), toggleLabel);
+
+        const container = document.createElement('div');
+        container.className = 'sdv-asmr-illust hidden';
+        const img = document.createElement('img');
+        img.src = asmrPainting;
+        img.alt = 'ASMR 일러스트';
+        img.loading = 'lazy';
+        // Sized inline because this pair has no page stylesheet of its own and a
+        // full-size ASMR painting would otherwise blow out the drawer's width.
+        img.style.maxWidth = '100%';
+        img.style.height = 'auto';
+        container.appendChild(img);
+
+        toggleBtn.addEventListener('click', () => {
+            const isVisible = !container.classList.contains('hidden');
+            toggleElement(container, !isVisible);
+            toggleBtn.setAttribute('aria-expanded', String(!isVisible));
+            toggleLabel.textContent = isVisible ? 'ASMR 일러스트 보기' : 'ASMR 일러스트 숨기기';
+        });
+
+        return [toggleBtn, container];
+    }
+
+    // ===== Voice line collection =====
+
+    /** The three tab collections. ASMR rows are index-numbered and default-bank only. */
+    function collectVoiceGroups(skin) {
+        const { normal, oath } = collectVoiceLines(skin);
+        const asmrVoices = Array.isArray(skin['ASMR 음성']) ? skin['ASMR 음성'] : [];
+        return {
+            normal,
+            // 서약 lines exist in the data for skins that cannot show them in game.
+            oath: skin['ex_chat_status'] === 1 ? oath : [],
+            asmr: asmrVoices.map((line, i) => ({
+                label: `ASMR ${String(i + 1).padStart(2, '0')}`,
+                text: line.voiceline || '',
+                src: line.voicelink || '',
+                altSrc: '',
+            })),
+        };
+    }
+
+    /**
+     * Split a skin record's voice fields into the normal and 서약 banks.
+     * Priority keys (입수시, 상세확인, …) lead; `_ex` keys are 서약; 설명/자기소개 are
+     * pulled out for the description block above the list.
+     */
     function collectVoiceLines(skin) {
         const normal = [];
         const oath = [];
@@ -403,219 +707,115 @@ document.addEventListener('DOMContentLoaded', async () => {
         return { normal, oath };
     }
 
-    function createVoiceTable(titleText, lines, mode = VOICE_MODE_DEFAULT, toggleEl = null) {
-        const table = document.createElement('table');
-        table.className = 'voice-line-table';
+    // ===== Drawer collapse =====
 
-        const thead = document.createElement('thead');
-        const headerRow = document.createElement('tr');
-        const headerCell = document.createElement('th');
-        headerCell.colSpan = 2;
-        headerCell.appendChild(createTableHeader(titleText, toggleEl));
-        headerRow.appendChild(headerCell);
-        thead.appendChild(headerRow);
-
-        const tbody = document.createElement('tbody');
-        lines.forEach(line => tbody.appendChild(createVoiceRow(line, mode)));
-
-        table.append(thead, tbody);
-        return table;
+    /**
+     * `#voice-toggle` closes the drawer (a class on the console, which is what the
+     * grid reads) and reveals the floating `#voice-peek` pill that reopens it.
+     * Visibility goes through toggleElement so nothing on these nodes mixes the
+     * `.hidden` class with an inline display.
+     */
+    function setupVoiceCollapse() {
+        setVoiceOpen(getStorageItem(VOICE_OPEN_KEY, '1') !== '0');
+        voiceToggle?.addEventListener('click', () => setVoiceOpen(!voiceOpen));
+        voicePeek?.addEventListener('click', () => setVoiceOpen(true));
     }
 
-    function createTableHeader(titleText, toggleEl = null) {
-        const header = document.createElement('div');
-        header.className = 'table-header-with-volume';
-
-        const title = document.createElement('span');
-        title.textContent = titleText;
-        if (toggleEl) {
-            header.append(title, toggleEl, createVolumeControlElement());
-        } else {
-            header.append(title, createVolumeControlElement());
-        }
-        return header;
+    function setVoiceOpen(open) {
+        voiceOpen = open;
+        consoleEl?.classList.toggle('voice-closed', !open);
+        toggleElement(voicePeek, !open);
+        voiceToggle?.setAttribute('aria-expanded', String(open));
+        voiceToggle?.setAttribute('aria-label', open ? '대사 패널 접기' : '대사 패널 펼치기');
+        setStorageItem(VOICE_OPEN_KEY, open ? '1' : '0');
     }
 
-    function createVoiceRow(line, mode = VOICE_MODE_DEFAULT) {
-        const row = document.createElement('tr');
+    // ===== Player bar =====
 
-        const labelCell = document.createElement('td');
-        labelCell.textContent = line.label;
+    /**
+     * Build the bar once at boot and hide it: rebuilding it per skin would
+     * re-create the volume slider under `attachVolumeListeners`, and the bar has to
+     * survive the drawer re-renders it reports on. Returns the nodes the playback
+     * subscription writes into, or null when the page has no bar.
+     */
+    function buildPlayerBar() {
+        if (!playerBar) return null;
 
-        const textCell = document.createElement('td');
-        const wrapper = document.createElement('div');
-        const lineText = document.createElement('span');
-        lineText.textContent = line.text;
-        wrapper.appendChild(lineText);
-        const src = resolveVoiceSrc(line, mode);
-        // Partial alt packs: a line the alt bank never recorded stays visible
-        // but disabled — never silently plays the other bank.
-        const missingAlt = mode === VOICE_MODE_ALT && !src && !!line.src;
-        wrapper.appendChild(createPlayButton(src, missingAlt ? '대체 음성이 없는 대사입니다' : ''));
-        textCell.appendChild(wrapper);
+        const stop = document.createElement('button');
+        stop.type = 'button';
+        stop.className = 'sdv-player-stop';
+        stop.setAttribute('aria-label', '재생 중지');
+        stop.appendChild(createIcon('fas fa-stop'));
+        stop.addEventListener('click', () => stopCurrentAudio());
 
-        row.append(labelCell, textCell);
-        return row;
+        const label = document.createElement('span');
+        label.className = 'sdv-player-label';
+        label.textContent = PLAYER_IDLE_LABEL;
+
+        const time = document.createElement('span');
+        time.className = 'sdv-player-time';
+        time.textContent = '0:00';
+
+        // The shared widget initializes the slider from the current global volume
+        // and carries the `.volume-slider` class `attachVolumeListeners` binds, so
+        // take its input rather than hand-rolling one; the bar is too narrow for
+        // the widget's icon and percentage label, which stay behind.
+        const widget = createVolumeControlElement();
+        const volume = widget.querySelector('.volume-slider') || widget;
+        volume.classList.add('sdv-player-volume');
+
+        const row = document.createElement('div');
+        row.className = 'sdv-player-row';
+        row.append(stop, label, time, volume);
+
+        const fill = document.createElement('div');
+        fill.className = 'sdv-player-fill';
+
+        const track = document.createElement('div');
+        track.className = 'sdv-player-track';
+        track.setAttribute('role', 'progressbar');
+        track.setAttribute('aria-label', '재생 위치');
+        track.setAttribute('aria-valuemin', '0');
+        track.setAttribute('aria-valuemax', '100');
+        track.setAttribute('aria-valuenow', '0');
+        track.appendChild(fill);
+
+        playerBar.replaceChildren(row, track);
+        attachVolumeListeners();
+
+        return { label, track, fill, time };
     }
 
-    function createPlayButton(src, missingTitle = '') {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = 'btn btn-icon play-voice-btn';
-        button.setAttribute('aria-label', src ? '대사 재생' : (missingTitle || '대사 음성 없음'));
-        if (src) {
-            button.dataset.src = src;
-        } else {
-            button.disabled = true;
-            if (missingTitle) button.title = missingTitle;
-        }
-
-        button.appendChild(createIcon('fas fa-play'));
-        return button;
+    /**
+     * Follow the shared audio element, whichever row started it.
+     * The bar is permanently visible (it ships without `.hidden` and nothing here
+     * hides it): it used to appear on the first playback, which meant the drawer's
+     * bottom edge jumped under the reader and the volume slider was unreachable
+     * until something was already playing.
+     */
+    function onPlaybackChange({ label, currentTime, duration }) {
+        if (!player) return;
+        player.label.textContent = label || PLAYER_IDLE_LABEL;
+        const percent = duration > 0 ? Math.round(Math.min(currentTime / duration, 1) * 100) : 0;
+        player.fill.style.width = `${percent}%`;
+        player.track.setAttribute('aria-valuenow', String(percent));
+        player.time.textContent = formatClock(currentTime);
     }
 
-    function renderAsmrSection(skin) {
-        const asmrVoices = skin['ASMR 음성'];
-        if (!Array.isArray(asmrVoices) || asmrVoices.length === 0) {
-            hideElement(elements.asmrTable);
-            return;
-        }
-
-        elements.asmrTable.replaceChildren();
-        const rows = [];
-        asmrVoices.forEach((line, i) => {
-            const label = `ASMR ${String(i + 1).padStart(2, '0')}`;
-            const text = line.voiceline || '';
-            rows.push({ label, text, src: line.voicelink || '' });
-        });
-
-        // ASMR illustration toggle
-        const asmrPainting = skin['ASMR 일러'];
-        if (asmrPainting) {
-            const toggleBtn = document.createElement('button');
-            toggleBtn.type = 'button';
-            toggleBtn.className = 'asmr-illust-toggle';
-            toggleBtn.setAttribute('aria-expanded', 'false');
-
-            const toggleLabel = document.createElement('span');
-            toggleLabel.textContent = 'ASMR 일러스트 보기';
-            toggleBtn.append(createIcon('fas fa-image'), toggleLabel);
-
-            const container = document.createElement('div');
-            container.className = 'asmr-illust-container hidden';
-            const img = document.createElement('img');
-            img.src = asmrPainting;
-            img.alt = 'ASMR 일러스트';
-            img.loading = 'lazy';
-            container.appendChild(img);
-
-            toggleBtn.addEventListener('click', () => {
-                const isVisible = !container.classList.contains('hidden');
-                toggleElement(container, !isVisible);
-                toggleBtn.setAttribute('aria-expanded', String(!isVisible));
-                toggleLabel.textContent = isVisible ? 'ASMR 일러스트 보기' : 'ASMR 일러스트 숨기기';
-            });
-
-            elements.asmrTable.append(toggleBtn, container);
-        }
-
-        elements.asmrTable.appendChild(createVoiceTable('ASMR 대사', rows));
-        showElement(elements.asmrTable);
+    /** mm:ss for the elapsed readout (utils' formatTime is the "1m 23s" report form). */
+    function formatClock(seconds) {
+        const total = Math.max(0, Math.floor(seconds || 0));
+        return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`;
     }
+
+    // ===== URL state =====
 
     function updateURLWithFilters() {
         if (isApplyingURLState) return;
         setUrlParams({
-            character: elements.charInput.value || null,
-            skin: elements.skinInput.value || null
+            character: currentCharName || null,
+            skin: currentSkinName || null,
         }, { clear: true });
-    }
-
-    // ===== Random Skin Feature =====
-    /**
-     * Wire the random skin modal: filter dropdowns (rarity/type/tag/nation),
-     * count display, and the "go" button that picks and navigates to a random skin.
-     */
-    function setupRandomSkin() {
-        const randomBtn = document.getElementById('random-skin-btn');
-        const goBtn = document.getElementById('random-skin-go');
-        const countEl = document.getElementById('random-skin-count');
-
-        const raritySelect = document.getElementById('random-rarity-filter');
-        const typeSelect = document.getElementById('random-type-filter');
-        const tagSelect = document.getElementById('random-tag-filter');
-        const nationSelect = document.getElementById('random-nation-filter');
-
-        let skinPool = [];
-        let filterData = null;
-
-        // Wire canonical modal (backdrop-click + ESC + .modal-close provided by setupModal)
-        setupModal('random-skin-modal', {
-            closeOnEscape: true,
-            closeOnBackdrop: true,
-            restoreFocus: true,
-            onClose: () => randomBtn.setAttribute('aria-expanded', 'false'),
-        });
-
-        function initFilterData() {
-            if (filterData) return;
-            filterData = getSkinFilterData();
-            skinPool = filterData.pool;
-
-            // Populate dropdowns
-            filterData.filters.rarities.forEach(v => raritySelect.add(new Option(v, v)));
-            filterData.filters.types.forEach(v => typeSelect.add(new Option(v, v)));
-            filterData.filters.tags.forEach(v => tagSelect.add(new Option(v, v)));
-            filterData.filters.nations.forEach(v => nationSelect.add(new Option(v, v)));
-        }
-
-        function getFilteredPool() {
-            const rarity = raritySelect.value;
-            const type = typeSelect.value;
-            const tag = tagSelect.value;
-            const nation = nationSelect.value;
-
-            return skinPool.filter(s => {
-                if (rarity && s.rarity !== rarity) return false;
-                if (type && s.type !== type) return false;
-                if (tag && !s.tagList.includes(tag)) return false;
-                if (nation && s.nation !== nation) return false;
-                return true;
-            });
-        }
-
-        function updateCount() {
-            const filtered = getFilteredPool();
-            countEl.textContent = `${filtered.length}개의 스킨`;
-            goBtn.disabled = filtered.length === 0;
-        }
-
-        randomBtn.addEventListener('click', () => {
-            initFilterData();
-            updateCount();
-            randomBtn.setAttribute('aria-expanded', 'true');
-            openModal('random-skin-modal', { restoreFocus: true, focusFirst: false });
-            goBtn.focus();
-        });
-
-        // Update count on filter change
-        [raritySelect, typeSelect, tagSelect, nationSelect].forEach(sel => {
-            sel.addEventListener('change', updateCount);
-        });
-
-        // Go button - pick random and navigate
-        goBtn.addEventListener('click', () => {
-            const filtered = getFilteredPool();
-            if (filtered.length === 0) return;
-
-            const pick = filtered[Math.floor(Math.random() * filtered.length)];
-            randomBtn.setAttribute('aria-expanded', 'false');
-            closeModal('random-skin-modal');
-
-            // Navigate to the picked skin
-            handleCharacterSelect(pick.charName, false);
-            handleSkinSelect(pick.skinName);
-        });
     }
 
     function applyFiltersFromURL() {
@@ -632,10 +832,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             let matchedName = gid ? getCharacterNameByGid(gid) : '';
 
             if (!matchedName && !char) {
+                currentCharName = '';
+                currentSkinName = '';
                 elements.charInput.value = '';
-                elements.skinInput.value = '';
-                elements.skinInput.placeholder = '함순이를 먼저 선택해주세요...';
-                elements.skinInput.disabled = true;
+                elements.skinRail.replaceChildren();
+                if (railCount) railCount.textContent = '';
                 clearSkinDetails();
                 return;
             }
@@ -659,7 +860,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
 
-            handleCharacterSelect(matchedName, false);
+            // A popstate onto a DIFFERENT 함순이 must drop the old stage even if the
+            // new URL names no skin; the same character keeps its rendered skin.
+            selectCharacter(matchedName, matchedName !== currentCharName);
 
             if (!skin) return;
             const skins = getSkinsForCharacter(matchedName);
@@ -669,9 +872,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 : skins.find(skinName => normalizeRomanNumerals(skinName) === normalizedSkin);
 
             if (matchedSkin) {
-                handleSkinSelect(matchedSkin);
+                selectSkin(matchedSkin);
             } else if (skins.length > 0) {
-                handleSkinSelect(skins[0]);
+                selectSkin(skins[0]);
             }
         } finally {
             isApplyingURLState = false;

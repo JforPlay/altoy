@@ -1,0 +1,250 @@
+/* =========================================================================
+   skin.detail.viewer.search.css — 함순이 찾아보기 + 랜덤 modal
+   (/skin/skin-detail-viewer, renewal 2026-09-21 §6). Driven by
+   public/js/skin/skin.detail.search.js.
+
+   Layout shape: the Modal.astro dialog becomes a NON-scrolling flex column so
+   the filter row and the count/random footer stay pinned and only the result
+   grid scrolls — the same pattern the fleet-sim pickers use.
+
+   Shared components do the heavy lifting: `.filter-bar` (filter row),
+   `.card-grid` (results), `.card-hover` (cards) and rarity.css's `.rarity-badge`
+   treatment on a `.rarity-N…UR` palette class — so nothing here re-declares a
+   grid formula or a rarity colour. Every other colour is a theme.css token.
+   ========================================================================= */
+
+/* ── dialog shell ────────────────────────────────────────────────────────
+   The ID prefix outranks Modal.astro's own scoped styles. max-width stays on
+   the component's inline maxWidth prop (960px); at phone widths the dialog is
+   narrower than that anyway, so the mobile block below never needs to beat it. */
+#skin-search-modal .c-modal-dialog {
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+  overflow: hidden;
+}
+
+/* Non-scrolling chrome: title, filters, 더 보기, footer. Without this the
+   flex column would squash them to make room for the grid. */
+#skin-search-modal .c-modal-title,
+.sdv-search-filters,
+.sdv-search-more,
+.sdv-search-foot {
+  flex: 0 0 auto;
+}
+
+/* ── filter row ──────────────────────────────────────────────────────────
+   The markup carries the canonical `.filter-bar` (components/filter-bar.css);
+   only what differs is here — the fields are label-over-control stacks, so the
+   row aligns on their baselines rather than centres. */
+.sdv-search-filters {
+  --filter-bar-gap: var(--spacing-sm);
+
+  align-items: flex-end;
+  margin-bottom: var(--spacing-md);
+}
+
+/* Basis kept small on purpose: six fields have to share ONE row inside a 960px
+   dialog (14rem + 5 × 8.5rem overflowed it and dropped 스킨 타입 onto a line of
+   its own, full width). They grow to fill from there. */
+.sdv-search-field {
+  display: flex;
+  flex: 1 1 7rem;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+/* The name box narrows the whole grid, so it leads the row and takes the slack
+   the five selects leave. */
+.sdv-search-field--name {
+  flex: 2 1 10rem;
+}
+
+.sdv-search-field label {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.sdv-search-field select,
+.sdv-search-field input {
+  width: 100%;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-md);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.85rem;
+  transition: border-color var(--transition-fast);
+}
+
+.sdv-search-field select {
+  cursor: pointer;
+}
+
+.sdv-search-field select:focus-visible,
+.sdv-search-field input:focus-visible {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: var(--focus-ring);
+}
+
+/* ── results grid ────────────────────────────────────────────────────────
+   Layout comes from the global `.card-grid`; this supplies only its two hooks
+   plus the scroll behaviour. `align-content: start` keeps a short result set at
+   the top instead of stretching a single row over the whole panel. */
+.sdv-search-results {
+  --grid-min: 7rem;
+  --grid-gap: var(--spacing-sm);
+
+  flex: 1 1 auto;
+  align-content: start;
+  min-height: 12rem;
+  overflow-y: auto;
+}
+
+/* .page-status (loading / empty / error) is a grid ITEM here, so it would sit
+   in column one without this. */
+.sdv-search-results .page-status {
+  grid-column: 1 / -1;
+}
+
+/* ── result card ─────────────────────────────────────────────────────── */
+.sdv-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: var(--spacing-xs);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sdv-card:focus-visible {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: var(--focus-ring);
+}
+
+.sdv-card-thumb {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: var(--bg-secondary);
+}
+
+.sdv-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* `.rarity-badge` (solid --r fill + its paired --r-text) sits on top of the
+   portrait, so it also takes a hairline scrim: SSR's pale amber over a white
+   uniform still needs an edge. Rectangular per the chip rule — the shared
+   treatment's own radius is pill-ish at this size. */
+.sdv-card-rarity {
+  position: absolute;
+  bottom: 0.2rem;
+  left: 0.2rem;
+  padding: 0.05rem 0.3rem;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 0 0 1px var(--overlay-medium);
+  font-size: 0.6rem;
+  line-height: 1.5;
+}
+
+.sdv-card-name {
+  overflow: hidden;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Empty for base skins (their name is the character's), but always rendered so
+   card heights stay uniform. */
+.sdv-card-skin {
+  min-height: 1.1em;
+  overflow: hidden;
+  color: var(--text-secondary);
+  font-size: 0.68rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ── 더 보기 ─────────────────────────────────────────────────────────── */
+.sdv-search-more {
+  align-self: center;
+  margin-top: var(--spacing-sm);
+}
+
+/* ── count + random footer ───────────────────────────────────────────────
+   The random button lives here, under the same count it acts on: filtering IS
+   how you narrow the random pick, and the layout has to say so. */
+.sdv-search-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--border-color);
+}
+
+.sdv-search-count {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.sdv-search-hint {
+  margin-left: auto;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+/* ── mobile ──────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  #skin-search-modal .c-modal-dialog {
+    height: 100%;
+    max-height: 100%;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .sdv-search-results {
+    --grid-min: 5.5rem;
+  }
+
+  .sdv-search-field {
+    flex-basis: 6.5rem;
+  }
+
+  .sdv-search-field--name {
+    flex-basis: 100%;
+  }
+
+  .sdv-search-hint {
+    display: none;
+  }
+
+  .sdv-search-foot > .btn {
+    flex: 1 1 auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sdv-card,
+  .sdv-search-field select,
+  .sdv-search-field input {
+    transition: none;
+  }
+}

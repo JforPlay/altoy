@@ -57,6 +57,11 @@ const state = {
  */
 function init() {
     state.lightboxModal = document.getElementById('lightbox-modal');
+    // The renewed skin detail viewer replaced #lightbox-modal with its own
+    // #stage-viewer, so it ships no lightbox markup at all. Consumers that still
+    // do (cn-preview, skin.list.viewer) are unaffected; without this guard the
+    // first querySelector below throws and kills the whole page boot.
+    if (!state.lightboxModal) return;
     state.lightboxImage = document.getElementById('lightbox-image');
     state.lightboxCaption = state.lightboxModal.querySelector('.lightbox-caption');
     state.lightboxCounter = state.lightboxModal.querySelector('.lightbox-counter');
@@ -611,5 +616,11 @@ export {
     init,
     setManifest,
     renderImageGallery,
-    composeDefaultPainting
+    composeDefaultPainting,
+    // Re-used verbatim by skin.detail.stage.js so the renewed detail viewer
+    // composites through the exact same seam-free path as the gallery here;
+    // a second implementation would be a second place to reopen the face hole.
+    buildOverlayContainer,
+    composeOverlay,
+    expUrl
 };

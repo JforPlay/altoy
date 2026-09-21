@@ -970,6 +970,20 @@ function setupDropdown(config) {
         if (typeof onInputChange === 'function') onInputChange(input.value);
     }
 
+    /**
+     * Re-render from the CURRENT items before opening. `open()` alone only toggles
+     * the class, so whatever `render` last produced stays in the DOM — and a
+     * `setItems` that ran while the input still held the PREVIOUS selection filtered
+     * the new items down to nothing (skin detail: pick a 함순이 while a skin is
+     * selected → the skin list renders empty and only a re-pick fixes it). Rendering
+     * unfiltered also makes the open list predictable: click to see everything, type
+     * to narrow.
+     */
+    function onFocus() {
+        render(currentItems);
+        open();
+    }
+
     function onInputKeydown(event) {
         if (event.key === 'ArrowDown') {
             event.preventDefault();
@@ -1010,7 +1024,7 @@ function setupDropdown(config) {
         close();
     }
 
-    input.addEventListener('focus', open);
+    input.addEventListener('focus', onFocus);
     input.addEventListener('input', onInput);
     input.addEventListener('keydown', onInputKeydown);
     dropdown.addEventListener('keydown', onDropdownKeydown);
@@ -1026,7 +1040,7 @@ function setupDropdown(config) {
         open,
         close,
         dispose() {
-            input.removeEventListener('focus', open);
+            input.removeEventListener('focus', onFocus);
             input.removeEventListener('input', onInput);
             input.removeEventListener('keydown', onInputKeydown);
             dropdown.removeEventListener('keydown', onDropdownKeydown);

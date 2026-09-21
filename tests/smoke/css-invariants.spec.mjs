@@ -472,8 +472,12 @@ test('page-header: a real consumer adopts the canonical row class (equip-viewer)
 //   2. The row keeps a non-zero margin-bottom, so the search section below it doesn't
 //      butt against the title. RED before fix #2 (expression-viewer): the wrapper's
 //      margin-bottom was lost in the migration → search bar sat flush under the title.
+// skin-detail-viewer is NOT in this loop any more: the console renewal (2026-09-21)
+// replaced its .controls-header / .page-header-title row with a rail head, so the
+// structure this guard protects no longer exists there. The equivalent invariant for
+// the new layout is asserted separately below; expression-viewer still uses the
+// migrated pattern and keeps the original guard.
 for (const { key, btnId } of [
-    { key: 'skin-detail-viewer', btnId: 'random-skin-btn' },
     { key: 'expression-viewer', btnId: 'info-button' },
 ]) {
     test(`page-header: ${key} title + action button share one row (no wrap)`, async ({ page }) => {
@@ -499,6 +503,36 @@ for (const { key, btnId } of [
         expect(probe.marginBottom, 'title row must keep a gap above the search section below it').toBeGreaterThan(0);
     });
 }
+
+// The console renewal's equivalent: skin-detail-viewer's top bar packs the <h1>, the
+// 도움말 button, the 함순이 combobox and the 찾아보기 · 랜덤 opener onto ONE line. Same
+// failure mode as the guard above — a wrapping member pushes the console down and eats
+// the art height the bar exists to save — so assert every member shares the h1's row.
+test('page-header: skin-detail-viewer top bar keeps its four members on one row', async ({ page }) => {
+    await page.goto(pathFor('skin-detail-viewer'), { waitUntil: 'load' });
+    const probe = await page.evaluate(() => {
+        const h1 = document.querySelector('.sdv-topbar h1');
+        const ids = ['info-button', 'character-search-input', 'skin-browse-btn'];
+        if (!h1) return null;
+        // ONE evaluate, so every rect comes from a single layout snapshot: separate
+        // boundingBox() calls are separate CDP round-trips and a settling page moves
+        // the target between them.
+        const h = h1.getBoundingClientRect();
+        const rows = ids.map((id) => {
+            const el = document.getElementById(id);
+            return { id, rect: el ? el.getBoundingClientRect() : null };
+        });
+        return {
+            missing: rows.filter((r) => !r.rect).map((r) => r.id),
+            wrapped: rows.filter((r) => r.rect && r.rect.top >= h.bottom).map((r) => r.id),
+            barHeight: document.querySelector('.sdv-topbar').getBoundingClientRect().height,
+        };
+    });
+    expect(probe, 'skin-detail-viewer top bar missing').not.toBeNull();
+    expect(probe.missing, 'top bar members missing from the markup').toEqual([]);
+    expect(probe.wrapped, 'top bar members must sit on the title line, not wrap below it').toEqual([]);
+    expect(probe.barHeight, 'a one-line top bar cannot be this tall').toBeLessThan(80);
+});
 
 // --- Wave-2 chip + filter-bar unification (Task 1) ---------------------------
 // chip.css and filter-bar.css are imported globally via Layout.astro. These

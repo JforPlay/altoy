@@ -1,0 +1,681 @@
+/* =============================================================================
+   skin.detail.viewer.stage.css
+   The art stage of the renewed skin detail viewer: art frame, the sticky bottom
+   dock (일러 picker + expression shelf), the 전체 표정 overlay and the fullscreen
+   viewer. Built by public/js/skin/skin.detail.stage.js — every selector here is
+   either created by that module or (#skin-stage, #stage-dock, #asset-rail,
+   #stage-tools) handed to it by markup.
+
+   The stage is deliberately dark in BOTH themes: face patches are overwhelmingly
+   light (white uniforms) so they vanish on a light tile. Text sitting on it is
+   therefore #fff-class rather than --text-*; everything outside the frame keeps
+   the page tokens.
+============================================================================= */
+
+/* --- Local palette -----------------------------------------------------------
+   Scoped to the dark roots so nothing leaks onto the page. Held as a bare RGB
+   triple because the glow and the rail fade need real alpha stops: a gradient
+   into the `transparent` keyword fades through grey, and `var(--token)NN` is not
+   an alpha suffix (it voids the whole declaration). --------------------------- */
+.sdv-art,
+.sdv-dock,
+.sdv-viewer,
+.sdv-facegrid {
+    --sdv-shelf-rgb: 13, 19, 23;
+    --sdv-shelf: rgb(var(--sdv-shelf-rgb));
+    --sdv-tile-bg: #1b252d;
+    --sdv-on-dark: #f2f6f8;
+    --sdv-on-dark-dim: #a9b8c2;
+}
+
+
+/* =============================================================================
+   ART FRAME
+   Content-sized: the fit below is WIDTH-driven, so the frame's height follows the
+   painting and the page scrolls for a large one rather than shrinking it to fit
+   one screen.
+============================================================================= */
+
+/* A neutral studio surface, and deliberately not an image. This used to paint a
+   blurred, scaled copy of the skin's own art — but the cheapest art a skin has is
+   its 아이콘, which is a cropped FACE, so the letterbox read as a second, blurry
+   portrait behind the first. A coloured (e.g. rarity-tinted) wash is no better:
+   mixed into this near-black it goes muddy, and every hue it could take collides
+   with some painting. The soft top lift is the whole effect — it keeps the panel
+   from reading as a dead rectangle and never competes with the art. */
+.sdv-art {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    flex: 0 0 auto;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    background:
+        radial-gradient(130% 80% at 50% 0%,
+            rgba(255, 255, 255, 0.055) 0%,
+            rgba(255, 255, 255, 0) 62%),
+        var(--sdv-shelf);
+}
+
+.sdv-art-view {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+/* The never-upscale fit. JS sets `width` to
+   `min(100%, <native>px, var(--sdv-art-cap) * <native ratio>)`, so the art takes
+   the WHOLE column width it is given — capped by its own native size, and by a
+   height ceiling so a 1:3 portrait cannot turn the page into a mile of scroll.
+   Fitting by height instead is what made the art look small: a 3002 × 2800
+   painting in a 1500px-wide stage was rendered 928px wide because the frame was
+   pinned to one viewport. There is no cover mode on purpose. */
+.sdv-art-fit {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* The composite <canvas> carries inline width:100%/height:auto from
+   buildOverlayContainer, so the wrapper only has to match the fit box. */
+.sdv-art-fit > .face-overlay-container {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    line-height: 0;
+}
+
+.sdv-art-img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* The fullscreen viewer fits by BOTH axes inside one screen (it is a lightbox,
+   it never scrolls), so there the image keeps the contain behaviour the stage
+   gave up. applyFit() sizes the wrapper to match — see its `mode` argument. */
+.sdv-viewer-body .sdv-art-img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* --- Head-row tools (rendered into #stage-tools) --------------------------- */
+
+.sdv-art-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.sdv-art-full {
+    flex-shrink: 0;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--card-bg);
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.sdv-art-full:hover {
+    border-color: var(--accent-blue);
+    color: var(--text-primary);
+}
+
+.sdv-art-full:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+}
+
+/* =============================================================================
+   BOTTOM DOCK  (#stage-dock)
+   One dark bar pinned to the bottom of the viewport carrying BOTH pickers for the
+   art above it: the 일러 thumbnails and the expression shelf. They used to be two
+   separate bands — one inside the art frame, one in a bare white strip under it —
+   which is what made the bottom of the page read as leftovers. Pinned because the
+   art frame is now free to run several screens long.
+============================================================================= */
+
+.sdv-dock {
+    position: sticky;
+    bottom: 0;
+    z-index: var(--z-sticky);
+    display: flex;
+    align-items: stretch;
+    gap: 14px;
+    margin: 0 calc(-1 * var(--spacing-sm));
+    padding: 8px 14px 10px;
+    background: var(--sdv-shelf);
+    border-top: 1px solid var(--highlight-soft);
+}
+
+.sdv-dock-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+/* The 일러 picker is exactly as wide as its six cards; the expression shelf takes
+   the rest and scrolls inside it. */
+.sdv-dock-assets {
+    flex: 0 0 auto;
+    max-width: 55%;
+}
+
+.sdv-dock-faces {
+    flex: 1 1 auto;
+    border-left: 1px solid var(--highlight-soft);
+    padding-left: 14px;
+}
+
+.sdv-dock-label {
+    height: 19px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 19px;
+    color: var(--sdv-on-dark-dim);
+}
+
+/* =============================================================================
+   EXPRESSION SHELF (inside the dock)
+============================================================================= */
+
+.sdv-face-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 19px;
+    color: var(--sdv-on-dark);
+}
+
+.sdv-face-count {
+    min-width: 54px;
+    font-size: 0.74rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+    letter-spacing: 0.02em;
+}
+
+.sdv-face-spacer {
+    flex: 1;
+}
+
+.sdv-face-step {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 19px;
+    height: 19px;
+    padding: 0;
+    border: 1px solid var(--highlight-soft);
+    border-radius: var(--radius-sm);
+    background: var(--highlight-subtle);
+    color: var(--sdv-on-dark);
+    font-size: 0.6rem;
+    cursor: pointer;
+    transition: background var(--transition-fast);
+}
+
+.sdv-face-step:hover {
+    background: var(--highlight-medium);
+}
+
+.sdv-face-all {
+    padding: 2px 9px;
+    border: 1px solid var(--highlight-medium);
+    border-radius: var(--radius-sm);
+    background: none;
+    color: var(--sdv-on-dark);
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1.3;
+    cursor: pointer;
+    transition: background var(--transition-fast);
+}
+
+.sdv-face-all:hover {
+    background: var(--highlight-soft);
+}
+
+.sdv-face-step:focus-visible,
+.sdv-face-all:focus-visible,
+.sdv-face-tile:focus-visible {
+    outline: 2px solid var(--sdv-on-dark);
+    outline-offset: 1px;
+}
+
+.sdv-face-rail-wrap {
+    position: relative;
+    height: 80px;
+}
+
+.sdv-face-rail {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+/* A hint that the rail scrolls, so it drops once the end is reached. */
+.sdv-face-fade {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 44px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-fast);
+    background: linear-gradient(90deg, rgba(var(--sdv-shelf-rgb), 0), rgb(var(--sdv-shelf-rgb)));
+}
+
+.sdv-face-rail-wrap.has-more .sdv-face-fade {
+    opacity: 1;
+}
+
+/* The tile's WIDTH is set inline from the manifest box aspect ratio, so the
+   patch fills it edge to edge: no object-fit, no letterbox, no crop. A
+   629x1042 patch squeezed into a square becomes an invisible sliver. The fill
+   is solid dark because face patches are mostly white and disappear on a light
+   tile. The active ring is an inset shadow, not a border, so picking a face
+   cannot shift the rail by 1px. */
+.sdv-face-tile {
+    flex: 0 0 auto;
+    height: 74px;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: var(--sdv-tile-bg);
+    box-shadow: inset 0 0 0 1px var(--highlight-soft);
+    cursor: pointer;
+    transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.sdv-face-tile > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.sdv-face-tile:hover {
+    box-shadow: inset 0 0 0 1px var(--highlight-strong);
+    transform: translateY(-1px);
+}
+
+.sdv-face-tile.is-active {
+    box-shadow: inset 0 0 0 2px #fff, 0 0 0 3px var(--highlight-medium);
+}
+
+/* =============================================================================
+   ASSET RAIL  (#asset-rail)
+   Thumbnails, not text chips. Two of the six assets are hole-punched base
+   paintings, so their preview shows a transparent gap where the face belongs —
+   accepted deliberately (user call, 2026-09-21): at 56px the gap reads as a
+   detail, and seeing the art beats reading its name. `object-fit: contain` on a
+   solid tile, never a crop: the six assets run from a 3000px painting to a 116px
+   icon and a crop rect would cut a face off one of them.
+============================================================================= */
+
+#asset-rail {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 2px;
+}
+
+.sdv-asset {
+    flex: 0 0 auto;
+    width: 58px;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: var(--sdv-tile-bg);
+    box-shadow: inset 0 0 0 1px var(--highlight-soft);
+    color: var(--sdv-on-dark-dim);
+    font-family: inherit;
+    cursor: pointer;
+    transition: box-shadow var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+}
+
+.sdv-asset-thumb {
+    display: block;
+    height: 54px;
+    overflow: hidden;
+}
+
+.sdv-asset-thumb img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.sdv-asset-name {
+    display: block;
+    padding: 1px 2px 3px;
+    font-size: 0.62rem;
+    font-weight: 600;
+    line-height: 1.3;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sdv-asset:hover {
+    box-shadow: inset 0 0 0 1px var(--highlight-strong);
+    color: var(--sdv-on-dark);
+    transform: translateY(-1px);
+}
+
+/* Same inset ring the expression tiles use, so picking on either rail reads as
+   one gesture — and an inset ring cannot shift the rail by a pixel the way a
+   border would. */
+.sdv-asset[aria-pressed="true"] {
+    box-shadow: inset 0 0 0 2px #fff, 0 0 0 3px var(--highlight-medium);
+    color: var(--sdv-on-dark);
+}
+
+.sdv-asset:focus-visible {
+    outline: 2px solid var(--sdv-on-dark);
+    outline-offset: 1px;
+}
+
+/* =============================================================================
+   FULL-SCREEN OVERLAYS  (#face-grid, #stage-viewer)
+   Both start .hidden (display:none !important), which always beats these rules.
+============================================================================= */
+
+.sdv-facegrid,
+.sdv-viewer {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-modal);
+    display: flex;
+    flex-direction: column;
+    /* Fully opaque, not 0.97: these overlays exist to look at artwork, and even 3%
+       of a light page behind them is enough to read the navbar and the voice rows
+       through the expression patches. Also overrides .sdv-overlay's
+       --overlay-opaque, which is itself only 90%. */
+    background: var(--sdv-shelf);
+    color: var(--sdv-on-dark);
+}
+
+.sdv-facegrid-head,
+.sdv-viewer-head {
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--highlight-soft);
+}
+
+.sdv-facegrid-titles,
+.sdv-viewer-titles {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.sdv-facegrid-title {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--sdv-on-dark);
+}
+
+.sdv-facegrid-sub,
+.sdv-facegrid-hint {
+    margin: 0;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: var(--sdv-on-dark-dim);
+}
+
+.sdv-facegrid-close,
+.sdv-viewer-close {
+    flex-shrink: 0;
+    color: var(--sdv-on-dark);
+}
+
+.sdv-facegrid-close:hover,
+.sdv-viewer-close:hover {
+    background: var(--highlight-soft);
+    color: var(--sdv-on-dark);
+}
+
+/* Roughly 4x the rail size, which is what makes a 629x1042 patch legible. */
+.sdv-facegrid-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    align-content: start;
+    gap: 12px;
+    padding: 16px;
+}
+
+.sdv-facegrid-tile {
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    border-radius: var(--radius-md);
+    background: var(--sdv-tile-bg);
+    box-shadow: inset 0 0 0 1px var(--highlight-soft);
+    cursor: pointer;
+    transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.sdv-facegrid-tile > img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.sdv-facegrid-tile:hover {
+    box-shadow: inset 0 0 0 1px var(--highlight-strong);
+    transform: translateY(-2px);
+}
+
+.sdv-facegrid-tile.is-active {
+    box-shadow: inset 0 0 0 2px #fff, 0 0 0 3px var(--highlight-medium);
+}
+
+.sdv-facegrid-tile:focus-visible {
+    outline: 2px solid var(--sdv-on-dark);
+    outline-offset: 2px;
+}
+
+.sdv-facegrid-num {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    min-width: 20px;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    background: rgba(var(--sdv-shelf-rgb), 0.78);
+    color: var(--sdv-on-dark);
+    font-size: 0.72rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.3;
+}
+
+/* --- Fullscreen viewer ---------------------------------------------------- */
+
+.sdv-viewer-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--sdv-on-dark);
+}
+
+.sdv-viewer-meta {
+    font-size: 0.78rem;
+    color: var(--sdv-on-dark-dim);
+}
+
+.sdv-viewer-save {
+    flex-shrink: 0;
+}
+
+.sdv-viewer-body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+}
+
+/* `width: auto`, overriding the stage's `width: 100%`: as a flex item with a
+   definite height, an auto width is content-based, which is what lets the inline
+   `aspect-ratio` applyFit('contain') sets derive the width and keep the art
+   inside one screen. At `width: 100%` the ratio drives the HEIGHT instead and the
+   art runs off the bottom of the lightbox, taking the 표정 stepper with it. */
+.sdv-viewer-body > .sdv-art-fit {
+    width: auto;
+    max-width: 100%;
+    height: 100%;
+}
+
+.sdv-viewer-foot {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 12px 16px;
+    border-top: 1px solid var(--highlight-soft);
+}
+
+.sdv-viewer-count {
+    min-width: 88px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+}
+
+.sdv-viewer-note {
+    margin-left: 6px;
+    font-size: 0.76rem;
+    color: var(--sdv-on-dark-dim);
+}
+
+/* =============================================================================
+   RESPONSIVE
+   Below the console breakpoint the page scrolls naturally, so the frame stops
+   pretending to fill a fixed-height column.
+============================================================================= */
+
+@media (max-width: 1100px) {
+    .sdv-art {
+        border-radius: 0;
+        border-left: 0;
+        border-right: 0;
+    }
+
+    .sdv-art-view {
+        padding: 6px;
+    }
+
+    /* Two rails side by side need width the phone does not have, so the dock
+       stacks and the 일러 picker gives up its cap. */
+    .sdv-dock {
+        flex-direction: column;
+        gap: 8px;
+        margin: 0;
+    }
+
+    .sdv-dock-assets {
+        max-width: none;
+    }
+
+    .sdv-dock-faces {
+        border-left: 0;
+        border-top: 1px solid var(--highlight-soft);
+        padding-left: 0;
+        padding-top: 8px;
+    }
+
+    .sdv-viewer-head {
+        flex-wrap: wrap;
+    }
+
+    .sdv-viewer-note {
+        flex-basis: 100%;
+        margin-left: 0;
+        text-align: center;
+    }
+}
+
+/* =============================================================================
+   MOTION
+============================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .sdv-art,
+    .sdv-art *,
+    .sdv-viewer,
+    .sdv-viewer *,
+    .sdv-facegrid,
+    .sdv-facegrid *,
+    .sdv-asset {
+        transition: none !important;
+    }
+
+    .sdv-face-tile:hover,
+    .sdv-facegrid-tile:hover {
+        transform: none;
+    }
+}
+
+/* --- Status host --------------------------------------------------------------
+   The controller cannot render a status straight into #skin-stage: initStage()
+   does stage.replaceChildren(art) and keeps a live reference to that art frame,
+   so writing into the container would detach it permanently. It appends this box
+   instead, and loadPageData / the empty state render their .page-status here. */
+.sdv-stage-status {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    min-height: 16rem;
+    padding: var(--spacing-lg);
+}
+
+.sdv-stage-status:empty {
+    display: none;
+}

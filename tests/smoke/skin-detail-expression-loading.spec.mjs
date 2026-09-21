@@ -75,6 +75,18 @@ function waitForExpressionManifest(page) {
     );
 }
 
+/**
+ * The console's skin picker is a rail of buttons, not a combobox. Match on the
+ * row's own name node with `exact`, because skin names carry quotes and share
+ * prefixes with one another, so neither an attribute selector nor a substring
+ * filter is safe here.
+ */
+function skinRow(page, skinName) {
+    return page.locator('#skin-rail button.sdv-skin-row').filter({
+        has: page.getByText(skinName, { exact: true }),
+    });
+}
+
 async function waitForSearchShell(page) {
     const input = page.locator('#character-search-input');
     await expect(input).toBeEnabled();
@@ -82,13 +94,12 @@ async function waitForSearchShell(page) {
     // `charInput` is enabled in the markup and only ever disabled on load
     // failure, so being enabled proves nothing about initialization: the focus
     // handler is attached after initSkinData() resolves, and a focus that lands
-    // before that populates nothing and is never retried by the page. Re-focus
-    // until the options render — the 250ms gap lets the blur close-timer fire
-    // first, so the final focus leaves the dropdown open.
+    // before that populates nothing and is never retried by the page. setupDropdown
+    // re-renders from its current items on focus, so one blur/focus pair per poll
+    // picks the options up as soon as the wiring lands.
     const options = page.locator('#character-dropdown-content [role="option"]');
     await expect.poll(async () => {
         await input.blur();
-        await page.waitForTimeout(250);
         await input.focus();
         return options.count();
     }, { timeout: 30_000, intervals: [250] }).toBeGreaterThan(0);
@@ -110,25 +121,16 @@ async function chooseCharacter(page) {
         name: skinFixture.character,
         exact: true,
     }).click();
-    await expect(page.locator('#skin-search-input')).toBeEnabled();
+    await expect(page.locator('#skin-rail button.sdv-skin-row').first()).toBeVisible();
 }
 
 async function chooseSkin(page, skinName) {
-    const skinInput = page.locator('#skin-search-input');
-    // A selected dropdown link may leave the input focused. Force a complete
-    // blur/close/focus cycle so the next focus handler repopulates the options.
-    await skinInput.blur();
-    await page.waitForTimeout(250);
-    await skinInput.focus();
-    const option = page.locator('#skin-dropdown-content').getByRole('option', {
-        name: skinName,
-        exact: true,
-    });
-    await expect(option).toBeVisible();
-    await option.click();
-    await expect(skinInput).toHaveValue(skinName);
+    const row = skinRow(page, skinName);
+    await expect(row).toHaveCount(1);
+    await row.click();
+    await expect(row).toHaveAttribute('aria-current', 'true');
     await expect(page.locator('#loading-skeleton')).toBeHidden();
-    await expect(page.locator('#image-gallery')).toBeVisible();
+    await expect(page.locator('#skin-stage')).toBeVisible();
 }
 
 test('R13: expression data starts on first skin detail, not search initialization', async ({ page }) => {
@@ -166,9 +168,9 @@ test('R13: a skin deep link loads expression data before initial detail renderin
 
     expect(requested).toEqual([EXPRESSION_MANIFEST_PATH]);
     await expect(page.locator('#character-search-input')).toHaveValue(skinFixture.character);
-    await expect(page.locator('#skin-search-input')).toHaveValue(skinFixture.skins[0]);
+    await expect(skinRow(page, skinFixture.skins[0])).toHaveAttribute('aria-current', 'true');
     await expect(page.locator('#loading-skeleton')).toBeHidden();
-    await expect(page.locator('#image-gallery')).toBeVisible();
+    await expect(page.locator('#skin-stage')).toBeVisible();
 });
 
 test('R13: a failed expression load is retried by the next skin selection', async ({ page }) => {
@@ -197,5 +199,5 @@ test('R13: a failed expression load is retried by the next skin selection', asyn
     await retryResponse;
 
     expect(attempts).toBe(2);
-    await expect(page.locator('#image-gallery')).toBeVisible();
+    await expect(page.locator('#skin-stage')).toBeVisible();
 });

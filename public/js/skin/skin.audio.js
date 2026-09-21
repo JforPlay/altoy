@@ -12,8 +12,12 @@ import { createIcon } from '../utils.js';
 const state = {
     currentAudio: null,
     currentPlayButton: null,
+    currentLabel: '',
     globalVolume: 0.3,
-    volumeChangeHandlers: []
+    volumeChangeHandlers: [],
+    // Playback observers (skin detail's player bar). Empty for the pages that
+    // only delegate clicks — notifying then costs one no-op Set iteration.
+    playbackSubscribers: new Set()
 };
 
 // ===== Playback =====
@@ -21,6 +25,45 @@ const state = {
 /** Sync the volume icon class with the current global volume level. */
 function init() {
     updateVolumeIcon();
+}
+
+/**
+ * Observe the shared audio element so a UI can follow playback it did not start.
+ * The callback receives `{ playing, label, currentTime, duration }` on play, on
+ * every `timeupdate`, once metadata lands (so the progress denominator is real),
+ * and on stop/end.
+ * @param {(snapshot: {playing: boolean, label: string, currentTime: number, duration: number}) => void} callback
+ * @returns {() => void} Unsubscribe
+ */
+function subscribePlayback(callback) {
+    if (typeof callback !== 'function') return () => {};
+    state.playbackSubscribers.add(callback);
+    return () => state.playbackSubscribers.delete(callback);
+}
+
+/**
+ * Push a playback snapshot to every subscriber.
+ * `playing` is passed in rather than read off `audio.paused` because `play()`
+ * resolves asynchronously — the element is still paused on the tick the click
+ * handler starts it, so reading it would report every fresh play as stopped.
+ * One throwing subscriber must not stop the others or break playback itself.
+ */
+function notifyPlayback(playing) {
+    const audio = state.currentAudio;
+    const duration = audio && Number.isFinite(audio.duration) ? audio.duration : 0;
+    const snapshot = {
+        playing,
+        label: state.currentLabel,
+        currentTime: playing && audio ? audio.currentTime : 0,
+        duration: playing ? duration : 0
+    };
+    state.playbackSubscribers.forEach(callback => {
+        try {
+            callback(snapshot);
+        } catch (e) {
+            console.error('Playback subscriber failed:', e);
+        }
+    });
 }
 
 /**
@@ -38,6 +81,8 @@ function stopCurrentAudio() {
         state.currentPlayButton.classList.remove('playing');
         state.currentPlayButton = null;
     }
+    state.currentLabel = '';
+    notifyPlayback(false);
 }
 
 /**
@@ -45,6 +90,10 @@ function stopCurrentAudio() {
  * If the same button is clicked while playing, it acts as a stop. If a different button is
  * clicked, the previous audio stops and the new clip starts, registering an `ended` listener
  * to auto-reset the button when playback finishes naturally.
+ *
+ * `data-label` is optional: pages with a player bar (skin detail) stamp each row's
+ * label on its button so the bar can name the running track; the pages that only
+ * delegate clicks (skin list, cn-preview) omit it and the label stays empty.
  */
 function handlePlayClick(event) {
     const button = event.target.closest('.play-voice-btn');
@@ -57,13 +106,23 @@ function handlePlayClick(event) {
         stopCurrentAudio();
     } else {
         stopCurrentAudio();
+        const audio = new Audio(src);
         state.currentPlayButton = button;
-        state.currentAudio = new Audio(src);
-        state.currentAudio.volume = state.globalVolume;
-        state.currentAudio.play().catch(e => console.error("Error playing audio:", e));
+        state.currentLabel = button.dataset.label || '';
+        state.currentAudio = audio;
+        audio.volume = state.globalVolume;
+        audio.play().catch(e => console.error("Error playing audio:", e));
         button.replaceChildren(createIcon('fas fa-stop'));
         button.classList.add('playing');
-        state.currentAudio.addEventListener('ended', stopCurrentAudio);
+        audio.addEventListener('ended', stopCurrentAudio);
+        // Guarded against the element that was just superseded: a trailing event
+        // from the previous clip must not re-announce playback after a stop.
+        const onProgress = () => {
+            if (state.currentAudio === audio) notifyPlayback(true);
+        };
+        audio.addEventListener('timeupdate', onProgress);
+        audio.addEventListener('loadedmetadata', onProgress);
+        notifyPlayback(true);
     }
 }
 
@@ -169,6 +228,7 @@ export {
     init,
     stopCurrentAudio,
     handlePlayClick,
+    subscribePlayback,
     createVolumeControlElement,
     attachVolumeListeners,
     updateVolumeIcon

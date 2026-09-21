@@ -1,5 +1,6 @@
 /* =============================================================================
    skin.detail.viewer.responsive.css
+   Consumed by src/pages/shipgirl/cn-preview.astro ONLY since the 2026-09-21 console renewal; skin-detail-viewer.astro no longer imports it.
    Part of the skin.detail.viewer style split (formerly skin.detail.viewer.css, one monolith).
    The page imports each sibling in source order — keep rules in original order.
 ============================================================================= */
