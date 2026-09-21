@@ -504,34 +504,44 @@ for (const { key, btnId } of [
     });
 }
 
-// The console renewal's equivalent: skin-detail-viewer's top bar packs the <h1>, the
-// 도움말 button, the 함순이 combobox and the 찾아보기 · 랜덤 opener onto ONE line. Same
-// failure mode as the guard above — a wrapping member pushes the console down and eats
-// the art height the bar exists to save — so assert every member shares the h1's row.
-test('page-header: skin-detail-viewer top bar keeps its four members on one row', async ({ page }) => {
+// The console renewal's equivalent, inverted by the 2026-09-21 polish round: the
+// page-level top bar is GONE and its three controls moved into the rail's head, so
+// that nothing but the navbar sits above the art. That is the invariant worth
+// guarding — the art surface must start within a navbar's height of the viewport
+// top, and every control the bar used to hold must still exist, in the rail.
+//
+// It regresses the moment anyone reintroduces a band between the navbar and the
+// stage, which is exactly what this round spent its effort deleting.
+test('skin-detail-viewer: nothing but the navbar sits above the art', async ({ page }) => {
     await page.goto(pathFor('skin-detail-viewer'), { waitUntil: 'load' });
     const probe = await page.evaluate(() => {
-        const h1 = document.querySelector('.sdv-topbar h1');
         const ids = ['info-button', 'character-search-input', 'skin-browse-btn'];
-        if (!h1) return null;
+        const head = document.querySelector('.sdv-rail-head');
+        const stage = document.querySelector('.sdv-stage');
+        if (!head || !stage) return null;
         // ONE evaluate, so every rect comes from a single layout snapshot: separate
         // boundingBox() calls are separate CDP round-trips and a settling page moves
         // the target between them.
-        const h = h1.getBoundingClientRect();
-        const rows = ids.map((id) => {
+        const headRect = head.getBoundingClientRect();
+        const members = ids.map((id) => {
             const el = document.getElementById(id);
-            return { id, rect: el ? el.getBoundingClientRect() : null };
+            return { id, inHead: !!el && head.contains(el) };
         });
         return {
-            missing: rows.filter((r) => !r.rect).map((r) => r.id),
-            wrapped: rows.filter((r) => r.rect && r.rect.top >= h.bottom).map((r) => r.id),
-            barHeight: document.querySelector('.sdv-topbar').getBoundingClientRect().height,
+            missing: members.filter((m) => !document.getElementById(m.id)).map((m) => m.id),
+            strayed: members.filter((m) => !m.inHead).map((m) => m.id),
+            topbars: document.querySelectorAll('.sdv-topbar').length,
+            stageTop: stage.getBoundingClientRect().top,
+            headTop: headRect.top,
         };
     });
-    expect(probe, 'skin-detail-viewer top bar missing').not.toBeNull();
-    expect(probe.missing, 'top bar members missing from the markup').toEqual([]);
-    expect(probe.wrapped, 'top bar members must sit on the title line, not wrap below it').toEqual([]);
-    expect(probe.barHeight, 'a one-line top bar cannot be this tall').toBeLessThan(80);
+    expect(probe, 'skin-detail-viewer console missing').not.toBeNull();
+    expect(probe.missing, 'the rail head lost one of the controls the top bar used to hold').toEqual([]);
+    expect(probe.strayed, 'every 함순이 control belongs inside .sdv-rail-head').toEqual([]);
+    expect(probe.topbars, 'the page-level top bar was deleted — do not bring the band back').toBe(0);
+    // Both panes start at the same y, right under the sticky navbar (measured 64px).
+    expect(probe.stageTop, 'a band crept in above the art').toBeLessThanOrEqual(72);
+    expect(Math.abs(probe.stageTop - probe.headTop), 'rail and stage must start on the same line').toBeLessThan(2);
 });
 
 // --- Wave-2 chip + filter-bar unification (Task 1) ---------------------------

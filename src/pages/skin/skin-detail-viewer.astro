@@ -2,13 +2,21 @@
 /**
  * Skin Detail Viewer — three-column console (renewal 2026-09-21).
  *
+ * NOTHING sits above the art but the global navbar. The page-level top bar was
+ * deleted in the 2026-09-21 polish round: 함순이 검색 and 찾아보기 · 랜덤 moved into
+ * the rail's head (a column with a thousand spare pixels), and the skin's own
+ * caption, the 일러 picker and the 표정 picker all FLOAT on the art instead of
+ * stacking bands over it. That is worth ~143px of art height at 1080p, which is
+ * the whole point — see §13 of the renewal doc.
+ *
  * Static shell only. Every data region below is filled at runtime and its owner
  * is fixed by the DOM contract in dev/active/2026-09-21-skin-detail-viewer-renewal.md §3.1:
  *   controller (skin.detail.viewer.js) → #skin-rail, #skin-title/#skin-rarity/#skin-meta,
  *                                        #voice-tabs, #voice-bank, #voice-desc,
  *                                        #voice-list, #player-bar
- *   stage module (skin.detail.stage.js) → #skin-stage, #stage-tools, #stage-dock,
- *                                        #asset-rail, #face-grid, #stage-viewer
+ *   stage module (skin.detail.stage.js) → #skin-stage, #stage-art-label, #stage-tools,
+ *                                        #stage-assets, #asset-rail, #stage-dock,
+ *                                        #face-grid, #stage-viewer
  *   search module (skin.detail.search.js) → #sf-results / #sf-count inside #skin-search-modal
  * Those elements ship EMPTY on purpose — do not seed them with placeholder markup.
  *
@@ -29,41 +37,43 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 <Layout title="함순이 스킨/대사보기" theme="accent" {base}>
     <div class="main-container sdv-page">
-        <header class="sdv-topbar">
-            <div class="sdv-topbar-brand">
-                <h1 class="sdv-title">함순이 스킨 / 대사보기</h1>
-                <button id="info-button" class="info-button" aria-label="도움말 보기" type="button">
-                    <i class="fas fa-info-circle" aria-hidden="true"></i>
-                </button>
-            </div>
-
-            <label class="sdv-field-label" for="character-search-input">
-                <i class="fas fa-user" aria-hidden="true"></i> 함순이
-            </label>
-            <div class="dropdown-container sdv-topbar-pick">
-                <input type="text" id="character-search-input" placeholder="함순이를 검색/선택해주세요..." autocomplete="off" aria-label="함순이 검색" aria-autocomplete="list" aria-controls="character-dropdown-content">
-                <div class="dropdown-icon"><i class="fas fa-chevron-down" aria-hidden="true"></i></div>
-                <div class="dropdown-content scroll-styled" id="character-dropdown-content" role="listbox"></div>
-            </div>
-
-            <button id="skin-browse-btn" class="btn btn-outline sdv-browse-btn" type="button" aria-haspopup="dialog" aria-controls="skin-search-modal" aria-label="함순이 찾아보기 또는 랜덤으로 보기">
-                <span class="sdv-browse-part"><i class="fas fa-search" aria-hidden="true"></i> 찾아보기</span>
-                <span class="sdv-browse-sep" aria-hidden="true"></span>
-                <span class="sdv-browse-part"><i class="fas fa-dice" aria-hidden="true"></i> 랜덤</span>
-            </button>
-        </header>
-
         <div class="sdv-console">
-            <aside class="sdv-rail" aria-label="스킨 선택">
+            <aside class="sdv-rail" aria-label="함순이 · 스킨 선택">
+                <!-- The page's whole navigation, in the column that can afford it. -->
+                <div class="sdv-rail-head">
+                    <div class="sdv-rail-brand">
+                        <h1 class="sdv-title">함순이 스킨 / 대사보기</h1>
+                        <button id="info-button" class="info-button" aria-label="도움말 보기" type="button">
+                            <i class="fas fa-info-circle" aria-hidden="true"></i>
+                        </button>
+                    </div>
+
+                    <div class="dropdown-container sdv-rail-pick">
+                        <i class="fas fa-search sdv-pick-icon" aria-hidden="true"></i>
+                        <input type="text" id="character-search-input" placeholder="함순이 이름으로 검색" autocomplete="off" aria-label="함순이 검색" aria-autocomplete="list" aria-controls="character-dropdown-content">
+                        <div class="dropdown-icon"><i class="fas fa-chevron-down" aria-hidden="true"></i></div>
+                        <div class="dropdown-content scroll-styled" id="character-dropdown-content" role="listbox"></div>
+                    </div>
+
+                    <button id="skin-browse-btn" class="btn btn-outline sdv-browse-btn" type="button" aria-haspopup="dialog" aria-controls="skin-search-modal" aria-label="함순이 찾아보기 또는 랜덤으로 보기">
+                        <span class="sdv-browse-part"><i class="fas fa-search" aria-hidden="true"></i> 찾아보기</span>
+                        <span class="sdv-browse-sep" aria-hidden="true"></span>
+                        <span class="sdv-browse-part"><i class="fas fa-dice" aria-hidden="true"></i> 랜덤</span>
+                    </button>
+                </div>
+
                 <p id="skin-rail-count" class="sdv-rail-count" aria-live="polite"></p>
                 <div id="skin-rail" class="sdv-rail-list scroll-styled" role="group" aria-label="스킨 목록"></div>
             </aside>
 
             <main class="sdv-stage">
+                <!-- Caption. Absolutely positioned over the art on a soft scrim, so
+                     the skin's identity costs zero height above the picture. -->
                 <header class="sdv-stage-head">
                     <h2 id="skin-title" class="sdv-stage-title"></h2>
                     <span id="skin-rarity" class="sdv-stage-rarity"></span>
                     <p id="skin-meta" class="sdv-stage-meta"></p>
+                    <span id="stage-art-label" class="sdv-art-label"></span>
                     <div id="stage-tools" class="sdv-stage-tools"></div>
                 </header>
 
@@ -75,15 +85,19 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
                 <div id="skin-stage" class="sdv-stage-body"></div>
 
-                <!-- Sticky bottom dock: the 일러 picker plus (appended by the stage
-                     module) the expression shelf. Both are pickers for the art above,
-                     so they share one bar that stays on screen while the art scrolls. -->
-                <div id="stage-dock" class="sdv-dock">
-                    <div class="sdv-dock-group sdv-dock-assets">
-                        <span class="sdv-dock-label">일러</span>
-                        <div id="asset-rail" class="sdv-asset-rail scroll-styled" role="group" aria-label="일러스트 종류 선택"></div>
-                    </div>
+                <!-- 일러 picker: a vertical glass column on the art's right edge. Six
+                     cards at most, so it costs horizontal space and no height at all —
+                     and its position never depends on how tall the art is, which is what
+                     stranded it a screen below a 150px SD sprite before. -->
+                <div id="stage-assets" class="sdv-assets sdv-glass">
+                    <div id="asset-rail" class="sdv-asset-rail" role="group" aria-label="일러스트 종류 선택"></div>
                 </div>
+
+                <!-- 표정 picker: filled by the stage module. Folded to a pill by default
+                     (0.5% of the drawing); the thumbnail row unfolds on hover, on focus,
+                     or when pinned. Horizontal by necessity — face patches keep their own
+                     box ratio, so a vertical strip runs past 1800px for 21 faces. -->
+                <div id="stage-dock" class="sdv-dock sdv-glass"></div>
             </main>
 
             <section id="sdv-voice" class="sdv-voice" aria-label="대사">

@@ -26,7 +26,7 @@
 import {
     createImgElement, createIcon, lockBodyScroll, unlockBodyScroll,
     downloadImage, sanitizeFilename, showElement, hideElement, toggleElement,
-    DATA_FOR_TOY_BASE
+    getStorageItem, setStorageItem, DATA_FOR_TOY_BASE
 } from '../utils.js';
 import { pickFaceCandidates } from '../expression-face.js';
 import { buildOverlayContainer, composeOverlay, expUrl } from './skin.expression.js';
@@ -58,6 +58,9 @@ const TILE_H = 74;
 const EAGER_TILES = 12;
 // Below this count every expression already fits the rail, so 전체 표정 is noise.
 const FACE_GRID_THRESHOLD = 8;
+// Whether the 표정 dock stays unfolded. A UI-only preference, so plain storage —
+// not syncedStorage, which is for data other tabs must agree on.
+const DOCK_PIN_KEY = 'sdvFaceDockPinned';
 
 // ===== State =====
 
@@ -69,6 +72,7 @@ const state = {
     active: -1,
     faceId: null,   // shared across 전체 and 확대: they show one expression
     skinName: '',
+    dockPinned: false,   // 표정 dock unfolded regardless of hover
     railObserver: null,  // defers off-screen rail thumbs (see railThumb)
     gridObserver: null   // same, for the 전체 표정 grid
 };
@@ -84,22 +88,23 @@ const state = {
 function initStage() {
     const stage = document.getElementById('skin-stage');
     const assetRail = document.getElementById('asset-rail');
+    const assets = document.getElementById('stage-assets');
     const dock = document.getElementById('stage-dock');
     const tools = document.getElementById('stage-tools');
+    const label = document.getElementById('stage-art-label');
     if (!stage) return false;
 
     const art = el('div', 'sdv-art');
 
-    // Both live on the sticky stage head, not floating over the art: the frame is
-    // free to run several screens tall now, so anything pinned inside it would
-    // scroll away from the art it describes — and reserving 46px of frame height
-    // for them is exactly the space the bigger fit needed back.
-    const label = el('div', 'sdv-art-label');
-    const fullBtn = el('button', 'sdv-art-full');
+    // Both ride the caption, which FLOATS on the art rather than sitting in a band
+    // above it — the page has no header of its own any more, so the art starts
+    // immediately under the navbar. The caption owns the left of that line
+    // (name · 레어도 · 출시일 · 원본 크기) and #stage-tools the right.
+    const fullBtn = el('button', 'sdv-art-full sdv-glass');
     fullBtn.type = 'button';
-    fullBtn.textContent = '전체화면 · 저장';
+    fullBtn.append(createIcon('fas fa-expand'), document.createTextNode('전체화면 · 저장'));
     fullBtn.addEventListener('click', openViewer);
-    tools?.replaceChildren(label, fullBtn);
+    tools?.replaceChildren(fullBtn);
 
     const view = el('div', 'sdv-art-view');
     const fit = el('div', 'sdv-art-fit');
@@ -108,14 +113,16 @@ function initStage() {
     art.appendChild(view);
     stage.replaceChildren(art);
 
-    // The expression shelf joins the 일러 rail in the dock: two pickers for one
-    // image belong on one bar, and the bar has to outlive the art's scroll.
+    // The dock carries the expression shelf and NOTHING else: the 일러 picker moved
+    // to its own vertical column and the tools to the caption, so the one bar left
+    // over the art is only ever about 표정.
     const shelf = buildShelf();
     dock?.appendChild(shelf.root);
 
-    state.els = { stage, assetRail, dock, tools, art, view, fit, label, fullBtn, shelf };
+    state.els = { stage, assetRail, assets, dock, tools, art, view, fit, label, fullBtn, shelf };
     state.viewer = buildViewer();
     state.grid = buildFaceGrid();
+    setDockPin(getStorageItem(DOCK_PIN_KEY, false) === true);
 
     // One handler for both overlays; they are mutually exclusive by construction
     // (전체 표정 is only reachable from the shelf, the viewer only from the art).
@@ -124,11 +131,13 @@ function initStage() {
     return true;
 }
 
-/** Art frame, its head-row tools and the dock appear and disappear together. */
+/** Everything that only means something once a skin is on the stage. */
 function showStage(on) {
     toggleElement(state.els.art, on);
+    toggleElement(state.els.assets, on);
     toggleElement(state.els.dock, on);
     toggleElement(state.els.tools, on);
+    toggleElement(state.els.label, on);
 }
 
 // ===== Render =====
@@ -356,7 +365,14 @@ function renderLabel() {
 
 // ===== Expression shelf =====
 
-/** Build the shelf chrome once; renderShelf() refills it per asset. */
+/**
+ * Build the shelf chrome once; renderShelf() refills it per asset.
+ *
+ * The head row is what stays visible when the dock is folded, so it has to read
+ * on its own: 「‹ 표정 3 / 21 ›」 plus 전체 표정 and the pin. Unfolding is CSS
+ * (:hover / :focus-within); the pin is the affordance for touch, where there is
+ * no hover and the thumbnail row is display:none until something opens it.
+ */
 function buildShelf() {
     const root = el('div', 'sdv-dock-group sdv-dock-faces');
 
@@ -368,10 +384,15 @@ function buildShelf() {
 
     const all = el('button', 'sdv-face-all');
     all.type = 'button';
-    all.textContent = '전체 표정';
+    all.append(createIcon('fas fa-table-cells-large'), document.createTextNode('전체 표정'));
     all.addEventListener('click', openFaceGrid);
 
-    head.append(prev, count, next, spacer, all);
+    const pin = el('button', 'sdv-face-pin');
+    pin.type = 'button';
+    pin.appendChild(createIcon('fas fa-thumbtack'));
+    pin.addEventListener('click', () => setDockPin(!state.dockPinned, true));
+
+    head.append(prev, count, next, spacer, all, pin);
 
     const wrap = el('div', 'sdv-face-rail-wrap');
     const rail = el('div', 'sdv-face-rail scroll-styled');
@@ -381,7 +402,25 @@ function buildShelf() {
     wrap.append(rail, fade);
 
     root.append(head, wrap);
-    return { root, count, all, wrap, rail };
+    return { root, count, all, pin, wrap, rail };
+}
+
+/**
+ * Hold the 표정 dock open. `persist` is false on the boot restore so reading the
+ * preference cannot rewrite it.
+ */
+function setDockPin(on, persist = false) {
+    state.dockPinned = !!on;
+    state.els?.dock?.classList.toggle('is-pinned', state.dockPinned);
+    const { pin } = state.els?.shelf || {};
+    if (pin) {
+        pin.setAttribute('aria-pressed', String(state.dockPinned));
+        pin.setAttribute('aria-label', state.dockPinned ? '표정 목록 접기' : '표정 목록 펼쳐두기');
+    }
+    if (persist) setStorageItem(DOCK_PIN_KEY, state.dockPinned);
+    // The rail only has a scrollport once it is visible, so the "scrolls further"
+    // hint is wrong until the fold animation has laid it out.
+    if (state.dockPinned) requestAnimationFrame(() => updateFade(state.els.shelf.wrap, state.els.shelf.rail));
 }
 
 function stepButton(delta, ariaLabel) {
@@ -393,16 +432,20 @@ function stepButton(delta, ariaLabel) {
     return btn;
 }
 
-/** The shelf exists only for assets that have expressions. */
+/**
+ * The shelf exists only for assets that have expressions — and since the dock now
+ * holds nothing else, the DOCK is what disappears. Hiding only the shelf would
+ * leave an empty glass pill floating over an SD sprite.
+ */
 function renderShelf() {
-    const { shelf } = state.els;
+    const { shelf, dock } = state.els;
     const asset = state.assets[state.active];
     if (!asset?.faces) {
-        toggleElement(shelf.root, false);
+        toggleElement(dock, false);
         shelf.rail.replaceChildren();
         return;
     }
-    toggleElement(shelf.root, true);
+    toggleElement(dock, true);
     toggleElement(shelf.all, asset.faces.length > FACE_GRID_THRESHOLD);
 
     shelf.rail.replaceChildren(...asset.faces.map((faceId, i) => {

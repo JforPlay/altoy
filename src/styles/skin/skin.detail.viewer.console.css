@@ -1,15 +1,23 @@
 /* =============================================================================
    skin.detail.viewer.console.css
-   The console SHELL for /skin/skin-detail-viewer/: the full-width top bar (title,
-   combobox, 찾아보기 · 랜덤), the three-column grid, the left skin rail, the right
-   voice column frame, its collapse handle + floating re-open pill, the loading
-   skeleton, and the responsive collapse to a single column.
+   The console SHELL for /skin/skin-detail-viewer/: the three-column grid, the
+   left rail (its head carries the page's whole navigation), the caption that
+   floats on the art, the right voice column frame, its collapse handle +
+   floating re-open pill, the loading skeleton, and the responsive collapse to a
+   single column.
 
    Not here: the art stage (skin.detail.viewer.stage.css), the voice tabs / rows /
    player internals (skin.detail.viewer.voice.css), the search modal
    (skin.detail.viewer.search.css).
 
-   All color/spacing/z tokens come from theme.css. The page is accent-themed
+   NOTHING is stacked above the art but the global navbar. The page-level top bar
+   that used to carry the title + combobox + 찾아보기 was deleted on 2026-09-21:
+   three bands (navbar 64 + topbar 56 + stage head 49) plus a 123px bottom dock
+   spent 26% of a 1080 screen before a pixel of artwork. The navigation moved into
+   the rail's head; the caption, the 일러 picker and the 표정 dock all float.
+
+   All color/spacing/z tokens come from theme.css; the few this file adds are the
+   shared radius / hairline / glass scale below. The page is accent-themed
    (<body data-theme="accent">), so dark mode is handled by token re-resolution
    alone — explicit .dark-mode rules only appear where no token can express it.
 ============================================================================= */
@@ -20,56 +28,147 @@
    this wins over common.css's .main-container regardless of bundle order. */
 .sdv-page.main-container {
   /* 4rem = the measured 64px accent-page navbar (sticky, see global.navbar.css).
-     Both live here rather than on .sdv-console because .sdv-topbar is its sibling
-     and hangs off the same two numbers. */
+     It is now the ONLY chrome above the art, so every pane hangs off this alone. */
   --sdv-chrome: 4rem;
-  --sdv-topbar-h: 3.5rem;
+
+  /* One radius scale for the whole console. Rectangular throughout — never
+     --radius-full, per the chip rule in CLAUDE.md. */
+  --sdv-r-lg: 12px;
+  --sdv-r-md: 9px;
+  --sdv-r-sm: 7px;
+
+  /* Hairlines and hover lifts. :root-side values are the LIGHT theme and
+     body.dark-mode overrides them below — never `body:not(.dark-mode)`, which
+     would lose to any later rule at equal specificity. */
+  --sdv-hair: rgba(15, 25, 35, 0.11);
+  --sdv-lift-1: rgba(15, 25, 35, 0.04);
+  --sdv-lift-2: rgba(15, 25, 35, 0.075);
+
+  /* The stage is dark in BOTH themes (face patches are overwhelmingly light), so
+     everything that floats on it keeps one ink ramp and never inverts. */
+  --sdv-glass: rgba(14, 20, 25, 0.74);
+  --sdv-ink-1: #f4f7f9;
+  --sdv-ink-2: rgba(255, 255, 255, 0.66);
+  --sdv-ink-3: rgba(255, 255, 255, 0.46);
 
   max-width: none;
   padding: 0;
 }
 
-/* --- Top bar -----------------------------------------------------------------
-   ONE full-width line above the console: page title, the 함순이 combobox and the
-   찾아보기 · 랜덤 opener. These used to stack inside the 234px rail, which cost the
-   rail ~150px of skin list and read as three separate blocks.
-
-   Pinned under the navbar, and its height is a CONSTANT the three console panes
-   below subtract from theirs. Letting it scroll away instead makes the panes
-   start 56px down the viewport at scroll 0, which pushes the player bar under
-   the fold — the exact thing the docked player exists to avoid. `nowrap` is what
-   keeps the constant honest; below the console breakpoint the bar is static and
-   free to wrap. */
-.sdv-topbar {
-  position: sticky;
-  top: var(--sdv-chrome);
-  /* One above --z-sticky: the console's own sticky head is at --z-sticky and
-     comes later in the DOM, so at equal z it would paint over the open 함순이
-     dropdown. */
-  z-index: calc(var(--z-sticky) + 1);
-  box-sizing: border-box;
-  height: var(--sdv-topbar-h);
-  display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  gap: var(--spacing-sm);
-  padding: 0 var(--spacing-md);
-  background: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-color);
+body.dark-mode .sdv-page.main-container {
+  --sdv-hair: rgba(255, 255, 255, 0.085);
+  --sdv-lift-1: rgba(255, 255, 255, 0.045);
+  --sdv-lift-2: rgba(255, 255, 255, 0.085);
 }
 
-.sdv-topbar-brand {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  margin-right: auto;
+/* One material for every floating control over the art: the 전체화면 button, the
+   일러 column and the 표정 dock. Shared so they read as the same pane of glass. */
+.sdv-glass {
+  border: 1px solid var(--sdv-hair);
+  background: var(--sdv-glass);
+  -webkit-backdrop-filter: blur(22px) saturate(1.4);
+  backdrop-filter: blur(22px) saturate(1.4);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.42);
 }
 
-/* Grows into the free middle of the bar but stops well short of the 찾아보기
-   button, so the two never read as one control. */
-.sdv-topbar-pick {
-  flex: 0 1 22rem;
-  min-width: 11rem;
+/* --- Rail head ---------------------------------------------------------------
+   The page's whole navigation — title, 함순이 combobox, 찾아보기 · 랜덤 — in the
+   column that can afford the height. It sat here before the renewal as three
+   stacked BLOCKS eating ~150px of skin list; one compact group costs ~130px and
+   buys the stage its entire top bar back. */
+.sdv-rail-head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-bottom: 1px solid var(--sdv-hair);
+}
+
+.sdv-rail-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.sdv-rail-head .info-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--sdv-r-sm);
+  background: none;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.sdv-rail-head .info-button:hover {
+  background: var(--sdv-lift-1);
+  color: var(--text-primary);
+}
+
+/* --- 함순이 combobox ----------------------------------------------------------
+   A filled hairline field rather than global.components.css's 2px-bordered box:
+   at rail width that border reads as a form, not as search. The explicit height
+   is load-bearing — .dropdown-container is a flex COLUMN item here, so a
+   flex-basis meant for a row would resolve as a height. */
+.sdv-rail-pick {
+  flex: 0 0 auto;
+  position: relative;
+  width: 100%;
+  height: 36px;
+}
+
+.sdv-pick-icon {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  pointer-events: none;
+}
+
+.sdv-rail-pick input {
+  height: 36px;
+  padding: 0 30px 0 31px;
+  border: 1px solid var(--sdv-hair);
+  border-radius: var(--sdv-r-md);
+  background: var(--sdv-lift-1);
+  font-size: 0.82rem;
+  font-weight: 500;
+  /* the global rule lifts the field 1px on focus; at this size it just jitters */
+  transform: none;
+}
+
+.sdv-rail-pick input:hover {
+  background: var(--sdv-lift-2);
+}
+
+.sdv-rail-pick input:focus {
+  background: var(--sdv-lift-1);
+  border-color: var(--primary-color);
+  transform: none;
+}
+
+.sdv-rail-pick .dropdown-icon {
+  right: 11px;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+/* No `top`: the global rule leaves it auto, so the panel already sits at its
+   static position right under the 36px input. Only the gap and the skin change. */
+.sdv-rail-pick .dropdown-content {
+  margin-top: 4px;
+  border-color: var(--sdv-hair);
+  border-radius: var(--sdv-r-md);
 }
 
 /* --- The grid ---------------------------------------------------------------
@@ -83,9 +182,11 @@
    skin.detail.viewer.stage.css) and the page scrolls with it, while the rail, the
    voice drawer and the stage's own dock stay pinned to the viewport. */
 .sdv-console {
-  --sdv-rail-w: 234px;
+  /* 304px, up from 234: the rail now hosts the search field and the
+     찾아보기 · 랜덤 pair, and it is the only place a skin name has room to breathe. */
+  --sdv-rail-w: 304px;
   --sdv-voice-w: 372px;
-  --sdv-pane-top: calc(var(--sdv-chrome) + var(--sdv-topbar-h));
+  --sdv-pane-top: var(--sdv-chrome);
   --sdv-pane-h: calc(100dvh - var(--sdv-pane-top));
   /* Height ceiling for the width-driven art fit (stage.css .sdv-art-fit). 1.35
      screens: enough that a 1:2 portrait is rendered big, bounded so it never
@@ -138,48 +239,36 @@
   display: flex;
   flex-direction: column;
   background: var(--bg-secondary);
-  border-right: 1px solid var(--border-color);
+  border-right: 1px solid var(--sdv-hair);
 }
 
-/* A console header, not a landing-page title. */
+/* A section label for the column, not a landing-page title — the navbar already
+   says where you are, and this line is competing with a skin list. */
 .sdv-title {
   flex: 1;
   min-width: 0;
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.69rem;
   font-weight: 700;
   line-height: 1.3;
-  letter-spacing: -0.01em;
-  color: var(--text-primary);
-}
-
-.sdv-field-label {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-}
-
-.sdv-field-label i {
-  color: var(--primary-color);
-}
-
-.sdv-topbar .dropdown-container input {
-  height: 2.1rem;
-  font-size: 0.875rem;
+  letter-spacing: 0.045em;
+  color: var(--text-muted);
 }
 
 /* --- 찾아보기 · 랜덤 ----------------------------------------------------------
    One button, two jobs, and it has to read that way: two labelled halves split
-   by a hairline rule. .btn/.btn-outline supply every property; only the internal
-   split lives here. */
+   by a hairline rule. .btn/.btn-outline supply every property; only the size
+   hooks and the internal split live here. */
 .sdv-browse-btn {
-  --btn-pad-y: 0.4rem;
-  --btn-pad-x: 0.65rem;
+  --btn-pad-y: 0;
+  --btn-pad-x: 0;
+  --btn-font-size: 0.74rem;
   flex-shrink: 0;
   gap: 0;
+  width: 100%;
+  height: 32px;
+  border-radius: var(--sdv-r-md);
+  border-color: var(--sdv-hair);
 }
 
 .sdv-browse-part {
@@ -202,12 +291,14 @@
 }
 
 /* --- Skin list --------------------------------------------------------------- */
+/* A caption for the group below, so it takes no rule of its own. */
 .sdv-rail-count {
   margin: 0;
-  padding: var(--spacing-sm) var(--spacing-md) var(--spacing-xs);
-  border-bottom: 1px solid var(--border-color);
-  font-size: 0.75rem;
-  font-weight: 600;
+  padding: 13px 14px 5px;
+  border: 0;
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   color: var(--text-muted);
 }
 
@@ -218,27 +309,31 @@
 .sdv-rail-list {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: var(--spacing-sm) var(--spacing-xs) var(--spacing-md);
+  padding: 0 8px var(--spacing-md);
 }
 
 /* ONE LINE, always: the name takes the slack and truncates, the 기믹 badges never
-   shrink. Anything added to this row must be flex-shrink: 0 or truncating. */
+   shrink. Anything added to this row must be flex-shrink: 0 or truncating.
+   `relative` is for the selected row's accent bar below. */
 .sdv-skin-row {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.375rem;
   width: 100%;
-  padding: 0.4rem 0.55rem;
+  min-height: 34px;
+  padding: 0.4rem 0.55rem 0.4rem 0.6rem;
   background: transparent;
   border: 0;
-  border-radius: var(--radius-sm);
+  border-radius: var(--sdv-r-md);
   color: var(--text-secondary);
   font-family: inherit;
-  font-size: 0.8125rem;
+  font-size: 0.8rem;
+  font-weight: 500;
   text-align: left;
   cursor: pointer;
   transition: background var(--transition-fast), color var(--transition-fast);
@@ -260,7 +355,7 @@
 }
 
 .sdv-skin-row:hover {
-  background: var(--overlay-lighter);
+  background: var(--sdv-lift-1);
   color: var(--text-primary);
 }
 
@@ -269,10 +364,24 @@
   box-shadow: var(--focus-ring);
 }
 
+/* Tint PLUS an accent bar. Recolouring the text alone was the weakest selected
+   state available, and at 0.8rem on a tinted row it barely registered. */
 .sdv-skin-row[aria-current="true"] {
   background: var(--primary-alpha-10);
-  color: var(--text-link);
-  font-weight: 700;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.sdv-skin-row[aria-current="true"]::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 15px;
+  border-radius: 0 2px 2px 0;
+  background: var(--primary-color);
 }
 
 /* --- 기믹 badges ---------------------------------------------------------------
@@ -286,10 +395,12 @@
 .sdv-skin-tag {
   --gm: var(--text-muted);
 
-  padding: 0.1rem 0.3rem;
+  padding: 0.08rem 0.28rem;
+  border-radius: 4px;
   background: color-mix(in srgb, var(--gm) 16%, transparent);
   color: color-mix(in srgb, var(--gm) 72%, #000);
-  font-size: 0.65rem;
+  font-size: 0.6rem;
+  font-weight: 700;
 }
 
 body.dark-mode .sdv-skin-tag {
@@ -307,16 +418,20 @@ body.dark-mode .sdv-skin-tag {
 .sdv-skin-tag[data-gm="asmr"]  { --gm: var(--accent-slate-light); }
 
 /* --- Centre column frame ------------------------------------------------------
-   The art frame, asset rail and face shelf themselves live in
-   skin.detail.viewer.stage.css; only the column frame is here. */
-/* NOT `overflow: hidden`: the head and the dock below are `position: sticky`, and
-   a hidden ancestor is its own scroll container — they would pin to a box that
-   never scrolls and so never move at all. */
+   The art frame, asset column and face dock themselves live in
+   skin.detail.viewer.stage.css; only the column frame and the caption are here.
+
+   `relative` is the containing block for the caption and the 일러 column, which
+   are absolutely positioned over the art. NOT `overflow: hidden`: the dock below
+   is `position: sticky`, and a hidden ancestor is its own scroll container — it
+   would pin to a box that never scrolls and so never move at all. No horizontal
+   padding either: the art runs edge to edge between the two side panes. */
 .sdv-stage {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-height: var(--sdv-pane-h);
-  padding: 0 var(--spacing-sm);
+  padding: 0;
 }
 
 /* Takes the art's own height (the fit is width-driven), so the column — and with
@@ -325,53 +440,67 @@ body.dark-mode .sdv-skin-tag {
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
-  padding: var(--spacing-sm) 0;
+  padding: 0;
 }
 
-/* Pinned under the navbar so the skin's identity and the art tools stay readable
-   however far the art scrolls. Opaque, or the art would show through it. */
+/* --- Caption -----------------------------------------------------------------
+   Floats ON the art, on a scrim that fades to nothing — so the skin's identity
+   costs zero height above the picture. It used to be a sticky 49px band; that
+   band plus the deleted top bar is most of the ~143px the art gained.
+
+   Measured against the rendered image, the whole scrim BOX overlaps ~5.4% of it,
+   and the opaque part is roughly the top third of that. */
 .sdv-stage-head {
-  position: sticky;
-  top: var(--sdv-pane-top);
-  z-index: var(--z-sticky);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
   display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: var(--spacing-xs) var(--spacing-sm);
-  margin: 0 calc(-1 * var(--spacing-sm));
-  padding: 0.6rem var(--spacing-lg);
-  background: var(--bg-primary);
-  border-bottom: 1px solid var(--border-color);
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  padding: 12px 14px 24px;
+  border: 0;
+  background: linear-gradient(180deg,
+      rgba(10, 15, 19, 0.74) 0%,
+      rgba(10, 15, 19, 0.34) 52%,
+      rgba(10, 15, 19, 0) 100%);
 }
 
+/* Every text stop on the caption is one rung of the same ink ramp, which is what
+   keeps a four-part line from reading as four labels. The shadow is not decoration
+   — a white uniform can sit directly under this text. */
 .sdv-stage-title {
   margin: 0;
-  font-size: 1.05rem;
+  font-size: 1.06rem;
   font-weight: 700;
-  color: var(--text-primary);
+  letter-spacing: -0.015em;
+  color: var(--sdv-ink-1);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
 }
 
 .sdv-stage-rarity {
   flex-shrink: 0;
 }
 
-/* Inline with the title (it used to force its own second row at `width: 100%`),
-   and the first thing to wrap when the column is narrow. */
 .sdv-stage-meta {
-  flex: 1 1 auto;
+  flex: 0 0 auto;
   min-width: 0;
   margin: 0;
-  font-size: 0.8125rem;
-  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--sdv-ink-2);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
 }
 
 .sdv-stage-meta:empty {
   display: none;
 }
 
-/* Stage module's slot on the head row: the art's native-size label and the
-   전체화면 · 저장 button. They used to be absolutely positioned inside the art
-   frame, which reserved 46px of its height and scrolled away with it. */
+/* Stage module's slot on the caption row: the 전체화면 · 저장 button, pushed to the
+   right. The art's native-size label is its own element (#stage-art-label) and
+   stays on the left with the rest of the metadata. */
 .sdv-stage-tools {
   display: flex;
   align-items: center;
@@ -403,13 +532,16 @@ body.dark-mode .sdv-skin-tag {
   display: flex;
   flex-direction: column;
   background: var(--bg-secondary);
-  border-left: 1px solid var(--border-color);
+  border-left: 1px solid var(--sdv-hair);
 }
 
+/* The rows are rounded and separator-less now, so the list supplies the gutter
+   their hover surface needs. */
 .sdv-voice-list {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  padding: 4px 6px 10px;
 }
 
 /* Slim vertical tab riding the column's left edge. It sits OUTSIDE the column
@@ -499,7 +631,12 @@ body.dark-mode .sdv-skin-tag {
 
 /* --- Responsive: single column (< 1100px) -------------------------------------
    Natural page scroll returns and the source order already reads
-   search → skin strip → stage → face shelf → voice list → player. */
+   rail head → skin strip → caption → stage → 일러 → 표정 → voice list → player.
+
+   Everything that floats on the art goes back into flow here. A phone has no
+   spare width for a vertical column beside the art and no spare height to give
+   a scrim, and the art is only ~390px wide — a caption over it would sit on the
+   character's face rather than on background. */
 @media (max-width: 1099px) {
   .sdv-console,
   .sdv-console.voice-closed {
@@ -509,37 +646,52 @@ body.dark-mode .sdv-skin-tag {
   }
 
   /* Nothing pins on a block-flow page: a viewport-tall sticky rail would cover
-     the stage it is meant to introduce. */
-  .sdv-topbar,
+     the stage it is meant to introduce.
+
+     .sdv-assets and .sdv-dock are NOT in this list even though they need the same
+     reset — their base rules live in skin.detail.viewer.stage.css, which is
+     bundled AFTER this file, and @media adds no specificity. Their resets are in
+     that sheet's own responsive block, after the rules they undo. */
   .sdv-rail,
   .sdv-voice,
-  .sdv-stage-head,
-  .sdv-dock {
+  .sdv-stage-head {
     position: static;
     height: auto;
-  }
-
-  .sdv-topbar {
-    flex-wrap: wrap;
-    padding: var(--spacing-sm) var(--spacing-md);
-  }
-
-  .sdv-topbar-pick {
-    flex: 1 1 12rem;
+    transform: none;
   }
 
   .sdv-stage {
     min-height: 0;
-    padding: 0;
   }
 
+  /* Back to an opaque band, with the tools wrapping under the name. */
   .sdv-stage-head {
+    flex-wrap: wrap;
+    gap: var(--spacing-xs) var(--spacing-sm);
     margin: 0;
+    padding: 0.6rem var(--spacing-md);
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--sdv-hair);
+  }
+
+  .sdv-stage-title {
+    color: var(--text-primary);
+    text-shadow: none;
+  }
+
+  .sdv-stage-meta,
+  .sdv-stage-head .sdv-art-label {
+    color: var(--text-muted);
+    text-shadow: none;
   }
 
   .sdv-rail {
     border-right: 0;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--sdv-hair);
+  }
+
+  .sdv-rail-head {
+    padding: var(--spacing-sm) var(--spacing-md);
   }
 
   /* The list becomes a horizontal strip of chips. */
@@ -567,7 +719,7 @@ body.dark-mode .sdv-skin-tag {
   .voice-closed .sdv-voice {
     overflow: visible;
     border-left: 0;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid var(--sdv-hair);
     border-left-width: 0;
   }
 

@@ -34,55 +34,44 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: var(--spacing-xs);
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-bottom: 1px solid var(--border-color);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--sdv-hair);
 }
 
-/* Segmented row: joined borders, one filled member. Mirrors .btn-group's shape
-   without depending on .btn, because the controller renders bare .sdv-tab
-   buttons whose selected state is aria-selected, not a class. */
+/* A segmented control on a filled track: one recessed group, the selected member
+   RAISED out of it. The old shape was N buttons with joined 1px borders and a
+   solid blue fill on the active one, which at this size read as a toolbar rather
+   than as a two-way switch. The controller renders bare .sdv-tab buttons whose
+   selected state is aria-selected, not a class, so this can't lean on .btn-group. */
 .sdv-tabs,
 .sdv-voice-bank {
   display: inline-flex;
+  padding: 2px;
+  border-radius: var(--sdv-r-md);
+  background: var(--sdv-lift-1);
+  box-shadow: inset 0 0 0 1px var(--sdv-hair);
 }
 
 .sdv-tab,
 .sdv-bank-btn {
-  padding: 0.35rem 0.7rem;
-  margin-left: -1px;
-  background: var(--bg-elevated);
-  color: var(--text-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 0;
+  padding: 0.3rem 0.65rem;
+  margin: 0;
+  background: none;
+  color: var(--text-muted);
+  border: 0;
+  border-radius: var(--sdv-r-sm);
   font-family: inherit;
-  font-size: 0.78rem;
+  font-size: 0.73rem;
   font-weight: 600;
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
-  transition: background var(--transition-fast), color var(--transition-fast),
-              border-color var(--transition-fast);
-}
-
-.sdv-tab:first-child,
-.sdv-bank-btn:first-child {
-  margin-left: 0;
-  border-top-left-radius: var(--radius-md);
-  border-bottom-left-radius: var(--radius-md);
-}
-
-.sdv-tab:last-child,
-.sdv-bank-btn:last-child {
-  border-top-right-radius: var(--radius-md);
-  border-bottom-right-radius: var(--radius-md);
+  transition: background var(--transition-fast), color var(--transition-fast);
 }
 
 .sdv-tab:hover,
 .sdv-bank-btn:hover {
   color: var(--text-primary);
-  border-color: var(--primary-color);
-  position: relative;
-  z-index: var(--z-base);
 }
 
 .sdv-tab:focus-visible,
@@ -91,15 +80,14 @@
   box-shadow: var(--focus-ring);
 }
 
-/* Filled selected state uses --accent-blue + #fff, never --primary-color:
-   --primary-color is grayscale on the default theme and silver in dark. */
+/* The selected member is lifted by surface, not by hue: --bg-primary here is the
+   page behind the recessed track, so it reads as raised in both themes without a
+   fill that has to be contrast-checked against its own label. */
 .sdv-tab[aria-selected="true"],
 .sdv-bank-btn[aria-selected="true"] {
-  background: var(--accent-blue);
-  color: #fff;
-  border-color: var(--accent-blue);
-  position: relative;
-  z-index: var(--z-base);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.28);
 }
 
 .sdv-tab:disabled,
@@ -117,7 +105,7 @@
   max-height: 9.5rem;
   overflow-y: auto;
   padding: var(--spacing-sm) var(--spacing-md);
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--sdv-hair);
   font-size: 0.8125rem;
   line-height: 1.5;
   color: var(--text-secondary);
@@ -174,26 +162,29 @@
 }
 
 /* --- Line rows ------------------------------------------------------------------ */
+/* Rounded rows with a hover lift instead of hairline-separated bands: at ~30 rows
+   the separators were doing more ruling than the content needed. */
 .sdv-line {
   display: grid;
-  grid-template-columns: 58px 1fr auto;
+  grid-template-columns: 54px 1fr auto;
   align-items: center;
   gap: var(--spacing-sm);
-  padding: 0.5rem var(--spacing-md);
-  border-bottom: 1px solid var(--border-color);
+  padding: 0.45rem 0.6rem;
+  border-radius: var(--sdv-r-md);
   transition: background var(--transition-fast);
 }
 
 .sdv-line:hover {
-  background: var(--overlay-lightest);
+  background: var(--sdv-lift-1);
 }
 
 .sdv-line-label {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 0.7rem;
-  font-weight: 600;
+  font-size: 0.655rem;
+  font-weight: 700;
+  letter-spacing: 0.035em;
   line-height: 1.3;
   color: var(--text-muted);
 }
@@ -206,8 +197,8 @@
   -webkit-line-clamp: 2;
   line-clamp: 2;
   overflow: hidden;
-  font-size: 0.8125rem;
-  line-height: 1.45;
+  font-size: 0.79rem;
+  line-height: 1.5;
   color: var(--text-primary);
 }
 
@@ -264,7 +255,7 @@
   gap: 0.4rem;
   padding: var(--spacing-sm) var(--spacing-md);
   background: var(--bg-tertiary);
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--sdv-hair);
 }
 
 .sdv-player-row {
