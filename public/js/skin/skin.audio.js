@@ -126,6 +126,24 @@ function handlePlayClick(event) {
     }
 }
 
+/**
+ * Move the playhead of whatever is currently playing.
+ *
+ * Guarded on a FINITE duration, not merely on there being an audio element:
+ * until `loadedmetadata` lands the duration is NaN, and assigning a currentTime
+ * against it throws in some engines — the player bar's seek slider is live from
+ * the moment a clip starts, which is exactly that window.
+ * @param {number} seconds - clamped into [0, duration]
+ */
+function seekTo(seconds) {
+    const audio = state.currentAudio;
+    if (!audio || !Number.isFinite(audio.duration)) return;
+    audio.currentTime = Math.min(Math.max(0, seconds), audio.duration);
+    // `timeupdate` follows a seek, but not before the next frame — push now so the
+    // readout tracks the drag instead of lagging a tick behind the thumb.
+    notifyPlayback(!audio.paused);
+}
+
 // ===== Volume =====
 
 // Volume state handlers — react to slider input and sync state/icons
@@ -229,6 +247,7 @@ export {
     stopCurrentAudio,
     handlePlayClick,
     subscribePlayback,
+    seekTo,
     createVolumeControlElement,
     attachVolumeListeners,
     updateVolumeIcon

@@ -138,7 +138,11 @@ function initStage() {
     state.els = { stage, assetRail, assets, dock, dockHome, tools, art, view, fit, label, fullBtn, shelf };
     state.viewer = buildViewer();
     state.grid = buildFaceGrid();
-    setDockPin(getStorageItem(DOCK_PIN_KEY, false) === true);
+    // getStorageItem returns the raw STRING localStorage holds, so the old
+    // `=== true` compared 'true' to a boolean and was false for every visitor —
+    // the pin was written on every click and restored on none. Same string idiom
+    // the drawer's own open/closed preference uses.
+    setDockPin(getStorageItem(DOCK_PIN_KEY, '') === 'true');
 
     // One handler for both overlays; they are mutually exclusive by construction
     // (전체 표정 is only reachable from the shelf, the viewer only from the art).
@@ -323,7 +327,7 @@ function assetNode(asset) {
     }
 
     const img = createImgElement(asset.url, `${asset.label} 일러스트`, { className: 'sdv-art-img', eager: true });
-    img.addEventListener('load', () => {
+    const adoptSize = () => {
         asset.w = img.naturalWidth;
         asset.h = img.naturalHeight;
         if (state.assets[state.active] === asset) {
@@ -331,7 +335,13 @@ function assetNode(asset) {
             renderLabel();
             if (isOpen(state.viewer.root)) renderViewer();
         }
-    }, { once: true });
+    };
+    // A cached image is already decoded when createImgElement sets its src, but
+    // `load` still fires a frame late — so the size was unknown for exactly one
+    // paint and the art rendered unfitted before snapping. Read it now when it is
+    // already there, and fall back to the event when it is not.
+    if (img.complete && img.naturalWidth) adoptSize();
+    else img.addEventListener('load', adoptSize, { once: true });
     asset.node = img;
     return img;
 }
@@ -356,8 +366,13 @@ function applyFit(fit, asset, mode = 'width') {
         fit.style.width = '';
         fit.style.height = '100%';
         fit.style.aspectRatio = known ? `${asset.w} / ${asset.h}` : '';
-        fit.style.maxWidth = known ? `${asset.w}px` : '';
-        fit.style.maxHeight = known ? `${asset.h}px` : '';
+        // min(100%, native), not a bare native size: the inline max-width beats the
+        // sheet's own `max-width: 100%`, so a 2000px painting whose ratio-derived
+        // width exceeds a phone's 412px screen was laid out at 870px and CENTRED by
+        // the flex body — running off both edges at once. Clamping here keeps the
+        // never-upscale cap and restores the containment the lightbox promises.
+        fit.style.maxWidth = known ? `min(100%, ${asset.w}px)` : '100%';
+        fit.style.maxHeight = known ? `min(100%, ${asset.h}px)` : '100%';
         return;
     }
 
@@ -396,9 +411,9 @@ function buildShelf() {
     const root = el('div', 'sdv-dock-group sdv-glass');
 
     const head = el('div', 'sdv-face-head');
-    const prev = stepButton(-1, '이전 표정');
+    const prev = stepButton(-1, '이전 표정', stepFace);
     const count = el('span', 'sdv-face-count');
-    const next = stepButton(1, '다음 표정');
+    const next = stepButton(1, '다음 표정', stepFace);
     const spacer = el('span', 'sdv-face-spacer');
 
     const all = el('button', 'sdv-face-all');
@@ -518,12 +533,17 @@ function setDockPin(on, persist = false) {
     if (state.dockPinned) requestAnimationFrame(() => updateFade(state.els.shelf.wrap, state.els.shelf.rail));
 }
 
-function stepButton(delta, ariaLabel) {
+/**
+ * A ‹ / › control. Shared by the 표정 shelf and the viewer's 일러 stepper — same
+ * 26px button on the same dark chrome, so `onStep` is the only difference and a
+ * second copy of this would be a second thing to keep in sync.
+ */
+function stepButton(delta, ariaLabel, onStep) {
     const btn = el('button', 'sdv-face-step');
     btn.type = 'button';
     btn.setAttribute('aria-label', ariaLabel);
     btn.appendChild(createIcon(delta < 0 ? 'fas fa-chevron-left' : 'fas fa-chevron-right'));
-    btn.addEventListener('click', () => stepFace(delta));
+    btn.addEventListener('click', () => onStep(delta));
     return btn;
 }
 
@@ -822,8 +842,20 @@ function buildViewer() {
     close.appendChild(createIcon('fas fa-times'));
     close.addEventListener('click', closeViewer);
 
+    // 일러 stepper: 전체 › 확대 › 깔끔 › SD › 아이콘 › 쥬스타 without leaving the
+    // lightbox. It lives in the HEAD rather than the foot because the foot holds
+    // the 표정 dock and is hidden wholesale for an art object that has no
+    // expressions — which is precisely when you still need a way back out.
+    const assetName = el('span', 'sdv-viewer-asset');
+    const nav = el('div', 'sdv-viewer-nav');
+    nav.append(
+        stepButton(-1, '이전 일러스트', stepAsset),
+        assetName,
+        stepButton(1, '다음 일러스트', stepAsset),
+    );
+
     const head = el('div', 'sdv-viewer-head');
-    head.append(titles, save, close);
+    head.append(titles, nav, save, close);
 
     const fit = el('div', 'sdv-art-fit');
     const body = el('div', 'sdv-viewer-body');
@@ -838,7 +870,7 @@ function buildViewer() {
     foot.append(note);
 
     root.replaceChildren(head, body, foot);
-    return { root, name, meta, body, fit, foot };
+    return { root, name, meta, body, fit, foot, nav, assetName };
 }
 
 /**
@@ -879,10 +911,21 @@ function renderViewer() {
     state.viewer.meta.textContent = (asset.w && asset.h)
         ? `${asset.label} 일러스트 · 원본 ${asset.w} × ${asset.h}`
         : `${asset.label} 일러스트`;
+    state.viewer.assetName.textContent = asset.label;
+    // A skin with one art object has nothing to step to; SD-only skins are the
+    // common case there.
+    toggleElement(state.viewer.nav, state.assets.length > 1);
     state.viewer.fit.replaceChildren(assetNode(asset));
     applyFit(state.viewer.fit, asset, 'contain');
     toggleElement(state.viewer.foot, !!asset.faces);
     if (asset.faces) renderFaceSelection();
+}
+
+/** Step the art object by `delta`, wrapping at both ends (mirrors stepFace). */
+function stepAsset(delta) {
+    const count = state.assets.length;
+    if (count < 2) return;
+    selectAsset((state.active + delta + count) % count);
 }
 
 function closeViewer() {
@@ -927,8 +970,10 @@ async function saveCurrentArt() {
 // ===== Keyboard =====
 
 /**
- * Escape closes whichever overlay is up; arrows step the expression while the
- * viewer is open. The overlays never stack, so first-match wins is enough.
+ * Escape closes whichever overlay is up; inside the viewer the arrows step the
+ * two axes it shows — left/right the 표정, up/down the 일러. The 전체 표정 grid
+ * CAN sit over the viewer (it is reachable from the dock the viewer borrows), so
+ * it is tested first and swallows the key rather than letting both act.
  */
 function onKeydown(e) {
     if (isOpen(state.grid?.root)) {
@@ -940,6 +985,8 @@ function onKeydown(e) {
         case 'Escape': e.preventDefault(); closeViewer(); break;
         case 'ArrowLeft': e.preventDefault(); stepFace(-1); break;
         case 'ArrowRight': e.preventDefault(); stepFace(1); break;
+        case 'ArrowUp': e.preventDefault(); stepAsset(-1); break;
+        case 'ArrowDown': e.preventDefault(); stepAsset(1); break;
     }
 }
 

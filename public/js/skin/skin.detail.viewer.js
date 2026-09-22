@@ -42,6 +42,7 @@ import {
     stopCurrentAudio,
     handlePlayClick,
     subscribePlayback,
+    seekTo,
     createVolumeControlElement,
     attachVolumeListeners,
 } from './skin.audio.js';
@@ -111,6 +112,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Optional: decorative or collapsible chrome. Each is null-guarded so a
     // markup rename degrades that one affordance instead of the whole page.
     const consoleEl = document.querySelector('.sdv-console');
+    const charClear = document.getElementById('character-search-clear');
     const railCount = document.getElementById('skin-rail-count');
     const voiceDesc = document.getElementById('voice-desc');
     const voiceBank = document.getElementById('voice-bank');
@@ -132,6 +134,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     let currentSkinName = '';
     let activeTab = 'normal';
     let voiceOpen = true;
+    // True while the player bar's seek thumb is held, so playback updates stop
+    // fighting the drag for the slider's value.
+    let seeking = false;
     // charName -> (skinName -> 기믹 tags), built once from the index on first rail render.
     let skinTagsByChar = null;
 
@@ -219,8 +224,30 @@ document.addEventListener('DOMContentLoaded', async () => {
             getLabel: (name) => name,
             filterItems: (query) => searchCharacters(query).map(res => res.item.name),
             onSelect: (name) => selectCharacter(name),
+            onInputChange: syncCharClear,
             emptyMessage: '검색 결과가 없습니다',
         });
+
+        // Clearing leaves the caret in the box, so the next keystroke reopens the
+        // list through the helper's own `input` handler. It deliberately does NOT
+        // force the panel open here: setupDropdown closes on any document click
+        // outside the input and the panel, and this button is neither — an open()
+        // from this handler is undone by that listener a moment later, on the same
+        // click.
+        charClear?.addEventListener('click', () => {
+            elements.charInput.value = '';
+            syncCharClear();
+            elements.charInput.focus();
+        });
+    }
+
+    /**
+     * Show the X only when there is something to clear. Typing is covered by the
+     * helper's `onInputChange`; every place the VALUE is set in code has to call
+     * this too, because assigning `.value` fires no input event.
+     */
+    function syncCharClear() {
+        if (charClear) charClear.hidden = !elements.charInput.value;
     }
 
     /**
@@ -230,6 +257,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     function selectCharacter(name, clearSkin = true) {
         currentCharName = name;
         elements.charInput.value = name;
+        syncCharClear();
         if (clearSkin) {
             currentSkinName = '';
             clearSkinDetails();
@@ -790,34 +818,62 @@ document.addEventListener('DOMContentLoaded', async () => {
         time.className = 'sdv-player-time';
         time.textContent = '0:00';
 
-        // The shared widget initializes the slider from the current global volume
-        // and carries the `.volume-slider` class `attachVolumeListeners` binds, so
-        // take its input rather than hand-rolling one; the bar is too narrow for
-        // the widget's icon and percentage label, which stay behind.
+        // The shared widget initializes both parts from the current global volume
+        // and carries the classes skin.audio.js binds — `.volume-slider` for
+        // attachVolumeListeners, `.volume-icon` for updateVolumeIcon — so take
+        // them from it rather than hand-rolling either. Only the percentage label
+        // stays behind; the bar has no room for it and the slider says the same
+        // thing. The icon keeps NO extra class on purpose: updateVolumeIcon
+        // rewrites className wholesale on every change, so the stylesheet reaches
+        // it through `.sdv-player .volume-icon` instead.
         const widget = createVolumeControlElement();
+        const volumeIcon = widget.querySelector('.volume-icon');
         const volume = widget.querySelector('.volume-slider') || widget;
         volume.classList.add('sdv-player-volume');
 
         const row = document.createElement('div');
         row.className = 'sdv-player-row';
-        row.append(wave, label, time, volume);
+        row.append(wave, label, time, ...(volumeIcon ? [volumeIcon] : []), volume);
 
-        const fill = document.createElement('div');
-        fill.className = 'sdv-player-fill';
+        // Seek bar. A native range rather than the read-only progress div this
+        // replaced: click, drag, touch and arrow keys all come with it, which is
+        // the whole request. `max` is the clip's duration in seconds so the value
+        // IS the seek target and no rescaling is needed.
+        const seek = document.createElement('input');
+        seek.type = 'range';
+        seek.className = 'sdv-player-seek';
+        seek.min = '0';
+        seek.max = '0';
+        seek.step = '0.01';
+        seek.value = '0';
+        seek.disabled = true;
+        seek.setAttribute('aria-label', '재생 위치');
 
-        const track = document.createElement('div');
-        track.className = 'sdv-player-track';
-        track.setAttribute('role', 'progressbar');
-        track.setAttribute('aria-label', '재생 위치');
-        track.setAttribute('aria-valuemin', '0');
-        track.setAttribute('aria-valuemax', '100');
-        track.setAttribute('aria-valuenow', '0');
-        track.appendChild(fill);
+        // `input` fires all through a drag, so the audio follows the thumb live.
+        // The flag only suppresses the SUBSCRIPTION's writes meanwhile: playback
+        // continues during a drag, so an incoming timeupdate would push the thumb
+        // a few hundredths past where the pointer is holding it. Pointer-ended
+        // rather than change-ended alone because a keyboard step fires `input`
+        // with no pointer sequence at all, and must still seek.
+        seek.addEventListener('input', () => seekTo(Number(seek.value)));
+        seek.addEventListener('pointerdown', () => { seeking = true; });
+        ['pointerup', 'pointercancel', 'change'].forEach(evt =>
+            seek.addEventListener(evt, () => { seeking = false; }));
 
-        playerBar.replaceChildren(row, track);
+        playerBar.replaceChildren(row, seek);
         attachVolumeListeners();
 
-        return { label, track, fill, time, wave };
+        // The global scroll-to-top button is fixed to the same bottom-right corner
+        // this bar occupies, and clears it by this height (see the `:has` rule in
+        // skin.detail.viewer.console.css). Measured rather than assumed: the bar's
+        // contents are not fixed, and the two additions above just changed them.
+        if (typeof ResizeObserver === 'function') {
+            new ResizeObserver(() => {
+                document.documentElement.style.setProperty('--sdv-player-h', `${playerBar.offsetHeight}px`);
+            }).observe(playerBar);
+        }
+
+        return { label, seek, time, wave };
     }
 
     /**
@@ -833,10 +889,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         // (play() resolves async, so audio.paused is still true on this tick).
         player.wave.classList.toggle('is-playing', !!playing);
         player.label.textContent = label || PLAYER_IDLE_LABEL;
-        const percent = duration > 0 ? Math.round(Math.min(currentTime / duration, 1) * 100) : 0;
-        player.fill.style.width = `${percent}%`;
-        player.track.setAttribute('aria-valuenow', String(percent));
-        player.time.textContent = formatClock(currentTime);
+
+        // Nothing to seek through until the duration is known: the bar is
+        // permanently visible, so most of the time there is no clip at all.
+        player.seek.disabled = !(duration > 0);
+        player.seek.max = String(duration > 0 ? duration : 0);
+        if (!seeking) player.seek.value = String(duration > 0 ? Math.min(currentTime, duration) : 0);
+
+        // The total is what makes a seek target meaningful — 0:10 means nothing
+        // without knowing whether the line runs 0:12 or 1:30.
+        player.time.textContent = duration > 0
+            ? `${formatClock(currentTime)} / ${formatClock(duration)}`
+            : formatClock(currentTime);
     }
 
     /** mm:ss for the elapsed readout (utils' formatTime is the "1m 23s" report form). */
@@ -872,6 +936,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 currentCharName = '';
                 currentSkinName = '';
                 elements.charInput.value = '';
+                syncCharClear();
                 elements.skinRail.replaceChildren();
                 renderRailCount(0);
                 clearSkinDetails();

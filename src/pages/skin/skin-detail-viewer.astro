@@ -51,6 +51,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <div class="dropdown-container sdv-rail-pick">
                         <i class="fas fa-search sdv-pick-icon" aria-hidden="true"></i>
                         <input type="text" id="character-search-input" placeholder="함순이 이름으로 검색" autocomplete="off" aria-label="함순이 검색" aria-autocomplete="list" aria-controls="character-dropdown-content">
+                        <!-- Takes the chevron's place while the box has text. Touch
+                             has no Escape and no easy select-all, so this is the
+                             only quick way to drop a half-typed name. -->
+                        <button id="character-search-clear" class="sdv-pick-clear" type="button" aria-label="검색어 지우기" hidden>
+                            <i class="fas fa-times" aria-hidden="true"></i>
+                        </button>
                         <div class="dropdown-icon"><i class="fas fa-chevron-down" aria-hidden="true"></i></div>
                         <div class="dropdown-content scroll-styled" id="character-dropdown-content" role="listbox"></div>
                     </div>

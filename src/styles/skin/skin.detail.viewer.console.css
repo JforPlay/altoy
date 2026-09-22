@@ -163,12 +163,79 @@ body.dark-mode .sdv-page.main-container {
   color: var(--text-muted);
 }
 
+/* Clear button. Touch has no Escape key and no easy select-all, so wiping a
+   half-typed 함순이 name meant holding backspace — the reason this exists at all.
+   It REPLACES the chevron rather than crowding beside it (the field is 304px of
+   rail and both would collide with the text), which is the same swap
+   expression-viewer's own .clear-search-btn does. `[hidden]` is the visibility
+   switch, so the module never touches display directly. */
+.sdv-pick-clear {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--sdv-r-sm);
+  background: none;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+/* The component sheets' own guard: a bare `display: flex` above outranks the UA
+   `[hidden] { display: none }`, so without this the button never hides. */
+.sdv-pick-clear[hidden] {
+  display: none;
+}
+
+.sdv-pick-clear:hover {
+  background: var(--sdv-lift-2);
+  color: var(--text-primary);
+}
+
+.sdv-pick-clear:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.sdv-rail-pick:has(.sdv-pick-clear:not([hidden])) .dropdown-icon {
+  display: none;
+}
+
 /* No `top`: the global rule leaves it auto, so the panel already sits at its
-   static position right under the 36px input. Only the gap and the skin change. */
+   static position right under the 36px input. Only the gap and the skin change.
+
+   The font-size is inherited by the options — `.dropdown-option` is `font:
+   inherit` — and it has to be set HERE because the global component sizes the
+   input and leaves the panel at the page's 1rem. The input is 0.82rem, so the
+   list under it was rendering three points larger than the box it filters. */
 .sdv-rail-pick .dropdown-content {
   margin-top: 4px;
   border-color: var(--sdv-hair);
   border-radius: var(--sdv-r-md);
+  font-size: 0.82rem;
+}
+
+.sdv-rail-pick .dropdown-option {
+  padding: 0.5rem 0.75rem;
+}
+
+.sdv-rail-pick .dropdown-option:hover,
+.sdv-rail-pick .dropdown-option:focus-visible {
+  padding-left: 1rem;
+}
+
+.sdv-rail-pick .dropdown-empty {
+  padding: 1rem;
+  font-size: 0.82rem;
 }
 
 /* --- The grid ---------------------------------------------------------------
@@ -729,6 +796,25 @@ body.dark-mode .sdv-skin-tag {
 .sdv-voice-peek:focus-visible {
   outline: none;
   box-shadow: var(--focus-ring);
+}
+
+/* --- Scroll-to-top vs the player bar ------------------------------------------
+   The global button is fixed at the bottom-right corner, and on this page that
+   corner belongs to the player: on mobile the bar is sticky at the viewport's
+   bottom edge, on desktop it is the last row of a viewport-tall drawer pinned to
+   the same edge. Either way the 3.5rem disc landed on the volume slider — the one
+   control in the bar that needs a drag.
+
+   Lifted by the bar's MEASURED height (the controller publishes --sdv-player-h
+   from a ResizeObserver) rather than by a constant: the bar's contents are not
+   fixed — this round alone added a volume icon and a seek slider to it — so a
+   number written here would have been stale the day it was written. The fallback
+   covers the frame before the first measurement.
+
+   Scoped by :has so it cannot reach the other ~40 pages, the same way
+   global.components.css already scopes its drawer rule. */
+body:has(.sdv-player) .scroll-to-top {
+  bottom: calc(var(--sdv-player-h, 3.5rem) + 1rem);
 }
 
 /* --- Full-screen overlays (#face-grid, #stage-viewer) -------------------------

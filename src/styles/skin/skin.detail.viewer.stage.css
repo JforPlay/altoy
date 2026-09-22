@@ -106,9 +106,18 @@
     line-height: 0;
 }
 
+/* `width: auto` + `max-width: 100%`, NOT `width: 100%`. The fit box is sized from
+   the art's native dimensions, and those are only known once a plain <img> has
+   loaded — so for one frame every asset was stretched to the full column. On a
+   116px 아이콘 in a 1244px stage that is a 10x upscale flashing past before the
+   `load` handler snaps it back, which is the "flash of an image from memory" (the
+   image IS in cache — `load` still fires a frame late). Capping instead of
+   stretching makes the unsized first paint correct by construction, and once
+   applyFit has the real numbers the two agree exactly. */
 .sdv-art-img {
     display: block;
-    width: 100%;
+    width: auto;
+    max-width: 100%;
     height: auto;
 }
 
@@ -345,7 +354,7 @@
     border-radius: var(--sdv-r-lg);
 }
 
-/* --- Folding ---------------------------------------------------------------
+/* --- Folding (pointer layouts only) -----------------------------------------
    Folded is a ZERO BOX, not `display: none`, so both axes can be animated: the
    card is `width: fit-content`, so a strip that measures 0 wide contributes
    nothing and the card hugs its control row exactly as a hidden strip did — while
@@ -360,50 +369,86 @@
 
    `.is-open` is set by the module on a hover-intent timer, NOT by `:hover` here —
    a bare :hover folded the instant the pointer slipped off the card, which made
-   the whole thing feel like it was fleeing the mouse. */
-.sdv-dock .sdv-face-rail-wrap {
-    width: 0;
-    height: 0;
-    max-width: 100%;
-    opacity: 0;
-    overflow: hidden;
-    /* --slow (350ms), not --base: this is the one transition on the page that
-       moves a whole card's worth of box, and at 250ms it still read as a pop. The
-       fade is one rung shorter so the tiles are legible before the slide ends,
-       never after. Folding borrows the same pair, which is unhurried on purpose —
-       it only ever runs after the 420ms hover-intent delay has already elapsed. */
-    transition: width var(--transition-slow), height var(--transition-slow),
-                opacity var(--transition-base);
-}
+   the whole thing feel like it was fleeing the mouse.
 
-.sdv-dock.is-open .sdv-face-rail-wrap,
-.sdv-dock.is-pinned .sdv-face-rail-wrap,
-.sdv-dock.is-fullscreen .sdv-face-rail-wrap {
-    width: var(--sdv-face-strip-w, 100%);
-    height: 76px;
-    opacity: 1;
-}
+   GATED ON min-width, not merely overridden in the single-column block below.
+   The open rules are three classes (0,3,0) and that block's reset was two
+   (0,2,0), so the reset LOST and the measured desktop strip (815px) applied on a
+   412px phone: the first real tap fires mouseenter → .is-open → the dock becomes
+   829px wide, and Chrome answers a document wider than the viewport by dropping
+   the page scale, so the whole page zoomed out to ~0.5 and snapped back when the
+   fold timed out ~2s later. It read as "the overlay opens as if this weren't a
+   phone". @media adds no specificity (CLAUDE.md), so the durable fix is to keep
+   these rules away from mobile entirely rather than to out-specify them. */
+@media (min-width: 1100px) {
+    .sdv-dock .sdv-face-rail-wrap {
+        width: 0;
+        height: 0;
+        max-width: 100%;
+        opacity: 0;
+        overflow: hidden;
+        /* --slow (350ms), not --base: this is the one transition on the page that
+           moves a whole card's worth of box, and at 250ms it still read as a pop.
+           The fade is one rung shorter so the tiles are legible before the slide
+           ends, never after. Folding borrows the same pair, which is unhurried on
+           purpose — it only ever runs after the 420ms hover-intent delay has
+           already elapsed. */
+        transition: width var(--transition-slow), height var(--transition-slow),
+                    opacity var(--transition-base);
+    }
 
-/* The keyboard path, and it is :focus-VISIBLE on purpose. Under :focus-within a
-   mouse click on a tile or on the pin left the card held open by the focus the
-   click itself put there — it only folded once something else was clicked. A
-   pointer click sets no :focus-visible, so the hover-intent timer stays in charge
-   of the mouse and this rule serves tabbing alone.
-   Kept in its OWN rule: :has() is unsupported in old engines, and one unknown
-   selector invalidates every selector in the list it appears in. */
-.sdv-dock-group:has(:focus-visible) .sdv-face-rail-wrap {
-    width: var(--sdv-face-strip-w, 100%);
-    height: 76px;
-    opacity: 1;
+    .sdv-dock.is-open .sdv-face-rail-wrap,
+    .sdv-dock.is-pinned .sdv-face-rail-wrap {
+        width: var(--sdv-face-strip-w, 100%);
+        height: 76px;
+        opacity: 1;
+    }
+
+    /* The keyboard path, and it is :focus-VISIBLE on purpose. Under :focus-within
+       a mouse click on a tile or on the pin left the card held open by the focus
+       the click itself put there — it only folded once something else was
+       clicked. A pointer click sets no :focus-visible, so the hover-intent timer
+       stays in charge of the mouse and this rule serves tabbing alone.
+       Kept in its OWN rule: :has() is unsupported in old engines, and one unknown
+       selector invalidates every selector in the list it appears in. */
+    .sdv-dock-group:has(:focus-visible) .sdv-face-rail-wrap {
+        width: var(--sdv-face-strip-w, 100%);
+        height: 76px;
+        opacity: 1;
+    }
 }
 
 /* --- In the fullscreen viewer -----------------------------------------------
    The module MOVES this element into the viewer's foot rather than building a
    second strip, so there is one rail and one set of 21 thumbnails on the page.
-   Always open: a lightbox has the room and there is nothing left to cover. */
+   Always open: a lightbox has the room and there is nothing left to cover.
+
+   FULL WIDTH of the lightbox, and every box in the chain needs `min-width: 0` to
+   get there. The foot is a flex row, so the dock lands in it as a shrink-to-fit
+   item — and a scroll container still contributes its CONTENT's max-content size
+   to that, so a 815px strip made the dock 843px wide inside a 412px phone
+   (measured at x=-215: the art and the strip both ran off BOTH edges, because the
+   foot centres what it cannot fit). Pinning the width also answers the desktop
+   half of the same complaint: the strip used to stop at its measured 831px in a
+   1920px viewer instead of using the room a lightbox has. */
 .sdv-dock.is-fullscreen {
     position: static;
+    width: 100%;
+    min-width: 0;
     pointer-events: auto;
+}
+
+.sdv-dock.is-fullscreen .sdv-dock-group {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.sdv-dock.is-fullscreen .sdv-face-rail-wrap {
+    width: 100%;
+    max-width: 100%;
+    height: 76px;
+    opacity: 1;
 }
 
 /* Nothing to pin to — the dock cannot fold in here. */
@@ -505,10 +550,13 @@
     outline-offset: 1px;
 }
 
-/* Height and width live on the fold rules above — in here the strip is a plain
-   positioning context for its scroll-hint fade. */
+/* The DEFAULT is open, and the fold above is the pointer-layout exception. That
+   way the single-column layout — which has no hover to unfold with — needs no
+   reset at all, and cannot lose one to a higher-specificity desktop rule. Also
+   the positioning context for the scroll-hint fade. */
 .sdv-face-rail-wrap {
     position: relative;
+    height: 76px;
 }
 
 .sdv-face-rail {
@@ -589,6 +637,16 @@
        --overlay-opaque, which is itself only 90%. */
     background: var(--sdv-shelf);
     color: var(--sdv-on-dark);
+}
+
+/* 전체 표정 is reachable FROM the fullscreen viewer (the module lends it the live
+   표정 dock, 전체 표정 button included), so the two overlays do stack after all —
+   and at equal z-index the later sibling wins, which is the viewer. The grid
+   opened underneath it and only appeared once the lightbox was closed. One rung
+   up rather than a new token: they are the same modal layer, and this says only
+   "grid over viewer". */
+.sdv-facegrid {
+    z-index: calc(var(--z-modal) + 1);
 }
 
 .sdv-facegrid-head,
@@ -709,6 +767,32 @@
     color: var(--sdv-on-dark-dim);
 }
 
+/* 일러스트 stepper — 전체 › 확대 › 깔끔 › SD … without leaving the lightbox. The
+   BUTTONS are .sdv-face-step, reused verbatim from the 표정 shelf: it is the same
+   26px control on the same dark chrome, and a second near-identical treatment
+   would be the thing to explain, not the reuse. Only the group and its label live
+   here. Hidden by the module when the skin has a single art object.
+   --sdv-on-dark, NOT --sdv-ink-1: the ink ramp is declared on .sdv-page and this
+   overlay is a body-level SIBLING of it, so that token does not resolve here —
+   and an undefined custom property voids the whole declaration silently
+   (check:css-tokens cannot see it: the token IS defined on the page, just not on
+   an ancestor of this element). */
+.sdv-viewer-nav {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.sdv-viewer-asset {
+    min-width: 3.4rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    color: var(--sdv-on-dark);
+}
+
 .sdv-viewer-save {
     flex-shrink: 0;
 }
@@ -759,7 +843,10 @@
    pretending to fill a fixed-height column.
 ============================================================================= */
 
-@media (max-width: 1100px) {
+/* 1099, matching skin.detail.viewer.console.css. It was 1100 here, so at exactly
+   1100px the console was already a three-column grid while the stage still drew
+   its single-column dock. */
+@media (max-width: 1099px) {
     .sdv-art {
         flex: 0 0 auto;
     }
@@ -831,14 +918,10 @@
         pointer-events: auto;
     }
 
-    /* No fold at all here, so no measured width either — the strip takes the
-       full-width card and scrolls inside it. */
-    .sdv-dock .sdv-face-rail-wrap {
-        width: auto;
-        height: 76px;
-        max-width: none;
-        opacity: 1;
-    }
+    /* No .sdv-face-rail-wrap reset here any more: the fold is gated behind
+       min-width now, so the strip's open default already applies and there is
+       nothing to undo. The reset that used to live here is exactly what lost the
+       specificity fight described at the fold. */
 
     /* Controls back ABOVE the strip. Tiles-over-controls is a consequence of the
        desktop card growing upward from a pinned bottom edge; in normal flow it

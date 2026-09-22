@@ -19,8 +19,9 @@
            > button.sdv-player-wave > span x4
            > .sdv-player-label
            > .sdv-player-time
+           > i.volume-icon
            > input[type="range"].sdv-player-volume
-       > .sdv-player-track > .sdv-player-fill
+       > input[type="range"].sdv-player-seek
 ============================================================================= */
 
 /* --- Head: tabs + bank toggle -------------------------------------------------- */
@@ -80,14 +81,41 @@
   box-shadow: var(--focus-ring);
 }
 
-/* The selected member is lifted by surface, not by hue: --bg-primary here is the
-   page behind the recessed track, so it reads as raised in both themes without a
-   fill that has to be contrast-checked against its own label. */
+/* The selected member was lifted by SURFACE alone (--bg-primary on the recessed
+   track). It read as raised but barely as selected — at 0.73rem the only signal
+   was a one-stop lightness change, and 대사 vs 서약 is the drawer's primary
+   navigation. It now carries the accent fill.
+
+   --accent-blue, never --primary-color: that token is grayscale on default-theme
+   pages and inverts to silver in dark mode, so fixed white text on it is the
+   recurring unreadable-fill bug in CLAUDE.md.
+
+   The bank toggle shares the rule on purpose — it is the same segmented control
+   sitting in the same head row, and giving the two different selected states
+   would say they are different kinds of switch. */
 .sdv-tab[aria-selected="true"],
 .sdv-bank-btn[aria-selected="true"] {
-  background: var(--bg-primary);
-  color: var(--text-primary);
+  background: var(--accent-blue);
+  color: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.28);
+}
+
+/* --accent-blue is NOT theme-stable enough to carry #fff on its own: it is
+   #0071eb in light (4.60:1) but the far paler blurple #7289da in dark, which
+   gives an 11.7px label only 3.33:1 — under AA. Measured, not assumed. Mixing the
+   same hue toward black keeps it recognisably the one accent while clearing the
+   bar; it is the per-theme color-mix .sdv-skin-tag already uses in the console
+   sheet, and NOT `var(--token)NN`, which would void the declaration outright. */
+body.dark-mode .sdv-tab[aria-selected="true"],
+body.dark-mode .sdv-bank-btn[aria-selected="true"] {
+  background: color-mix(in srgb, var(--accent-blue) 76%, #000);
+}
+
+/* The hover rule above recolours by `color` alone, which on a filled tab would
+   drop the label to --text-primary on the accent fill. */
+.sdv-tab[aria-selected="true"]:hover,
+.sdv-bank-btn[aria-selected="true"]:hover {
+  color: #fff;
 }
 
 .sdv-tab:disabled,
@@ -106,8 +134,11 @@
   overflow-y: auto;
   padding: var(--spacing-sm) var(--spacing-md);
   border-bottom: 1px solid var(--sdv-hair);
-  font-size: 0.8125rem;
-  line-height: 1.5;
+  /* 0.8125rem was list-metadata size for what is actually prose — the only
+     running text on the page, and the one thing a visitor reads rather than
+     scans. Up a step, and the title with it below. */
+  font-size: 0.875rem;
+  line-height: 1.55;
   color: var(--text-secondary);
 }
 
@@ -125,7 +156,7 @@
 .sdv-desc-title {
   display: block;
   margin-bottom: 0.125rem;
-  font-size: 0.6875rem;
+  font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   color: var(--text-link);
@@ -135,14 +166,32 @@
   display: block;
 }
 
-/* The self-intro carries a play button, so its text and the button share a line. */
+/* 자기소개 is a voice line like any other, so its play button gets a column of its
+   own instead of trailing the prose inline. Inline, the button landed wherever
+   the last word happened to end — mid-paragraph, at a different x on every skin —
+   while every other playable line on the page has its control in a fixed right
+   column. Same shape as .sdv-line: text takes the slack, the button never shrinks
+   and centres against the whole block.
+
+   Placed explicitly rather than by auto-flow: the children are title → text →
+   button, so row-major placement would put the text beside the title. */
+.sdv-desc-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0 var(--spacing-sm);
+}
+
+.sdv-desc-intro .sdv-desc-title {
+  grid-area: 1 / 1;
+}
+
 .sdv-desc-intro .sdv-desc-text {
-  display: inline;
+  grid-area: 2 / 1;
 }
 
 .sdv-desc-intro .play-voice-btn {
-  vertical-align: middle;
-  margin-left: 0.25rem;
+  grid-area: 1 / 2 / 3 / 3;
+  align-self: center;
 }
 
 /* --- ASMR --------------------------------------------------------------------- */
@@ -340,6 +389,16 @@
   color: var(--text-muted);
 }
 
+/* Styled by ANCESTOR, never by an added class: skin.audio.js updateVolumeIcon
+   rewrites `icon.className` wholesale on every volume change (it swaps
+   mute/down/up), so any extra class handed to that element survives exactly until
+   the first drag. */
+.sdv-player .volume-icon {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
 /* Native range input: accent-color paints thumb and track in every browser this
    site supports, so there is no vendor pseudo-element boilerplate here. */
 .sdv-player-volume {
@@ -349,19 +408,26 @@
   cursor: pointer;
 }
 
-.sdv-player-track {
-  height: 4px;
-  border-radius: var(--radius-xs);
-  background: var(--border-color);
-  overflow: hidden;
+/* Seek bar. Also a native range, replacing a read-only div + fill: that carried
+   click-to-seek, drag, touch and keyboard stepping for free, which IS the
+   feature, against ~30 lines of pointer maths and ARIA to hand-roll the same
+   thing on a div. `margin: 0` because the UA gives a range horizontal margins
+   and the bar wants the full width the old track had. */
+.sdv-player-seek {
+  width: 100%;
+  margin: 0;
+  accent-color: var(--accent-blue);
+  cursor: pointer;
 }
 
-.sdv-player-fill {
-  width: 0;
-  height: 100%;
-  border-radius: inherit;
-  background: var(--accent-blue);
-  transition: width var(--transition-fast) linear;
+.sdv-player-seek:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.sdv-player-seek:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
 }
 
 /* --- Responsive ------------------------------------------------------------------
@@ -381,8 +447,7 @@
   .sdv-bank-btn,
   .sdv-line,
   .play-voice-btn,
-  .sdv-player-wave > span,
-  .sdv-player-fill {
+  .sdv-player-wave > span {
     transition: none;
   }
 
