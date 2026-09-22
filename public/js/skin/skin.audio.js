@@ -141,7 +141,12 @@ function seekTo(seconds) {
     audio.currentTime = Math.min(Math.max(0, seconds), audio.duration);
     // `timeupdate` follows a seek, but not before the next frame — push now so the
     // readout tracks the drag instead of lagging a tick behind the thumb.
-    notifyPlayback(!audio.paused);
+    // Unconditionally `true`, not `!audio.paused`: play() resolves a tick after the
+    // click that starts it, and the seek bar goes live at `loadedmetadata`, which
+    // can land first — reading `paused` in that window would announce a stop and
+    // blank the bar mid-drag. Nothing in this module ever pauses, so a tracked
+    // element is a playing one.
+    notifyPlayback(true);
 }
 
 // ===== Volume =====

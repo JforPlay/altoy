@@ -42,6 +42,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <!-- The page's whole navigation, in the column that can afford it. -->
                 <div class="sdv-rail-head">
                     <div class="sdv-rail-brand">
+                        <span class="sdv-title-mark" aria-hidden="true"><i class="fas fa-shirt"></i></span>
                         <h1 class="sdv-title">함순이 스킨<span class="sdv-title-sub">대사보기</span></h1>
                         <button id="info-button" class="info-button" aria-label="도움말 보기" type="button">
                             <i class="fas fa-info-circle" aria-hidden="true"></i>
@@ -54,7 +55,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                         <!-- Takes the chevron's place while the box has text. Touch
                              has no Escape and no easy select-all, so this is the
                              only quick way to drop a half-typed name. -->
-                        <button id="character-search-clear" class="sdv-pick-clear" type="button" aria-label="검색어 지우기" hidden>
+                        <button id="character-search-clear" class="btn btn-close sdv-pick-clear" type="button" aria-label="검색어 지우기" hidden>
                             <i class="fas fa-times" aria-hidden="true"></i>
                         </button>
                         <div class="dropdown-icon"><i class="fas fa-chevron-down" aria-hidden="true"></i></div>

@@ -56,8 +56,10 @@ const TILE_H = 74;
 // Rail thumbs past this index load lazily: a 21-expression skin otherwise pulls
 // ~12.6 MB of full-size face PNGs just to draw a row of thumbnails.
 const EAGER_TILES = 12;
-// Below this count every expression already fits the rail, so 전체 표정 is noise.
-const FACE_GRID_THRESHOLD = 8;
+// The strip's chrome inside the dock frame: .sdv-dock-group's max-width band
+// (calc(100% - 28px)) plus its own 8px side padding. Subtracted from the frame to
+// get the width the rail can actually occupy — see faceStripOverflows().
+const DOCK_GROUP_INSET = 44;
 // Whether the 표정 dock stays unfolded. A UI-only preference, so plain storage —
 // not syncedStorage, which is for data other tabs must agree on.
 const DOCK_PIN_KEY = 'sdvFaceDockPinned';
@@ -139,10 +141,11 @@ function initStage() {
     state.viewer = buildViewer();
     state.grid = buildFaceGrid();
     // getStorageItem returns the raw STRING localStorage holds, so the old
-    // `=== true` compared 'true' to a boolean and was false for every visitor —
-    // the pin was written on every click and restored on none. Same string idiom
-    // the drawer's own open/closed preference uses.
-    setDockPin(getStorageItem(DOCK_PIN_KEY, '') === 'true');
+    // `=== true` compared a string to a boolean and was false for every visitor —
+    // the pin was written on every click and restored on none. Read and write are
+    // now the same '1'/'0' idiom the drawer's own open/closed preference uses,
+    // rather than leaning on setItem's coercion of a boolean at one end only.
+    setDockPin(getStorageItem(DOCK_PIN_KEY, '') === '1');
 
     // One handler for both overlays; they are mutually exclusive by construction
     // (전체 표정 is only reachable from the shelf, the viewer only from the art).
@@ -327,6 +330,11 @@ function assetNode(asset) {
     }
 
     const img = createImgElement(asset.url, `${asset.label} 일러스트`, { className: 'sdv-art-img', eager: true });
+    // Cached BEFORE adoptSize can run: that path re-enters renderViewer, which
+    // asks for this very node again. Without the assignment first the guard at
+    // the top has nothing to return, a second <img> is built — also complete,
+    // also adopting — and the pair recurse until the stack gives out.
+    asset.node = img;
     const adoptSize = () => {
         asset.w = img.naturalWidth;
         asset.h = img.naturalHeight;
@@ -342,7 +350,6 @@ function assetNode(asset) {
     // already there, and fall back to the event when it is not.
     if (img.complete && img.naturalWidth) adoptSize();
     else img.addEventListener('load', adoptSize, { once: true });
-    asset.node = img;
     return img;
 }
 
@@ -527,19 +534,20 @@ function setDockPin(on, persist = false) {
         pin.setAttribute('aria-pressed', String(state.dockPinned));
         pin.setAttribute('aria-label', state.dockPinned ? '표정 목록 접기' : '표정 목록 펼쳐두기');
     }
-    if (persist) setStorageItem(DOCK_PIN_KEY, state.dockPinned);
+    if (persist) setStorageItem(DOCK_PIN_KEY, state.dockPinned ? '1' : '0');
     // The rail only has a scrollport once it is visible, so the "scrolls further"
     // hint is wrong until the fold animation has laid it out.
     if (state.dockPinned) requestAnimationFrame(() => updateFade(state.els.shelf.wrap, state.els.shelf.rail));
 }
 
 /**
- * A ‹ / › control. Shared by the 표정 shelf and the viewer's 일러 stepper — same
- * 26px button on the same dark chrome, so `onStep` is the only difference and a
- * second copy of this would be a second thing to keep in sync.
+ * A ‹ / › control. Shared by the 표정 shelf and the viewer's 일러 stepper, which
+ * differ only in chrome — the shelf's 26px button sits in a dense control row,
+ * the lightbox's is a 3rem disc at the screen edge — so `className` is a
+ * parameter rather than a second copy of the wiring.
  */
-function stepButton(delta, ariaLabel, onStep) {
-    const btn = el('button', 'sdv-face-step');
+function stepButton(delta, ariaLabel, onStep, className = 'sdv-face-step') {
+    const btn = el('button', className);
     btn.type = 'button';
     btn.setAttribute('aria-label', ariaLabel);
     btn.appendChild(createIcon(delta < 0 ? 'fas fa-chevron-left' : 'fas fa-chevron-right'));
@@ -561,7 +569,6 @@ function renderShelf() {
         return;
     }
     toggleElement(dock, true);
-    toggleElement(shelf.all, asset.faces.length > FACE_GRID_THRESHOLD);
 
     shelf.rail.replaceChildren(...asset.faces.map((faceId, i) => {
         const tile = el('button', 'sdv-face-tile');
@@ -579,6 +586,7 @@ function renderShelf() {
     requestAnimationFrame(() => {
         measureStrip();
         updateFade(shelf.wrap, shelf.rail);
+        toggleElement(shelf.all, faceStripOverflows());
     });
 }
 
@@ -750,6 +758,23 @@ function measureStrip() {
     dock.style.setProperty('--sdv-face-strip-w', `${shelf.rail.scrollWidth}px`);
 }
 
+/**
+ * Does the 표정 strip need scrolling to be seen whole? That — not a count — is
+ * when 전체 표정 earns its place: tile widths come from each patch's own aspect
+ * ratio, so seven tall faces overflow a narrow band while ten square ones fit a
+ * wide one. The old `count > 8` rule left 여우 신령님 납시오 scrolling at seven
+ * with no way to see the rest at once.
+ *
+ * Measured off the dock FRAME, which is a fixed left/right box and so reports the
+ * same width folded or open — the rail's own clientWidth is 0 while folded and
+ * would call every strip an overflow.
+ */
+function faceStripOverflows() {
+    const { dock, shelf } = state.els || {};
+    if (!dock || !shelf) return false;
+    return shelf.rail.scrollWidth > dock.clientWidth - DOCK_GROUP_INSET;
+}
+
 // ===== 전체 표정 overlay =====
 
 function buildFaceGrid() {
@@ -842,24 +867,26 @@ function buildViewer() {
     close.appendChild(createIcon('fas fa-times'));
     close.addEventListener('click', closeViewer);
 
-    // 일러 stepper: 전체 › 확대 › 깔끔 › SD › 아이콘 › 쥬스타 without leaving the
-    // lightbox. It lives in the HEAD rather than the foot because the foot holds
-    // the 표정 dock and is hidden wholesale for an art object that has no
-    // expressions — which is precisely when you still need a way back out.
-    const assetName = el('span', 'sdv-viewer-asset');
-    const nav = el('div', 'sdv-viewer-nav');
-    nav.append(
-        stepButton(-1, '이전 일러스트', stepAsset),
-        assetName,
-        stepButton(1, '다음 일러스트', stepAsset),
-    );
-
     const head = el('div', 'sdv-viewer-head');
-    head.append(titles, nav, save, close);
+    head.append(titles, save, close);
 
     const fit = el('div', 'sdv-art-fit');
     const body = el('div', 'sdv-viewer-body');
-    body.appendChild(fit);
+
+    // 일러 stepper: 전체 › 확대 › 깔끔 › SD › 아이콘 › 쥬스타 without leaving the
+    // lightbox. Two discs pinned to the left and right edges of the ART area, the
+    // shape the old gallery lightbox used — in the head they were 26px controls
+    // competing with the title row for the eye. Scoped to the BODY rather than
+    // the overlay root so they centre on the picture and can never land on the
+    // head's buttons or on the 표정 dock in the foot.
+    // The wrapper is inert (`pointer-events: none` in the sheet) so it does not
+    // roof the artwork; only the buttons take the pointer back.
+    const nav = el('div', 'sdv-viewer-nav');
+    nav.append(
+        stepButton(-1, '이전 일러스트', stepAsset, 'sdv-viewer-step sdv-viewer-prev'),
+        stepButton(1, '다음 일러스트', stepAsset, 'sdv-viewer-step sdv-viewer-next'),
+    );
+    body.append(fit, nav);
 
     // No stepper of its own: openViewer moves the live 표정 dock in here, and that
     // card already carries ‹ 표정 n / N › plus the thumbnail rail. A second counter
@@ -870,7 +897,7 @@ function buildViewer() {
     foot.append(note);
 
     root.replaceChildren(head, body, foot);
-    return { root, name, meta, body, fit, foot, nav, assetName };
+    return { root, name, meta, body, fit, foot, nav };
 }
 
 /**
@@ -911,9 +938,9 @@ function renderViewer() {
     state.viewer.meta.textContent = (asset.w && asset.h)
         ? `${asset.label} 일러스트 · 원본 ${asset.w} × ${asset.h}`
         : `${asset.label} 일러스트`;
-    state.viewer.assetName.textContent = asset.label;
     // A skin with one art object has nothing to step to; SD-only skins are the
-    // common case there.
+    // common case there. The name of the art object is already the head's own
+    // `meta` line, so the stepper carries no second label.
     toggleElement(state.viewer.nav, state.assets.length > 1);
     state.viewer.fit.replaceChildren(assetNode(asset));
     applyFit(state.viewer.fit, asset, 'contain');

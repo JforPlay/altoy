@@ -228,13 +228,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             emptyMessage: '검색 결과가 없습니다',
         });
 
-        // Clearing leaves the caret in the box, so the next keystroke reopens the
-        // list through the helper's own `input` handler. It deliberately does NOT
-        // force the panel open here: setupDropdown closes on any document click
-        // outside the input and the panel, and this button is neither — an open()
-        // from this handler is undone by that listener a moment later, on the same
-        // click.
-        charClear?.addEventListener('click', () => {
+        // stopPropagation is what makes the refocus stick. setupDropdown closes on
+        // any document click outside the input and the panel, and this button is
+        // neither — so without it the open() that focus() triggers is undone by
+        // that listener on the same click, leaving an empty focused field with a
+        // shut list that a second click cannot reopen either (no focus event
+        // fires on an already-focused input). Stopping here lets the clear end
+        // where select-all-and-delete used to: caret in the box, full list under
+        // it.
+        charClear?.addEventListener('click', (e) => {
+            e.stopPropagation();
             elements.charInput.value = '';
             syncCharClear();
             elements.charInput.focus();
@@ -827,13 +830,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         // rewrites className wholesale on every change, so the stylesheet reaches
         // it through `.sdv-player .volume-icon` instead.
         const widget = createVolumeControlElement();
+        // Taken from the widget rather than built: createVolumeControlElement
+        // already makes the icon updateVolumeIcon keeps in sync, and the bar had
+        // been discarding it.
         const volumeIcon = widget.querySelector('.volume-icon');
         const volume = widget.querySelector('.volume-slider') || widget;
         volume.classList.add('sdv-player-volume');
 
         const row = document.createElement('div');
         row.className = 'sdv-player-row';
-        row.append(wave, label, time, ...(volumeIcon ? [volumeIcon] : []), volume);
+        row.append(wave, label, time, volumeIcon, volume);
 
         // Seek bar. A native range rather than the read-only progress div this
         // replaced: click, drag, touch and arrow keys all come with it, which is
@@ -844,7 +850,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         seek.className = 'sdv-player-seek';
         seek.min = '0';
         seek.max = '0';
-        seek.step = '0.01';
+        // 0.25, not 0.01: arrow keys move by `step`, and at a hundredth of a second
+        // crossing a 3-second voice line takes ~300 presses. A quarter-second is
+        // still finer than one pixel of this bar, so dragging loses nothing.
+        seek.step = '0.25';
         seek.value = '0';
         seek.disabled = true;
         seek.setAttribute('aria-label', '재생 위치');
@@ -865,8 +874,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // The global scroll-to-top button is fixed to the same bottom-right corner
         // this bar occupies, and clears it by this height (see the `:has` rule in
-        // skin.detail.viewer.console.css). Measured rather than assumed: the bar's
-        // contents are not fixed, and the two additions above just changed them.
+        // skin.detail.viewer.console.css). Measured rather than written down: the
+        // row never wraps, so the height is constant at any one width — but it is
+        // built out of --spacing tokens that change at the responsive breakpoints,
+        // so a literal would need a media duplicate per breakpoint to stay true
+        // (which is what the same rule in bgm-misc.css carries). One observer
+        // instead, and the two additions above cost the CSS nothing.
         if (typeof ResizeObserver === 'function') {
             new ResizeObserver(() => {
                 document.documentElement.style.setProperty('--sdv-player-h', `${playerBar.offsetHeight}px`);
@@ -898,9 +911,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // The total is what makes a seek target meaningful — 0:10 means nothing
         // without knowing whether the line runs 0:12 or 1:30.
-        player.time.textContent = duration > 0
+        const clock = duration > 0
             ? `${formatClock(currentTime)} / ${formatClock(duration)}`
             : formatClock(currentTime);
+        player.time.textContent = clock;
+        // Without this a screen reader reads the raw range value — 「10.25」 — since
+        // the seconds are the slider's own units. Same string the sighted readout
+        // beside it shows.
+        player.seek.setAttribute('aria-valuetext', clock);
     }
 
     /** mm:ss for the elapsed readout (utils' formatTime is the "1m 23s" report form). */

@@ -33,6 +33,25 @@
     --sdv-tile-bg: rgba(255, 255, 255, 0.055);
     --sdv-on-dark: #f2f6f8;
     --sdv-on-dark-dim: #a9b8c2;
+    /* The rail tile row, and the scrollport around it. The 10px gutter is where
+       the horizontal scrollbar goes — see .sdv-face-rail. */
+    --sdv-face-strip-h: 76px;
+    --sdv-face-rail-h: calc(var(--sdv-face-strip-h) + 10px);
+    /* Restated, not inherited: the radius/glass/ink scale is declared on
+       .sdv-page.main-container (console.css), and #stage-viewer / #face-grid are
+       body-level SIBLINGS of that element, not descendants — so inside them those
+       tokens resolve to nothing and every declaration reading one is voided
+       outright. The dock is MOVED into the viewer's foot, so it loses them too:
+       .sdv-glass's border and background, .sdv-dock-group's radius, .sdv-face-all's
+       ink. check:css-tokens cannot see this — the tokens ARE defined on the page,
+       just not on an ancestor of the consumer. Values track console.css:36-52. */
+    --sdv-r-sm: 8px;
+    --sdv-r-md: 12px;
+    --sdv-r-lg: 16px;
+    --sdv-hair: rgba(255, 255, 255, 0.11);
+    --sdv-glass: rgba(18, 25, 31, 0.86);
+    --sdv-ink-1: #f2f6f8;
+    --sdv-lift-1: rgba(255, 255, 255, 0.06);
 }
 
 
@@ -125,11 +144,7 @@
    it never scrolls), so there the image keeps the contain behaviour the stage
    gave up. applyFit() sizes the wrapper to match — see its `mode` argument. */
 .sdv-viewer-body .sdv-art-img {
-    width: auto;
-    height: auto;
-    max-width: 100%;
     max-height: 100%;
-    object-fit: contain;
 }
 
 /* --- Caption-row members (#stage-art-label, #stage-tools) -------------------
@@ -380,7 +395,11 @@
    fold timed out ~2s later. It read as "the overlay opens as if this weren't a
    phone". @media adds no specificity (CLAUDE.md), so the durable fix is to keep
    these rules away from mobile entirely rather than to out-specify them. */
-@media (min-width: 1100px) {
+/* 1099.02, not 1100: the single-column block below is max-width 1099, so a plain
+   1100 leaves 1099 < w < 1100 — reachable under browser zoom — matching neither.
+   The fold is the POINTER-LAYOUT exception and lives behind a min-width for it,
+   which is what lets the single-column layout need no reset at all. */
+@media (min-width: 1099.02px) {
     .sdv-dock .sdv-face-rail-wrap {
         width: 0;
         height: 0;
@@ -400,7 +419,7 @@
     .sdv-dock.is-open .sdv-face-rail-wrap,
     .sdv-dock.is-pinned .sdv-face-rail-wrap {
         width: var(--sdv-face-strip-w, 100%);
-        height: 76px;
+        height: var(--sdv-face-rail-h);
         opacity: 1;
     }
 
@@ -413,7 +432,7 @@
        selector invalidates every selector in the list it appears in. */
     .sdv-dock-group:has(:focus-visible) .sdv-face-rail-wrap {
         width: var(--sdv-face-strip-w, 100%);
-        height: 76px;
+        height: var(--sdv-face-rail-h);
         opacity: 1;
     }
 }
@@ -447,7 +466,7 @@
 .sdv-dock.is-fullscreen .sdv-face-rail-wrap {
     width: 100%;
     max-width: 100%;
-    height: 76px;
+    height: var(--sdv-face-rail-h);
     opacity: 1;
 }
 
@@ -556,9 +575,15 @@
    the positioning context for the scroll-hint fade. */
 .sdv-face-rail-wrap {
     position: relative;
-    height: 76px;
+    height: var(--sdv-face-rail-h);
 }
 
+/* The scrollbar lives INSIDE the scrollport, so a rail exactly as tall as its
+   tiles hands the bottom 6px of every face to it — which is what clipped the
+   chins off a strip that scrolls. The wrap is a tile row PLUS a gutter, the tiles
+   stay pinned to the top by `align-items: flex-start`, and the bar gets the
+   gutter to itself. `scroll-styled` (6px, the global utility) is what makes 10px
+   enough; a native bar would need three times that. */
 .sdv-face-rail {
     display: flex;
     align-items: flex-start;
@@ -595,7 +620,7 @@
    by 1px. */
 .sdv-face-tile {
     flex: 0 0 auto;
-    height: 76px;
+    height: var(--sdv-face-strip-h);
     padding: 0;
     overflow: hidden;
     border: 0;
@@ -645,7 +670,7 @@
    opened underneath it and only appeared once the lightbox was closed. One rung
    up rather than a new token: they are the same modal layer, and this says only
    "grid over viewer". */
-.sdv-facegrid {
+.sdv-overlay.sdv-facegrid {
     z-index: calc(var(--z-modal) + 1);
 }
 
@@ -767,30 +792,82 @@
     color: var(--sdv-on-dark-dim);
 }
 
-/* 일러스트 stepper — 전체 › 확대 › 깔끔 › SD … without leaving the lightbox. The
-   BUTTONS are .sdv-face-step, reused verbatim from the 표정 shelf: it is the same
-   26px control on the same dark chrome, and a second near-identical treatment
-   would be the thing to explain, not the reuse. Only the group and its label live
-   here. Hidden by the module when the skin has a single art object.
-   --sdv-on-dark, NOT --sdv-ink-1: the ink ramp is declared on .sdv-page and this
-   overlay is a body-level SIBLING of it, so that token does not resolve here —
-   and an undefined custom property voids the whole declaration silently
-   (check:css-tokens cannot see it: the token IS defined on the page, just not on
-   an ancestor of this element). */
+/* 일러스트 stepper — 전체 › 확대 › 깔끔 › SD … without leaving the lightbox. Two
+   discs at the edges of the ART, which is the shape the old gallery lightbox used
+   and the one people already reach for; the first cut put 26px chevrons in the
+   head, where they read as chrome beside the title rather than as navigation.
+   The wrapper spans the art area and is INERT, so it does not roof the picture
+   (a full-bleed overlay with pointer-events would swallow every click meant for
+   the art beneath it); only the buttons take the pointer back. Hidden by the
+   module when the skin has a single art object. */
 .sdv-viewer-nav {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: 2px;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
 }
 
-.sdv-viewer-asset {
-    min-width: 3.4rem;
-    font-size: 0.72rem;
-    font-weight: 700;
-    line-height: 1;
-    text-align: center;
+.sdv-viewer-step {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    padding: 0;
+    border: 0;
+    /* One of the three shapes --radius-full is for: a round control, not a chip. */
+    border-radius: var(--radius-full);
+    background: var(--sdv-glass);
     color: var(--sdv-on-dark);
+    font-size: 1.05rem;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+    transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.sdv-viewer-prev {
+    left: var(--spacing-lg);
+}
+
+.sdv-viewer-next {
+    right: var(--spacing-lg);
+}
+
+.sdv-viewer-step:hover {
+    background: var(--primary-color);
+}
+
+.sdv-viewer-prev:hover {
+    transform: translateY(-50%) translateX(-4px);
+}
+
+.sdv-viewer-next:hover {
+    transform: translateY(-50%) translateX(4px);
+}
+
+.sdv-viewer-step:focus-visible {
+    outline: 2px solid var(--sdv-on-dark);
+    outline-offset: 2px;
+}
+
+/* Out of the art's way on a phone, where the picture uses the full width. */
+@media (max-width: 640px) {
+    .sdv-viewer-step {
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 0.9rem;
+    }
+
+    .sdv-viewer-prev {
+        left: var(--spacing-xs);
+    }
+
+    .sdv-viewer-next {
+        right: var(--spacing-xs);
+    }
 }
 
 .sdv-viewer-save {
@@ -800,6 +877,10 @@
 .sdv-viewer-body {
     flex: 1;
     min-height: 0;
+    /* The positioning context for .sdv-viewer-nav, which centres its two discs on
+       the ART rather than on the whole overlay — the head's buttons and the 표정
+       dock in the foot are then unreachable by them at any viewport height. */
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -917,11 +998,6 @@
     .sdv-dock.is-away:not(.is-fullscreen) .sdv-dock-group {
         pointer-events: auto;
     }
-
-    /* No .sdv-face-rail-wrap reset here any more: the fold is gated behind
-       min-width now, so the strip's open default already applies and there is
-       nothing to undo. The reset that used to live here is exactly what lost the
-       specificity fight described at the fold. */
 
     /* Controls back ABOVE the strip. Tiles-over-controls is a consequence of the
        desktop card growing upward from a pinned bottom edge; in normal flow it

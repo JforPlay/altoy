@@ -169,41 +169,30 @@ body.dark-mode .sdv-page.main-container {
    rail and both would collide with the text), which is the same swap
    expression-viewer's own .clear-search-btn does. `[hidden]` is the visibility
    switch, so the module never touches display directly. */
+/* The control itself is `.btn .btn-close .btn-sm` from components/button.css —
+   borderless, square, muted-to-primary on hover, focus ring included — which is
+   what that class exists for and what the two overlays in skin.detail.stage.js
+   already use for their close buttons. Only the placement is local, as its own
+   doc comment says it should be. Matching the chevron's 11px keeps the swap from
+   nudging the affordance sideways. */
 .sdv-pick-clear {
   position: absolute;
-  right: 6px;
+  right: 11px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  padding: 0;
-  border: 0;
-  border-radius: var(--sdv-r-sm);
-  background: none;
-  color: var(--text-muted);
-  font-size: 0.72rem;
-  cursor: pointer;
-  transition: background var(--transition-fast), color var(--transition-fast);
+  /* The size knobs, not the properties they feed — .btn reads
+     `font-size: var(--btn-font-size)` and `.btn-close` `padding: var(--btn-pad-y)`,
+     so setting the hooks is how the component says to retune it. No .btn-sm: that
+     would be a third rule setting the same two vars at the same specificity. */
+  --btn-pad-y: 0.3rem;
+  --btn-font-size: 0.72rem;
 }
 
-/* The component sheets' own guard: a bare `display: flex` above outranks the UA
-   `[hidden] { display: none }`, so without this the button never hides. */
+/* .btn is `display: inline-flex`, which outranks the UA `[hidden] {display:none}`
+   — the same guard badge.css and chip.css carry for the same reason. */
 .sdv-pick-clear[hidden] {
   display: none;
-}
-
-.sdv-pick-clear:hover {
-  background: var(--sdv-lift-2);
-  color: var(--text-primary);
-}
-
-.sdv-pick-clear:focus-visible {
-  outline: none;
-  box-shadow: var(--focus-ring);
 }
 
 .sdv-rail-pick:has(.sdv-pick-clear:not([hidden])) .dropdown-icon {
@@ -224,18 +213,24 @@ body.dark-mode .sdv-page.main-container {
   font-size: 0.82rem;
 }
 
-.sdv-rail-pick .dropdown-option {
+/* `.dropdown-content` is in each selector to OUT-SPECIFY the global component
+   rather than tie with it: global.components.css states these as
+   `.dropdown-content .dropdown-option` (0,2,0), so a two-class override here wins
+   only while Astro happens to emit the page sheet last. At a tie the base padding
+   would lose while the hover padding kept applying, and the list would jump left
+   under the pointer. */
+.sdv-rail-pick .dropdown-content .dropdown-option {
   padding: 0.5rem 0.75rem;
 }
 
-.sdv-rail-pick .dropdown-option:hover,
-.sdv-rail-pick .dropdown-option:focus-visible {
+.sdv-rail-pick .dropdown-content .dropdown-option:hover,
+.sdv-rail-pick .dropdown-content .dropdown-option:focus-visible {
   padding-left: 1rem;
 }
 
-.sdv-rail-pick .dropdown-empty {
+/* font-size is inherited from .dropdown-content above, so only the padding here. */
+.sdv-rail-pick .dropdown-content .dropdown-empty {
   padding: 1rem;
-  font-size: 0.82rem;
 }
 
 /* --- The grid ---------------------------------------------------------------
@@ -329,19 +324,42 @@ body.dark-mode .sdv-page.main-container {
    chrome. Two weights on one line instead: the subject at full ink, the mode
    after a hairline slash at muted, so it is prominent without becoming a banner.
    The slash is a pseudo-element so the two halves stay separate text nodes. */
+/* The mark. A 26px accent tile carrying the same fa-shirt the 스킨 모음집 page
+   titles itself with, so the two skin pages read as one family — and so the rail
+   head opens with something that says "this is the page" before the words do.
+   A tinted fill with the accent as the GLYPH, never accent-on-accent: on this
+   page --primary-color is a saturated blue that inverts per theme, and
+   color-mix keeps the tint tracking it in both. */
+.sdv-title-mark {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--sdv-r-sm);
+  background: color-mix(in srgb, var(--primary-color) 15%, transparent);
+  color: var(--primary-color);
+  font-size: 0.78rem;
+}
+
 .sdv-title {
   flex: 1;
   min-width: 0;
   margin: 0;
-  font-size: 0.97rem;
+  /* Up from 0.97rem and tighter: at rail width the old size sat between the
+     search field and the browse button as one more control label. It is the h1. */
+  font-size: 1.1rem;
   font-weight: 800;
-  line-height: 1.25;
-  letter-spacing: -0.02em;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
   color: var(--text-primary);
 }
 
 .sdv-title-sub {
   font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: -0.01em;
   color: var(--text-muted);
 }
 

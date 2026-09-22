@@ -111,13 +111,6 @@ body.dark-mode .sdv-bank-btn[aria-selected="true"] {
   background: color-mix(in srgb, var(--accent-blue) 76%, #000);
 }
 
-/* The hover rule above recolours by `color` alone, which on a filled tab would
-   drop the label to --text-primary on the accent fill. */
-.sdv-tab[aria-selected="true"]:hover,
-.sdv-bank-btn[aria-selected="true"]:hover {
-  color: #fff;
-}
-
 .sdv-tab:disabled,
 .sdv-bank-btn:disabled {
   opacity: 0.5;
@@ -128,12 +121,21 @@ body.dark-mode .sdv-bank-btn[aria-selected="true"] {
    Above the list, not a row in it. */
 .sdv-voice-desc {
   flex-shrink: 0;
+
   /* Same reason as .sdv-voice-head: a long 설명 would otherwise take the whole
      column. Capped instead of clamped so the text stays fully readable. */
   max-height: 9.5rem;
   overflow-y: auto;
   padding: var(--spacing-sm) var(--spacing-md);
   border-bottom: 1px solid var(--sdv-hair);
+  /* The breathing room goes OUTSIDE the box, below its rule. Inside it would be
+     wasted: this block is height-capped and scrolls, so bottom padding is only
+     ever seen at the end of a scroll — adding it there just pushed a description
+     that used to fit into overflow and changed nothing on screen (measured).
+     Out here the divider reads as a section break instead of as the 자기소개's
+     underline, which is what made the first 대사 row look like one more line of
+     the description. */
+  margin-bottom: var(--spacing-sm);
   /* 0.8125rem was list-metadata size for what is actually prose — the only
      running text on the page, and the one thing a visitor reads rather than
      scans. Up a step, and the title with it below. */
@@ -173,24 +175,17 @@ body.dark-mode .sdv-bank-btn[aria-selected="true"] {
    column. Same shape as .sdv-line: text takes the slack, the button never shrinks
    and centres against the whole block.
 
-   Placed explicitly rather than by auto-flow: the children are title → text →
-   button, so row-major placement would put the text beside the title. */
+   Only the BUTTON is placed. It claims column 2 across both rows, and sparse
+   auto-flow then has nowhere to put the title but (1,1) and the text but (2,1) —
+   which is the stack we want, without restating it twice. */
 .sdv-desc-intro {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 0 var(--spacing-sm);
 }
 
-.sdv-desc-intro .sdv-desc-title {
-  grid-area: 1 / 1;
-}
-
-.sdv-desc-intro .sdv-desc-text {
-  grid-area: 2 / 1;
-}
-
 .sdv-desc-intro .play-voice-btn {
-  grid-area: 1 / 2 / 3 / 3;
+  grid-area: 1 / 2 / span 2;
   align-self: center;
 }
 
