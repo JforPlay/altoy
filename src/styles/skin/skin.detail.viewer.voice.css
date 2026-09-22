@@ -120,28 +120,26 @@ body.dark-mode .sdv-bank-btn[aria-selected="true"] {
 /* --- 설명 / 자기소개 ------------------------------------------------------------
    Above the list, not a row in it. */
 .sdv-voice-desc {
-  flex-shrink: 0;
-
-  /* Same reason as .sdv-voice-head: a long 설명 would otherwise take the whole
-     column. Capped instead of clamped so the text stays fully readable. */
-  max-height: 9.5rem;
-  overflow-y: auto;
+  /* No height cap and no scroller of its own: it shares .sdv-voice-scroll with
+     the 대사 rows. The old 9.5rem cap existed to stop a long 설명 eating the
+     column, which only mattered while this block was a pinned flex item — it now
+     scrolls away with the list like any other content. */
   padding: var(--spacing-sm) var(--spacing-md);
   border-bottom: 1px solid var(--sdv-hair);
-  /* The breathing room goes OUTSIDE the box, below its rule. Inside it would be
-     wasted: this block is height-capped and scrolls, so bottom padding is only
-     ever seen at the end of a scroll — adding it there just pushed a description
-     that used to fit into overflow and changed nothing on screen (measured).
-     Out here the divider reads as a section break instead of as the 자기소개's
-     underline, which is what made the first 대사 row look like one more line of
-     the description. */
+  /* The breathing room goes OUTSIDE the box, below its rule, so the divider reads
+     as a section break instead of as the 자기소개's underline — which is what made
+     the first 대사 row look like one more line of the description. */
   margin-bottom: var(--spacing-sm);
-  /* 0.8125rem was list-metadata size for what is actually prose — the only
-     running text on the page, and the one thing a visitor reads rather than
-     scans. Up a step, and the title with it below. */
-  font-size: 0.875rem;
-  line-height: 1.55;
-  color: var(--text-secondary);
+  /* Size, leading AND colour matched to .sdv-line-text, deliberately: 설명/자기소개
+     and the 대사 rows now share one scroll column, and a block that differs from
+     the rows under it in all three reads as a different KIND of content rather
+     than as the description above its lines. --text-secondary also made it the
+     dimmest prose in the drawer, which is backwards — it is the one thing a
+     visitor reads rather than scans. .sdv-desc-title sets its own size and
+     colour, so the labels are unaffected. */
+  font-size: 0.79rem;
+  line-height: 1.5;
+  color: var(--text-primary);
 }
 
 .sdv-voice-desc:empty {
@@ -211,19 +209,47 @@ body.dark-mode .sdv-bank-btn[aria-selected="true"] {
 .sdv-line {
   display: grid;
   grid-template-columns: 54px 1fr auto;
-  align-items: center;
+  /* start, not center: the text is no longer clamped, so a 서약 line can run six
+     lines tall and a centred 메인1 would float halfway down the paragraph it
+     names. On the single-line rows that are the median this moves the text up by
+     3px — half the gap between its 19px line box and the 25px play button. */
+  align-items: start;
   gap: var(--spacing-sm);
   padding: 0.45rem 0.6rem;
   border-radius: var(--sdv-r-md);
   transition: background var(--transition-fast);
 }
 
+/* Zebra banding. Rows carry no separators and now run up to six lines each, so
+   without it a long 서약 line and the one under it read as one block of prose.
+   A faint ACCENT wash rather than another neutral lift: :hover owns the neutral
+   channel (--sdv-lift-1), and a zebra built from the same token would either
+   swallow the hover or be beaten by it. color-mix, never `var(--token)NN` —
+   that is two tokens, not an alpha, and it voids the declaration outright.
+
+   Above :hover on purpose: both selectors are (0,2,0), so a tie is settled by
+   source order and a zebra rule placed after would win on every even row. */
+.sdv-line:nth-child(even) {
+  background: color-mix(in srgb, var(--primary-color) 5%, transparent);
+}
+
 .sdv-line:hover {
-  background: var(--sdv-lift-1);
+  background: var(--sdv-lift-2);
 }
 
 .sdv-line-label {
+  /* Centred against the whole row while the text and the play button stay on the
+     first line: the label names the row, not its opening words, and on a
+     three-line 낯섦 it read as a hanging note above the text. */
+  align-self: center;
   min-width: 0;
+  /* Korean breaks between SYLLABLES by default, so 「함대 특수대사」 split as
+     「함대 특수대」/「사」 in a 54px column. keep-all is the property written for
+     exactly this: never break inside a word, break at the space — giving
+     「함대」/「특수대사」. Every label that has no space (상세확인, 전투개시, 모항귀환 …)
+     is at most four syllables and fits the column on one line, so keep-all
+     cannot push one out of the box. */
+  word-break: keep-all;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 0.655rem;
@@ -233,14 +259,13 @@ body.dark-mode .sdv-bank-btn[aria-selected="true"] {
   color: var(--text-muted);
 }
 
-/* Two lines, then ellipsis. The full string is the row's title attribute. */
+/* Unclamped: every 대사 is shown in full. The 2-line clamp put the rest of a long
+   line in the row's title attribute, which touch devices never surface — the one
+   place the text was most often cut. Measured over all 48,175 voicelines: median
+   43 chars (one line), p95 102, longest 216 (~6 lines at drawer width), and the
+   worst skins grow from 69 to 107 text lines. The list already scrolls. */
 .sdv-line-text {
   min-width: 0;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  overflow: hidden;
   font-size: 0.79rem;
   line-height: 1.5;
   color: var(--text-primary);

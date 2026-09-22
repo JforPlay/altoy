@@ -562,19 +562,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         lines.forEach(line => elements.voiceList.appendChild(createVoiceRow(line, mode)));
     }
 
-    /** One drawer row: label, clamped text, play button. */
+    /** One drawer row: label, full text, play button. */
     function createVoiceRow(line, mode) {
         const row = document.createElement('div');
         row.className = 'sdv-line';
-        // The text clamps to two lines, so the full string lives on the row.
-        if (line.text) row.title = line.text;
 
         const label = document.createElement('span');
         label.className = 'sdv-line-label';
         label.textContent = line.label;
 
-        // A div, not a p: the row is a centered grid and `.sdv-line-text` carries
-        // no margin reset, so a paragraph's UA margins would inflate every row.
+        // A div, not a p: `.sdv-line-text` carries no margin reset, so a
+        // paragraph's UA margins would inflate every row.
         const text = document.createElement('div');
         text.className = 'sdv-line-text';
         text.textContent = line.text;

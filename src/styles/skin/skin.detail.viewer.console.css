@@ -247,7 +247,11 @@ body.dark-mode .sdv-page.main-container {
   /* 304px, up from 234: the rail now hosts the search field and the
      찾아보기 · 랜덤 pair, and it is the only place a skin name has room to breathe. */
   --sdv-rail-w: 304px;
-  --sdv-voice-w: 372px;
+  /* 410px, up from 372: the 대사 rows are unclamped now, so the text column is
+      what decides how tall a 서약 line runs. The width comes out of the stage,
+      which is the one column that can give it — the art fit is width-driven and
+      simply renders a few percent smaller. */
+  --sdv-voice-w: 410px;
   --sdv-pane-top: var(--sdv-chrome);
   --sdv-pane-h: calc(100dvh - var(--sdv-pane-top));
   /* Height ceiling for the width-driven art fit (stage.css .sdv-art-fit). 1.35
@@ -716,12 +720,19 @@ body.dark-mode .sdv-skin-tag {
   border-left: 1px solid var(--sdv-hair);
 }
 
-/* The rows are rounded and separator-less now, so the list supplies the gutter
-   their hover surface needs. */
-.sdv-voice-list {
+/* The drawer's single scroll region: 설명/자기소개 and the 대사 rows share it, so
+   the column shows ONE scrollbar between the pinned head and the pinned player
+   bar. min-height: 0 because a flex item's auto minimum would otherwise refuse
+   to shrink below its content and push the player bar off the bottom. */
+.sdv-voice-scroll {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+}
+
+/* The rows are rounded and separator-less now, so the list supplies the gutter
+   their hover surface needs. */
+.sdv-voice-list {
   padding: 4px 6px 10px;
 }
 
@@ -952,7 +963,7 @@ body:has(.sdv-player) .scroll-to-top {
     border-left-width: 0;
   }
 
-  .sdv-voice-list {
+  .sdv-voice-scroll {
     overflow-y: visible;
   }
 

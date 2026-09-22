@@ -119,8 +119,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <div id="voice-tabs" class="sdv-tabs" role="tablist" aria-label="대사 종류"></div>
                     <div id="voice-bank" class="sdv-voice-bank"></div>
                 </div>
-                <div id="voice-desc" class="sdv-voice-desc scroll-styled"></div>
-                <div id="voice-list" class="sdv-voice-list scroll-styled"></div>
+                <!-- ONE scroller over 설명/자기소개 AND the 대사 rows. They used to be
+                     two independent scroll regions stacked in the flex column, which
+                     put two scrollbars in a 410px drawer and made the description a
+                     separate little box you scrolled to the end of on its own. The
+                     head above and the player bar below stay pinned, so this wrapper
+                     is the only thing between them that moves. -->
+                <div class="sdv-voice-scroll scroll-styled">
+                    <div id="voice-desc" class="sdv-voice-desc"></div>
+                    <div id="voice-list" class="sdv-voice-list"></div>
+                </div>
                 <div id="player-bar" class="sdv-player"></div>
             </section>
 
