@@ -4,7 +4,12 @@
 // between build and artifact upload.
 import { defineConfig } from '@playwright/test';
 
-const PORT = 4321;
+// 4321 is `astro preview`'s own default and the port CI uses. $SMOKE_PORT moves
+// the whole run elsewhere — 4399 for an agent — so a suite can be trusted while
+// the user's own `astro dev` keeps :4321. Without it the only way to run the
+// suite is to stop their server, and reuseExistingServer below would otherwise
+// silently adopt it (which is what assert-built-server.mjs exists to catch).
+const PORT = Number(process.env.SMOKE_PORT) || 4321;
 const BASE_URL = `http://localhost:${PORT}/altoy/`;
 
 export default defineConfig({
@@ -32,7 +37,7 @@ export default defineConfig({
         launchOptions: { args: ['--enable-unsafe-swiftshader'] },
     },
     webServer: {
-        command: 'npm run preview',
+        command: `npm run preview -- --port ${PORT}`,
         url: BASE_URL,
         reuseExistingServer: !process.env.CI,
         timeout: 30_000,

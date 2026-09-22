@@ -18,7 +18,6 @@ const state = {
     liteData: null,
     fullData: null,
     fullDataPromise: null,
-    enemyStats: null,
     shipInfo: null,
     currentTab: 'main',
     currentMapId: null,

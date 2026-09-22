@@ -6,6 +6,13 @@
  * Output: public/data/skin/skin_poll_data.json        (~200 KB, 9 fields per skin)
  *
  * Usage: node scripts/split_skin_poll_data.mjs
+ *
+ * Its output is the ONE split artifact that is COMMITTED — the other four are
+ * gitignored — and that is deliberate: `build` runs `check:data` BEFORE
+ * `data:split`, and check-data-shape.mjs validates skin_poll_data.json, so a
+ * gitignored copy would ENOENT on a fresh CI checkout. scripts/sync-skin-labels.mjs
+ * reads it from disk outside any build for the same reason. Gitignoring it means
+ * moving check:data after data:split first.
  */
 import fs from 'fs';
 

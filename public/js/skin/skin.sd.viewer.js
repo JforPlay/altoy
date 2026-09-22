@@ -121,6 +121,10 @@ function setupResizeHandler(container) {
  * Load sd_data.json (character list) and orbit_data.json (equip skin definitions) in parallel,
  * then populate both dropdowns.
  *
+ * sd_data.json is ALSO a frozen committed artifact — nothing in altoy_process
+ * writes it either (checked 2026-09-22), so a newly released shipgirl will not
+ * appear in the character list until someone writes a producer for it.
+ *
  * orbit_data.json is a FROZEN committed artifact — its WSL producer
  * (orbit_process.py) was deleted 2026-09-22: it had been commented out of the
  * pipeline, pointed at an asset dir that no longer exists, and read the stale

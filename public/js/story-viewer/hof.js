@@ -16,6 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const hofConfig = {
         viewerType: 'hof',
 
+        // FROZEN: neither hof_kr.json nor hof_kr_dummy.json has ever had a
+        // producer in the WSL pipeline -- both are hand-made (checked 2026-09-22).
+        // "dummy" is part of a filename, not a hint: the page needs both.
         dataPaths: [
             'data/story-viewer/hof_kr.json',
             'data/story-viewer/hof_kr_dummy.json',

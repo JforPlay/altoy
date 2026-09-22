@@ -73,6 +73,11 @@ header h1 {
 }
 
 .gallery-item {
+  /* Two cover sources: the hand-sourced 477x508 cards (public/assets/img/<id_2>.webp)
+     paint over this fill, while newer groups get the game's own title banner via
+     .banner below. The card fill backs both -- the banner is a transparent strip and
+     the name bar below is its own dark overlay. */
+  background-color: var(--card-bg);
   height: 145px;
   background-size: cover;
   background-position: center;
@@ -82,6 +87,16 @@ header h1 {
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 3px solid transparent;
+}
+
+/* The game's title banner is a ~176x66 transparent name strip, not a card:
+   `cover` would blow it up past the tile. Sit it above the name bar, and darken
+   the tile -- the banner art is white text, invisible on the light-mode card. */
+.gallery-item.banner {
+  background-color: var(--overlay-heavy);
+  background-size: 85% auto;
+  background-repeat: no-repeat;
+  background-position: center 35%;
 }
 
 .gallery-item::before {
@@ -191,6 +206,17 @@ header h1 {
 .content-paragraph p {
   font-size: 1em;
   line-height: 1.7;
+}
+
+/* Per-document illustration (collectionfileillustration, data_for_toy).
+   Square 272x273 art; capped so it reads as a figure beside the text, not a hero. */
+.content-illustration {
+  display: block;
+  margin: 20px auto 0;
+  max-width: min(272px, 100%);
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
 }
 
 /* ======================================= */

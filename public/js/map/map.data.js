@@ -92,21 +92,6 @@ export async function loadFullData() {
     return null;
 }
 
-/** Load enemy stat data (cached 24h). Returns the cache if already loaded. */
-export async function loadEnemyStats() {
-    if (state.enemyStats) return state.enemyStats;
-    try {
-        state.enemyStats = await fetchJSONWithCache(
-            'data/maps/enemy_data_statistics.json',
-            { maxAge: 86400000 }
-        );
-        return state.enemyStats;
-    } catch (error) {
-        console.warn('Failed to load enemy stats:', error);
-    }
-    return null;
-}
-
 /** Reverse lookup: gid -> ship.id */
 let gidToId = null;
 
@@ -205,7 +190,15 @@ export function getChapter(mapId) {
     return state.fullData[String(mapId)] || null;
 }
 
-/** Load world target data for exploration map conditions. */
+/**
+ * Load world target data for exploration map conditions.
+ *
+ * `world_target_data.json` is a FROZEN committed artifact: no WSL processor
+ * writes it and no `cfg` line stages it — grepping altoy_process for the name
+ * returns nothing (checked 2026-09-22). It is hand-made, and new Operation Siren
+ * targets will not appear until someone writes a producer. A missing file only
+ * warns, so the page degrades to no conditions rather than breaking.
+ */
 export async function loadWorldTargetData() {
     if (worldTargetData) return worldTargetData;
     try {
