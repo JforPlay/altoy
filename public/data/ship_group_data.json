@@ -1889,7 +1889,7 @@
         "rarity": "SR"
     },
     "10214": {
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/102143.webp",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/102140.webp",
         "name": "몬트필리어",
         "add_get_attr": 4,
         "add_get_shiptype": [
@@ -14125,7 +14125,7 @@
         "retrofit": true
     },
     "40302": {
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/403023.webp",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/403020.webp",
         "name": "블뤼허",
         "add_get_attr": 1,
         "add_get_shiptype": [
@@ -18031,7 +18031,7 @@
         "rarity": "SSR"
     },
     "70202": {
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/702025.webp",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/702020.webp",
         "name": "파먀티 메르쿠리야",
         "add_get_attr": 1,
         "add_get_shiptype": [
