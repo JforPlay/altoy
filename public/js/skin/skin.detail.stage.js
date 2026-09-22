@@ -26,7 +26,7 @@
 import {
     createImgElement, createIcon, lockBodyScroll, unlockBodyScroll,
     downloadImage, sanitizeFilename, showElement, hideElement, toggleElement,
-    getStorageItem, setStorageItem, debounce, DATA_FOR_TOY_BASE
+    getStorageItem, setStorageItem, debounce, observeLazyImages, DATA_FOR_TOY_BASE
 } from '../utils.js';
 import { pickFaceCandidates } from '../expression-face.js';
 import { buildOverlayContainer, composeOverlay, expUrl } from './skin.expression.js';
@@ -597,9 +597,14 @@ function renderShelf() {
  * then sets `img.loading`, so the fetch has already started AND the element is
  * detached, which the lazy machinery requires it not to be. `loading="lazy"`
  * through it is a silent no-op repo-wide. Deferred tiles therefore carry the URL
- * on `data-src` and are swapped in by observeRailThumbs once they scroll near the
- * viewport. Worth the ~12 lines: a 21-expression skin otherwise pulls ~12.6 MB of
- * full-size face PNGs just to paint one row of thumbnails.
+ * on `data-src` and the `lazy` class `observeLazyImages` keys on, and are swapped
+ * in once they scroll near the viewport. Worth the handful of lines: a
+ * 21-expression skin otherwise pulls ~12.6 MB of full-size face PNGs just to paint
+ * one row of thumbnails.
+ *
+ * `loading="lazy"` stays on as a fallback for the no-IntersectionObserver path,
+ * where the helper swaps every src at once and the attribute is the only deferral
+ * left.
  */
 function railThumb(src, alt, eager) {
     const img = document.createElement('img');
@@ -609,38 +614,30 @@ function railThumb(src, alt, eager) {
         img.src = src;
     } else {
         img.loading = 'lazy';
+        img.className = 'lazy';
         img.dataset.src = src;
     }
     return img;
 }
 
 /**
- * Swap `data-src` into `src` as deferred tiles come near view, and return the
- * observer so the caller can replace its previous one.
+ * utils' `observeLazyImages` with this module's two settings, plus the disconnect
+ * of the observer it replaces (the helper hands back an observer and leaves its
+ * lifetime to the caller; both call sites here rebuild their tiles wholesale).
  *
- * Deliberately viewport-rooted (`root: null`) rather than rooted at the scroller:
- * the intersection rect is computed against every ancestor clip box, so one
- * observer handles the shelf rail's HORIZONTAL overflow and the grid's vertical
- * scroll alike. It also sidesteps the trap that an observer rooted at a
- * `display: none` element reports everything as non-intersecting forever.
+ * `useViewportRoot` is deliberate rather than rooting at the scroller: the
+ * intersection rect is computed against every ancestor clip box, so one setting
+ * handles the shelf rail's HORIZONTAL overflow and the grid's vertical scroll
+ * alike. It also sidesteps the trap that an observer rooted at a `display: none`
+ * element reports everything as non-intersecting forever.
  */
 function observeThumbs(root, previous) {
     previous?.disconnect();
-    const pending = root.querySelectorAll('img[data-src]');
-    if (pending.length === 0) return null;
-
-    const observer = new IntersectionObserver((entries, obs) => {
-        for (const entry of entries) {
-            if (!entry.isIntersecting) continue;
-            const img = entry.target;
-            img.src = img.dataset.src;
-            delete img.dataset.src;
-            obs.unobserve(img);
-        }
-    }, { rootMargin: '300px' });
-
-    pending.forEach(img => observer.observe(img));
-    return observer;
+    return observeLazyImages(root, {
+        rootMargin: '300px',
+        useViewportRoot: true,
+        addLoadedClass: false,
+    });
 }
 
 /**

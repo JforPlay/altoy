@@ -846,18 +846,10 @@ body:has(.sdv-player) .scroll-to-top {
   bottom: calc(var(--sdv-player-h, 3.5rem) + 1rem);
 }
 
-/* --- Full-screen overlays (#face-grid, #stage-viewer) -------------------------
-   Frame only; both are filled and opened by the stage module, which swaps the
-   global .hidden utility. */
-.sdv-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: var(--z-modal);
-  display: flex;
-  flex-direction: column;
-  background: var(--overlay-opaque);
-  color: #fff;
-}
+/* The full-screen overlays (#face-grid, #stage-viewer) are framed entirely in
+   skin.detail.viewer.stage.css, which owns the module that builds them. A
+   duplicate frame lived here and never applied — `ensureOverlay` assigns
+   `className`, so the shared class it was written against is gone at runtime. */
 
 /* --- Responsive: single column (< 1100px) -------------------------------------
    Natural page scroll returns and the source order already reads

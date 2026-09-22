@@ -8,11 +8,8 @@
    DARK MODE OVERRIDES
    ================================================================= */
 
-body.dark-mode .random-filter-group select {
-  background: var(--bg-input);
-  color: var(--text-primary);
-  border-color: var(--border-color);
-}
+/* The 랜덤 스킨 filter override went with its base rule in the 2026-09-22 checkup —
+   cn-preview, this sheet's only consumer, has no such modal. */
 
 /* Voice Line Table - Darker backgrounds for dark mode */
 body.dark-mode .voice-line-table tbody tr:nth-child(even) {

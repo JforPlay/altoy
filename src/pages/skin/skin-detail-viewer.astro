@@ -209,7 +209,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <button id="sf-more" class="btn btn-secondary sdv-search-more hidden" type="button">더 보기</button>
 
         <div class="sdv-search-foot">
-            <span id="sf-count"></span>
+            <span id="sf-count" class="sdv-search-count"></span>
             <span class="sdv-search-hint">고르기 어렵다면</span>
             <button id="sf-random" class="btn btn-primary" type="button">
                 <i class="fas fa-dice" aria-hidden="true"></i> 이 중에서 랜덤으로 보기
@@ -217,8 +217,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
     </Modal>
 
-    <div id="face-grid" class="sdv-overlay hidden" role="dialog" aria-modal="true" aria-label="전체 표정"></div>
-    <div id="stage-viewer" class="sdv-overlay hidden" role="dialog" aria-modal="true" aria-label="일러스트 전체화면"></div>
+    <!-- Empty shells only. `ensureOverlay` in the stage module OVERWRITES className
+         (to .sdv-facegrid / .sdv-viewer), so any class written here is discarded the
+         moment the module boots — don't style these through a class on this line. -->
+    <div id="face-grid" class="hidden" role="dialog" aria-modal="true" aria-label="전체 표정"></div>
+    <div id="stage-viewer" class="hidden" role="dialog" aria-modal="true" aria-label="일러스트 전체화면"></div>
 
     <script is:inline type="module" src={`${base}/js/skin/skin.detail.viewer.js`}></script>
 </Layout>

@@ -4,46 +4,11 @@
    Part of the skin.detail.viewer style split (formerly skin.detail.viewer.css, one monolith).
    The page imports each sibling in source order — keep rules in original order.
 ============================================================================= */
-/* --- Responsive Styles --- */
+/* --- Responsive Styles ---
+   The title / <select> / 랜덤 필터 / 설명 패널 breakpoints that used to open this
+   block went with their base rules in the 2026-09-22 checkup: cn-preview is this
+   sheet's only consumer and renders none of those elements. */
 @media (max-width: 768px) {
-  /* .title-wrapper already wraps (flex-wrap from --center); keep responsive font-size only. */
-  .page-title {
-    font-size: 1.25rem;
-  }
-
-  .info-button {
-    flex-shrink: 0;
-    font-size: 1.25rem;
-  }
-
-  .selectors {
-    flex-direction: column;
-    gap: var(--spacing-md);
-  }
-
-  .selector-wrapper {
-    max-width: 100%;
-    width: 100%;
-  }
-
-  /* Full width dropdowns on mobile */
-  .dropdown-container {
-    width: 100%;
-  }
-
-  .clear-btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .random-skin-filters {
-    grid-template-columns: 1fr;
-  }
-
-  .descriptions-panel {
-    flex-direction: column;
-  }
-
   .voice-line-table {
     display: block;
     overflow-x: auto;

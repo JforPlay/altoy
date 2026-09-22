@@ -14,7 +14,6 @@ const state = {
     currentPlayButton: null,
     currentLabel: '',
     globalVolume: 0.3,
-    volumeChangeHandlers: [],
     // Playback observers (skin detail's player bar). Empty for the pages that
     // only delegate clicks — notifying then costs one no-op Set iteration.
     playbackSubscribers: new Set()
@@ -187,7 +186,6 @@ function updateVolumeIcon() {
     const volume = state.globalVolume;
 
     volumeIcons.forEach(icon => {
-        icon.className = '';
         if (volume === 0) {
             icon.className = 'fas fa-volume-mute volume-icon';
         } else if (volume < 0.5) {
@@ -228,21 +226,18 @@ function createVolumeControlElement() {
 }
 
 /**
- * Re-bind volume input listeners on all current `.volume-slider` elements.
- * Removes previously tracked listeners first to prevent duplicates when sliders are re-rendered.
+ * Bind the volume input listener on every current `.volume-slider`. Safe to call
+ * again after sliders are re-rendered.
+ *
+ * No remove-first bookkeeping: `handleVolumeChange` is one module-level function,
+ * so every call passes the SAME reference, and `addEventListener` with an identical
+ * (type, callback, capture) triple on the same target is a no-op per spec. The
+ * tracking array this used to keep could therefore never prevent a duplicate that
+ * could happen.
  */
 function attachVolumeListeners() {
-    // Remove old listeners to prevent duplicates when sliders are re-rendered
-    state.volumeChangeHandlers.forEach(({ slider, handler }) => {
-        slider.removeEventListener('input', handler);
-    });
-    state.volumeChangeHandlers = [];
-
-    const volumeSliders = document.querySelectorAll('.volume-slider');
-    volumeSliders.forEach(slider => {
-        slider.addEventListener('input', handleVolumeChange);
-        state.volumeChangeHandlers.push({ slider, handler: handleVolumeChange });
-    });
+    document.querySelectorAll('.volume-slider')
+        .forEach(slider => slider.addEventListener('input', handleVolumeChange));
 }
 
 // ===== Exports =====

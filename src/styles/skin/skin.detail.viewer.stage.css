@@ -674,8 +674,7 @@
     flex-direction: column;
     /* Fully opaque, not 0.97: these overlays exist to look at artwork, and even 3%
        of a light page behind them is enough to read the navbar and the voice rows
-       through the expression patches. Also overrides .sdv-overlay's
-       --overlay-opaque, which is itself only 90%. */
+       through the expression patches. */
     background: var(--sdv-shelf);
     color: var(--sdv-on-dark);
 }
@@ -685,8 +684,15 @@
    and at equal z-index the later sibling wins, which is the viewer. The grid
    opened underneath it and only appeared once the lightbox was closed. One rung
    up rather than a new token: they are the same modal layer, and this says only
-   "grid over viewer". */
-.sdv-overlay.sdv-facegrid {
+   "grid over viewer".
+
+   Single class, NOT `.sdv-overlay.sdv-facegrid`: `ensureOverlay` builds these two
+   with `node.className = '<one class>'`, so the markup's `sdv-overlay` is gone by
+   the time anything is shown and a two-class selector never matches. That is how
+   this rule silently stopped working — the grid was buried again with the fix
+   still sitting in the sheet. Guarded by the hit-test in
+   tests/smoke/skin-detail-console.spec.mjs. */
+.sdv-facegrid {
     z-index: calc(var(--z-modal) + 1);
 }
 

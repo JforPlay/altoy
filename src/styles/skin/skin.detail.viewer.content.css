@@ -9,62 +9,10 @@
   margin-top: var(--spacing-xl);
 }
 
-.descriptions-panel {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-xl);
-}
-
-.description-item {
-  flex: 1 1 100%;
-  background: var(--bg-secondary);
-  padding: var(--spacing-lg);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-color);
-  transition: all var(--transition-base);
-  box-shadow: var(--shadow-sm);
-}
-
-.description-item:hover {
-  transform: translateY(var(--card-lift));
-  box-shadow: var(--card-hover-shadow);
-  border-color: var(--primary-color);
-}
-
-.description-item h2 {
-  margin-top: 0;
-  font-size: 1.25rem;
-  color: var(--primary-light);
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-}
-
-.description-item h2::before {
-  content: "";
-  width: 4px;
-  height: 1.5rem;
-  background: linear-gradient(
-    180deg,
-    var(--primary-color),
-    var(--accent-color)
-  );
-  border-radius: 999px;
-}
-
-.description-item p {
-  margin-bottom: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--spacing-md);
-  line-height: 1.7;
-}
-
-.self-intro {
-  flex-grow: 2;
-}
+/* The 설명/자기소개 card stack (.descriptions-panel / .description-item / .self-intro)
+   was deleted in the 2026-09-22 checkup: cn-preview is this sheet's only consumer
+   and never builds those nodes. The renewed detail viewer's own description block
+   is .sdv-voice-desc in skin.detail.viewer.voice.css. */
 
 /* --- Voice Line Table (Modern) --- */
 .voice-line-table {

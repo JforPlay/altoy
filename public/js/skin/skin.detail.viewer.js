@@ -18,7 +18,9 @@ import {
     toggleElement,
     normalizeRomanNumerals,
     createIcon,
+    createImgElement,
     createGemIconImg,
+    IMG_FALLBACKS,
     setupDropdown,
     loadPageData,
     renderStatus,
@@ -34,6 +36,7 @@ import {
     getAllCharacterNames,
     getCharacterNameByGid,
     getReleaseDate,
+    ensureReleaseDates,
     getSkinFilterData,
 } from './skin.data.js';
 import { ensureExpressionManifest } from '../expression-manifest.js';
@@ -381,6 +384,8 @@ document.addEventListener('DOMContentLoaded', async () => {
      * The manifest fetch belongs HERE and nowhere earlier: the R13 loading boundary
      * says the search shell must not request expression metadata, so the first skin
      * pick is what starts it (tests/smoke/skin-detail-expression-loading.spec.mjs).
+     * Release dates ride along for the same reason — the caption is their only
+     * reader, they are 15.5 KB gz, and parallel with these two they cost nothing.
      * The render token drops a response whose selection has already been replaced.
      */
     async function displaySkinDetails(skinName) {
@@ -393,6 +398,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             [skin, manifest] = await Promise.all([
                 getSkinByName(skinName),
                 ensureExpressionManifest(),
+                // Resolved for its side effect on the data module; a failure here
+                // must not cost the visitor the artwork, so it degrades to no date.
+                ensureReleaseDates().catch(() => null),
             ]);
         } catch (error) {
             console.error('Failed to load skin details', error);
@@ -509,11 +517,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             tab.type = 'button';
             tab.className = 'sdv-tab';
             tab.dataset.tab = key;
+            // The pair a tablist owes a screen reader: the tab points at the panel,
+            // and the panel (below) points back at whichever tab is currently on.
+            tab.id = `voice-tab-${key}`;
             tab.setAttribute('role', 'tab');
+            tab.setAttribute('aria-controls', 'voice-list');
             tab.setAttribute('aria-selected', String(key === activeTab));
             tab.textContent = `${TAB_LABELS[key]} ${groups[key].length}`;
             elements.voiceTabs.appendChild(tab);
         });
+        elements.voiceList.setAttribute('aria-labelledby', `voice-tab-${activeTab}`);
     }
 
     function onTabClick(event) {
@@ -570,6 +583,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const label = document.createElement('span');
         label.className = 'sdv-line-label';
         label.textContent = line.label;
+        // The column is ~54px and the label ellipsises; the row text does not, so
+        // this is the only string here that can be cut off with nowhere to read it.
+        label.title = line.label;
 
         // A div, not a p: `.sdv-line-text` carries no margin reset, so a
         // paragraph's UA margins would inflate every row.
@@ -672,15 +688,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const container = document.createElement('div');
         container.className = 'sdv-asmr-illust hidden';
-        const img = document.createElement('img');
-        img.src = asmrPainting;
-        img.alt = 'ASMR 일러스트';
-        img.loading = 'lazy';
-        // Sized inline because this pair has no page stylesheet of its own and a
-        // full-size ASMR painting would otherwise blow out the drawer's width.
-        img.style.maxWidth = '100%';
-        img.style.height = 'auto';
-        container.appendChild(img);
+        // Sizing lives in `.sdv-asmr-illust img` (skin.detail.viewer.voice.css) —
+        // width/height/radius together, so nothing is set inline here.
+        container.appendChild(createImgElement(asmrPainting, 'ASMR 일러스트', {
+            fallback: IMG_FALLBACKS.DEFAULT,
+        }));
 
         toggleBtn.addEventListener('click', () => {
             const isVisible = !container.classList.contains('hidden');
@@ -900,6 +912,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         // (play() resolves async, so audio.paused is still true on this tick).
         player.wave.classList.toggle('is-playing', !!playing);
         player.label.textContent = label || PLAYER_IDLE_LABEL;
+        // Single-line and ellipsised, so a long 대사 label needs the tooltip.
+        player.label.title = label || '';
 
         // Nothing to seek through until the duration is known: the bar is
         // permanently visible, so most of the time there is no clip at all.

@@ -10,8 +10,11 @@
  *
  * Everything is lazy: the pool is built on the FIRST open, never at page boot, because
  * a visitor arriving on a deep link may never open it. 함종 is the only filter needing
- * data the skin index does not carry (two extra files, ~21 KB gz); it loads beside the
- * pool and a failure hides that one <select> instead of failing the modal.
+ * data the skin index does not carry (two extra files, ~21 KB gz); it is the only fetch
+ * this module makes, and a failure hides that one <select> instead of failing the modal.
+ * Everything else — including each row's `clientId`, which the portrait URL and the 함종
+ * join both need — rides `getSkinFilterData()`'s pool, so the 317 KB skin index is
+ * parsed exactly once per session by skin.data.js.
  *
  * Results cap at PAGE_SIZE rendered cards with a 더 보기 step. That is not cosmetic:
  * raw.githubusercontent.com 429-throttles on image bursts and then serves permanent
@@ -35,12 +38,6 @@ const PAGE_SIZE = 120;
 
 const SKIN_ICON_BASE = `${DATA_FOR_TOY_BASE}/skin_icon`;
 
-/**
- * The skin index — re-read here for `clientId`, which getSkinFilterData()'s pool rows
- * do not carry but both the portrait URL and the 함종 join need. skin.data.js already
- * fetched this during its own init, so this resolves out of the IndexedDB cache.
- */
-const SKIN_INDEX_URL = 'data/skin/skin_voiceline_index.json';
 const SHIP_LITE_URL = 'data/ship_info_lite.json';
 const SHIP_TYPE_MAP_URL = 'data/mapping/ship_type_mapping.json';
 
@@ -92,27 +89,16 @@ async function buildPool() {
     const { pool, filters } = getSkinFilterData();
     if (pool.length === 0) throw new Error('skin index not loaded yet');
 
-    const [index, shipTypes] = await Promise.all([
-        fetchJSONWithCache(SKIN_INDEX_URL),
-        loadShipTypes().catch((e) => {
-            console.warn('[skin search] 함종 data unavailable, hiding that filter', e);
-            return null;
-        })
-    ]);
-
-    // Skin display names are globally unique across the whole index (verified against
-    // the committed file), so one flat map is enough to reunite a pool row with its id.
-    const clientIds = new Map();
-    for (const entry of Object.values(index?.characters || {})) {
-        for (const skin of entry?.skins || []) clientIds.set(skin.name, Number(skin.clientId));
-    }
+    const shipTypes = await loadShipTypes().catch((e) => {
+        console.warn('[skin search] 함종 data unavailable, hiding that filter', e);
+        return null;
+    });
 
     const typeNames = new Set();
     for (const row of pool) {
         // Precomputed once: the name box filters on every keystroke over ~2,400
         // rows, and normalizing both names per row per keystroke is the whole cost.
         row.search = normalizeRomanNumerals(`${row.charName} ${row.skinName}`).toLowerCase();
-        row.clientId = clientIds.get(row.skinName) ?? null;
         // clientId encodes shipGroup*10 + skinIndex, so floor(/10) is the ship-group id
         // ship_info_lite is keyed by. The ~25 collab/NPC rows that miss simply carry no
         // 함종 and drop out when one is selected.
