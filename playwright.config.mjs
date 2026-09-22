@@ -9,6 +9,9 @@ const BASE_URL = `http://localhost:${PORT}/altoy/`;
 
 export default defineConfig({
     testDir: 'tests/smoke',
+    // Fails the run if a dev server has been adopted via reuseExistingServer
+    // below, instead of letting the whole suite silently test the dev pipeline.
+    globalSetup: './tests/smoke/assert-built-server.mjs',
     fullyParallel: true,
     forbidOnly: !!process.env.CI,
     // One retry absorbs transient flake (slow first paint, OS hiccup);

@@ -576,7 +576,7 @@ function renderShelf() {
         tile.dataset.faceId = faceId;
         tile.style.width = `${tileWidth(asset.entry)}px`;
         tile.setAttribute('aria-label', `표정 ${i + 1}`);
-        tile.appendChild(railThumb(thumbUrl(asset.baseDir, faceId), `표정 ${i + 1}`, i < EAGER_TILES));
+        tile.appendChild(railThumb(thumbUrl(asset, faceId), `표정 ${i + 1}`, i < EAGER_TILES));
         tile.addEventListener('click', () => setFace(faceId));
         return tile;
     }));
@@ -653,21 +653,29 @@ function tileWidth(entry) {
     return Math.max(24, Math.round(TILE_H * bw / bh));
 }
 
-/**
- * Prefer the webp thumbnail tier when the manifest says the pipeline emitted it.
- * The flag is absent from today's data, so the PNG path is what ships; the gate
- * exists so a future pipeline run costs zero 404s instead of one per face. The
- * full-size render and the image save always use the original PNG.
- */
-function thumbUrl(baseDir, faceId) {
-    const entry = state.assets[state.active]?.entry;
-    return entry?.thumbs
-        ? expUrl(`${baseDir}/thumbs/painting_face_${faceId}.webp`)
-        : expUrl(`${baseDir}/painting_face_${faceId}.png`);
-}
-
 function faceUrl(asset, faceId) {
     return expUrl(`${asset.baseDir}/${asset.baseName}_face_${faceId}.png`);
+}
+
+/**
+ * Prefer the webp thumbnail tier when the manifest says the pipeline emitted it
+ * (WSL `build_expression_thumbs.py`, an additive `thumbs/` dir beside the PNGs).
+ * The faces are hole-fill patches for the compositor, ~105 KB each, so a
+ * 21-expression skin used to pull ~2.2 MB to paint one row of 76px tiles.
+ *
+ * Falls back to `faceUrl` rather than to a URL of its own: both assets share one
+ * `baseDir` and are told apart ONLY by `baseName`, so the hardcoded `painting_`
+ * this used to carry served the 전체 painting's faces under the 확대 rail — the
+ * wrong art, silently, because both files exist on every skin that has either.
+ *
+ * The full-size render, the lightbox and the image save always keep the PNG:
+ * lossy alpha is fine at 76px and is not fine for the hole-punch composite,
+ * whose edge must sum to full opacity (expression-composite.js).
+ */
+function thumbUrl(asset, faceId) {
+    return asset.entry?.thumbs
+        ? expUrl(`${asset.baseDir}/thumbs/${asset.baseName}_face_${faceId}.webp`)
+        : faceUrl(asset, faceId);
 }
 
 /**
@@ -813,7 +821,7 @@ function openFaceGrid() {
         const tile = el('button', 'sdv-facegrid-tile');
         tile.type = 'button';
         tile.dataset.faceId = faceId;
-        const img = railThumb(thumbUrl(asset.baseDir, faceId), `표정 ${i + 1}`, i < EAGER_TILES);
+        const img = railThumb(thumbUrl(asset, faceId), `표정 ${i + 1}`, i < EAGER_TILES);
         const badge = el('span', 'sdv-facegrid-num');
         badge.textContent = String(i + 1);
         tile.append(img, badge);

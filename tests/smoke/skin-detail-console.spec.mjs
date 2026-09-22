@@ -61,6 +61,26 @@ if (!fixture) {
     throw new Error('skin-detail-console: no skin with >=16 expressions in the committed manifest');
 }
 
+/**
+ * Second fixture, for the 확대 test below: a skin the manifest knows under BOTH
+ * `<id>` and `<id>_n`. The two paintings share one `baseDir` and are told apart
+ * only by the file prefix, so a skin with just one of them cannot see the bug.
+ */
+let zoomFixture = null;
+for (const [character, entry] of Object.entries(skinIndex.characters || {})) {
+    for (const skin of entry?.skins || []) {
+        const id = Number(skin.clientId);
+        if (!manifest[String(id)]?.faces?.length) continue;
+        if (!manifest[`${id}_n`]?.faces?.length) continue;
+        zoomFixture = { character, skin: skin.name, id };
+        break;
+    }
+    if (zoomFixture) break;
+}
+if (!zoomFixture) {
+    throw new Error('skin-detail-console: no skin with both <id> and <id>_n expression entries');
+}
+
 test('전체 표정 opened from the fullscreen viewer paints above it', async ({ page }) => {
     await seedFuse(page);
 
@@ -108,4 +128,45 @@ test('전체 표정 opened from the fullscreen viewer paints above it', async ({
     // the overlay, and what was impossible while it was buried.
     await page.locator('#face-grid .sdv-facegrid-tile').first().click();
     await expect(page.locator('#face-grid')).toHaveClass(/hidden/);
+});
+
+/**
+ * The 표정 rail must draw the faces of the art that is ON the stage.
+ *
+ * 전체 (`painting`) and 확대 (`painting_n`) resolve to two different paintings in
+ * the SAME `output_expressions/<id>/` dir, told apart only by the file prefix, and
+ * both have a full set of `_face_N.png` beside each other. So a thumbnail URL that
+ * hardcodes `painting_face_` still returns 200 under 확대 — it just returns the
+ * wrong face — and neither the console gate, an image-404 check nor a visibility
+ * assertion can see it. `thumbUrl` carried exactly that for months.
+ *
+ * Asserting the URL is the only thing that separates "loaded" from "loaded the
+ * right one". It also guards the webp tier the WSL pipeline emits: `thumbs/` is
+ * keyed by the same prefix, so one wrong `baseName` there is a 404 per face.
+ */
+test('확대 rail thumbnails come from painting_n, not the base painting', async ({ page }) => {
+    await seedFuse(page);
+
+    const url = `${SKIN_DETAIL_PATH}?character=${encodeURIComponent(zoomFixture.character)}`
+        + `&skin=${encodeURIComponent(zoomFixture.skin)}`;
+    await page.goto(url);
+    await expect(page.locator('#stage-dock .sdv-face-tile').first()).toBeAttached({ timeout: 45_000 });
+
+    // Deferred tiles hold the URL on data-src until they scroll in, so read both.
+    const railSources = () => page.locator('#stage-dock .sdv-face-tile img').evaluateAll(
+        imgs => imgs.map(img => img.dataset.src || img.getAttribute('src') || '')
+    );
+
+    const base = await railSources();
+    expect(base.length).toBeGreaterThan(0);
+    expect(base.every(src => /\/painting_face_\d+\./.test(src))).toBe(true);
+
+    await page.locator('.sdv-asset[data-asset="확대"]').click();
+    // Wait for the rail to be rebuilt for the new asset rather than racing it.
+    await expect.poll(async () => (await railSources())[0] ?? '')
+        .toMatch(/\/painting_n_face_\d+\./);
+
+    const zoom = await railSources();
+    expect(zoom.length).toBeGreaterThan(0);
+    expect(zoom.every(src => /\/painting_n_face_\d+\./.test(src))).toBe(true);
 });

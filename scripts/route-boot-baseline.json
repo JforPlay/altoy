@@ -2608,9 +2608,9 @@
         },
         {
           "path": "/altoy/js/skin/skin.detail.stage.js",
-          "raw": 44336,
-          "gzip": 15069,
-          "brotli": 14533
+          "raw": 44818,
+          "gzip": 15266,
+          "brotli": 14729
         },
         {
           "path": "/altoy/js/skin/skin.detail.viewer.js",
@@ -2686,9 +2686,9 @@
         },
         "js": {
           "count": 19,
-          "raw": 294967,
-          "gzip": 97868,
-          "brotli": 93425
+          "raw": 295449,
+          "gzip": 98065,
+          "brotli": 93621
         },
         "css": {
           "count": 3,
@@ -2704,9 +2704,9 @@
         },
         "total": {
           "count": 24,
-          "raw": 737042,
-          "gzip": 179405,
-          "brotli": 167653
+          "raw": 737524,
+          "gzip": 179602,
+          "brotli": 167849
         }
       },
       "bytes": {
@@ -2718,9 +2718,9 @@
         },
         "js": {
           "count": 19,
-          "raw": 294967,
-          "gzip": 97868,
-          "brotli": 93425
+          "raw": 295449,
+          "gzip": 98065,
+          "brotli": 93621
         },
         "css": {
           "count": 3,
@@ -2736,9 +2736,9 @@
         },
         "total": {
           "count": 24,
-          "raw": 737042,
-          "gzip": 179405,
-          "brotli": 167653
+          "raw": 737524,
+          "gzip": 179602,
+          "brotli": 167849
         }
       },
       "problems": []
