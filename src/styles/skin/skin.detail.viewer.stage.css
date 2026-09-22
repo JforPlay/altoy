@@ -303,6 +303,30 @@
     display: flex;
     justify-content: center;
     pointer-events: none;
+    transition: opacity var(--transition-base), transform var(--transition-base),
+                visibility var(--transition-base);
+}
+
+/* Scrolled clear of the artwork. A card that exists to point at a picture has no
+   business floating over the empty page below it — which is exactly what a fixed
+   dock does once the art has scrolled off. The module sets this from an
+   IntersectionObserver on .sdv-art.
+   `pointer-events` has to be killed on the GROUP, not here: the frame is already
+   transparent to the pointer and the group re-enables it, so opacity alone would
+   leave an invisible, fully clickable card parked at the bottom of the viewport —
+   the same trap the navbar's mega-menu had. `visibility` takes the keyboard half
+   (the tiles stay focusable while folded, on purpose — tabbing into them is what
+   opens the strip) and rides the transition on purpose: it interpolates
+   DISCRETELY, so it holds `visible` through the fade out and flips instantly on
+   the way back in. */
+.sdv-dock.is-away:not(.is-fullscreen) {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px);
+}
+
+.sdv-dock.is-away:not(.is-fullscreen) .sdv-dock-group {
+    pointer-events: none;
 }
 
 /* Padding is CONSTANT across folded and open. It used to grow with the fold, and
@@ -322,22 +346,55 @@
 }
 
 /* --- Folding ---------------------------------------------------------------
-   `display: none` rather than a clipped height, so `width: fit-content` shrinks
-   the card to its control row: at height 0 the tile row still laid out and the
-   folded pill stayed as wide as the open one.
+   Folded is a ZERO BOX, not `display: none`, so both axes can be animated: the
+   card is `width: fit-content`, so a strip that measures 0 wide contributes
+   nothing and the card hugs its control row exactly as a hidden strip did — while
+   a `height: 0` strip that still had its natural width would keep the folded pill
+   as wide as the open one, which is why the first cut used display at all.
+
+   The open width is a MEASURED length (--sdv-face-strip-w, set per skin by the
+   module from the rail's own scrollWidth) rather than `auto`: `width` only
+   interpolates between two lengths, and the tiles are inline-sized from each
+   patch's box ratio, so the number cannot be derived in CSS. `max-width` keeps it
+   inside the band when the strip is wider than the stage.
 
    `.is-open` is set by the module on a hover-intent timer, NOT by `:hover` here —
    a bare :hover folded the instant the pointer slipped off the card, which made
-   the whole thing feel like it was fleeing the mouse. :focus-within stays as the
-   keyboard path, where there is no dwell to measure. */
+   the whole thing feel like it was fleeing the mouse. */
 .sdv-dock .sdv-face-rail-wrap {
-    display: none;
+    width: 0;
+    height: 0;
+    max-width: 100%;
+    opacity: 0;
+    overflow: hidden;
+    /* --slow (350ms), not --base: this is the one transition on the page that
+       moves a whole card's worth of box, and at 250ms it still read as a pop. The
+       fade is one rung shorter so the tiles are legible before the slide ends,
+       never after. Folding borrows the same pair, which is unhurried on purpose —
+       it only ever runs after the 420ms hover-intent delay has already elapsed. */
+    transition: width var(--transition-slow), height var(--transition-slow),
+                opacity var(--transition-base);
 }
 
 .sdv-dock.is-open .sdv-face-rail-wrap,
 .sdv-dock.is-pinned .sdv-face-rail-wrap,
-.sdv-dock-group:focus-within .sdv-face-rail-wrap {
-    display: block;
+.sdv-dock.is-fullscreen .sdv-face-rail-wrap {
+    width: var(--sdv-face-strip-w, 100%);
+    height: 76px;
+    opacity: 1;
+}
+
+/* The keyboard path, and it is :focus-VISIBLE on purpose. Under :focus-within a
+   mouse click on a tile or on the pin left the card held open by the focus the
+   click itself put there — it only folded once something else was clicked. A
+   pointer click sets no :focus-visible, so the hover-intent timer stays in charge
+   of the mouse and this rule serves tabbing alone.
+   Kept in its OWN rule: :has() is unsupported in old engines, and one unknown
+   selector invalidates every selector in the list it appears in. */
+.sdv-dock-group:has(:focus-visible) .sdv-face-rail-wrap {
+    width: var(--sdv-face-strip-w, 100%);
+    height: 76px;
+    opacity: 1;
 }
 
 /* --- In the fullscreen viewer -----------------------------------------------
@@ -347,10 +404,6 @@
 .sdv-dock.is-fullscreen {
     position: static;
     pointer-events: auto;
-}
-
-.sdv-dock.is-fullscreen .sdv-face-rail-wrap {
-    display: block;
 }
 
 /* Nothing to pin to — the dock cannot fold in here. */
@@ -452,9 +505,10 @@
     outline-offset: 1px;
 }
 
+/* Height and width live on the fold rules above — in here the strip is a plain
+   positioning context for its scroll-hint fade. */
 .sdv-face-rail-wrap {
     position: relative;
-    height: 76px;
 }
 
 .sdv-face-rail {
@@ -764,8 +818,26 @@
         box-shadow: none;
     }
 
+    /* Nothing floats, so nothing can be stranded over empty page: the dock scrolls
+       with the art like any other block. Same specificity as the rule it undoes —
+       @media adds none, and `:not()` counts. */
+    .sdv-dock.is-away:not(.is-fullscreen) {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+    }
+
+    .sdv-dock.is-away:not(.is-fullscreen) .sdv-dock-group {
+        pointer-events: auto;
+    }
+
+    /* No fold at all here, so no measured width either — the strip takes the
+       full-width card and scrolls inside it. */
     .sdv-dock .sdv-face-rail-wrap {
-        display: block;
+        width: auto;
+        height: 76px;
+        max-width: none;
+        opacity: 1;
     }
 
     /* Controls back ABOVE the strip. Tiles-over-controls is a consequence of the
@@ -801,7 +873,9 @@
     .sdv-viewer *,
     .sdv-facegrid,
     .sdv-facegrid *,
-    .sdv-asset {
+    .sdv-asset,
+    .sdv-dock,
+    .sdv-face-rail-wrap {
         transition: none !important;
     }
 

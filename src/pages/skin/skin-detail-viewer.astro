@@ -11,7 +11,7 @@
  *
  * Static shell only. Every data region below is filled at runtime and its owner
  * is fixed by the DOM contract in dev/active/2026-09-21-skin-detail-viewer-renewal.md §3.1:
- *   controller (skin.detail.viewer.js) → #skin-rail, #skin-title/#skin-rarity/#skin-meta,
+ *   controller (skin.detail.viewer.js) → #skin-rail, #skin-title/#skin-type/#skin-meta,
  *                                        #voice-tabs, #voice-bank, #voice-desc,
  *                                        #voice-list, #player-bar
  *   stage module (skin.detail.stage.js) → #skin-stage, #stage-art-label, #stage-tools,
@@ -71,7 +71,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                      the skin's identity costs zero height above the picture. -->
                 <header class="sdv-stage-head">
                     <h2 id="skin-title" class="sdv-stage-title"></h2>
-                    <span id="skin-rarity" class="sdv-stage-rarity"></span>
+                    <span id="skin-type" class="sdv-stage-type"></span>
                     <p id="skin-meta" class="sdv-stage-meta"></p>
                     <span id="stage-art-label" class="sdv-art-label"></span>
                     <div id="stage-tools" class="sdv-stage-tools"></div>
@@ -97,7 +97,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                      (0.5% of the drawing); the thumbnail row unfolds on hover, on focus,
                      or when pinned. Horizontal by necessity — face patches keep their own
                      box ratio, so a vertical strip runs past 1800px for 21 faces. -->
-                <div id="stage-dock" class="sdv-dock sdv-glass"></div>
+                <!-- No .sdv-glass here: this element is the positioning FRAME and
+                     spans the whole stage band, so the glass painted a full-width
+                     pane behind the card. The CARD is .sdv-dock-group, built by the
+                     stage module, and it is what carries the material. -->
+                <div id="stage-dock" class="sdv-dock"></div>
             </main>
 
             <section id="sdv-voice" class="sdv-voice" aria-label="대사">
@@ -112,6 +116,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <div id="voice-list" class="sdv-voice-list scroll-styled"></div>
                 <div id="player-bar" class="sdv-player"></div>
             </section>
+
+            <!-- Replaces the collapse handle once the drawer is shut. Fixed, so it
+                 sits in the console only to inherit the layout tokens its collision
+                 floor is measured from; the controller toggles .hidden on it. -->
+            <button id="voice-peek" class="sdv-voice-peek hidden" type="button" aria-label="대사 패널 열기">
+                <i class="fas fa-comment-dots" aria-hidden="true"></i>
+                <span>대사</span>
+            </button>
         </div>
     </div>
 
@@ -192,11 +204,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     <div id="face-grid" class="sdv-overlay hidden" role="dialog" aria-modal="true" aria-label="전체 표정"></div>
     <div id="stage-viewer" class="sdv-overlay hidden" role="dialog" aria-modal="true" aria-label="일러스트 전체화면"></div>
-
-    <button id="voice-peek" class="sdv-voice-peek hidden" type="button" aria-label="대사 패널 열기">
-        <i class="fas fa-comment-dots" aria-hidden="true"></i>
-        <span>대사</span>
-    </button>
 
     <script is:inline type="module" src={`${base}/js/skin/skin.detail.viewer.js`}></script>
 </Layout>

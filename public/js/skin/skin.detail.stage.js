@@ -26,7 +26,7 @@
 import {
     createImgElement, createIcon, lockBodyScroll, unlockBodyScroll,
     downloadImage, sanitizeFilename, showElement, hideElement, toggleElement,
-    getStorageItem, setStorageItem, DATA_FOR_TOY_BASE
+    getStorageItem, setStorageItem, debounce, DATA_FOR_TOY_BASE
 } from '../utils.js';
 import { pickFaceCandidates } from '../expression-face.js';
 import { buildOverlayContainer, composeOverlay, expUrl } from './skin.expression.js';
@@ -66,6 +66,10 @@ const DOCK_PIN_KEY = 'sdvFaceDockPinned';
 // flicker shut on every near-miss. Long enough to cross the card's own corner,
 // short enough that a deliberate exit still feels like one.
 const DOCK_FOLD_DELAY = 420;
+// How much of the viewport's bottom edge the dock owns. The card is ~100px tall
+// over an 18px offset, so once the art's bottom edge rises past this line the dock
+// is floating over page, not over picture — which is when it hides itself.
+const DOCK_CLEAR_PX = 120;
 
 // ===== State =====
 
@@ -129,6 +133,7 @@ function initStage() {
     // rather than building a second rail, and closeViewer has to put it back.
     const dockHome = dock?.parentNode || null;
     wireDockIntent(dock, shelf.root);
+    wireDockVisibility(dock, art);
 
     state.els = { stage, assetRail, assets, dock, dockHome, tools, art, view, fit, label, fullBtn, shelf };
     state.viewer = buildViewer();
@@ -380,9 +385,9 @@ function renderLabel() {
  * Build the shelf chrome once; renderShelf() refills it per asset.
  *
  * The head row is what stays visible when the dock is folded, so it has to read
- * on its own: 「‹ 표정 3 / 21 ›」 plus 전체 표정 and the pin. Unfolding is CSS
- * (:hover / :focus-within); the pin is the affordance for touch, where there is
- * no hover and the thumbnail row is display:none until something opens it.
+ * on its own: 「‹ 표정 3 / 21 ›」 plus 전체 표정 and the pin. Unfolding is a class this
+ * module sets on hover intent (plus a :focus-visible rule for the keyboard); the
+ * pin is the affordance for touch, where there is no hover at all.
  */
 function buildShelf() {
     // The CARD is this group, not #stage-dock: the dock is a pointer-transparent
@@ -404,7 +409,15 @@ function buildShelf() {
     const pin = el('button', 'sdv-face-pin');
     pin.type = 'button';
     pin.appendChild(createIcon('fas fa-thumbtack'));
-    pin.addEventListener('click', () => setDockPin(!state.dockPinned, true));
+    pin.addEventListener('click', () => {
+        const next = !state.dockPinned;
+        setDockPin(next, true);
+        // Unpinning must not slam the strip shut under the very pointer that is
+        // on the button: the card was opened by `is-pinned`, so `is-open` may
+        // never have been set, and no further mouseenter fires while the pointer
+        // is already inside. Hand it back to the hover-intent timer instead.
+        if (!next) setDockOpen(true);
+    });
 
     head.append(prev, count, next, spacer, all, pin);
 
@@ -413,6 +426,13 @@ function buildShelf() {
     const fade = el('div', 'sdv-face-fade');
     fade.setAttribute('aria-hidden', 'true');
     rail.addEventListener('scroll', () => updateFade(wrap, rail));
+    // The fold ANIMATES the strip's width now, so a scrollport measured when the
+    // class flips is measured mid-slide and every strip reads as "scrolls
+    // further". Re-read it when the width lands. (With reduced motion there is no
+    // transition and no event — the caller's rAF already sees the final box.)
+    wrap.addEventListener('transitionend', e => {
+        if (e.propertyName === 'width') updateFade(wrap, rail);
+    });
     wrap.append(rail, fade);
 
     // Tiles ABOVE the controls. The card is anchored by its bottom edge, so it
@@ -435,6 +455,34 @@ function wireDockIntent(dock, card) {
     if (!dock || !card) return;
     card.addEventListener('mouseenter', () => setDockOpen(true));
     card.addEventListener('mouseleave', () => setDockOpen(false));
+}
+
+/**
+ * Fade the dock out once the artwork has scrolled clear of it. The dock is
+ * `position: fixed`, so without this it outlives the thing it annotates: the art
+ * is often taller than the viewport, and past its bottom edge the card goes on
+ * floating over empty page.
+ *
+ * The observer's ROOT is shrunk to the bottom band the dock occupies, so
+ * "intersecting" reads as "there is still artwork behind the card". A plain
+ * viewport root cannot express that — a picture taller than the screen intersects
+ * it from the top long after its bottom edge has risen past the dock, which is
+ * exactly the state this exists to catch. The band is a viewport-height offset,
+ * hence the re-attach on resize.
+ */
+function wireDockVisibility(dock, art) {
+    if (!dock || !art || typeof IntersectionObserver !== 'function') return;
+    let io = null;
+    const attach = () => {
+        io?.disconnect();
+        io = new IntersectionObserver(
+            ([entry]) => dock.classList.toggle('is-away', !entry.isIntersecting),
+            { rootMargin: `-${Math.max(0, window.innerHeight - DOCK_CLEAR_PX)}px 0px 0px 0px` }
+        );
+        io.observe(art);
+    };
+    attach();
+    window.addEventListener('resize', debounce(attach, 200));
 }
 
 /** Open at once, fold on a timer. Pinned and fullscreen ignore both. */
@@ -508,7 +556,10 @@ function renderShelf() {
 
     renderFaceSelection();
     state.railObserver = observeThumbs(shelf.rail, state.railObserver);
-    requestAnimationFrame(() => updateFade(shelf.wrap, shelf.rail));
+    requestAnimationFrame(() => {
+        measureStrip();
+        updateFade(shelf.wrap, shelf.rail);
+    });
 }
 
 /**
@@ -662,6 +713,21 @@ function keepTileInView(rail) {
 function updateFade(wrap, rail) {
     const more = rail.scrollWidth - rail.clientWidth - rail.scrollLeft > 4;
     wrap.classList.toggle('has-more', more);
+}
+
+/**
+ * Publish the strip's natural width, which is what the fold animates TO — `width`
+ * interpolates between lengths only, and `auto` is not one.
+ *
+ * `scrollWidth` is the measurement that survives both states: folded, the rail's
+ * box is 0 wide and it reports its content; open, box and content agree; capped by
+ * the band, the box is narrower and it reports its content again. The tiles carry
+ * inline widths from their patch ratios, so no image has to have loaded yet.
+ */
+function measureStrip() {
+    const { dock, shelf } = state.els || {};
+    if (!dock || !shelf) return;
+    dock.style.setProperty('--sdv-face-strip-w', `${shelf.rail.scrollWidth}px`);
 }
 
 // ===== 전체 표정 overlay =====

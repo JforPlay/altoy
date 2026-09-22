@@ -228,8 +228,8 @@ body.dark-mode .sdv-page.main-container {
    edge from (stage.css), so a hard `0` in the template here would collapse the
    column while leaving the dock centred as if the drawer were still open.
    The panel clips itself, so its border and its collapse handle vanish with it;
-   #voice-peek (a page-level sibling, unreachable by any combinator from here) is
-   revealed by the controller toggling .hidden on it. */
+   #voice-peek (a child of the console, not a sibling of it, so no combinator from
+   this class reaches it) is revealed by the controller toggling .hidden on it. */
 .sdv-console.voice-closed {
   --sdv-voice-w: 0px;
 }
@@ -535,10 +535,32 @@ body.dark-mode .sdv-skin-tag {
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
 }
 
-.sdv-stage-rarity {
+/* 스킨 타입 (댄스 · 수영복 · 정장 …) — the one classification worth a chip here, so
+   it leads the metadata instead of sitting third in a run of dot-separated text.
+   Hand-styled rather than the shared .chip: that component is the interactive
+   filter chip on page surfaces, and chip.css itself files display-only labels as
+   not-this-component. The treatment is the dock's own (rgba white on glass,
+   --sdv-r-sm), because this label floats on the dark art scrim, not on a card.
+   Rectangular per the chip rule in CLAUDE.md. */
+.sdv-stage-type {
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: var(--sdv-r-sm);
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--sdv-ink-1);
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
 }
 
+/* INLINE flow, never flex: the line is text with one icon in it, and a flex
+   container turns every text run into an item whose leading and trailing spaces
+   are trimmed — which silently welds 「· 900」 onto the gem beside it. */
 .sdv-stage-meta {
   flex: 0 0 auto;
   min-width: 0;
@@ -547,6 +569,15 @@ body.dark-mode .sdv-skin-tag {
   font-weight: 500;
   color: var(--sdv-ink-2);
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* skin.common.css sizes .gem-icon for a price list (1.5rem); on a 0.72rem caption
+   line it has to come down to the cap height of the text beside it. */
+.sdv-stage-meta .gem-icon {
+  width: 0.95rem;
+  height: 0.95rem;
+  vertical-align: -0.2em;
+  filter: none;
 }
 
 .sdv-stage-meta:empty {
@@ -653,12 +684,22 @@ body.dark-mode .sdv-skin-tag {
   box-shadow: var(--focus-ring);
 }
 
-/* Floating re-open pill. A page-level sibling, so no selector here can react to
-   .voice-closed: the controller toggles the global .hidden utility on it. */
+/* Floating re-open pill. It lives inside .sdv-console purely so it can read the
+   layout tokens below — it is `fixed`, so its DOM position costs no layout — but
+   it is still not reachable from `.voice-closed` by a combinator (that class is
+   on the console itself, and this is its child, not its sibling): the controller
+   toggles the global .hidden utility on it.
+
+   Same COLLISION FLOOR as .sdv-voice-toggle above, and for the same reason — this
+   pill REPLACES that handle, so it has to land where the handle was (measured 2px
+   apart) or the affordance appears to jump when the drawer shuts. Two differences
+   in the arithmetic: this one is fixed, so the floor measures from the VIEWPORT
+   and must add the navbar the stage hangs off; and the addend is 16px clearance
+   plus half of THIS element's height (26px), not the handle's 28. */
 .sdv-voice-peek {
   position: fixed;
   right: 0;
-  top: 50%;
+  top: max(calc(var(--sdv-pane-top) + var(--sdv-assets-top) + var(--sdv-assets-span) + 42px), 50%);
   transform: translateY(-50%);
   z-index: var(--z-drawer);
   display: flex;
@@ -756,6 +797,16 @@ body.dark-mode .sdv-skin-tag {
   .sdv-stage-meta,
   .sdv-stage-head .sdv-art-label {
     color: var(--text-muted);
+    text-shadow: none;
+  }
+
+  /* The caption is an opaque page-coloured band here, not a scrim over dark art,
+     so the chip has to leave the fixed dark-stage ink ramp: --sdv-ink-1 is
+     near-white and would vanish into --bg-primary in the light theme. Both
+     replacements are theme-resolving tokens. */
+  .sdv-stage-type {
+    background: var(--sdv-lift-2);
+    color: var(--text-secondary);
     text-shadow: none;
   }
 

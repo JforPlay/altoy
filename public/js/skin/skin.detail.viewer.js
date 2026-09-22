@@ -18,6 +18,7 @@ import {
     toggleElement,
     normalizeRomanNumerals,
     createIcon,
+    createGemIconImg,
     setupDropdown,
     loadPageData,
     renderStatus,
@@ -61,10 +62,6 @@ const VOICE_OPEN_KEY = 'skinDetailVoiceOpen';
 const TAB_ORDER = ['normal', 'oath', 'asmr'];
 const TAB_LABELS = { normal: '대사', oath: '서약', asmr: 'ASMR' };
 
-// Rarity palette classes from src/styles/rarity.css. Listed so the stage badge can
-// drop the previous skin's tier without wiping classes the markup put there.
-const RARITY_CLASSES = ['rarity-N', 'rarity-R', 'rarity-SR', 'rarity-SSR', 'rarity-UR'];
-
 const EMPTY_STAGE_MESSAGE = '함순이와 스킨을 고르면 일러스트가 나옵니다.';
 const PLAYER_IDLE_LABEL = '재생 중인 대사가 없습니다';
 
@@ -103,7 +100,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         charDropdown: document.getElementById('character-dropdown-content'),
         skinRail: document.getElementById('skin-rail'),
         skinTitle: document.getElementById('skin-title'),
-        skinRarity: document.getElementById('skin-rarity'),
+        skinType: document.getElementById('skin-type'),
         skinMeta: document.getElementById('skin-meta'),
         stage: document.getElementById('skin-stage'),
         voiceTabs: document.getElementById('voice-tabs'),
@@ -388,33 +385,47 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    /** Title, rarity badge, and the single metadata line above the art. */
+    /**
+     * Title, 스킨 타입 chip, and the single metadata line above the art.
+     *
+     * 레어도 is deliberately absent: the rail row the visitor just clicked already
+     * carries its badge, and on the caption it only competed with the name.
+     * 기간 and the release date are ONE run (「상시 · 2022-08-04」) because they are
+     * one fact — when the skin could be bought — and splitting them across the
+     * separators made the line read as four unrelated labels.
+     */
     function renderStageHeader(skin, skinName) {
         elements.skinTitle.textContent = skinName;
 
-        const rarity = skin['레어도'] || '';
-        elements.skinRarity.classList.remove(...RARITY_CLASSES);
-        elements.skinRarity.classList.add('badge', 'rarity-badge');
-        if (rarity) elements.skinRarity.classList.add(`rarity-${rarity}`);
-        elements.skinRarity.textContent = rarity;
-        toggleElement(elements.skinRarity, Boolean(rarity));
+        const type = skin['스킨 타입 - 한글'] || '';
+        elements.skinType.textContent = type;
+        toggleElement(elements.skinType, Boolean(type));
 
+        // 출시 stays on the date: beside 한정 a bare date reads as the END of the
+        // limited run rather than the start of it.
         const parts = [];
-        if (skin['기간']) parts.push(skin['기간']);
-        if (skin['스킨 타입 - 한글']) parts.push(skin['스킨 타입 - 한글']);
         const release = getReleaseDate(skin['클뜯 id']);
-        if (release) parts.push(`출시 ${release}`);
-        if (skin['재화']) parts.push(`재화 ${Number(skin['재화']).toLocaleString()}`);
-        elements.skinMeta.textContent = parts.join(' · ');
-        toggleElement(elements.skinMeta, parts.length > 0);
+        const sale = [skin['기간'], release && `출시 ${release}`].filter(Boolean).join(' · ');
+        if (sale) parts.push(sale);
+        elements.skinMeta.replaceChildren();
+        if (parts.length) elements.skinMeta.append(parts.join(' · '));
+        // 재화 reads as the gem it is: the same Ruby icon every other skin page
+        // prices with (utils.js owns the asset), so the word can go.
+        if (skin['재화']) {
+            if (parts.length) elements.skinMeta.append(' · ');
+            elements.skinMeta.append(
+                createGemIconImg(),
+                ` ${Number(skin['재화']).toLocaleString()}`
+            );
+        }
+        toggleElement(elements.skinMeta, Boolean(elements.skinMeta.firstChild));
     }
 
     function clearStageHeader() {
         elements.skinTitle.textContent = '';
-        elements.skinRarity.textContent = '';
-        elements.skinRarity.classList.remove(...RARITY_CLASSES);
-        hideElement(elements.skinRarity);
-        elements.skinMeta.textContent = '';
+        elements.skinType.textContent = '';
+        hideElement(elements.skinType);
+        elements.skinMeta.replaceChildren();
         hideElement(elements.skinMeta);
     }
 
