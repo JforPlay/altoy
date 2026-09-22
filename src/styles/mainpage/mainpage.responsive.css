@@ -94,17 +94,10 @@
     border-top: 1px solid var(--primary-alpha-15);
     box-shadow: none;
     border-radius: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-in-out;
   }
 
   body.dark-mode .mega-menu {
     background: rgba(0, 113, 235, 0.05);
-  }
-
-  .mega-dropdown.active .mega-menu {
-    max-height: 800px;
   }
 
   .mega-menu-content {
