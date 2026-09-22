@@ -209,11 +209,13 @@ body.dark-mode .sdv-bank-btn[aria-selected="true"] {
 .sdv-line {
   display: grid;
   grid-template-columns: 54px 1fr auto;
-  /* start, not center: the text is no longer clamped, so a 서약 line can run six
-     lines tall and a centred 메인1 would float halfway down the paragraph it
-     names. On the single-line rows that are the median this moves the text up by
-     3px — half the gap between its 19px line box and the 25px play button. */
-  align-items: start;
+  /* The label and the play button both address the ROW, not its opening words, so
+     they centre against it — on a three-line 낯섦 a top-aligned 낯섦 read as a
+     hanging note above the text. The text is unaffected either way: whenever it
+     runs to more than one line it IS the tallest item and fills the row, and on
+     the single-line rows that are the median centring is what keeps all three
+     columns on one axis (the 25px button is 6px taller than the 19px line box). */
+  align-items: center;
   gap: var(--spacing-sm);
   padding: 0.45rem 0.6rem;
   border-radius: var(--sdv-r-md);
@@ -223,9 +225,13 @@ body.dark-mode .sdv-bank-btn[aria-selected="true"] {
 /* Zebra banding. Rows carry no separators and now run up to six lines each, so
    without it a long 서약 line and the one under it read as one block of prose.
    A faint ACCENT wash rather than another neutral lift: :hover owns the neutral
-   channel (--sdv-lift-1), and a zebra built from the same token would either
-   swallow the hover or be beaten by it. color-mix, never `var(--token)NN` —
-   that is two tokens, not an alpha, and it voids the declaration outright.
+   channel, and a zebra built from the same token would either swallow the hover
+   or be beaten by it. color-mix, never `var(--token)NN` — that is two tokens,
+   not an alpha, and it voids the declaration outright.
+
+   :hover is --sdv-lift-2 rather than -1 because of this rule, measured off the
+   rasterised pixels: at lift-1 the dark-mode hover landed within a point of the
+   stripe itself, so an even row had no visible hover at all.
 
    Above :hover on purpose: both selectors are (0,2,0), so a tie is settled by
    source order and a zebra rule placed after would win on every even row. */
@@ -238,10 +244,6 @@ body.dark-mode .sdv-bank-btn[aria-selected="true"] {
 }
 
 .sdv-line-label {
-  /* Centred against the whole row while the text and the play button stay on the
-     first line: the label names the row, not its opening words, and on a
-     three-line 낯섦 it read as a hanging note above the text. */
-  align-self: center;
   min-width: 0;
   /* Korean breaks between SYLLABLES by default, so 「함대 특수대사」 split as
      「함대 특수대」/「사」 in a 54px column. keep-all is the property written for
