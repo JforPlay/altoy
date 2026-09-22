@@ -7,7 +7,8 @@
  */
 import { debounce, fetchJSONWithCache, getAllUrlParams, setUrlParams, resolveUrl, normalizeRomanNumerals, createSearchIndex, ensureFuse,
     openModal, setupModal, showToast, toggleElement, IMG_FALLBACKS,
-    createIcon, createGemIconImg, lockBodyScroll, unlockBodyScroll, syncedStorage, renderStatus, loadPageData } from '../utils.js';
+    createIcon, createGemIconImg, lockBodyScroll, unlockBodyScroll, syncedStorage, renderStatus, loadPageData,
+    getSkinThemes } from '../utils.js';
 import { loadReleaseDates } from './skin.data.js';
 import { formatReleaseDate, releaseSortKey } from './skin.dates.js';
 import { composeDefaultPainting } from './skin.expression.js';
@@ -1364,6 +1365,27 @@ document.addEventListener('DOMContentLoaded', () => {
         URLState.update();
     }, DEBOUNCE_DELAY);
 
+    /**
+     * Fill the 스킨 타입 select from the loaded skins. Must run before
+     * URLState.apply() — setSelectValue falls back to 'all' when the option
+     * it is restoring does not exist yet.
+     */
+    function populateSkinTypeSelect(skins) {
+        const options = [
+            createFilterOption('all', '전체'),
+            createFilterOption('기본', '기본'),
+            ...getSkinThemes(skins).map(theme => createFilterOption(theme, theme)),
+        ];
+        DOM.filters.skinType.replaceChildren(...options);
+    }
+
+    function createFilterOption(value, label) {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = label;
+        return option;
+    }
+
     // ===== Data Initialization =====
     // Status goes to #list-status, not the four section containers: those boot
     // `.hidden` for CLS, so anything rendered inside them is invisible.
@@ -1392,6 +1414,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Initialize chunked rendering
         ChunkController.init(Object.keys(DOM.sections));
+
+        populateSkinTypeSelect(allSkins);
 
         const uniqueNames = [...new Set(allSkins.map(skin => skin['한글 함순이 + 스킨 이름']))].sort();
         await ensureFuse();

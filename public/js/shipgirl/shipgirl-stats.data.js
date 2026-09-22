@@ -8,7 +8,7 @@
  * skin metadata (counts, gem costs, tag counts, release dates) for each shipgirl.
  */
 
-import { fetchJSON, fetchJSONWithCache, normalizeRomanNumerals } from '../utils.js';
+import { fetchJSON, fetchJSONWithCache, normalizeRomanNumerals, getSkinThemes } from '../utils.js';
 import { mergeReleaseDates, releaseSortKey } from '../skin/skin.dates.js';
 import { statTableKey } from '../ship-stat-table.js';
 
@@ -493,12 +493,7 @@ export function getShipIconUrl(ship) {
  * @returns {string[]}
  */
 export function getSkinTypeList() {
-    const set = new Set();
-    for (const skin of state.skinSubsetData) {
-        const t = skin['스킨 타입 - 한글'];
-        if (t) set.add(t);
-    }
-    return [...set].sort((a, b) => a.localeCompare(b, 'ko'));
+    return getSkinThemes(state.skinSubsetData);
 }
 
 /**

@@ -11,7 +11,7 @@
 import {
   debounce, fetchJSONWithCache, getAllUrlParams, setUrlParams,
   getStorageItem, setStorageItem, showToast, createSearchIndex, ensureFuse,
-  lockBodyScroll, unlockBodyScroll, renderStatus
+  lockBodyScroll, unlockBodyScroll, renderStatus, getSkinThemes
 } from '../utils.js';
 import { createVirtualScroll } from './skin.poll.virtual-scroll.js';
 
@@ -1158,6 +1158,25 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
 
   /**
+   * Fill the 스킨 타입 select from the loaded skins. Must run before
+   * applyFiltersFromURL — setSelectValue falls back to 'all' when the option
+   * it is restoring does not exist yet.
+   */
+  const populateSkinTypeSelect = (skins) => {
+    const makeOption = (value, label) => {
+      const option = document.createElement('option');
+      option.value = value;
+      option.textContent = label;
+      return option;
+    };
+    skinTypeSelect.replaceChildren(
+      makeOption('all', '전체'),
+      makeOption('기본', '기본'),
+      ...getSkinThemes(skins).map(theme => makeOption(theme, theme)),
+    );
+  };
+
+  /**
    * Apply filters from URL parameters.
    * If no URL parameters exist (first visit), showcase featured event skins.
    */
@@ -1167,7 +1186,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (Object.keys(params).length === 0) {
       // First visit with no URL params - showcase featured event
       characterNameSearch.value = '';
-      skinTypeSelect.value = FEATURED_SKIN_TYPE;
+      // Falls back to 'all' if the featured theme currently has no skins —
+      // the option list is derived, so it is not guaranteed to be present.
+      setSelectValue(skinTypeSelect, FEATURED_SKIN_TYPE, 'all');
       factionSelect.value = 'all';
       tagSelect.value = 'all';
       sortSelect.value = 'default';
@@ -1566,6 +1587,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       const clientId = String(skin["클뜯 id"]);
       clientIdToSkinMap[clientId] = skin;
     });
+
+    populateSkinTypeSelect(allSkins);
 
     allCharacterNames = [...new Set(allSkins.map((s) => s["함순이 이름"]))].filter(Boolean).sort();
 

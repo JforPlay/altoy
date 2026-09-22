@@ -441,6 +441,30 @@ export function compareByRarity(a, b) {
     return (RARITY_ORDER[a] ?? 99) - (RARITY_ORDER[b] ?? 99);
 }
 
+// ===== Skin themes =====
+
+/**
+ * Distinct `스킨 타입 - 한글` values across a skin collection, ko-sorted.
+ *
+ * The theme list is derived from the data on purpose. It used to be hand-typed
+ * <option> lists in skin-list-viewer.astro and skin-poll.astro, which meant a
+ * new KR theme was invisible on every page until someone added it by hand —
+ * id 29 백함기담 shipped with 아마츠카제's skins and appeared nowhere.
+ *
+ * Base skins carry no theme (shop_type_id 0 is absent from the game's
+ * skin_page_template), so callers add their own '기본' entry for the null case.
+ *
+ * @param {Iterable<Object>} skins @returns {string[]}
+ */
+export function getSkinThemes(skins) {
+    const themes = new Set();
+    for (const skin of skins) {
+        const theme = skin['스킨 타입 - 한글'];
+        if (theme) themes.add(theme);
+    }
+    return [...themes].sort((a, b) => a.localeCompare(b, 'ko'));
+}
+
 /**
  * Escape a value for safe interpolation into HTML text or a double-quoted
  * attribute. Full &<>"' set — safe in both contexts. Mirrors the former
