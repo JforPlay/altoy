@@ -131,6 +131,44 @@ test('전체 표정 opened from the fullscreen viewer paints above it', async ({
 });
 
 /**
+ * The caption must fit the stage at the narrowest desktop width.
+ *
+ * At 1100px the stage column is 386px. As one unwrapped flex row the caption
+ * squeezed the title to one syllable per line and ran the 전체화면 button on under
+ * the 대사 column — the test above timed out on that very click in CI (2026-09-23),
+ * 1280 being Playwright's default width. Wrapping the whole row instead drops the
+ * button onto the 일러 column, so both neighbours are asserted. The art label is
+ * awaited because it lands last and is the widest member the row has to fit.
+ */
+test('caption keeps the 전체화면 button clear of the 대사 and 일러 columns', async ({ page }) => {
+    await seedFuse(page);
+    await page.setViewportSize({ width: 1100, height: 800 });
+
+    const url = `${SKIN_DETAIL_PATH}?character=${encodeURIComponent(fixture.character)}`
+        + `&skin=${encodeURIComponent(fixture.skin)}`;
+    await page.goto(url);
+    await expect(page.locator('#stage-art-label')).not.toBeEmpty({ timeout: 45_000 });
+
+    const layout = await page.evaluate(() => {
+        const rect = sel => document.querySelector(sel).getBoundingClientRect();
+        const meets = (a, b) => a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+        const btn = rect('.sdv-art-full');
+        const hit = document.elementFromPoint(btn.left + btn.width / 2, btn.top + btn.height / 2);
+        const range = document.createRange();
+        range.selectNodeContents(document.getElementById('skin-title'));
+        return {
+            buttonOnTop: !!hit?.closest('.sdv-art-full'),
+            onVoice: meets(btn, rect('#sdv-voice')),
+            onAssets: meets(btn, rect('#stage-assets')),
+            titleLines: new Set([...range.getClientRects()].map(r => Math.round(r.top))).size,
+        };
+    });
+
+    expect(layout).toMatchObject({ buttonOnTop: true, onVoice: false, onAssets: false });
+    expect(layout.titleLines).toBeLessThanOrEqual(2);
+});
+
+/**
  * The 표정 rail must draw the faces of the art that is ON the stage.
  *
  * 전체 (`painting`) and 확대 (`painting_n`) resolve to two different paintings in

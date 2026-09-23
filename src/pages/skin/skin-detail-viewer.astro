@@ -77,10 +77,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <!-- Caption. Absolutely positioned over the art on a soft scrim, so
                      the skin's identity costs zero height above the picture. -->
                 <header class="sdv-stage-head">
-                    <h2 id="skin-title" class="sdv-stage-title"></h2>
-                    <span id="skin-type" class="sdv-stage-type"></span>
-                    <p id="skin-meta" class="sdv-stage-meta"></p>
-                    <span id="stage-art-label" class="sdv-art-label"></span>
+                    <div class="sdv-stage-caption">
+                        <h2 id="skin-title" class="sdv-stage-title"></h2>
+                        <span id="skin-type" class="sdv-stage-type"></span>
+                        <p id="skin-meta" class="sdv-stage-meta"></p>
+                        <span id="stage-art-label" class="sdv-art-label"></span>
+                    </div>
                     <div id="stage-tools" class="sdv-stage-tools"></div>
                 </header>
 

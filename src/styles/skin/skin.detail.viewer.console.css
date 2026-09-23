@@ -612,6 +612,23 @@ body.dark-mode .sdv-skin-tag {
       rgba(10, 15, 19, 0) 100%);
 }
 
+/* The text half of the caption, as its own WRAPPING column beside #stage-tools.
+   Between 1100px and ~1440px the stage is only 386–726px wide, too narrow for the
+   whole line — and as one unwrapped row the title (the only shrinkable member) was
+   squeezed to a single syllable per line while the 전체화면 button ran on under the
+   대사 column (z-index 5 over this caption's 3) and could not be clicked. Wrapping
+   the head itself is not enough: the button then drops to a third line at 1100px
+   and lands on the 일러 column hanging at --sdv-assets-top. Grouped, only the text
+   wraps and the button stays on line 1, clear of both (see .sdv-stage-tools). */
+.sdv-stage-caption {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 9px;
+}
+
 /* Every text stop on the caption is one rung of the same ink ramp, which is what
    keeps a four-part line from reading as four labels. The shadow is not decoration
    — a white uniform can sit directly under this text. */
@@ -649,9 +666,12 @@ body.dark-mode .sdv-skin-tag {
 
 /* INLINE flow, never flex: the line is text with one icon in it, and a flex
    container turns every text run into an item whose leading and trailing spaces
-   are trimmed — which silently welds 「· 900」 onto the gem beside it. */
+   are trimmed — which silently welds 「· 900」 onto the gem beside it.
+   Shrinkable as an ITEM, so that alone on a wrapped line narrower than itself it
+   wraps that text instead of overflowing under the button; it never shrinks while
+   it still fits, because flex lines break on max-content before anything shrinks. */
 .sdv-stage-meta {
-  flex: 0 0 auto;
+  flex: 0 1 auto;
   min-width: 0;
   margin: 0;
   font-size: 0.72rem;
@@ -675,10 +695,14 @@ body.dark-mode .sdv-skin-tag {
 
 /* Stage module's slot on the caption row: the 전체화면 · 저장 button, pushed to the
    right. The art's native-size label is its own element (#stage-art-label) and
-   stays on the left with the rest of the metadata. */
+   stays on the left with the rest of the metadata.
+   Top-aligned, not centred: beside a four-line caption (1100px, long name) a centred
+   button slid down onto the 일러 column. On one line it is the tallest member and
+   sets the line height, so there the two alignments are identical. */
 .sdv-stage-tools {
   display: flex;
   align-items: center;
+  align-self: flex-start;
   gap: var(--spacing-sm);
   margin-left: auto;
 }
@@ -894,6 +918,12 @@ body:has(.sdv-player) .scroll-to-top {
     padding: 0.6rem var(--spacing-md);
     background: var(--bg-primary);
     border-bottom: 1px solid var(--sdv-hair);
+  }
+
+  /* The group exists for the desktop scrim row; here the band wraps the tools
+     under the name as it always did, so hoist the text back into it. */
+  .sdv-stage-caption {
+    display: contents;
   }
 
   .sdv-stage-title {
