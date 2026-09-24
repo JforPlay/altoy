@@ -163,8 +163,9 @@ for (const [id, s] of Object.entries(passives)) {
 
 test('the emitted 숙련도 corpus keeps its shape', () => {
   const skills = new Set(profRows.map((r) => r.id));
-  // 109 + 1019170 (data update 2026-09-17, a new 전용 장비 rung; label-scoped, ungated).
-  assert.equal(skills.size, 110, 'skills carrying a 숙련도 row');
+  // 109 + 1019170 (data update 2026-09-17, a new 전용 장비 rung; label-scoped, ungated)
+  // + 152842 (data update 2026-09-24, 아즈치; slot 1 + MG, ungated).
+  assert.equal(skills.size, 111, 'skills carrying a 숙련도 row');
   // Every record names at least one filter. A record with neither would buff every
   // weapon on the ship, which the matcher supports but no game record asks for —
   // if one appears, look at it before assuming the branch is right for it.

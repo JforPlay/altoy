@@ -735,7 +735,14 @@ const BASELINE = {
   // membership was diffed against the pre-update data: no existing root changed bucket;
   // the five new zero-row roots are all new 전용 장비 ids (disclosed 1012953 / 1090510,
   // silent 1014200 / 1019171 / 1090511).
-  displayed: { checked: 948, disclosed: 177, silent: 62    // 2026-09-10: +3 아마츠카제; 2026-09-17: +1
+  //
+  // MOVED 2026-09-24 by the six-ship data update (호스타일/헤이스티/타이거/아즈치/이14/
+  // 빅토리어스·META) — corpus growth only, diffed per root against the pre-update data:
+  // displayed checked 948 -> 955, disclosed 177 -> 180, silent held, 전용 장비 held. The
+  // three new disclosed roots are all new-ship skills (타이거 152720, 이14 30721/30722);
+  // no existing root changed bucket. 21061/21062 moved owner 히어로 -> 헤이스티 (shared
+  // skills), still scored.
+  displayed: { checked: 955, disclosed: 180, silent: 62    // 2026-09-10: +3 아마츠카제; 2026-09-17: +1; 2026-09-24: +7
   },
   spweapon: { checked: 93, disclosed: 51, silent: 193 },
 };

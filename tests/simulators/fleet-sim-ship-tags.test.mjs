@@ -32,7 +32,8 @@ const stampedTags = new Set(
 );
 
 test('the pipeline still emits tag_list, and it covers the roster', () => {
-    assert.equal(ships.length, 888);   // 886 + 아마츠카제 (2026-09-10) + 새러토가·META (2026-09-17)
+    assert.equal(ships.length, 894);   // 886 + 아마츠카제 (2026-09-10) + 새러토가·META (2026-09-17)
+    // + 호스타일/헤이스티/타이거/아즈치/이14/빅토리어스·META (2026-09-24), all with a tag_list
     // 51 ships genuinely have none; a pipeline that dropped the field reads 888.
     const without = ships.filter((s) => !(s.tag_list || []).length).length;
     assert.equal(without, 51);
