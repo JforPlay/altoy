@@ -10,7 +10,7 @@
  *   3. ALWAYS: write public/data/skin/skin_label_worklist.csv — the pre-joined
  *      feed (id, reason, name, image, current best values) that the sheet's
  *      bound Apps Script (scripts/skin-label-sheet.gs) appends rows from after
- *      deploy. All join logic lives HERE, node-tested; the sheet script only
+ *      push. All join logic lives HERE, node-tested; the sheet script only
  *      appends ids it does not have yet.
  *
  * The sheet's rows arrive pre-filled with the model's values, so a curator
@@ -425,7 +425,7 @@ async function main() {
     console.log(`  ${work.unlabelled.length} 신규 (no labels at all)`);
     console.log(`  ${work.incomplete.length} 공란 (a blank attribute)`);
     console.log(`  ${work.conflicted.length} 충돌 (sibling disagreement, ${conflicts.length} conflicts)`);
-    console.log('  after deploy, pull them into the sheet: ALtoy 메뉴 → 새로고침');
+    console.log('  after push, pull them into the sheet: ALtoy 메뉴 → 새로고침');
 
     // Conflicts are WARNINGS — a skin genuinely may change hair colour — so show
     // a sample for a feel and leave the rest to the sheet's 사유 column.

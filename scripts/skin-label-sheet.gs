@@ -7,14 +7,14 @@
  * run setup() once. Everything else runs from the ALtoy menu.
  * Setup guide: dev/reference/skin-label-sheet.md
  *
- * All sheet data arrives through ONE deployed file, skin_label_worklist.csv,
+ * All sheet data arrives through ONE committed file, skin_label_worklist.csv,
  * pre-joined and validated by scripts/sync-skin-labels.mjs. refresh() only
  * APPENDS rows whose id is not in the sheet yet — it never overwrites,
  * deletes or reorders, so hand-entered work cannot be clobbered and an id
  * can never misalign with its row.
  */
 
-var FEED_URL = 'https://jforplay.github.io/altoy/data/skin/skin_label_worklist.csv';
+var FEED_URL = 'https://raw.githubusercontent.com/JforPlay/altoy/main/public/data/skin/skin_label_worklist.csv';
 var SHEET_NAME = '라벨';
 
 /**
@@ -116,7 +116,7 @@ function refresh() {
     var res = UrlFetchApp.fetch(FEED_URL, { muteHttpExceptions: true });
     if (res.getResponseCode() !== 200) {
       throw new Error('worklist 다운로드 실패 (HTTP ' + res.getResponseCode() + ') — '
-        + 'skin_label_worklist.csv가 아직 배포되지 않았는지 확인하세요.');
+        + 'skin_label_worklist.csv가 main에 push되었는지 확인하세요.');
     }
     var rows = Utilities.parseCsv(res.getContentText());
     var feedHeader = (rows.shift() || []).map(function (h) { return String(h).trim(); });

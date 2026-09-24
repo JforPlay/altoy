@@ -4,7 +4,7 @@
  *
  *   1. ALWAYS: regenerate public/data/equip/hearing_catalog.csv from
  *      equip_data_lite.json. The curators' Google Sheet IMPORTDATAs this
- *      file (after deploy) so its catalog tab self-refreshes.
+ *      file from raw.githubusercontent (main) so its catalog tab self-refreshes.
  *   2. WHEN SHEET_ID IS SET: fetch the sheet's hearing tab as CSV, validate,
  *      group rows by equip, and write public/data/equip/equip_hearing.json.
  *

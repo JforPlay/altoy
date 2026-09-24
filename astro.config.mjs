@@ -20,7 +20,11 @@ const isCloudflare = !!process.env.CF_PAGES;
  * Verified 2026-09-22: exact-basename search across src/ + public/js/ finds no
  * reference to any of them; the only readers are in scripts/.
  *
- * Adding a file here is safe ONLY if nothing in src/ or public/js/ fetches it.
+ * Adding a file here is safe ONLY if nothing in src/ or public/js/ fetches it
+ * AND nothing outside the repo fetches its Pages URL. The two sheet feeds
+ * (hearing_catalog.csv, skin_label_worklist.csv) have external readers — the
+ * Google Sheets — which read them from raw.githubusercontent on main, not
+ * from the deployed site (they 404'd there after this list first shipped).
  */
 const BUILD_ONLY_DATA = [
     'data/story-viewer/main_story_data.json',      // -> main_story_chapters/ + main_story_index.json
