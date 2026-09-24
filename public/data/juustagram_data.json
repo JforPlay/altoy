@@ -30498,6 +30498,22 @@
         "op_reply2": "",
         "reply2_shipgirl": null
     },
+    "669": {
+        "id": 669,
+        "ship_group": 20238,
+        "message": "",
+        "name": "Tiger",
+        "picture_persist": "",
+        "shipgirl_names": [
+            20238
+        ],
+        "op_option1": "",
+        "op_reply1": "",
+        "reply1_shipgirl": null,
+        "op_option2": "",
+        "op_reply2": "",
+        "reply2_shipgirl": null
+    },
     "67": {
         "id": 67,
         "ship_group": 20603,
@@ -30543,6 +30559,70 @@
         "op_reply2": "",
         "reply2_shipgirl": null,
         "picture": "juustagram/67.png"
+    },
+    "670": {
+        "id": 670,
+        "ship_group": 30409,
+        "message": "",
+        "name": "Azuchi",
+        "picture_persist": "",
+        "shipgirl_names": [
+            30409
+        ],
+        "op_option1": "",
+        "op_reply1": "",
+        "reply1_shipgirl": null,
+        "op_option2": "",
+        "op_reply2": "",
+        "reply2_shipgirl": null
+    },
+    "671": {
+        "id": 671,
+        "ship_group": 31703,
+        "message": "",
+        "name": "I14",
+        "picture_persist": "",
+        "shipgirl_names": [
+            31703
+        ],
+        "op_option1": "",
+        "op_reply1": "",
+        "reply1_shipgirl": null,
+        "op_option2": "",
+        "op_reply2": "",
+        "reply2_shipgirl": null
+    },
+    "672": {
+        "id": 672,
+        "ship_group": 20140,
+        "message": "",
+        "name": "Hasty",
+        "picture_persist": "",
+        "shipgirl_names": [
+            20140
+        ],
+        "op_option1": "",
+        "op_reply1": "",
+        "reply1_shipgirl": null,
+        "op_option2": "",
+        "op_reply2": "",
+        "reply2_shipgirl": null
+    },
+    "673": {
+        "id": 673,
+        "ship_group": 20119,
+        "message": "",
+        "name": "Hostile",
+        "picture_persist": "",
+        "shipgirl_names": [
+            20119
+        ],
+        "op_option1": "",
+        "op_reply1": "",
+        "reply1_shipgirl": null,
+        "op_option2": "",
+        "op_reply2": "",
+        "reply2_shipgirl": null
     },
     "68": {
         "id": 68,

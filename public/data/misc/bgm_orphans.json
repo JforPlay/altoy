@@ -22,6 +22,11 @@
                 "year": 2024
             },
             {
+                "kind": "event",
+                "label": "유영 미성",
+                "year": 2026
+            },
+            {
                 "kind": "main",
                 "label": "샌드플레이"
             },
@@ -56,10 +61,6 @@
             {
                 "kind": "main",
                 "label": "휘광의 성에서 피어나라"
-            },
-            {
-                "kind": "main",
-                "label": "주염단장"
             }
         ],
         "year": 2022
@@ -1202,6 +1203,11 @@
                 "year": 2026
             },
             {
+                "kind": "event",
+                "label": "유영 미성",
+                "year": 2026
+            },
+            {
                 "kind": "main",
                 "label": "강철의 날개와 바람"
             },
@@ -1228,10 +1234,6 @@
             {
                 "kind": "main",
                 "label": "새장에 갇힌 신의 빛"
-            },
-            {
-                "kind": "main",
-                "label": "아직 가라앉지 않은 태양"
             }
         ],
         "year": 2025
@@ -3121,6 +3123,70 @@
         ],
         "year": null
     },
+    "battle-visioncity-1": {
+        "name": "battle-visioncity-1",
+        "cues": [
+            "新纪元都市NO.7_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "新纪元都市NO.7_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-visioncity-1/%E6%96%B0%E7%BA%AA%E5%85%83%E9%83%BD%E5%B8%82NO.7_AL.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "event",
+                "label": "유영 미성",
+                "year": 2026
+            },
+            {
+                "kind": "map",
+                "label": "A1 이상 조사"
+            },
+            {
+                "kind": "map",
+                "label": "A2 유영 기습"
+            },
+            {
+                "kind": "map",
+                "label": "A3 시청의 그림자"
+            },
+            {
+                "kind": "map",
+                "label": "C1 이상 조사"
+            },
+            {
+                "kind": "map",
+                "label": "C2 유영 기습"
+            },
+            {
+                "kind": "map",
+                "label": "C3 시청의 그림자"
+            },
+            {
+                "kind": "map",
+                "label": "SP 「유영 미성」"
+            },
+            {
+                "kind": "opsi",
+                "label": "소형 정찰함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "중형 정찰함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "대형 정찰함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "소형 주력함대"
+            }
+        ],
+        "year": 2026
+    },
     "battle-warprotocol": {
         "name": "battle-warprotocol",
         "cues": [
@@ -3960,6 +4026,11 @@
         ],
         "usage": [
             {
+                "kind": "event",
+                "label": "유영 미성",
+                "year": 2026
+            },
+            {
                 "kind": "main",
                 "label": "작은 약속"
             },
@@ -4000,7 +4071,7 @@
                 "label": "DeXiQianShaoReRePtPage"
             }
         ],
-        "year": null
+        "year": 2026
     },
     "bsm-7": {
         "name": "bsm-7",
@@ -4028,6 +4099,11 @@
                 "kind": "event",
                 "label": "메이드 스타일",
                 "year": 2022
+            },
+            {
+                "kind": "event",
+                "label": "유영 미성",
+                "year": 2026
             },
             {
                 "kind": "main",
@@ -4060,10 +4136,6 @@
             {
                 "kind": "main",
                 "label": "튤리퍼의 바다로"
-            },
-            {
-                "kind": "main",
-                "label": "메탈블러드, 음표&맹세·상편"
             }
         ],
         "year": 2019
@@ -6967,6 +7039,20 @@
             {
                 "cue": "日服7周年登录bgm",
                 "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/login-jp7th/%E6%97%A5%E6%9C%8D7%E5%91%A8%E5%B9%B4%E7%99%BB%E5%BD%95bgm.opus"
+            }
+        ],
+        "usage": [],
+        "year": null
+    },
+    "login-jp9th": {
+        "name": "login-jp9th",
+        "cues": [
+            "KAF_BLUE SIGNAL_Short.ver_Master_2448"
+        ],
+        "tracks": [
+            {
+                "cue": "KAF_BLUE SIGNAL_Short.ver_Master_2448",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/login-jp9th/KAF_BLUE%20SIGNAL_Short.ver_Master_2448.opus"
             }
         ],
         "usage": [],
@@ -10418,6 +10504,11 @@
                 "year": 2026
             },
             {
+                "kind": "event",
+                "label": "유영 미성",
+                "year": 2026
+            },
+            {
                 "kind": "main",
                 "label": "은빛 정상의 안개"
             },
@@ -10958,6 +11049,11 @@
                 "year": 2026
             },
             {
+                "kind": "event",
+                "label": "유영 미성",
+                "year": 2026
+            },
+            {
                 "kind": "main",
                 "label": "창공에 울리는 소리"
             },
@@ -10996,10 +11092,6 @@
             {
                 "kind": "event",
                 "label": "EP4-1 아스트라리움 타워로 가는 방법"
-            },
-            {
-                "kind": "event",
-                "label": "EP4-2 공연 개최 허가증"
             }
         ],
         "year": 2026
@@ -11109,16 +11201,17 @@
                 "year": 2026
             },
             {
+                "kind": "event",
+                "label": "유영 미성",
+                "year": 2026
+            },
+            {
                 "kind": "main",
                 "label": "은빛 정상의 안개"
             },
             {
                 "kind": "main",
                 "label": "설경미종"
-            },
-            {
-                "kind": "main",
-                "label": "저편에 핀 꽃의 향기"
             }
         ],
         "year": 2024
@@ -11552,6 +11645,16 @@
                 "year": 2026
             },
             {
+                "kind": "event",
+                "label": "유영 미성",
+                "year": 2026
+            },
+            {
+                "kind": "event",
+                "label": "이상한 일상 진행 중",
+                "year": 2026
+            },
+            {
                 "kind": "scene",
                 "label": "GhostSkinStoryActPage"
             },
@@ -11582,6 +11685,11 @@
             {
                 "kind": "event",
                 "label": "괴담 실록: 백야 빌라에서 탈출하라!",
+                "year": 2026
+            },
+            {
+                "kind": "event",
+                "label": "유영 미성",
                 "year": 2026
             }
         ],
@@ -11615,6 +11723,10 @@
             {
                 "kind": "scene",
                 "label": "EscapeManorPtPage"
+            },
+            {
+                "kind": "scene",
+                "label": "ShiningMagicKillPage"
             }
         ],
         "year": 2026
@@ -12071,6 +12183,11 @@
         ],
         "usage": [
             {
+                "kind": "event",
+                "label": "이상한 일상 진행 중",
+                "year": 2026
+            },
+            {
                 "kind": "main",
                 "label": "짙은 자줏빛의 안개"
             },
@@ -12091,7 +12208,7 @@
                 "label": "JapanV3PtPage"
             }
         ],
-        "year": null
+        "year": 2026
     },
     "story-maystorm": {
         "name": "story-maystorm",
@@ -12139,6 +12256,11 @@
             {
                 "kind": "event",
                 "label": "Fight! 도시 구직 대작전!",
+                "year": 2026
+            },
+            {
+                "kind": "event",
+                "label": "유영 미성",
                 "year": 2026
             },
             {
@@ -12470,6 +12592,11 @@
         ],
         "usage": [
             {
+                "kind": "event",
+                "label": "이상한 일상 진행 중",
+                "year": 2026
+            },
+            {
                 "kind": "main",
                 "label": "깨워라 창홍의 바람"
             },
@@ -12512,13 +12639,9 @@
             {
                 "kind": "scene",
                 "label": "RuiFengSpPage"
-            },
-            {
-                "kind": "scene",
-                "label": "TianYuTianYuanLoginPage"
             }
         ],
-        "year": null
+        "year": 2026
     },
     "story-niceship-soft": {
         "name": "story-niceship-soft",
@@ -12622,6 +12745,11 @@
             {
                 "kind": "event",
                 "label": "Fight! 도시 구직 대작전!",
+                "year": 2026
+            },
+            {
+                "kind": "event",
+                "label": "유영 미성",
                 "year": 2026
             },
             {
@@ -13145,6 +13273,11 @@
                 "year": 2025
             },
             {
+                "kind": "event",
+                "label": "이상한 일상 진행 중",
+                "year": 2026
+            },
+            {
                 "kind": "island",
                 "label": "쥬카페"
             }
@@ -13291,8 +13424,8 @@
                 "label": "IslandTowerClimbingGameView"
             },
             {
-                "kind": "island",
-                "label": "모항 상점가"
+                "kind": "scene",
+                "label": "ShadowCityPtPage"
             }
         ],
         "year": 2022
@@ -13583,12 +13716,13 @@
                 "year": 2026
             },
             {
-                "kind": "main",
-                "label": "환몽 간주곡"
+                "kind": "event",
+                "label": "이상한 일상 진행 중",
+                "year": 2026
             },
             {
                 "kind": "main",
-                "label": "저편에 묻혀진 꽃"
+                "label": "환몽 간주곡"
             }
         ],
         "year": 2024
@@ -13649,6 +13783,11 @@
                 "kind": "event",
                 "label": "하트 댄싱",
                 "year": 2024
+            },
+            {
+                "kind": "event",
+                "label": "이상한 일상 진행 중",
+                "year": 2026
             },
             {
                 "kind": "scene",
@@ -13929,6 +14068,26 @@
             }
         ],
         "year": 2025
+    },
+    "story-richang-visioncity": {
+        "name": "story-richang-visioncity",
+        "cues": [
+            "都市漫步_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "都市漫步_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-visioncity/%E9%83%BD%E5%B8%82%E6%BC%AB%E6%AD%A5_PV.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "event",
+                "label": "유영 미성",
+                "year": 2026
+            }
+        ],
+        "year": 2026
     },
     "story-richang-wavelight": {
         "name": "story-richang-wavelight",
@@ -15152,6 +15311,90 @@
         ],
         "year": 2025
     },
+    "story-visioncity-1": {
+        "name": "story-visioncity-1",
+        "cues": [
+            "异象之城_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "异象之城_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-visioncity-1/%E5%BC%82%E8%B1%A1%E4%B9%8B%E5%9F%8E_AL.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "event",
+                "label": "유영 미성",
+                "year": 2026
+            },
+            {
+                "kind": "map",
+                "label": "B1 망설임을 넘어"
+            },
+            {
+                "kind": "map",
+                "label": "B2 서로를 받쳐주는 자들"
+            },
+            {
+                "kind": "map",
+                "label": "B3 껍질을 깨부술 때"
+            },
+            {
+                "kind": "map",
+                "label": "D1 망설임을 넘어"
+            },
+            {
+                "kind": "map",
+                "label": "D2 서로를 받쳐주는 자들"
+            },
+            {
+                "kind": "map",
+                "label": "D3 껍질을 깨부술 때"
+            },
+            {
+                "kind": "map",
+                "label": "EXTRA 내일이 찾아오리"
+            },
+            {
+                "kind": "opsi",
+                "label": "소형 정찰함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "중형 정찰함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "대형 정찰함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "소형 주력함대"
+            }
+        ],
+        "year": 2026
+    },
+    "story-visioncity-pv": {
+        "name": "story-visioncity-pv",
+        "cues": [
+            "新都市新未来_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "新都市新未来_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-visioncity-pv/%E6%96%B0%E9%83%BD%E5%B8%82%E6%96%B0%E6%9C%AA%E6%9D%A5_PV.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "event",
+                "label": "유영 미성",
+                "year": 2026
+            }
+        ],
+        "year": 2026
+    },
     "story-wanderingcity-future": {
         "name": "story-wanderingcity-future",
         "cues": [
@@ -15312,6 +15555,11 @@
         ],
         "usage": [
             {
+                "kind": "event",
+                "label": "유영 미성",
+                "year": 2026
+            },
+            {
                 "kind": "main",
                 "label": "몽광의 아스트라리움"
             },
@@ -15354,13 +15602,9 @@
             {
                 "kind": "opsi",
                 "label": "소형 주력함대"
-            },
-            {
-                "kind": "opsi",
-                "label": "중형 주력함대"
             }
         ],
-        "year": null
+        "year": 2026
     },
     "story-worldα-brokenlight": {
         "name": "story-worldα-brokenlight",
@@ -15528,6 +15772,11 @@
         ],
         "usage": [
             {
+                "kind": "event",
+                "label": "유영 미성",
+                "year": 2026
+            },
+            {
                 "kind": "main",
                 "label": "저편에 핀 꽃의 향기"
             },
@@ -15570,13 +15819,9 @@
             {
                 "kind": "opsi",
                 "label": "중형 정찰 함대"
-            },
-            {
-                "kind": "opsi",
-                "label": "대형 정찰 함대"
             }
         ],
-        "year": null
+        "year": 2026
     },
     "theme-akagi-meta": {
         "name": "theme-akagi-meta",
@@ -17010,6 +17255,11 @@
                 "year": 2026
             },
             {
+                "kind": "event",
+                "label": "이상한 일상 진행 중",
+                "year": 2026
+            },
+            {
                 "kind": "opsi",
                 "label": "보스 함대"
             },
@@ -17316,6 +17566,16 @@
                 "year": 2026
             },
             {
+                "kind": "event",
+                "label": "유영 미성",
+                "year": 2026
+            },
+            {
+                "kind": "event",
+                "label": "이상한 일상 진행 중",
+                "year": 2026
+            },
+            {
                 "kind": "map",
                 "label": "T1 서커스 나이트"
             },
@@ -17350,14 +17610,6 @@
             {
                 "kind": "opsi",
                 "label": "중형 정찰함대"
-            },
-            {
-                "kind": "opsi",
-                "label": "대형 정찰함대"
-            },
-            {
-                "kind": "opsi",
-                "label": "소형 주력함대"
             }
         ],
         "year": 2026
@@ -19374,6 +19626,11 @@
         ],
         "usage": [
             {
+                "kind": "event",
+                "label": "유영 미성",
+                "year": 2026
+            },
+            {
                 "kind": "main",
                 "label": "빛을 쫓는 별의 바다"
             },
@@ -19418,7 +19675,7 @@
                 "label": "StarSeaPtRePage"
             }
         ],
-        "year": null
+        "year": 2026
     },
     "theme-umieyuku": {
         "name": "theme-umieyuku",

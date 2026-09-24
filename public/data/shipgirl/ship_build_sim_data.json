@@ -585,16 +585,6 @@
             "rarity": "SR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/502100.webp"
         },
-        "502121": {
-            "name": "하이처우",
-            "rarity": "SR",
-            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/502120.webp"
-        },
-        "503021": {
-            "name": "장우",
-            "rarity": "SSR",
-            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/503020.webp"
-        },
         "601031": {
             "name": "빈첸초 조베르티",
             "rarity": "SR",
@@ -1518,11 +1508,6 @@
             "name": "무사시",
             "rarity": "UR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/305100.webp"
-        },
-        "306041": {
-            "name": "즈이호",
-            "rarity": "SSR",
-            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/306040.webp"
         },
         "306081": {
             "name": "치토세",

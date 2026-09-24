@@ -5,29 +5,29 @@
             "build_name": "기간 한정",
             "banner_type": 2,
             "shipgirls": {
-                "80503": {
-                    "name": "알자스",
+                "30409": {
+                    "name": "아즈치",
                     "rarity": "UR",
-                    "nationality": 8,
-                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/805030.webp"
+                    "nationality": 3,
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/304090.webp"
                 },
-                "80302": {
-                    "name": "브렌누스",
+                "31703": {
+                    "name": "이14",
                     "rarity": "SSR",
-                    "nationality": 8,
-                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/803020.webp"
+                    "nationality": 3,
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/317030.webp"
                 },
-                "970704": {
-                    "name": "베아른·META",
+                "970709": {
+                    "name": "빅토리어스·META",
                     "rarity": "SSR",
                     "nationality": 97,
-                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9707040.webp"
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9707090.webp"
                 },
-                "90105": {
-                    "name": "플뢰레",
+                "20140": {
+                    "name": "헤이스티",
                     "rarity": "SR",
-                    "nationality": 9,
-                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/901050.webp"
+                    "nationality": 2,
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/201400.webp"
                 }
             }
         },

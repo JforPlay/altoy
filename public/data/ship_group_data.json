@@ -5204,6 +5204,37 @@
             "이벤트 : 피오르드의 별",
             "소형함 건조"
         ],
+        "rarity": "SR",
+        "retrofit": true
+    },
+    "20119": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/201190.webp",
+        "name": "호스타일",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 3,
+        "add_level_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_level_value": 1,
+        "class": 20106,
+        "id": 20119,
+        "max_star": 5,
+        "pt_get": 5,
+        "pt_level": 8,
+        "pt_upgrage": 11,
+        "nationality": 2,
+        "type": 1,
+        "description": [
+            "이벤트: 유영 미성"
+        ],
         "rarity": "SR"
     },
     "20120": {
@@ -5727,6 +5758,36 @@
         "type": 1,
         "description": [
             "이벤트: 높은 탑의 장미"
+        ],
+        "rarity": "SR"
+    },
+    "20140": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/201400.webp",
+        "name": "헤이스티",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 8,
+        "add_level_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_level_value": 1,
+        "class": 20106,
+        "id": 20140,
+        "max_star": 5,
+        "pt_get": 5,
+        "pt_level": 8,
+        "pt_upgrage": 11,
+        "nationality": 2,
+        "type": 1,
+        "description": [
+            "이벤트: 유영 미성"
         ],
         "rarity": "SR"
     },
@@ -6634,6 +6695,32 @@
             "이벤트: 괴담 실록: 백야 빌라에서 탈출하라!"
         ],
         "rarity": "SSR"
+    },
+    "20238": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/202380.webp",
+        "name": "타이거",
+        "add_get_attr": 4,
+        "add_get_shiptype": [
+            2
+        ],
+        "add_get_value": 2,
+        "add_level_attr": 2,
+        "add_level_shiptype": [
+            2
+        ],
+        "add_level_value": 1,
+        "class": 20213,
+        "id": 20238,
+        "max_star": 6,
+        "pt_get": 21,
+        "pt_level": 32,
+        "pt_upgrage": 43,
+        "nationality": 2,
+        "type": 2,
+        "description": [
+            "이벤트: 유영 미성"
+        ],
+        "rarity": "UR"
     },
     "20301": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/203010.webp",
@@ -11476,6 +11563,36 @@
         ],
         "rarity": "SR"
     },
+    "30409": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/304090.webp",
+        "name": "아즈치",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            4,
+            5,
+            10
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 2,
+        "add_level_shiptype": [
+            4,
+            5,
+            10
+        ],
+        "add_level_value": 1,
+        "class": 30403,
+        "id": 30409,
+        "max_star": 6,
+        "pt_get": 26,
+        "pt_level": 39,
+        "pt_upgrage": 52,
+        "nationality": 3,
+        "type": 4,
+        "description": [
+            "이벤트: 유영 미성"
+        ],
+        "rarity": "UR"
+    },
     "30501": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/305010.webp",
         "name": "후소",
@@ -12824,6 +12941,33 @@
             "이벤트: 아마하라에 바치는 춤"
         ],
         "rarity": "UR"
+    },
+    "31703": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/317030.webp",
+        "name": "이14",
+        "add_get_attr": 3,
+        "add_get_shiptype": [
+            8,
+            17
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 5,
+        "add_level_shiptype": [
+            17
+        ],
+        "add_level_value": 2,
+        "class": 31701,
+        "id": 31703,
+        "max_star": 6,
+        "pt_get": 6,
+        "pt_level": 9,
+        "pt_upgrage": 12,
+        "nationality": 3,
+        "type": 17,
+        "description": [
+            "이벤트: 유영 미성"
+        ],
+        "rarity": "SSR"
     },
     "31901": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/319010.webp",
@@ -22620,6 +22764,34 @@
         "type": 7,
         "description": [
             "META 연구실·정보 동기화"
+        ],
+        "rarity": "SSR"
+    },
+    "970709": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9707090.webp",
+        "name": "빅토리어스·META",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            6,
+            7
+        ],
+        "add_get_value": 2,
+        "add_level_attr": 4,
+        "add_level_shiptype": [
+            6,
+            7
+        ],
+        "add_level_value": 1,
+        "class": 970709,
+        "id": 970709,
+        "max_star": 6,
+        "pt_get": 19,
+        "pt_level": 29,
+        "pt_upgrage": 39,
+        "nationality": 97,
+        "type": 7,
+        "description": [
+            "이벤트: 유영 미성"
         ],
         "rarity": "SSR"
     },

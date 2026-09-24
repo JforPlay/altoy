@@ -4372,6 +4372,37 @@
     "painting_n": null
   },
   {
+    "id": "900557",
+    "name": "아마츠카제",
+    "painting": {
+      "faces": [
+        "5",
+        "3",
+        "4",
+        "6",
+        "1",
+        "2",
+        "0"
+      ],
+      "box": [
+        213,
+        372,
+        230,
+        225
+      ],
+      "size": [
+        1852,
+        2048
+      ],
+      "default": "0",
+      "recovered_default": true,
+      "thumbs": true,
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900557/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900557/painting_face_{faceId}.png"
+    },
+    "painting_n": null
+  },
+  {
     "id": "900533",
     "name": "아마하라 료코",
     "painting": {
@@ -4760,6 +4791,37 @@
       "thumbs": true,
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900517/painting.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900517/painting_face_{faceId}.png"
+    },
+    "painting_n": null
+  },
+  {
+    "id": "900562",
+    "name": "아즈치",
+    "painting": {
+      "faces": [
+        "4",
+        "5",
+        "3",
+        "6",
+        "1",
+        "2",
+        "0"
+      ],
+      "box": [
+        625,
+        115,
+        226,
+        229
+      ],
+      "size": [
+        1156,
+        2048
+      ],
+      "default": "0",
+      "recovered_default": true,
+      "thumbs": true,
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900562/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900562/painting_face_{faceId}.png"
     },
     "painting_n": null
   },
@@ -6254,6 +6316,39 @@
       "thumbs": true,
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900395/painting.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900395/painting_face_{faceId}.png"
+    },
+    "painting_n": null
+  },
+  {
+    "id": "900561",
+    "name": "일러스트리어스",
+    "painting": {
+      "faces": [
+        "1",
+        "7",
+        "4",
+        "5",
+        "3",
+        "2",
+        "6",
+        "8",
+        "0"
+      ],
+      "box": [
+        338,
+        117,
+        246,
+        240
+      ],
+      "size": [
+        912,
+        2048
+      ],
+      "default": "0",
+      "recovered_default": true,
+      "thumbs": true,
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900561/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900561/painting_face_{faceId}.png"
     },
     "painting_n": null
   },
