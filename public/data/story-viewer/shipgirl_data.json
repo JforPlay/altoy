@@ -283,6 +283,10 @@
         "name": "오늘도 착한 아이의 방과후",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/101266.webp"
     },
+    "101267": {
+        "name": "찌릿찌릿 달맞이 타임",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/101267.webp"
+    },
     "101268": {
         "name": "한낮의 포레스트 채플",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/101268.webp"
@@ -483,6 +487,10 @@
         "name": "음료 연구원?",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/101481.webp"
     },
+    "101482": {
+        "name": "미니어처라이즈 월드",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/101482.webp"
+    },
     "101490": {
         "name": "브리스톨",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/101490.webp"
@@ -534,6 +542,10 @@
     "101531": {
         "name": "괴인 실험체 M01",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/101531.webp"
+    },
+    "101532": {
+        "name": "밀러 님의 통행 금지 다리",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/101532.webp"
     },
     "101550": {
         "name": "클래런스 K 브론슨",
@@ -4176,7 +4188,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/231210.webp"
     },
     "231211": {
-        "name": "재블린",
+        "name": "PINKLOVE★Heart Lancer",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/231211.webp"
     },
     "236030": {
@@ -4256,7 +4268,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/299034.webp"
     },
     "299035": {
-        "name": "체셔 ",
+        "name": "체셔 고양이의 메르헨 메이즈",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/299035.webp"
     },
     "299038": {
@@ -6068,7 +6080,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307052.webp"
     },
     "307053": {
-        "name": "쇼카쿠",
+        "name": "비상하는 학의 보은",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307053.webp"
     },
     "307058": {
@@ -6204,7 +6216,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307161.webp"
     },
     "307162": {
-        "name": "하쿠호",
+        "name": "여우비 속의 여우 신부",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307162.webp"
     },
     "307170": {
@@ -7036,7 +7048,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/403112.webp"
     },
     "403113": {
-        "name": "요크",
+        "name": "환야의 무도가",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/403113.webp"
     },
     "403120": {
@@ -11048,11 +11060,11 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600031.webp"
     },
     "9600032": {
-        "name": "골든 하인드",
+        "name": "미소 짓는 괴담의 금사슴",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600032.webp"
     },
     "9600033": {
-        "name": "골든 하인드",
+        "name": "미소 짓는 괴담의 금사슴",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600033.webp"
     },
     "9600040": {
@@ -11210,6 +11222,10 @@
     "9701120": {
         "name": "브리스톨·META",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9701120.webp"
+    },
+    "9701130": {
+        "name": "소브라지텔니·META",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9701130.webp"
     },
     "9702010": {
         "name": "헬레나·META",

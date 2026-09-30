@@ -21423,6 +21423,36 @@
         ],
         "rarity": "SSR"
     },
+    "970113": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9701130.webp",
+        "name": "소브라지텔니·META",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 9,
+        "add_level_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_level_value": 1,
+        "class": 970113,
+        "id": 970113,
+        "max_star": 5,
+        "pt_get": 9,
+        "pt_level": 13,
+        "pt_upgrage": 18,
+        "nationality": 97,
+        "type": 1,
+        "description": [
+            "META 연구실·월드 투어"
+        ],
+        "rarity": "SR"
+    },
     "970201": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9702010.webp",
         "name": "헬레나·META",

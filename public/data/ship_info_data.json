@@ -210654,6 +210654,269 @@
         "limited": false
     },
     {
+        "id": 30066,
+        "gid": 970113,
+        "sid": 9701131,
+        "nationality": 97,
+        "type": 1,
+        "rarity": "SR",
+        "skill": {
+            "802361": {
+                "id": 802361,
+                "parent": 802361,
+                "upgrade": 802362,
+                "downgrade": null,
+                "requirement": "Limit Break 1",
+                "weapon_true": true
+            },
+            "802362": {
+                "id": 802362,
+                "parent": 802361,
+                "upgrade": null,
+                "downgrade": 802361,
+                "requirement": "Limit Break 3",
+                "weapon_true": true
+            },
+            "802340": {
+                "id": 802340,
+                "parent": 802340,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": true
+            },
+            "802350": {
+                "id": 802350,
+                "parent": 802350,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 4081
+                    }
+                ],
+                "trigger_cd": 1
+            }
+        },
+        "base": {
+            "9701131": {
+                "health": 390,
+                "firepower": 31,
+                "torpedo": 43,
+                "antiair": 30,
+                "aviation": 0,
+                "reload": 77,
+                "accuracy": 55,
+                "evasion": 55,
+                "speed": 48,
+                "luck": 84,
+                "asw": 47
+            },
+            "9701132": {
+                "health": 485,
+                "firepower": 39,
+                "torpedo": 54,
+                "antiair": 37,
+                "aviation": 0,
+                "reload": 77,
+                "accuracy": 55,
+                "evasion": 55,
+                "speed": 48,
+                "luck": 84,
+                "asw": 59
+            },
+            "9701133": {
+                "health": 675,
+                "firepower": 54,
+                "torpedo": 75,
+                "antiair": 52,
+                "aviation": 0,
+                "reload": 77,
+                "accuracy": 55,
+                "evasion": 55,
+                "speed": 48,
+                "luck": 84,
+                "asw": 82
+            },
+            "9701134": {
+                "health": 960,
+                "firepower": 78,
+                "torpedo": 107,
+                "antiair": 74,
+                "aviation": 0,
+                "reload": 77,
+                "accuracy": 55,
+                "evasion": 55,
+                "speed": 48,
+                "luck": 84,
+                "asw": 117
+            }
+        },
+        "growth": {
+            "9701131": {
+                "health": 7903,
+                "firepower": 394,
+                "torpedo": 594,
+                "antiair": 411,
+                "aviation": 0,
+                "reload": 534,
+                "accuracy": 746,
+                "evasion": 863,
+                "speed": 0,
+                "luck": 0,
+                "asw": 632
+            },
+            "9701132": {
+                "health": 7903,
+                "firepower": 394,
+                "torpedo": 594,
+                "antiair": 411,
+                "aviation": 0,
+                "reload": 534,
+                "accuracy": 746,
+                "evasion": 863,
+                "speed": 0,
+                "luck": 0,
+                "asw": 632
+            },
+            "9701133": {
+                "health": 7903,
+                "firepower": 394,
+                "torpedo": 594,
+                "antiair": 411,
+                "aviation": 0,
+                "reload": 534,
+                "accuracy": 746,
+                "evasion": 863,
+                "speed": 0,
+                "luck": 0,
+                "asw": 632
+            },
+            "9701134": {
+                "health": 7903,
+                "firepower": 394,
+                "torpedo": 594,
+                "antiair": 411,
+                "aviation": 0,
+                "reload": 534,
+                "accuracy": 746,
+                "evasion": 863,
+                "speed": 0,
+                "luck": 0,
+                "asw": 632
+            }
+        },
+        "enhance": {
+            "health": 380,
+            "antiair": 30,
+            "accuracy": 54,
+            "evasion": 54,
+            "torpedo": 42,
+            "reload": 57
+        },
+        "armor": 1,
+        "base_list": {
+            "9701131": [
+                1,
+                1,
+                1
+            ],
+            "9701132": [
+                1,
+                1,
+                1
+            ],
+            "9701133": [
+                1,
+                2,
+                1
+            ],
+            "9701134": [
+                1,
+                2,
+                1
+            ]
+        },
+        "mounts": {
+            "9701131": [
+                1,
+                1,
+                1
+            ],
+            "9701132": [
+                1,
+                1,
+                1
+            ],
+            "9701133": [
+                1,
+                2,
+                1
+            ],
+            "9701134": [
+                1,
+                2,
+                1
+            ]
+        },
+        "description": [
+            "META 연구실·월드 투어"
+        ],
+        "name": "소브라지텔니·META",
+        "gift_dislike": [],
+        "skin_id": 9701130,
+        "class_name": "소브라지텔니·META",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9701130.webp",
+        "equip_1": [
+            1
+        ],
+        "equip_2": [
+            5
+        ],
+        "equip_3": [
+            6
+        ],
+        "equip_4": [
+            10,
+            14
+        ],
+        "equip_5": [
+            10,
+            14
+        ],
+        "equipment_proficiency": [
+            1.6,
+            1.15,
+            1.1
+        ],
+        "equipment_proficiency_base": [
+            1.4,
+            1.1,
+            1.05
+        ],
+        "preload_count": [
+            0,
+            1,
+            0
+        ],
+        "default_equip_list": [
+            100,
+            106,
+            104
+        ],
+        "tag_list": [
+            "SoobrazitelnyMETA",
+            "SoobrazitelnyMETA"
+        ],
+        "timer": null,
+        "light": false,
+        "heavy": false,
+        "special": false,
+        "limited": false
+    },
+    {
         "id": 30003,
         "gid": 970201,
         "sid": 9702011,

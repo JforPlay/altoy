@@ -15395,6 +15395,20 @@
         ],
         "year": 2026
     },
+    "story-visioncity-pv-mystic": {
+        "name": "story-visioncity-pv-mystic",
+        "cues": [
+            "幽影派对_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "幽影派对_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-visioncity-pv-mystic/%E5%B9%BD%E5%BD%B1%E6%B4%BE%E5%AF%B9_PV.opus"
+            }
+        ],
+        "usage": [],
+        "year": null
+    },
     "story-wanderingcity-future": {
         "name": "story-wanderingcity-future",
         "cues": [
