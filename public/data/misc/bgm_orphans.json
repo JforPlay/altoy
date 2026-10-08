@@ -14332,6 +14332,20 @@
         "usage": [],
         "year": null
     },
+    "story-room-implacable": {
+        "name": "story-room-implacable",
+        "cues": [
+            "烹茶聆音_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "烹茶聆音_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-room-implacable/%E7%83%B9%E8%8C%B6%E8%81%86%E9%9F%B3_AL.opus"
+            }
+        ],
+        "usage": [],
+        "year": null
+    },
     "story-room-nakhimov": {
         "name": "story-room-nakhimov",
         "cues": [

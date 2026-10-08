@@ -210810,7 +210810,7 @@
         },
         "enhance": {
             "health": 380,
-            "antiair": 30,
+            "antiair": 31,
             "accuracy": 54,
             "evasion": 54,
             "torpedo": 42,
@@ -210865,7 +210865,10 @@
             "META 연구실·월드 투어"
         ],
         "name": "소브라지텔니·META",
-        "gift_dislike": [],
+        "gift_dislike": [
+            180004,
+            180006
+        ],
         "skin_id": 9701130,
         "class_name": "소브라지텔니·META",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9701130.webp",
