@@ -35,7 +35,8 @@ const searchPlaceholder = '이름 · @아이디 · 대사 검색';
             </div>
         </div>
         <div class="chat-list scroll-styled" id="chat-list"></div>
-        <div class="chat-results scroll-styled hidden" id="chat-results" aria-live="polite"></div>
+        <p class="sr-only" id="chat-search-status" role="status" aria-live="polite"></p>
+        <div class="chat-results scroll-styled hidden" id="chat-results"></div>
     </aside>
 
     <section class="chat-main" aria-label="대화">

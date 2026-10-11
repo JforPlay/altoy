@@ -283,6 +283,43 @@ test('group rooms show their game avatar, including the five that had none', asy
     await expect(page.locator('.chat-row[data-chat="공용 채팅방"] img.chat-avatar')).toHaveAttribute('src', /\/juus_room\/200\.webp$/);
 });
 
+test('search announces a one-line count, not the whole results list', async ({ page }) => {
+    await page.goto(JUUS);
+    await expect(page.locator('#chat-list .chat-row').first()).toBeVisible();
+    await expect(page.locator('#chat-results')).not.toHaveAttribute('aria-live');
+    const status = page.locator('#chat-search-status');
+    await page.fill('#chat-search', '@Ganj');
+    await expect(status).toHaveText(/^함순이 1명 · 대사 \d+건$/);
+    await page.fill('#chat-search', '없는검색어zzz');
+    await expect(status).toHaveText("'없는검색어zzz' 검색 결과가 없습니다.");
+    await page.press('#chat-search', 'Escape');
+    await expect(status).toHaveText('');
+});
+
+test('clearing the search resets 더 보기, so the same query starts on its first page again', async ({ page }) => {
+    await page.goto(JUUS);
+    await expect(page.locator('#chat-list .chat-row').first()).toBeVisible();
+    const rows = page.locator('#chat-results [data-open="line"]');
+    await page.fill('#chat-search', '지휘관');
+    await expect(rows).toHaveCount(50);
+    await page.locator('#chat-results [data-open="more"]').click();
+    await expect(rows).toHaveCount(100);
+    await page.press('#chat-search', 'Escape');
+    await expect(page.locator('#chat-results')).toBeHidden();
+    // The hidden list still holds 100 rows, so this only passes once the retyped query re-renders.
+    await page.fill('#chat-search', '지휘관');
+    await expect(rows).toHaveCount(50);
+});
+
+test('an avatar that fails to load falls back to the shared "?" placeholder', async ({ page }) => {
+    await page.route(/\/skin_icon\/201390\.webp$/, (route) => route.fulfill({ status: 404 }));
+    await page.goto(JUUS);
+    const avatar = page.locator('.chat-row[data-chat="갤런트"] img.chat-avatar');
+    await avatar.scrollIntoViewIfNeeded(); // lazy: an off-screen row never requests its avatar
+    // IMG_FALLBACKS.DEFAULT draws a "?" glyph.
+    await expect(avatar).toHaveAttribute('src', /%3E\?%3C\/text%3E/);
+});
+
 test('쥬쥬 핫 이슈 keeps its centered header (it shares base.css with these pages)', async ({ page }) => {
     await page.goto('chat-viewer/juus-hot-issue/');
     const header = page.locator('.main-header');

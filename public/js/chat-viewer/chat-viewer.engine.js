@@ -80,6 +80,7 @@ export class ChatViewerEngine {
             sort: byId('chat-sort'),
             list: byId('chat-list'),
             results: byId('chat-results'),
+            searchStatus: byId('chat-search-status'),
             empty: byId('chat-empty'),
             pane: byId('chat-pane'),
             back: byId('chat-back'),
@@ -458,6 +459,8 @@ export class ChatViewerEngine {
     runSearch() {
         const query = this.els.search.value.trim();
         if (!query) {
+            this.lastQuery = ''; // so retyping the same query starts again at its first page
+            this.els.searchStatus.textContent = '';
             hideElement(this.els.results);
             showElement(this.els.list);
             showElement(this.els.filter);
@@ -466,7 +469,7 @@ export class ChatViewerEngine {
         this.speakers ??= buildSpeakerIndex(this.allData, this.usernames);
         if (query !== this.lastQuery) this.lineLimit = LINE_PAGE;
         this.lastQuery = query;
-        renderSearchResults(this.els.results, {
+        this.els.searchStatus.textContent = renderSearchResults(this.els.results, {
             query,
             speakers: searchSpeakers(this.speakers, query),
             lines: searchLines(this.allData, query, this.lineLimit),

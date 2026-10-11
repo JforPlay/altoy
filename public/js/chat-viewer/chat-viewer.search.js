@@ -65,12 +65,14 @@ function lineHitRow(hit, ctx) {
  * @param {{ query: string, speakers: Array, lines: {total: number, hits: Array},
  *           chats: Map<string, {name, icon, storyCount}>,
  *           storyName: (chatKey: string, storyId: string) => string }} ctx
+ * @returns {string} one-line summary for the search's live region (the list itself is not announced)
  */
 export function renderSearchResults(container, ctx) {
     const { query, speakers, lines } = ctx;
     if (!speakers.length && !lines.total) {
-        renderStatus(container, `'${query}' 검색 결과가 없습니다.`, 'empty', { compact: true });
-        return;
+        const none = `'${query}' 검색 결과가 없습니다.`;
+        renderStatus(container, none, 'empty', { compact: true });
+        return none;
     }
     const frag = document.createDocumentFragment();
     if (speakers.length) {
@@ -91,4 +93,5 @@ export function renderSearchResults(container, ctx) {
         }
     }
     container.replaceChildren(frag);
+    return `함순이 ${speakers.length}명 · 대사 ${lines.total}건`;
 }

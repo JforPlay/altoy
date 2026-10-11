@@ -5,9 +5,7 @@
  * search-highlighted text. No state and no listeners — chat-viewer.engine.js owns both.
  * Data values only ever reach the DOM through textContent / text nodes.
  */
-import { createImgElement, dataForToyUrl } from '../utils.js';
-
-const PLACEHOLDER_ICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
+import { createImgElement, dataForToyUrl, IMG_FALLBACKS } from '../utils.js';
 
 /** Element with optional class and text — the only way data reaches these nodes. */
 export function el(tag, className, text) {
@@ -27,7 +25,7 @@ export function button(className, text) {
 
 /** Portrait <img>, or a letter tile when there is no icon. */
 export function avatarNode(src, name, className = 'chat-avatar') {
-    if (src) return createImgElement(src, name || '', { className, fallback: PLACEHOLDER_ICON });
+    if (src) return createImgElement(src, name || '', { className, fallback: IMG_FALLBACKS.DEFAULT });
     const tile = el('span', `${className} chat-avatar--letter`, String(name || '?').trim().charAt(0));
     tile.setAttribute('aria-hidden', 'true');
     return tile;

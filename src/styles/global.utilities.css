@@ -8,6 +8,18 @@
   display: none !important;
 }
 
+/* Read by screen readers, invisible on screen — labels and live-region status lines. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Polished scrollbar for any scrollable region — apply this class instead of
    leaving the native scrollbar or hand-rolling ::-webkit-scrollbar per page.
    The standard properties cover Firefox and Chromium; the ::-webkit-* rules
