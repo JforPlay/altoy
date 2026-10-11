@@ -1,30 +1,50 @@
 /**
  * chat-viewer.engine.js
- * Shared chat playback engine for Juustagram and Dorm3D viewers.
- * Accepts a config object from the page-specific init script (juus.js / dorm3d.js)
- * that provides the data URL, timing, group chat icons, and optional type-4 handler.
- * Renders a character selector grid, story dropdown, and auto-advancing message bubbles.
+ * Two-pane messenger viewer shared by JUUS 보기 (juus.js) and 3D숙소 JUUS (dorm3d.js):
+ * chat list + search on the left, the open chat on the right, in 재생 (timed) or
+ * 전체 대본 (whole script) mode. Owns state, listeners and timers; branching and
+ * search live in chat-viewer.script.js, DOM builders in chat-viewer.render.js /
+ * chat-viewer.search.js.
  */
 import {
     fetchJSONWithCache,
-    showElement,
-    createImgElement,
-    renderStatus,
-    requireElements,
     loadPageData,
-    DATA_FOR_TOY_BASE,
+    requireElements,
+    renderStatus,
+    showElement,
+    hideElement,
+    toggleElement,
+    debounce,
+    getStorageItem,
+    setStorageItem,
 } from '../utils.js';
+import {
+    visibleLines,
+    picksToReach,
+    isGroupChat,
+    speakerOf,
+    speakerHandle,
+    buildSpeakerIndex,
+    searchSpeakers,
+    searchLines,
+    storyHits,
+} from './chat-viewer.script.js';
+import {
+    avatarNode,
+    handleNode,
+    chatRowNode,
+    storyTabNodes,
+    unlockNode,
+    endNode,
+    lineNode,
+    choiceNode,
+    replyNodes,
+} from './chat-viewer.render.js';
+import { renderSearchResults } from './chat-viewer.search.js';
 
-const PLACEHOLDER_ICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
-
-function clearElement(element) {
-    if (element) element.textContent = '';
-}
-
-function appendLoadingMessage(container, message, isError = false) {
-    // Canonical .page-status state (status.css): error vs empty.
-    renderStatus(container, message, isError ? 'error' : 'empty');
-}
+const MODE_KEY = 'chatViewerMode';
+const LINE_PAGE = 50;           // 대사 hits shown per page of results
+const NEAR_BOTTOM_PX = 150;     // 재생 auto-scrolls only when the reader is this close to the end
 
 function isRecord(value) {
     return value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -34,12 +54,12 @@ export class ChatViewerEngine {
     /**
      * Create and immediately start a chat viewer instance.
      * @param {Object} config
-     * @param {string} config.dataUrl - URL to fetch chat data JSON
-     * @param {string} [config.shipGroupIdUrl] - External source for @username handles
-     * @param {Object<string, string>} [config.groupChatIcons] - Group chat name → icon URL
-     * @param {number} [config.defaultDelay=1300] - Delay between messages (ms)
-     * @param {number} [config.initialDelay=100] - Delay before first message (ms)
-     * @param {Object} [config.customHandlers] - Optional overrides for script type handlers
+     * @param {string} config.dataUrl - chat data JSON ({ chatKey: { storyId: story } })
+     * @param {string} [config.shipGroupIdUrl] - @아이디 map ({ ship_group: handle })
+     * @param {Object<string, string>} [config.groupChatIcons] - group chat name → icon URL
+     * @param {number} [config.defaultDelay=1300] - 재생 delay between lines (ms)
+     * @param {number} [config.initialDelay=100] - 재생 delay before the first line / after a pick or sticker (ms)
+     * @param {Object} [config.customHandlers] - `handleType4(line)`, called with `this` = engine in 재생
      */
     constructor(config) {
         this.dataUrl = config.dataUrl;
@@ -47,625 +67,468 @@ export class ChatViewerEngine {
         this.groupChatIcons = config.groupChatIcons || {};
         this.defaultDelay = config.defaultDelay || 1300;
         this.initialDelay = config.initialDelay || 100;
-
-        // DOM elements cached at construction time
-        this.characterGrid = document.getElementById('character-selector-grid');
-        this.characterSelectionSection = document.getElementById('character-selection-section');
-        this.selectedCharacterNameDisplay = document.getElementById('selected-character-name');
-        this.storyDisplaySection = document.getElementById('story-display-section');
-        this.storyDropdown = document.getElementById('story-dropdown');
-        this.unlockDescText = document.getElementById('unlock-desc-text');
-        this.storyContainer = document.getElementById('story-container');
-        this.optionsContainer = document.getElementById('options-container');
-        this.restartButton = document.getElementById('restart-button');
-
-        if (!requireElements({
-            characterGrid: this.characterGrid,
-            characterSelectionSection: this.characterSelectionSection,
-            selectedCharacterNameDisplay: this.selectedCharacterNameDisplay,
-            storyDisplaySection: this.storyDisplaySection,
-            storyDropdown: this.storyDropdown,
-            unlockDescText: this.unlockDescText,
-            storyContainer: this.storyContainer,
-            optionsContainer: this.optionsContainer,
-            restartButton: this.restartButton,
-        }, 'ChatViewer')) {
-            return;
-        }
-
-        this.allData = {};
-        this.shipGroupIdData = {};
-        this.selectedCharacterName = null;
-        this.currentStoryScripts = [];
-        this.currentScriptIndex = 0;
-
-        // Card lookup and currently selected card avoid per-selection full-grid scans.
-        this.characterCardByName = new Map();
-        this.selectedCharacterCard = null;
-
-        // All setTimeout IDs tracked here so clearTimers() can cancel them atomically
-        this.activeTimers = [];
-
         this.customHandlers = config.customHandlers || {};
 
-        // Bind once so `this` resolves inside the handlers when fired via addEventListener
-        this.handleStoryChange = this.loadSelectedStory.bind(this);
-        this.handleRestart = this.initializeStory.bind(this);
-        this.handleSectionToggle = () => {
-            const collapsed = this.characterSelectionSection.classList.toggle('collapsed');
-            this.sectionHeader?.setAttribute('aria-expanded', String(!collapsed));
+        const byId = (id) => document.getElementById(id);
+        this.els = {
+            app: byId('chat-app'),
+            search: byId('chat-search'),
+            filter: byId('chat-filter'),
+            list: byId('chat-list'),
+            results: byId('chat-results'),
+            empty: byId('chat-empty'),
+            pane: byId('chat-pane'),
+            back: byId('chat-back'),
+            headAvatar: byId('chat-head-avatar'),
+            headName: byId('chat-head-name'),
+            headSub: byId('chat-head-sub'),
+            mode: byId('chat-mode'),
+            restart: byId('chat-restart'),
+            tabs: byId('chat-tabs'),
+            jump: byId('chat-jump'),
+            jumpLabel: byId('chat-jump-label'),
+            log: byId('chat-log'),
+            reply: byId('chat-reply'),
         };
-        this.handleSectionToggleKeydown = (event) => {
-            if (event.key !== 'Enter' && event.key !== ' ') return;
-            event.preventDefault();
-            this.handleSectionToggle();
-        };
-        this.handleCharacterGridClick = this.handleCharacterGridClick.bind(this);
-        this.handleCharacterGridKeydown = this.handleCharacterGridKeydown.bind(this);
+        if (!requireElements(this.els, 'ChatViewer')) return;
 
-        this.initialize();
+        this.allData = {};
+        this.usernames = {};
+        this.chats = new Map();   // chatKey → summary (row, header, search results)
+        this.rows = new Map();    // chatKey → list row
+        this.hasGroups = false;
+        this.speakers = null;     // built on the first search
+        this.chatKey = null;
+        this.storyId = null;
+        this.picks = {};          // script index → picked reply flag
+        this.focus = null;        // search target: { gid | query, label, hits, at }
+        this.mode = getStorageItem(MODE_KEY, 'play') === 'full' ? 'full' : 'play';
+        this.lineLimit = LINE_PAGE;
+        this.lastQuery = '';
+        this.played = 0;          // 재생: visible items already on screen
+        this.lastGid = null;      // ship_group of the line above, for name/avatar collapsing
+        this.activeTimers = [];
+
+        this.init();
     }
-    
-    // ===== Data Loading =====
 
-    /**
-     * Fetch chat data (and optional ship group IDs) in parallel, then
-     * populate the character grid and attach event listeners.
-     */
-    async initialize() {
-        try {
-            const shipGroupIdPromise = this.shipGroupIdUrl
-                ? fetchJSONWithCache(this.shipGroupIdUrl)
-                    .catch((error) => {
-                        console.warn('ChatViewer: ship group ID data failed to load:', error);
-                        return null;
-                    })
-                : Promise.resolve(null);
-
-            const data = await loadPageData(
-                () => fetchJSONWithCache(this.dataUrl),
-                this.characterGrid,
-                {
-                    contextLabel: 'ChatViewer',
-                    errorMessage: '스토리 정보를 불러오는데 실패했어요.',
-                },
-            );
-
-            if (data === null) return;
-            if (!isRecord(data)) {
-                appendLoadingMessage(this.characterGrid, '표시할 채팅 데이터가 없습니다.');
-                return;
-            }
-
-            this.allData = data;
-            const shipGroupIdData = await shipGroupIdPromise;
-            if (isRecord(shipGroupIdData)) {
-                this.shipGroupIdData = shipGroupIdData;
-            }
-            
-            this.populateCharacterSelector();
-            this.attachEventListeners();
-        } catch (error) {
-            console.error('Error fetching story data:', error);
-            appendLoadingMessage(this.characterGrid, '스토리 정보를 불러오는데 실패했어요.', true);
-        }
+    get story() {
+        return this.allData[this.chatKey]?.[this.storyId] ?? null;
     }
-    
-    // ===== Message Rendering =====
 
-    // ===== Character Selection =====
+    get scripts() {
+        const scripts = this.story?.scripts;
+        return Array.isArray(scripts) ? scripts : [];
+    }
 
-    /**
-     * Build and insert character cards into the grid.
-     * Uses a DocumentFragment for a single DOM insertion, then keeps a lookup
-     * for O(1) selected-card updates.
-     */
-    populateCharacterSelector() {
-        clearElement(this.characterGrid);
-        this.characterCardByName.clear();
-        this.selectedCharacterCard = null;
-        const fragment = document.createDocumentFragment();
+    // ===== Boot =====
 
-        for (const characterName in this.allData) {
-            const characterData = this.allData[characterName];
-            const firstStoryId = Object.keys(characterData)[0];
-            if (!firstStoryId) continue;
+    async init() {
+        const usernamesPromise = this.shipGroupIdUrl
+            ? fetchJSONWithCache(this.shipGroupIdUrl).catch((error) => {
+                console.warn('ChatViewer: @아이디 data failed to load:', error);
+                return null;
+            })
+            : Promise.resolve(null);
 
-            const firstStory = characterData[firstStoryId];
-            const card = document.createElement('div');
-            card.className = 'character-card';
-            card.dataset.characterName = characterName;
-            card.setAttribute('role', 'button');
-            card.setAttribute('aria-pressed', 'false');
-            card.tabIndex = 0;
-
-            let iconSrc = firstStory.icon;
-            if (!iconSrc && this.groupChatIcons[firstStory.kr_name]) {
-                iconSrc = this.groupChatIcons[firstStory.kr_name];
-            } else if (!iconSrc) {
-                iconSrc = PLACEHOLDER_ICON;
-            }
-
-            const shipName = firstStory.ship_name || '';
-
-            const img = createImgElement(iconSrc, firstStory.kr_name, {
-                fallback: PLACEHOLDER_ICON,
-            });
-
-            const charNameP = document.createElement('p');
-            charNameP.className = 'char-name';
-            charNameP.textContent = firstStory.kr_name;
-
-            const shipNameP = document.createElement('p');
-            shipNameP.className = 'ship-name';
-            shipNameP.textContent = shipName;
-
-            card.appendChild(img);
-            card.appendChild(charNameP);
-            card.appendChild(shipNameP);
-            this.characterCardByName.set(characterName, card);
-            fragment.appendChild(card);
-        }
-
-        if (!fragment.childElementCount) {
-            appendLoadingMessage(this.characterGrid, '표시할 채팅 데이터가 없습니다.');
+        const data = await loadPageData(() => fetchJSONWithCache(this.dataUrl), this.els.list, {
+            contextLabel: 'ChatViewer',
+            loadingMessage: '대화 목록을 불러오는 중...',
+            errorMessage: '대화 정보를 불러오지 못했어요.',
+        });
+        if (data === null) return;
+        if (!isRecord(data) || !Object.keys(data).length) {
+            renderStatus(this.els.list, '표시할 채팅 데이터가 없습니다.', 'empty');
             return;
         }
+        this.allData = data;
+        const usernames = await usernamesPromise;
+        if (isRecord(usernames)) this.usernames = usernames;
 
-        this.characterGrid.appendChild(fragment);
+        this.buildChatList();
+        this.bindEvents();
+        this.syncModeButtons();
     }
-    
+
+    /** One summary per chat — built once, reused by the list, the header and search. */
+    summarize(key, stories) {
+        const list = Object.values(stories);
+        const first = list[0];
+        const group = isGroupChat(first);
+        const lastScripts = list[list.length - 1].scripts || [];
+        const preview = lastScripts.findLast((line) => line.type === 1)?.param ?? '';
+        const speakerCount = group
+            ? new Set(list.flatMap((s) => (s.scripts || []).map((l) => l.ship_group)).filter((g) => g > 1)).size
+            : 0;
+        return {
+            key,
+            group,
+            name: first.kr_name || key,
+            handle: group ? '' : speakerHandle({ ship_group: first.ship_group }, first, this.usernames),
+            icon: first.icon || this.groupChatIcons[first.kr_name] || null,
+            storyCount: list.length,
+            speakerCount,
+            preview: String(preview),
+        };
+    }
+
+    buildChatList() {
+        const frag = document.createDocumentFragment();
+        for (const [key, stories] of Object.entries(this.allData)) {
+            if (!isRecord(stories) || !Object.keys(stories).length) continue;
+            const chat = this.summarize(key, stories);
+            const row = chatRowNode(chat);
+            this.chats.set(key, chat);
+            this.rows.set(key, row);
+            this.hasGroups ||= chat.group;
+            frag.append(row);
+        }
+        this.els.list.replaceChildren(frag);
+        if (!this.hasGroups) hideElement(this.els.filter); // Dorm3D: nothing to filter
+    }
+
+    bindEvents() {
+        const { list, filter, search, results, back, mode, restart, tabs, log, reply, jump } = this.els;
+        list.addEventListener('click', (event) => {
+            const row = event.target.closest('[data-chat]');
+            if (row) this.openChat(row.dataset.chat);
+        });
+        filter.addEventListener('click', (event) => {
+            const chip = event.target.closest('[data-kind]');
+            if (chip) this.applyKindFilter(chip.dataset.kind);
+        });
+        search.addEventListener('input', debounce(() => this.runSearch(), 200));
+        search.addEventListener('keydown', (event) => {
+            if (event.key !== 'Escape') return;
+            search.value = '';
+            this.runSearch();
+        });
+        results.addEventListener('click', (event) => this.handleResultClick(event));
+        back.addEventListener('click', () => { this.els.app.dataset.view = 'list'; });
+        mode.addEventListener('click', (event) => {
+            const btn = event.target.closest('[data-mode]');
+            if (btn) this.setMode(btn.dataset.mode);
+        });
+        restart.addEventListener('click', () => {
+            this.picks = {};
+            this.focus = null;
+            this.renderStory();
+        });
+        tabs.addEventListener('click', (event) => {
+            const tab = event.target.closest('[data-story]');
+            if (tab) this.openStory(this.chatKey, tab.dataset.story);
+        });
+        log.addEventListener('click', (event) => this.handleChoiceTab(event));
+        reply.addEventListener('click', (event) => {
+            const btn = event.target.closest('[data-flag]');
+            if (btn) this.pickReply(Number(btn.dataset.flag));
+        });
+        jump.addEventListener('click', (event) => {
+            const btn = event.target.closest('[data-step]');
+            if (btn && this.focus) this.goToHit(this.focus.at + Number(btn.dataset.step));
+        });
+    }
+
+    // ===== Sidebar =====
+
+    applyKindFilter(kind) {
+        for (const chip of this.els.filter.querySelectorAll('[data-kind]')) {
+            const on = chip.dataset.kind === kind;
+            chip.classList.toggle('active', on);
+            chip.setAttribute('aria-pressed', String(on));
+        }
+        for (const [key, row] of this.rows) {
+            const { group } = this.chats.get(key);
+            toggleElement(row, kind === 'all' || (kind === 'group') === group);
+        }
+    }
+
+    selectRow(key) {
+        for (const [rowKey, row] of this.rows) {
+            const on = rowKey === key;
+            row.classList.toggle('is-selected', on);
+            row.setAttribute('aria-pressed', String(on));
+        }
+    }
+
+    // ===== Opening chats and stories =====
+
+    openChat(key) {
+        if (key === this.chatKey) { // keep the reader's place (phone: back, then the same row)
+            this.els.app.dataset.view = 'chat';
+            return;
+        }
+        const stories = this.allData[key];
+        if (isRecord(stories)) this.openStory(key, Object.keys(stories)[0]);
+    }
+
     /**
-     * Select a character: highlight their card, collapse the selector,
-     * reveal the story section, and load their first story.
+     * Show one story. `focus` (from search) switches to 전체 대본 — for the rest of the visit,
+     * without saving it as the remembered mode — and lands on its first hit.
      */
-    handleCharacterClick(characterName, selectedCard = this.characterCardByName.get(characterName)) {
-        this.selectedCharacterName = characterName;
-
-        if (this.selectedCharacterCard && this.selectedCharacterCard !== selectedCard) {
-            this.selectedCharacterCard.classList.remove('selected');
-            this.selectedCharacterCard.setAttribute('aria-pressed', 'false');
+    openStory(key, storyId, focus = null) {
+        if (key !== this.chatKey) {
+            this.chatKey = key;
+            this.selectRow(key);
+            this.renderHeader();
         }
-
-        if (selectedCard) {
-            selectedCard.classList.add('selected');
-            selectedCard.setAttribute('aria-pressed', 'true');
-            this.selectedCharacterCard = selectedCard;
+        this.storyId = storyId;
+        this.picks = {};
+        this.focus = focus;
+        this.els.tabs.replaceChildren(...storyTabNodes(this.allData[key], storyId));
+        this.els.tabs.querySelector('.is-active')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+        hideElement(this.els.empty);
+        showElement(this.els.pane);
+        this.els.app.dataset.view = 'chat';
+        if (focus) {
+            this.mode = 'full';
+            this.syncModeButtons();
+            this.goToHit(focus.at);
+        } else {
+            this.renderStory();
         }
-
-        const characterData = this.allData[characterName];
-        const firstStoryId = Object.keys(characterData)[0];
-        const displayName = characterData[firstStoryId]?.kr_name || characterName;
-
-        if (this.selectedCharacterNameDisplay) {
-            this.selectedCharacterNameDisplay.textContent = `(${displayName})`;
-        }
-
-        this.characterSelectionSection.classList.add('collapsed');
-        this.sectionHeader?.setAttribute('aria-expanded', 'false');
-
-        showElement(this.storyDisplaySection);
-        this.populateStoryDropdown(this.allData[characterName]);
-        clearElement(this.storyContainer);
-        clearElement(this.optionsContainer);
-
-        this.setTrackedTimeout(() => {
-            this.storyDisplaySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 100);
     }
-    
-    // ===== Story Playback =====
 
-    /** Fill the dropdown with all stories for the selected character, then auto-load the first. */
-    populateStoryDropdown(characterStories) {
-        clearElement(this.storyDropdown);
-        
-        for (const storyId in characterStories) {
-            const story = characterStories[storyId];
-            const option = document.createElement('option');
-            option.value = storyId;
-            option.textContent = story.name;
-            this.storyDropdown.appendChild(option);
+    renderHeader() {
+        const chat = this.chats.get(this.chatKey);
+        const { headAvatar, headName, headSub } = this.els;
+        headAvatar.replaceChildren(avatarNode(chat.icon, chat.name));
+        headName.textContent = chat.name;
+        headSub.replaceChildren();
+        if (chat.group) {
+            headSub.append(`그룹 채팅방 · 발언 ${chat.speakerCount}명 · 스토리 ${chat.storyCount}개`);
+        } else {
+            if (chat.handle) headSub.append(handleNode(chat.handle), ' · ');
+            headSub.append(`스토리 ${chat.storyCount}개`);
         }
-        
-        this.loadSelectedStory();
     }
-    
-    /**
-     * Read the dropdown selection, set the unlock condition text,
-     * and reset playback to the beginning of the chosen story.
-     */
-    loadSelectedStory() {
-        const storyId = this.storyDropdown.value;
-        if (!this.selectedCharacterName || !storyId) return;
-        
-        const storyData = this.allData[this.selectedCharacterName][storyId];
-        this.currentStoryScripts = Array.isArray(storyData.scripts) ? storyData.scripts : [];
-        
-        clearElement(this.unlockDescText);
-        const conditionLabel = document.createElement('strong');
-        conditionLabel.textContent = '해금 조건 :';
-        this.unlockDescText.append(conditionLabel, document.createTextNode(` "${storyData.unlock_desc || ''}"`));
 
-        if (storyData.trigger_type === 2 && storyData.trigger_param) {
-            this.unlockDescText.appendChild(document.createElement('br'));
-            const affectionLabel = document.createElement('strong');
-            affectionLabel.textContent = '요구 호감도 :';
-            this.unlockDescText.append(affectionLabel, document.createTextNode(` ${storyData.trigger_param}`));
+    // ===== Modes =====
+
+    syncModeButtons() {
+        for (const btn of this.els.mode.querySelectorAll('[data-mode]')) {
+            const on = btn.dataset.mode === this.mode;
+            btn.classList.toggle('is-active', on);
+            btn.setAttribute('aria-pressed', String(on));
         }
-
-        this.initializeStory();
     }
-    
-    /** Cancel pending timers, clear the message container, and begin message playback. */
-    initializeStory() {
-        // Clear any pending timers
+
+    /** 재생 → 전체 keeps the picks made so far; 전체 → 재생 starts over from line 1. */
+    setMode(mode) {
+        if (mode === this.mode) return;
+        this.mode = mode;
+        setStorageItem(MODE_KEY, mode);
+        this.syncModeButtons();
+        if (!this.story) return;
+        if (mode === 'play') {
+            this.picks = {};
+            this.focus = null;
+        }
+        this.renderStory();
+    }
+
+    /** Re-render the open story from line 1 in the current mode (picks are kept). */
+    renderStory() {
         this.clearTimers();
-
-        clearElement(this.storyContainer);
-        clearElement(this.optionsContainer);
-        this.currentScriptIndex = 0;
-        this.showNextLineAfterDelay(this.initialDelay);
+        this.played = 0;
+        this.lastGid = null;
+        this.els.log.dataset.mode = this.mode;
+        this.els.log.replaceChildren(unlockNode(this.story));
+        this.els.log.scrollTop = 0; // callers that need a position (choice tab, search hit) set it after
+        this.els.reply.replaceChildren();
+        hideElement(this.els.reply);
+        this.renderJump();
+        if (this.mode === 'full') this.renderFull();
+        else this.playNext(this.initialDelay);
     }
-    
+
+    renderFull() {
+        const { items } = visibleLines(this.scripts, this.picks, { full: true });
+        const frag = document.createDocumentFragment();
+        for (const item of items) frag.append(...this.nodesFor(item, false));
+        frag.append(endNode());
+        this.els.log.append(frag);
+    }
+
     /**
-     * Scroll the story container to the bottom after a new message is appended,
-     * but only if the user is already near the bottom (within 150px). This lets
-     * users scroll up to re-read earlier messages without being yanked back down.
+     * Node(s) for one walk item, tracking the same-speaker run that collapses name + avatar.
+     * A single-option choice draws no strip: there is nothing to switch to.
      */
-    scrollToLatest(element) {
-        // Double rAF ensures the element is in the layout before measuring.
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                const container = this.storyContainer;
-
-                const scrolledFromBottom = container.scrollHeight - container.scrollTop - container.clientHeight;
-                const isNearBottom = scrolledFromBottom < 150 || container.scrollHeight <= container.clientHeight;
-
-                // Only auto-scroll if user hasn't scrolled up to read old messages
-                if (isNearBottom) {
-                    container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
-                }
-            });
+    nodesFor(item, playing) {
+        if (item.type === 'choice') {
+            this.lastGid = null;
+            return item.options.length > 1 ? [choiceNode(item)] : [];
+        }
+        const { line } = item;
+        if (line.type === 4 && this.customHandlers.handleType4) {
+            if (playing) this.customHandlers.handleType4.call(this, line);
+            return [];
+        }
+        const who = speakerOf(line, this.story, this.usernames);
+        const runGid = who.role === 'narrator' ? null : who.gid;
+        const node = lineNode(line, who, {
+            continued: runGid !== null && runGid === this.lastGid,
+            query: this.focus?.query ?? '',
         });
+        if (!node) return [];
+        node.dataset.index = String(item.index);
+        if (this.focus?.gid != null && who.gid === this.focus.gid) node.classList.add('is-hit');
+        this.lastGid = line.type === 5 ? null : runGid;
+        return [node];
     }
 
-    /**
-     * Advance to the next script entry. Dispatches by type:
-     * 1=dialogue, 3=red envelope, 4=sticker/special event, 5=system message.
-     * Unknown types are silently skipped. Stops when all scripts are consumed.
-     */
-    showNextLine() {
-        if (this.currentScriptIndex >= this.currentStoryScripts.length) {
-            // Display end of conversation message
-            this.displayEndOfConversation();
+    // ===== 재생 =====
+
+    /** Show the next visible line after `delay`; stop at a choice (reply buttons) or the end. */
+    playNext(delay = this.defaultDelay) {
+        this.setTrackedTimeout(() => {
+            const { items, pending } = visibleLines(this.scripts, this.picks);
+            const stick = this.isNearBottom();
+            if (this.played < items.length) {
+                const item = items[this.played++];
+                const nodes = this.nodesFor(item, true);
+                this.els.log.append(...nodes);
+                if (stick) this.scrollToBottom();
+                this.playNext(!nodes.length || item.line.type === 4 ? this.initialDelay : this.defaultDelay);
+            } else if (pending) {
+                this.els.reply.replaceChildren(...replyNodes(pending));
+                showElement(this.els.reply);
+                this.scrollToBottom();
+            } else {
+                this.els.log.append(endNode());
+                if (stick) this.scrollToBottom();
+            }
+        }, delay);
+    }
+
+    /** Record a 재생 reply; the data's own 지휘관 line for it plays next. */
+    pickReply(flag) {
+        const { pending } = visibleLines(this.scripts, this.picks);
+        if (!pending) return;
+        this.picks[pending.index] = flag;
+        this.els.reply.replaceChildren();
+        hideElement(this.els.reply);
+        this.playNext(this.initialDelay);
+    }
+
+    isNearBottom() {
+        const { log } = this.els;
+        return log.scrollHeight - log.scrollTop - log.clientHeight < NEAR_BOTTOM_PX;
+    }
+
+    scrollToBottom() {
+        const { log } = this.els;
+        log.scrollTo({ top: log.scrollHeight, behavior: 'smooth' });
+    }
+
+    // ===== 전체 대본 =====
+
+    /** Switch one choice's branch in place, keeping that choice where it was on screen. */
+    handleChoiceTab(event) {
+        const tab = event.target.closest('.chat-choice-tab');
+        const strip = tab?.closest('[data-choice]');
+        if (!strip || tab.classList.contains('active')) return;
+        const index = Number(strip.dataset.choice);
+        const before = strip.getBoundingClientRect().top;
+        this.picks[index] = Number(tab.dataset.flag);
+        this.renderStory();
+        const after = this.els.log.querySelector(`[data-choice="${index}"]`);
+        if (after) this.els.log.scrollTop += after.getBoundingClientRect().top - before;
+    }
+
+    // ===== Search =====
+
+    runSearch() {
+        const query = this.els.search.value.trim();
+        if (!query) {
+            hideElement(this.els.results);
+            showElement(this.els.list);
+            if (this.hasGroups) showElement(this.els.filter);
             return;
         }
-        
-        const script = this.currentStoryScripts[this.currentScriptIndex];
-        let processed = false;
-        
-        switch (script.type) {
-            case 1: // Dialogue
-                if (script.param) {
-                    this.displayBubble(script);
-                    if (script.option && Array.isArray(script.option[0])) {
-                        const options = script.option.map(opt => ({ flag: opt[0], content: opt[1] }));
-                        this.displayOptions(options);
-                    } else {
-                        this.currentScriptIndex++;
-                        this.showNextLineAfterDelay();
-                    }
-                    processed = true;
-                }
-                break;
-                
-            case 3: // Red Envelope (Instagram only)
-                this.displayRedEnvelope(script);
-                this.currentScriptIndex++;
-                this.showNextLineAfterDelay();
-                processed = true;
-                break;
-                
-            case 4: // Sticker/Emoji or Special Event
-                if (this.customHandlers.handleType4) {
-                    this.customHandlers.handleType4.call(this, script);
-                } else {
-                    this.displaySticker(script);
-                }
-                this.currentScriptIndex++;
-                this.showNextLineAfterDelay(this.initialDelay);
-                processed = true;
-                break;
-                
-            case 5: // System Message (Instagram only)
-                this.displaySystemMessage(script);
-                this.currentScriptIndex++;
-                this.showNextLineAfterDelay();
-                processed = true;
-                break;
-        }
-        
-        if (!processed) {
-            this.currentScriptIndex++;
-            this.showNextLine();
-        }
-    }
-    
-    /** Schedule the next script line after `delay` ms; tracks the timer for cleanup. */
-    showNextLineAfterDelay(delay = this.defaultDelay) {
-        this.setTrackedTimeout(() => this.showNextLine(), delay);
-    }
-    
-    /**
-     * Render a dialogue bubble for one script line.
-     * Determines speaker role (player / character / narrator), resolves icon and
-     * @username, then wraps in a character-line-wrapper when a portrait is needed.
-     */
-    displayBubble(script) {
-        const currentStoryInfo = this.allData[this.selectedCharacterName][this.storyDropdown.value];
-        let speakerName = script.kr_name || '';
-        let speakerIcon = script.icon || '';
-        let speakerUsername = '';
-        let messageClass = '';
-        
-        // ship_group === 0 → player; named icon present → character; otherwise → narrator
-        if (script.ship_group === 0) {
-            speakerName = '지휘관';
-            messageClass = 'player';
-        } else if (speakerName && speakerIcon) {
-            messageClass = 'character';
-            // Guest characters may have an @username from the ship group ID source
-            if (this.shipGroupIdData && script.ship_group) {
-                const idEntry = this.shipGroupIdData[script.ship_group];
-                // Accept the local flat handle map ({id:"handle"}) and the raw
-                // template shape ({id:{name:"handle"}}) interchangeably.
-                const handle = typeof idEntry === 'string' ? idEntry : idEntry?.name;
-                if (handle) {
-                    speakerUsername = handle;
-                }
-            }
-        } else if (script.ship_group === currentStoryInfo.ship_group) {
-            speakerName = currentStoryInfo.kr_name;
-            speakerIcon = currentStoryInfo.icon;
-            speakerUsername = currentStoryInfo.ship_name || '';
-            messageClass = 'character';
-        } else {
-            messageClass = 'narrator';
-        }
-        
-        const messageBubble = document.createElement('div');
-        messageBubble.classList.add('message-bubble', messageClass);
-        
-        if (messageClass === 'character') {
-            const speakerNameElement = document.createElement('p');
-            speakerNameElement.className = 'speaker-name';
-            speakerNameElement.textContent = speakerName;
-            
-            if (speakerUsername) {
-                const speakerId = document.createElement('span');
-                speakerId.className = 'speaker-id';
-                speakerId.textContent = ` @${speakerUsername}`;
-                speakerNameElement.appendChild(speakerId);
-            }
-            
-            messageBubble.appendChild(speakerNameElement);
-        } else if (speakerName && messageClass !== 'player') {
-            const speakerNameElement = document.createElement('p');
-            speakerNameElement.className = 'speaker-name';
-            speakerNameElement.textContent = speakerName;
-            messageBubble.appendChild(speakerNameElement);
-        }
-        
-        const messageText = document.createElement('p');
-        messageText.textContent = script.param;
-        messageBubble.appendChild(messageText);
-        
-        let topLevelElement = messageBubble;
-        
-        if (messageClass === 'character') {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'character-line-wrapper';
-
-            const portrait = createImgElement(speakerIcon, speakerName, {
-                className: 'portrait',
-                fallback: PLACEHOLDER_ICON,
-            });
-
-            wrapper.appendChild(portrait);
-            wrapper.appendChild(messageBubble);
-            this.storyContainer.appendChild(wrapper);
-            topLevelElement = wrapper;
-        } else {
-            this.storyContainer.appendChild(messageBubble);
-        }
-
-        this.scrollToLatest(topLevelElement);
-        return topLevelElement;
-    }
-    
-    /** Render a sticker image fetched from the emoji asset repo. Wraps in player or character layout. */
-    displaySticker(script) {
-        const isPlayer = script.ship_group === 0;
-        const stickerUrl = `${DATA_FOR_TOY_BASE}/emoji/${script.param}.webp`;
-
-        const container = document.createElement('div');
-        container.className = 'sticker-container';
-
-        const sticker = createImgElement(stickerUrl, '움짤은 아직 안돼요..', {
-            className: 'sticker-image',
-            onError: () => {
-                sticker.alt = '이미지를 불러올 수 없습니다';
-                sticker.style.display = 'none';
-            },
+        this.speakers ??= buildSpeakerIndex(this.allData, this.usernames);
+        if (query !== this.lastQuery) this.lineLimit = LINE_PAGE;
+        this.lastQuery = query;
+        renderSearchResults(this.els.results, {
+            query,
+            speakers: searchSpeakers(this.speakers, query),
+            lines: searchLines(this.allData, query, this.lineLimit),
+            chats: this.chats,
+            storyName: (chatKey, storyId) => this.allData[chatKey]?.[storyId]?.name ?? '',
         });
+        hideElement(this.els.list);
+        hideElement(this.els.filter);
+        showElement(this.els.results);
+    }
 
-        container.appendChild(sticker);
-
-        if (isPlayer) {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'player';
-            wrapper.style.background = 'transparent';
-            wrapper.appendChild(container);
-            this.storyContainer.appendChild(wrapper);
-            this.scrollToLatest(wrapper);
+    handleResultClick(event) {
+        const btn = event.target.closest('[data-open]');
+        if (!btn) return;
+        const { open, chat, story } = btn.dataset;
+        if (open === 'more') {
+            this.lineLimit += LINE_PAGE;
+            this.runSearch();
+            return;
+        }
+        if (open === 'chat') {
+            this.openChat(chat);
+            return;
+        }
+        const scripts = this.allData[chat]?.[story]?.scripts ?? [];
+        if (open === 'speaker') {
+            const gid = Number(btn.dataset.gid);
+            this.openStory(chat, story, { gid, label: `${btn.dataset.name} 발언`, hits: storyHits(scripts, { gid }), at: 0 });
         } else {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'character-line-wrapper';
-
-            const portrait = createImgElement(script.icon, script.kr_name, {
-                className: 'portrait',
-                fallback: PLACEHOLDER_ICON,
-            });
-
-            wrapper.appendChild(portrait);
-            wrapper.appendChild(container);
-            this.storyContainer.appendChild(wrapper);
-            this.scrollToLatest(wrapper);
-        }
-    }
-    
-    /** Render a system/notification message (Juustagram only, script type 5). */
-    displaySystemMessage(script) {
-        const message = document.createElement('div');
-        message.className = 'system-message';
-        message.textContent = script.param;
-        this.storyContainer.appendChild(message);
-        this.scrollToLatest(message);
-    }
-
-    /** Render the red envelope element (Juustagram only, script type 3). */
-    displayRedEnvelope(script) {
-        const envelope = document.createElement('div');
-        envelope.className = 'red-envelope-bubble';
-        envelope.textContent = '세뱃돈을 탭하여 확인';
-        this.storyContainer.appendChild(envelope);
-        this.scrollToLatest(envelope);
-    }
-    
-    /**
-     * Render choice buttons and force-scroll to the bottom so they're immediately visible
-     * (they push earlier bubbles upward and can be clipped without the scroll).
-     */
-    displayOptions(options) {
-        clearElement(this.optionsContainer);
-
-        options.forEach(option => {
-            const button = document.createElement('button');
-            button.type = 'button';
-            button.classList.add('btn', 'choice-button');
-            button.textContent = option.content;
-            button.addEventListener('click', () => this.handleChoice(option.flag, option.content));
-            this.optionsContainer.appendChild(button);
-        });
-
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                const container = this.storyContainer;
-                container.scrollTo({
-                    top: container.scrollHeight,
-                    behavior: 'smooth'
-                });
-            });
-        });
-    }
-    
-    /**
-     * Record the player's choice: show it as a bubble, clear options,
-     * then jump to the first script entry tagged with the chosen flag.
-     * Falls back to the line immediately after the options if no match.
-     */
-    handleChoice(chosenFlag, chosenText) {
-        this.displaySelectedChoice(chosenText);
-        clearElement(this.optionsContainer);
-        
-        const foundIndex = this.currentStoryScripts.findIndex((script, index) => 
-            index > this.currentScriptIndex && script.flag === chosenFlag
-        );
-        
-        this.currentScriptIndex = (foundIndex !== -1) ? foundIndex : this.currentScriptIndex + 1;
-        this.showNextLineAfterDelay();
-    }
-
-    handleCharacterGridClick(event) {
-        const card = this.getCharacterCardFromEvent(event);
-        if (!card) return;
-        event.preventDefault();
-        this.handleCharacterClick(card.dataset.characterName, card);
-    }
-
-    handleCharacterGridKeydown(event) {
-        if (event.key !== 'Enter' && event.key !== ' ') return;
-        const card = this.getCharacterCardFromEvent(event);
-        if (!card) return;
-        event.preventDefault();
-        this.handleCharacterClick(card.dataset.characterName, card);
-    }
-
-    getCharacterCardFromEvent(event) {
-        if (!(event.target instanceof Element)) return null;
-        const card = event.target.closest('.character-card');
-        if (!card || !this.characterGrid.contains(card)) return null;
-        return card;
-    }
-    
-    /** Render the chosen option as a player bubble so the choice appears in the chat history. */
-    displaySelectedChoice(chosenText) {
-        const choiceBubble = document.createElement('div');
-        choiceBubble.classList.add('message-bubble', 'player', 'selected-choice');
-        const p = document.createElement('p');
-        p.textContent = chosenText;
-        choiceBubble.appendChild(p);
-
-        this.storyContainer.appendChild(choiceBubble);
-        this.scrollToLatest(choiceBubble);
-    }
-
-    // ===== Controls & Cleanup =====
-
-    /** Append the end-of-conversation marker to signal no more messages. */
-    displayEndOfConversation() {
-        const endMessage = document.createElement('div');
-        endMessage.className = 'end-of-conversation';
-        endMessage.textContent = '대화 종료';
-        this.storyContainer.appendChild(endMessage);
-        this.scrollToLatest(endMessage);
-    }
-    
-    /** Wire dropdown change, restart button, and collapsible section header. */
-    attachEventListeners() {
-        this.characterGrid.addEventListener('click', this.handleCharacterGridClick);
-        this.characterGrid.addEventListener('keydown', this.handleCharacterGridKeydown);
-        this.storyDropdown.addEventListener('change', this.handleStoryChange);
-        this.restartButton.addEventListener('click', this.handleRestart);
-
-        // Toggle character selection section
-        this.sectionHeader = this.characterSelectionSection.querySelector('h3');
-        if (this.sectionHeader) {
-            this.sectionHeader.setAttribute('role', 'button');
-            this.sectionHeader.tabIndex = 0;
-            this.sectionHeader.setAttribute('aria-expanded', String(!this.characterSelectionSection.classList.contains('collapsed')));
-            this.sectionHeader.addEventListener('click', this.handleSectionToggle);
-            this.sectionHeader.addEventListener('keydown', this.handleSectionToggleKeydown);
+            const query = this.lastQuery; // what these rows were built from, not what is typed now
+            const hits = storyHits(scripts, { query });
+            const at = Math.max(0, hits.indexOf(Number(btn.dataset.index)));
+            this.openStory(chat, story, { query, label: `'${query}'`, hits, at });
         }
     }
 
-    /**
-     * Schedule a timeout and remove it from activeTimers once it fires, keeping
-     * long conversations from accumulating stale timer IDs.
-     */
+    /** Land on search hit `at`: pick the branches that lead to it, render, center it. */
+    goToHit(at) {
+        const { hits } = this.focus;
+        if (!hits.length) {
+            this.renderStory();
+            return;
+        }
+        this.focus.at = (at + hits.length) % hits.length;
+        const index = hits[this.focus.at];
+        this.picks = picksToReach(this.scripts, index);
+        this.renderStory();
+        const node = this.els.log.querySelector(`[data-index="${index}"]`);
+        if (!node) return;
+        node.classList.add('is-focus');
+        this.els.log.scrollTop = node.offsetTop - (this.els.log.clientHeight - node.offsetHeight) / 2;
+    }
+
+    /** The ↑↓ bar for a story opened from search; hidden otherwise. */
+    renderJump() {
+        const focus = this.focus;
+        if (!focus?.hits.length) {
+            hideElement(this.els.jump);
+            return;
+        }
+        this.els.jumpLabel.textContent = `${focus.label} · 이 대화에서 ${focus.hits.length}건 중 ${focus.at + 1}`;
+        showElement(this.els.jump);
+    }
+
+    // ===== Timers =====
+
+    /** Schedule a timeout tracked for clearTimers(); drops itself from the list once it fires. */
     setTrackedTimeout(callback, delay) {
         const timer = setTimeout(() => {
-            this.activeTimers = this.activeTimers.filter(activeTimer => activeTimer !== timer);
+            this.activeTimers = this.activeTimers.filter((t) => t !== timer);
             callback();
         }, delay);
         this.activeTimers.push(timer);
         return timer;
     }
 
-    /** Cancel all queued setTimeout calls so switching stories doesn't produce stale messages. */
+    /** Cancel every pending line so a story / mode switch never shows stale messages. */
     clearTimers() {
-        this.activeTimers.forEach(timer => clearTimeout(timer));
+        this.activeTimers.forEach((timer) => clearTimeout(timer));
         this.activeTimers = [];
     }
 }

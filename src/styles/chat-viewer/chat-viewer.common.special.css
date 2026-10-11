@@ -1,75 +1,57 @@
 /* =============================================================================
    chat-viewer.common.special.css
-   Part of the chat-viewer.common style split (formerly chat-viewer.common.css, one monolith).
-   The page imports each sibling in source order — keep rules in original order.
+   Non-dialogue lines: stickers (type 4, Juus), system messages (type 5), the red
+   envelope (type 3), and the Dorm3D type-4 shake.
 ============================================================================= */
-/* ============================================================================
-   SPECIAL MESSAGE TYPES
-   ============================================================================ */
 
-/* Stickers/Emojis */
-.sticker-container {
-  align-self: flex-start;
-  max-width: 9.375rem;
-}
-
-.player .sticker-container {
-  align-self: flex-end;
-}
-
-.sticker-image {
-  width: 100%;
-  height: auto;
+.chat-sticker {
   display: block;
+  width: 7.5rem;
+  height: auto;
 }
 
-/* System Messages */
-.system-message {
-  text-align: center;
-  color: var(--chat-text-secondary);
-  font-size: 0.9em;
-  font-style: italic;
-  padding: 0.5rem;
-  background-color: var(--bg-tertiary);
-  border-radius: 0.5rem;
+/* Animated emoji (and any other missing sticker) degrade to a small label. */
+.chat-sticker--missing {
+  width: auto;
+  padding: 0.25rem 0.625rem;
+  border: 1px dashed var(--chat-border);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.chat-system {
   align-self: center;
-  width: 90%;
-  transition: background-color var(--animation-duration) ease,
-    color var(--animation-duration) ease;
+  max-width: 90%;
+  margin-block: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-tertiary);
+  color: var(--chat-text-secondary);
+  font-size: 0.8125rem;
+  text-align: center;
 }
 
-/* Red Envelope (Lunar New Year) */
-.red-envelope-bubble {
-  background-color: var(--red-envelope);
-  color: #ffffff;
-  padding: 0.9375rem;
-  border-radius: 0.75rem;
-  text-align: center;
-  font-weight: bold;
-  cursor: pointer;
+.chat-envelope {
   align-self: center;
   width: 15.625rem;
+  margin-block: 0.5rem;
+  padding: 0.9375rem;
+  border-radius: 0.75rem;
+  background-color: var(--red-envelope);
   box-shadow: 0 0.25rem 0.375rem var(--shadow-medium);
-  transition: transform 0.2s;
+  color: #ffffff;
+  font-weight: bold;
+  text-align: center;
 }
 
-.red-envelope-bubble:hover {
-  transform: scale(1.05);
-}
-
-.red-envelope-bubble::before {
+.chat-envelope::before {
   content: "🧧";
-  font-size: 2em;
   display: block;
+  font-size: 2em;
 }
 
-/* ============================================================================
-   SPECIAL EFFECTS
-   ============================================================================ */
-
+/* Dorm3D type 4: the engine's handleType4 shakes the last bubble (@keyframes shake: theme.css). */
 .shake-effect {
   animation: shake 0.5s;
 }
-
-/* @keyframes shake — moved to theme.css */
-

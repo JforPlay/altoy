@@ -1,0 +1,240 @@
+/* =============================================================================
+   chat-viewer.common.sidebar.css
+   Left pane: search box, 전체 · 1:1 · 그룹 filter, chat-list rows, and the avatar /
+   @아이디 atoms the header, log and search results reuse.
+============================================================================= */
+
+.chat-side {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-right: 1px solid var(--chat-border);
+}
+
+.chat-side-top {
+  display: grid;
+  gap: 0.625rem;
+  padding: 0.875rem;
+  border-bottom: 1px solid var(--chat-border);
+}
+
+.chat-search-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--chat-border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-tertiary);
+  color: var(--chat-text);
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.chat-search-input:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 1px;
+}
+
+.chat-filter {
+  --filter-bar-gap: 0.375rem;
+}
+
+.chat-list,
+.chat-results {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* ===== Chat-list rows ===== */
+
+/* Full-width row buttons: chat-list rows here, search-result rows below. */
+.chat-row,
+.chat-hit-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.chat-row:hover,
+.chat-hit-row:hover {
+  background: var(--bg-tertiary);
+}
+
+.chat-row:focus-visible,
+.chat-hit-row:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: -2px;
+}
+
+.chat-row.is-selected {
+  background: color-mix(in srgb, var(--accent-primary) 14%, transparent);
+}
+
+.chat-row-body {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+
+.chat-row-top {
+  display: flex;
+  align-items: baseline;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+.chat-row-name {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--text-heading);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The handle takes only what the name leaves (a long @아이디 must not ellipsize the name). */
+.chat-row-top .chat-handle {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-row-count {
+  flex: none;
+  margin-left: auto;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.chat-row-preview {
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ===== Shared atoms ===== */
+
+.chat-avatar {
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--bg-tertiary);
+}
+
+.chat-avatar--sm {
+  width: 2rem;
+  height: 2rem;
+}
+
+/* No icon (5 group rooms): first letter of the name. */
+.chat-avatar--letter {
+  display: inline-grid;
+  place-items: center;
+  color: var(--chat-text-secondary);
+  font-weight: 700;
+}
+
+.chat-handle {
+  margin-left: 0.25rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+/* ===== Search results (chat-viewer.search.js) ===== */
+
+.chat-results-head {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0.875rem 0.875rem 0.25rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.chat-hit-speaker {
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--chat-border);
+}
+
+.chat-hit-speaker-head {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 0.875rem 0.25rem;
+}
+
+.chat-hit-speaker-head b {
+  color: var(--text-heading);
+}
+
+.chat-hit-row {
+  padding-block: 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* A speaker's chats indent under her avatar. */
+.chat-hit-speaker .chat-hit-row {
+  padding-left: 4.25rem;
+}
+
+.chat-hit-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-hit-count {
+  flex: none;
+  margin-left: auto;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.chat-hit-body {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+
+.chat-hit-where {
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-hit-snippet {
+  overflow-wrap: anywhere;
+}
+
+.chat-results-note {
+  margin: 0;
+  padding: 0.5rem 0.875rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.chat-results-more {
+  margin: 0.5rem 0.875rem 1rem;
+}

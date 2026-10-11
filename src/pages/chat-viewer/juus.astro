@@ -1,13 +1,15 @@
 ---
 /**
- * JUUS Chat Viewer
- * Converted from pages/chat-viewer/juus.html
+ * JUUS 보기 — 쥬톡 as a two-pane messenger (chat list + search | open chat),
+ * with 재생 / 전체 대본 modes. Shell: src/components/ChatViewerApp.astro;
+ * engine: public/js/chat-viewer/chat-viewer.engine.js (shared with dorm3d.astro).
  */
 import Layout from '../../layouts/Layout.astro';
+import ChatViewerApp from '../../components/ChatViewerApp.astro';
 import '../../styles/chat-viewer/chat-viewer.common.vars.css';
 import '../../styles/chat-viewer/chat-viewer.common.base.css';
-import '../../styles/chat-viewer/chat-viewer.common.selection.css';
-import '../../styles/chat-viewer/chat-viewer.common.controls.css';
+import '../../styles/chat-viewer/chat-viewer.common.sidebar.css';
+import '../../styles/chat-viewer/chat-viewer.common.header.css';
 import '../../styles/chat-viewer/chat-viewer.common.messages.css';
 import '../../styles/chat-viewer/chat-viewer.common.special.css';
 import '../../styles/chat-viewer/chat-viewer.common.responsive.css';
@@ -15,42 +17,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <Layout title="벽람항로 쥬톡 뷰어" bodyClass="chat-viewer" {base}>
-    <header class="main-header">
-        <h1>벽람항로 쥬톡 뷰어</h1>
-    </header>
-
-    <main class="content-container">
-        <section id="character-selection-section">
-            <h3>
-                1. 캐릭터/그룹 선택
-                <span class="selected-character-display" id="selected-character-name"></span>
-            </h3>
-            <div id="character-selector-grid" class="character-grid juus card-grid scroll-styled">
-                 <div class="page-status page-status-loading">
-                     <div class="spinner"></div>
-                     <p class="page-status-msg">캐릭터 정보 불러오는 중...</p>
-                 </div>
-            </div>
-        </section>
-
-        <section id="story-display-section" class="hidden juus">
-            <div class="story-controls">
-                <div class="story-controls-left">
-                    <div class="story-select-wrapper">
-                        <label for="story-dropdown" class="story-select-label">2. 스토리 선택 :</label>
-                        <select id="story-dropdown" autocomplete="off"></select>
-                    </div>
-                    <div id="flavor-text-box" class="flavor-text-box">
-                        <p id="unlock-desc-text"></p>
-                    </div>
-                </div>
-                <button id="restart-button" class="btn restart-button">다시 재생하기</button>
-            </div>
-
-            <div class="story-container scroll-styled" id="story-container"></div>
-            <div class="options-container juus" id="options-container"></div>
-        </section>
-    </main>
+    <div class="chat-page">
+        <header class="page-header">
+            <h1 class="page-header-title">벽람항로 쥬톡 뷰어</h1>
+        </header>
+        <ChatViewerApp />
+    </div>
 
     <script is:inline type="module" src={`${base}/js/chat-viewer/juus.js`}></script>
 </Layout>

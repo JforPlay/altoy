@@ -1,12 +1,8 @@
 /* =============================================================================
    chat-viewer.common.vars.css
-   Part of the chat-viewer.common style split (formerly chat-viewer.common.css, one monolith).
-   The page imports each sibling in source order — keep rules in original order.
+   Tokens for the chat-viewer pages (JUUS 보기, 3D숙소 JUUS, 쥬쥬 핫 이슈): light
+   defaults on body.chat-viewer, dark overrides below.
 ============================================================================= */
-/* ============================================================================
-   CHAT VIEWER - COMMON STYLES
-   Shared styles for both Dorm3D and Juustagram chat viewers
-   ============================================================================ */
 
 /* --- CSS Variables & Theme System --- */
 /* Light mode defaults */
@@ -38,6 +34,12 @@ body.chat-viewer {
 
   /* Accessibility */
   --animation-duration: 0.3s;
+
+  /* Search highlight + jump target, and the app-height knob (navbar + title + padding). */
+  --chat-hit-bg: #ffe58a;
+  --chat-hit-fg: #1a1a1a;
+  --chat-focus: #f5a524;
+  --chat-app-offset: 9.5rem;
 }
 
 /* Dark mode overrides */
@@ -66,6 +68,10 @@ body.chat-viewer.dark-mode {
 
   --shadow-light: rgba(0, 0, 0, 0.1);
   --shadow-medium: rgba(0, 0, 0, 0.2);
+
+  --chat-hit-bg: #7a6514;
+  --chat-hit-fg: #fff6d6;
+  --chat-focus: #f5b042;
 }
 
 /* Respect user's motion preferences */

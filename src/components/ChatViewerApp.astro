@@ -1,0 +1,67 @@
+---
+/**
+ * ChatViewerApp — the two-pane messenger shell shared by chat-viewer/juus and
+ * chat-viewer/dorm3d: chat list + search on the left, the open chat on the right.
+ * Every id here is read by public/js/chat-viewer/chat-viewer.engine.js
+ * (requireElements); styles live in src/styles/chat-viewer/.
+ * data-view (list|chat) only matters at phone width, where one pane shows at a time.
+ */
+const searchPlaceholder = '이름 · @아이디 · 대사 검색';
+---
+
+<div class="chat-app" id="chat-app" data-view="list">
+    <aside class="chat-side" aria-label="대화 목록">
+        <div class="chat-side-top">
+            <input
+                type="search"
+                id="chat-search"
+                class="chat-search-input"
+                placeholder={searchPlaceholder}
+                aria-label={searchPlaceholder}
+                autocomplete="off"
+            />
+            <div class="filter-bar chat-filter" id="chat-filter" role="group" aria-label="대화방 종류">
+                <button type="button" class="chip active" data-kind="all" aria-pressed="true">전체</button>
+                <button type="button" class="chip" data-kind="dm" aria-pressed="false">1:1</button>
+                <button type="button" class="chip" data-kind="group" aria-pressed="false">그룹</button>
+            </div>
+        </div>
+        <div class="chat-list scroll-styled" id="chat-list"></div>
+        <div class="chat-results scroll-styled hidden" id="chat-results" aria-live="polite"></div>
+    </aside>
+
+    <section class="chat-main" aria-label="대화">
+        <p class="chat-empty" id="chat-empty">왼쪽에서 대화방을 선택하세요</p>
+        <div class="chat-pane hidden" id="chat-pane">
+            <header class="chat-head">
+                <button type="button" class="btn btn-icon btn-sm chat-back" id="chat-back" aria-label="목록으로">
+                    <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+                </button>
+                <span class="chat-head-avatar" id="chat-head-avatar"></span>
+                <div class="chat-head-who">
+                    <b class="chat-head-name" id="chat-head-name"></b>
+                    <span class="chat-head-sub" id="chat-head-sub"></span>
+                </div>
+                <div class="btn-group chat-mode" id="chat-mode" role="group" aria-label="보기 모드">
+                    <button type="button" class="btn btn-outline btn-sm" data-mode="play" aria-pressed="true">재생</button>
+                    <button type="button" class="btn btn-outline btn-sm" data-mode="full" aria-pressed="false">전체 대본</button>
+                </div>
+                <button type="button" class="btn btn-icon btn-sm" id="chat-restart" aria-label="처음부터" title="처음부터">
+                    <span class="material-symbols-outlined" aria-hidden="true">replay</span>
+                </button>
+            </header>
+            <nav class="chat-tabs scroll-styled" id="chat-tabs" role="tablist" aria-label="스토리"></nav>
+            <div class="chat-jump hidden" id="chat-jump">
+                <span class="chat-jump-label" id="chat-jump-label"></span>
+                <button type="button" class="btn btn-icon btn-sm" data-step="-1" aria-label="이전 결과">
+                    <span class="material-symbols-outlined" aria-hidden="true">keyboard_arrow_up</span>
+                </button>
+                <button type="button" class="btn btn-icon btn-sm" data-step="1" aria-label="다음 결과">
+                    <span class="material-symbols-outlined" aria-hidden="true">keyboard_arrow_down</span>
+                </button>
+            </div>
+            <div class="chat-log scroll-styled" id="chat-log" aria-label="대화 내용"></div>
+            <div class="chat-reply hidden" id="chat-reply"></div>
+        </div>
+    </section>
+</div>

@@ -1,48 +1,56 @@
 /* =============================================================================
    chat-viewer.common.base.css
-   Part of the chat-viewer.common style split (formerly chat-viewer.common.css, one monolith).
-   The page imports each sibling in source order — keep rules in original order.
+   Page frame for the chat viewers (JUUS 보기 / 3D숙소 JUUS): body, title and the
+   two-pane app shell (src/components/ChatViewerApp.astro). Part of the
+   chat-viewer.common.* split — each page imports vars, base, sidebar, header,
+   messages, special, responsive, in that order.
 ============================================================================= */
 
-/* --- General Body & Typography --- */
+/* Flat page color: no global gradient (css-invariants.spec.mjs asserts it for dorm3d). */
 body {
   background: var(--bg-primary);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: var(--chat-text);
-  margin: 0;
-  padding: 1.25rem;
-  transition: background-color var(--animation-duration) ease,
-    color var(--animation-duration) ease;
-
-  /* Modern CSS improvements */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-.main-header {
-  margin-bottom: 1.875rem;
-  text-align: center;
+/* Base color + line-height are not global and these pages skip common.css. */
+.chat-page {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 1rem 1rem 1.25rem;
+  color: var(--chat-text);
+  line-height: 1.6;
 }
 
-.main-header h1 {
-  margin-bottom: 0.3125rem;
-  color: var(--text-heading);
-  transition: color var(--animation-duration) ease;
+.chat-page .page-header {
+  --page-header-mb: 0.75rem;
 }
 
-.main-header h2,
-.main-header h3 {
-  color: var(--text-heading);
-  text-align: center;
-  transition: color var(--animation-duration) ease;
-}
-
-.main-header p {
-  color: var(--chat-text-secondary);
-  text-align: center;
+.chat-page .page-header-title {
   margin: 0;
-  transition: color var(--animation-duration) ease;
+  color: var(--text-heading);
+  font-size: 1.5rem;
 }
 
-/* .hidden utility class defined in global.utilities.css */
+/* Two panes filling the viewport under the navbar + title. --chat-app-offset (vars.css)
+   is the knob if either of those changes height. */
+.chat-app {
+  display: grid;
+  grid-template-columns: 20rem minmax(0, 1fr);
+  height: calc(100dvh - var(--chat-app-offset));
+  min-height: 28rem;
+  overflow: hidden;
+  background: var(--bg-secondary);
+  border: 1px solid var(--chat-border);
+  border-radius: 0.75rem;
+  box-shadow: 0 0.25rem 1rem var(--shadow-light);
+}
 
+/* Search matches, in the results list and in the log. */
+.chat-app mark {
+  padding: 0 1px;
+  border-radius: 2px;
+  background: var(--chat-hit-bg);
+  color: var(--chat-hit-fg);
+}

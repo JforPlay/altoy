@@ -1,208 +1,172 @@
 /* =============================================================================
    chat-viewer.common.messages.css
-   Part of the chat-viewer.common style split (formerly chat-viewer.common.css, one monolith).
-   The page imports each sibling in source order — keep rules in original order.
+   The message log: 해금 조건 line, bubbles (character / player / narrator), the
+   전체 대본 choice strip, search hit marks, and the end marker.
 ============================================================================= */
-/* ============================================================================
-   STORY DISPLAY - CHAT MESSAGES
-   ============================================================================ */
 
-#story-display-section {
-  max-width: 56.25rem;
-  margin: 0 auto;
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--chat-border);
-  border-radius: 0.625rem;
-  box-sizing: border-box;
-  transition: background-color var(--animation-duration) ease,
-    border-color var(--animation-duration) ease;
+.chat-log {
+  position: relative; /* offsetTop anchor for the search jump */
   display: flex;
-  flex-direction: column;
-  max-height: calc(100vh - 17.5rem);
-}
-
-.story-container {
-  max-width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0.9375rem;
-  padding: 1.25rem 1.5625rem;
-  overflow-y: auto;
   flex: 1;
-
-  /* Modern scrolling improvements */
-  scroll-behavior: smooth;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-height: 0;
+  padding: 1rem 1.25rem 1.5rem;
+  overflow-y: auto;
   overscroll-behavior: contain;
 }
 
+.chat-unlock {
+  align-self: center;
+  margin: 0 0 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-tertiary);
+  color: var(--chat-text-secondary);
+  font-size: 0.8125rem;
+  text-align: center;
+}
 
-/* Character message wrapper with portrait */
-.character-line-wrapper {
+.chat-unlock strong {
+  color: var(--text-heading);
+  font-weight: 600;
+}
+
+/* ===== Messages ===== */
+
+.chat-msg {
   display: flex;
-  align-items: flex-end;
-  gap: 0.625rem;
-  max-width: 80%;
-  align-self: flex-start;
-  opacity: 0;
-  transform: translateY(1.25rem);
-  animation: bubble-fade-in 0.4s forwards;
+  align-items: flex-start;
+  gap: 0.5rem;
+  max-width: min(40rem, 80%);
 }
 
-.character-line-wrapper .portrait {
-  width: 2.8125rem;
-  height: 2.8125rem;
-  border-radius: 50%;
-  border: 2px solid var(--chat-border);
-  flex-shrink: 0;
-  object-fit: cover;
-  transition: border-color var(--animation-duration) ease;
+/* Lines arrive one by one only in 재생; 전체 대본 renders at rest. */
+.chat-log[data-mode="play"] .chat-msg {
+  animation: chat-msg-in 0.3s ease-out;
 }
 
-/* Message bubbles */
-.message-bubble {
-  padding: 0.75rem 0.9375rem;
-  border-radius: 0.5rem;
-  max-width: 75%;
-  line-height: 1.4;
-  box-sizing: border-box;
-  transition: background-color var(--animation-duration) ease,
-    color var(--animation-duration) ease;
-}
-
-.player,
-.narrator {
-  opacity: 0;
-  transform: translateY(1.25rem);
-  animation: bubble-fade-in 0.4s forwards;
-}
-
-@keyframes bubble-fade-in {
-  to {
-    opacity: 1;
-    transform: translateY(0);
+@keyframes chat-msg-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
   }
 }
 
-.message-bubble p {
-  margin: 0;
-  word-break: break-word;
+.chat-msg--character:not(.is-cont) {
+  margin-top: 0.625rem;
 }
 
-.speaker-name {
-  font-weight: bold;
-  margin-bottom: 0.3125rem;
-  color: var(--text-heading);
-  transition: color var(--animation-duration) ease;
+.chat-msg--character > .chat-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
 }
 
-.speaker-id {
-  color: var(--text-muted);
-  font-size: 0.8em;
-  font-weight: normal;
-  margin-left: 0.25rem;
-  transition: color var(--animation-duration) ease;
+/* A same-speaker run keeps the avatar column but shows the portrait once. */
+.chat-msg.is-cont > .chat-avatar {
+  height: 0;
+  visibility: hidden;
 }
 
-/* Message types */
-.character {
-  background-color: var(--character-bg);
-  color: var(--chat-text);
-}
-
-.player {
-  background-color: var(--player-bg);
+.chat-msg--player {
   align-self: flex-end;
-  max-width: 75%;
+  margin-top: 0.375rem;
+}
+
+.chat-msg--narrator {
+  display: block;
+  align-self: center;
+  max-width: 90%;
+  margin-block: 0.375rem;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-style: italic;
+  text-align: center;
+}
+
+.chat-bubble {
+  min-width: 0;
+  padding: 0.5rem 0.875rem;
+  border-radius: 1rem 1rem 1rem 0.25rem;
+  background: var(--character-bg);
+  color: var(--chat-text);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.chat-msg.is-cont .chat-bubble {
+  border-radius: 1rem;
+}
+
+.chat-msg--player .chat-bubble {
+  border-radius: 1rem 1rem 0.25rem 1rem;
+  background: var(--player-bg);
   color: var(--player-text);
 }
 
-.narrator {
-  background-color: transparent;
-  font-style: italic;
-  color: var(--text-muted);
-  text-align: center;
+.chat-speaker {
+  margin: 0 0 0.125rem;
+  color: var(--text-heading);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.chat-text {
+  margin: 0;
+}
+
+/* ===== 전체 대본 choice strip ===== */
+
+.chat-choice {
+  display: grid;
   align-self: center;
+  justify-items: center;
+  gap: 0.375rem;
   max-width: 90%;
+  margin: 0.75rem 0 0.25rem;
 }
 
-/* ============================================================================
-   PLAYER CHOICES & OPTIONS
-   ============================================================================ */
+.chat-choice-label {
+  color: var(--text-muted);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
 
-.options-container {
-  max-width: 100%;
-  padding: 0.9375rem 1.5625rem 1.25rem 1.5625rem;
+.chat-choice-tabs {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.625rem;
-  background-color: var(--bg-secondary);
-  border-top: 1px solid var(--chat-border);
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.375rem;
 }
 
-/* EXCEPTION: adopts the `.btn` base shape (inline-flex, focus-ring) but keeps
-   the chat-viewer blurple identity (--accent-primary fill), right-aligned
-   chat-bubble look + big touch target as a scoped brand rule. */
-.choice-button {
-  background-color: var(--accent-primary);
-  color: #ffffff;
-  border: none;
-  border-radius: 0.3125rem;
-  padding: 0.75rem 1.125rem;
-  font-size: 1em;
-  text-align: right;
-  justify-content: flex-end;
-  max-width: 80%;
+/* The shared .chip (hover + accent-blue active fill come from chip.css), sized for option
+   text; two classes so the override holds whatever order the bundle puts chip.css in. */
+.chip.chat-choice-tab {
+  padding: 0.3125rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.4;
 }
 
-.choice-button:hover {
-  background-color: var(--accent-hover);
+/* ===== Search marks ===== */
+
+/* Every line of the searched 함순이. */
+.chat-msg.is-hit .chat-bubble {
+  box-shadow: 0 0 0 2px var(--chat-hit-bg);
 }
 
-.choice-button:focus-visible {
-  outline: 2px solid var(--accent-primary);
-  outline-offset: 2px;
+/* The hit the jump bar is on: ring the bubble, or the whole line when it has none. */
+.chat-log .is-focus:not(:has(.chat-bubble)),
+.chat-log .is-focus .chat-bubble {
+  border-radius: 1rem;
+  outline: 2px solid var(--chat-focus);
+  outline-offset: 3px;
 }
 
-.choice-button:active {
-  transform: scale(0.98);
+.chat-end {
+  align-self: center;
+  margin-top: 1rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
 }
-
-/* Selected choice styling */
-.message-bubble.selected-choice {
-  font-size: 0.85em;
-  opacity: 0.8;
-  margin: 0.5rem 0;
-  padding: 0.5rem 0.75rem;
-  background-color: rgba(88, 101, 242, 0.15);
-  border: 1px solid var(--accent-primary);
-  color: var(--chat-text);
-}
-
-body.dark-mode .message-bubble.selected-choice {
-  opacity: 0.7;
-  background-color: var(--accent-primary);
-  border-color: var(--accent-hover);
-  color: #ffffff;
-}
-
-/* End of conversation message */
-.end-of-conversation {
-  text-align: center;
-  padding: 1.25rem;
-  margin: 1.25rem 0;
-  font-size: 1.1em;
-  font-weight: bold;
-  color: var(--chat-text-secondary);
-  background-color: var(--bg-tertiary);
-  border-radius: 0.625rem;
-  border: 2px dashed var(--chat-border);
-  transition: background-color var(--animation-duration) ease,
-    border-color var(--animation-duration) ease,
-    color var(--animation-duration) ease;
-}
-
-body.dark-mode .end-of-conversation {
-  background-color: var(--bg-secondary);
-}
-

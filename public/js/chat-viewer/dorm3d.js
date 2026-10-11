@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
              * Apply a brief shake animation to the last bubble as a substitute.
              */
             handleType4: function(script) {
-                const lastBubble = this.storyContainer.lastElementChild;
+                const lastBubble = this.els.log.lastElementChild;
                 if (lastBubble) {
                     // Add temporary shake animation
                     lastBubble.classList.add('shake-effect');
