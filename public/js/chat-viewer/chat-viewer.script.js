@@ -77,6 +77,23 @@ export function isGroupChat(story) {
 }
 
 /**
+ * When a chat last got a story, as a sortable number: its newest line `id`. Neither file
+ * carries a date, but line ids are global per file and grow with each release; Dorm3D story
+ * ids embed the ship group, so they cannot order its rooms.
+ */
+export function addedOrder(stories) {
+    return Math.max(...Object.values(stories).flatMap((story) => (story.scripts || []).map((line) => line.id)));
+}
+
+/** Chat-list orders over summaries ({ name, added }), keyed by the sort menu's values. */
+export const CHAT_SORTS = {
+    new: (a, b) => b.added - a.added,
+    old: (a, b) => a.added - b.added,
+    name: (a, b) => a.name.localeCompare(b.name, 'ko'),
+    'name-desc': (a, b) => b.name.localeCompare(a.name, 'ko'),
+};
+
+/**
  * @아이디 for a line's speaker: the username map (local flat `{gid: "handle"}` or the raw
  * template `{gid: {name}}`), else the story owner's ship_name when the owner speaks
  * (Dorm3D ships no username map). Player, system and unknown speakers → ''.

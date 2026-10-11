@@ -27,6 +27,8 @@ test('the list renders and a chat opens with its @아이디 and stories', async 
     await expect(page.locator('#chat-list .chat-row').first()).toBeVisible();
     await expect(page.locator('#chat-empty')).toBeVisible();
     await expect(page.locator('.chat-row[data-chat="건스웨이"] .chat-handle')).toHaveText('@Ganj-i-sawai');
+    // The row previews how the chat starts: first message of the first story.
+    await expect(page.locator('.chat-row[data-chat="건스웨이"] .chat-row-preview')).toHaveText('지휘관~ 가이드북에 흥미로운 유적이 몇 개 실려 있던데.');
     await page.locator('.chat-row[data-chat="건스웨이"]').click();
     await expect(page.locator('#chat-head-name')).toHaveText('건스웨이');
     await expect(page.locator('#chat-head-sub')).toContainText('@Ganj-i-sawai');
@@ -95,7 +97,8 @@ test('the chosen mode is remembered across reloads', async ({ page }) => {
 test('3D숙소 JUUS boots on the same layout', async ({ page }) => {
     await page.goto(DORM);
     await expect(page.locator('#chat-list .chat-row').first()).toBeVisible();
-    await expect(page.locator('#chat-filter')).toBeHidden();
+    await expect(page.locator('#chat-kind')).toBeHidden(); // no group rooms to filter
+    await expect(page.locator('#chat-sort')).toBeVisible();
     await page.locator('#chat-list .chat-row').first().click();
     await expect(page.locator('#chat-head-sub')).toContainText('@');
     await expect(page.locator('#chat-log .chat-msg').first()).toBeVisible(LINE_WAIT);
@@ -138,11 +141,13 @@ test('함순이 search by @아이디 lists her 1:1 chat and the group rooms she 
     await expect(speaker).toBeVisible();
     await expect(speaker.locator('[data-open="chat"]')).toHaveCount(1);
     await expect(speaker.locator('[data-open="speaker"]')).toHaveCount(2);
+    await expect(speaker.locator('[data-open="speaker"] .chat-hit-count').first()).toHaveText(/^채팅 \d+$/);
 
     await speaker.locator('[data-open="speaker"]', { hasText: '템페스타 채팅방' }).click();
     await expect(page.locator('#chat-head-name')).toHaveText('템페스타 채팅방');
     const jump = page.locator('#chat-jump');
-    await expect(jump).toContainText('돌핀 발언 · 이 대화에서 5건 중 1');
+    await expect(page.locator('#chat-head-sub')).toHaveText(/^그룹 채팅방 · 참여자 \d+명 · 스토리 \d+개$/);
+    await expect(jump).toContainText('돌핀 채팅 · 이 대화에서 5건 중 1');
     // Her 3rd line sits in the flag-4 branch reached through the flag-2 choice (index 24,
     // not the flag-1 one at 17 that offers the same flags) — stepping there must re-pick.
     await jump.locator('[data-step="1"]').click();
@@ -187,6 +192,28 @@ test('the 1:1 / 그룹 chips filter the chat list', async ({ page }) => {
     await expect(page.locator('.chat-row[data-chat="템페스타 채팅방"]')).toBeHidden();
     await page.locator('#chat-filter [data-kind="all"]').click();
     await expect(rows).toHaveCount(138);
+});
+
+test('the sort menu orders the list by added date or name, and is remembered', async ({ page }) => {
+    await page.goto(JUUS);
+    const rows = page.locator('#chat-list .chat-row');
+    await expect(rows.first()).toBeVisible();
+    const order = () => rows.evaluateAll(nodes => nodes.map(n => n.dataset.chat));
+    const sort = page.locator('#chat-sort');
+    await expect(sort).toHaveValue('new');
+    const newest = await order();
+    await sort.selectOption('old');
+    // Story ids 1-3: the first chat Juus ever shipped stays the oldest whatever is added later.
+    await expect(rows.first()).toHaveAttribute('data-chat', '건스웨이');
+    expect(await order()).toEqual([...newest].reverse());
+    await sort.selectOption('name');
+    const byName = await order();
+    expect(byName).toEqual([...byName].sort((a, b) => a.localeCompare(b, 'ko')));
+    await sort.selectOption('name-desc');
+    expect(await order()).toEqual([...byName].reverse());
+    await page.reload();
+    await expect(sort).toHaveValue('name-desc');
+    await expect(rows.first()).toHaveAttribute('data-chat', byName.at(-1));
 });
 
 // ===== Final-review regressions =====

@@ -1,6 +1,6 @@
 /* =============================================================================
    chat-viewer.common.sidebar.css
-   Left pane: search box, 전체 · 1:1 · 그룹 filter, chat-list rows, and the avatar /
+   Left pane: search box, 전체 · 1:1 · 그룹 filter + sort menu, chat-list rows, and the avatar /
    @아이디 atoms the header, log and search results reuse.
 ============================================================================= */
 
@@ -18,8 +18,8 @@
   border-bottom: 1px solid var(--chat-border);
 }
 
-.chat-search-input {
-  width: 100%;
+.chat-search-input,
+.chat-sort {
   box-sizing: border-box;
   padding: 0.5rem 0.75rem;
   border: 1px solid var(--chat-border);
@@ -30,13 +30,26 @@
   font-size: 0.9rem;
 }
 
-.chat-search-input:focus-visible {
+.chat-search-input {
+  width: 100%;
+}
+
+.chat-search-input:focus-visible,
+.chat-sort:focus-visible {
   outline: 2px solid var(--accent-primary);
   outline-offset: 1px;
 }
 
-.chat-filter {
+.chat-filter,
+.chat-kind {
   --filter-bar-gap: 0.375rem;
+}
+
+.chat-sort {
+  margin-left: auto;
+  padding: 0.25rem 0.375rem;
+  font-size: 0.8125rem;
+  cursor: pointer;
 }
 
 .chat-list,

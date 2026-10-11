@@ -28,6 +28,8 @@ import {
     searchSpeakers,
     searchLines,
     storyHits,
+    addedOrder,
+    CHAT_SORTS,
 } from './chat-viewer.script.js';
 import {
     avatarNode,
@@ -43,6 +45,7 @@ import {
 import { renderSearchResults } from './chat-viewer.search.js';
 
 const MODE_KEY = 'chatViewerMode';
+const SORT_KEY = 'chatViewerSort';
 const LINE_PAGE = 50;           // 대사 hits shown per page of results
 const NEAR_BOTTOM_PX = 150;     // 재생 auto-scrolls only when the reader is this close to the end
 
@@ -74,6 +77,8 @@ export class ChatViewerEngine {
             app: byId('chat-app'),
             search: byId('chat-search'),
             filter: byId('chat-filter'),
+            kind: byId('chat-kind'),
+            sort: byId('chat-sort'),
             list: byId('chat-list'),
             results: byId('chat-results'),
             empty: byId('chat-empty'),
@@ -155,8 +160,7 @@ export class ChatViewerEngine {
         const list = Object.values(stories);
         const first = list[0];
         const group = isGroupChat(first);
-        const lastScripts = list[list.length - 1].scripts || [];
-        const preview = lastScripts.findLast((line) => line.type === 1)?.param ?? '';
+        const preview = (first.scripts || []).find((line) => line.type === 1)?.param ?? '';
         const speakerCount = group
             ? new Set(list.flatMap((s) => (s.scripts || []).map((l) => l.ship_group)).filter((g) => g > 1)).size
             : 0;
@@ -169,6 +173,7 @@ export class ChatViewerEngine {
             storyCount: list.length,
             speakerCount,
             preview: String(preview),
+            added: addedOrder(stories),
         };
     }
 
@@ -184,11 +189,14 @@ export class ChatViewerEngine {
             frag.append(row);
         }
         this.els.list.replaceChildren(frag);
-        if (!this.hasGroups) hideElement(this.els.filter); // Dorm3D: nothing to filter
+        if (!this.hasGroups) hideElement(this.els.kind); // Dorm3D: nothing to filter
+        const sort = getStorageItem(SORT_KEY, 'new');
+        this.els.sort.value = CHAT_SORTS[sort] ? sort : 'new';
+        this.sortList();
     }
 
     bindEvents() {
-        const { list, filter, search, results, back, mode, restart, tabs, log, reply, jump } = this.els;
+        const { list, filter, sort, search, results, back, mode, restart, tabs, log, reply, jump } = this.els;
         list.addEventListener('click', (event) => {
             const row = event.target.closest('[data-chat]');
             if (row) this.openChat(row.dataset.chat);
@@ -196,6 +204,10 @@ export class ChatViewerEngine {
         filter.addEventListener('click', (event) => {
             const chip = event.target.closest('[data-kind]');
             if (chip) this.applyKindFilter(chip.dataset.kind);
+        });
+        sort.addEventListener('change', () => {
+            setStorageItem(SORT_KEY, sort.value);
+            this.sortList();
         });
         search.addEventListener('input', debounce(() => this.runSearch(), 200));
         search.addEventListener('keydown', (event) => {
@@ -241,6 +253,12 @@ export class ChatViewerEngine {
             const { group } = this.chats.get(key);
             toggleElement(row, kind === 'all' || (kind === 'group') === group);
         }
+    }
+
+    /** Re-order the existing rows (append moves them); the kind filter's hidden rows stay hidden. */
+    sortList() {
+        const chats = [...this.chats.values()].sort(CHAT_SORTS[this.els.sort.value]);
+        this.els.list.append(...chats.map((chat) => this.rows.get(chat.key)));
     }
 
     selectRow(key) {
@@ -296,7 +314,7 @@ export class ChatViewerEngine {
         headName.textContent = chat.name;
         headSub.replaceChildren();
         if (chat.group) {
-            headSub.append(`그룹 채팅방 · 발언 ${chat.speakerCount}명 · 스토리 ${chat.storyCount}개`);
+            headSub.append(`그룹 채팅방 · 참여자 ${chat.speakerCount}명 · 스토리 ${chat.storyCount}개`);
         } else {
             if (chat.handle) headSub.append(handleNode(chat.handle), ' · ');
             headSub.append(`스토리 ${chat.storyCount}개`);
@@ -443,7 +461,7 @@ export class ChatViewerEngine {
         if (!query) {
             hideElement(this.els.results);
             showElement(this.els.list);
-            if (this.hasGroups) showElement(this.els.filter);
+            showElement(this.els.filter);
             return;
         }
         this.speakers ??= buildSpeakerIndex(this.allData, this.usernames);
@@ -477,7 +495,7 @@ export class ChatViewerEngine {
         const scripts = this.allData[chat]?.[story]?.scripts ?? [];
         if (open === 'speaker') {
             const gid = Number(btn.dataset.gid);
-            this.openStory(chat, story, { gid, label: `${btn.dataset.name} 발언`, hits: storyHits(scripts, { gid }), at: 0 });
+            this.openStory(chat, story, { gid, label: `${btn.dataset.name} 채팅`, hits: storyHits(scripts, { gid }), at: 0 });
         } else {
             const query = this.lastQuery; // what these rows were built from, not what is typed now
             const hits = storyHits(scripts, { query });

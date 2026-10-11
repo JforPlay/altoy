@@ -25,6 +25,8 @@ body {
 
 .chat-page .page-header {
   --page-header-mb: 0.75rem;
+  --page-header-gap: 0.5rem;
+  --page-header-accent: var(--accent-primary);
 }
 
 .chat-page .page-header-title {

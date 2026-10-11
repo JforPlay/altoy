@@ -20,10 +20,18 @@ const searchPlaceholder = '이름 · @아이디 · 대사 검색';
                 aria-label={searchPlaceholder}
                 autocomplete="off"
             />
-            <div class="filter-bar chat-filter" id="chat-filter" role="group" aria-label="대화방 종류">
-                <button type="button" class="chip active" data-kind="all" aria-pressed="true">전체</button>
-                <button type="button" class="chip" data-kind="dm" aria-pressed="false">1:1</button>
-                <button type="button" class="chip" data-kind="group" aria-pressed="false">그룹</button>
+            <div class="filter-bar chat-filter" id="chat-filter">
+                <div class="filter-bar chat-kind" id="chat-kind" role="group" aria-label="대화방 종류">
+                    <button type="button" class="chip active" data-kind="all" aria-pressed="true">전체</button>
+                    <button type="button" class="chip" data-kind="dm" aria-pressed="false">1:1</button>
+                    <button type="button" class="chip" data-kind="group" aria-pressed="false">그룹</button>
+                </div>
+                <select class="chat-sort" id="chat-sort" aria-label="정렬">
+                    <option value="new">최신순</option>
+                    <option value="old">오래된순</option>
+                    <option value="name">이름순 (가→하)</option>
+                    <option value="name-desc">이름순 (하→가)</option>
+                </select>
             </div>
         </div>
         <div class="chat-list scroll-styled" id="chat-list"></div>

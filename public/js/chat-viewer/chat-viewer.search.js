@@ -41,7 +41,7 @@ function speakerGroup(speaker, ctx) {
         group.append(resultRow(
             { open: 'speaker', chat: a.chatKey, story: a.storyId, gid: String(speaker.gid), name: speaker.name },
             `${a.chatKey} · ${ctx.storyName(a.chatKey, a.storyId)}`,
-            `발언 ${a.count}`,
+            `채팅 ${a.count}`,
         ));
     }
     return group;

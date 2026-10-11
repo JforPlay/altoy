@@ -18,6 +18,7 @@ import {
     searchSpeakers,
     searchLines,
     storyHits,
+    addedOrder,
 } from '../../public/js/chat-viewer/chat-viewer.script.js';
 
 const readJson = (path) => JSON.parse(readFileSync(new URL(`../../public/data/${path}`, import.meta.url), 'utf8'));
@@ -305,4 +306,18 @@ test('every text line in every story is reachable — a 대사 search hit always
             });
         }
     }
+});
+
+test('addedOrder ranks chats by their newest line id — the only release order both files carry', () => {
+    const newestFirst = (data, key) => Object.keys(data).sort((a, b) => key(data[b]) - key(data[a]));
+    // Juus story ids are global and grow per release; line ids agree on every chat.
+    const maxStoryId = (stories) => Math.max(...Object.keys(stories).map(Number));
+    assert.deepEqual(newestFirst(JUUS, addedOrder), newestFirst(JUUS, maxStoryId));
+    // Dorm3D story ids embed the ship group, so only line ids order its rooms. KR first-seen
+    // dates (AzurLaneLuaScripts git history): the first three 2025-03-13, 뉴저지 2025-06-26,
+    // 다이호 2025-10-09, 에기르 2026-01-08, 나히모프 2026-07-09.
+    assert.deepEqual(
+        newestFirst(DORM, addedOrder).reverse().slice(0, 7),
+        ['시리우스', '노시로', '앵커리지', '뉴저지', '다이호', '에기르', '아드미랄 나히모프'],
+    );
 });
