@@ -17,6 +17,7 @@ import {
     debounce,
     getStorageItem,
     setStorageItem,
+    dataForToyUrl,
 } from '../utils.js';
 import {
     visibleLines,
@@ -59,7 +60,6 @@ export class ChatViewerEngine {
      * @param {Object} config
      * @param {string} config.dataUrl - chat data JSON ({ chatKey: { storyId: story } })
      * @param {string} [config.shipGroupIdUrl] - @아이디 map ({ ship_group: handle })
-     * @param {Object<string, string>} [config.groupChatIcons] - group chat name → icon URL
      * @param {number} [config.defaultDelay=1300] - 재생 delay between lines (ms)
      * @param {number} [config.initialDelay=100] - 재생 delay before the first line / after a pick or sticker (ms)
      * @param {Object} [config.customHandlers] - `handleType4(line)`, called with `this` = engine in 재생
@@ -67,7 +67,6 @@ export class ChatViewerEngine {
     constructor(config) {
         this.dataUrl = config.dataUrl;
         this.shipGroupIdUrl = config.shipGroupIdUrl || null;
-        this.groupChatIcons = config.groupChatIcons || {};
         this.defaultDelay = config.defaultDelay || 1300;
         this.initialDelay = config.initialDelay || 100;
         this.customHandlers = config.customHandlers || {};
@@ -169,7 +168,7 @@ export class ChatViewerEngine {
             group,
             name: first.kr_name || key,
             handle: group ? '' : speakerHandle({ ship_group: first.ship_group }, first, this.usernames),
-            icon: first.icon || this.groupChatIcons[first.kr_name] || null,
+            icon: first.icon || (first.room_icon ? dataForToyUrl(first.room_icon) : null),
             storyCount: list.length,
             speakerCount,
             preview: String(preview),

@@ -5,7 +5,7 @@
  * search-highlighted text. No state and no listeners — chat-viewer.engine.js owns both.
  * Data values only ever reach the DOM through textContent / text nodes.
  */
-import { createImgElement, DATA_FOR_TOY_BASE } from '../utils.js';
+import { createImgElement, dataForToyUrl } from '../utils.js';
 
 const PLACEHOLDER_ICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
 
@@ -25,7 +25,7 @@ export function button(className, text) {
 
 // ===== Shared pieces =====
 
-/** Portrait <img>, or a letter tile when there is no icon (5 group rooms have none). */
+/** Portrait <img>, or a letter tile when there is no icon. */
 export function avatarNode(src, name, className = 'chat-avatar') {
     if (src) return createImgElement(src, name || '', { className, fallback: PLACEHOLDER_ICON });
     const tile = el('span', `${className} chat-avatar--letter`, String(name || '?').trim().charAt(0));
@@ -156,14 +156,22 @@ function bubbleNode(line, who, ctx) {
     return msg;
 }
 
+/**
+ * A sticker's art (`sticker`, a data_for_toy path the pipeline resolved through
+ * emoji_template.pic) or, when it has none, its label — the encrypted video stickers.
+ */
 function stickerNode(line, who, ctx) {
     const mine = who.role === 'player';
     const msg = el('div', `chat-msg ${mine ? 'chat-msg--player' : 'chat-msg--character'}`);
     if (ctx.continued && !mine) msg.classList.add('is-cont');
-    const sticker = createImgElement(`${DATA_FOR_TOY_BASE}/emoji/${line.param}.webp`, '이모티콘', {
-        className: 'chat-sticker',
-        onError: () => sticker.replaceWith(el('span', 'chat-sticker chat-sticker--missing', '이모티콘')),
-    });
+    const label = line.label || '이모티콘';
+    const missing = () => el('span', 'chat-sticker chat-sticker--missing', label);
+    const sticker = line.sticker
+        ? createImgElement(dataForToyUrl(line.sticker), label, {
+            className: 'chat-sticker',
+            onError: () => sticker.replaceWith(missing()),
+        })
+        : missing();
     if (!mine) msg.append(avatarNode(who.icon, who.name));
     msg.append(sticker);
     return msg;

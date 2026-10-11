@@ -253,6 +253,36 @@ test('a 대사 row opens with the query it was built from, even if the box chang
     await expect(page.locator('#chat-jump')).toContainText("'첫 여행이라 너무 기대' · 이 대화에서 1건 중 1");
 });
 
+// data_for_toy is an external host and new art may not be pushed yet: answer the Juus art
+// paths with a 1×1 PNG so an <img> keeps the src under test instead of its error fallback.
+const PIXEL = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=', 'base64');
+async function openJuusWithArt(page, chat) {
+    await page.route(/\/data_for_toy\/main\/juus_(emoji|room)\//, (route) => route.fulfill({ contentType: 'image/png', body: PIXEL }));
+    await page.goto(JUUS);
+    await expect(page.locator('#chat-list .chat-row').first()).toBeVisible();
+    if (!chat) return;
+    await page.locator(`.chat-row[data-chat="${chat}"]`).click();
+    await page.locator('#chat-mode [data-mode="full"]').click();
+}
+
+test('a sticker draws the art emoji_template names, not its own id (갤런트 「서프라이즈」)', async ({ page }) => {
+    await openJuusWithArt(page, '갤런트');
+    // 239 → line_part2_39 (used to be blank); 13 → 11 (used to show emoji 15's art).
+    await expect(page.locator('#chat-log img.chat-sticker[alt="[…거다！]"]')).toHaveAttribute('src', /\/juus_emoji\/line_part2_39\.webp$/);
+    await expect(page.locator('#chat-log img.chat-sticker[alt="[심쿵]"]')).toHaveAttribute('src', /\/juus_emoji\/11\.webp$/);
+});
+
+test('a video sticker shows its label in place of art (차파예프 「애완동물」)', async ({ page }) => {
+    await openJuusWithArt(page, '차파예프');
+    await expect(page.locator('#chat-log .chat-sticker--missing', { hasText: '[청소 준비]' })).toBeVisible();
+});
+
+test('group rooms show their game avatar, including the five that had none', async ({ page }) => {
+    await openJuusWithArt(page);
+    await expect(page.locator('.chat-row[data-chat="튤리퍼 채널"] img.chat-avatar')).toHaveAttribute('src', /\/juus_room\/110\.webp$/);
+    await expect(page.locator('.chat-row[data-chat="공용 채팅방"] img.chat-avatar')).toHaveAttribute('src', /\/juus_room\/200\.webp$/);
+});
+
 test('쥬쥬 핫 이슈 keeps its centered header (it shares base.css with these pages)', async ({ page }) => {
     await page.goto('chat-viewer/juus-hot-issue/');
     const header = page.locator('.main-header');

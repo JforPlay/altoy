@@ -321,3 +321,50 @@ test('addedOrder ranks chats by their newest line id — the only release order 
         ['시리우스', '노시로', '앵커리지', '뉴저지', '다이호', '에기르', '아드미랄 나히모프'],
     );
 });
+
+// ===== Pipeline-stamped art (WSL chat_viewer_process + build_juus_images) =====
+
+const linesOf = (data) => Object.values(data).flatMap((stories) =>
+    Object.values(stories).flatMap((story) => story.scripts || []));
+
+test('a sticker resolves through emoji_template.pic, never its own param (갤런트 「서프라이즈」)', () => {
+    const surprise = JUUS['갤런트']['126'];
+    assert.equal(surprise.name, '서프라이즈');
+    const [missing, wrong] = [surprise.scripts[5], surprise.scripts[16]];
+    assert.equal(missing.param, '239');
+    assert.equal(missing.sticker, 'juus_emoji/line_part2_39.webp');
+    assert.equal(missing.label, '[…거다！]');
+    // emoji/13 is a different sticker ([OK], emoji 15's art) — the page used to show it here.
+    assert.equal(wrong.param, '13');
+    assert.equal(wrong.sticker, 'juus_emoji/11.webp');
+    assert.equal(wrong.label, '[심쿵]');
+});
+
+test('a video sticker (imsgSticke_*, encrypted CRI USM) ships its label and no art', () => {
+    const pet = JUUS['차파예프']['99'].scripts[3];
+    assert.equal(pet.param, '100');
+    assert.equal(pet.sticker, undefined);
+    assert.equal(pet.label, '[청소 준비]');
+});
+
+test('every Juus sticker line carries a plain label, and art only as a juus_emoji path', () => {
+    const stickers = linesOf(JUUS).filter((line) => line.type === 4);
+    assert.ok(stickers.length > 500);
+    for (const line of stickers) {
+        assert.match(line.label, /^\S.*$/, `param ${line.param}`);
+        assert.doesNotMatch(line.label, /<color/);
+        if (line.sticker !== undefined) assert.match(line.sticker, /^juus_emoji\/[a-z0-9_]+\.webp$/);
+    }
+    // Dorm3D type 4 is a shake event, not a sticker.
+    assert.ok(linesOf(DORM).every((line) => line.sticker === undefined && line.label === undefined));
+});
+
+test('every group room carries its game avatar (qicon/<sculpture>); 1:1 chats do not', () => {
+    for (const stories of Object.values(JUUS)) {
+        for (const story of Object.values(stories)) {
+            if (isGroupChat(story)) assert.match(story.room_icon, /^juus_room\/\w+\.webp$/, story.kr_name);
+            else assert.equal(story.room_icon, undefined, story.kr_name);
+        }
+    }
+    assert.equal(JUUS['튤리퍼 채널']['210'].room_icon, 'juus_room/110.webp');
+});
