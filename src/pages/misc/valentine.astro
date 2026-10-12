@@ -9,6 +9,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 <Layout title="Valentine Letters" theme="accent" {base}>
     <div class="valentine-container">
+        <header class="page-header">
+            <h1 class="page-header-title">
+                <span class="material-symbols-outlined" aria-hidden="true">mail</span>
+                발렌타인 편지
+            </h1>
+            <p class="page-header-subtitle">참고사항: 26년부터는 신규 출시 신캐들만 발렌타인 편지를 받습니다</p>
+        </header>
         <div class="shipgirl-panel" aria-label="Shipgirl list">
             <div class="search-box">
                 <input type="search" id="search" placeholder="함순이 이름으로 검색..." autocomplete="off" aria-label="Search shipgirl names">

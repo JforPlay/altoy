@@ -35,6 +35,19 @@ body.dark-mode {
   color: var(--text-secondary);
 }
 
+/* --- Page header (spans both columns; the grid gap does its spacing) --- */
+.valentine-container .page-header {
+  grid-column: 1 / -1;
+  --page-header-mb: 0;
+  --page-header-gap: 0.5rem;
+  --page-header-accent: var(--val-accent);
+}
+
+.valentine-container .page-header-title {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+}
+
 /* --- Left Panel: Shipgirl List --- */
 .shipgirl-panel {
   background: var(--bg-secondary);
@@ -351,6 +364,10 @@ body.dark-mode .letter-card {
     gap: var(--spacing-md);
     padding: var(--spacing-sm);
     min-height: auto;
+  }
+
+  .valentine-container .page-header-title {
+    font-size: 1.2rem;
   }
 
   .shipgirl-panel {
