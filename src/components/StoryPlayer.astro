@@ -3,8 +3,9 @@
  * StoryPlayer.astro — the reading view shared by every engine story page
  * (main / event / world / secretary / hof / lora / navi / tb). Element ids are
  * the story-viewer.engine.js contract; page scripts reach them by id.
- * Layout A ("fade band"): top chrome, the stage, a gradient band with the
- * storyicon bust, and the E2 up-next card. Styles: story-player.css.
+ * Layout A ("fade band"): top chrome (icon toolbar incl. the BGM control), the
+ * stage, a gradient band with the storyicon bust, and the E2 up-next card.
+ * Styles: story-player.css.
  * Props:
  *   backButtonId      — 'back-to-memory-selection' (default) or 'back-to-tabs' (child pages)
  *   transcriptToolbar — show the transcript title + 전체 복사 row (default true)
@@ -14,6 +15,14 @@ import '../styles/story-viewer/story-viewer.read-marks.css';
 interface Props { backButtonId?: string; transcriptToolbar?: boolean; }
 const { backButtonId = 'back-to-memory-selection', transcriptToolbar = true } = Astro.props;
 const ICON_BACK = 'M15 5l-7 7 7 7';
+const ICON_AUTO = 'M5 6l7 6-7 6zM13 6l7 6-7 6z';
+const ICON_LOG = 'M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01';
+const ICON_NOTE = 'M9 18V5l11-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM20 16a3 3 0 1 1-6 0 3 3 0 0 1 6 0z';
+const ICON_PLAY = 'M8 5.5v13l10.5-6.5z';
+const ICON_PAUSE = 'M8.5 5.5v13M15.5 5.5v13';
+const ICON_SPEAKER = 'M11 5L6 9H3v6h3l5 4zM15.5 8.5a5 5 0 0 1 0 7';
+const ICON_PREV = 'M14.5 6l-6 6 6 6';
+const ICON_NEXT = 'M9.5 6l6 6-6 6';
 const ICON_EYE_OFF = 'M3 3l18 18M10.6 6.1A9.9 9.9 0 0 1 12 6c5.5 0 9 6 9 6a15.6 15.6 0 0 1-2.8 3.4M6.3 7.6C4 9.2 3 12 3 12s3.5 6 9 6a9.4 9.4 0 0 0 4-.9M9.9 9.9a3 3 0 0 0 4.2 4.2';
 ---
 <div id="story-viewer-view" class="story-player hidden" data-ui="shown">
@@ -34,18 +43,37 @@ const ICON_EYE_OFF = 'M3 3l18 18M10.6 6.1A9.9 9.9 0 0 1 12 6c5.5 0 9 6 9 6a15.6 
                 <h2 id="story-title" class="chrome-title"></h2>
                 <span id="progress-indicator" class="chrome-progress"></span>
                 <span id="read-mark" class="chrome-read hidden" title="읽은 이야기">✓</span>
-                <div id="audio-player-container" class="bgm-chip hidden">
-                    <button id="play-pause-btn" class="bgm-chip-btn" type="button" aria-label="배경음 재생 / 일시정지">
-                        <span class="material-symbols-outlined" aria-hidden="true">play_arrow</span>
-                        <span id="bgm-name" class="bgm-name"></span>
-                    </button>
-                </div>
             </div>
             <div class="chrome-right">
-                <button id="auto-play-btn" class="chrome-chip" type="button" aria-pressed="false" title="자동 진행 (A)">AUTO</button>
-                <button id="view-script-btn" class="chrome-chip" type="button" title="전체 대사 (L)">LOG</button>
-                <button id="settings-btn" class="chrome-chip" type="button" aria-haspopup="dialog" aria-controls="reader-settings" title="보기 설정">Aa</button>
-                <button id="hide-ui-btn" class="chrome-chip chrome-chip--icon" type="button" aria-label="UI 숨기기 (H)">
+                <div id="audio-player-container" class="bgm-ctl hidden">
+                    <button id="bgm-btn" class="chrome-btn bgm-btn" type="button" aria-expanded="false" aria-controls="bgm-pop" aria-label="배경음" title="배경음">
+                        <svg class="bgm-note" viewBox="0 0 24 24" aria-hidden="true"><path d={ICON_NOTE} /></svg>
+                        <span class="bgm-eq" aria-hidden="true"><i></i><i></i><i></i></span>
+                    </button>
+                    <div id="bgm-pop" class="bgm-pop" role="group" aria-label="배경음">
+                        <div class="bgm-pop-track">
+                            <button id="play-pause-btn" class="bgm-play" type="button" aria-pressed="false" aria-label="배경음 재생">
+                                <svg class="bgm-play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d={ICON_PLAY} /></svg>
+                                <svg class="bgm-pause-icon" viewBox="0 0 24 24" aria-hidden="true"><path d={ICON_PAUSE} /></svg>
+                            </button>
+                            <span id="bgm-name" class="bgm-name"></span>
+                        </div>
+                        <label class="bgm-pop-vol">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d={ICON_SPEAKER} /></svg>
+                            <span class="sr-only">배경음 볼륨</span>
+                            <input id="bgm-volume" type="range" min="0" max="100" step="1" data-setting="volume">
+                            <output data-out="volume"></output>
+                        </label>
+                    </div>
+                </div>
+                <button id="auto-play-btn" class="chrome-btn chrome-btn--toggle" type="button" aria-pressed="false" aria-label="자동 진행" title="자동 진행 (A)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d={ICON_AUTO} /></svg>
+                </button>
+                <button id="view-script-btn" class="chrome-btn" type="button" aria-label="전체 대사" title="전체 대사 (L)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d={ICON_LOG} /></svg>
+                </button>
+                <button id="settings-btn" class="chrome-btn chrome-btn--text" type="button" aria-haspopup="dialog" aria-controls="reader-settings" aria-label="보기 설정" title="보기 설정">Aa</button>
+                <button id="hide-ui-btn" class="chrome-btn" type="button" aria-label="UI 숨기기" title="UI 숨기기 (H)">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d={ICON_EYE_OFF} /></svg>
                 </button>
             </div>
@@ -74,15 +102,18 @@ const ICON_EYE_OFF = 'M3 3l18 18M10.6 6.1A9.9 9.9 0 0 1 12 6c5.5 0 9 6 9 6a15.6 
             <div class="dialogue-content">
                 <p id="actor-name" class="actor-name"></p>
                 <p id="dialogue-text" class="dialogue-text" aria-busy="false"></p>
+                <div class="band-nav">
+                    <button id="prev-line-btn" class="band-arrow" type="button" aria-label="이전 줄">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d={ICON_PREV} /></svg>
+                    </button>
+                    <button id="next-line-btn" class="band-arrow" type="button" aria-label="다음 줄">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d={ICON_NEXT} /></svg>
+                    </button>
+                </div>
                 <div id="branch-end" class="branch-end hidden">
                     <span>이 분기의 끝입니다. 다른 선택지가 남아 있어요.</span>
                     <button id="branch-back-btn" class="up-next-btn up-next-btn--primary" type="button">↶ 마지막 선택지로</button>
                 </div>
-            </div>
-            <div class="band-nav">
-                <button id="prev-line-btn" class="band-arrow" type="button" aria-label="이전 줄">‹</button>
-                <button id="next-line-btn" class="band-arrow" type="button" aria-label="다음 줄">›</button>
-                <span id="next-page-indicator" class="next-page-indicator" aria-hidden="true">▼</span>
             </div>
             <span class="auto-progress" aria-hidden="true"></span>
         </div>
@@ -96,13 +127,9 @@ const ICON_EYE_OFF = 'M3 3l18 18M10.6 6.1A9.9 9.9 0 0 1 12 6c5.5 0 9 6 9 6a15.6 
             <button type="button" class="rs-close" data-rs-close aria-label="닫기">완료</button>
         </div>
         <div class="rs-preview" aria-hidden="true"><span class="rs-label">미리보기</span><p class="rs-preview-line"></p></div>
-        <div class="rs-tabs" role="tablist">
-            <button type="button" role="tab" data-rs-tab="font" aria-selected="true">글꼴</button>
-            <button type="button" role="tab" data-rs-tab="view" aria-selected="false">화면</button>
-            <button type="button" role="tab" data-rs-tab="play" aria-selected="false">재생</button>
-        </div>
         <div class="rs-body scroll-styled">
-            <section class="rs-panel" data-rs-panel="font">
+            <section class="rs-section" aria-labelledby="rs-h-text">
+                <h3 id="rs-h-text" class="rs-section-title">글자</h3>
                 <div class="rs-row"><span class="rs-label">글꼴</span>
                     <div class="rs-seg" role="group" aria-label="글꼴">
                         <button type="button" data-setting="font" data-value="sans" style="font-family:'Noto Sans KR',sans-serif">고딕</button>
@@ -122,13 +149,15 @@ const ICON_EYE_OFF = 'M3 3l18 18M10.6 6.1A9.9 9.9 0 0 1 12 6c5.5 0 9 6 9 6a15.6 
                         <button type="button" data-setting="lineHeight" data-value="2.1">넓게</button>
                     </div></div>
             </section>
-            <section class="rs-panel" data-rs-panel="view">
+            <section class="rs-section" aria-labelledby="rs-h-view">
+                <h3 id="rs-h-view" class="rs-section-title">화면</h3>
                 <label class="rs-row"><span class="rs-label">대화창 투명도 <output data-out="boxOpacity"></output></span>
                     <input id="rs-boxOpacity" type="range" min="0" max="100" step="5" data-setting="boxOpacity"></label>
                 <label class="rs-row rs-desktop-only"><span class="rs-label">대화창 폭 <output data-out="boxWidth"></output></span>
                     <input id="rs-boxWidth" type="range" min="520" max="1100" step="20" data-setting="boxWidth"></label>
             </section>
-            <section class="rs-panel" data-rs-panel="play">
+            <section class="rs-section" aria-labelledby="rs-h-play">
+                <h3 id="rs-h-play" class="rs-section-title">재생</h3>
                 <div class="rs-row"><span class="rs-label">글자 표시</span>
                     <div class="rs-seg" role="group" aria-label="글자 표시">
                         <button type="button" data-setting="reveal" data-value="instant">즉시</button>

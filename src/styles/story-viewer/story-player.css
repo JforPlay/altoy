@@ -14,6 +14,15 @@
   --band-ink: #f4f5f8;
   --band-shade: #070912;
   --band-accent: #5ce6ff;
+  --band-on-accent: #0a2530;   /* ink on an accent fill */
+  --band-on-ink: #141621;      /* ink on a --band-ink fill */
+  --rs-width: 22rem;           /* the settings drawer */
+  /* The band is sized by its text, never by the viewport: a fade zone, the
+     name row and three lines. --band-h is that height, so choices and the
+     up-next card can sit just above the text at any window height. */
+  --band-fade: 5rem;
+  --band-pad-bottom: 1rem;
+  --band-h: calc(var(--band-fade) + var(--rd-size) * (1.62 + 3 * var(--rd-lh)) + 0.8rem + 1px + var(--band-pad-bottom));
   position: relative;
   height: calc(100dvh - var(--navbar-height, 3.5rem));
   -webkit-user-select: none;
@@ -32,62 +41,110 @@
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  padding: 0.75rem 1rem 1.5rem;
-  background: linear-gradient(to bottom, var(--overlay-medium), transparent);
+  padding: 0.75rem 1rem 2.75rem;
+  /* A real scrim (video-player style): the title must read over bright art. */
+  background: linear-gradient(to bottom,
+      color-mix(in srgb, var(--band-shade) 72%, transparent) 0%,
+      color-mix(in srgb, var(--band-shade) 38%, transparent) 55%,
+      transparent 100%);
   font-family: "Noto Sans KR", system-ui, sans-serif;
+  pointer-events: none;   /* the transparent fade must not swallow taps on the art */
 }
-.chrome-left, .chrome-right { display: flex; align-items: center; gap: 0.5rem; min-width: 0; }
-.chrome-icon { display: inline-grid; place-items: center; width: 2.25rem; height: 2.25rem; border: 0; background: none; color: var(--band-ink); border-radius: var(--radius-sm); cursor: pointer; }
-.chrome-icon svg, .chrome-chip svg { width: 1.25rem; height: 1.25rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.chrome-title { margin: 0; font-size: 0.95rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px var(--overlay-80); }
-.chrome-progress { font-size: 0.75rem; font-variant-numeric: tabular-nums; opacity: 0.8; white-space: nowrap; }
+.chrome-left, .chrome-right { display: flex; align-items: center; gap: 0.5rem; min-width: 0; pointer-events: auto; }
+.chrome-icon { display: inline-grid; place-items: center; width: 2.5rem; height: 2.5rem; flex-shrink: 0; border: 0; background: none; color: var(--band-ink); border-radius: var(--radius-sm); cursor: pointer; }
+.story-chrome svg, .band-nav svg { width: 1.25rem; height: 1.25rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.chrome-title { margin: 0; font-size: 1.02rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 3px var(--overlay-80); }
+.chrome-progress { font-size: 0.8rem; font-weight: 500; font-variant-numeric: tabular-nums; opacity: 0.9; white-space: nowrap; text-shadow: 0 1px 3px var(--overlay-80); }
 .chrome-read { color: var(--band-accent); font-weight: 700; }
-.chrome-chip {
-  display: inline-flex; align-items: center; gap: 0.3rem;
-  padding: 0.35rem 0.7rem;
-  border: 0; border-radius: var(--radius-sm);
-  background: var(--highlight-90);
-  color: #1c2240;
-  font: 600 0.72rem/1 "IBM Plex Mono", ui-monospace, monospace;
-  letter-spacing: 0.08em;
+
+/* Toolbar: one 40×40 square per control — icon, tooltip, aria-label. */
+.chrome-btn {
+  display: inline-grid; place-items: center;
+  width: 2.5rem; height: 2.5rem; padding: 0;
+  border: 1px solid var(--highlight-medium); border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--band-shade) 50%, transparent);
+  backdrop-filter: blur(6px);
+  color: var(--band-ink);
+  font: 600 1rem/1 "Noto Sans KR", system-ui, sans-serif;
+  letter-spacing: -0.02em;
   cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
-.chrome-chip[aria-pressed="true"] { background: var(--band-accent); color: #0a2530; }
-.chrome-chip:focus-visible, .chrome-icon:focus-visible, .band-arrow:focus-visible, .up-next-btn:focus-visible { outline: 2px solid var(--band-accent); outline-offset: 2px; }
-.bgm-chip-btn { display: inline-flex; align-items: center; gap: 0.25rem; max-width: 12rem; padding: 0.2rem 0.5rem; border: 1px solid var(--highlight-medium); border-radius: var(--radius-sm); background: var(--overlay-light); color: var(--band-ink); font-size: 0.72rem; cursor: pointer; }
-.bgm-chip-btn .material-symbols-outlined { font-size: 1rem; }
-.bgm-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chrome-btn:hover { background: color-mix(in srgb, var(--band-shade) 78%, transparent); border-color: var(--band-ink); }
+.chrome-btn--toggle[aria-pressed="true"] { background: var(--band-accent); border-color: var(--band-accent); color: var(--band-on-accent); }
+.chrome-btn:focus-visible, .chrome-icon:focus-visible, .band-arrow:focus-visible, .up-next-btn:focus-visible, .bgm-play:focus-visible, .bgm-pop input:focus-visible { outline: 2px solid var(--band-accent); outline-offset: 2px; }
+
+/* BGM: the note while paused, animated bars while playing. A click opens the
+   pop-up (play/pause, track, volume) — anchored to the toolbar's right edge,
+   not the button's, so it stays on a phone screen. */
+.chrome-right { position: relative; }
+.bgm-eq { display: none; align-items: flex-end; gap: 2px; height: 1rem; }
+.bgm-eq i { width: 3px; height: 40%; border-radius: 1px; background: var(--band-accent); animation: bgm-eq 0.9s ease-in-out infinite alternate; }
+.bgm-eq i:nth-child(2) { animation-delay: -0.3s; }
+.bgm-eq i:nth-child(3) { animation-delay: -0.6s; }
+.bgm-ctl.playing .bgm-eq { display: flex; }
+.bgm-ctl.playing .bgm-note { display: none; }
+.bgm-pop {
+  position: absolute; top: calc(100% + 0.5rem); right: 0; z-index: 1;
+  display: none; gap: 0.6rem;
+  width: min(16rem, calc(100vw - 2rem)); padding: 0.7rem 0.8rem;
+  border: 1px solid var(--highlight-medium); border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--band-shade) 88%, transparent);
+  backdrop-filter: blur(10px);
+  font-size: 0.8rem;
+}
+.bgm-ctl.open .bgm-pop { display: grid; }
+.bgm-ctl.open .bgm-btn { border-color: var(--band-ink); }
+.bgm-pop-track { display: flex; align-items: center; gap: 0.6rem; min-width: 0; }
+.bgm-play { display: inline-grid; place-items: center; flex-shrink: 0; width: 2.25rem; height: 2.25rem; padding: 0; border: 0; border-radius: var(--radius-sm); background: var(--band-ink); color: var(--band-on-ink); cursor: pointer; }
+.bgm-play svg { width: 1.1rem; height: 1.1rem; }
+.bgm-play .bgm-play-icon { fill: currentColor; }
+.bgm-play .bgm-pause-icon, .bgm-ctl.playing .bgm-play .bgm-play-icon { display: none; }
+.bgm-ctl.playing .bgm-play .bgm-pause-icon { display: block; }
+.bgm-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bgm-pop-vol { display: grid; grid-template-columns: auto 1fr 2.5rem; align-items: center; gap: 0.5rem; }
+.bgm-pop-vol svg { width: 1rem; height: 1rem; }
+.bgm-pop-vol input { width: 100%; margin: 0; accent-color: var(--band-accent); }
+.bgm-pop-vol output { font-variant-numeric: tabular-nums; text-align: right; opacity: 0.85; }
+@keyframes bgm-eq { from { height: 25%; } to { height: 100%; } }
 
 /* --- Band --- */
 .dialogue-band {
   position: absolute;
   left: 0; right: 0; bottom: 0;
   z-index: 3;
-  min-height: 34%;
   display: flex;
+  justify-content: center;   /* the text column is centred; its text reads left-aligned */
   align-items: flex-start;
   gap: 1rem;
-  padding: 3.5rem 7% 1.5rem;
-  background: linear-gradient(to top,
-      color-mix(in srgb, var(--band-shade) calc(var(--rd-box-alpha) * 100%), transparent) 0%,
-      color-mix(in srgb, var(--band-shade) calc(var(--rd-box-alpha) * 90%), transparent) 62%,
-      transparent 100%);
+  padding: var(--band-fade) 7% var(--band-pad-bottom);
+  /* The shade is measured from the band's TOP, so it is solid by the name row
+     whatever the window height — the text always sits on the dark. */
+  background: linear-gradient(to bottom,
+      transparent 0,
+      color-mix(in srgb, var(--band-shade) calc(var(--rd-box-alpha) * 22%), transparent) calc(var(--band-fade) * 0.35),
+      color-mix(in srgb, var(--band-shade) calc(var(--rd-box-alpha) * 62%), transparent) calc(var(--band-fade) * 0.7),
+      color-mix(in srgb, var(--band-shade) calc(var(--rd-box-alpha) * 92%), transparent) calc(var(--band-fade) - 0.25rem),
+      color-mix(in srgb, var(--band-shade) calc(var(--rd-box-alpha) * 100%), transparent) 100%);
 }
-.dialogue-band .dialogue-content { flex: 1; min-width: 0; max-width: var(--rd-box-width); font-family: var(--rd-font); text-shadow: 0 1px 2px var(--overlay-80); }
+/* Name over [text | ‹ ›]: the arrows close the text column at its bottom-right. */
+.dialogue-band .dialogue-content { flex: 1; min-width: 0; max-width: var(--rd-box-width); display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 0.75rem; font-family: var(--rd-font); text-shadow: 0 1px 2px var(--overlay-80); }
+.dialogue-content > .actor-name, .dialogue-content > .branch-end { grid-column: 1 / -1; }
 .dialogue-band.has-portrait:not(.has-mini-portrait) { padding-left: 39%; }
 .actor-name { display: flex; align-items: baseline; gap: 0.6rem; margin: 0 0 0.5rem; padding-bottom: 0.3rem; border-bottom: 1px solid var(--highlight-medium); font-size: calc(var(--rd-size) * 1.08); font-weight: 700; }
 .actor-faction-tag { color: var(--band-accent); font-size: 0.72em; font-weight: 500; }
-.dialogue-text { margin: 0; font-size: var(--rd-size); line-height: var(--rd-lh); text-wrap: pretty; min-height: calc(var(--rd-size) * var(--rd-lh) * 2); }
+.dialogue-text { margin: 0; font-size: var(--rd-size); line-height: var(--rd-lh); text-wrap: pretty; min-height: calc(var(--rd-size) * var(--rd-lh) * 3); }
+/* ▼ continue cue: right after the last character (VN convention), hidden while typing. */
+.dialogue-band.can-continue .dialogue-text::after { content: "▼" / ""; display: inline-block; margin-left: 0.4em; font-family: "Noto Sans KR", system-ui, sans-serif; font-size: 0.6em; vertical-align: 0.15em; color: var(--band-accent); animation: band-blink 1.1s steps(2, start) infinite; }
+.story-player[data-typing="1"] .dialogue-text::after { visibility: hidden; }
 .band-portrait { position: absolute; left: 2%; bottom: 0; width: 37%; pointer-events: none; }
 .band-portrait img { display: block; width: 100%; height: auto; }
 .band-portrait.is-mini { position: static; width: 3.5rem; flex-shrink: 0; margin-top: 0.25rem; border: 1px solid var(--highlight-medium); border-radius: var(--radius-sm); overflow: hidden; }
 .band-portrait.portrait-noise img { filter: brightness(0.75) contrast(1.15) saturate(0.9); animation: hologramFlicker 0.1s infinite; }
-.band-nav { position: absolute; right: 2.5%; bottom: 1rem; display: flex; align-items: center; gap: 0.25rem; }
-.band-arrow { width: 2rem; height: 2rem; border: 0; border-radius: var(--radius-sm); background: none; color: var(--band-ink); opacity: 0.55; font-size: 1.4rem; line-height: 1; cursor: pointer; }
-.band-arrow:hover:not(:disabled) { opacity: 1; background: var(--highlight-soft); }
-.band-arrow:disabled { opacity: 0.2; cursor: default; }
-.next-page-indicator { font-size: 0.8rem; opacity: 0.85; animation: band-blink 1.1s steps(2, start) infinite; }
-.story-player[data-typing="1"] .next-page-indicator { visibility: hidden; }
+.band-nav { align-self: end; display: flex; gap: 0.4rem; }
+.band-arrow { display: inline-grid; place-items: center; width: 2.5rem; height: 2.5rem; padding: 0; border: 1px solid var(--highlight-medium); border-radius: var(--radius-sm); background: var(--highlight-soft); color: var(--band-ink); cursor: pointer; transition: background-color 0.15s ease; }
+.band-arrow:hover:not(:disabled) { background: var(--highlight-medium); }
+.band-arrow:disabled { opacity: 0.3; cursor: default; }
 .auto-progress { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--band-accent); transform: scaleX(0); transform-origin: left; }
 .dialogue-band.is-counting .auto-progress { animation: band-fill var(--auto-ms, 4000ms) linear forwards; }
 .branch-end { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-top: 0.75rem; font-family: "Noto Sans KR", system-ui, sans-serif; font-size: 0.85rem; }
@@ -95,7 +152,7 @@
 @keyframes band-fill { to { transform: scaleX(1); } }
 
 /* --- Choices / title cards --- */
-.options-box { position: absolute; left: 50%; bottom: calc(34% + 1rem); translate: -50% 0; z-index: 4; display: flex; flex-direction: column; gap: 0.6rem; width: min(90%, 36rem); }
+.options-box { position: absolute; left: 50%; bottom: calc(var(--band-h) - var(--band-fade) + 1rem); translate: -50% 0; z-index: 4; display: flex; flex-direction: column; gap: 0.6rem; width: min(90%, 36rem); }
 .option-button { width: 100%; padding: 0.8rem 1.25rem; border: 1px solid var(--highlight-medium); border-radius: var(--radius-sm); background: color-mix(in srgb, var(--band-shade) 82%, transparent); color: var(--band-ink); font: inherit; font-family: var(--rd-font); cursor: pointer; }
 .option-button:hover { background: color-mix(in srgb, var(--band-shade) 95%, transparent); border-color: var(--band-accent); }
 .info-screen { position: absolute; inset: 0; z-index: 5; display: flex; justify-content: center; align-items: center; padding: 2rem; pointer-events: none; }
@@ -103,7 +160,7 @@
 #info-screen-text .sequence-line { display: block; font-size: calc(var(--sequence-base-size) * var(--sequence-scale, 1)); white-space: pre-line; word-break: break-word; }
 
 /* --- Up-next card (E2) --- */
-.up-next { position: absolute; right: 2.4%; bottom: calc(34% + 0.75rem); z-index: 5; display: grid; gap: 0.45rem; width: min(22rem, 92%); padding: 0.9rem 1rem 1.05rem; overflow: hidden; border: 1px solid var(--highlight-medium); border-radius: var(--radius-md); background: color-mix(in srgb, var(--band-shade) 86%, transparent); backdrop-filter: blur(10px); font-family: "Noto Sans KR", system-ui, sans-serif; }
+.up-next { position: absolute; right: 2.4%; bottom: calc(var(--band-h) - var(--band-fade) + 0.75rem); z-index: 5; display: grid; gap: 0.45rem; width: min(22rem, 92%); padding: 0.9rem 1rem 1.05rem; overflow: hidden; border: 1px solid var(--highlight-medium); border-radius: var(--radius-md); background: color-mix(in srgb, var(--band-shade) 86%, transparent); backdrop-filter: blur(10px); font-family: "Noto Sans KR", system-ui, sans-serif; }
 .up-next-head { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.75rem; }
 .up-next-label { opacity: 0.75; }
 .up-next-count { color: var(--band-accent); font-family: "IBM Plex Mono", ui-monospace, monospace; }
@@ -111,7 +168,7 @@
 .up-next-read { margin: 0; color: var(--band-accent); font-size: 0.75rem; }
 .up-next-actions { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.2rem; }
 .up-next-btn { padding: 0.45rem 0.9rem; border: 1px solid var(--highlight-medium); border-radius: var(--radius-sm); background: var(--highlight-soft); color: var(--band-ink); font: 500 0.82rem/1.2 "Noto Sans KR", system-ui, sans-serif; cursor: pointer; }
-.up-next-btn--primary { border-color: var(--band-ink); background: var(--band-ink); color: #141621; }
+.up-next-btn--primary { border-color: var(--band-ink); background: var(--band-ink); color: var(--band-on-ink); }
 .up-next-btn--ghost { border-color: transparent; background: none; opacity: 0.8; }
 .up-next-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--band-accent); transform: scaleX(0); transform-origin: left; }
 .up-next.is-counting .up-next-bar { animation: up-next-drain 8s linear forwards; }
@@ -123,18 +180,23 @@
 .story-player[data-ui="hidden"] :is(.story-chrome, .dialogue-band, .options-box, .up-next) { opacity: 0; visibility: hidden; pointer-events: none; }
 .story-player[data-ui="hidden"] .ui-restore-hint { opacity: 1; }
 
+/* Desktop: the open settings drawer covers the right edge, so the band makes
+   room for it — 대화창 폭 changes stay visible while they are being made. */
+@media (min-width: 769px) {
+  .story-player:has(.reader-settings.open) .dialogue-band { padding-right: calc(var(--rs-width) + 2%); }
+}
+
 /* --- Phones: the bust stands above the text --- */
 @media (max-width: 768px) {
-  .story-player { --rd-size: 16px; }
+  .story-player { --rd-size: 16px; --band-fade: 4rem; --band-pad-bottom: max(1rem, env(safe-area-inset-bottom)); }
   .chrome-title, .chrome-progress { display: none; }
-  .dialogue-band { min-height: 37%; padding: 3rem 6% 1.5rem; }
+  .dialogue-band { padding-inline: 6%; }
   .dialogue-band.has-portrait:not(.has-mini-portrait) { padding-left: 6%; }
   .band-portrait { left: -6%; bottom: 80%; width: 82%; }
-  .options-box { bottom: calc(37% + 0.75rem); }
   .up-next { top: 4rem; bottom: auto; left: 4%; right: 4%; width: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .next-page-indicator { animation: none; }
+  .dialogue-band.can-continue .dialogue-text::after, .bgm-eq i { animation: none; }
   .dialogue-band.is-counting .auto-progress, .up-next.is-counting .up-next-bar { animation: none; transform: scaleX(0.6); }
   .story-chrome, .dialogue-band, .options-box, .up-next, .ui-restore-hint { transition: none; }
 }
@@ -143,7 +205,7 @@
 .reader-settings {
   --drawer-top: var(--navbar-height, 3.5rem);
   --drawer-height: calc(100dvh - var(--navbar-height, 3.5rem));
-  --drawer-width: 22rem;
+  --drawer-width: var(--rs-width);
   --drawer-bg: var(--bg-color);   /* opaque: the viewer's dark --card-bg is 85% alpha */
   color: var(--text-primary);
   line-height: 1.5;
@@ -158,11 +220,10 @@
 .rs-label { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.8rem; color: var(--text-secondary); }
 .rs-preview { display: grid; gap: 0.35rem; padding: 0.8rem 0.9rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-secondary, var(--card-bg)); }
 .rs-preview-line { margin: 0; font-family: var(--rd-font); font-size: var(--rd-size); line-height: var(--rd-lh); }
-.rs-tabs { display: flex; border-bottom: 1px solid var(--border-color); }
-.rs-tabs button { flex: 1; padding: 0.5rem 0; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; background: none; color: var(--text-secondary); font: inherit; font-size: 0.88rem; cursor: pointer; }
-.rs-tabs button[aria-selected="true"] { color: var(--text-primary); border-bottom-color: var(--accent-blue); }
-.rs-body { display: grid; gap: 0.85rem; overflow: auto; }
-.rs-panel { display: grid; gap: 0.85rem; }
+.rs-body { display: grid; align-content: start; gap: 1.1rem; overflow: auto; }
+.rs-section { display: grid; gap: 0.85rem; }
+.rs-section + .rs-section { padding-top: 1.1rem; border-top: 1px solid var(--border-color); }
+.rs-section-title { margin: 0; font-size: 0.92rem; font-weight: 700; color: var(--text-primary); }
 .rs-row { display: grid; gap: 0.4rem; }
 .rs-seg { display: flex; border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; }
 .rs-seg button { flex: 1; padding: 0.45rem 0.5rem; border: 0; background: none; color: var(--text-primary); font-size: 0.85rem; cursor: pointer; }
@@ -174,9 +235,7 @@
 .reader-settings input[type="range"] { width: 100%; accent-color: var(--accent-blue); }
 .reader-settings input[type="range"]:disabled { opacity: 0.35; }
 .reader-settings :focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 2px; }
-.rs-panel[hidden] { display: none; }
 @media (max-width: 768px) {
   .rs-grab { display: block; justify-self: center; width: 2.6rem; height: 0.3rem; border-radius: var(--radius-sm); background: var(--border-color); }
-  .rs-tabs, .rs-preview, .rs-desktop-only { display: none; }
-  .rs-panel[hidden] { display: grid; }   /* the sheet shows every row */
+  .rs-preview, .rs-desktop-only { display: none; }
 }

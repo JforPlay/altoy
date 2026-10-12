@@ -135,7 +135,7 @@ test('I404 composites only the visible crop (sharp: canvas ≥ its on-screen siz
 
 test('layout A: chrome chips, band and ending card replace the old bars', async ({ page }) => {
     await openLine(page, PORTRAIT);
-    await expect(page.locator('.story-chrome .chrome-chip')).toHaveCount(4);
+    await expect(page.locator('.story-chrome .chrome-btn')).toHaveCount(5);
     await expect(page.locator('.bottom-bar-container')).toHaveCount(0);
     await expect(page.locator('#dialogue-box')).toHaveClass(/dialogue-band/);
     await page.evaluate(() => { const v = window.StoryViewer; v.scriptIndex = v.currentStoryScript.length - 1; v.renderScriptLine(); });
@@ -173,8 +173,10 @@ test('settings change the band and survive a reload', async ({ page }) => {
     await openLine(page, PORTRAIT);
     await page.locator('#settings-btn').click();
     await expect(page.locator('#reader-settings')).toHaveClass(/open/);
+    // One scrolling view: every section is there at once, no tabs.
+    await expect(page.locator('#reader-settings .rs-section')).toHaveCount(3);
+    await expect(page.locator('#reader-settings [role="tab"]')).toHaveCount(0);
     await page.locator('[data-setting="size"][data-step="1"]').click();
-    await page.locator('[data-rs-tab="view"]').click();   // desktop drawer: one tab at a time
     await page.locator('#rs-boxOpacity').fill('30');
     const fs = await page.locator('#dialogue-text').evaluate((n) => getComputedStyle(n).fontSize);
     await page.reload();
@@ -406,4 +408,86 @@ test('hidden UI takes its controls out of the Tab order', async ({ page }) => {
     await openLine(page, PORTRAIT);
     await page.keyboard.press('KeyH');
     await expect.poll(() => page.locator('#settings-btn').evaluate((b) => getComputedStyle(b).visibility)).toBe('hidden');
+});
+
+// ---- Toolbar / band / BGM polish (2026-10-12) --------------------------------
+
+test('the toolbar controls are equal squares, the BGM one included', async ({ page }) => {
+    await openLine(page, PORTRAIT);
+    await page.evaluate(() => window.StoryViewer.handleBgm('battle-2'));
+    await expect(page.locator('#bgm-btn')).toBeVisible();
+    const sizes = await page.evaluate(() => [...document.querySelectorAll('.story-chrome .chrome-btn')]
+        .map((b) => { const r = b.getBoundingClientRect(); return [r.width, r.height]; }));
+    expect(sizes).toHaveLength(5);
+    for (const [w, h] of sizes) expect([w, h]).toEqual([sizes[0][0], sizes[0][0]]);
+});
+
+test('the band is sized by its text: the same height and name offset at any window height', async ({ page }) => {
+    await openLine(page, PORTRAIT);
+    const measure = async (height) => {
+        await page.setViewportSize({ width: 1280, height });
+        return page.evaluate(() => {
+            const band = document.querySelector('#dialogue-box').getBoundingClientRect();
+            const name = document.querySelector('#actor-name').getBoundingClientRect();
+            return { band: band.height, nameOffset: name.top - band.top };
+        });
+    };
+    const short = await measure(700);
+    expect(await measure(1100)).toEqual(short);
+});
+
+test('the text column is centred and its ‹ › close it at the bottom-right', async ({ page }) => {
+    await page.setViewportSize({ width: 1920, height: 1080 });   // wide enough to leave room around the column
+    await openLine(page, PORTRAIT);
+    const g = await page.evaluate(() => {
+        const band = document.querySelector('#dialogue-box');
+        const cs = getComputedStyle(band);
+        const b = band.getBoundingClientRect();
+        const r = (s) => document.querySelector(s).getBoundingClientRect();
+        const col = r('.dialogue-content'), nav = r('.band-nav'), text = r('#dialogue-text');
+        return {
+            leftGap: col.left - (b.left + parseFloat(cs.paddingLeft)),
+            rightGap: (b.right - parseFloat(cs.paddingRight)) - col.right,
+            navRight: col.right - nav.right,
+            navBottom: text.bottom - nav.bottom,
+        };
+    });
+    expect(g.leftGap).toBeGreaterThan(10);
+    expect(Math.abs(g.leftGap - g.rightGap)).toBeLessThanOrEqual(1);
+    expect(Math.abs(g.navRight)).toBeLessThanOrEqual(1);
+    expect(Math.abs(g.navBottom)).toBeLessThanOrEqual(1);
+});
+
+test('the ▼ continue cue follows the last character and leaves on a choice line', async ({ page }) => {
+    await openLine(page, PORTRAIT);
+    await expect(page.locator('#dialogue-box')).toHaveClass(/can-continue/);
+    expect(await page.locator('#dialogue-text').evaluate((t) => getComputedStyle(t, '::after').content)).toContain('▼');
+    await openLine(page, { eventId: DEAD.eventId, memoryId: DEAD.memoryId, index: DEAD.optionsIndex });
+    await expect(page.locator('#options-box .option-button').first()).toBeVisible();
+    await expect(page.locator('#dialogue-box')).not.toHaveClass(/can-continue/);
+});
+
+test('the BGM pop-up opens on click with play/pause inside and shares the volume setting', async ({ page }) => {
+    await openLine(page, PORTRAIT);
+    await page.evaluate(() => window.StoryViewer.handleBgm('battle-2'));
+    await expect(page.locator('#bgm-pop')).toBeHidden();
+    await page.locator('#bgm-btn').click();
+    await expect(page.locator('#bgm-pop')).toBeVisible();
+    await expect(page.locator('#bgm-btn')).toHaveAttribute('aria-expanded', 'true');
+    await expect(page.locator('#bgm-pop #play-pause-btn')).toBeVisible();
+    await page.locator('#bgm-volume').fill('40');
+    await expect(page.locator('#rs-volume')).toHaveValue('40');
+    expect(await page.evaluate(() => JSON.parse(localStorage.getItem('storyReaderSettings')).d.volume)).toBe(40);
+    // A tap on the art closes it without turning the page …
+    const idx = await page.evaluate(() => window.StoryViewer.scriptIndex);
+    const box = await page.locator('#viewer-container').boundingBox();
+    await page.mouse.click(box.x + box.width * 0.7, box.y + box.height * 0.45);
+    await expect(page.locator('#bgm-pop')).toBeHidden();
+    expect(await page.evaluate(() => window.StoryViewer.scriptIndex)).toBe(idx);
+    // … and Escape closes it without leaving the story.
+    await page.locator('#bgm-btn').click();
+    await expect(page.locator('#bgm-pop')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#bgm-pop')).toBeHidden();
+    await expect(page.locator('#story-viewer-view')).toBeVisible();
 });

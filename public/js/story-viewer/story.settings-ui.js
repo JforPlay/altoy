@@ -1,8 +1,10 @@
 /**
  * story.settings-ui.js
  * Binds the static #reader-settings panel (StoryPlayer.astro) to the reader
- * settings model. One field set, two shells: a right drawer with tabs on
- * desktop, a bottom sheet with every row on phones (CSS-switched).
+ * settings model. One scrolling field set, two shells: a right drawer on
+ * desktop, a bottom sheet on phones (CSS-switched). Sliders and readouts are
+ * bound across the whole player, so the toolbar's BGM volume pop-up and the
+ * panel's 배경음 볼륨 are one setting.
  */
 import { normalizeSettings, saveSettings, ensureFontLoaded } from './story.settings.js';
 
@@ -17,16 +19,17 @@ export function setupReaderSettings(viewer) {
     const openBtn = viewer.elements.settingsBtn;
     if (!panel || !openBtn) return { open() {}, close() {}, isOpen: () => false };
 
+    const root = viewer.elements.storyViewerView ?? panel;
     const sync = () => {
         const s = viewer.settings;
         panel.querySelectorAll('button[data-setting][data-value]').forEach((b) => {
             b.setAttribute('aria-pressed', String(String(s[b.dataset.setting]) === b.dataset.value));
         });
-        panel.querySelectorAll('input[data-setting]').forEach((i) => {
+        root.querySelectorAll('input[data-setting]').forEach((i) => {
             i.value = s[i.dataset.setting];
             i.disabled = i.dataset.setting === 'cps' && s.reveal === 'instant';
         });
-        panel.querySelectorAll('output[data-out]').forEach((o) => { o.textContent = FORMAT[o.dataset.out](s[o.dataset.out]); });
+        root.querySelectorAll('output[data-out]').forEach((o) => { o.textContent = FORMAT[o.dataset.out](s[o.dataset.out]); });
         const preview = panel.querySelector('.rs-preview-line');
         if (preview) preview.textContent = viewer.elements.dialogueText.textContent || '바다가 노을빛으로 물들었다.';
     };
@@ -40,12 +43,6 @@ export function setupReaderSettings(viewer) {
 
     panel.addEventListener('click', (e) => {
         e.stopPropagation();
-        const tab = e.target.closest('[data-rs-tab]');
-        if (tab) {
-            panel.querySelectorAll('[data-rs-tab]').forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
-            panel.querySelectorAll('[data-rs-panel]').forEach((p) => { p.hidden = p.dataset.rsPanel !== tab.dataset.rsTab; });
-            return;
-        }
         if (e.target.closest('[data-rs-close]')) { api.close(); return; }
         const b = e.target.closest('button[data-setting]');
         if (!b) return;
@@ -58,7 +55,7 @@ export function setupReaderSettings(viewer) {
             update({ [key]: key === 'lineHeight' ? Number(raw) : raw });
         }
     });
-    panel.addEventListener('input', (e) => {
+    root.addEventListener('input', (e) => {
         const i = e.target.closest('input[data-setting]');
         if (i) update({ [i.dataset.setting]: Number(i.value) });
     });
@@ -69,7 +66,7 @@ export function setupReaderSettings(viewer) {
         isOpen: () => panel.classList.contains('open'),
     };
     openBtn.addEventListener('click', (e) => { e.stopPropagation(); api.isOpen() ? api.close() : api.open(); });
-    panel.querySelectorAll('[data-rs-panel]').forEach((p, i) => { p.hidden = i !== 0; });
+    sync();             // the toolbar's volume slider is visible before the panel ever opens
     panel.inert = true; // off-screen while closed: keep it out of the Tab order
     return api;
 }

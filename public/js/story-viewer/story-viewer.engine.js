@@ -85,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
             actorName: document.getElementById('actor-name'),
             dialogueText: document.getElementById('dialogue-text'),
             optionsBox: document.getElementById('options-box'),
-            nextPageIndicator: document.getElementById('next-page-indicator'),
             prevLineBtn: document.getElementById('prev-line-btn'),
             nextLineBtn: document.getElementById('next-line-btn'),
             nextStoryBtn: document.getElementById('next-story-btn'),
@@ -109,6 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
             summaryModalContent: document.getElementById('summary-modal-content'),
             audioPlayerContainer: document.getElementById('audio-player-container'),
             playPauseBtn: document.getElementById('play-pause-btn'),
+            bgmBtn: document.getElementById('bgm-btn'),
             bgmNameSpan: document.getElementById('bgm-name'),
             progressIndicator: document.getElementById('progress-indicator'),
             paintingLayer: document.getElementById('painting-layer'),
@@ -127,7 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
             readerSettings: document.getElementById('reader-settings'),
             // Cached elements (populated on first access)
             storyBackground: null,
-            playPauseIcon: null,
         },
 
         // Auto-play: on/off, kept across stories within the page (the E2 card
@@ -270,6 +269,16 @@ document.addEventListener('DOMContentLoaded', () => {
             el.summaryModalOverlay?.addEventListener('click', (e) => { if (e.target === el.summaryModalOverlay) this.hideSummaryModal(); });
 
             el.playPauseBtn?.addEventListener('click', (e) => { e.stopPropagation(); this.audio.paused ? this.audio.play().catch(console.warn) : this.audio.pause(); });
+            el.bgmBtn?.addEventListener('click', (e) => { e.stopPropagation(); this.setBgmPopOpen(!this.isBgmPopOpen()); });
+            // The BGM pop-up closes on any click outside it (capture phase, so a
+            // toolbar button's stopPropagation can't keep it open). A tap on the
+            // art that closes it is consumed, like the settings panel's, so it
+            // doesn't also turn the page.
+            document.addEventListener('click', (e) => {
+                if (!this.isBgmPopOpen() || e.target.closest('.bgm-ctl')) return;
+                this.setBgmPopOpen(false);
+                if (el.storyViewerView?.contains(e.target) && !e.target.closest('button, a, input')) e.stopPropagation();
+            }, true);
 
             this.cleanupAudioListeners();
 
@@ -333,6 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const hasOptions = this.elements.optionsBox?.children.length > 0;
 
                 if (this.settingsPanel?.isOpen() && e.key === 'Escape') { e.preventDefault(); this.settingsPanel.close(); return; }
+                if (this.isBgmPopOpen() && e.key === 'Escape') { e.preventDefault(); this.setBgmPopOpen(false); el.bgmBtn?.focus(); return; }
                 if (this.uiHidden && (e.key === 'Escape' || e.code === 'KeyH')) { e.preventDefault(); this.setUiHidden(false); return; }
                 // e.code names the physical key, so the letters work with the Korean IME on.
                 switch (e.code) {
@@ -1172,7 +1182,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const isBranchDeadEnd = isAtPathEnd && !isAtFileEnd && !hasOptions;
             toggleElement(el.branchEnd, isBranchDeadEnd);
             this.showUpNext((isAtFileEnd || isAtPathEnd) && !hasOptions);
-            toggleElement(el.nextPageIndicator, !(isAtPathEnd || hasOptions));
+            // The ▼ continue cue is the text's own ::after (story-player.css).
+            el.dialogueBox.classList.toggle('can-continue', !(isAtPathEnd || hasOptions));
 
             this.updateProgressIndicator();
 
@@ -1811,6 +1822,7 @@ document.addEventListener('DOMContentLoaded', () => {
          */
         handleBgm(bgmName) {
             toggleElement(this.elements.audioPlayerContainer, !!bgmName);
+            if (!bgmName) this.setBgmPopOpen(false);
 
             if (bgmName && bgmName !== this.currentBgm) {
                 const requested = bgmName;
@@ -1856,13 +1868,19 @@ document.addEventListener('DOMContentLoaded', () => {
             this.updateAudioPlayerUI();
         },
 
-        /** Sync the ♪ chip's play/pause icon and playing state. */
+        /** Open or close the toolbar's BGM pop-up (play/pause, track name, volume). */
+        setBgmPopOpen(open) {
+            this.elements.audioPlayerContainer?.classList.toggle('open', open);
+            this.elements.bgmBtn?.setAttribute('aria-expanded', String(open));
+        },
+
+        isBgmPopOpen() { return !!this.elements.audioPlayerContainer?.classList.contains('open'); },
+
+        /** Sync the BGM controls: animated bars + pause icon while playing, the note + play icon while paused. */
         updateAudioPlayerUI() {
-            const btn = this.elements.playPauseBtn;
-            if (!btn) return;
-            this.elements.playPauseIcon ??= btn.querySelector('.material-symbols-outlined');
-            this.elements.playPauseIcon.textContent = this.audio.paused ? 'play_arrow' : 'pause';
-            this.elements.audioPlayerContainer?.classList.toggle('playing', !this.audio.paused);
+            const playing = !this.audio.paused;
+            this.elements.playPauseBtn?.setAttribute('aria-pressed', String(playing));
+            this.elements.audioPlayerContainer?.classList.toggle('playing', playing);
         },
 
         /** Display an error message in the error container for 5 seconds. */
