@@ -41,6 +41,7 @@
   );
   opacity: 0;
   transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
 .navbar:hover::after {
@@ -115,6 +116,19 @@ body.dark-mode .navbar::after {
   background: var(--primary-alpha-15);
   border-color: rgba(0, 113, 235, 0.4);
   box-shadow: 0 0 16px var(--primary-alpha-25);
+}
+
+/* The global 10px hover bridge (global.navbar.css) is sized for an 8.4px gap.
+   Here the hover lift above carries the bridge 2px away from the panel and the
+   1px border starts it 1px higher, leaving a ~1.4px dead strip that closes the
+   menu mid-crossing. Grown only while hovered: the panel is open then and paints
+   over any overhang, so it never covers page content while the menu is closed.
+   (.navbar::after's pointer-events: none is the other half — that glow line sits
+   on top of the bridge across the navbar's bottom edge.) */
+@media screen and (min-width: 769px) {
+  .mega-dropdown:hover > .nav-links::before {
+    height: 2rem;
+  }
 }
 
 /* Dark Mode Link Adjustments */
