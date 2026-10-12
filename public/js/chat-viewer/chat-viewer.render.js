@@ -6,6 +6,7 @@
  * Data values only ever reach the DOM through textContent / text nodes.
  */
 import { createImgElement, dataForToyUrl, IMG_FALLBACKS } from '../utils.js';
+import { colorRuns } from './chat-viewer.script.js';
 
 /** Element with optional class and text — the only way data reaches these nodes. */
 export function el(tag, className, text) {
@@ -52,6 +53,25 @@ export function appendHighlighted(parent, text, query) {
         at = hit + needle.length;
     }
     parent.append(value.slice(at));
+}
+
+/**
+ * appendHighlighted for line text that may carry `<color>` tags: each colored run becomes a
+ * span whose color the stylesheet clamps to the bubble (the raw game colors assume the game's).
+ * ponytail: marks match within one run, so a query spanning a tag edge gets no <mark>
+ * (the bubble still takes the hit ring); match on plainText offsets if that ever matters.
+ */
+function appendRich(parent, text, query) {
+    for (const run of colorRuns(text)) {
+        if (!run.color) {
+            appendHighlighted(parent, run.text, query);
+            continue;
+        }
+        const span = el('span', 'chat-color');
+        span.style.setProperty('--chat-ink', run.color);
+        appendHighlighted(span, run.text, query);
+        parent.append(span);
+    }
 }
 
 // ===== Sidebar + header =====
@@ -114,7 +134,7 @@ export function lineNode(line, who, ctx) {
         case 4: return stickerNode(line, who, ctx);
         case 5: {
             const node = el('div', 'chat-system');
-            appendHighlighted(node, line.param, ctx.query);
+            appendRich(node, line.param, ctx.query);
             return node;
         }
         default: return null;
@@ -123,7 +143,7 @@ export function lineNode(line, who, ctx) {
 
 function textNode(line, query) {
     const p = el('p', 'chat-text');
-    appendHighlighted(p, line.param, query);
+    appendRich(p, line.param, query);
     return p;
 }
 

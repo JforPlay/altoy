@@ -30,6 +30,7 @@ import {
     searchLines,
     storyHits,
     addedOrder,
+    plainText,
     CHAT_SORTS,
 } from './chat-viewer.script.js';
 import {
@@ -172,7 +173,7 @@ export class ChatViewerEngine {
             icon: first.icon || (first.room_icon ? dataForToyUrl(first.room_icon) : null),
             storyCount: list.length,
             speakerCount,
-            preview: String(preview),
+            preview: plainText(preview),
             added: addedOrder(stories),
         };
     }

@@ -19,6 +19,8 @@ import {
     searchLines,
     storyHits,
     addedOrder,
+    colorRuns,
+    plainText,
 } from '../../public/js/chat-viewer/chat-viewer.script.js';
 
 const readJson = (path) => JSON.parse(readFileSync(new URL(`../../public/data/${path}`, import.meta.url), 'utf8'));
@@ -184,6 +186,26 @@ test('searchLines counts every hit and caps the returned list', () => {
 test('searchLines skips sticker ids (a type-4 param is an emoji id, not text)', () => {
     const data = { c: { 1: { scripts: [{ type: 4, param: '202' }, { type: 1, param: '202호로 와' }, { type: 5, param: '[202] 수신' }] } } };
     assert.deepEqual(searchLines(data, '202').hits.map(h => h.index), [1, 2]);
+});
+
+test('colorRuns splits <color> tags into runs; plainText is what the player reads', () => {
+    // 이스트 글림 채팅방: a colored @mention run, then plain text.
+    const mention = '<color=#93e9ff>@딩안 @롱우 </color>그러고 보니';
+    assert.deepEqual(colorRuns(mention), [{ text: '@딩안 @롱우 ', color: '#93e9ff' }, { text: '그러고 보니', color: null }]);
+    assert.equal(plainText(mention), '@딩안 @롱우 그러고 보니');
+    assert.deepEqual(colorRuns('a<color=#D80000>♥</color>b<color=#E7C355>✿</color>'),
+        [{ text: 'a', color: null }, { text: '♥', color: '#D80000' }, { text: 'b', color: null }, { text: '✿', color: '#E7C355' }]);
+    assert.deepEqual(colorRuns('태그 없음'), [{ text: '태그 없음', color: null }]);
+    assert.deepEqual(colorRuns(null), []);
+});
+
+test('search reads through color tags: never matches the tag, always matches across it', () => {
+    assert.equal(searchLines(JUUS, 'color').total, 0);
+    assert.equal(searchLines(JUUS, '93e9ff').total, 0);
+    // 플뢰레 146: the whole line is one colored run; the hit text comes back untagged.
+    const hit = searchLines(JUUS, '글자 색깔이 바뀌었어').hits;
+    assert.deepEqual(hit.map(h => [h.chatKey, h.storyId, h.index, h.text]), [['플뢰레', '146', 19, '오? 입력한 글자 색깔이 바뀌었어!']]);
+    assert.equal(searchLines(JUUS, '@롱우 그러고').total, 1);
 });
 
 test('storyHits: a speaker\'s lines or a text query, in script order', () => {

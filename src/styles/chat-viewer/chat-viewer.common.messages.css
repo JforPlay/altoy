@@ -115,6 +115,22 @@
   margin: 0;
 }
 
+/* <color> runs keep the game's hue at a lightness our bubble can carry: the raw colors assume
+   the game's own bubbles (#93e9ff @mentions vanish on the light one, #583b28 on the dark one).
+   Clamps measured ≥4:1 on every bubble; a browser without relative colors shows plain text. */
+.chat-color {
+  color: oklch(from var(--chat-ink, currentColor) min(l, 0.45) c h);
+}
+
+body.chat-viewer.dark-mode .chat-color {
+  color: oklch(from var(--chat-ink, currentColor) max(l, 0.85) c h);
+}
+
+/* The dark player bubble is mid-tone, so dark ink outreads light (4.0:1 vs its own white's 3.6). */
+body.chat-viewer.dark-mode .chat-msg--player .chat-color {
+  color: oklch(from var(--chat-ink, currentColor) min(l, 0.3) c h);
+}
+
 /* ===== 전체 대본 choice strip ===== */
 
 .chat-choice {

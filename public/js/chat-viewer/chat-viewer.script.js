@@ -174,11 +174,33 @@ export function searchSpeakers(speakers, query) {
         .map(({ s }) => s);
 }
 
+// Unity rich text: the only tag the chat data uses (플뢰레's colored typing, group @mentions).
+const COLOR_TAG = /<color=([^>]+)>([\s\S]*?)<\/color>/g;
+
+/** A line's text split on `<color=X>…</color>` into runs: [{ text, color: string|null }]. */
+export function colorRuns(text) {
+    const value = String(text ?? '');
+    const runs = [];
+    let at = 0;
+    for (const m of value.matchAll(COLOR_TAG)) {
+        if (m.index > at) runs.push({ text: value.slice(at, m.index), color: null });
+        runs.push({ text: m[2], color: m[1] });
+        at = m.index + m[0].length;
+    }
+    if (at < value.length) runs.push({ text: value.slice(at), color: null });
+    return runs;
+}
+
+/** A line's text as the player reads it — color tags removed. */
+export function plainText(text) {
+    return String(text ?? '').replace(COLOR_TAG, '$2');
+}
+
 // Dialogue and system lines carry text; a sticker's param is an emoji id.
 const TEXT_TYPES = new Set([1, 5]);
 
 function lineMatches(line, q) {
-    return TEXT_TYPES.has(line.type) && String(line.param ?? '').toLowerCase().includes(q);
+    return TEXT_TYPES.has(line.type) && plainText(line.param).toLowerCase().includes(q);
 }
 
 /**
@@ -196,7 +218,7 @@ export function searchLines(allData, query, limit = 50) {
             (story.scripts || []).forEach((line, index) => {
                 if (!lineMatches(line, q)) return;
                 total++;
-                if (hits.length < limit) hits.push({ chatKey, storyId, index, text: String(line.param) });
+                if (hits.length < limit) hits.push({ chatKey, storyId, index, text: plainText(line.param) });
             });
         }
     }

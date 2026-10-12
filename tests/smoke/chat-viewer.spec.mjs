@@ -311,6 +311,19 @@ test('clearing the search resets 더 보기, so the same query starts on its fir
     await expect(rows).toHaveCount(50);
 });
 
+test('<color> tags render as colored text, never as raw markup (로열 네이비 @mentions)', async ({ page }) => {
+    await page.goto(JUUS);
+    await page.locator('.chat-row[data-chat="로열 네이비 채팅방"]').click();
+    await page.locator('#chat-mode [data-mode="full"]').click();
+    await page.locator('#chat-tabs .chat-tab[data-story="353"]').click();
+    const mention = page.locator('#chat-log .chat-color', { hasText: '@Surrey' });
+    await expect(mention).toBeVisible();
+    await expect(page.locator('#chat-log')).not.toContainText('<color');
+    // The clamped color must survive the CSS minifier: an invalid value would inherit the bubble's.
+    const [own, bubble] = await mention.evaluate((n) => [getComputedStyle(n).color, getComputedStyle(n.parentElement).color]);
+    expect(own).not.toBe(bubble);
+});
+
 test('an avatar that fails to load falls back to the shared "?" placeholder', async ({ page }) => {
     await page.route(/\/skin_icon\/201390\.webp$/, (route) => route.fulfill({ status: 404 }));
     await page.goto(JUUS);
