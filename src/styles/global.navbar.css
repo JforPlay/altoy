@@ -172,19 +172,27 @@
 
   /* The hover BRIDGE, and the reason the rule above cannot ship alone.
      .mega-dropdown's box is exactly the link's box, while the open panel starts
-     8.4px lower — that strip is .navbar's own padding and belongs to no hoverable
-     element. Until now the cursor only crossed it because the fading panel was
-     still catching the mouse; making the panel inert without this leaves the menu
+     lower — at least .navbar's own padding, which belongs to no hoverable element.
+     Until now the cursor only crossed it because the fading panel was still
+     catching the mouse; making the panel inert without this leaves the menu
      unreachable for anyone who crosses the gap slowly. .nav-links is already
-     position: relative, so this costs no layout. Keep it <= 10px: any taller and
-     it overhangs into the page and starts eating clicks on the content below. */
-  .mega-dropdown > .nav-links::before {
+     position: relative, so this costs no layout.
+     The gap is NOT a constant. A short label beside a wrapped one ends well above
+     the panel (measured 2026-10-11: up to 31px at 769-1000px on default pages,
+     71px on the homepage at ~790px, where labels squeeze to one glyph per line),
+     and the homepage's hover lift + border widen it further — the old fixed 10px
+     bridge left a dead strip on the homepage at EVERY width. So it exists only
+     while hovered and is sized past the worst case: the panel is open whenever it
+     is and, coming later in tree order, paints over the overhang (hit-tested:
+     every overlapping px lands on the panel; the shortest panel is 352px), so the
+     excess never reaches page content. */
+  .mega-dropdown:hover > .nav-links::before {
     content: '';
     position: absolute;
     left: 0;
     right: 0;
     top: 100%;
-    height: 10px;
+    height: 6rem;
   }
 
   .mega-dropdown:hover > .nav-links::after {
