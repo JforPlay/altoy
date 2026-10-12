@@ -412,14 +412,58 @@ test('hidden UI takes its controls out of the Tab order', async ({ page }) => {
 
 // ---- Toolbar / band / BGM polish (2026-10-12) --------------------------------
 
-test('the toolbar controls are equal squares, the BGM one included', async ({ page }) => {
+test('the toolbar controls are equal squares, the BGM one included, icons centred', async ({ page }) => {
     await openLine(page, PORTRAIT);
     await page.evaluate(() => window.StoryViewer.handleBgm('battle-2'));
     await expect(page.locator('#bgm-btn')).toBeVisible();
-    const sizes = await page.evaluate(() => [...document.querySelectorAll('.story-chrome .chrome-btn')]
-        .map((b) => { const r = b.getBoundingClientRect(); return [r.width, r.height]; }));
-    expect(sizes).toHaveLength(5);
-    for (const [w, h] of sizes) expect([w, h]).toEqual([sizes[0][0], sizes[0][0]]);
+    const buttons = await page.evaluate(() => [...document.querySelectorAll('.story-chrome .chrome-btn')].map((b) => {
+        const r = b.getBoundingClientRect();
+        const svg = b.querySelector(':scope > svg');
+        const s = svg?.getBoundingClientRect();
+        // A legacy #id rule once overrode the square's grid centring (icon pinned left).
+        return { size: [r.width, r.height], off: s ? [s.x + s.width / 2 - (r.x + r.width / 2), s.y + s.height / 2 - (r.y + r.height / 2)] : [0, 0] };
+    }));
+    expect(buttons).toHaveLength(5);
+    for (const { size, off } of buttons) {
+        expect(size).toEqual([buttons[0].size[0], buttons[0].size[0]]);
+        expect(Math.abs(off[0])).toBeLessThan(1.5);
+        expect(Math.abs(off[1])).toBeLessThan(1.5);
+    }
+});
+
+/** Main story 29/1061 line 17: both side slots filled. */
+const TWO_SIDES = { eventId: '29', memoryId: '1061', index: 17 };
+
+test('a narrow viewer fits both side paintings on screen; 16:9 keeps the game stage', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(`${MAIN_STORY}?eventid=${TWO_SIDES.eventId}&story=${TWO_SIDES.memoryId}`);
+    await expect(page.locator('#story-viewer-view')).toBeVisible();
+    await page.evaluate((i) => { window.StoryViewer.scriptIndex = i; window.StoryViewer.renderScriptLine(); }, TWO_SIDES.index);
+    const measure = () => page.evaluate(() => {
+        const v = window.StoryViewer;
+        const r = (e) => e.getBoundingClientRect();
+        const stage = r(document.querySelector('.story-stage'));
+        const layer = r(v.elements.paintingLayer);
+        const canvas = r(document.querySelector('.story-stage-canvas'));
+        const shown = [...v.paintingsBySide.values()].map(({ element }) => {
+            const b = r(element);
+            return { onScreen: (Math.min(b.right, stage.right) - Math.max(b.left, stage.left)) / b.width, height: b.height, pad: element._pad };
+        });
+        return { sides: [...v.paintingsBySide.keys()].sort(), layerW: layer.width, layerH: layer.height, canvasW: canvas.width, shown };
+    });
+    const phone = await measure();
+    expect(phone.sides).toEqual([0, 1]);
+    expect(phone.layerW).toBeLessThan(phone.canvasW * 0.6);
+    for (const s of phone.shown) {
+        expect(s.onScreen).toBeGreaterThan(0.6);
+        // The crop reaches past the shrunken layer, so its edges never show as hard cuts.
+        expect(s.height).toBeGreaterThan(phone.layerH);
+    }
+    await page.setViewportSize({ width: 1920, height: 1080 });
+    await expect.poll(async () => {
+        const m = await measure();
+        return [Math.round(m.layerW - m.canvasW), ...m.shown.map((s) => s.pad)];
+    }).toEqual([0, 0, 0]);
 });
 
 test('the band is sized by its text: the same height and name offset at any window height', async ({ page }) => {

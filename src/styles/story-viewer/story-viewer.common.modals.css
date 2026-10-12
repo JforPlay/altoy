@@ -89,12 +89,6 @@
   margin-right: 0.5em;
 }
 
-#view-script-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-}
-
 /* --- Full-script transcript (per-story modal + group 전체 대사 모아보기) --- */
 
 /* Title + copy button row; padding-right clears the absolute corner close button. */

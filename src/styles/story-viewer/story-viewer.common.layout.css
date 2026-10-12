@@ -10,7 +10,10 @@
 
 /* --- Stage: a 1920x1080 virtual canvas scaled to COVER the viewer, centred.
    Paintings are placed in canvas percent by story.frames.js framePlacement, so
-   every viewport gets the game composition; a portrait phone centre-crops it. */
+   every viewport gets the game composition. The painting layer is the same
+   canvas but FITS: on a viewer narrower than the --need stage px its paintings
+   occupy (story.painting.js fitStage), it shrinks about the centre so every
+   duihua frame stays on screen while the background still covers. */
 .story-stage {
   position: absolute;
   inset: 0;
@@ -37,7 +40,15 @@
   transition: background-image 0.5s ease-in-out;
   will-change: background-image;
 }
-.painting-layer { position: absolute; inset: 0; }
+.painting-layer {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(100%, calc(100cqw * 1920 / var(--need, 1920)));
+  aspect-ratio: 16 / 9;
+  translate: -50% -50%;
+}
+.painting-layer.glide { transition: width 0.35s ease; }
 .painting-container {
   position: absolute;
   left: calc(var(--pl, 0) * 1%);

@@ -143,7 +143,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Paintings are rebuilt from the script on every render, matching the
         // game's dialoguestoryplayer.lua. Non-active sides dim to the current
         // step's painting.alpha; the active speaker is always at 1.0.
-        paintingsBySide: new Map(), // Map<side:number, {actorId, element, expression, side, dir}>
+        paintingsBySide: new Map(), // Map<side:number, {actorId, element, expression, side, dir, placeKey, want}>
+        stageNeed: null,     // stage px the painting layer fits across the viewer (story.painting.js fitStage)
+        stageObserver: null, // re-crops on resize when the fit pad moves
         activeSpeakerSide: null,
         PAINTING_FADE_OUT_MS: 150, // game fadeOutPaintingTime default (dialoguestep.lua:71)
 

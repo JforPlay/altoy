@@ -29,7 +29,7 @@ import { pickFaceCandidates } from '../expression-face.js';
 // Seam-free face compositing on a downscaled base (see expression-composite.js:
 // the face must be composited at native res in a patch BEFORE resampling).
 import { cutFacePatchBase, drawFaceComposite } from '../expression-composite.js';
-import { framePlacement, visibleCrop, STAGE_W, STAGE_H } from './story.frames.js';
+import { framePlacement, visibleCrop, fitWidth, fitPad, STAGE_W, STAGE_H } from './story.frames.js';
 import { toggleElement } from '../utils.js';
 
 // =========================================================================
@@ -363,24 +363,54 @@ async function composePainting(container, expressionData, expression) {
 /**
  * Position a painting container on the stage from the game placement rule,
  * sized to the part that can be on stage (composePainting draws only that
- * crop, read back from `el._crop`). Fully off-stage → hidden, returns null.
+ * crop, read back from `el._crop`). `pad` is the stage fit's (fitStage).
+ * Fully off-stage → hidden, returns null.
  */
-function placePainting(el, expressionData, want) {
+function placePainting(el, expressionData, want, pad = 0) {
     const box = framePlacement({
         frame: expressionData.frame, size: expressionData.size, side: want.side,
         dir: want.dir, actorPosition: want.actorPosition, actorScale: want.actorScale,
     });
-    const crop = visibleCrop(box, expressionData.size);
+    const crop = visibleCrop(box, expressionData.size, pad);
     toggleElement(el, !!crop);
     el.dataset.scale = box.scale.toFixed(5);
     el.dataset.dir = box.flip ? '-1' : '1';
     el._crop = crop;
+    el._pad = pad;
     if (!crop) return null;
     el.style.setProperty('--pl', String((crop.left / STAGE_W) * 100));
     el.style.setProperty('--pt', String((crop.top / STAGE_H) * 100));
     el.style.setProperty('--pw', String((crop.width / STAGE_W) * 100));
     el.style.setProperty('--ph', String((crop.height / STAGE_H) * 100));
     return crop;
+}
+
+/**
+ * Size the painting layer to show `need` stage px across the viewer (CSS
+ * --need; story.frames.js fitWidth) and return the crop pad that size calls
+ * for. An empty stage keeps its last fit, so the next painting does not zoom
+ * in from elsewhere; `glide` animates only a painting that stays on stage.
+ */
+function fitStage(ctx, need, glide) {
+    const layer = ctx.elements.paintingLayer;
+    const stage = layer.closest('.story-stage') ?? layer;
+    if (need != null && need !== ctx.stageNeed) {
+        layer.classList.toggle('glide', glide);
+        layer.style.setProperty('--need', need.toFixed(1));
+        ctx.stageNeed = need;
+    }
+    // A resize that moves the pad re-crops what is on stage (once per pad step).
+    ctx.stageObserver ??= new ResizeObserver(() => {
+        const pad = fitPad(ctx.stageNeed, stage.clientWidth, stage.clientHeight);
+        for (const p of ctx.paintingsBySide.values()) {
+            const expressionData = getExpressionData(ctx, p.actorId);
+            if (p.element._pad === pad || !expressionData) continue;
+            placePainting(p.element, expressionData, p.want, pad);
+            composePainting(p.element, expressionData, p.expression);
+        }
+    });
+    ctx.stageObserver.observe(stage);
+    return fitPad(ctx.stageNeed, stage.clientWidth, stage.clientHeight);
 }
 
 /** Everything that moves a painting's box; a change re-runs placePainting. */
@@ -405,6 +435,14 @@ function applyPaintingState(ctx, target) {
         }
     }
 
+    // Fit the layer to everything about to be on stage before placing any of it.
+    const spans = [];
+    for (const want of targetMap.values()) {
+        const expressionData = getExpressionData(ctx, want.actorId);
+        if (expressionData) spans.push(framePlacement({ ...want, frame: expressionData.frame, size: expressionData.size }).focus);
+    }
+    const pad = fitStage(ctx, fitWidth(spans), ctx.paintingsBySide.size > 0);
+
     // Create or update paintings to match the target.
     for (const [side, want] of targetMap) {
         const current = ctx.paintingsBySide.get(side);
@@ -414,11 +452,12 @@ function applyPaintingState(ctx, target) {
         if (current && current.actorId === want.actorId) {
             // Same actor, same side — reuse the element and update fields. A
             // moved placement moves the crop, so it recomposes like a new face.
-            const moved = current.dir !== want.dir || current.placeKey !== placeKeyOf(want);
+            const moved = current.dir !== want.dir || current.placeKey !== placeKeyOf(want) || current.element._pad !== pad;
             if (moved) {
-                placePainting(current.element, expressionData, want);
+                placePainting(current.element, expressionData, want, pad);
                 current.dir = want.dir;
                 current.placeKey = placeKeyOf(want);
+                current.want = want;
             }
             if (moved || current.expression !== want.expression) {
                 composePainting(current.element, expressionData, want.expression);
@@ -435,6 +474,7 @@ function applyPaintingState(ctx, target) {
                 expressionData,
                 expression: want.expression,
                 hasNoise: want.paintingNoise,
+                pad,
             });
             ctx.elements.paintingLayer.appendChild(container);
             ctx.paintingsBySide.set(side, {
@@ -444,6 +484,7 @@ function applyPaintingState(ctx, target) {
                 side: want.side,
                 dir: want.dir,
                 placeKey: placeKeyOf(want),
+                want,
             });
         }
     }
@@ -478,7 +519,7 @@ function applyPaintingState(ctx, target) {
  * <canvas>. Alpha is controlled entirely by --painting-opacity (set by
  * applyPaintingState); the container is seeded at 0 for the fade-in.
  */
-function createPaintingContainer({ actorId, side, dir, actorPosition, actorScale, expressionData, expression, hasNoise }) {
+function createPaintingContainer({ actorId, side, dir, actorPosition, actorScale, expressionData, expression, hasNoise, pad }) {
     const container = document.createElement('div');
     container.className = 'painting-container';
     container.dataset.side = side;
@@ -490,7 +531,7 @@ function createPaintingContainer({ actorId, side, dir, actorPosition, actorScale
     // animates up to whatever applyPaintingState() sets next frame.
     container.style.setProperty('--painting-opacity', 0);
 
-    placePainting(container, expressionData, { side, dir, actorPosition, actorScale });
+    placePainting(container, expressionData, { side, dir, actorPosition, actorScale }, pad);
 
     const wrapper = document.createElement('div');
     wrapper.className = 'painting-image-wrapper';
