@@ -59,8 +59,4 @@ body.dark-mode {
   --shadow-color: rgba(0, 0, 0, 0.4);
 }
 
-/* Dark mode specific overrides */
-body.dark-mode .story-header {
-  color: #ffffff;
-}
 

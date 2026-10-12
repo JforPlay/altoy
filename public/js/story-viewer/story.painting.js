@@ -29,43 +29,48 @@ import { pickFaceCandidates } from '../expression-face.js';
 // Seam-free face compositing on a downscaled base (see expression-composite.js:
 // the face must be composited at native res in a patch BEFORE resampling).
 import { cutFacePatchBase, drawFaceComposite } from '../expression-composite.js';
+import { framePlacement, visibleCrop, STAGE_W, STAGE_H } from './story.frames.js';
+import { toggleElement } from '../utils.js';
 
 // =========================================================================
 // Expression manifest lookup
 // =========================================================================
 
 /**
- * Look up expression manifest data for a character.
- * Prefers painting_n (zoomed variant used in story mode) over the
- * standard painting, and returns null if neither variant is present.
+ * Painting data for an actor. Expression-manifest entries win (painting_n
+ * first — the existing story-mode preference), then frames-only rows, which
+ * cover the ~560 faceless paintings the manifest never lists. `frame` is the
+ * duihua rect from painting_frames.json; it is null when unknown, or when the
+ * row's [W, H] disagrees with the manifest size (a frame from a newer or older
+ * cut than the extracted png would misplace it — the fit fallback is safer).
  */
 export function getExpressionData(ctx, actorId) {
+    // No manifest (failed load) = faces unknown: a frames-only row would draw the
+    // hole-punched base bare, so render no painting at all, as before frames.
     if (!actorId || !ctx.expressionManifest) return null;
-
-    const idStr = String(actorId);
-
-    // First try painting_n (zoomed version, used in story mode)
-    const paintingN = ctx.expressionManifest[`${idStr}_n`];
-    if (paintingN) {
+    const id = String(actorId);
+    const manifest = ctx.expressionManifest || {};
+    const frames = ctx.paintingFrames || {};
+    const variants = [[`${id}_n`, 'painting_n'], [id, 'painting']];
+    const build = (file, entry, row) => {
+        const size = entry?.size ?? (row ? [row[4], row[5]] : null);
+        const fits = row && size && row[4] === size[0] && row[5] === size[1];
         return {
-            ...paintingN,
-            type: 'painting_n',
-            baseUrl: `${ctx.BASE_URL}output_expressions/${idStr}/painting_n.png`,
-            faceUrlTemplate: `${ctx.BASE_URL}output_expressions/${idStr}/painting_n_face_{faceId}.png`
+            faces: [],
+            ...entry,
+            size,
+            frame: fits ? row.slice(0, 4) : null,
+            type: file,
+            baseUrl: `${ctx.BASE_URL}output_expressions/${id}/${file}.png`,
+            faceUrlTemplate: `${ctx.BASE_URL}output_expressions/${id}/${file}_face_{faceId}.png`,
         };
+    };
+    for (const [key, file] of variants) {
+        if (manifest[key]) return build(file, manifest[key], frames[key] || null);
     }
-
-    // Fall back to regular painting
-    const painting = ctx.expressionManifest[idStr];
-    if (painting) {
-        return {
-            ...painting,
-            type: 'painting',
-            baseUrl: `${ctx.BASE_URL}output_expressions/${idStr}/painting.png`,
-            faceUrlTemplate: `${ctx.BASE_URL}output_expressions/${idStr}/painting_face_{faceId}.png`
-        };
+    for (const [key, file] of variants) {
+        if (frames[key]) return build(file, null, frames[key]);
     }
-
     return null;
 }
 
@@ -104,7 +109,7 @@ export function updatePaintings(ctx) {
 }
 
 export function computePaintingStateAt(ctx, index) {
-    /** @type {Map<number, {actorId:number, side:number, dir:number, expression:string, paintingNoise:boolean}>} */
+    /** @type {Map<number, {actorId:number, side:number, dir:number, expression:string, paintingNoise:boolean, actorPosition:object|null, actorScale:number|null}>} */
     const paintings = new Map();
     let activeSide = null;
     let dimAlpha = 0.3; // game default: GetPaintingData → alpha or 0.3
@@ -213,6 +218,7 @@ export function computePaintingStateAt(ctx, index) {
         // Place (or update) the new painting on the target side.
         paintings.set(targetSide, {
             actorId, side: targetSide, dir, expression, paintingNoise,
+            actorPosition: line.actorPosition ?? null, actorScale: line.actorScale ?? null,
         });
 
         activeSide = targetSide;
@@ -234,7 +240,7 @@ const MAX_COMPOSITE_DIM = 4096;
 // navigation evicts/recreates containers constantly, so caching by URL is
 // what makes Back/expression swaps cheap.
 const BASE_CANVAS_CACHE_MAX = 4;
-const baseCanvasCache = new Map(); // baseUrl -> Promise<{canvas, facePatch}>
+const baseCanvasCache = new Map(); // "<baseUrl>|<crop>" -> Promise<{canvas, facePatch}>
 
 /**
  * Load an image cross-origin. crossOrigin is set before src so the response
@@ -253,37 +259,44 @@ function loadImage(url) {
 /**
  * Decode the base painting once into an offscreen canvas at composite
  * resolution, plus the native-res face-box patch drawFaceComposite needs for
- * seam-free face draws when the base was downscaled.
+ * seam-free face draws when the base was downscaled. Only `crop` (the part
+ * that can be on stage, painting px) is drawn: cropping BEFORE the 4096 cap
+ * keeps a zoomed-in painting sharp.
  */
-async function buildBaseCanvas(url, box) {
+async function buildBaseCanvas(url, box, crop) {
     const base = await loadImage(url);
     const nw = base.naturalWidth;
     const nh = base.naturalHeight;
     if (!nw || !nh) throw new Error('base painting has no dimensions');
+    const c = crop || { x: 0, y: 0, w: nw, h: nh };
 
-    const scale = Math.min(1, MAX_COMPOSITE_DIM / Math.max(nw, nh));
+    const scale = Math.min(1, MAX_COMPOSITE_DIM / Math.max(c.w, c.h));
     const canvas = document.createElement('canvas');
-    canvas.width = Math.round(nw * scale);
-    canvas.height = Math.round(nh * scale);
+    canvas.width = Math.round(c.w * scale);
+    canvas.height = Math.round(c.h * scale);
     const c2d = canvas.getContext('2d');
     c2d.imageSmoothingQuality = 'high';
-    c2d.drawImage(base, 0, 0, canvas.width, canvas.height);
-    const facePatch = cutFacePatchBase(base, box, scale);
+    c2d.drawImage(base, c.x, c.y, c.w, c.h, 0, 0, canvas.width, canvas.height);
+    // The patch is cut from the FULL native base (it needs the face box's real
+    // neighbourhood), then shifted into crop space for drawFaceComposite.
+    const patch = cutFacePatchBase(base, box, scale);
+    const facePatch = patch ? { canvas: patch.canvas, x: patch.x - c.x, y: patch.y - c.y } : null;
     return { canvas, facePatch };
 }
 
-/** Get (or build) the cached base canvas entry for a painting URL. LRU on access. */
-function getBaseCanvas(url, box) {
-    let promise = baseCanvasCache.get(url);
+/** Get (or build) the cached base canvas entry for a painting URL + crop. LRU on access. */
+function getBaseCanvas(url, box, crop) {
+    const key = `${url}|${crop ? [crop.x, crop.y, crop.w, crop.h].join(',') : 'full'}`;
+    let promise = baseCanvasCache.get(key);
     if (promise) {
         // Refresh recency (Map iteration order doubles as the LRU order).
-        baseCanvasCache.delete(url);
-        baseCanvasCache.set(url, promise);
+        baseCanvasCache.delete(key);
+        baseCanvasCache.set(key, promise);
         return promise;
     }
-    promise = buildBaseCanvas(url, box);
-    promise.catch(() => baseCanvasCache.delete(url)); // don't cache failures
-    baseCanvasCache.set(url, promise);
+    promise = buildBaseCanvas(url, box, crop);
+    promise.catch(() => baseCanvasCache.delete(key)); // don't cache failures
+    baseCanvasCache.set(key, promise);
     if (baseCanvasCache.size > BASE_CANVAS_CACHE_MAX) {
         baseCanvasCache.delete(baseCanvasCache.keys().next().value);
     }
@@ -292,24 +305,6 @@ function getBaseCanvas(url, box) {
 
 // pickFaceCandidates lives in ../expression-face.js now (shared with the skin pages);
 // imported at the top of this file.
-
-/**
- * Resolve the dialog-portrait face URL for a speaker's expression data and
- * the step's raw `expression` value (number, string, or absent). Runs the
- * SAME candidate chain as the painting compositor so the dialog face and
- * the mid-screen face can't drift apart. Returns null when the painting has
- * no usable face (caller falls back to the ship icon). Pure — node-testable.
- */
-export function resolvePortraitFaceUrl(expressionData, expression) {
-    if (!expressionData) return null;
-    const candidates = pickFaceCandidates(
-        expressionData,
-        expression != null ? String(expression) : null
-    );
-    return candidates.length
-        ? expressionData.faceUrlTemplate.replace('{faceId}', candidates[0])
-        : null;
-}
 
 /**
  * Draw base painting + face for `expression` onto the container's <canvas>.
@@ -322,9 +317,10 @@ async function composePainting(container, expressionData, expression) {
     if (!canvas) return;
     const gen = (canvas._gen = (canvas._gen || 0) + 1);
 
+    const crop = container._crop || null;
     let baseCanvas, facePatch;
     try {
-        ({ canvas: baseCanvas, facePatch } = await getBaseCanvas(expressionData.baseUrl, expressionData.box));
+        ({ canvas: baseCanvas, facePatch } = await getBaseCanvas(expressionData.baseUrl, expressionData.box, crop));
     } catch (e) {
         console.warn('Painting base load failed', e);
         return;
@@ -333,7 +329,7 @@ async function composePainting(container, expressionData, expression) {
 
     // Resolve the face image, falling back through the candidate chain.
     let face = null;
-    if (expressionData.faces && expressionData.faces.length > 0) {
+    if (expressionData.faces && expressionData.faces.length > 0 && expressionData.faceUrlTemplate) {
         const candidates = pickFaceCandidates(expressionData, expression);
         for (const faceId of candidates) {
             try {
@@ -353,13 +349,42 @@ async function composePainting(container, expressionData, expression) {
     c2d.drawImage(baseCanvas, 0, 0);
 
     if (face && expressionData.box && expressionData.size) {
-        drawFaceComposite(c2d, face, expressionData.box, expressionData.size, facePatch);
+        // drawFaceComposite scales by canvas / size, so crop space keeps it unchanged.
+        const c = crop || { x: 0, y: 0, w: expressionData.size[0], h: expressionData.size[1] };
+        const [bx, by, bw, bh] = expressionData.box;
+        drawFaceComposite(c2d, face, [bx - c.x, by - c.y, bw, bh], [c.w, c.h], facePatch);
     }
 }
 
 // =========================================================================
 // DOM reconciliation
 // =========================================================================
+
+/**
+ * Position a painting container on the stage from the game placement rule,
+ * sized to the part that can be on stage (composePainting draws only that
+ * crop, read back from `el._crop`). Fully off-stage → hidden, returns null.
+ */
+function placePainting(el, expressionData, want) {
+    const box = framePlacement({
+        frame: expressionData.frame, size: expressionData.size, side: want.side,
+        dir: want.dir, actorPosition: want.actorPosition, actorScale: want.actorScale,
+    });
+    const crop = visibleCrop(box, expressionData.size);
+    toggleElement(el, !!crop);
+    el.dataset.scale = box.scale.toFixed(5);
+    el.dataset.dir = box.flip ? '-1' : '1';
+    el._crop = crop;
+    if (!crop) return null;
+    el.style.setProperty('--pl', String((crop.left / STAGE_W) * 100));
+    el.style.setProperty('--pt', String((crop.top / STAGE_H) * 100));
+    el.style.setProperty('--pw', String((crop.width / STAGE_W) * 100));
+    el.style.setProperty('--ph', String((crop.height / STAGE_H) * 100));
+    return crop;
+}
+
+/** Everything that moves a painting's box; a change re-runs placePainting. */
+const placeKeyOf = (w) => JSON.stringify([w.side, w.dir, w.actorPosition, w.actorScale]);
 
 /**
  * Reconcile the DOM with a target painting state. Paintings already
@@ -387,14 +412,17 @@ function applyPaintingState(ctx, target) {
         if (!expressionData) continue;
 
         if (current && current.actorId === want.actorId) {
-            // Same actor, same side — reuse the element and update fields.
-            if (current.expression !== want.expression) {
+            // Same actor, same side — reuse the element and update fields. A
+            // moved placement moves the crop, so it recomposes like a new face.
+            const moved = current.dir !== want.dir || current.placeKey !== placeKeyOf(want);
+            if (moved) {
+                placePainting(current.element, expressionData, want);
+                current.dir = want.dir;
+                current.placeKey = placeKeyOf(want);
+            }
+            if (moved || current.expression !== want.expression) {
                 composePainting(current.element, expressionData, want.expression);
                 current.expression = want.expression;
-            }
-            if (current.dir !== want.dir) {
-                current.element.dataset.dir = want.dir;
-                current.dir = want.dir;
             }
             current.element.classList.toggle('painting-noise', want.paintingNoise);
         } else {
@@ -402,6 +430,8 @@ function applyPaintingState(ctx, target) {
                 actorId: want.actorId,
                 side: want.side,
                 dir: want.dir,
+                actorPosition: want.actorPosition,
+                actorScale: want.actorScale,
                 expressionData,
                 expression: want.expression,
                 hasNoise: want.paintingNoise,
@@ -413,6 +443,7 @@ function applyPaintingState(ctx, target) {
                 expression: want.expression,
                 side: want.side,
                 dir: want.dir,
+                placeKey: placeKeyOf(want),
             });
         }
     }
@@ -447,7 +478,7 @@ function applyPaintingState(ctx, target) {
  * <canvas>. Alpha is controlled entirely by --painting-opacity (set by
  * applyPaintingState); the container is seeded at 0 for the fade-in.
  */
-function createPaintingContainer({ actorId, side, dir, expressionData, expression, hasNoise }) {
+function createPaintingContainer({ actorId, side, dir, actorPosition, actorScale, expressionData, expression, hasNoise }) {
     const container = document.createElement('div');
     container.className = 'painting-container';
     container.dataset.side = side;
@@ -459,17 +490,10 @@ function createPaintingContainer({ actorId, side, dir, expressionData, expressio
     // animates up to whatever applyPaintingState() sets next frame.
     container.style.setProperty('--painting-opacity', 0);
 
+    placePainting(container, expressionData, { side, dir, actorPosition, actorScale });
+
     const wrapper = document.createElement('div');
     wrapper.className = 'painting-image-wrapper';
-    // Publish the painting's natural dimensions so CSS can compute a box
-    // that matches the rendered composite exactly (see .painting-image-
-    // wrapper rules).
-    if (expressionData.size && expressionData.size[0] && expressionData.size[1]) {
-        const [imgW, imgH] = expressionData.size;
-        wrapper.style.setProperty('--painting-w', String(imgW));
-        wrapper.style.setProperty('--painting-h', String(imgH));
-        wrapper.style.aspectRatio = `${imgW} / ${imgH}`;
-    }
 
     const canvas = document.createElement('canvas');
     canvas.className = 'painting-base';

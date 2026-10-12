@@ -49,6 +49,17 @@ function countSecretaryCompletion(raw) {
     return count > 0 ? `비서함 스토리 ${count}개 완료` : '';
 }
 
+function countReadLog(raw) {
+    const obj = tryParse(raw);
+    const d = obj && typeof obj === 'object' && obj.d && typeof obj.d === 'object' ? obj.d : null;
+    if (!d) return '';
+    let n = 0;
+    for (const events of Object.values(d)) {
+        for (const ids of Object.values(events || {})) n += Array.isArray(ids) ? ids.length : 0;
+    }
+    return n > 0 ? `스토리 ${n}편 읽음` : '';
+}
+
 function countCollection(raw) {
     const obj = tryParse(raw);
     if (!obj) return '';
@@ -119,6 +130,7 @@ const SUMMARIZERS = {
     researchTrackerPinned: countPinned,
     shipgirlInvestment: countInvestment,
     secretaryStoryCompletion: countSecretaryCompletion,
+    storyReadLog: countReadLog,
     skinCollection: countCollection,
     'island-restaurant-rank': describeRestaurantRank,
     'island-restaurant-events': countRestaurantEvents,

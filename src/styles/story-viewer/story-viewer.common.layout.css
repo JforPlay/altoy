@@ -8,137 +8,46 @@
    Main layout for the story reading interface
 ============================================================================= */
 
-/* --- Main Container --- */
-#story-viewer-view {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: calc(100dvh - var(--navbar-height, 3.5rem));
-  -webkit-user-select: none;
-  user-select: none;
+/* --- Stage: a 1920x1080 virtual canvas scaled to COVER the viewer, centred.
+   Paintings are placed in canvas percent by story.frames.js framePlacement, so
+   every viewport gets the game composition; a portrait phone centre-crops it. */
+.story-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  container-type: size;
+  background: #000000;
+  z-index: 0;
+  pointer-events: none;
 }
-
-.viewer-container {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  flex-grow: 1;
-  width: 100%;
-  padding-bottom: 1.5rem;
+.story-stage-canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(100cqw, calc(100cqh * 16 / 9));
+  aspect-ratio: 16 / 9;
+  translate: -50% -50%;
 }
-
-/* --- Background Image --- */
 .story-background {
   position: absolute;
-  top: 5rem;
-  left: 0;
-  width: 100%;
-  height: calc(100% - 5rem);
-  background-size: contain;
-  background-position: center top;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
-  background-color: #000000;
-  z-index: 0;
   transition: background-image 0.5s ease-in-out;
-  pointer-events: none;
   will-change: background-image;
-  contain: layout style paint;
 }
-
-/* --- Character Painting Layer --- */
-.painting-layer {
-  position: absolute;
-  top: 5rem;
-  left: 0;
-  width: 100%;
-  height: calc(100% - 5rem - 11rem); /* Account for header and dialogue area */
-  z-index: 1;
-  pointer-events: none;
-  overflow: hidden;
-}
-
+.painting-layer { position: absolute; inset: 0; }
 .painting-container {
   position: absolute;
-  bottom: 0;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  height: 100%;
+  left: calc(var(--pl, 0) * 1%);
+  top: calc(var(--pt, 0) * 1%);
+  width: calc(var(--pw, 0) * 1%);
+  height: calc(var(--ph, 0) * 1%);
 }
-
-/* Side positioning: 0 = left, 1 = right, 2 = center */
-.painting-container[data-side="0"] {
-  left: 0;
-  right: auto;
-  --base-transform: translateX(0);
-  transform: var(--base-transform);
-}
-
-.painting-container[data-side="1"] {
-  left: auto;
-  right: 0;
-  --base-transform: translateX(0);
-  transform: var(--base-transform);
-}
-
-.painting-container[data-side="2"] {
-  left: 50%;
-  --base-transform: translateX(-50%);
-  transform: var(--base-transform);
-}
-
-/* Direction flip: dir = -1 means facing left (mirror) */
-.painting-container[data-dir="-1"] .painting-image-wrapper {
-  transform: scaleX(-1);
-}
-
-.painting-image-wrapper {
-  position: relative;
-  display: block;
-  line-height: 0;
-  /* The wrapper box must match the rendered painting exactly.
-     We achieve that by:
-       (1) height: 100% anchors the wrapper to the layer's height;
-       (2) aspect-ratio: W/H (set inline from the painting's natural dims)
-           derives wrapper width = height * W/H;
-       (3) max-width: <vw> (per-side below) can clamp width;
-       (4) max-height: calc(max-width * H/W) clamps HEIGHT in lock-step
-           with max-width so the aspect-ratio is preserved when width is
-           the tighter constraint — without this, max-width would clamp
-           width while height stayed at 100%, breaking the ratio.
-     --painting-w/--painting-h are set inline by the engine. */
-  height: 100%;
-  aspect-ratio: var(--painting-w, 1) / var(--painting-h, 1);
-  /* max-width / max-height set per-side below */
-}
-
-.painting-base {
-  display: block;
-  /* Fill the wrapper exactly. Wrapper's aspect-ratio + size constraints
-     guarantee this matches the painting's natural aspect — no letterboxing
-     under normal conditions. object-fit is defensive. The element is a
-     <canvas> holding the base+face composite (story.painting.js) so face
-     and hole edges can never separate. */
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-/* Side-specific size constraints — live on the wrapper so its box (and
-   therefore the face overlay coordinate space) matches the painting. The
-   paired max-width + max-height keeps the aspect-ratio intact when either
-   constraint bites. */
-.painting-container[data-side="0"] .painting-image-wrapper,
-.painting-container[data-side="1"] .painting-image-wrapper {
-  max-width: 45vw;
-  max-height: calc(45vw * var(--painting-h, 1) / var(--painting-w, 1));
-}
-
-.painting-container[data-side="2"] .painting-image-wrapper {
-  max-width: 70vw;
-  max-height: calc(70vw * var(--painting-h, 1) / var(--painting-w, 1));
-}
+.painting-container[data-dir="-1"] .painting-image-wrapper { transform: scaleX(-1); }
+.painting-image-wrapper { position: relative; width: 100%; height: 100%; line-height: 0; }
+.painting-base { display: block; width: 100%; height: 100%; }
 
 /* Painting Noise Effect (Hologram/Projector) */
 .painting-container.painting-noise .painting-image-wrapper {

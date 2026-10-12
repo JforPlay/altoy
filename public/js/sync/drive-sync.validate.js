@@ -39,6 +39,7 @@ export const VALUE_KINDS = {
     researchTrackerPinned: 'array',
     shipgirlInvestment: 'object',
     secretaryStoryCompletion: 'object',
+    storyReadLog: 'object',
     skinCollection: 'object-or-array',
     'island-restaurant-rank': 'string',
     'island-restaurant-events': 'array',

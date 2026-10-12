@@ -1,0 +1,166 @@
+---
+/**
+ * StoryPlayer.astro — the reading view shared by every engine story page
+ * (main / event / world / secretary / hof / lora / navi / tb). Element ids are
+ * the story-viewer.engine.js contract; page scripts reach them by id.
+ * Layout A ("fade band"): top chrome, the stage, a gradient band with the
+ * storyicon bust, and the E2 up-next card. Styles: story-player.css.
+ * Props:
+ *   backButtonId      — 'back-to-memory-selection' (default) or 'back-to-tabs' (child pages)
+ *   transcriptToolbar — show the transcript title + 전체 복사 row (default true)
+ */
+import '../styles/story-viewer/story-player.css';
+import '../styles/story-viewer/story-viewer.read-marks.css';
+interface Props { backButtonId?: string; transcriptToolbar?: boolean; }
+const { backButtonId = 'back-to-memory-selection', transcriptToolbar = true } = Astro.props;
+const ICON_BACK = 'M15 5l-7 7 7 7';
+const ICON_EYE_OFF = 'M3 3l18 18M10.6 6.1A9.9 9.9 0 0 1 12 6c5.5 0 9 6 9 6a15.6 15.6 0 0 1-2.8 3.4M6.3 7.6C4 9.2 3 12 3 12s3.5 6 9 6a9.4 9.4 0 0 0 4-.9M9.9 9.9a3 3 0 0 0 4.2 4.2';
+---
+<div id="story-viewer-view" class="story-player hidden" data-ui="shown">
+    <div id="fade-overlay" class="fade-overlay"></div>
+    <div id="viewer-container" class="viewer-container">
+        <div class="story-stage" id="story-stage">
+            <div class="story-stage-canvas">
+                <div class="story-background"></div>
+                <div id="painting-layer" class="painting-layer"></div>
+            </div>
+        </div>
+
+        <header id="story-header" class="story-chrome">
+            <div class="chrome-left">
+                <button id={backButtonId} class="chrome-icon nav-button back-button" type="button" aria-label="목록으로">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d={ICON_BACK} /></svg>
+                </button>
+                <h2 id="story-title" class="chrome-title"></h2>
+                <span id="progress-indicator" class="chrome-progress"></span>
+                <span id="read-mark" class="chrome-read hidden" title="읽은 이야기">✓</span>
+                <div id="audio-player-container" class="bgm-chip hidden">
+                    <button id="play-pause-btn" class="bgm-chip-btn" type="button" aria-label="배경음 재생 / 일시정지">
+                        <span class="material-symbols-outlined" aria-hidden="true">play_arrow</span>
+                        <span id="bgm-name" class="bgm-name"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="chrome-right">
+                <button id="auto-play-btn" class="chrome-chip" type="button" aria-pressed="false" title="자동 진행 (A)">AUTO</button>
+                <button id="view-script-btn" class="chrome-chip" type="button" title="전체 대사 (L)">LOG</button>
+                <button id="settings-btn" class="chrome-chip" type="button" aria-haspopup="dialog" aria-controls="reader-settings" title="보기 설정">Aa</button>
+                <button id="hide-ui-btn" class="chrome-chip chrome-chip--icon" type="button" aria-label="UI 숨기기 (H)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d={ICON_EYE_OFF} /></svg>
+                </button>
+            </div>
+        </header>
+
+        <div id="info-screen" class="info-screen hidden"><p id="info-screen-text"></p></div>
+        <div id="options-box" class="options-box"></div>
+
+        <aside id="up-next" class="up-next hidden" aria-label="다음 이야기">
+            <div class="up-next-head">
+                <span class="up-next-label">다음 이야기</span>
+                <span id="up-next-count" class="up-next-count hidden"></span>
+            </div>
+            <p id="up-next-title" class="up-next-title"></p>
+            <p id="up-next-read" class="up-next-read hidden">읽음으로 표시됨</p>
+            <div class="up-next-actions">
+                <button id="next-story-btn" class="up-next-btn up-next-btn--primary" type="button">지금 보기</button>
+                <button id="up-next-cancel" class="up-next-btn hidden" type="button">취소</button>
+                <button id="return-btn" class="up-next-btn up-next-btn--ghost" type="button">목록</button>
+            </div>
+            <span class="up-next-bar" aria-hidden="true"></span>
+        </aside>
+
+        <div id="dialogue-box" class="dialogue-band">
+            <div id="actor-portrait" class="band-portrait hidden"></div>
+            <div class="dialogue-content">
+                <p id="actor-name" class="actor-name"></p>
+                <p id="dialogue-text" class="dialogue-text" aria-busy="false"></p>
+                <div id="branch-end" class="branch-end hidden">
+                    <span>이 분기의 끝입니다. 다른 선택지가 남아 있어요.</span>
+                    <button id="branch-back-btn" class="up-next-btn up-next-btn--primary" type="button">↶ 마지막 선택지로</button>
+                </div>
+            </div>
+            <div class="band-nav">
+                <button id="prev-line-btn" class="band-arrow" type="button" aria-label="이전 줄">‹</button>
+                <button id="next-line-btn" class="band-arrow" type="button" aria-label="다음 줄">›</button>
+                <span id="next-page-indicator" class="next-page-indicator" aria-hidden="true">▼</span>
+            </div>
+            <span class="auto-progress" aria-hidden="true"></span>
+        </div>
+        <p id="line-status" class="sr-only" role="status"></p>
+        <p class="ui-restore-hint" aria-hidden="true">화면을 누르면 UI가 다시 나타납니다</p>
+    </div>
+    <aside id="reader-settings" class="drawer drawer--sheet reader-settings" role="dialog" aria-labelledby="rs-title">
+        <span class="rs-grab" aria-hidden="true"></span>
+        <div class="rs-head">
+            <h2 id="rs-title" class="rs-title">보기 설정</h2>
+            <button type="button" class="rs-close" data-rs-close aria-label="닫기">완료</button>
+        </div>
+        <div class="rs-preview" aria-hidden="true"><span class="rs-label">미리보기</span><p class="rs-preview-line"></p></div>
+        <div class="rs-tabs" role="tablist">
+            <button type="button" role="tab" data-rs-tab="font" aria-selected="true">글꼴</button>
+            <button type="button" role="tab" data-rs-tab="view" aria-selected="false">화면</button>
+            <button type="button" role="tab" data-rs-tab="play" aria-selected="false">재생</button>
+        </div>
+        <div class="rs-body scroll-styled">
+            <section class="rs-panel" data-rs-panel="font">
+                <div class="rs-row"><span class="rs-label">글꼴</span>
+                    <div class="rs-seg" role="group" aria-label="글꼴">
+                        <button type="button" data-setting="font" data-value="sans" style="font-family:'Noto Sans KR',sans-serif">고딕</button>
+                        <button type="button" data-setting="font" data-value="serif" style="font-family:'Noto Serif KR',serif">명조</button>
+                        <button type="button" data-setting="font" data-value="round" style="font-family:'Gowun Dodum',sans-serif">둥근</button>
+                    </div></div>
+                <div class="rs-row"><span class="rs-label">글자 크기</span>
+                    <div class="rs-stepper">
+                        <button type="button" data-setting="size" data-step="-1" aria-label="글자 작게">가−</button>
+                        <output data-out="size"></output>
+                        <button type="button" data-setting="size" data-step="1" aria-label="글자 크게">가+</button>
+                    </div></div>
+                <div class="rs-row"><span class="rs-label">줄 간격</span>
+                    <div class="rs-seg" role="group" aria-label="줄 간격">
+                        <button type="button" data-setting="lineHeight" data-value="1.5">좁게</button>
+                        <button type="button" data-setting="lineHeight" data-value="1.8">보통</button>
+                        <button type="button" data-setting="lineHeight" data-value="2.1">넓게</button>
+                    </div></div>
+            </section>
+            <section class="rs-panel" data-rs-panel="view">
+                <label class="rs-row"><span class="rs-label">대화창 투명도 <output data-out="boxOpacity"></output></span>
+                    <input id="rs-boxOpacity" type="range" min="0" max="100" step="5" data-setting="boxOpacity"></label>
+                <label class="rs-row rs-desktop-only"><span class="rs-label">대화창 폭 <output data-out="boxWidth"></output></span>
+                    <input id="rs-boxWidth" type="range" min="520" max="1100" step="20" data-setting="boxWidth"></label>
+            </section>
+            <section class="rs-panel" data-rs-panel="play">
+                <div class="rs-row"><span class="rs-label">글자 표시</span>
+                    <div class="rs-seg" role="group" aria-label="글자 표시">
+                        <button type="button" data-setting="reveal" data-value="instant">즉시</button>
+                        <button type="button" data-setting="reveal" data-value="type">타자기</button>
+                    </div></div>
+                <label class="rs-row"><span class="rs-label">타자기 속도 <output data-out="cps"></output></span>
+                    <input id="rs-cps" type="range" min="10" max="80" step="5" data-setting="cps"></label>
+                <div class="rs-row"><span class="rs-label">자동 진행 속도</span>
+                    <div class="rs-seg" role="group" aria-label="자동 진행 속도">
+                        <button type="button" data-setting="autoSpeed" data-value="slow">느림</button>
+                        <button type="button" data-setting="autoSpeed" data-value="normal">보통</button>
+                        <button type="button" data-setting="autoSpeed" data-value="fast">빠름</button>
+                    </div></div>
+                <label class="rs-row"><span class="rs-label">배경음 볼륨 <output data-out="volume"></output></span>
+                    <input id="rs-volume" type="range" min="0" max="100" step="1" data-setting="volume"></label>
+            </section>
+        </div>
+    </aside>
+</div>
+
+<div id="script-modal-overlay" class="modal-overlay hidden">
+    <div class="modal-content">
+        <button id="close-modal-btn" class="btn btn-close close-modal-btn" title="Close"><span class="material-symbols-outlined">close</span></button>
+        {transcriptToolbar && (
+            <div class="script-modal-toolbar">
+                <h2 id="script-modal-title" class="script-modal-title"></h2>
+                <button id="copy-script-btn" class="btn btn-secondary btn-sm" type="button">
+                    <span class="material-symbols-outlined">content_copy</span>
+                    <span class="copy-script-label">전체 복사</span>
+                </button>
+            </div>
+        )}
+        <div id="full-script-content" class="full-script-content scroll-styled"></div>
+    </div>
+</div>

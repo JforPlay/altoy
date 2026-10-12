@@ -1,0 +1,94 @@
+/* =============================================================================
+   story-viewer.read-marks.css — read tracking marks shared by every story page:
+   the memory-card checkbox (moved verbatim from secretary-story.css, selectors
+   widened so child-page cards match) and the event-card read count.
+   Imported by StoryPlayer.astro. Toggled by story-viewer.engine.js
+   decorateReadCheckbox / decorateReadCount / refreshReadMarks.
+============================================================================= */
+
+/* Circular completion checkbox.
+   Unchecked state shows a ghosted ✔ inside a translucent outline circle —
+   the affordance reads as "click to check" the same way an empty checkbox
+   square would. Hover brightens the ghost and the border; completed state
+   fills with the accent color and reveals the check at full opacity. */
+:is(.grid-card, [class*="-card"]) .card-checkbox {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  background-color: rgba(0, 0, 0, 0.45);
+  border: 1.5px dashed rgba(255, 255, 255, 0.55);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease,
+    border-style 0.18s ease, transform 0.1s ease;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: saturate(120%) blur(2px);
+  /* Single ::after rule covers both states; opacity + color shift on .completed
+     keeps the hit target and glyph metrics stable across the toggle. */
+}
+
+:is(.grid-card, [class*="-card"]) .card-checkbox::after {
+  content: "✔";
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1;
+  transition: color 0.18s ease, opacity 0.18s ease, transform 0.15s ease;
+  opacity: 0.45;
+}
+
+:is(.grid-card, [class*="-card"]) .card-checkbox:hover {
+  background-color: rgba(0, 0, 0, 0.65);
+  border-color: var(--highlight-90);
+  border-style: solid;
+}
+
+:is(.grid-card, [class*="-card"]) .card-checkbox:hover::after {
+  opacity: 0.9;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+:is(.grid-card, [class*="-card"]) .card-checkbox:active {
+  transform: scale(0.92);
+}
+
+:is(.grid-card, [class*="-card"]) .card-checkbox.completed {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  border-style: solid;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-color) 35%, transparent),
+    0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+:is(.grid-card, [class*="-card"]) .card-checkbox.completed::after {
+  color: #ffffff;
+  opacity: 1;
+  font-size: 1rem;
+}
+
+/* Muted look for completed cards (still hoverable) */
+:is(.grid-card, [class*="-card"]).completed-card {
+  opacity: 0.6;
+}
+:is(.grid-card, [class*="-card"]).completed-card:hover {
+  opacity: 1;
+}
+
+/* Event-card read count ("3 / 8"); a full check once every story is read. */
+.read-count {
+  position: absolute;
+  right: 0.4rem;
+  bottom: 0.4rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: var(--radius-sm);
+  background: var(--overlay-heavy);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+}
+.read-count.is-complete { background: var(--accent-blue); }

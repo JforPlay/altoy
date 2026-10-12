@@ -96,8 +96,9 @@ function createTabStoryViewer(config) {
                 this.convertDataForEngine();
                 this.setupEventListeners();
                 this.setupBrowserBackButton();
-                this.populateAllGrids();
+                // Engine first: the grids' read checkboxes need its readLog + viewerType.
                 this.initStoryViewer();
+                this.populateAllGrids();
                 this.preloadFirstImages();
                 this.handleUrlParameters();
             } catch (error) {
@@ -473,6 +474,7 @@ function createTabStoryViewer(config) {
 
             this.appendCardImage(card, this.config.placeholderImage, title);
             this.appendCardContent(card, title, `메모리 #${memory.id}`);
+            window.StoryViewer?.decorateReadCheckbox(card, 'memory', memory.id);
             return card;
         },
 
@@ -497,6 +499,7 @@ function createTabStoryViewer(config) {
 
             this.appendCardImage(card, imageUrl, title);
             this.appendCardContent(card, title, `엔딩 #${ending.id}`);
+            window.StoryViewer?.decorateReadCheckbox(card, 'ending', ending.id);
             return card;
         },
 
@@ -514,6 +517,7 @@ function createTabStoryViewer(config) {
 
             this.appendCardImage(card, imageUrl, item.title);
             this.appendCardContent(card, item.title, badgeText);
+            window.StoryViewer?.decorateReadCheckbox(card, categoryId, item.id);
             return card;
         },
 
@@ -645,47 +649,24 @@ function createTabStoryViewer(config) {
             window.scrollTo(0, 0);
 
             if (window.StoryViewer) {
-                window.StoryViewer.currentEventId = category;
-                window.StoryViewer.currentMemoryId = storyId;
-                window.StoryViewer.currentStoryScript = memory.story.scripts;
-                window.StoryViewer.scriptIndex = 0;
-                window.StoryViewer.lastPortraitUrl = null;
-                window.StoryViewer.currentBgm = null;
-                window.StoryViewer.currentStoryDefaultBgUrl = null;
-                window.StoryViewer.activeOptionFlag = null;
-                window.StoryViewer.lastOptionIndex = -1;
-
-                // Reset caches for new story
-                window.StoryViewer.cachedBackground = {
-                    url: null,
-                    isBlack: false,
-                    lastIndex: -1
-                };
-                window.StoryViewer.scriptNavCache = null;
-                window.StoryViewer.cachedTranscript = null;
-
-                if (memory.story.mask) {
-                    window.StoryViewer.currentStoryDefaultBgUrl = `${window.StoryViewer.BASE_URL}${memory.story.mask}.webp`;
-                }
-
+                const viewer = window.StoryViewer;
+                if (viewer.elements.fadeOverlay) viewer.elements.fadeOverlay.classList.remove('visible');
                 const memories = eventData.child;
                 const index = memories.findIndex(m => m.id === storyId);
-                window.StoryViewer.nextMemory = (index >= 0 && index < memories.length - 1) ? memories[index + 1] : null;
-
-                if (window.StoryViewer.elements.fadeOverlay) {
-                    window.StoryViewer.elements.fadeOverlay.classList.remove('visible');
-                }
-
-                window.StoryViewer.elements.storyTitle.textContent = `${eventData.name} - ${memory.title}`;
-
-                // Build navigation cache for fast lookups (required for advanceStory to work)
-                window.StoryViewer.buildNavigationCache();
-
-                window.StoryViewer.renderScriptLine();
+                viewer.beginScript({
+                    scripts: memory.story.scripts,
+                    memoryId: storyId,
+                    eventId: category,
+                    title: `${eventData.name} - ${memory.title}`,
+                    mask: memory.story.mask,
+                    nextMemory: (index >= 0 && index < memories.length - 1) ? memories[index + 1] : null,
+                });
             }
         },
 
         returnToTabs(updateUrl = true) {
+            window.StoryViewer?.hideUpNext();
+            window.StoryViewer?.cancelAutoAdvance();
             if (window.StoryViewer && window.StoryViewer.audio) {
                 window.StoryViewer.audio.pause();
                 window.StoryViewer.currentBgm = null;

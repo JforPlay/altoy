@@ -10,8 +10,14 @@
  * rendering, screen shake/flash effects, SFX playback, auto-play, full-script modal,
  * and all keyboard/pointer event wiring.
  */
-import { debounce, fetchJSONWithCache, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl, makeKeyboardActivatable, DATA_FOR_TOY_BASE } from '../utils.js';
-import { getExpressionData, updatePaintings, clearPaintings, resolvePortraitFaceUrl } from './story.painting.js';
+import { debounce, fetchJSONWithCache, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, makeKeyboardActivatable, DATA_FOR_TOY_BASE } from '../utils.js';
+import { getExpressionData, updatePaintings, clearPaintings } from './story.painting.js';
+import { resolveStoryPortrait } from './story.portrait.js';
+import { ensurePaintingFrames } from './story.frames.js';
+import { createTypewriter } from './story.typewriter.js';
+import { loadSettings, settingsToCssVars, ensureFontLoaded, AUTO_DELAY_MS } from './story.settings.js';
+import { setupReaderSettings } from './story.settings-ui.js';
+import { createReadLogStore } from './story.readlog.js';
 import { clearLineEffects, handleLineShake, handleLineDialogShake, handleLinePaintingShake, handleLineFlashN, handleLineSoundEffect, clearFlashOverlay, handleLineFlash, playFlashoutCover } from './story.effects.js';
 import { correctKrNameColor } from './story.text.js';
 import { collectTranscriptLines, transcriptToPlainText, buildTranscriptFragment, extractSequenceLines, formatSequenceLine } from './story.transcript.js';
@@ -26,6 +32,12 @@ document.addEventListener('DOMContentLoaded', () => {
         shipgirlData: {},
         shipgirlNameMap: {},
         expressionManifest: null, // Painting/expression data, loaded on first story playback
+        paintingFrames: null, // painting_frames.json duihua rects, loaded with the manifest
+        typewriter: null, // story.typewriter.js reveal for the current line (created in init)
+        uiHidden: false, // H / eye chip: chrome + band hidden to look at the art
+        settings: null, // reader settings (story.settings.js), applied by applyReaderSettings
+        settingsPanel: null, // story.settings-ui.js { open, close, isOpen }
+        readLog: null, // story.readlog.js store: which stories this reader finished (Drive-synced)
         currentEventId: null,
         currentMemoryId: null,
         currentStoryScript: [],
@@ -55,7 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
             lastIndex: -1
         },
 
-        COMMANDER_ICON_PATH: resolveUrl('assets/icon/commander.webp'),
         BASE_URL: `${DATA_FOR_TOY_BASE}/`,
 
         // ===== DOM Elements =====
@@ -98,23 +109,36 @@ document.addEventListener('DOMContentLoaded', () => {
             summaryModalContent: document.getElementById('summary-modal-content'),
             audioPlayerContainer: document.getElementById('audio-player-container'),
             playPauseBtn: document.getElementById('play-pause-btn'),
-            muteBtn: document.getElementById('mute-btn'),
-            volumeSlider: document.getElementById('volume-slider'),
             bgmNameSpan: document.getElementById('bgm-name'),
             progressIndicator: document.getElementById('progress-indicator'),
             paintingLayer: document.getElementById('painting-layer'),
+            autoPlayBtn: document.getElementById('auto-play-btn'),
+            settingsBtn: document.getElementById('settings-btn'),
+            hideUiBtn: document.getElementById('hide-ui-btn'),
+            readMark: document.getElementById('read-mark'),
+            upNext: document.getElementById('up-next'),
+            upNextTitle: document.getElementById('up-next-title'),
+            upNextRead: document.getElementById('up-next-read'),
+            upNextCount: document.getElementById('up-next-count'),
+            upNextCancel: document.getElementById('up-next-cancel'),
+            branchEnd: document.getElementById('branch-end'),
+            branchBackBtn: document.getElementById('branch-back-btn'),
+            lineStatus: document.getElementById('line-status'),
+            readerSettings: document.getElementById('reader-settings'),
             // Cached elements (populated on first access)
             storyBackground: null,
             playPauseIcon: null,
-            muteIcon: null,
         },
 
-        // Auto-play state. Speed 0 = disabled; 1/2/3 = slow/medium/fast.
-        // Reset to 0 at the start of every story (see startStory) — not
-        // persisted across sessions or stories.
-        autoPlaySpeed: 0,
-        AUTO_PLAY_DELAYS_MS: { 1: 6000, 2: 4000, 3: 2500 },
+        // Auto-play: on/off, kept across stories within the page (the E2 card
+        // chains them), reset on reload. The per-line delay is the reader's
+        // 자동 진행 speed (story.settings.js AUTO_DELAY_MS).
+        autoPlay: false,
         _autoPlayTimer: null,
+        _upNextTimer: null,
+        _upNextCancelled: false, // 취소 on the card sticks until the next render
+        UP_NEXT_COUNTDOWN_MS: 8000,
+        failedPortraitUrls: new Set(), // storyicons that 404'd once stay hidden for the page
 
         // Painting state — one painting per side (0=left, 1=right, 2=center).
         // Paintings are rebuilt from the script on every render, matching the
@@ -145,14 +169,17 @@ document.addEventListener('DOMContentLoaded', () => {
         init(config) {
             this.config = config;
             this.audio.loop = true;
-            this.audio.volume = 0.01;
+            this.typewriter = createTypewriter();
+            this.applyReaderSettings(loadSettings());
+            this.readLog = createReadLogStore({ onRemoteChange: () => this.refreshReadMarks() });
             this.loadData()
                 .then(() => {
                     this.populateEventGrid();
                     this.handleUrlParameters();
                     this.setupEventListeners();
+                    this.settingsPanel = setupReaderSettings(this);
                     this.setupBrowserBackButton();
-                    this.injectAutoPlayButton();
+                    this.updateAutoPlayButton();
                 })
                 .catch(error => {
                     console.error('Initialization failed:', error);
@@ -179,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
          * Load painting/expression metadata when story playback first needs it,
          * via the shared expression-manifest loader (one cached request; failure
          * resolves null and the next activation retries without the IndexedDB
-         * entry). A missing manifest degrades to icon-only dialogue.
+         * entry). A missing manifest degrades to dialogue without paintings.
          */
         async ensureExpressionManifest() {
             this.expressionManifest = await loadExpressionManifest();
@@ -211,14 +238,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.returnToMemorySelection();
             });
 
+            // Tap zones: the left third goes back, the rest advances (or finishes
+            // a typing line). While the UI is hidden, any tap only restores it.
             el.storyViewerView?.addEventListener('click', (e) => {
-                if (e.target.closest('.option-button, .nav-button, .story-nav-btn, .audio-player-container, .theme-toggle')) return;
-                if (el.optionsBox.children.length === 0) this.advanceStory();
+                if (this.uiHidden) { this.setUiHidden(false); return; }
+                if (this.settingsPanel?.isOpen()) { this.settingsPanel.close(); return; }
+                if (e.target.closest('button, a, input, .options-box, .reader-settings, .up-next, .story-chrome')) return;
+                const rect = el.viewerContainer.getBoundingClientRect();
+                if (e.clientX - rect.left < rect.width / 3) { this.goBackStory(); return; }
+                this.nextOrFinish();
             });
+            el.hideUiBtn?.addEventListener('click', (e) => { e.stopPropagation(); this.setUiHidden(true); });
             el.prevLineBtn?.addEventListener('click', (e) => { e.stopPropagation(); this.goBackStory(); });
-            el.nextLineBtn?.addEventListener('click', (e) => { e.stopPropagation(); this.advanceStory(); });
+            el.nextLineBtn?.addEventListener('click', (e) => { e.stopPropagation(); this.nextOrFinish(); });
             el.nextStoryBtn?.addEventListener('click', (e) => { e.stopPropagation(); if (this.nextMemory) this.startStory(this.nextMemory); });
             el.returnBtn?.addEventListener('click', (e) => { e.stopPropagation(); this.returnToMemorySelection(); });
+            el.autoPlayBtn?.addEventListener('click', (e) => { e.stopPropagation(); this.toggleAutoPlay(); });
+            el.branchBackBtn?.addEventListener('click', (e) => { e.stopPropagation(); this.jumpToLastChoice(); });
+            el.upNextCancel?.addEventListener('click', (e) => { e.stopPropagation(); this._upNextCancelled = true; this.cancelUpNextCountdown(); });
+            // A hidden tab pauses both clocks: the line wait and the E2 countdown.
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) this.cancelAutoAdvance(); else this.scheduleAutoAdvance();
+            });
 
             el.viewScriptBtn?.addEventListener('click', () => this.showFullScript());
             el.groupScriptBtn?.addEventListener('click', () => this.showGroupScript());
@@ -229,8 +270,6 @@ document.addEventListener('DOMContentLoaded', () => {
             el.summaryModalOverlay?.addEventListener('click', (e) => { if (e.target === el.summaryModalOverlay) this.hideSummaryModal(); });
 
             el.playPauseBtn?.addEventListener('click', (e) => { e.stopPropagation(); this.audio.paused ? this.audio.play().catch(console.warn) : this.audio.pause(); });
-            el.muteBtn?.addEventListener('click', (e) => { e.stopPropagation(); this.audio.muted = !this.audio.muted; this.updateAudioPlayerUI(); });
-            el.volumeSlider?.addEventListener('input', (e) => { e.stopPropagation(); this.audio.volume = e.target.value; this.audio.muted = e.target.value == 0; this.updateAudioPlayerUI(); });
 
             this.cleanupAudioListeners();
 
@@ -263,6 +302,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Don't steal keys from form inputs, textareas, or contenteditable.
                 const t = e.target;
                 if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+                // Browser/OS shortcuts (Ctrl+L, Alt+←, Ctrl+A …) are never story keys.
+                if (e.ctrlKey || e.metaKey || e.altKey) return;
+                // A control reached by keyboard (chips, card buttons, the settings
+                // panel) handles its own Space/Enter; a mouse-focused one does not,
+                // so Space still advances after clicking a chip.
+                const onControl = t?.closest?.('button, a, [role="button"], [role="checkbox"], [role="tab"], .reader-settings');
+                if (onControl && t.matches?.(':focus-visible') && ['Space', 'Enter', 'NumpadEnter'].includes(e.code)) return;
 
                 // If a modal is open, let Escape close it but ignore other keys.
                 // A page without the modal element counts as CLOSED — the
@@ -286,37 +332,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const hasOptions = this.elements.optionsBox?.children.length > 0;
 
-                switch (e.key) {
-                    case ' ':
-                    case 'ArrowRight':
-                    case 'Enter':
+                if (this.settingsPanel?.isOpen() && e.key === 'Escape') { e.preventDefault(); this.settingsPanel.close(); return; }
+                if (this.uiHidden && (e.key === 'Escape' || e.code === 'KeyH')) { e.preventDefault(); this.setUiHidden(false); return; }
+                // e.code names the physical key, so the letters work with the Korean IME on.
+                switch (e.code) {
+                    case 'Space': case 'ArrowRight': case 'Enter': case 'NumpadEnter':
                         // While options are displayed, let the user pick with a click;
-                        // don't auto-advance past a decision point.
+                        // don't advance past a decision point.
                         if (hasOptions) return;
-                        e.preventDefault();
-                        this.advanceStory();
-                        break;
+                        e.preventDefault(); this.nextOrFinish(); break;
                     case 'ArrowLeft':
-                        e.preventDefault();
-                        this.goBackStory();
-                        break;
+                        e.preventDefault(); this.goBackStory(); break;
                     case 'Escape':
-                        e.preventDefault();
-                        this.returnToMemorySelection();
-                        break;
-                    case 'a':
-                    case 'A':
-                        // Reserved for auto-play toggle.
-                        if (typeof this.toggleAutoPlay === 'function') {
-                            e.preventDefault();
-                            this.toggleAutoPlay();
-                        }
-                        break;
-                    case 's':
-                    case 'S':
-                        e.preventDefault();
-                        this.showFullScript();
-                        break;
+                        e.preventDefault(); this.returnToMemorySelection(); break;
+                    case 'KeyA':
+                        e.preventDefault(); this.toggleAutoPlay(); break;
+                    case 'KeyS': case 'KeyL':
+                        e.preventDefault(); this.showFullScript(); break;
+                    case 'KeyH':
+                        e.preventDefault(); this.setUiHidden(true); break;
                 }
             };
             document.addEventListener('keydown', this._keydownHandler);
@@ -324,83 +358,79 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // ===== Auto-Play =====
 
-        /**
-         * Create the auto-play button and insert it into the story nav-arrows
-         * container. No-op if the container is missing or the button already exists.
-         */
-        injectAutoPlayButton() {
-            // Find the nav-arrows container in whichever story page this engine is mounted on.
-            const navArrows = this.elements.storyViewerView?.querySelector('.story-nav-arrows');
-            if (!navArrows || document.getElementById('auto-play-btn')) return;
-
-            const btn = document.createElement('button');
-            btn.id = 'auto-play-btn';
-            btn.className = 'btn btn-secondary story-nav-btn auto-play-btn';
-            btn.type = 'button';
-            btn.title = '자동 재생 (A)';
-            navArrows.insertBefore(btn, navArrows.firstChild);
-
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                this.toggleAutoPlay();
-            });
-
-            this.elements.autoPlayBtn = btn;
-            this.updateAutoPlayButton();
-        },
-
-        /** Sync the auto-play button label and aria-pressed to the current speed tier. */
+        /** Sync the AUTO chip's pressed state (its label stays "AUTO"). */
         updateAutoPlayButton() {
-            const btn = this.elements.autoPlayBtn;
-            if (!btn) return;
-            const label = ['자동', '자동 (느림)', '자동 (보통)', '자동 (빠름)'][this.autoPlaySpeed] || '자동';
-            btn.textContent = label;
-            btn.classList.toggle('is-active', this.autoPlaySpeed > 0);
-            btn.setAttribute('aria-pressed', String(this.autoPlaySpeed > 0));
+            this.elements.autoPlayBtn?.setAttribute('aria-pressed', String(this.autoPlay));
         },
 
-        /** Cycle auto-play speed: off → slow → medium → fast → off. */
+        /** Toggle auto-play. It stays on across stories in this page (E2 chains them). */
         toggleAutoPlay() {
-            // Cycle off → slow → medium → fast → off.
-            this.autoPlaySpeed = (this.autoPlaySpeed + 1) % 4;
+            this.autoPlay = !this.autoPlay;
             this.updateAutoPlayButton();
             this.cancelAutoAdvance();
-            if (this.autoPlaySpeed > 0) this.scheduleAutoAdvance();
+            if (this.autoPlay) this.scheduleAutoAdvance();
         },
 
         /**
-         * Queue the next auto-advance after the delay for the current speed tier.
-         * Cancels any pending timer first. No-op when the story view is hidden,
-         * options are showing, or there is no next reachable line.
+         * The one owner of both auto-play clocks: queue the next advance after the
+         * reader's 자동 진행 delay or — at the end of the path — the E2 card's 8 s
+         * countdown. No-op while typing (onLineShown re-calls it), at a choice,
+         * with settings or the LOG open, or when the tab is hidden; every one of
+         * those re-calls it when it clears. The hairline shows the line wait.
          */
         scheduleAutoAdvance() {
             this.cancelAutoAdvance();
-            if (this.autoPlaySpeed <= 0) return;
-
-            // Don't schedule if we're on an options line, at path end, or if the
-            // story view isn't visible.
-            if (!this.isStoryViewActive()) return;
-            const optionsShowing = this.elements.optionsBox?.children.length > 0;
-            if (optionsShowing) return;
-            if (!this.hasReachableNextDisplayable()) return;
-
-            const delay = this.AUTO_PLAY_DELAYS_MS[this.autoPlaySpeed] || 4000;
+            if (!this.autoPlay || !this.isStoryViewActive() || document.hidden) return;
+            if (this.settingsPanel?.isOpen() || this.typewriter?.isTyping()) return;
+            if (this.elements.scriptModalOverlay && !this.elements.scriptModalOverlay.classList.contains('hidden')) return;
+            if (this.elements.optionsBox?.children.length > 0) return;
+            if (!this.hasReachableNextDisplayable()) {
+                const cardShown = this.elements.upNext && !this.elements.upNext.classList.contains('hidden');
+                if (cardShown && !this._upNextCancelled) this.startUpNextCountdown();
+                return;
+            }
+            const delay = AUTO_DELAY_MS[this.settings?.autoSpeed] || 4000;
+            this.elements.dialogueBox.classList.remove('is-counting');
+            void this.elements.dialogueBox.offsetWidth;   // restart the hairline animation
+            this.elements.dialogueBox.classList.add('is-counting');
             this._autoPlayTimer = setTimeout(() => {
                 this._autoPlayTimer = null;
                 // Guard again at fire time — state may have changed.
-                if (this.autoPlaySpeed <= 0) return;
-                if (!this.isStoryViewActive()) return;
+                if (!this.autoPlay || !this.isStoryViewActive()) return;
                 if (this.elements.optionsBox?.children.length > 0) return;
                 this.advanceStory();
             }, delay);
         },
 
-        /** Clear the pending auto-advance timer, if any. */
+        /** Stop both auto-play clocks (the line wait and the E2 countdown). */
         cancelAutoAdvance() {
-            if (this._autoPlayTimer != null) {
-                clearTimeout(this._autoPlayTimer);
-                this._autoPlayTimer = null;
-            }
+            if (this._autoPlayTimer != null) { clearTimeout(this._autoPlayTimer); this._autoPlayTimer = null; }
+            this.elements.dialogueBox?.classList.remove('is-counting');
+            this.cancelUpNextCountdown();
+        },
+
+        /** E2: count 8 s down inside the card, then play the next story. */
+        startUpNextCountdown() {
+            this.cancelUpNextCountdown();
+            const el = this.elements;
+            if (!this.autoPlay || !this.nextMemory || !el.upNext) return;
+            el.upNext.classList.add('is-counting');
+            el.upNextCount.textContent = `${this.UP_NEXT_COUNTDOWN_MS / 1000}초 후 자동 재생`;
+            showElement(el.upNextCount);
+            showElement(el.upNextCancel);
+            const next = this.nextMemory;
+            this._upNextTimer = setTimeout(() => {
+                this._upNextTimer = null;
+                if (this.isStoryViewActive() && this.nextMemory === next) this.startStory(next);
+            }, this.UP_NEXT_COUNTDOWN_MS);
+        },
+
+        cancelUpNextCountdown() {
+            if (this._upNextTimer != null) { clearTimeout(this._upNextTimer); this._upNextTimer = null; }
+            const el = this.elements;
+            el.upNext?.classList.remove('is-counting');
+            if (el.upNextCount) hideElement(el.upNextCount);
+            if (el.upNextCancel) hideElement(el.upNextCancel);
         },
 
         /**
@@ -590,6 +620,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (specialLink) {
                     card.classList.add('world-story-link');
                 }
+                this.decorateReadCount(card, eventId, Number(event.memoryCount) || this.config.getEventMemories(event)?.length || 0);
                 this.elements.eventGrid.appendChild(card);
             });
         },
@@ -676,6 +707,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         () => this.startStory(memory),
                         memory.id
                     );
+                    this.decorateReadCheckbox(card, eventId, memory.id);
                     this.elements.memoryGrid.appendChild(card);
                 });
             }
@@ -704,6 +736,8 @@ document.addEventListener('DOMContentLoaded', () => {
          * they left off.
          */
         returnToMemorySelection() {
+            this.hideUpNext();
+            this.cancelAutoAdvance();
             this.updateUrl(this.currentEventId);
             this.switchView(this.elements.memorySelectionView, false); // Don't scroll to top when going back
 
@@ -841,70 +875,66 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // The event/chapter grids do not consume painting metadata. Wait
-            // for it only at the first playback boundary so the initial line's
-            // portrait and painting render deterministically. Failure remains
-            // non-fatal and is retried by a later story activation.
-            await this.ensureExpressionManifest();
-
             hideElement(this.elements.fadeOverlay, true);
-
-            this.currentStoryScript = story.scripts;
-            this.currentMemoryId = memory.id;
-            this.scriptIndex = 0;
-            this.lastPortraitUrl = null;
-            this.currentBgm = null;
-            this.currentStoryDefaultBgUrl = null;
-            this.activeOptionFlag = null;
-
-            // Auto-play resets to OFF at the start of every story. Carrying
-            // the previous story's auto state over surprised users, and a
-            // persistent "active" state combined with poor dark-mode contrast
-            // made the button look like it had disappeared.
-            this.autoPlaySpeed = 0;
-            this.cancelAutoAdvance();
-            this.updateAutoPlayButton();
-            this.lastOptionIndex = -1;
-
-            // Clear any existing paintings from previous story
-            this.clearPaintings();
-
-
-            // Reset caches for new story
-            this.cachedBackground = {
-                url: null,
-                isBlack: false,
-                lastIndex: -1
-            };
-            this.scriptNavCache = null;
-            this.cachedTranscript = null;
-
-            if (memory.mask) {
-                this.currentStoryDefaultBgUrl = `${this.BASE_URL}${memory.mask}.webp`;
-            }
 
             const event = this.storylineData[this.currentEventId];
             const memories = this.config.getEventMemories(event);
             const index = memories.findIndex(mem => mem.id == memory.id);
-            this.nextMemory = (index >= 0 && index < memories.length - 1) ? memories[index + 1] : null;
-
             const eventName = event?.name || 'Event';
-            this.elements.storyTitle.textContent = `${eventName} - ${memory.title || memory.name || 'Chapter'}`;
 
-            if (updateUrl) {
-                this.updateUrl(this.currentEventId, memory.id);
-            }
+            if (updateUrl) this.updateUrl(this.currentEventId, memory.id);
 
             const imagesToPreload = new Set();
-            if (this.currentStoryDefaultBgUrl) imagesToPreload.add(this.currentStoryDefaultBgUrl);
-            const firstBgLine = this.currentStoryScript.find(line => line.bgName);
+            if (memory.mask) imagesToPreload.add(`${this.BASE_URL}${memory.mask}.webp`);
+            const firstBgLine = story.scripts.find(line => line.bgName);
             if (firstBgLine) imagesToPreload.add(`${this.BASE_URL}bg/${firstBgLine.bgName}.webp`);
             imagesToPreload.forEach(src => { new Image().src = src; });
 
-            this.buildNavigationCache();
-
-            this.renderScriptLine();
+            await this.beginScript({
+                scripts: story.scripts,
+                memoryId: memory.id,
+                title: `${eventName} - ${memory.title || memory.name || 'Chapter'}`,
+                mask: memory.mask,
+                nextMemory: (index >= 0 && index < memories.length - 1) ? memories[index + 1] : null,
+            });
             this.switchView(this.elements.storyViewerView);
+            // Line 0 rendered while the grid was still showing, so auto-play saw an
+            // inactive view; arm it now (a no-op while the line is typing).
+            this.scheduleAutoAdvance();
+        },
+
+        /**
+         * Reset every per-story field, make sure the stage data is loaded, and
+         * render line 0. Shared by startStory and child-story.js playStory so a
+         * per-story behaviour lives in exactly one place.
+         */
+        async beginScript({ scripts, memoryId, eventId, title, mask, nextMemory }) {
+            // The event/chapter grids do not consume painting metadata. Wait
+            // for it only at the first playback boundary so the initial line's
+            // portrait and painting render deterministically. Failure remains
+            // non-fatal and is retried by a later story activation.
+            const [, frames] = await Promise.all([this.ensureExpressionManifest(), ensurePaintingFrames()]);
+            this.paintingFrames = frames;
+            this.cancelFlashTransition();
+            this.cancelAutoAdvance();
+            this.currentStoryScript = scripts;
+            if (eventId != null) this.currentEventId = eventId;
+            this.currentMemoryId = memoryId;
+            this.scriptIndex = 0;
+            this.lastPortraitUrl = null;
+            this.currentBgm = null;
+            this.activeOptionFlag = null;
+            this.lastOptionIndex = -1;
+            this.currentStoryDefaultBgUrl = mask ? `${this.BASE_URL}${mask}.webp` : null;
+            this.cachedBackground = { url: null, isBlack: false, lastIndex: -1 };
+            this.scriptNavCache = null;
+            this.cachedTranscript = null;
+            this.nextMemory = nextMemory || null;
+            this.clearPaintings();
+            this.elements.storyTitle.textContent = title;
+            this.buildNavigationCache();
+            this.renderScriptLine();
+            this.refreshReadMarks(this.elements.storyViewerView);
         },
 
         /**
@@ -951,10 +981,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 // resume, and jumps should NOT re-trigger blackouts.
                 this._playFlashOnNextRender = true;
                 this.renderAfterFlashCover();
-            } else {
-                // At end of reachable path
-                this.renderScriptLine();
             }
+            // At the end of the reachable path the line already shows its end
+            // state (E2 card / branch panel) — re-rendering would retype it.
         },
 
         /**
@@ -1035,6 +1064,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // the pending transition (the completion callback nulls the
             // handle before calling us, so this no-ops on that path).
             this.cancelFlashTransition();
+            this.hideUpNext();
+            this.typewriter?.cancel();
             if (this.scriptIndex >= this.currentStoryScript.length) return;
             const line = this.currentStoryScript[this.scriptIndex];
             const el = this.elements;
@@ -1117,46 +1148,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 // the same).
                 this.renderActorName(displayedName, line);
 
-                // Resolve the portrait URL on EVERY line — same candidate
-                // chain as the painting compositor, so the dialog face tracks
-                // per-line expression changes instead of freezing on the
-                // first face of a same-speaker run (the old speaker-id gate).
-                // Cheap: two manifest lookups + a small array scan; the <img>
-                // below is only rebuilt when the resolved URL changes, so
-                // same-face runs cause no reload or flicker.
-                let portraitIcon = actorInfo.icon;
-                if (typeof line.actor === 'number' && line.actor > 0) {
-                    const faceUrl = resolvePortraitFaceUrl(this.getExpressionData(line.actor), line.expression);
-                    if (faceUrl) portraitIcon = faceUrl;
-                }
-
-                if (portraitIcon !== this.lastPortraitUrl) {
-                    if (portraitIcon) {
-                        const img = document.createElement('img');
-                        img.src = portraitIcon;
-                        img.alt = actorInfo.name;
-                        img.onerror = () => {
-                            if (actorInfo.icon && img.src !== actorInfo.icon) {
-                                img.src = actorInfo.icon;
-                            } else {
-                                hideElement(el.actorPortrait);
-                            }
-                        };
-                        el.actorPortrait.textContent = '';
-                        el.actorPortrait.appendChild(img);
-                        showElement(el.actorPortrait);
-                    } else {
-                        el.actorPortrait.textContent = '';
-                        hideElement(el.actorPortrait);
-                    }
-                    this.lastPortraitUrl = portraitIcon;
-                }
+                // The band image is the step's own `portrait` (storyicon), never
+                // the speaker's painting — game dialoguestoryplayer.lua UpdatePortrait.
+                this.renderBandPortrait(resolveStoryPortrait(line, this.BASE_URL), actorInfo.name);
 
                 // The KR client remaps several legacy nameColor values
                 // (dialoguestep.lua:14-32) — apply the same correction.
                 el.actorName.style.color = line.nameColor ? correctKrNameColor(line.nameColor) : '';
-
-                el.actorPortrait.classList.toggle('actor-shadow', line.actorShadow === true);
             }
 
             const hasOptions = line.options && line.options.length > 0;
@@ -1167,16 +1165,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const isAtPathEnd = !nextDisplayableExists;
 
             toggleElement(el.nextLineBtn, !(hasOptions || !nextDisplayableExists));
-            toggleElement(el.returnBtn, isAtFileEnd || isAtPathEnd);
 
-            // If the user has reached the end of a branch (but not the end of the
-            // script), surface a hint so they know they can rewind and try the
-            // other choice. We distinguish "end of branch" from "end of file" by
-            // checking whether there are actually unreachable lines beyond us.
+            // End of a branch (but not of the script): offer the last decision
+            // point. "End of branch" vs "end of file" = are there lines beyond us
+            // that this path cannot reach.
             const isBranchDeadEnd = isAtPathEnd && !isAtFileEnd && !hasOptions;
-            this.setBranchEndHint(isBranchDeadEnd);
-
-            toggleElement(el.nextStoryBtn, (isAtFileEnd || isAtPathEnd) && this.nextMemory);
+            toggleElement(el.branchEnd, isBranchDeadEnd);
+            this.showUpNext((isAtFileEnd || isAtPathEnd) && !hasOptions);
             toggleElement(el.nextPageIndicator, !(isAtPathEnd || hasOptions));
 
             this.updateProgressIndicator();
@@ -1195,29 +1190,148 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
 
+            if (line.say && !hasSequenceContent) this.revealLine();
+            else this.scheduleAutoAdvance();
+        },
+
+        /** Type the current line out (reader setting), or show it at once. */
+        revealLine() {
+            const el = this.elements;
+            const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const s = this.settings || { reveal: 'instant', cps: 40 };
+            if (s.reveal === 'type' && !reduced) {
+                el.dialogueText.setAttribute('aria-busy', 'true');
+                el.storyViewerView.dataset.typing = '1';
+                this.typewriter.start(el.dialogueText, s.cps, () => this.onLineShown());
+            } else {
+                this.onLineShown();
+            }
+        },
+
+        /** The current line is fully visible: announce it once, then let auto-play continue. */
+        onLineShown() {
+            const el = this.elements;
+            el.dialogueText.setAttribute('aria-busy', 'false');
+            el.storyViewerView.dataset.typing = '0';
+            if (el.lineStatus) el.lineStatus.textContent = `${el.actorName.textContent} ${el.dialogueText.textContent}`.trim();
             this.scheduleAutoAdvance();
         },
 
-        /**
-         * Show/hide a small hint element near the dialogue area when the user
-         * has reached the end of a branch but the story has more content behind
-         * other choices. Injected once, then toggled.
-         */
-        setBranchEndHint(show) {
-            let hint = this.elements.branchEndHint;
-            if (!hint && show) {
-                hint = document.createElement('div');
-                hint.id = 'branch-end-hint';
-                hint.className = 'branch-end-hint';
-                hint.textContent = '이 분기의 끝입니다. 뒤로 가서 다른 선택을 해보세요.';
-                // Mount below the dialogue box; fall back to viewerContainer.
-                const host = this.elements.dialogueBox?.parentNode || this.elements.viewerContainer;
-                host?.appendChild(hint);
-                this.elements.branchEndHint = hint;
+        /** Advance, or finish a line that is still typing. */
+        nextOrFinish() {
+            if (this.typewriter?.isTyping()) { this.typewriter.finish(); return; }
+            if (this.elements.optionsBox.children.length === 0) this.advanceStory();
+        },
+
+        /** Hide the chrome/band/choices to look at the art; a tap or H restores. */
+        setUiHidden(hidden) {
+            this.uiHidden = hidden;
+            this.elements.storyViewerView.dataset.ui = hidden ? 'hidden' : 'shown';
+        },
+
+        /** Apply reader settings to the player root, audio and pacing. */
+        applyReaderSettings(s) {
+            this.settings = s;
+            const root = this.elements.storyViewerView;
+            if (!root) return;
+            for (const [name, value] of Object.entries(settingsToCssVars(s))) {
+                if (value == null) root.style.removeProperty(name); else root.style.setProperty(name, value);
             }
-            if (hint) {
-                toggleElement(hint, !!show);
+            root.style.setProperty('--auto-ms', `${AUTO_DELAY_MS[s.autoSpeed]}ms`);
+            ensureFontLoaded(s.font);
+            this.audio.volume = s.volume / 100;
+            this.audio.muted = s.volume === 0;
+        },
+
+        /** The E2 ending card. Countdown + read marking arrive in Tasks C6/C7. */
+        showUpNext(atEnd) {
+            const el = this.elements;
+            if (!atEnd || !el.upNext) return;
+            el.upNextTitle.textContent = this.nextMemory
+                ? (this.nextMemory.title || this.nextMemory.name || '')
+                : '마지막 이야기입니다';
+            toggleElement(el.nextStoryBtn, !!this.nextMemory);
+            showElement(el.upNext);
+            toggleElement(el.upNextRead, this.markCurrentStoryRead());
+            // The countdown starts from scheduleAutoAdvance once the last line is shown.
+        },
+
+        hideUpNext() {
+            this._upNextCancelled = false;
+            this.cancelUpNextCountdown();
+            if (this.elements.upNext) hideElement(this.elements.upNext);
+        },
+
+        // ===== Read tracking (story.readlog.js) =====
+
+        /** Read-log scope: memory ids are only unique within one story source. */
+        readScope() { return this.config.viewerType || 'story'; },
+
+        /** Mark the open story read; returns true when this call newly marked it. */
+        markCurrentStoryRead() {
+            const scope = this.readScope();
+            if (!this.readLog || this.currentEventId == null || this.currentMemoryId == null) return false;
+            if (this.readLog.isRead(scope, this.currentEventId, this.currentMemoryId)) return false;
+            this.readLog.setRead(scope, this.currentEventId, this.currentMemoryId, true);
+            this.refreshReadMarks();
+            return true;
+        },
+
+        /** A role=checkbox toggle on a memory card (secretary's pattern, shared). */
+        decorateReadCheckbox(card, eventId, memoryId) {
+            const box = document.createElement('div');
+            box.className = 'card-checkbox';
+            box.dataset.readEvent = String(eventId);
+            box.dataset.readMemory = String(memoryId);
+            box.setAttribute('aria-label', '읽음 표시');
+            makeKeyboardActivatable(box, (e) => {
+                e.stopPropagation();
+                this.readLog.toggleRead(this.readScope(), eventId, memoryId);
+                this.refreshReadMarks();
+            }, { role: 'checkbox' });
+            card.appendChild(box);
+            this.refreshReadMarks(card);
+        },
+
+        /** A "3 / 8" badge on an event card; a full check once all are read. */
+        decorateReadCount(card, eventId, total) {
+            if (!total) return;
+            const badge = document.createElement('span');
+            badge.className = 'read-count';
+            badge.dataset.readEvent = String(eventId);
+            badge.dataset.readTotal = String(total);
+            card.appendChild(badge);
+            this.refreshReadMarks(card);
+        },
+
+        /** Re-sync every read mark under `root` (a card, or the whole page). */
+        refreshReadMarks(root = document) {
+            if (!this.readLog) return;
+            const scope = this.readScope();
+            root.querySelectorAll('.card-checkbox[data-read-memory]').forEach((box) => {
+                const read = this.readLog.isRead(scope, box.dataset.readEvent, box.dataset.readMemory);
+                box.classList.toggle('completed', read);
+                box.setAttribute('aria-checked', String(read));
+                box.closest('.grid-card, [class*="-card"]')?.classList.toggle('completed-card', read);
+            });
+            root.querySelectorAll('.read-count[data-read-total]').forEach((badge) => {
+                const n = this.readLog.countRead(scope, badge.dataset.readEvent);
+                const total = Number(badge.dataset.readTotal);
+                badge.textContent = n >= total ? '✓ 다 읽음' : `${n} / ${total}`;
+                toggleElement(badge, n > 0);
+                badge.classList.toggle('is-complete', n >= total);
+            });
+            if (this.elements.readMark && this.currentMemoryId != null) {
+                toggleElement(this.elements.readMark, this.readLog.isRead(scope, this.currentEventId, this.currentMemoryId));
             }
+        },
+
+        /** ↶ 마지막 선택지로: re-show the last decision point's options. */
+        jumpToLastChoice() {
+            if (this.lastOptionIndex < 0) return;
+            this.activeOptionFlag = null;
+            this.scriptIndex = this.lastOptionIndex;
+            this.renderScriptLine();
         },
 
         /**
@@ -1301,6 +1415,38 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         /**
+         * Show (or clear) the band portrait. Rebuilds the <img> only when the
+         * resolved URL changes, so a same-portrait run never reloads. A failed
+         * load hides the slot — a portrait can ship before its extraction runs.
+         */
+        renderBandPortrait(portrait, alt) {
+            const box = this.elements.actorPortrait;
+            // A storyicon that 404'd stays hidden for the page: a speaker run shares
+            // it, and re-arming the bust padding on every line would leave a gap.
+            const url = portrait && !this.failedPortraitUrls.has(portrait.url) ? portrait.url : null;
+            this.elements.dialogueBox.classList.toggle('has-portrait', !!url);
+            this.elements.dialogueBox.classList.toggle('has-mini-portrait', !!url && portrait.mini);
+            box.classList.toggle('is-mini', !!url && portrait.mini);
+            box.classList.toggle('portrait-noise', !!url && portrait.noise);
+            if (url === this.lastPortraitUrl) return;
+            this.lastPortraitUrl = url;
+            box.textContent = '';
+            if (!url) { hideElement(box); return; }
+            const img = document.createElement('img');
+            img.alt = alt || '';
+            img.decoding = 'async';
+            img.addEventListener('error', () => {
+                this.failedPortraitUrls.add(url);
+                if (this.lastPortraitUrl !== url) return;
+                hideElement(box);
+                this.elements.dialogueBox.classList.remove('has-portrait', 'has-mini-portrait');
+            }, { once: true });
+            img.src = url;
+            box.appendChild(img);
+            showElement(box);
+        },
+
+        /**
          * Render dialogue text with <color=#XXX>...</color> tags into a target
          * element using DOM nodes (no innerHTML). Text inside color tags is
          * inserted via textContent, so any other HTML in the raw data is
@@ -1341,7 +1487,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // ===== Helpers: Visual & Audio =====
 
         /**
-         * Resolve display info (id, name, icon) for a script line's speaker.
+         * Resolve display info (id, name) for a script line's speaker.
          * Handles the many ways the game identifies actors: numeric IDs, string
          * names, actorName overrides, Commander (actor 0), world-viewer Narrator,
          * {namecode:N} placeholders, and pure narration lines with no speaker.
@@ -1349,19 +1495,17 @@ document.addEventListener('DOMContentLoaded', () => {
         getActorInfo(line) {
             const isKorean = (text) => /[\uAC00-\uD7AF]/.test(text || '');
 
-            // Narration: no actor or actorName. A distinct ID forces the renderer
-            // to clear the previous character's portrait.
+            // Narration: no actor or actorName.
             if (line.actor == null && !line.actorName) {
-                return { id: 'no-actor', name: '', icon: null };
+                return { id: 'no-actor', name: '' };
             }
 
-            // Named character with no numeric actor ID — show name, no portrait.
-            // Using the name as ID ensures the UI updates when the speaker changes.
+            // Named character with no numeric actor ID — show the name as given.
             if (line.actor == null && line.actorName && isKorean(line.actorName)) {
-                return { id: line.actorName, name: line.actorName, icon: null };
+                return { id: line.actorName, name: line.actorName };
             }
 
-            let actorInfo = { id: null, name: '', icon: null };
+            let actorInfo = { id: null, name: '' };
 
             // Step 1: Base actor from line.actor
             let baseActorId = null;
@@ -1373,7 +1517,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (this.shipgirlData[baseActorId]) {
                 const char = this.shipgirlData[baseActorId];
-                actorInfo = { id: baseActorId, name: char.name, icon: char.icon };
+                actorInfo = { id: baseActorId, name: char.name };
             }
 
             // Step 2: actorName overrides
@@ -1383,7 +1527,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     const overrideChar = this.shipgirlData[actorNameId];
                     actorInfo.id = actorNameId;
                     actorInfo.name = overrideChar.name;
-                    actorInfo.icon = overrideChar.icon;
                 } else {
                     actorInfo.id = line.actorName;
                     actorInfo.name = line.actorName;
@@ -1392,12 +1535,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Step 3: Special cases — Commander, world-viewer Narrator
             if ((line.actor === 0 || line.portrait === 'zhihuiguan') && !line.actorName) {
-                actorInfo = { id: 0, name: '지휘관', icon: this.COMMANDER_ICON_PATH };
+                actorInfo = { id: 0, name: '지휘관' };
             } else if (this.config.viewerType === 'world' && line.say && !line.actor && !line.actorName) {
                 actorInfo.name = (line.say.includes('·') || line.say.includes('————')) ? 'Narrator' : '지휘관';
-                if (actorInfo.name === '지휘관') {
-                    actorInfo.icon = this.COMMANDER_ICON_PATH;
-                }
             } else if (actorInfo.name === '') {
                 actorInfo.name = 'Narrator';
             }
@@ -1414,12 +1554,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Step 5: Numeric-only names are raw IDs with no translation — show as Narrator
             if (!isNaN(parseInt(actorInfo.name, 10)) && String(actorInfo.name).indexOf('{') === -1) {
                 actorInfo.name = 'Narrator';
-            }
-
-            // Step 6: Clear portrait for non-character speakers
-            const nonCharacterNames = ['Narrator', '통신기', '분석기', '모두들'];
-            if (nonCharacterNames.includes(actorInfo.name) || actorInfo.name?.includes('?')) {
-                actorInfo.icon = null;
             }
 
             return actorInfo;
@@ -1502,7 +1636,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 overlay = document.createElement('div');
                 overlay.className = 'story-oldphoto-overlay';
                 overlay.setAttribute('aria-hidden', 'true');
-                this.elements.viewerContainer.appendChild(overlay);
+                // Inside the stage (spec: overlays inside the stage), so it tints
+                // the scene and never the band or chrome above it.
+                const stage = this.elements.storyViewerView?.querySelector('.story-stage-canvas');
+                (stage || this.elements.viewerContainer).appendChild(overlay);
                 this.elements.oldPhotoOverlay = overlay;
             }
             if (spec) {
@@ -1719,25 +1856,13 @@ document.addEventListener('DOMContentLoaded', () => {
             this.updateAudioPlayerUI();
         },
 
-        /** Sync the audio player button icons and volume slider to the audio element's current state. */
+        /** Sync the ♪ chip's play/pause icon and playing state. */
         updateAudioPlayerUI() {
-            const el = this.elements;
-            if (!el.playPauseBtn || !el.muteBtn || !el.volumeSlider) return;
-
-            if (!el.playPauseIcon) {
-                el.playPauseIcon = el.playPauseBtn.querySelector('.material-symbols-outlined');
-            }
-            if (!el.muteIcon) {
-                el.muteIcon = el.muteBtn.querySelector('.material-symbols-outlined');
-            }
-
-            el.playPauseIcon.textContent = this.audio.paused ? 'play_arrow' : 'pause';
-            el.muteIcon.textContent = this.audio.muted || this.audio.volume === 0 ? 'volume_off' : 'volume_up';
-            el.volumeSlider.value = this.audio.muted ? 0 : this.audio.volume;
-
-            if (el.audioPlayerContainer) {
-                el.audioPlayerContainer.classList.toggle('playing', !this.audio.paused);
-            }
+            const btn = this.elements.playPauseBtn;
+            if (!btn) return;
+            this.elements.playPauseIcon ??= btn.querySelector('.material-symbols-outlined');
+            this.elements.playPauseIcon.textContent = this.audio.paused ? 'play_arrow' : 'pause';
+            this.elements.audioPlayerContainer?.classList.toggle('playing', !this.audio.paused);
         },
 
         /** Display an error message in the error container for 5 seconds. */
@@ -1749,26 +1874,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         /** Update the line-count and progress-bar UI based on the current script position. */
         updateProgressIndicator() {
-            if (!this.elements.progressIndicator) return;
-
-            const totalLines = this.currentStoryScript.length;
-            const currentLine = this.scriptIndex + 1;
-            const percentage = Math.round((currentLine / totalLines) * 100);
-
-            const indicator = this.elements.progressIndicator;
-            indicator.textContent = '';
-
-            const text = document.createElement('div');
-            text.className = 'progress-text';
-            text.textContent = `${currentLine} / ${totalLines}`;
-
-            const barContainer = document.createElement('div');
-            barContainer.className = 'progress-bar-container';
-            const barFill = document.createElement('div');
-            barFill.className = 'progress-bar-fill';
-            barFill.style.width = `${percentage}%`;
-            barContainer.appendChild(barFill);
-            indicator.append(text, barContainer);
+            if (this.elements.progressIndicator) this.elements.progressIndicator.textContent = `${this.scriptIndex + 1} / ${this.currentStoryScript.length}`;
         },
 
         // ===== Modals =====
@@ -1780,6 +1886,7 @@ document.addEventListener('DOMContentLoaded', () => {
          */
         showFullScript() {
             if (!this.currentStoryScript || this.currentStoryScript.length === 0) return;
+            this.cancelAutoAdvance();   // reading the log pauses auto-play; hideFullScript resumes
 
             const key = `story:${this.currentEventId}:${this.currentMemoryId}`;
             if (this.cachedTranscript?.key !== key) {
@@ -1843,7 +1950,7 @@ document.addEventListener('DOMContentLoaded', () => {
             el.fullScriptContent.scrollTop = 0;
             showElement(el.scriptModalOverlay);
         },
-        hideFullScript() { hideElement(this.elements.scriptModalOverlay); },
+        hideFullScript() { hideElement(this.elements.scriptModalOverlay); this.scheduleAutoAdvance(); },
 
         /** Copy the open transcript as plain text (deterministic 화자: 대사 grammar). */
         copyTranscript() {

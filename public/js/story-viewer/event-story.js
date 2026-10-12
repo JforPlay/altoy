@@ -71,6 +71,7 @@ function renderEventGrid(viewer, searchTerm) {
                 },
                 ev.id
             );
+            viewer.decorateReadCount(card, ev.id, Number(ev.memoryCount) || 0);
 
             if (!ev.icon) {
                 const thumb = card.querySelector('.card-thumbnail');

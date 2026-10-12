@@ -202,6 +202,7 @@
 .navi-card,
 .tb-card,
 .lora-card {
+  position: relative;   /* anchors the read checkbox (story-viewer.read-marks.css) */
   background: white;
   border-radius: 16px;
   overflow: hidden;

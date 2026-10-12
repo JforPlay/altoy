@@ -11,7 +11,7 @@
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { computePaintingStateAt, resolvePortraitFaceUrl } from '../../public/js/story-viewer/story.painting.js';
+import { computePaintingStateAt } from '../../public/js/story-viewer/story.painting.js';
 import { pickFaceCandidates } from '../../public/js/expression-face.js';
 
 const MANIFEST = {
@@ -226,22 +226,44 @@ test('no faces → no candidates', () => {
     assert.deepEqual(pickFaceCandidates(null, '1'), []);
 });
 
-// ---- resolvePortraitFaceUrl: dialog-portrait face URL --------------------
-// The portrait must resolve through the SAME chain as the painting
-// compositor, or the dialog face and the mid-screen face drift apart.
-
-test('portrait URL: explicit expression resolves to that face', () => {
-    const data = { faces: ['1', '3'], faceUrlTemplate: 'u/face_{faceId}.png' };
-    assert.equal(resolvePortraitFaceUrl(data, 3), 'u/face_3.png');
-    assert.equal(resolvePortraitFaceUrl(data, '1'), 'u/face_1.png');
+test('a faceless painting renders through the frames file', () => {
+    const ctx = { ...ctxWith([{ actor: 107010, side: 2, say: 'hi' }]),
+        paintingFrames: { '107010': [10, 20, 30, 40, 500, 600] } };
+    const s = computePaintingStateAt(ctx, 0);
+    assert.equal(s.paintings.get(2)?.actorId, 107010);
 });
 
-test('portrait URL: no expression follows the default-first chain', () => {
-    const data = { faces: ['0', '2', '5'], default: '5', faceUrlTemplate: 'u/face_{faceId}.png' };
-    assert.equal(resolvePortraitFaceUrl(data, undefined), 'u/face_5.png');
+test('getExpressionData prefers manifest entries, then frames-only rows', async () => {
+    const { getExpressionData } = await import('../../public/js/story-viewer/story.painting.js');
+    const ctx = { expressionManifest: MANIFEST, BASE_URL: 'base/',
+        paintingFrames: { '101': [1, 2, 3, 4, 100, 200], '999_n': [5, 6, 7, 8, 90, 80] } };
+    const a = getExpressionData(ctx, 101);
+    assert.deepEqual(a.frame, [1, 2, 3, 4]);
+    assert.equal(a.type, 'painting');
+    const b = getExpressionData(ctx, 999);
+    assert.deepEqual(b.size, [90, 80]);
+    assert.equal(b.type, 'painting_n');
+    assert.deepEqual(b.faces, []);
+    assert.equal(getExpressionData({ ...ctx, paintingFrames: null }, 999), null);
 });
 
-test('portrait URL: no manifest data or no faces → null', () => {
-    assert.equal(resolvePortraitFaceUrl(null, 1), null);
-    assert.equal(resolvePortraitFaceUrl({ faces: [], faceUrlTemplate: 'u/face_{faceId}.png' }, 1), null);
+test('a frame whose [W, H] is not the painting size is dropped (stale frames row)', async () => {
+    const { getExpressionData } = await import('../../public/js/story-viewer/story.painting.js');
+    const ctx = { expressionManifest: MANIFEST, BASE_URL: 'base/',
+        paintingFrames: { '101': [1, 2, 3, 4, 100, 201] } };
+    const d = getExpressionData(ctx, 101);
+    assert.equal(d.frame, null);
+    assert.deepEqual(d.size, [100, 200]);
+});
+
+test('painting state carries actorPosition and actorScale', () => {
+    const s = stateAtEnd([{ actor: 101, side: 2, say: 'a', actorPosition: { x: 5, y: 6 }, actorScale: 1.2 }]);
+    assert.deepEqual(s.paintings.get(2).actorPosition, { x: 5, y: 6 });
+    assert.equal(s.paintings.get(2).actorScale, 1.2);
+});
+
+test('a failed expression manifest renders no painting (never the bare hole-punched base)', async () => {
+    const { getExpressionData } = await import('../../public/js/story-viewer/story.painting.js');
+    const ctx = { expressionManifest: null, BASE_URL: 'base/', paintingFrames: { '101': [1, 2, 3, 4, 100, 200] } };
+    assert.equal(getExpressionData(ctx, 101), null);
 });
