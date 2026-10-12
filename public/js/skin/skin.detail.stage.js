@@ -939,15 +939,21 @@ function adoptDock(toViewer) {
 function renderViewer() {
     const asset = state.assets[state.active];
     if (!asset) return;
+    const node = assetNode(asset);
+    // 이미지 저장 snapshots the composite canvas, which is capped below native on
+    // large paintings (MAX_COMPOSITE_DIM) — so 원본 alone would promise a file
+    // bigger than the one saved. The canvas is sized from the manifest up front.
+    const canvas = node.querySelector('canvas.base-image');
+    const saved = canvas && canvas.width !== asset.w ? ` · 저장 ${canvas.width} × ${canvas.height}` : '';
     state.viewer.name.textContent = state.skinName;
     state.viewer.meta.textContent = (asset.w && asset.h)
-        ? `${asset.label} 일러스트 · 원본 ${asset.w} × ${asset.h}`
+        ? `${asset.label} 일러스트 · 원본 ${asset.w} × ${asset.h}${saved}`
         : `${asset.label} 일러스트`;
     // A skin with one art object has nothing to step to; SD-only skins are the
     // common case there. The name of the art object is already the head's own
     // `meta` line, so the stepper carries no second label.
     toggleElement(state.viewer.nav, state.assets.length > 1);
-    state.viewer.fit.replaceChildren(assetNode(asset));
+    state.viewer.fit.replaceChildren(node);
     applyFit(state.viewer.fit, asset, 'contain');
     toggleElement(state.viewer.foot, !!asset.faces);
     if (asset.faces) renderFaceSelection();
