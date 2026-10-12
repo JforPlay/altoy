@@ -168,7 +168,8 @@
 
 /* Carries .sdv-glass from the console sheet — same material as the 일러 column
    and the 표정 dock, so the three float as one set rather than three widgets. */
-.sdv-art-full {
+.sdv-art-full,
+.sdv-art-hx {
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;
@@ -194,15 +195,24 @@
    discs are just the one that sits on top of the picture. :focus-visible is
    untouched, so keyboard users keep their affordance on every device. */
 @media (hover: hover) {
-    .sdv-art-full:hover {
+    .sdv-art-full:hover,
+    .sdv-art-hx:hover {
         background: rgba(28, 38, 46, 0.86);
         border-color: rgba(255, 255, 255, 0.18);
     }
 }
 
-.sdv-art-full:focus-visible {
+.sdv-art-full:focus-visible,
+.sdv-art-hx:focus-visible {
     outline: none;
     box-shadow: var(--focus-ring);
+}
+
+/* 검열판 on — the one caption button that is a toggle. */
+.sdv-art-hx[aria-pressed="true"] {
+    background: var(--highlight-medium);
+    border-color: var(--highlight-strong);
+    color: #fff;
 }
 
 /* =============================================================================

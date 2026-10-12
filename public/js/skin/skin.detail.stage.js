@@ -26,7 +26,8 @@
 import {
     createImgElement, createIcon, lockBodyScroll, unlockBodyScroll,
     downloadImage, sanitizeFilename, showElement, hideElement, toggleElement,
-    getStorageItem, setStorageItem, debounce, observeLazyImages, DATA_FOR_TOY_BASE
+    getStorageItem, setStorageItem, debounce, observeLazyImages, DATA_FOR_TOY_BASE,
+    DATA_FOR_TOY_MISC_BASE
 } from '../utils.js';
 import { pickFaceCandidates } from '../expression-face.js';
 import { buildOverlayContainer, composeOverlay, expUrl } from './skin.expression.js';
@@ -83,6 +84,11 @@ const state = {
     active: -1,
     faceId: null,   // shared across 전체 and 확대: they show one expression
     skinName: '',
+    skin: null,     // the record + manifests on stage, kept so 검열판 can rebuild
+    manifest: null,
+    hx: null,       // 검열판 manifest (data_for_toy_misc), null when unavailable
+    censored: false, // 검열판 on. Off on every visit — deliberately not stored —
+                     // but kept across skins within one.
     dockPinned: false,   // 표정 dock unfolded regardless of hover
     dockFoldTimer: 0,    // pending hover-intent fold (see DOCK_FOLD_DELAY)
     railObserver: null,  // defers off-screen rail thumbs (see railThumb)
@@ -116,7 +122,15 @@ function initStage() {
     fullBtn.type = 'button';
     fullBtn.append(createIcon('fas fa-expand'), document.createTextNode('전체화면 · 저장'));
     fullBtn.addEventListener('click', openViewer);
-    tools?.replaceChildren(fullBtn);
+    // 검열판: the CN client's `_hx` cut of 전체/확대. Shown only for a skin that has one.
+    const hxBtn = el('button', 'sdv-art-hx sdv-glass');
+    hxBtn.type = 'button';
+    hxBtn.setAttribute('aria-pressed', 'false');
+    hxBtn.title = '중국 서버에서 표시되는 일러스트';
+    hxBtn.append(createIcon('fas fa-shirt'), document.createTextNode('검열판'));
+    hxBtn.addEventListener('click', toggleCensored);
+    hideElement(hxBtn);
+    tools?.replaceChildren(hxBtn, fullBtn);
 
     const view = el('div', 'sdv-art-view');
     const fit = el('div', 'sdv-art-fit');
@@ -137,7 +151,7 @@ function initStage() {
     wireDockIntent(dock, shelf.root);
     wireDockVisibility(dock, art);
 
-    state.els = { stage, assetRail, assets, dock, dockHome, tools, art, view, fit, label, fullBtn, shelf };
+    state.els = { stage, assetRail, assets, dock, dockHome, tools, art, view, fit, label, fullBtn, hxBtn, shelf };
     state.viewer = buildViewer();
     state.grid = buildFaceGrid();
     // getStorageItem returns the raw STRING localStorage holds, so the old
@@ -172,16 +186,21 @@ function showStage(on) {
  * @param {Object} skin - a skin record from the skin index
  * @param {Object} manifest - the full expression manifest, keyed by skin id
  * @param {string} [skinName] - human-readable name, used in the viewer + filenames
+ * @param {Object|null} [hx] - the 검열판 manifest (ensureHxManifest), null when unavailable
  */
-function renderStage(skin, manifest, skinName = '') {
+function renderStage(skin, manifest, skinName = '', hx = null) {
     if (!state.els) return;
     closeViewer();
     closeFaceGrid();
 
     state.skinName = skinName;
-    state.assets = buildAssets(skin || {}, manifest || {});
+    state.skin = skin || {};
+    state.manifest = manifest || {};
+    state.hx = hx;
+    state.assets = buildAssets(state.skin, state.manifest);
     state.active = -1;
     state.faceId = null;
+    toggleElement(state.els.hxBtn, state.assets.some(a => a.hasHx));
 
     renderAssetRail();
     if (state.assets.length === 0) {
@@ -210,18 +229,43 @@ function clearStage() {
 }
 
 /**
+ * Flip 검열판 and rebuild the skin's assets in place. The rail keeps its order (a
+ * `_hx` entry only ever replaces a composited asset), so the active art and the
+ * picked face carry over — selectAsset re-adopts the default only if the face is
+ * missing from the new entry.
+ */
+function toggleCensored() {
+    state.censored = !state.censored;
+    state.els.hxBtn.setAttribute('aria-pressed', String(state.censored));
+    const active = Math.max(0, state.active);
+    state.assets = buildAssets(state.skin, state.manifest);
+    renderAssetRail();
+    selectAsset(active);
+}
+
+/**
  * Resolve the skin's art objects in rail order, dropping the ones it lacks.
  * An asset is composited when the manifest knows it and lists faces; otherwise
  * it is the record's plain URL, which is also how 전체/확대 degrade for skins
  * that were never extracted.
+ *
+ * With 검열판 on, a composited asset that has a `_hx` entry paints the CN cut from
+ * data_for_toy_misc instead. A bare `{}` entry keeps the base faces — the pipeline
+ * emits one only when the punched hole is pixel-identical — and a full entry brings
+ * its own patches, so only then does the face directory move too.
  */
 function buildAssets(skin, manifest) {
     const skinId = skin['클뜯 id'];
     const baseDir = skinId ? `${DATA_FOR_TOY_BASE}/output_expressions/${skinId}` : '';
+    const hxDir = skinId ? `${DATA_FOR_TOY_MISC_BASE}/hx/${skinId}` : '';
     const out = [];
 
     for (const def of ASSET_DEFS) {
-        const entry = (skinId && def.baseName) ? manifest[`${skinId}${def.suffix}`] : null;
+        const key = `${skinId}${def.suffix}`;
+        const base = (skinId && def.baseName) ? manifest[key] : null;
+        const hasHx = Boolean(base?.faces?.length && state.hx?.[key]);
+        const hx = hasHx && state.censored ? state.hx[key] : null;
+        const entry = hx?.faces?.length ? hx : base;
         // Sorted numerically for DISPLAY only. The manifest stores `faces` in atlas
         // order, which is arbitrary: the game's no-expression face is usually '0' but
         // can sit anywhere in the array, so the untouched order made the default read
@@ -234,8 +278,9 @@ function buildAssets(skin, manifest) {
         if (faces) {
             const [w, h] = entry.size || [];
             out.push({
-                ...def, entry, faces, baseDir, node: null,
-                url: expUrl(`${baseDir}/${def.baseName}.png`),
+                ...def, entry, faces, hasHx, hx: Boolean(hx), node: null,
+                baseDir: entry === base ? baseDir : hxDir,
+                url: expUrl(`${hx ? hxDir : baseDir}/${def.baseName}.png`),
                 w: w || 0, h: h || 0
             });
         } else if (skin[def.field]) {
@@ -396,9 +441,8 @@ function applyFit(fit, asset, mode = 'width') {
 function renderLabel() {
     const asset = state.assets[state.active];
     if (!asset) return;
-    state.els.label.textContent = (asset.w && asset.h)
-        ? `${asset.label} 일러스트 · ${asset.w} × ${asset.h}`
-        : `${asset.label} 일러스트`;
+    const name = `${asset.label} 일러스트${asset.hx ? ' (검열판)' : ''}`;
+    state.els.label.textContent = (asset.w && asset.h) ? `${name} · ${asset.w} × ${asset.h}` : name;
 }
 
 // ===== Expression shelf =====
@@ -984,7 +1028,7 @@ function closeViewer() {
 async function saveCurrentArt() {
     const asset = state.assets[state.active];
     if (!asset) return;
-    const filename = `${sanitizeFilename(`${state.skinName} ${asset.label} 일러스트`)}.png`;
+    const filename = `${sanitizeFilename(`${state.skinName} ${asset.label} 일러스트${asset.hx ? ' 검열판' : ''}`)}.png`;
 
     if (asset.node?._overlay) {
         if (asset.node._composePromise) await asset.node._composePromise;

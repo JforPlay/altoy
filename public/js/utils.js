@@ -23,7 +23,7 @@ import { syncedStorage } from './synced-storage.js';
  * Must stay in sync with public/sw.js CACHE_VERSION. Bumping just one
  * leaves the other cache stale on first visit. See CLAUDE.md "Cache & Data Versioning".
  */
-const DATA_VERSION = '1.88.0';
+const DATA_VERSION = '1.89.0';
 
 /**
  * localStorage keys that participate in Google Drive sync.
@@ -392,6 +392,13 @@ function createGemIconImg() {
 
 /** Base for the JforPlay/data_for_toy asset host (icons, illustrations, audio, …). */
 export const DATA_FOR_TOY_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main';
+
+/**
+ * Base for JforPlay/data_for_toy_misc — assets kept OUT of data_for_toy on purpose
+ * (today: the CN `_hx` 검열판 paintings under `hx/`, which data_for_toy's extractor
+ * skips by decision).
+ */
+export const DATA_FOR_TOY_MISC_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy_misc/main';
 
 /**
  * Build a data_for_toy asset URL from a repo-relative path.

@@ -39,7 +39,7 @@ import {
     ensureReleaseDates,
     getSkinFilterData,
 } from './skin.data.js';
-import { ensureExpressionManifest } from '../expression-manifest.js';
+import { ensureExpressionManifest, ensureHxManifest } from '../expression-manifest.js';
 import {
     init as initSkinAudio,
     stopCurrentAudio,
@@ -394,10 +394,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         let skin = null;
         let manifest = null;
+        let hxManifest = null;
         try {
-            [skin, manifest] = await Promise.all([
+            [skin, manifest, hxManifest] = await Promise.all([
                 getSkinByName(skinName),
                 ensureExpressionManifest(),
+                // Never rejects (null = no 검열판 toggle), so a third-party host being
+                // down cannot cost the visitor the artwork.
+                ensureHxManifest(),
                 // Resolved for its side effect on the data module; a failure here
                 // must not cost the visitor the artwork, so it degrades to no date.
                 ensureReleaseDates().catch(() => null),
@@ -418,7 +422,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (renderToken !== skinRenderToken) return;
             renderStatus(statusHost, '');
             renderStageHeader(skin, skinName);
-            renderStage(skin, manifest, skinName);
+            renderStage(skin, manifest, skinName, hxManifest);
             renderVoicePanel(skin);
             hideElement(skeleton);
         });
