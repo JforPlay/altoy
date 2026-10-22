@@ -10,11 +10,17 @@
  * Every test gets a fresh browser context, so localStorage (the remembered mode)
  * starts empty → 재생.
  */
+import { readFileSync } from 'node:fs';
 import { test, expect } from '@playwright/test';
+import { isGroupChat } from '../../public/js/chat-viewer/chat-viewer.script.js';
 
 const JUUS = 'chat-viewer/juus/';
 const DORM = 'chat-viewer/dorm3d/';
 const LINE_WAIT = { timeout: 10_000 }; // 재생 shows one line per 1.3 s
+
+// Chip counts follow the committed data, so a data refresh that adds a chat does not break the spec.
+const juusChats = Object.values(JSON.parse(readFileSync(new URL('../../public/data/chat-viewer/juus_chat_data.json', import.meta.url), 'utf8')));
+const GROUP_CHATS = juusChats.filter((stories) => isGroupChat(Object.values(stories)[0])).length;
 
 async function openGanj(page) {
     await page.goto(JUUS);
@@ -183,15 +189,15 @@ test('the 1:1 / 그룹 chips filter the chat list', async ({ page }) => {
     await page.goto(JUUS);
     const rows = page.locator('#chat-list .chat-row:visible');
     await expect(rows.first()).toBeVisible();
-    await expect(rows).toHaveCount(138);
+    await expect(rows).toHaveCount(juusChats.length);
     await page.locator('#chat-filter [data-kind="group"]').click();
-    await expect(rows).toHaveCount(15);
+    await expect(rows).toHaveCount(GROUP_CHATS);
     await expect(page.locator('.chat-row[data-chat="템페스타 채팅방"]')).toBeVisible();
     await page.locator('#chat-filter [data-kind="dm"]').click();
-    await expect(rows).toHaveCount(123);
+    await expect(rows).toHaveCount(juusChats.length - GROUP_CHATS);
     await expect(page.locator('.chat-row[data-chat="템페스타 채팅방"]')).toBeHidden();
     await page.locator('#chat-filter [data-kind="all"]').click();
-    await expect(rows).toHaveCount(138);
+    await expect(rows).toHaveCount(juusChats.length);
 });
 
 test('the sort menu orders the list by added date or name, and is remembered', async ({ page }) => {
