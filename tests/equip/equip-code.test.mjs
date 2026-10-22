@@ -2,7 +2,7 @@
  * equip-code.test.mjs
  * Game-compatible 장비 코드 codec (public/js/equip/equip-code.js).
  * Fixtures come from COMMITTED data files only (CI runs tests before build).
- * Format spec: dev/active/2026-06-30-fleet-sim-enhancements-design.md F3-UPDATE.
+ * Format spec: dev/archive/fleet-sim/2026-06-30-fleet-sim-enhancements-design.md F3-UPDATE.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';

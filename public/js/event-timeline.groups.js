@@ -6,7 +6,7 @@
  * Grouping truth is the explicit 원본ID field on rerun/상시편입 rows in
  * kr_event_timeline.json, pointing at the anchor run's ID. Never fuzzy-matched
  * at runtime — names drift in the hand-maintained data (same lesson as gid
- * linking; the one-off normalizer lives only in dev/seed-event-groups.mjs).
+ * linking; the one-off normalizer lives only in dev/archive/event-timeline-rework/seed-event-groups.mjs).
  */
 
 const MS_PER_DAY = 86400000;

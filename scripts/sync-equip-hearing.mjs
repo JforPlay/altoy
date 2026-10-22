@@ -13,7 +13,7 @@
  * user input and game data can never clobber each other.
  *
  * Run: `npm run data:hearing` [--allow-unknown]
- * Spec: dev/active/2026-06-11-equip-hearing-design.md
+ * Spec: dev/archive/equip-hearing/2026-06-11-equip-hearing-design.md
  */
 
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';

@@ -111689,6 +111689,894 @@
             ]
         }
     },
+    "볼가": {
+        "418": {
+            "id": 418,
+            "type": null,
+            "unlock_desc": "캐릭터 획득",
+            "ship_group": 70701,
+            "name": "함께 빵을 만들어요!",
+            "trigger_type": 1,
+            "trigger_param": "",
+            "kr_name": "볼가",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp",
+            "ship_name": "Волга",
+            "scripts": [
+                {
+                    "flag": 0,
+                    "id": 12351,
+                    "option": "",
+                    "param": "지휘관님, 요즘 조금 피곤하시죠?",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 12352,
+                    "option": [
+                        [
+                            1,
+                            "괜찮아"
+                        ]
+                    ],
+                    "param": "제대로 쉬고 계신가요? 또 늦게까지 일하신 건……",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 12353,
+                    "option": "",
+                    "param": "괜찮아. 어제 잠을 잘 못 잤을 뿐이야.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 1,
+                    "id": 12354,
+                    "option": "",
+                    "param": "잠을 잘 못 잤을 뿐이라니, 듣는 사람은 걱정된다고요.",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 12355,
+                    "option": "",
+                    "param": "일도 힘드셨죠? 계속 긴장한 상태로 있으면 누워도 제대로 쉴 수 없어요.",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 12356,
+                    "option": [
+                        [
+                            2,
+                            "응? 어떤 방법인데?"
+                        ]
+                    ],
+                    "param": "아, 지휘관님이 편하게 쉴 수 있을 만한 방법이 하나 떠올랐어요!",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 12357,
+                    "option": "",
+                    "param": "응? 어떤 방법인데?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 12358,
+                    "option": "",
+                    "param": "그건…… 함께 빵을 굽는 거예요. 에헤헤~",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 12359,
+                    "option": "",
+                    "param": "반죽을 치대고, 조금씩 발효되면서 부풀어 오르는 걸 지켜본 다음에",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 12360,
+                    "option": "",
+                    "param": "오븐에 넣고, 빵이 구워지면서 고소한 냄새가 천천히 퍼지는 걸 지켜보면……",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 12361,
+                    "option": [
+                        [
+                            3,
+                            "힐링이 되겠네……"
+                        ]
+                    ],
+                    "param": "마음도 몸도 편안해질 거예요~",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 12362,
+                    "option": "",
+                    "param": "힐링이 되겠네……",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 3,
+                    "id": 12363,
+                    "option": "",
+                    "param": "그렇죠~?",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 12364,
+                    "option": "",
+                    "param": "다만…… 미리 한 가지만 말씀드릴게요.",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 12365,
+                    "option": "",
+                    "param": "제 빵 굽는 솜씨는 로열 메이드분들에 비하면 한참 부족해요.",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 12366,
+                    "option": "",
+                    "param": "그래서 조금 엉뚱한 빵이 나오겠지만, 서로 즐겁기만 하면 그걸로 충분할 거예요.",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 12367,
+                    "option": "",
+                    "param": "게다가 이번에는 지휘관님도 함께하니까 혼자 구울 때보다 훨씬 잘되겠죠?",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 12368,
+                    "option": "",
+                    "param": "재료도 도구도 전부 준비해 뒀으니…",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 12369,
+                    "option": "",
+                    "param": "지휘관님은 마음의 준비만 하고 와 주시면 돼요!",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 12370,
+                    "option": "",
+                    "param": "빵이 얼마나 폭신하게 구워지는지는 만드는 사람의 마음가짐에도 달려 있대요.",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 12371,
+                    "option": "",
+                    "param": "준비가 되면 바로 주방으로 와 주세요!",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 12372,
+                    "option": "",
+                    "param": "지휘관님의 마음도 폭신하고 달콤하게 반죽해 드릴게요♪",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                }
+            ]
+        },
+        "419": {
+            "id": 419,
+            "type": null,
+            "unlock_desc": "호감도 사랑 달성",
+            "ship_group": 70701,
+            "name": "「선물」 고르기",
+            "trigger_type": 2,
+            "trigger_param": "100",
+            "kr_name": "볼가",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp",
+            "ship_name": "Волга",
+            "scripts": [
+                {
+                    "flag": 0,
+                    "id": 12373,
+                    "option": "",
+                    "param": "지휘관님, 요즘 안색이 많이 좋아지셨네요.",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 12374,
+                    "option": "",
+                    "param": "볼가의 「건강 플랜」이 도움이 되고 있죠?",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 12375,
+                    "option": "",
+                    "param": "지휘관님을 돌보는 일만큼은 진심이니까요!",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 12376,
+                    "option": "",
+                    "param": "물론 지휘관님이 노력하고 계시는 것도 다 보고 있어요.",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 12377,
+                    "option": "",
+                    "param": "착한 아이에게는 특별한 보상을 줘야겠죠♪",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 12378,
+                    "option": [
+                        [
+                            1,
+                            "당장은 모르겠어"
+                        ]
+                    ],
+                    "param": "그래서 말인데~ 갖고 싶은 거 있으세요?",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 12379,
+                    "option": "",
+                    "param": "당장은 생각이 안 나네.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 1,
+                    "id": 12380,
+                    "option": "",
+                    "param": "음…… 그렇군요……",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 12381,
+                    "option": "",
+                    "param": "확실히 뭐가 가지고 싶냐며 덜컥 물어보면, 바로 안 떠오르는 게 당연하죠.",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 12382,
+                    "option": "",
+                    "param": "생각나는 게 없으시다면……",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 12383,
+                    "option": "",
+                    "param": "제가 마음대로 정해도 될까요?",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 12384,
+                    "option": "",
+                    "param": "지휘관님에게 딱 어울리는 게 떠올랐어요!",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 12385,
+                    "option": "",
+                    "param": "오래 앉아서 일할 때 유용한 「힐링 쿠션」이나",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 12386,
+                    "option": "",
+                    "param": "휴식 시간에 딱 맞는 「온열 안대」 같은 거요.",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 12387,
+                    "option": [
+                        [
+                            2,
+                            "「힐링 쿠션」"
+                        ],
+                        [
+                            3,
+                            "「온열 안대」"
+                        ]
+                    ],
+                    "param": "건강 플랜을 성실히 실천하신 보상으로 둘 중 하나만 골라 주세요!",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 12388,
+                    "option": "",
+                    "param": "힐링 쿠션이라…… 괜찮겠네. 어떤 거야?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 12389,
+                    "option": "",
+                    "param": "그…… 촉감이 폭신폭신하고, 안았을 때도 정말 포근한 쿠션이에요.",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 12390,
+                    "option": "",
+                    "param": "지휘관님이 피곤할 때 큰 힘이 되어 줄 거예요♪",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 12391,
+                    "option": "",
+                    "param": "예를 들면, 편하게 기대고 있으면",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 12392,
+                    "option": "",
+                    "param": "제가 뒤에서 살며시 어깨를 받쳐 드린다던가……",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 12393,
+                    "option": "",
+                    "param": "에헤헤~ 「볼가의 힐링 쿠션」, 어떠세요?",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 12394,
+                    "option": "",
+                    "param": "마침 온열 안대가 떨어지려던 참인데 그걸로 할까 봐.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 3,
+                    "id": 12395,
+                    "option": "",
+                    "param": "네에~ 그럼 저도 시간을 내서 손 관리를 해 둬야겠네요.",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 12396,
+                    "option": "",
+                    "param": "안대가 부드럽더라도, 착용할 때 피부에 닿는 감촉이 좋지 않으면 소용없으니까요.",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 12397,
+                    "option": "",
+                    "param": "참고로~ 볼가의 무릎베개 상품도 포함되어 있답니다♪",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 12398,
+                    "option": "",
+                    "param": "세트로 이용해 주세요♪",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 12399,
+                    "option": "",
+                    "param": "보상이 정해졌으니 오늘 밤 가지고 지휘관님을 찾아갈게요.",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 12400,
+                    "option": "",
+                    "param": "꼭 시간 비워 두시고, 방에서 얌전히 기다리고 계세요~",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                }
+            ]
+        },
+        "420": {
+            "id": 420,
+            "type": null,
+            "unlock_desc": "서약 완료",
+            "ship_group": 70701,
+            "name": "느긋한 취기",
+            "trigger_type": 2,
+            "trigger_param": "150",
+            "kr_name": "볼가",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp",
+            "ship_name": "Волга",
+            "scripts": [
+                {
+                    "flag": 0,
+                    "id": 12401,
+                    "option": "",
+                    "param": "지휘관님~ 오늘 밤 시간 괜찮으세요?",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 12402,
+                    "option": "",
+                    "param": "얼마 전에 좋은 보드카를 한 병 구했거든요.",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 0,
+                    "id": 12403,
+                    "option": [
+                        [
+                            1,
+                            "알겠어"
+                        ]
+                    ],
+                    "param": "일 끝나시면 제 방에 오시지 않을래요?",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 12404,
+                    "option": "",
+                    "param": "알겠어. 이따가 봐.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 1,
+                    "id": 12405,
+                    "option": "",
+                    "param": "에헤헤, 지휘관님이 와 주시면",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 1,
+                    "id": 12406,
+                    "option": [
+                        [
+                            2,
+                            "몸에 좋은…… 안주?"
+                        ]
+                    ],
+                    "param": "몸에 좋은 안주를 준비해 둘게요.",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 12407,
+                    "option": "",
+                    "param": "몸에 좋은…… 안주?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 12408,
+                    "option": "",
+                    "param": "물론이죠. 건강은 일상생활 속에서 꾸준히 신경 써야 하는 법이니까요.",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 12409,
+                    "option": "",
+                    "param": "요즘 한 가지 깨달은 게 있어요.",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 12410,
+                    "option": "",
+                    "param": "지휘관님을 만날 때마다 가슴속이 따뜻해져요……",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 12411,
+                    "option": "",
+                    "param": "마치 독한 술을 마셨을 때 목부터 가슴까지 따뜻해지는 것처럼요……",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 2,
+                    "id": 12412,
+                    "option": [
+                        [
+                            3,
+                            "「행복」 같은 건가……?"
+                        ]
+                    ],
+                    "param": "지휘관님을 만나기 전까지는 이런 느낌을 전혀 몰랐는데……",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 12413,
+                    "option": "",
+                    "param": "따뜻해진다…… 「행복」 같은 건가……?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 3,
+                    "id": 12414,
+                    "option": "",
+                    "param": "그렇군요. 알딸딸한 기분은 「행복」인 거네요.",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 12415,
+                    "option": "",
+                    "param": "그럼 다음에 지휘관님이 보고 싶어지면 보드카를 마시면 되겠어요~",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 12416,
+                    "option": "",
+                    "param": "아, 방금 말은 농담이에요~",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 3,
+                    "id": 12417,
+                    "option": [
+                        [
+                            4,
+                            "볼가가 곁에 있어 주면……"
+                        ]
+                    ],
+                    "param": "그때는 지휘관님을 불러서 곁으로 와 달라고 해야죠~",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 12418,
+                    "option": "",
+                    "param": "볼가가 곁에 있어 주면 나도 행복해.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 4,
+                    "id": 12419,
+                    "option": "",
+                    "param": "그렇죠!",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 12420,
+                    "option": "",
+                    "param": "함께 있으면서…",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 12421,
+                    "option": "",
+                    "param": "밥도 먹고, 수다도 떨고, 느긋하게 쉬기도 하고…… 가끔은 술도 조금 마시면서……",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 12422,
+                    "option": "",
+                    "param": "그런 「행복」을 많이 쌓아 둘 수 있었죠.",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 12423,
+                    "option": "",
+                    "param": "앞으로도 지휘관님과 함께 계속 쌓아 가고 싶어요~",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 4,
+                    "id": 12424,
+                    "option": [
+                        [
+                            5,
+                            "취하면 볼가에게 맡길게"
+                        ]
+                    ],
+                    "param": "아! 오늘은 술을 좀 많이 드셔도 되는 날인가요?",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 5,
+                    "id": 12425,
+                    "option": "",
+                    "param": "혹시 취하면 그 뒤는 볼가에게 맡길게.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 5,
+                    "id": 12426,
+                    "option": "",
+                    "param": "맡겨 주세요~",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 5,
+                    "id": 12427,
+                    "option": "",
+                    "param": "안주도 보드카도 준비해 뒀어요.",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 5,
+                    "id": 12428,
+                    "option": "",
+                    "param": "빈손으로 오셔도 되니까, 일 끝나면 와 주세요~",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                },
+                {
+                    "flag": 5,
+                    "id": 12429,
+                    "option": "",
+                    "param": "너무 늦으시면 안주는 볼가가 먹어 버릴 거예요♪",
+                    "ship_group": 70701,
+                    "type": 1,
+                    "kr_name": "볼가",
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/707010.webp"
+                }
+            ]
+        }
+    },
     "Z52": {
         "44": {
             "id": 44,

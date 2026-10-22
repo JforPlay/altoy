@@ -168094,6 +168094,19 @@
             180005
         ],
         "skin_id": 601030,
+        "sp_weapon": {
+            "icon": "15700",
+            "name": "GB에게 맡겨",
+            "skill_upgrade": [
+                [
+                    0,
+                    1014030
+                ]
+            ],
+            "attribute_1": "cannon",
+            "attribute_2": "durability",
+            "weapon_true": true
+        },
         "class_name": "알프레도 오리아니급",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/601030.webp",
         "equip_1": [
@@ -203376,6 +203389,19 @@
             180002
         ],
         "skin_id": 9600010,
+        "sp_weapon": {
+            "icon": "15680",
+            "name": "규약의 서",
+            "skill_upgrade": [
+                [
+                    0,
+                    1016180
+                ]
+            ],
+            "attribute_1": "cannon",
+            "attribute_2": "hit",
+            "weapon_true": true
+        },
         "class_name": "로열 포춘",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600010.webp",
         "equip_1": [

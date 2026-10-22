@@ -746,9 +746,13 @@ const BASELINE = {
   // MOVED 2026-09-30 by the 소브라지텔니·META data update — corpus growth only:
   // displayed checked 955 -> 959, every other count in both corpora held. The four
   // new roots are her four skills (802340 / 802350 / 802361 / 802362), all scored.
+  //
+  // MOVED 2026-10-22 by the 10/22 data update — corpus growth only: 전용 장비 checked
+  // 93 -> 95 (95/95 agree), every other count in both corpora held. The two new roots
+  // are the two new 전용 장비 (GB에게 맡겨 1014030, 규약의 서 1016180).
   displayed: { checked: 959, disclosed: 180, silent: 62    // 2026-09-10: +3 아마츠카제; 2026-09-17: +1; 2026-09-24: +7; 2026-09-30: +4
   },
-  spweapon: { checked: 93, disclosed: 51, silent: 193 },
+  spweapon: { checked: 95, disclosed: 51, silent: 193 },    // 2026-10-22: +2
 };
 
 function assertCoverage(which, got) {

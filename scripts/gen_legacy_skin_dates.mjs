@@ -10,7 +10,7 @@
  * Requires the `gh` CLI, authenticated (`gh auth status`).
  * Run:  node scripts/gen_legacy_skin_dates.mjs
  *
- * See dev/active/2026-05-15-legacy-skin-dates.md for the design rationale.
+ * See dev/archive/skin-release-dates-legacy/2026-05-15-legacy-skin-dates.md for the design rationale.
  */
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';

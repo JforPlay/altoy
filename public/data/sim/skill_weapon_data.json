@@ -65111,6 +65111,67 @@
             ]
         }
     },
+    "1014030": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/14030.webp",
+        "name": "빈첸초 조베르티",
+        "weapon_true": true,
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/601030.webp",
+        "class_name": "알프레도 오리아니급",
+        "skill_id": 1014030,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 161871
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 65601
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 161880
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 65610
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
     "14400": {
         "requirement": "Default",
         "weapon_true": true,
@@ -86036,6 +86097,49 @@
                     "casterAniEffect": "",
                     "targetAniEffect": "",
                     "target_choise": "TargetHarmRandom",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "1016180": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/16180.webp",
+        "name": "로열 포춘",
+        "weapon_true": true,
+        "position": "잠수",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600010.webp",
+        "class_name": "로열 포춘",
+        "skill_id": 1016180,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 62941
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 62950
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
                     "type": "BattleSkillFire"
                 }
             ]

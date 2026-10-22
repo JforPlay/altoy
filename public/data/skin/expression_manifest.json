@@ -88522,5 +88522,53 @@
         "default": "0",
         "recovered_default": true,
         "thumbs": true
+    },
+    "903023": {
+        "faces": [
+            "1",
+            "4",
+            "6",
+            "5",
+            "3",
+            "2",
+            "0"
+        ],
+        "box": [
+            2625,
+            775,
+            295,
+            310
+        ],
+        "size": [
+            5412,
+            3202
+        ],
+        "default": "0",
+        "recovered_default": true,
+        "thumbs": true
+    },
+    "903023_n": {
+        "faces": [
+            "1",
+            "4",
+            "6",
+            "5",
+            "3",
+            "2",
+            "0"
+        ],
+        "box": [
+            2625,
+            775,
+            295,
+            310
+        ],
+        "size": [
+            5412,
+            3202
+        ],
+        "default": "0",
+        "recovered_default": true,
+        "thumbs": true
     }
 }
