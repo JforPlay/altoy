@@ -7501,5 +7501,17 @@
         "일": "5",
         "group_id": "20140",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/201400.webp"
+    },
+    {
+        "ID": "751",
+        "룽섭 이름": "호스타일",
+        "레어도": "SR",
+        "함종": "구축",
+        "진영": "로열 네이비",
+        "연": "1936",
+        "월": "1",
+        "일": "24",
+        "group_id": "20140",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/201190.webp"
     }
 ]
