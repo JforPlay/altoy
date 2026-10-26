@@ -149,6 +149,14 @@ test('clicking a bar shows only that half-hour in place; clicking it again shows
     await page.locator('#btSearch').fill('0410');
     await expect(bar).toHaveAttribute('aria-pressed', 'false');
     await expect(rows).toHaveCount(1);
+
+    // Keyboard: the re-rendered bar keeps focus, so the same key turns the filter back off.
+    await bar.focus();
+    await page.keyboard.press('Enter');
+    await expect(bar).toHaveAttribute('aria-pressed', 'true');
+    await expect(bar).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(bar).toHaveAttribute('aria-pressed', 'false');
 });
 
 test('clicking a card closes the popup and opens the detail view by gid', async ({ page }) => {

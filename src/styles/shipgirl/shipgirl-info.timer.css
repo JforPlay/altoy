@@ -47,12 +47,6 @@
   color: var(--text-muted);
 }
 
-.bt-pools .btn.is-active {
-  background: var(--accent-blue);
-  border-color: var(--accent-blue);
-  color: #fff;
-}
-
 .bt-controls select {
   padding: 0.4rem 0.6rem;
   border: 1px solid var(--border-color);

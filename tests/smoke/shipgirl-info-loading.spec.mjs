@@ -218,6 +218,29 @@ test('R11: skill search owns the same first-use data group and reuses its corpus
         .toHaveLength(OPTIONAL_DATA_PATHS.length);
 });
 
+test('grid, map browser and skill search cards link to the detail view by gid', async ({ page }) => {
+    await page.goto(SHIPGIRL_INFO_PATH, { waitUntil: 'domcontentloaded' });
+    await waitForCatalog(page);
+
+    await page.locator('#shipgirls .shipgirl-card').first().click();
+    await expect(page.locator('#detailView')).toBeVisible();
+    await expect(page).toHaveURL(/[?&]gid=\d+/);
+    await page.goBack();
+    await waitForCatalog(page);
+
+    await page.locator('#mapBrowserBtn').click();
+    await page.locator('#mapBrowserModal .map-browser-ship-card').first().click();
+    await expect(page.locator('#detailView')).toBeVisible();
+    await expect(page).toHaveURL(/[?&]gid=\d+/);
+    await page.goBack();
+    await waitForCatalog(page);
+
+    await page.locator('#skillSearchBtn').click();
+    await page.locator('#skillSearchResults [data-ship-name]').first().click();
+    await expect(page.locator('#detailView')).toBeVisible();
+    await expect(page).toHaveURL(/[?&]gid=\d+/);
+});
+
 test('flag toggles filter from lite data without optional downloads', async ({ page }) => {
     const requested = collectOptionalRequests(page);
     const count = (pred) => liteShips.filter(pred).length;

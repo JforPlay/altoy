@@ -157,6 +157,7 @@ function build() {
         activeBucket = activeBucket === bucket ? null : bucket;
         els.search.value = '';
         render();
+        els.chart.querySelector(`.bt-bar[data-bucket="${bucket}"]`).focus(); // render() replaced the bar
     });
     els.rows.addEventListener('click', (e) => {
         const card = e.target.closest('.shipgirl-card');

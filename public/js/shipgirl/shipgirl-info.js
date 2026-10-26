@@ -240,7 +240,7 @@ function setupEventListeners() {
         const card = e.target.closest('.shipgirl-card');
         if (!card || !shipgirls.contains(card)) return;
         const shipName = card.dataset.shipName;
-        if (shipName) navigateToDetail(shipName);
+        if (shipName) navigateToDetail(shipName, card.dataset.gid);
     });
 
     // Info popup is handled globally by global.script.js
@@ -433,7 +433,7 @@ function createGridCard(ship) {
     }
 
     return `
-        <div class="shipgirl-card ${rarityClass}" data-ship-name="${escapeHtml(ship.name)}">
+        <div class="shipgirl-card ${rarityClass}" data-ship-name="${escapeHtml(ship.name)}" data-gid="${Number(ship.gid)}">
             ${createImg(ship.shipyard || '', ship.name || '알 수 없음', { className: 'art', fallback: IMG_FALLBACKS.CARD })}
             <div class="scrim"></div>
             ${badges ? `<div class="badges">${badges}</div>` : ''}
@@ -482,7 +482,7 @@ function createListCard(ship) {
     }
 
     return `
-        <div class="shipgirl-card ${rarityClass}" data-ship-name="${escapeHtml(ship.name)}">
+        <div class="shipgirl-card ${rarityClass}" data-ship-name="${escapeHtml(ship.name)}" data-gid="${Number(ship.gid)}">
             <div class="lthumb">${createImg(ship.shipyard || '', ship.name || '알 수 없음', { fallback: IMG_FALLBACKS.CARD })}</div>
             <div class="lname-block">
                 <div class="lname">${escapeHtml(ship.name || '이름 없음')}</div>

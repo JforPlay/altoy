@@ -438,7 +438,7 @@ function renderMapBrowserContent() {
             card.addEventListener('click', () => {
                 const shipName = card.dataset.shipName;
                 closeMapBrowserModal();
-                state.navigateToDetail(shipName);
+                state.navigateToDetail(shipName, card.dataset.gid);
             });
         });
     }, 0);
@@ -450,7 +450,7 @@ function createMapBrowserShipCard(ship) {
         code: ship.nationality
     };
     return `
-        <div class="map-browser-ship-card" data-ship-name="${ship.name}">
+        <div class="map-browser-ship-card" data-ship-name="${ship.name}" data-gid="${Number(ship.gid)}">
             <img src="${ship.shipyard || ''}" alt="${ship.name}" class="map-browser-ship-image"
                  data-fallback="${IMG_FALLBACKS.DEFAULT}">
             <div class="map-browser-ship-info">

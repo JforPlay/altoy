@@ -76,7 +76,7 @@ function classifySkill(desc) {
 // ============================================
 let state;                 // shared state ref from shipgirl-info.js
 let skillCorpus = null;    // built once on first open; array of per-skill records
-let shipIndex = null;      // Map<number, {id, name, shipyard, rarity}> for fast ship lookup
+let shipIndex = null;      // Map<number, {id, gid, name, shipyard, rarity}> for fast ship lookup
 const BATCH_SIZE = 50;     // cards rendered per batch when result set is large
 let batchObserver = null;  // IntersectionObserver driving incremental render
 let fuseIndex = null;      // built once after corpus
@@ -130,6 +130,7 @@ async function buildCorpus() {
     for (const ship of state.shipgirlData) {
         shipIndex.set(ship.id, {
             id: ship.id,
+            gid: ship.gid,
             name: ship.name,
             shipyard: ship.shipyard,
             rarity: ship.rarity,
@@ -328,7 +329,7 @@ function wireControls() {
             const name = target.dataset.shipName;
             closeModal('skillSearchModal');
             if (typeof state.navigateToDetail === 'function') {
-                state.navigateToDetail(name);
+                state.navigateToDetail(name, target.dataset.gid);
             }
         });
     }
@@ -427,7 +428,7 @@ function renderSkillCard(skill) {
     const visibleShips = ships.slice(0, 8);
     const hiddenCount = ships.length - visibleShips.length;
     const avatarHtml = visibleShips.map(s => `
-        <button type="button" class="skill-result-ship-btn" data-ship-name="${escapeHtml(s.name)}" title="${escapeHtml(s.name)}">
+        <button type="button" class="skill-result-ship-btn" data-ship-name="${escapeHtml(s.name)}" data-gid="${Number(s.gid)}" title="${escapeHtml(s.name)}">
             <img src="${escapeHtml(s.shipyard)}" alt="${escapeHtml(s.name)}" loading="lazy" data-onfail="invisible">
         </button>
     `).join('') + (hiddenCount > 0 ? `<span class="skill-result-ship-more">+${hiddenCount}</span>` : '');
@@ -492,7 +493,7 @@ function renderShipCard({ ship, skills }) {
     }).join('');
 
     return `
-        <button type="button" class="skill-result-ship-card" data-ship-name="${escapeHtml(ship.name)}">
+        <button type="button" class="skill-result-ship-card" data-ship-name="${escapeHtml(ship.name)}" data-gid="${Number(ship.gid)}">
             <img class="skill-result-ship-portrait" src="${escapeHtml(ship.shipyard)}" alt="${escapeHtml(ship.name)}" loading="lazy" data-onfail="invisible">
             <div class="skill-result-ship-info">
                 <div class="skill-result-ship-name">

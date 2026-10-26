@@ -117,7 +117,7 @@ header h1 {
 .filter-rail.stuck #nationalityFilter,
 .filter-rail.stuck #constructionFilter,
 .filter-rail.stuck .filter-toggle-btn:not([aria-pressed="true"]),
-.filter-rail.stuck .view-toggle-btn:not(.active) {
+.filter-rail.stuck .view-toggle-btn:not(.is-active) {
   color: var(--text-primary);
 }
 /* dark page → add a top rim-light so the glass edge reads as defined

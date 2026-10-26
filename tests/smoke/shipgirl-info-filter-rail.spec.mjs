@@ -34,6 +34,15 @@ test('desktop rail has two lines and carries the counter', async ({ page }) => {
     await expect(page.locator('#filterRail > .rail-line')).toHaveCount(2);
 });
 
+test('stuck rail keeps the active view button on white text', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('theme', 'light'));
+    await openCatalog(page, { width: 1280, height: 900 });
+
+    await page.mouse.wheel(0, 800);
+    await expect(page.locator('#filterRail')).toHaveClass(/\bstuck\b/);
+    await expect(page.locator('#gridViewBtn')).toHaveCSS('color', 'rgb(255, 255, 255)');
+});
+
 for (const viewport of [{ width: 390, height: 844 }, { width: 360, height: 800 }]) {
     test(`phone ${viewport.width}px: counter in header, toggles on one line`, async ({ page }) => {
         await openCatalog(page, viewport);
