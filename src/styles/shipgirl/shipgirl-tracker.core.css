@@ -173,7 +173,7 @@ body {
   font-size: 1.15rem;
 }
 
-/* --- Summary Strip (기술 Pt · 보유 · 성정 유닛 · 유닛 II) --- */
+/* --- Summary Strip (표시 중 · 기술 Pt · 보유 · 성정 유닛 · 유닛 II) --- */
 
 .st-summary {
   display: flex;
@@ -196,8 +196,8 @@ body {
 }
 
 /* Labels + denominators are --text-secondary, not --text-muted: muted measures
-   3.6:1 dark / 3.1:1 light at these sizes, and these five strings are the only
-   thing that says what the five big numbers are. */
+   3.6:1 dark / 3.1:1 light at these sizes, and these labels are the only
+   thing that says what the big numbers are. */
 .st-sum-label {
   display: inline-flex;
   align-items: center;
@@ -222,7 +222,7 @@ body {
   color: var(--text-secondary);
 }
 
-/* wrapped 2×2 layout: side borders stop lining up, drop them */
+/* wrapped 2-up layout: side borders stop lining up, drop them */
 @media (max-width: 700px) {
   .st-sum-item { flex-basis: 45%; }
   .st-sum-item + .st-sum-item { border-left: 0; }

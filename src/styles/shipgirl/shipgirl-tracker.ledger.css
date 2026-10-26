@@ -7,9 +7,10 @@
 [data-view="ledger"] .ship-card {
   display: grid;
   /* icon | 함순이 | 보유 | 풀돌 | Lv120 | 기술 Pt | 육성 레벨 (2 stops) | 기타 육성 | 메모 */
-  /* 육성 needs 290px to hold its widest pair (호감 · 200 완료 + 스작 완료) on ONE
-     line — at 230px every maxed row wrapped, so row heights alternated 61/72px. */
-  grid-template-columns: 56px minmax(150px, 1fr) 46px 46px 46px 72px 82px 290px 40px;
+  /* 기타 육성 needs 340px to hold its widest row (호감 · 200 완료 + 스작 진행중 +
+     개장 + 전장, ~329px measured) on ONE line — at 290px every row wrapped once
+     전장 joined, and at 230px every maxed row wrapped (row heights 61/72px). */
+  grid-template-columns: 56px minmax(150px, 1fr) 46px 46px 46px 72px 82px 340px 40px;
   align-items: center;
   gap: 0 8px;
 }
@@ -185,7 +186,7 @@
 .lr-cap button.on.u2 { background: var(--warning-color); border-color: var(--warning-color); color: #3d2c00; }
 .lr-cap button:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 1px; }
 
-/* ===== 기타 육성 chips (호감작 / 스작 / 개장) ===== */
+/* ===== 기타 육성 chips (호감작 / 스작 / 개장 / 전장) ===== */
 .lr-chips { display: flex; flex-wrap: wrap; gap: 3px 4px; justify-content: center; }
 .lr-chip {
   display: inline-flex; align-items: center;

@@ -15,13 +15,13 @@ test('parseInvestment: null/array/garbage -> {}', () => {
 
 test('parseInvestment: clamps fields, drops empty records', () => {
     const raw = {
-        '10102': { cap: 7, ret: 3, fav: 1, aff: 9, skl: -1, memo: 42 },
+        '10102': { cap: 7, ret: 3, spw: 2, fav: 1, aff: 9, skl: -1, memo: 42 },
         '10103': { cap: 2 },
         '10104': {},                       // nothing set -> dropped
         '10105': { memo: 'x'.repeat(600) } // clamped to MEMO_MAX
     };
     const out = parseInvestment(raw);
-    assert.deepEqual(out['10102'], { cap: 5, ret: 1, fav: 1, aff: 4 });
+    assert.deepEqual(out['10102'], { cap: 5, ret: 1, spw: 1, fav: 1, aff: 4 });
     assert.deepEqual(out['10103'], { cap: 2 });
     assert.equal(out['10104'], undefined);
     assert.equal(out['10105'].memo.length, MEMO_MAX);

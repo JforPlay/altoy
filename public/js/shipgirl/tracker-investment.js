@@ -79,11 +79,13 @@ export function parseInvestment(value) {
         const out = {};
         const cap = clampInt(rec.cap, 1, 5);
         const ret = clampInt(rec.ret, 1, 1);
+        const spw = clampInt(rec.spw, 1, 1);
         const fav = clampInt(rec.fav, 1, 1);
         const aff = clampInt(rec.aff, 1, AFF_LABELS.length - 1);
         const skl = clampInt(rec.skl, 1, SKL_LABELS.length - 1);
         if (cap !== null) out.cap = cap;
         if (ret !== null) out.ret = ret;
+        if (spw !== null) out.spw = spw;
         if (fav !== null) out.fav = fav;
         if (aff !== null) out.aff = aff;
         if (skl !== null) out.skl = skl;

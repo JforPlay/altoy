@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let rarityByGid = {};
     const statusMenu = createStatusMenu();
 
-    // Investment records (cap/ret/fav/aff/skl/memo) — state-as-truth in this map,
+    // Investment records (cap/ret/spw/fav/aff/skl/memo) — state-as-truth in this map,
     // unlike progress where the checkboxes are truth. v1 envelope from day 1.
     const investmentStore = syncedStorage(INVEST_KEY, {
         parse: parseInvestment,
@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function isInvestmentFilterActive() {
-        return ['fav-filter', 'retro-filter', 'aff-filter', 'skl-filter', 'memo-filter']
+        return ['fav-filter', 'retro-filter', 'spw-filter', 'aff-filter', 'skl-filter', 'memo-filter']
             .some(id => filterValues(id).length > 0);
     }
 
@@ -421,9 +421,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }).join('');
 
         const chipsCell = card.querySelector('.lr-chips');
-        const retChip = ship.retrofit
-            ? `<button type="button" class="chip lr-chip ${rec.ret ? 'is-done' : ''}" data-action="ret"`
-                + ` aria-pressed="${!!rec.ret}" aria-label="${escapeHtml(ship.name)} 개장 ${rec.ret ? '완료' : '미완'}">개장</button>`
+        const toggleChip = (able, action, label) => able
+            ? `<button type="button" class="chip lr-chip ${rec[action] ? 'is-done' : ''}" data-action="${action}"`
+                + ` aria-pressed="${!!rec[action]}" aria-label="${escapeHtml(ship.name)} ${label} ${rec[action] ? '완료' : '미완'}">${label}</button>`
             : `<span class="lr-chip-ghost"></span>`;
         const aff = rec.aff || 0;
         const skl = rec.skl || 0;
@@ -436,13 +436,14 @@ document.addEventListener('DOMContentLoaded', () => {
             `<button type="button" class="chip lr-chip ${cls}" data-action="${action}"`
             + ` aria-haspopup="menu" aria-expanded="false" aria-label="${escapeHtml(name)}">`
             + `${escapeHtml(label)}<span class="material-symbols-outlined lr-chip-caret" aria-hidden="true">arrow_drop_down</span></button>`;
-        // 개장 trails the two menu chips: only ~107 ships have it, and leading with it
-        // shifted 호감작/스작 sideways from card to card. The ghost holds its slot so the
-        // ledger's centred group keeps a constant width.
+        // 개장 / 전장 trail the two menu chips: only ~109 / ~235 ships have them, and
+        // leading with them shifted 호감작/스작 sideways from card to card. The ghosts
+        // hold their slots so the ledger's centred group keeps a constant width.
         chipsCell.innerHTML = `<span class="lr-cell-label">기타 육성</span>`
             + menuChip('aff', stateCls(aff, 4), affLabel, `${ship.name} 호감작: ${AFF_LABELS[aff]}`)
             + menuChip('skl', stateCls(skl, 3), sklLabel, `${ship.name} 스작: ${SKL_LABELS[skl]}`)
-            + retChip;
+            + toggleChip(ship.retrofit, 'ret', '개장')
+            + toggleChip(ship.sp_weapon, 'spw', '전장');
 
         const star = card.querySelector('.lr-star');
         star.textContent = rec.fav ? '★' : '☆';
@@ -1494,6 +1495,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 'level-attr-filter', label: '120렙 스탯', data: attrTypeData, allOptionText: '120스탯 - 전체', prefix: '120렙: ' },
             { id: 'fav-filter', label: '즐겨찾기', options: { all: '즐겨찾기 - 전체', fav: '즐겨찾기만' } },
             { id: 'retro-filter', label: '개장', options: { all: '개장 - 전체', able: '개장 가능', done: '개장 완료', todo: '개장 미완' } },
+            { id: 'spw-filter', label: '전장', options: { all: '전장 - 전체', able: '전장 있음', done: '전장 완료', todo: '전장 미완' } },
             { id: 'memo-filter', label: '메모', options: { all: '메모 - 전체', has: '메모 있음' } },
             // Multi-select, and full-width — so they go last and leave the selects
             // above a tidy 2-up grid. The labels array IS the value→label map (index
@@ -2022,9 +2024,9 @@ document.addEventListener('DOMContentLoaded', () => {
             chips.push({ label: selectedOption.textContent, type: 'level-attr', value: levelAttrEl.value });
         }
 
-        // Investment chips (fav/retro/aff/skl/memo). Multi-select groups emit one
+        // Investment chips (fav/retro/spw/aff/skl/memo). Multi-select groups emit one
         // removable chip per selected value; single selects keep their option text.
-        ['fav', 'retro', 'aff', 'skl', 'memo'].forEach(type => {
+        ['fav', 'retro', 'spw', 'aff', 'skl', 'memo'].forEach(type => {
             const labels = MULTI_FILTER_LABELS[type];
             if (labels) {
                 filterValues(`${type}-filter`).forEach(value => {
@@ -2096,7 +2098,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (MULTI_FILTER_LABELS[chip.type]) {
             const el = document.querySelector(`#${chip.type}-filter .chip[data-value="${chip.value}"]`);
             if (el) setFilterChip(el, false);
-        } else if (['fav', 'retro', 'memo'].includes(chip.type)) {
+        } else if (['fav', 'retro', 'spw', 'memo'].includes(chip.type)) {
             const el = document.getElementById(`${chip.type}-filter`);
             if (el) el.value = 'all';
         }
@@ -2127,6 +2129,7 @@ document.addEventListener('DOMContentLoaded', () => {
             levelAttr: selectValue('level-attr-filter'),
             fav: selectValue('fav-filter'),
             retro: selectValue('retro-filter'),
+            spw: selectValue('spw-filter'),
             aff: filterValues('aff-filter'),
             skl: filterValues('skl-filter'),
             memo: selectValue('memo-filter'),
@@ -2193,6 +2196,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (favEl && filters.fav) favEl.value = filters.fav;
             const retroEl = document.getElementById('retro-filter');
             if (retroEl && filters.retro) retroEl.value = filters.retro;
+            const spwEl = document.getElementById('spw-filter');
+            if (spwEl && filters.spw) spwEl.value = filters.spw;
             // aff/skl are arrays since they went multi-select; older saves hold the
             // single string the <select> wrote.
             Object.keys(MULTI_FILTER_LABELS).forEach(type => {
@@ -2222,7 +2227,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const f = readFilterState();
         const searchQuery = f.search.toLowerCase();
         const { progress: progressFilter, getAttr: getAttrFilter, levelAttr: levelAttrFilter,
-                fav: favFilter, retro: retroFilter, memo: memoFilter,
+                fav: favFilter, retro: retroFilter, spw: spwFilter, memo: memoFilter,
                 rarities: checkedRarities } = f;
         const affFilter = f.aff.map(v => parseDatasetInt(v));
         const sklFilter = f.skl.map(v => parseDatasetInt(v));
@@ -2257,12 +2262,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 || (retroFilter === 'able' && !!ship.retrofit)
                 || (retroFilter === 'done' && !!rec.ret)
                 || (retroFilter === 'todo' && !!ship.retrofit && !rec.ret);
+            const spwMatch = spwFilter === 'all'
+                || (spwFilter === 'able' && !!ship.sp_weapon)
+                || (spwFilter === 'done' && !!rec.spw)
+                || (spwFilter === 'todo' && !!ship.sp_weapon && !rec.spw);
             const affMatch = !affFilter.length || affFilter.includes(rec.aff || 0);
             const sklMatch = !sklFilter.length || sklFilter.includes(rec.skl || 0);
             const memoMatch = memoFilter === 'all' || !!rec.memo;
 
             return searchMatch && natMatch && typeMatch && rarityMatch && progressMatch && getAttrMatch && levelAttrMatch
-                && favMatch && retroMatch && affMatch && sklMatch && memoMatch;
+                && favMatch && retroMatch && spwMatch && affMatch && sklMatch && memoMatch;
         });
 
         renderVisibleCards();
@@ -2271,6 +2280,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const drawerCount = document.getElementById('drawer-count');
         if (drawerCount) drawerCount.textContent = `${filteredShipIds.length}척`;
+        document.getElementById('shown-count').textContent = filteredShipIds.length;
+        document.getElementById('shown-total').textContent = Object.keys(fullShipData).length;
     }
 
     /**
@@ -2580,7 +2591,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         card.querySelector(`[data-action="${action}"]`)?.focus({ preventScroll: true });
                     },
                 });
-            } else if (action === 'fav' || action === 'ret') {
+            } else if (action === 'fav' || action === 'ret' || action === 'spw') {
                 setInv(gid, { [action]: getInv(gid)[action] ? 0 : 1 });
                 renderInvestmentCells(card, gid);
                 card.querySelector(`[data-action="${action}"]`)?.focus({ preventScroll: true });

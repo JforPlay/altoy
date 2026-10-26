@@ -111,7 +111,7 @@
    stops stretched to ~110px each and out-shouted the toggles above them. */
 [data-view="cards"] .lr-cap button { flex: 1; width: auto; max-width: 88px; }
 [data-view="cards"] .lr-chip-ghost { display: none; }
-/* Card width is the constraint here, not the ledger's 290px track — a smaller
+/* Card width is the constraint here, not the ledger's 340px track — a smaller
    face lets the three chips hold one line without stretching the boxes. */
 [data-view="cards"] .lr-chip { font-size: 0.7rem; padding: 3px 7px; min-height: 24px; }
 [data-view="cards"] .lr-chip-caret { font-size: 14px; }
