@@ -163,6 +163,54 @@ body {
     color: var(--text-secondary);
     word-break: break-word;
     line-height: 1.4;
+    margin-top: 0.15rem;
+}
+
+.bgm-misc-usage > summary {
+    list-style: none;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.bgm-misc-usage > summary::-webkit-details-marker {
+    display: none;
+}
+
+.bgm-misc-usage > summary:focus-visible {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 2px;
+}
+
+.bgm-misc-usage-more {
+    color: var(--text-link);
+    white-space: nowrap;
+}
+
+.bgm-misc-usage-more::after {
+    content: ' ▸';
+}
+
+.bgm-misc-usage[open] .bgm-misc-usage-more::after {
+    content: ' ▾';
+}
+
+.bgm-misc-usage-list {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.25rem 0.75rem;
+    margin: var(--spacing-sm, 0.5rem) 0 0;
+    padding: var(--spacing-sm, 0.5rem) 0 0;
+    border-top: 1px solid var(--border-color);
+}
+
+.bgm-misc-usage-list dt {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.bgm-misc-usage-list dd {
+    margin: 0;
+    min-width: 0;
 }
 
 .bgm-misc-tracks {

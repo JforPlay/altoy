@@ -17,7 +17,7 @@ const KIND_LABELS = {
     event: '이벤트',
     main: '메인 스토리',
     map: '해역',
-    opsi: '작전 시렌',
+    opsi: '대작전',
     skin: '스킨',
     island: '아일랜드',
     furniture: '기숙사 가구',
@@ -144,11 +144,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         const marker = document.createElement('span');
         marker.className = 'bgm-misc-section-marker';
         marker.textContent = '▾';
-        h2.append(marker, `${KIND_LABELS[kind]} (${groupStems.length})`);
+        const title = document.createTextNode(`${KIND_LABELS[kind]} (${groupStems.length})`);
+        h2.append(marker, title);
         headerLi.appendChild(h2);
         frag.appendChild(headerLi);
 
-        const section = { el: headerLi, marker, rows: [], collapsed: false };
+        const section = { el: headerLi, marker, title, label: KIND_LABELS[kind], rows: [], collapsed: false };
         sections.push(section);
         makeKeyboardActivatable(headerLi, () => {
             section.collapsed = !section.collapsed;
@@ -213,13 +214,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         for (const s of sections) {
             const collapsed = s.collapsed && !searching;
             for (const r of s.rows) r.el.hidden = !r.match || collapsed;
-            s.el.hidden = s.rows.every(r => !r.match);
+            const shown = s.rows.filter(r => r.match).length;
+            s.el.hidden = shown === 0;
+            s.title.data = `${s.label} (${formatCount(shown, s.rows.length)})`;
             s.el.setAttribute('aria-expanded', String(!collapsed));
             s.marker.textContent = collapsed ? '▸' : '▾';
         }
     }
+    function formatCount(shown, total) {
+        return shown === total ? `${total}` : `${shown} / ${total}`;
+    }
     function updateCount(shown, total) {
-        countEl.textContent = shown === total ? `${total}` : `${shown} / ${total}`;
+        countEl.textContent = formatCount(shown, total);
     }
 
     // ---- Visualizer ----
@@ -466,15 +472,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             cueLine.textContent = album.cues[0];
             titles.appendChild(cueLine);
         }
-        const usage = album.usage || [];
-        if (usage.length > 0) {
-            const usageLine = document.createElement('span');
-            usageLine.className = 'bgm-misc-usage';
-            const labels = usage.slice(0, 2).map(u => u.label);
-            if (usage.length > 2) labels.push(`외 ${usage.length - 2}곳`);
-            usageLine.textContent = [album.year, ...labels].filter(Boolean).join(' · ');
-            titles.appendChild(usageLine);
-        }
 
         const trackCount = document.createElement('span');
         trackCount.className = 'bgm-misc-count';
@@ -484,6 +481,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         header.append(titles, trackCount);
         li.appendChild(header);
+        // Below the header, not inside it: a multi-track header is a
+        // role=button toggle, and the <summary> must not nest in it.
+        const usage = album.usage || [];
+        if (usage.length > 0) li.appendChild(makeUsage(album.year, usage));
 
         if (album.tracks.length === 1) {
             const t = album.tracks[0];
@@ -518,6 +519,40 @@ document.addEventListener('DOMContentLoaded', async () => {
             header.tabIndex = 0;
         }
         return li;
+    }
+
+    // "year · label · label" line; past two usages it becomes a <details>
+    // whose "외 n곳" summary opens the full list grouped by kind.
+    function makeUsage(year, usage) {
+        const text = [year, ...usage.slice(0, 2).map(u => u.label)].filter(Boolean).join(' · ');
+        if (usage.length <= 2) {
+            const line = document.createElement('div');
+            line.className = 'bgm-misc-usage';
+            line.textContent = text;
+            return line;
+        }
+        const details = document.createElement('details');
+        details.className = 'bgm-misc-usage';
+        const summary = document.createElement('summary');
+        const more = document.createElement('span');
+        more.className = 'bgm-misc-usage-more';
+        more.textContent = `외 ${usage.length - 2}곳`;
+        summary.append(`${text} · `, more);
+
+        const dl = document.createElement('dl');
+        dl.className = 'bgm-misc-usage-list';
+        const kindOf = u => (u.kind in KIND_LABELS ? u.kind : 'none');
+        for (const kind of KIND_ORDER) {
+            const items = usage.filter(u => kindOf(u) === kind);
+            if (items.length === 0) continue;
+            const dt = document.createElement('dt');
+            dt.textContent = KIND_LABELS[kind];
+            const dd = document.createElement('dd');
+            dd.textContent = items.map(u => (u.year ? `${u.label} (${u.year})` : u.label)).join(' · ');
+            dl.append(dt, dd);
+        }
+        details.append(summary, dl);
+        return details;
     }
 
     function makeFavBtn(id) {
