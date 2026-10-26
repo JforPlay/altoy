@@ -622,5 +622,6 @@ export {
     // a second implementation would be a second place to reopen the face hole.
     buildOverlayContainer,
     composeOverlay,
-    expUrl
+    expUrl,
+    MAX_COMPOSITE_DIM
 };

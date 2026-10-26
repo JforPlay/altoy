@@ -502,37 +502,21 @@
     font: inherit;
 }
 
-.face-overlay-container img.base-image {
+/* The preview is ONE <canvas> with base + face already composited
+   (expression.viewer.js → skin.expression.js composeOverlay). */
+.face-overlay-container canvas.base-image {
     display: block;
     max-width: 100%;
     max-height: calc(100vh - 450px);
     height: auto;
     object-fit: contain;
-    position: relative;
-    z-index: 1;
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-lg);
     transition: transform var(--transition-base);
-    /* No border: a content-box border insets the painting from the container
-       while the face overlay positions against the container — the offset
-       exposes the transparent face hole as a thin black frame. */
-    border: none;
 }
 
-.face-overlay-container:hover img.base-image {
+.face-overlay-container:hover canvas.base-image {
     transform: scale(1.01);
-}
-
-.face-overlay-container img.face-overlay {
-    position: absolute;
-    z-index: 10;
-    pointer-events: none;
-    background-color: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    transform-origin: top left;
-    max-width: none;
-    max-height: none;
 }
 
 /* Empty / error states for this page use the canonical .page-status component
@@ -671,7 +655,7 @@
         height: 56px;
     }
 
-    .face-overlay-container img.base-image {
+    .face-overlay-container canvas.base-image {
         max-height: calc(100vh - 550px);
     }
 
@@ -735,10 +719,6 @@ body.dark-mode .character-card:hover {
 
 body.dark-mode .character-card.active {
     background: linear-gradient(135deg, var(--primary-alpha-20), rgba(67, 181, 129, 0.1));
-}
-
-body.dark-mode .face-overlay-container img.base-image {
-    border: none;
 }
 
 body.dark-mode .image-display {

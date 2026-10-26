@@ -1,12 +1,15 @@
 /**
  * expression.viewer.js
  * Page controller for the standalone expression illustration viewer.
- * Shows base-image + face-overlay composites for characters whose expressions
- * are not shown in the skin detail page; includes lightbox with canvas composite.
+ * Shows base + face composites for characters whose expressions are not shown
+ * in the skin detail page; includes a lightbox of the same composite.
  * Part of the skin module group.
  *
- * The base painting has a transparent face hole, so the lightbox always shows a
- * canvas-composited base+overlay image — never the bare painting.
+ * The base painting has a transparent face hole, so the preview is ONE <canvas>
+ * composited by skin.expression.js composeOverlay (the skin detail viewer's
+ * seam-free path) and the lightbox snapshots it — never the bare painting, and
+ * never a CSS-stacked base <img> + face <img>: the browser resamples those two
+ * layers independently, so the hole edge showed as a thin dark frame.
  */
 import {
     debounce,
@@ -24,6 +27,7 @@ import {
     renderStatus
 } from '../utils.js';
 import { pickFaceCandidates } from '../expression-face.js';
+import { composeOverlay, expUrl, MAX_COMPOSITE_DIM } from './skin.expression.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const state = {
@@ -49,9 +53,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         lightboxCaption: document.querySelector('.lightbox-caption')
     };
 
-    // Bumped on every lightbox open; a stale async composite checks it before
-    // painting, so a reopen/close can't be overwritten by an earlier composite.
+    // Bumped on every lightbox open and close; a stale async snapshot checks it
+    // before painting, so a reopen/close can't be overwritten by an earlier one.
     let lightboxToken = 0;
+    let lightboxUrl = null; // composite blob URL, revoked on close
 
     await init();
 
@@ -114,8 +119,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             restoreFocus: true,
             setAriaHidden: false,
             onClose: () => {
+                lightboxToken++;
                 elements.lightboxModal.setAttribute('aria-hidden', 'true');
                 elements.lightboxImage.removeAttribute('src');
+                if (lightboxUrl) URL.revokeObjectURL(lightboxUrl);
+                lightboxUrl = null;
             }
         });
 
@@ -127,7 +135,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     /**
      * Save the current lightbox image. The displayed src is the canvas composite
-     * data URL — mobile long-press doesn't reliably surface the save menu for
+     * blob URL — mobile long-press doesn't reliably surface the save menu for
      * those, so this button is the canonical save path.
      */
     function downloadCurrentImage() {
@@ -364,50 +372,39 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     /**
-     * Build the base-image + face-overlay HTML for the viewer panel.
-     * The overlay is positioned via percentage-based CSS computed from the manifest box/size.
+     * Build the viewer-panel preview: a button holding ONE <canvas> that
+     * composeOverlay fills with base + face (it caches the decoded base, so a
+     * face switch only redraws, and swaps in an error box if the base fails).
+     * The canvas is sized up front from the manifest so layout stays stable.
      */
     function renderImageWithOverlay(data) {
         if (!data) {
             return createStatusElement('이미지 없음', 'empty');
         }
 
-        const baseUrl = data.base_url;
-        const faceUrl = data.face_url_template.replace('{faceId}', state.currentFaceId || '0');
-
         const container = document.createElement('button');
         container.type = 'button';
         container.className = 'face-overlay-container';
         container.setAttribute('aria-label', '이미지 확대 보기');
 
-        const baseImage = document.createElement('img');
-        baseImage.className = 'base-image';
-        baseImage.src = baseUrl;
-        baseImage.alt = '일러스트';
-        baseImage.crossOrigin = 'anonymous';
-        baseImage.addEventListener('error', () => {
-            container.replaceWith(createStatusElement('이미지를 불러올 수 없습니다.', 'empty'));
-        }, { once: true });
+        const canvas = document.createElement('canvas');
+        canvas.className = 'base-image';
+        if (data.size) {
+            const [sw, sh] = data.size;
+            const scale = Math.min(1, MAX_COMPOSITE_DIM / Math.max(sw, sh));
+            canvas.width = Math.round(sw * scale);
+            canvas.height = Math.round(sh * scale);
+        }
+        container.appendChild(canvas);
 
-        const faceOverlay = document.createElement('img');
-        faceOverlay.className = 'face-overlay';
-        faceOverlay.src = faceUrl;
-        faceOverlay.alt = '표정';
-        faceOverlay.crossOrigin = 'anonymous';
-        applyOverlayStyle(faceOverlay, data);
-
-        container.append(baseImage, faceOverlay);
+        container._overlay = { baseUrl: expUrl(data.base_url), faceUrl: faceUrlFor(data), manifest: data };
+        container._gen = 0;
+        container._composePromise = composeOverlay(container);
         return container;
     }
 
-    function applyOverlayStyle(element, data) {
-        if (!data || !data.box || !data.size) return;
-        const [x, y, w, h] = data.box;
-        const [imgW, imgH] = data.size;
-        element.style.left = `${(x / imgW) * 100}%`;
-        element.style.top = `${(y / imgH) * 100}%`;
-        element.style.width = `${(w / imgW) * 100}%`;
-        element.style.height = `${(h / imgH) * 100}%`;
+    function faceUrlFor(data) {
+        return expUrl(data.face_url_template.replace('{faceId}', state.currentFaceId || '0'));
     }
 
     function updateFaceOverlay() {
@@ -417,32 +414,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         const currentData = item[state.currentPaintingType];
         if (!currentData) return;
 
-        const overlay = elements.viewerPanel.querySelector('.face-overlay');
-        if (overlay) {
-            const faceUrl = currentData.face_url_template.replace('{faceId}', state.currentFaceId);
-            overlay.src = faceUrl;
+        const container = elements.viewerPanel.querySelector('.face-overlay-container');
+        if (container?._overlay) {
+            container._overlay.faceUrl = faceUrlFor(currentData);
+            container._composePromise = composeOverlay(container);
         }
     }
 
     /**
-     * Open the lightbox with a canvas-composited base painting + face overlay.
-     *
-     * The base painting has a transparent face hole (output_expressions pipeline),
-     * so it must never be shown bare. We `await decode()` on both images, then
-     * composite — this also covers the case where the base wasn't loaded yet
-     * (the old code fell back to the holed `base_url` there). A generation token
-     * guards against a stale composite landing after the user reopened the box.
+     * Open the lightbox with a PNG snapshot of the preview <canvas>, so it shows
+     * the same seam-free composite (never the bare, hole-punched base). toBlob,
+     * NOT toDataURL: the canvas is up to 4096², and a synchronous encode of that
+     * freezes the page. A generation token guards against a stale snapshot
+     * landing after the user closed or reopened the box.
      */
     async function openLightbox() {
         const item = state.selectedCharacter;
-        if (!item) return;
-
-        const currentData = item[state.currentPaintingType];
-        if (!currentData) return;
-
         const container = elements.viewerPanel.querySelector('.face-overlay-container');
-        const baseImg = container?.querySelector('.base-image');
-        const overlayImg = container?.querySelector('.face-overlay');
+        if (!item || !container) return;
 
         const token = ++lightboxToken;
         elements.lightboxCaption.textContent = `${item.name} - ${state.currentPaintingType === 'painting' ? '기본 일러' : '확대 일러'}`;
@@ -450,43 +439,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             onOpen: modal => modal.setAttribute('aria-hidden', 'false')
         });
 
-        const composited = await compositeExpression(baseImg, overlayImg, currentData);
-        if (token !== lightboxToken) return; // user reopened/closed before composite finished
-        // Fall back to the bare base only if compositing genuinely failed (rare —
-        // e.g. an overlay network error). decode() removes the not-loaded-yet case.
-        elements.lightboxImage.src = composited || currentData.base_url;
-    }
-
-    /**
-     * Canvas-composite a base painting + face overlay into a PNG data URL.
-     * Awaits `decode()` on both images so an unloaded base still composites.
-     * @returns {Promise<string|null>} data URL, or null if compositing fails
-     */
-    async function compositeExpression(baseImg, overlayImg, data) {
-        if (!baseImg) return null;
-        try {
-            await baseImg.decode();
-            if (overlayImg) await overlayImg.decode().catch(() => {});
-
-            const canvas = document.createElement('canvas');
-            canvas.width = baseImg.naturalWidth;
-            canvas.height = baseImg.naturalHeight;
-            const ctx = canvas.getContext('2d');
-            if (!ctx || !canvas.width || !canvas.height) return null;
-
-            ctx.drawImage(baseImg, 0, 0);
-            if (overlayImg && overlayImg.naturalWidth > 0) {
-                const [x, y, w, h] = data.box || [0, 0, 0, 0];
-                const [imgW, imgH] = data.size || [1, 1];
-                ctx.drawImage(overlayImg,
-                    (x / imgW) * canvas.width, (y / imgH) * canvas.height,
-                    (w / imgW) * canvas.width, (h / imgH) * canvas.height);
-            }
-            return canvas.toDataURL('image/png');
-        } catch (e) {
-            console.warn('Expression composite failed', e);
-            return null;
-        }
+        await container._composePromise;
+        const canvas = container.querySelector('canvas.base-image');
+        const blob = container._composed && canvas
+            ? await new Promise(resolve => canvas.toBlob(resolve, 'image/png'))
+            : null;
+        if (token !== lightboxToken || !blob) return;
+        lightboxUrl = URL.createObjectURL(blob);
+        elements.lightboxImage.src = lightboxUrl;
     }
 
     function updateURL(id) {
