@@ -51,6 +51,8 @@ const SAMPLE_COUNT = 5;
 export const MANIFEST = [
     { file: 'ship_info_lite.json', kind: 'array', fields: {
         'gid': 'number',
+        'has_ex_voice': 'boolean',
+        'has_sp_weapon': 'boolean',
         'heavy': 'boolean',
         'id': 'number',
         'light': 'boolean',

@@ -21,6 +21,7 @@ import {
 } from './shipgirl-info.maps.js';
 import { setup as setupSkillSearch } from './shipgirl-info.skill-search.js';
 import { setup as setupRetrofit } from './shipgirl-info.retrofit.js';
+import { setup as setupTimer, restoreTimerFromHistory, hideTimer } from './shipgirl-info.timer.js';
 
 // ===== State =====
 const state = {
@@ -68,6 +69,10 @@ const state = {
     /** @type {Set<number>|null} */
     retrofitGidSet: null,
 
+    // Pressed lite-flag toggles (`has_sp_weapon`, `has_ex_voice`), ANDed.
+    /** @type {Set<string>} */
+    flagFilters: new Set(),
+
     // DOM Elements (set during init)
     elements: {},
 
@@ -98,6 +103,7 @@ setupDetail(state);
 setupMaps(state);
 setupSkillSearch(state);
 setupRetrofit(state);
+setupTimer(state);
 
 // ===== Initialization =====
 
@@ -218,6 +224,17 @@ function setupEventListeners() {
             filterShipgirls();
         });
     }
+
+    // Lite-flag toggles — the flags ship in ship_info_lite.json, so no fetch.
+    document.querySelectorAll('#filterRail [data-flag]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const next = btn.getAttribute('aria-pressed') !== 'true';
+            btn.setAttribute('aria-pressed', String(next));
+            if (next) state.flagFilters.add(btn.dataset.flag);
+            else state.flagFilters.delete(btn.dataset.flag);
+            filterShipgirls();
+        });
+    });
 
     shipgirls.addEventListener('click', (e) => {
         const card = e.target.closest('.shipgirl-card');
@@ -355,7 +372,9 @@ function filterShipgirls() {
             matchesRetrofit = state.currentRetrofitFilter === 'yes' ? has : !has;
         }
 
-        return matchesSearch && matchesRarity && matchesShipType && matchesNationality && matchesConstruction && matchesRetrofit;
+        const matchesFlags = [...state.flagFilters].every(flag => ship[flag] === true);
+
+        return matchesSearch && matchesRarity && matchesShipType && matchesNationality && matchesConstruction && matchesRetrofit && matchesFlags;
     });
 
     renderShipgirls();
@@ -529,12 +548,9 @@ function updateFilterStats() {
     const totalCount = state.shipgirlData.length;
     const filteredCount = state.filteredData.length;
 
-    // Update stats display if elements exist
-    const totalElement = document.getElementById('totalShips');
-    const filteredElement = document.getElementById('filteredShips');
-
-    if (totalElement) totalElement.textContent = totalCount;
-    if (filteredElement) filteredElement.textContent = filteredCount;
+    // The counter is rendered twice (header on phones, rail on desktop).
+    document.querySelectorAll('[data-stat="total"]').forEach(el => { el.textContent = totalCount; });
+    document.querySelectorAll('[data-stat="filtered"]').forEach(el => { el.textContent = filteredCount; });
 }
 
 // ===== Navigation & Routing =====
@@ -553,9 +569,11 @@ function handleRoute() {
     const gid = getUrlParam('gid');
 
     if (shipName || gid) {
+        hideTimer();
         showDetailView(shipName, gid);
     } else {
         showMainView();
+        restoreTimerFromHistory();
     }
 
     // Reset scroll position to top

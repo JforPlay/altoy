@@ -217,3 +217,40 @@ test('R11: skill search owns the same first-use data group and reuses its corpus
     expect(requested, 'reopening search must not refetch or rebuild its data group')
         .toHaveLength(OPTIONAL_DATA_PATHS.length);
 });
+
+test('flag toggles filter from lite data without optional downloads', async ({ page }) => {
+    const requested = collectOptionalRequests(page);
+    const count = (pred) => liteShips.filter(pred).length;
+    const sp = count((s) => s.has_sp_weapon === true);
+    const ex = count((s) => s.has_ex_voice === true);
+    const both = count((s) => s.has_sp_weapon === true && s.has_ex_voice === true);
+    expect(sp).toBeGreaterThan(0);
+    expect(both).toBeLessThan(sp + ex - both); // AND and OR differ on this data
+
+    await page.goto(SHIPGIRL_INFO_PATH, { waitUntil: 'domcontentloaded' });
+    await waitForCatalog(page);
+    const shown = page.locator('[data-stat="filtered"]:visible');
+
+    await page.locator('#spWeaponFilter').click();
+    await expect(page.locator('#spWeaponFilter')).toHaveAttribute('aria-pressed', 'true');
+    await expect(shown).toHaveText(String(sp));
+    // The hidden counter copy (phone header on desktop) must carry the same numbers.
+    await expect(page.locator('[data-stat="filtered"]')).toHaveText([String(sp), String(sp)]);
+    await page.locator('#exVoiceFilter').click();
+    await expect(shown).toHaveText(String(both)); // AND, not OR
+    await page.locator('#spWeaponFilter').click();
+    await expect(shown).toHaveText(String(ex));
+    expect(requested, 'flag toggles must not fetch optional data').toEqual([]);
+
+    // The existing retrofit toggle still composes with the new ones (AND).
+    const retrofitGids = new Set(JSON.parse(readFileSync(
+        new URL('../../public/data/ship_info_data.json', import.meta.url),
+        'utf8'
+    )).filter((s) => s?.retrofit?.id).map((s) => s.gid));
+    const exRetrofit = count((s) => s.has_ex_voice === true && retrofitGids.has(s.gid));
+    expect(exRetrofit).toBeLessThan(ex);
+    await page.locator('#retrofitFilter').click();
+    await expect(page.locator('#retrofitFilter')).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator('#exVoiceFilter')).toHaveAttribute('aria-pressed', 'true');
+    await expect(shown).toHaveText(String(exRetrofit));
+});

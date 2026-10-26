@@ -1,0 +1,241 @@
+/* 건조 시간표 popup (shipgirl-info.timer.js). The shell is Modal.astro; the cards
+   reuse the main grid's .shipgirl-card inner classes (cards.css), shrunk here. */
+
+#buildTimerModal .c-modal-dialog {
+  max-width: min(72rem, 100%);
+}
+
+.bt-mono {
+  font-family: ui-monospace, Consolas, monospace;
+  letter-spacing: 0.03em;
+}
+
+/* ===== Controls ===== */
+.bt-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.9rem;
+}
+
+.bt-search {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex: 1 1 11rem;
+  min-width: 0;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--input-bg);
+  color: var(--text-muted);
+}
+.bt-search:focus-within {
+  border-color: var(--accent-blue);
+}
+#btSearch {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 0.95em;
+}
+#btSearch::placeholder {
+  color: var(--text-muted);
+}
+
+.bt-pools .btn.is-active {
+  background: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color: #fff;
+}
+
+.bt-controls select {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-size: 0.9em;
+}
+.bt-controls select:focus-visible {
+  outline: none;
+  border-color: var(--accent-blue);
+}
+
+.bt-summary {
+  margin: 0 0 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.9em;
+}
+.bt-summary b {
+  color: var(--text-primary);
+  font-size: 1.1em;
+}
+
+/* ===== Distribution chart: one bar per 30 minutes ===== */
+.bt-bars {
+  display: flex;
+  align-items: stretch;
+  gap: 0.2rem;
+  height: 5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+.bt-bar {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: stretch;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+.bt-bar:disabled {
+  cursor: default;
+}
+.bt-bar-count {
+  height: 1rem;
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  line-height: 1rem;
+  text-align: center;
+}
+.bt-bar-fill {
+  height: calc((100% - 1rem) * var(--h, 0));
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background: color-mix(in srgb, var(--accent-blue) 45%, transparent);
+  transition: background-color var(--transition-fast, 0.15s);
+}
+.bt-bar:not(:disabled):hover .bt-bar-fill,
+.bt-bar:focus-visible .bt-bar-fill,
+.bt-bar.is-hit .bt-bar-fill {
+  background: var(--accent-blue);
+}
+.bt-bar.is-hit .bt-bar-count {
+  color: var(--accent-blue-text);
+  font-weight: 700;
+}
+.bt-bar:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+.bt-axis {
+  display: flex;
+  gap: 0.2rem;
+  margin: 0.2rem 0 0.9rem;
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+}
+.bt-axis span {
+  flex: 1 1 0;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+/* ===== Timer rows ===== */
+.bt-row {
+  display: flex;
+  gap: 0.9rem;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--border-color);
+  scroll-margin-top: 0.5rem;
+}
+.bt-label {
+  flex: 0 0 6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+.bt-time {
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.bt-empty {
+  padding: 2rem 0;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* ===== Cards: the grid card, smaller and name-only ===== */
+.bt-cards {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.bt-cards .shipgirl-card {
+  position: relative;
+  width: 6rem;
+  aspect-ratio: 3 / 4;
+  border-radius: 0.7rem;
+  overflow: hidden;
+  cursor: pointer;
+  isolation: isolate;
+  background: var(--item-bg);
+  box-shadow: 0 2px 8px var(--shadow-color);
+}
+/* rarity edge, drawn over the art */
+.bt-cards .shipgirl-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 2px var(--r);
+}
+.bt-cards .shipgirl-card .badges {
+  top: 0.3rem;
+  left: 0.3rem;
+  gap: 0.15rem;
+}
+.bt-cards .gbadge {
+  padding: 0.05rem 0.3rem;
+  font-size: 0.6rem;
+}
+.bt-cards .shipgirl-card .rchip {
+  top: 0.3rem;
+  right: 0.3rem;
+  padding: 0.08rem 0.32rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.6rem;
+}
+.bt-cards .shipgirl-card .meta {
+  padding: 0.35rem 0.4rem;
+}
+.bt-cards .shipgirl-card .gname {
+  font-size: 0.72rem;
+}
+
+@media (max-width: 768px) {
+  .bt-row {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .bt-label {
+    flex: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  .bt-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.4rem;
+  }
+  .bt-cards .shipgirl-card {
+    width: auto;
+  }
+}

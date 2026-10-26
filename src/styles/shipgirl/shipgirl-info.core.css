@@ -82,9 +82,9 @@ header h1 {
   top: var(--rail-top, var(--navbar-height, 64px));
   z-index: var(--z-sticky);
   display: flex;
-  gap: 0.6rem;
-  align-items: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
   margin-bottom: 2.25rem;
   padding: 0.7rem 0;
   border-top: 1px solid var(--border-color);
@@ -130,6 +130,23 @@ body.dark-mode .filter-rail.stuck {
    controls stay legible over scrolling cards */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .filter-rail.stuck { background: color-mix(in srgb, var(--card-bg) 96%, transparent); }
+}
+
+/* Two rail lines: find + view (search, counter, view toggle), then narrow down
+   (selects | flag toggles). */
+.rail-line,
+.rail-selects,
+.rail-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+.rail-divider {
+  align-self: stretch;
+  width: 1px;
+  margin: 0.35rem 0.1rem;
+  background: var(--border-color);
 }
 
 /* Search as a leading-magnifier pill — minimal underline, accent on focus */
@@ -303,6 +320,16 @@ body.dark-mode .filter-rail.stuck {
   border-radius: 0.5rem;
   border: 1px solid var(--border-color);
   flex: 1;
+}
+
+/* The counter is rendered twice: in rail line 1 on desktop, in the header row on
+   phones (responsive.css swaps them). */
+.stats-container.stats-header {
+  display: none;
+}
+
+.stats-container.stats-rail {
+  flex: 0 0 auto;
 }
 
 .stats-container .stat-item {
