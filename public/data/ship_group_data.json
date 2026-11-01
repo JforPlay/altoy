@@ -20955,7 +20955,8 @@
         "nationality": 96,
         "type": 24,
         "description": [
-            "이벤트: 템페스타와 잠든 바다"
+            "이벤트: 템페스타와 잠든 바다",
+            "중형함 건조"
         ],
         "rarity": "SSR",
         "sp_weapon": true
@@ -20986,7 +20987,8 @@
         "nationality": 96,
         "type": 23,
         "description": [
-            "이벤트: 템페스타와 잠든 바다"
+            "이벤트: 템페스타와 잠든 바다",
+            "소형함 건조"
         ],
         "rarity": "SSR",
         "sp_weapon": true
@@ -21017,7 +21019,8 @@
         "nationality": 96,
         "type": 22,
         "description": [
-            "이벤트: 템페스타와 잠든 바다"
+            "이벤트: 템페스타와 잠든 바다",
+            "특형함 건조"
         ],
         "rarity": "SSR",
         "sp_weapon": true
@@ -21048,7 +21051,8 @@
         "nationality": 96,
         "type": 23,
         "description": [
-            "이벤트: 템페스타와 잠든 바다"
+            "이벤트: 템페스타와 잠든 바다",
+            "소형함 건조"
         ],
         "rarity": "SR",
         "sp_weapon": true
@@ -21079,7 +21083,8 @@
         "nationality": 96,
         "type": 22,
         "description": [
-            "이벤트: 템페스타와 잠든 바다"
+            "이벤트: 템페스타와 잠든 바다",
+            "특별 보급 (공훈치 소비)"
         ],
         "rarity": "SR",
         "sp_weapon": true
@@ -21110,7 +21115,8 @@
         "nationality": 96,
         "type": 24,
         "description": [
-            "이벤트: 템페스타와 자유 군도"
+            "이벤트: 템페스타와 자유 군도",
+            "중형함 건조"
         ],
         "rarity": "SSR",
         "sp_weapon": true
@@ -21141,7 +21147,8 @@
         "nationality": 96,
         "type": 23,
         "description": [
-            "이벤트: 템페스타와 자유 군도"
+            "이벤트: 템페스타와 자유 군도",
+            "소형함 건조"
         ],
         "rarity": "SSR",
         "sp_weapon": true
@@ -21172,7 +21179,8 @@
         "nationality": 96,
         "type": 24,
         "description": [
-            "이벤트: 템페스타와 자유 군도"
+            "이벤트: 템페스타와 자유 군도",
+            "중형함 건조"
         ],
         "rarity": "SSR",
         "sp_weapon": true
@@ -21203,7 +21211,8 @@
         "nationality": 96,
         "type": 23,
         "description": [
-            "이벤트: 템페스타와 자유 군도"
+            "이벤트: 템페스타와 자유 군도",
+            "소형함 건조"
         ],
         "rarity": "SR",
         "sp_weapon": true
@@ -21234,7 +21243,8 @@
         "nationality": 96,
         "type": 22,
         "description": [
-            "이벤트: 템페스타와 자유 군도"
+            "이벤트: 템페스타와 자유 군도",
+            "특별 보급 (공훈치 소비)"
         ],
         "rarity": "SR",
         "sp_weapon": true

@@ -13972,6 +13972,10 @@
                 "label": "ToloveCollectPage"
             },
             {
+                "kind": "scene",
+                "label": "WindFogCorridorSkinPage"
+            },
+            {
                 "kind": "furniture",
                 "label": "데빌룩 스타일 기념장"
             }

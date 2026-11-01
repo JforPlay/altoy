@@ -16916,7 +16916,7 @@
         "스킨 태그":"배경",
         "입수 영상":"X",
         "재화":880.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "진영":"USS",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -152057,7 +152057,7 @@
         "스킨 태그":"배경",
         "입수 영상":"O",
         "재화":780.0,
-        "기간":"한정 (2025\/11\/19)",
+        "기간":"상시",
         "진영":"IJN",
         "레어도":"SR",
         "ex_chat_status":0
@@ -176965,7 +176965,7 @@
         "스킨 태그":"쁘띠모션, 배경",
         "입수 영상":"X",
         "재화":980.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "진영":"IJN",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -190875,7 +190875,7 @@
         "스킨 태그":"L2D, 배경",
         "입수 영상":"X",
         "재화":1180.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "진영":"IJN",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -212532,7 +212532,7 @@
         "스킨 태그":"쁘띠모션, 배경",
         "입수 영상":"O",
         "재화":980.0,
-        "기간":"한정 (2025\/11\/19)",
+        "기간":"상시",
         "진영":"IJN",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -308388,7 +308388,7 @@
         "스킨 태그":"쁘띠모션",
         "입수 영상":"O",
         "재화":900.0,
-        "기간":"한정 (2025\/11\/19)",
+        "기간":"상시",
         "진영":"SN",
         "레어도":"UR",
         "ex_chat_status":0
@@ -330366,6 +330366,137 @@
         "ex_chat_status":0
     },
     {
+        "클뜯 id":903023,
+        "클뜯 함순이 id":90302,
+        "함순이 이름":"알제리",
+        "한글 함순이 + 스킨 이름":"응석을 받아주는 채찍 메이드",
+        "전체 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/output_expressions\/903023\/painting.png",
+        "확대 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/output_expressions\/903023\/painting_n.png",
+        "sd 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_chibi\/903023.webp",
+        "아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_icon\/903023.webp",
+        "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_qicon\/903023.webp",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/903023.webp",
+        "설명":"어서 와, 지휘관. 나를 이렇게 기다리게 하다니…… 벌을 좀 줘야 하나? 후후후, 농담이야. 어서 이리 와서 앉아♪",
+        "자기소개":null,
+        "메인1":{
+            "voiceline":"어머? 지휘관, 아까부터 내 다리에서 눈을 못 떼네. 밟히고 싶은 거야?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/90302\/main_1_3.opus"
+        },
+        "메인2":{
+            "voiceline":"일 끝나면 같이 와인이라도 마실까? 지금 분위기에 맞춰서 평소와는 조금 색다른 방식으로 술을 따라 줄 수도 있어♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/90302\/main_2_3.opus"
+        },
+        "메인3":{
+            "voiceline":"이런 역할에 완전히 몰입하는 건 힘들지만, 지금 내게 푹 빠지게 만드는 건…… 의외로 식은 죽 먹기였네~",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/90302\/main_3_3.opus"
+        },
+        "전투개시":null,
+        "상세확인":{
+            "voiceline":"채찍은 왜 들고 있냐고? 여러 가지 이유가 있는데…… 후후, 지휘관의 워라밸을 바로잡을 때 필요할지도 모르잖아? 어떻게 쓸지는…… 기대하고 있어.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/90302\/detail_3.opus"
+        },
+        "드랍 설명":{
+            "voiceline":"어서 와, 지휘관. 나를 이렇게 기다리게 하다니…… 벌을 좀 줘야 하나? 후후후, 농담이야. 어서 이리 와서 앉아♪",
+            "voicelink":null
+        },
+        "의뢰 완료":null,
+        "실망":null,
+        "낯섦":null,
+        "호감":null,
+        "기쁨":null,
+        "사랑":{
+            "voiceline":"채찍으로 상대의 마음을 옭아매다니, 그런 건 악역이나 하는 짓이지. 상냥한 메이드는 눈빛 하나만으로도 사랑하는 사람을 사로잡을 수 있거든…… 지휘관, 어때?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/90302\/feeling5_3.opus"
+        },
+        "선호 선물":null,
+        "비선호 선물":null,
+        "터치3":{
+            "voiceline":"후후, 지휘관에게 주도권을 빼앗기는 기분도 나쁘지 않네.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/90302\/touch_head_3.opus"
+        },
+        "모항귀환":{
+            "voiceline":"작전하느라 수고했어. 어서 이리 와. 내가 포상을 내려줄 테니.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/90302\/home_3.opus"
+        },
+        "hp 경고":null,
+        "로그인":{
+            "voiceline":"어서 오세요, 주인님. 어머, 아직 업무 모드에서 벗어나지 못했으면, 이 채찍으로 정신이 번쩍 들게 해줄까? ……응? 방금 거, 진심으로 받아들인 거야?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/90302\/login_3.opus"
+        },
+        "실패":null,
+        "우편":null,
+        "임무":{
+            "voiceline":"아직 끝내지 않은 임무가 있어. 설마 지휘관, 이 채찍으로 찰싹 맞지 않으면 집중이 안 돼?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/90302\/task_3.opus"
+        },
+        "임무완료":null,
+        "서약":null,
+        "스킬":null,
+        "터치1":{
+            "voiceline":"어머? 혹시 이렇게 보살펴 주는 메이드가 좋아? 지휘관도 참 재미있다니까~",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/90302\/touch_1_3.opus"
+        },
+        "터치2":{
+            "voiceline":"채찍을 든 상대에게 그렇게까지 적극적으로 나오다니…… 그럴 여유가 있다면 나도 좀 더 「어른스러운」 방식으로 보살펴 줘야겠네♡",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/90302\/touch_2_3.opus"
+        },
+        "입수시":{
+            "voiceline":"어서 와, 지휘관. 나를 이렇게 기다리게 하다니…… 벌을 좀 줘야 하나? 후후후, 농담이야. 어서 이리 와서 앉아♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/90302\/get_3.opus"
+        },
+        "강화성공":null,
+        "vote":null,
+        "승리":null,
+        "메인1_ex":null,
+        "메인4_ex":null,
+        "메인5_ex":null,
+        "메인6_ex":null,
+        "전투개시_ex":null,
+        "상세확인_ex":null,
+        "의뢰 완료_ex":null,
+        "사랑_ex":null,
+        "선호 선물_ex":null,
+        "비선호 선물_ex":null,
+        "터치3_ex":null,
+        "모항귀환_ex":null,
+        "hp 경고_ex":null,
+        "로그인_ex":null,
+        "실패_ex":null,
+        "우편_ex":null,
+        "임무_ex":null,
+        "임무완료_ex":null,
+        "스킬_ex":null,
+        "터치1_ex":null,
+        "터치2_ex":null,
+        "입수시_ex":null,
+        "강화성공_ex":null,
+        "승리_ex":null,
+        "함대 특수대사":null,
+        "메인4":null,
+        "메인7_ex":null,
+        "메인8_ex":null,
+        "메인5":null,
+        "메인6":null,
+        "메인2_ex":null,
+        "메인3_ex":null,
+        "메인9_ex":null,
+        "ASMR 일러":null,
+        "ASMR 음성":null,
+        "voice_alt_kind":null,
+        "메인10_ex":null,
+        "메인7":null,
+        "스킨 타입 - 한글":"메이드 타임",
+        "상점 id":0,
+        "상점 카테고리 id":17,
+        "스킨 태그":"배경",
+        "입수 영상":"X",
+        "재화":null,
+        "기간":null,
+        "진영":"MNF",
+        "레어도":"SSR",
+        "ex_chat_status":0
+    },
+    {
         "클뜯 id":903030,
         "클뜯 함순이 id":90303,
         "함순이 이름":"듀플렉스",
@@ -338628,7 +338759,7 @@
         "스킨 태그":"쁘띠모션, 배경",
         "입수 영상":"X",
         "재화":980.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "진영":"MOT",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -339096,7 +339227,7 @@
         "스킨 태그":"배경",
         "입수 영상":"X",
         "재화":880.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "진영":"MOT",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -339450,7 +339581,7 @@
         "스킨 태그":"쁘띠모션, 배경",
         "입수 영상":"X",
         "재화":980.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "진영":"MOT",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -339815,7 +339946,7 @@
         "스킨 태그":"배경",
         "입수 영상":"X",
         "재화":780.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "진영":"MOT",
         "레어도":"SR",
         "ex_chat_status":0
@@ -340169,7 +340300,7 @@
         "스킨 태그":"배경",
         "입수 영상":"X",
         "재화":780.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "진영":"MOT",
         "레어도":"SR",
         "ex_chat_status":0
@@ -340511,7 +340642,7 @@
         "스킨 태그":"L2D, 배경",
         "입수 영상":"O",
         "재화":1180.0,
-        "기간":"한정 (2025\/11\/19)",
+        "기간":"상시",
         "진영":"MOT",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -340851,7 +340982,7 @@
         "스킨 태그":"쁘띠모션, 배경",
         "입수 영상":"O",
         "재화":980.0,
-        "기간":"한정 (2025\/11\/19)",
+        "기간":"상시",
         "진영":"MOT",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -341191,7 +341322,7 @@
         "스킨 태그":"L2D+, 배경",
         "입수 영상":"O",
         "재화":1260.0,
-        "기간":"한정 (2025\/11\/19)",
+        "기간":"상시",
         "진영":"MOT",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -341530,7 +341661,7 @@
         "스킨 태그":"배경",
         "입수 영상":"O",
         "재화":780.0,
-        "기간":"한정 (2025\/11\/19)",
+        "기간":"상시",
         "진영":"MOT",
         "레어도":"SR",
         "ex_chat_status":0
@@ -341867,7 +341998,7 @@
         "스킨 태그":"쁘띠모션, 배경",
         "입수 영상":"O",
         "재화":880.0,
-        "기간":"한정 (2025\/11\/19)",
+        "기간":"상시",
         "진영":"MOT",
         "레어도":"SR",
         "ex_chat_status":0
