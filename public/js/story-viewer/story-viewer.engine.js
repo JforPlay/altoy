@@ -933,7 +933,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (eventId != null) this.currentEventId = eventId;
             this.currentMemoryId = memoryId;
             this.scriptIndex = 0;
-            this.lastPortraitUrl = null;
+            this.renderBandPortrait(null); // clear the <img> too, not just its cache key
             this.currentBgm = null;
             this.activeOptionFlag = null;
             this.lastOptionIndex = -1;

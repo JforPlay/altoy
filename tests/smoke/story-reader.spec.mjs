@@ -279,6 +279,22 @@ test('a missing storyicon stays hidden on the next line of the same portrait', a
     await expect(page.locator('#actor-portrait')).toBeHidden();
 });
 
+test('re-entering a story drops the previous visit\'s portrait', async ({ page }) => {
+    // 4223: lines 22-30 are the commander (zhihuiguan, mini); lines 0-1 have no portrait.
+    await page.route('**/storyicon/**', (r) => r.fulfill({ status: 200, contentType: 'image/png', body: PIXEL }));
+    await page.goto(`${MAIN_STORY}?eventid=85&story=4223`, { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('#story-viewer-view')).toBeVisible();
+    await page.evaluate(() => { window.StoryViewer.scriptIndex = 22; window.StoryViewer.renderScriptLine(); });
+    await expect(page.locator('#actor-portrait')).toBeVisible();
+    await page.locator('#back-to-memory-selection').click();
+    await page.locator('#memory-grid .grid-card[data-id="4223"]').click();
+    await expect(page.locator('#story-viewer-view')).toBeVisible();
+    await page.evaluate(() => { window.StoryViewer.scriptIndex = 1; window.StoryViewer.renderScriptLine(); });
+    await expect(page.locator('#dialogue-box')).toBeVisible();
+    await expect(page.locator('#actor-portrait')).toBeHidden();
+    await expect(page.locator('#actor-portrait img')).toHaveCount(0);
+});
+
 test('the flashback tint stays inside the stage, under the band', async ({ page }) => {
     const OLD = (() => {
         for (const ev of Object.values(readMaster('event_story_data.json'))) {
