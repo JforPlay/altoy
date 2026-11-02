@@ -505,6 +505,11 @@
             "rarity": "R",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/401190.webp"
         },
+        "401471": {
+            "name": "Z47",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/401470.webp"
+        },
         "401991": {
             "name": "오토 폰 알벤슬레벤",
             "rarity": "SSR",
@@ -744,6 +749,26 @@
             "name": "골든 하인드",
             "rarity": "SSR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600030.webp"
+        },
+        "9600081": {
+            "name": "팬시",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600080.webp"
+        },
+        "9600101": {
+            "name": "포츠머스 어드벤처",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600100.webp"
+        },
+        "9600131": {
+            "name": "라임",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600130.webp"
+        },
+        "9600151": {
+            "name": "로열 제임스",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600150.webp"
         }
     },
     "2": {
@@ -1117,6 +1142,11 @@
             "rarity": "SSR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/404050.webp"
         },
+        "404061": {
+            "name": "알비트",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/404060.webp"
+        },
         "405031": {
             "name": "울리히 폰 후텐",
             "rarity": "UR",
@@ -1236,6 +1266,21 @@
             "name": "상 마르티뉴",
             "rarity": "SSR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600020.webp"
+        },
+        "9600071": {
+            "name": "건스웨이",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600070.webp"
+        },
+        "9600121": {
+            "name": "퀸 앤즈 리벤지",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600120.webp"
+        },
+        "9600141": {
+            "name": "펄",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600140.webp"
         }
     },
     "3": {
@@ -1664,6 +1709,11 @@
             "rarity": "SSR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/408100.webp"
         },
+        "408131": {
+            "name": "U-31",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/408130.webp"
+        },
         "506011": {
             "name": "젠하이",
             "rarity": "SR",
@@ -1718,6 +1768,11 @@
             "name": "위다",
             "rarity": "SR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600050.webp"
+        },
+        "9600091": {
+            "name": "아미티",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600090.webp"
         },
         "9708011": {
             "name": "U-556·META",

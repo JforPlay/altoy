@@ -14337,11 +14337,11 @@
             "Allen M. Sumner-class",
             "Collett"
         ],
-        "timer": null,
+        "timer": "00:29:00",
         "light": false,
         "heavy": false,
         "special": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 750,
@@ -14604,11 +14604,11 @@
         "tag_list": [
             "Fletcher-Class"
         ],
-        "timer": null,
+        "timer": "00:28:00",
         "light": false,
         "heavy": false,
         "special": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 753,
@@ -24558,11 +24558,11 @@
         "tag_list": [
             "Cleveland-Class"
         ],
-        "timer": null,
+        "timer": "01:25:00",
         "light": false,
         "heavy": false,
         "special": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 39,
@@ -42170,11 +42170,11 @@
             "Essex-Class",
             "Essex-Class-No-Yorktown"
         ],
-        "timer": null,
+        "timer": "04:25:00",
         "light": false,
         "heavy": false,
         "special": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 377,
@@ -59243,11 +59243,11 @@
         "tag_list": [
             "H-Class"
         ],
-        "timer": null,
+        "timer": "00:26:00",
         "light": false,
         "heavy": false,
         "special": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 104,
@@ -69167,11 +69167,11 @@
             "Swiftsure-Class",
             "Superb"
         ],
-        "timer": null,
+        "timer": "01:25:00",
         "light": false,
         "heavy": false,
         "special": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 754,
@@ -73126,11 +73126,11 @@
             "Surrey-Class",
             "Surrey"
         ],
-        "timer": null,
+        "timer": "01:30:00",
         "light": false,
         "heavy": false,
         "special": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 127,
@@ -90456,11 +90456,11 @@
             "Kagero-Class",
             "Amatsukaze"
         ],
-        "timer": null,
+        "timer": "00:27:00",
         "light": false,
         "heavy": false,
         "special": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 170,
@@ -116836,11 +116836,11 @@
         "tag_list": [
             "Azuchi"
         ],
-        "timer": null,
+        "timer": "04:40:00",
         "light": false,
         "heavy": false,
         "special": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 208,
@@ -130361,11 +130361,11 @@
         "tag_list": [
             "I Type-submarine"
         ],
-        "timer": null,
+        "timer": "00:33:00",
         "light": false,
         "heavy": false,
         "special": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 472,
@@ -138929,10 +138929,10 @@
             "Z-Class"
         ],
         "timer": "00:39:00",
-        "light": false,
+        "light": true,
         "heavy": false,
         "special": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 670,
@@ -148518,9 +148518,9 @@
         ],
         "timer": "05:05:00",
         "light": false,
-        "heavy": false,
+        "heavy": true,
         "special": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 694,
@@ -155772,8 +155772,8 @@
         "timer": "00:11:00",
         "light": false,
         "heavy": false,
-        "special": false,
-        "limited": true
+        "special": true,
+        "limited": false
     },
     {
         "id": 695,
@@ -205021,9 +205021,9 @@
         "tag_list": [],
         "timer": "04:42:30",
         "light": false,
-        "heavy": false,
+        "heavy": true,
         "special": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 665,
@@ -205302,10 +205302,10 @@
             "Fancy"
         ],
         "timer": "01:39:21",
-        "light": false,
+        "light": true,
         "heavy": false,
         "special": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 666,
@@ -205581,8 +205581,8 @@
         "timer": "00:28:13",
         "light": false,
         "heavy": false,
-        "special": false,
-        "limited": true
+        "special": true,
+        "limited": false
     },
     {
         "id": 667,
@@ -205851,10 +205851,10 @@
             "Portsmouth"
         ],
         "timer": "00:28:14",
-        "light": false,
+        "light": true,
         "heavy": false,
         "special": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 668,
@@ -206383,9 +206383,9 @@
         ],
         "timer": "04:46:10",
         "light": false,
-        "heavy": false,
+        "heavy": true,
         "special": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 710,
@@ -206659,10 +206659,10 @@
             "Lyme"
         ],
         "timer": "00:28:14",
-        "light": false,
+        "light": true,
         "heavy": false,
         "special": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 711,
@@ -206911,9 +206911,9 @@
         ],
         "timer": "04:46:02",
         "light": false,
-        "heavy": false,
+        "heavy": true,
         "special": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 712,
@@ -207175,10 +207175,10 @@
         ],
         "tag_list": [],
         "timer": "00:28:37",
-        "light": false,
+        "light": true,
         "heavy": false,
         "special": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 713,
@@ -224239,11 +224239,11 @@
         "tag_list": [
             "Armor-CV"
         ],
-        "timer": null,
+        "timer": "04:30:00",
         "light": false,
         "heavy": false,
         "special": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 30064,
