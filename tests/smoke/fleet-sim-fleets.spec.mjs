@@ -69,7 +69,7 @@ test('fleets hold their own ships, and switching preserves both', async ({ page 
     await addNamedShip(page, SP_SHIP);
     const first = await shipName(page);
 
-    await page.locator('[data-action="add-fleet"]').click();
+    await page.locator('#fleet-tabs [data-action="add-fleet"]').click();
     await expect(tabs(page)).toHaveCount(2);
     // The new fleet starts empty rather than inheriting fleet 1.
     await expect(slot0(page)).toHaveClass(/ship-card--empty/);
@@ -84,8 +84,8 @@ test('fleets hold their own ships, and switching preserves both', async ({ page 
 
 test('the strip refuses to drop the last fleet or add a fifth', async ({ page }) => {
     await page.goto(PAGE);
-    const add = page.locator('[data-action="add-fleet"]');
-    const remove = page.locator('[data-action="remove-fleet"]');
+    const add = page.locator('#fleet-tabs [data-action="add-fleet"]');
+    const remove = page.locator('#fleet-tabs [data-action="remove-fleet"]');
 
     await expect(remove).toBeDisabled();
     await expect(add).toBeEnabled();
@@ -116,7 +116,7 @@ test('a single-fleet share link keeps the legacy {s} payload', async ({ page }) 
 test('a multi-fleet share link restores every fleet', async ({ page }) => {
     await page.goto(PAGE);
     await addNamedShip(page, SP_SHIP);
-    await page.locator('[data-action="add-fleet"]').click();
+    await page.locator('#fleet-tabs [data-action="add-fleet"]').click();
     await addNamedShip(page, '유니콘');
 
     const payload = await sharedPayload(page);
@@ -134,7 +134,7 @@ test('a multi-fleet share link restores every fleet', async ({ page }) => {
 test('a save carries all its fleets, and the library row says how many', async ({ page }) => {
     await page.goto(PAGE);
     await addNamedShip(page, SP_SHIP);
-    await page.locator('[data-action="add-fleet"]').click();
+    await page.locator('#fleet-tabs [data-action="add-fleet"]').click();
     await addNamedShip(page, '유니콘');
 
     await saveAs(page, '2함대 저장');

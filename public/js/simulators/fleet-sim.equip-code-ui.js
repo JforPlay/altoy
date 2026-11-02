@@ -35,7 +35,7 @@ export function setup(stateRef, cbs) {
 
 /** Open the modal for a filled fleet slot: builds the export code eagerly. */
 export function openEquipCodeModal(slotIndex) {
-    const slotConfig = state.ships[slotIndex];
+    const slotConfig = state.getSlot(slotIndex);
     if (!slotConfig) return;
     activeSlot = slotIndex;
 
@@ -173,7 +173,7 @@ function _handleApplyClick() {
         return;
     }
 
-    const slotConfig = state.ships[activeSlot];
+    const slotConfig = state.getSlot(activeSlot);
     if (!slotConfig) return;
     const ship = getShipByGid(slotConfig.gid);
     const plan = planImport(decoded, _buildCtx(slotConfig, ship));
@@ -207,7 +207,7 @@ function _applyPending(switchShip) {
     if (switchShip) {
         callbacks.onShipSelected(activeSlot, decoded.gid);
         // re-plan against the NEW ship (slot config was replaced)
-        const slotConfig = state.ships[activeSlot];
+        const slotConfig = state.getSlot(activeSlot);
         const ship = getShipByGid(slotConfig.gid);
         _applyPlan(planImport(decoded, _buildCtx(slotConfig, ship)));
     } else {
@@ -217,7 +217,7 @@ function _applyPending(switchShip) {
 }
 
 function _applyPlan(plan) {
-    const slotConfig = state.ships[activeSlot];
+    const slotConfig = state.getSlot(activeSlot);
     if (!slotConfig) return;
     if (!plan.apply.length && !plan.sp) {
         _renderNotices(plan.notices);

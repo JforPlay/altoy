@@ -14,6 +14,33 @@ export const MAX_SAVE_SLOTS = 30;
 export const SAVES_VERSION = 1;
 /** Fleets fight in sequence in game; 1함대/2함대 plus two scratch variants. */
 export const MAX_FLEETS = 4;
+export const MAX_SUB_FLEETS = 2;
+export const SUB_FLEET_SIZE = 3;
+/** 지원함대 (15·16지역 opening battle): 0-2 항모, 3-5 잠수. No fleet tabs. */
+export const SUPPORT_SIZE = 6;
+
+// ===== Slot layout =====
+//
+// Every card carries one `data-slot` in a single address space, so the card,
+// picker, popover and equip-code code serve all three sections unchanged:
+//   0-5   active main fleet (0-2 후열, 3-5 전열)  — `state.ships`
+//   6-8   active 잠수함대
+//   9-11  지원함대 · 항모      12-14 지원함대 · 잠수
+// Rows are runs of three: drag-and-drop swaps within a row, the picker filters by it.
+export const SLOT_COUNT = 15;
+export const ROW = { MAIN: 0, VANGUARD: 1, SUB: 2, SUPPORT_CARRIER: 3, SUPPORT_SUB: 4 };
+export const slotRow = (slot) => Math.floor(slot / 3);
+
+/** The [array, index] holding `slot` in fleet-sim state, or null when out of range. */
+export function slotRef(state, slot) {
+    if (!Number.isInteger(slot) || slot < 0 || slot >= SLOT_COUNT) return null;
+    if (slot < 6) return [state.fleets[state.activeFleet], slot];
+    if (slot < 9) return [state.subFleets[state.activeSubFleet], slot - 6];
+    return [state.support, slot - 9];
+}
+
+export const emptySlots = (size) => new Array(size).fill(null);
+const _hasShip = (slots) => (slots || []).some(Boolean);
 
 /** syncedStorage parse() contract: never throw; null/garbage → []. */
 export function parseSaves(value) {
@@ -52,9 +79,9 @@ export function serializeFleet(ships) {
     });
 }
 
-/** Deserialize saved ships into exactly 6 clamped slot configs.
+/** Deserialize saved ships into exactly `size` clamped slot configs.
  *  ids coerce to finite positive Numbers — poisoned saves degrade to empty slots. */
-export function deserializeFleet(savedShips) {
+export function deserializeFleet(savedShips, size = 6) {
     const ships = (Array.isArray(savedShips) ? savedShips : []).map(s => {
         if (!s) return null;
         const gid = Number(s.gid);
@@ -82,9 +109,31 @@ export function deserializeFleet(savedShips) {
         if (s.fate !== undefined) slot.fate = s.fate;
         return slot;
     });
-    while (ships.length < 6) ships.push(null);
-    if (ships.length > 6) ships.length = 6;
+    while (ships.length < size) ships.push(null);
+    ships.length = size;
     return ships;
+}
+
+/** The 잠수함대 / 지원함대 half of a save record, or {} when both are empty — so a
+ *  main-fleet-only save stays byte-identical to what older builds wrote. */
+export function serializeSections(state) {
+    const out = {};
+    if (state.subFleets.some(_hasShip)) out.subFleets = state.subFleets.map(serializeFleet);
+    if (_hasShip(state.support)) out.support = serializeFleet(state.support);
+    return out;
+}
+
+/** Inverse of serializeSections; a record without them (every older save) gives
+ *  one empty 잠수함대 and an empty 지원함대. */
+export function deserializeSections(save) {
+    const subs = Array.isArray(save?.subFleets) ? save.subFleets.slice(0, MAX_SUB_FLEETS) : [];
+    return {
+        subFleets: subs.length
+            ? subs.map((f) => deserializeFleet(f, SUB_FLEET_SIZE))
+            : [emptySlots(SUB_FLEET_SIZE)],
+        activeSubFleet: 0,
+        support: deserializeFleet(save?.support, SUPPORT_SIZE),
+    };
 }
 
 // ===== ?fleet= share codec =====
@@ -114,7 +163,7 @@ function _encodeSlots(ships) {
 /** Inverse of _encodeSlots, hardened: the payload is untrusted, so ids coerce
  *  to finite positives and levels clamp. Anything unreadable becomes an empty
  *  slot rather than throwing. */
-function _decodeSlots(saved, spMaxLevel) {
+function _decodeSlots(saved, spMaxLevel, size = 6) {
     const ships = (Array.isArray(saved) ? saved : []).map(s => {
         if (!s || typeof s !== 'object') return null;
         const gid = Number(s.g);
@@ -140,8 +189,8 @@ function _decodeSlots(saved, spMaxLevel) {
         if (s.f !== undefined) slot.fate = s.f === 1;
         return slot;
     });
-    while (ships.length < 6) ships.push(null);
-    ships.length = 6;
+    while (ships.length < size) ships.push(null);
+    ships.length = size;
     return ships;
 }
 
@@ -159,6 +208,13 @@ export function encodeFleetConfig(state) {
     const config = fleets.length > 1
         ? { f: fleets.map(_encodeSlots), af: state.activeFleet || 0 }
         : { s: _encodeSlots(fleets[0]) };
+    // 잠수함대 / 지원함대 only when they hold a ship, so a main-fleet link is unchanged.
+    const subs = state.subFleets || [];
+    if (subs.some(_hasShip)) {
+        config.sb = subs.map(_encodeSlots);
+        if (state.activeSubFleet) config.asb = state.activeSubFleet;
+    }
+    if (_hasShip(state.support)) config.su = _encodeSlots(state.support);
 
     const dt = state.damageTarget;
     if (dt) {
@@ -189,10 +245,18 @@ export function decodeFleetConfig(encoded, spMaxLevel = () => 10) {
     const raw = Array.isArray(config.f) ? config.f : [config.s];
     const fleets = raw.slice(0, MAX_FLEETS).map(f => _decodeSlots(f, spMaxLevel));
     const af = parseInt(config.af, 10);
+    const rawSubs = Array.isArray(config.sb) ? config.sb.slice(0, MAX_SUB_FLEETS) : [];
+    const subFleets = rawSubs.length
+        ? rawSubs.map(f => _decodeSlots(f, spMaxLevel, SUB_FLEET_SIZE))
+        : [emptySlots(SUB_FLEET_SIZE)];
+    const asb = parseInt(config.asb, 10);
 
     return {
         fleets,
         activeFleet: Number.isInteger(af) && af >= 0 && af < fleets.length ? af : 0,
+        subFleets,
+        activeSubFleet: Number.isInteger(asb) && asb >= 0 && asb < subFleets.length ? asb : 0,
+        support: _decodeSlots(config.su, spMaxLevel, SUPPORT_SIZE),
         target: _decodeTarget(config.t),
     };
 }

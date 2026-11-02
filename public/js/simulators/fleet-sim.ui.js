@@ -14,15 +14,17 @@ import {
     resolvePassiveBuffs,
     computeHighlights,
     SHIPTYPE_TECH_KEY,
+    spRandomRolls,
 } from './fleet-sim.calc.js';
 import { simulateFleetDamage, effectiveProficiency, hasFateSimulation } from './fleet-sim.damage.js';
 import { ARMOR_PRESETS, BATTLE_START_DELAY } from '../engine/damage/index.js';
+import { SLOT_COUNT } from './fleet-sim.saves.js';
 
 // ===== State =====
 let state;
 
 // ===== DOM Cache =====
-let cardElements = [];    // 6 .ship-card elements (indexed by slot)
+let cardElements = [];    // SLOT_COUNT .ship-card elements (indexed by data-slot)
 let summarySection = null;
 let techBonusList = null;
 let passiveSkillList = null;
@@ -30,7 +32,7 @@ let loadingOverlay = null;
 let damageResultsEl = null;
 
 /** Track which slots have stats collapsed (persists across re-renders) */
-const statsCollapsed = new Set([0, 1, 2, 3, 4, 5]);
+const statsCollapsed = new Set(Array.from({ length: SLOT_COUNT }, (_, i) => i));
 
 /** Last successfully computed damage result — used for per-weapon card breakdown */
 let _lastDamageResult = null;
@@ -118,39 +120,12 @@ export function renderFleet() {
     // 1. Calculate fleet tech bonuses (from tracker localStorage)
     const techBonuses = calculateFleetTechBonuses();
 
-    // 2. Build ship data objects for passive buff resolution
-    const fleetShips = state.ships.map(slot => {
-        if (!slot || !slot.gid) return null;
-        return getShipByGid(slot.gid);
-    });
-
-    // 3. Calculate stats for all 6 slots
-    const allResults = [];   // { stats, reloads } or null
-    const allStats = [];     // raw stats objects for highlight comparison
-
-    for (let i = 0; i < 6; i++) {
-        const slotConfig = state.ships[i];
-        if (!slotConfig || !slotConfig.gid) {
-            allResults.push(null);
-            allStats.push(null);
-            continue;
-        }
-
-        const ship = fleetShips[i];
-        const passiveBuffs = ship ? resolvePassiveBuffs(ship, fleetShips, i, state.ships) : [];
-        const result = calculateShipStats(slotConfig, techBonuses, passiveBuffs);
-
-        allResults.push(result);
-        allStats.push(result ? result.stats : null);
-    }
-
-    // 4. Compute stat highlights across all slots
-    const highlights = computeHighlights(allStats);
-
-    // 5. Render each card (uses _lastDamageResult from previous calc for breakdown)
-    for (let i = 0; i < 6; i++) {
-        _renderCard(i, allResults[i], highlights);
-    }
+    // 2-5. Stats + cards per group. Only the main fleet is positional (주력/전열/기함
+    // target modes); 잠수함대 and each 지원함대 row resolve passives among themselves.
+    const fleetShips = _renderGroup(0, state.ships, techBonuses, true);
+    _renderGroup(6, state.subFleets[state.activeSubFleet], techBonuses, false);
+    _renderGroup(9, state.support.slice(0, 3), techBonuses, false);
+    _renderGroup(12, state.support.slice(3), techBonuses, false);
 
     // 6. Render fleet summary
     _renderFleetSummary(techBonuses, fleetShips);
@@ -176,13 +151,32 @@ export function renderFleet() {
 // ===== Card Rendering =====
 
 /**
+ * Calculate and render one group of cards starting at card slot `offset`.
+ * `positional` passes each ship's index so the 주력/전열/기함 modes resolve; a
+ * non-positional group passes -1, where those modes match nobody (a 잠수함 is in
+ * neither row) and self is matched by gid. Highlights compare within the group.
+ * @returns {Array<object|null>} the group's ship data objects, positional
+ */
+function _renderGroup(offset, slots, techBonuses, positional) {
+    const ships = slots.map((s) => (s && s.gid ? getShipByGid(s.gid) : null));
+    const results = slots.map((slotConfig, i) => (ships[i]
+        ? calculateShipStats(slotConfig, techBonuses,
+            resolvePassiveBuffs(ships[i], ships, positional ? i : -1, slots))
+        : null));
+    const highlights = computeHighlights(results.map((r) => (r ? r.stats : null)));
+    // Uses _lastDamageResult from the previous calc for the main fleet's breakdowns
+    results.forEach((r, i) => _renderCard(offset + i, r, highlights));
+    return ships;
+}
+
+/**
  * Render a single ship card (empty or populated).
  */
 function _renderCard(slotIndex, calcResult, highlights) {
     const card = cardElements[slotIndex];
     if (!card) return;
 
-    const slotConfig = state.ships[slotIndex];
+    const slotConfig = state.getSlot(slotIndex);
 
     if (!slotConfig || !slotConfig.gid) {
         _renderEmptyCard(card, slotIndex);
@@ -195,8 +189,10 @@ function _renderCard(slotIndex, calcResult, highlights) {
         return;
     }
 
-    // Look up this ship's per-weapon result from the last damage calc (may be null on first render)
-    const shipDmgResult = _lastDamageResult
+    // Look up this ship's per-weapon result from the last damage calc (may be null on
+    // first render). Main fleet only — the sim never sees 잠수/지원, and a ship placed
+    // in both would otherwise borrow its main-fleet rows by gid.
+    const shipDmgResult = _lastDamageResult && slotIndex < 6
         ? (_lastDamageResult.perShip.find(s => s.ref === slotConfig.gid) || null)
         : null;
 
@@ -465,6 +461,10 @@ function _buildSPSlotHTML(slotIndex, ship, slotConfig) {
             const iconUrl = getSPWeaponIconUrl(spWeapon.icon);
             const bgUrl = getRarityBgUrl(spWeapon.rarity + 1);
             const safeName = escapeHtml(spWeapon.name || '');
+            // The stats include the module's random roll at its max — say so, and by how much.
+            const rolls = spRandomRolls(spWeapon);
+            const rollText = rolls.map((r) => `${r.label} +${r.value}`).join(' · ');
+            const title = rolls.length ? `${safeName}&#10;랜덤 스탯 최대치 적용: ${escapeHtml(rollText)}` : safeName;
             return `
                 <div class="equip-slot equipped sp-slot"
                      role="button"
@@ -472,12 +472,13 @@ function _buildSPSlotHTML(slotIndex, ship, slotConfig) {
                      data-action="change-sp-weapon"
                      data-slot="${slotIndex}"
                      data-equip-rarity="${SP_RARITY_MAP[spWeapon.rarity] || ''}"
-                     title="${safeName}">
+                     title="${title}">
                     <div class="equip-slot-icon-box">
                         <div class="equip-icon-wrapper">
                             <img class="equip-icon-bg" src="${bgUrl}" alt="" loading="lazy" />
                             ${iconUrl ? `<img class="equip-icon-fg" src="${iconUrl}" alt="${safeName}" loading="lazy" />` : ''}
                         </div>
+                        ${rolls.length ? '<span class="equip-slot-badge equip-eff-badge sp-roll-badge" aria-hidden="true">MAX</span>' : ''}
                         <span class="equip-slot-badge equip-enhance-badge"
                               data-action="change-sp-level"
                               data-slot="${slotIndex}">+${spConfig.level ?? 0}</span>
@@ -736,10 +737,10 @@ function _renderPassiveSkills(fleetShips) {
  * Cache DOM element references for re-use.
  */
 function _cacheDOM() {
+    // Indexed by slot, never pushed: a missing card must not shift the ones after it.
     cardElements = [];
-    for (let i = 0; i < 6; i++) {
-        const el = document.querySelector(`.ship-card[data-slot="${i}"]`);
-        if (el) cardElements.push(el);
+    for (let i = 0; i < SLOT_COUNT; i++) {
+        cardElements[i] = document.querySelector(`.ship-card[data-slot="${i}"]`);
     }
 
     summarySection = document.getElementById('fleet-summary');

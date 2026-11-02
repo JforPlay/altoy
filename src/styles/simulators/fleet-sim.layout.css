@@ -72,3 +72,22 @@
   gap: var(--spacing-md);
 }
 
+/* 잠수함대 / 지원함대 — the sections below the main grid. A wider top gap so each
+   group reads as its own block; same cards, same two-column track. */
+.fleet-tabs--section,
+.fleet-grid--section {
+  margin-top: var(--spacing-xl);
+}
+
+/* The 3-card 잠수함대 spans both columns and flows its cards across them, so the
+   cards keep the main fleet's width instead of leaving the right column empty.
+   minmax(0, 1fr): a grid track otherwise sizes to its widest card's content. */
+.fleet-section--span {
+  grid-column: 1 / -1;
+}
+
+.ship-card-grid--flow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+

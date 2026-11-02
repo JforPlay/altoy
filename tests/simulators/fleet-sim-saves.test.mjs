@@ -12,9 +12,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-    MAX_SAVE_SLOTS, MAX_FLEETS, SAVES_VERSION,
+    MAX_SAVE_SLOTS, MAX_FLEETS, MAX_SUB_FLEETS, SAVES_VERSION, SLOT_COUNT,
     parseSaves, migrateSaves, serializeFleet, deserializeFleet, clampLevel,
-    encodeFleetConfig, decodeFleetConfig,
+    encodeFleetConfig, decodeFleetConfig, serializeSections, deserializeSections, slotRef, slotRow,
 } from '../../public/js/simulators/fleet-sim.saves.js';
 
 test('constants: cap 30 saves, 4 fleets, version 1', () => {
@@ -228,4 +228,69 @@ test('preset difficulty round-trips; a payload older than the field reads 하드
     // Untrusted input: anything that is not 'normal' is 하드, never undefined.
     const junk = btoa(JSON.stringify({ s: [], t: { k: 'preset', p: 'medium', df: { x: 1 } } }));
     assert.equal(decodeFleetConfig(junk).target.difficulty, 'hard');
+});
+
+// ===== 잠수함대 / 지원함대 =====
+
+const subOf = (gid) => [shipAt(gid), null, null];
+
+test('잠수함대 + 지원함대 round-trip through the share codec', () => {
+    const support = [shipAt(7), null, null, null, null, shipAt(8)];
+    const state = {
+        fleets: [fleetOf(1)], activeFleet: 0, damageTarget: null,
+        subFleets: [subOf(5), subOf(6)], activeSubFleet: 1, support,
+    };
+    const out = decodeFleetConfig(encodeFleetConfig(state));
+    assert.deepEqual(out.subFleets.map(f => f.length), [3, 3]);
+    assert.deepEqual(out.subFleets.map(f => f[0].gid), [5, 6]);
+    assert.equal(out.activeSubFleet, 1);
+    assert.equal(out.support.length, 6);
+    assert.deepEqual([out.support[0].gid, out.support[5].gid], [7, 8]);
+});
+
+test('empty sections add nothing to a link; a link without them decodes to empties', () => {
+    const state = {
+        fleets: [fleetOf(1)], activeFleet: 0, damageTarget: null,
+        subFleets: [[null, null, null]], activeSubFleet: 0, support: new Array(6).fill(null),
+    };
+    const encoded = encodeFleetConfig(state);
+    assert.deepEqual(Object.keys(payloadOf(encoded)), ['s'], 'main-only link stays the legacy shape');
+    const out = decodeFleetConfig(encoded);
+    assert.deepEqual(out.subFleets, [[null, null, null]]);
+    assert.equal(out.activeSubFleet, 0);
+    assert.deepEqual(out.support, new Array(6).fill(null));
+});
+
+test('decode caps 잠수함대 at MAX_SUB_FLEETS and clamps an out-of-range active index', () => {
+    const payload = btoa(JSON.stringify({ s: [], sb: [[], [], [{ g: 9 }]], asb: 5 }));
+    const out = decodeFleetConfig(payload);
+    assert.equal(out.subFleets.length, MAX_SUB_FLEETS);
+    assert.equal(out.activeSubFleet, 0);
+});
+
+test('save records carry sections only when they hold a ship, and older saves load empties', () => {
+    const empty = { subFleets: [[null, null, null]], support: new Array(6).fill(null) };
+    assert.deepEqual(serializeSections(empty), {});
+    const rec = serializeSections({ subFleets: [subOf(5)], support: [null, null, null, shipAt(8), null, null] });
+    const back = deserializeSections(rec);
+    assert.equal(back.subFleets[0][0].gid, 5);
+    assert.equal(back.support[3].gid, 8);
+    assert.deepEqual(deserializeSections({ ships: [] }).subFleets, [[null, null, null]]);
+});
+
+test('slotRef maps the one card address space onto main / 잠수 / 지원 arrays', () => {
+    const state = {
+        fleets: [fleetOf(1), fleetOf(2)], activeFleet: 1,
+        subFleets: [subOf(5), subOf(6)], activeSubFleet: 1, support: new Array(6).fill(null),
+    };
+    const [arr0, i0] = slotRef(state, 0);
+    assert.equal(arr0[i0].gid, 2, 'slot 0 follows the active main fleet');
+    const [arr6, i6] = slotRef(state, 6);
+    assert.equal(arr6[i6].gid, 6, 'slot 6 follows the active 잠수함대');
+    const [arr14, i14] = slotRef(state, 14);
+    assert.equal(arr14, state.support);
+    assert.equal(i14, 5);
+    assert.equal(slotRef(state, SLOT_COUNT), null);
+    assert.equal(slotRow(8), slotRow(6));
+    assert.notEqual(slotRow(9), slotRow(8));
 });

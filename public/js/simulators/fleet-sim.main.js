@@ -21,9 +21,10 @@ import {
     showElement,
 } from '../utils.js';
 import {
-    MAX_SAVE_SLOTS, MAX_FLEETS, SAVES_VERSION, parseSaves, migrateSaves,
-    serializeFleet, deserializeFleet, clampLevel,
-    encodeFleetConfig, decodeFleetConfig, presetCode, defaultWindow,
+    MAX_SAVE_SLOTS, MAX_FLEETS, MAX_SUB_FLEETS, SUB_FLEET_SIZE, SUPPORT_SIZE, SAVES_VERSION,
+    parseSaves, migrateSaves, serializeFleet, deserializeFleet, serializeSections, deserializeSections,
+    clampLevel, encodeFleetConfig, decodeFleetConfig, presetCode, defaultWindow,
+    SLOT_COUNT, slotRef, slotRow, emptySlots,
 } from './fleet-sim.saves.js';
 
 import {
@@ -92,6 +93,15 @@ const state = {
     activeFleet: 0,
     get ships() { return this.fleets[this.activeFleet]; },
     set ships(v) { this.fleets[this.activeFleet] = v; },
+
+    // 잠수함대 (up to MAX_SUB_FLEETS, one visible) and 지원함대 (0-2 항모, 3-5 잠수).
+    // Composition and stats only — neither feeds the boss damage sim.
+    subFleets: [emptySlots(SUB_FLEET_SIZE)],
+    activeSubFleet: 0,
+    support: emptySlots(SUPPORT_SIZE),
+    /** A card's slot config by its `data-slot` (layout: fleet-sim.saves.js slotRef). */
+    getSlot(slot) { const r = slotRef(this, slot); return r ? r[0][r[1]] : null; },
+    setSlot(slot, v) { const r = slotRef(this, slot); if (r) r[0][r[1]] = v; },
 
     // Data (populated by data module's loadAllData)
     shipData: [],
@@ -174,8 +184,8 @@ const VIEW_TOGGLE = {
 
 function _applyView(view) {
     const mode = VIEW_TOGGLE[view] ? view : 'default';
-    const grid = document.querySelector('.fleet-grid');
-    if (grid) grid.dataset.view = mode;
+    // Main, 잠수함대 and 지원함대 grids switch together.
+    document.querySelectorAll('.fleet-grid').forEach((grid) => { grid.dataset.view = mode; });
 
     const icon = document.getElementById('view-toggle-icon');
     const label = document.getElementById('view-toggle-label');
@@ -192,51 +202,78 @@ function _applyView(view) {
 
 // ===== Fleet Tabs =====
 
-const _fleetChromeBtn = (action, icon, label, disabled) =>
-    `<button type="button" class="btn btn-secondary btn-sm btn-icon" data-action="${action}"`
+/** The two tabbed fleet lists. Only `main` feeds the damage sim, so only it clears
+ *  the damage cache on a switch. `del` is the confirm text for a populated fleet. */
+const FLEET_GROUPS = {
+    main: {
+        el: 'fleet-tabs', list: 'fleets', active: 'activeFleet', max: MAX_FLEETS, size: 6,
+        name: (i) => `${i + 1}함대`, add: '함대 추가', remove: '함대 삭제',
+        del: (i) => `${i + 1}함대를 삭제할까요?`, damage: true,
+    },
+    sub: {
+        el: 'sub-fleet-tabs', list: 'subFleets', active: 'activeSubFleet', max: MAX_SUB_FLEETS, size: SUB_FLEET_SIZE,
+        name: (i) => `잠수함대 ${i + 1}`, add: '잠수함대 추가', remove: '잠수함대 삭제',
+        del: (i) => `잠수함대 ${i + 1}을(를) 삭제할까요?`, damage: false,
+    },
+};
+
+const _fleetChromeBtn = (action, icon, label, disabled, group) =>
+    `<button type="button" class="btn btn-secondary btn-sm btn-icon" data-action="${action}" data-group="${group}"`
     + ` title="${label}" aria-label="${label}"${disabled ? ' disabled' : ''}>`
     + `<span class="material-symbols-outlined">${icon}</span></button>`;
 
-/** Repaint the fleet tab strip. Only the fleet index is interpolated, and it is
- *  an array position — no user data reaches this innerHTML. */
-function _renderFleetTabs() {
-    const el = document.getElementById('fleet-tabs');
+/** Repaint one fleet tab strip. Only the fleet index and fixed labels are
+ *  interpolated — no user data reaches this innerHTML. */
+function _renderFleetTabs(group = 'main') {
+    const g = FLEET_GROUPS[group];
+    const el = document.getElementById(g.el);
     if (!el) return;
-    const tabs = state.fleets.map((_, i) => {
-        const active = i === state.activeFleet;
+    const fleets = state[g.list];
+    const tabs = fleets.map((_, i) => {
+        const active = i === state[g.active];
         return `<button type="button" class="btn btn-secondary btn-sm${active ? ' is-active' : ''}"`
-            + ` data-action="switch-fleet" data-fleet="${i}" aria-pressed="${active}">${i + 1}함대</button>`;
+            + ` data-action="switch-fleet" data-group="${group}" data-fleet="${i}" aria-pressed="${active}">${g.name(i)}</button>`;
     }).join('');
     el.innerHTML = `<div class="btn-group">${tabs}</div>`
-        + _fleetChromeBtn('add-fleet', 'add', '함대 추가', state.fleets.length >= MAX_FLEETS)
-        + _fleetChromeBtn('remove-fleet', 'close', '함대 삭제', state.fleets.length <= 1);
+        + _fleetChromeBtn('add-fleet', 'add', g.add, fleets.length >= g.max, group)
+        + _fleetChromeBtn('remove-fleet', 'close', g.remove, fleets.length <= 1, group);
 }
 
-function _switchFleet(index) {
-    if (!Number.isInteger(index) || index < 0 || index >= state.fleets.length) return;
-    if (index === state.activeFleet) return;
-    state.activeFleet = index;
-    clearDamageCache();
-    _renderFleetTabs();
+function _renderAllFleetTabs() {
+    for (const group of Object.keys(FLEET_GROUPS)) _renderFleetTabs(group);
+}
+
+const _group = (el) => (FLEET_GROUPS[el.dataset.group] ? el.dataset.group : 'main');
+
+function _switchFleet(index, group = 'main') {
+    const g = FLEET_GROUPS[group];
+    if (!Number.isInteger(index) || index < 0 || index >= state[g.list].length) return;
+    if (index === state[g.active]) return;
+    state[g.active] = index;
+    if (g.damage) clearDamageCache();
+    _renderFleetTabs(group);
     renderFleet();
 }
 
-function _addFleet() {
-    if (state.fleets.length >= MAX_FLEETS) return;
-    state.fleets.push(new Array(6).fill(null));
-    _switchFleet(state.fleets.length - 1);
+function _addFleet(group = 'main') {
+    const g = FLEET_GROUPS[group];
+    if (state[g.list].length >= g.max) return;
+    state[g.list].push(emptySlots(g.size));
+    _switchFleet(state[g.list].length - 1, group);
 }
 
 /** Removes the ACTIVE fleet and falls back to the previous index. A populated
  *  fleet is real user work with no undo, so it confirms first. */
-function _removeFleet() {
-    if (state.fleets.length <= 1) return;
-    const index = state.activeFleet;
-    if (state.fleets[index].some(Boolean) && !confirm(`${index + 1}함대를 삭제할까요?`)) return;
-    state.fleets.splice(index, 1);
-    state.activeFleet = Math.max(0, index - 1);
-    clearDamageCache();
-    _renderFleetTabs();
+function _removeFleet(group = 'main') {
+    const g = FLEET_GROUPS[group];
+    const fleets = state[g.list];
+    if (fleets.length <= 1) return;
+    const index = state[g.active];
+    if (fleets[index].some(Boolean) && !confirm(g.del(index))) return;
+    fleets.splice(index, 1);
+    state[g.active] = Math.max(0, index - 1);
+    if (g.damage) clearDamageCache();
+    _renderFleetTabs(group);
     renderFleet();
 }
 
@@ -291,7 +328,7 @@ async function init() {
     if (state.presets.length) showElement('preset-btn');
 
     // 7. Initial render
-    _renderFleetTabs();
+    _renderAllFleetTabs();
     renderFleet();
 }
 
@@ -338,15 +375,15 @@ function setupEventListeners() {
                 break;
             }
             case 'switch-fleet': {
-                _switchFleet(parseInt(actionEl.dataset.fleet, 10));
+                _switchFleet(parseInt(actionEl.dataset.fleet, 10), _group(actionEl));
                 break;
             }
             case 'add-fleet': {
-                _addFleet();
+                _addFleet(_group(actionEl));
                 break;
             }
             case 'remove-fleet': {
-                _removeFleet();
+                _removeFleet(_group(actionEl));
                 break;
             }
             case 'change-ship': {
@@ -355,7 +392,7 @@ function setupEventListeners() {
             }
             case 'remove-ship': {
                 if (slot !== -1) {
-                    state.ships[slot] = null;
+                    state.setSlot(slot, null);
                     renderFleet();
                 }
                 break;
@@ -383,7 +420,7 @@ function setupEventListeners() {
                 break;
             }
             case 'equip-code': {
-                if (slot !== -1 && state.ships[slot]) openEquipCodeModal(slot);
+                if (slot !== -1 && state.getSlot(slot)) openEquipCodeModal(slot);
                 break;
             }
             case 'step-level': {
@@ -438,7 +475,7 @@ function setupEventListeners() {
         const slot = _getSlot(actionEl);
 
         if (action === 'change-affinity' && slot !== -1) {
-            const slotConfig = state.ships[slot];
+            const slotConfig = state.getSlot(slot);
             if (slotConfig) {
                 slotConfig.affinity = actionEl.value;
                 renderFleet();
@@ -447,7 +484,7 @@ function setupEventListeners() {
 
         // Retrofit toggle (Task 5)
         if (action === 'toggle-retrofit' && slot !== -1) {
-            const slotConfig = state.ships[slot];
+            const slotConfig = state.getSlot(slot);
             if (slotConfig) {
                 slotConfig.retrofit = actionEl.checked;
                 renderFleet();
@@ -456,7 +493,7 @@ function setupEventListeners() {
 
         // 운명 시뮬레이션 toggle
         if (action === 'toggle-fate' && slot !== -1) {
-            const slotConfig = state.ships[slot];
+            const slotConfig = state.getSlot(slot);
             if (slotConfig) {
                 slotConfig.fate = actionEl.checked;
                 renderFleet();
@@ -508,12 +545,8 @@ function setupEventListeners() {
 
     // (Other input delegation removed — replaced by step-level/edit-level actions)
 
-    // --- Drag and drop (Task 6) — event delegation on grid containers ---
-    const mainGrid = document.getElementById('main-fleet-grid');
-    const vanguardGrid = document.getElementById('vanguard-fleet-grid');
-
-    for (const grid of [mainGrid, vanguardGrid]) {
-        if (!grid) continue;
+    // --- Drag and drop (Task 6) — event delegation on every card grid ---
+    for (const grid of document.querySelectorAll('.ship-card-grid')) {
 
         grid.addEventListener('dragstart', (e) => {
             const card = e.target.closest('.ship-card');
@@ -553,13 +586,12 @@ function setupEventListeners() {
             if (isNaN(sourceSlot) || isNaN(targetSlot) || sourceSlot === targetSlot) return;
 
             // Only allow swaps within same row
-            const sameRow = (sourceSlot < 3 && targetSlot < 3) || (sourceSlot >= 3 && targetSlot >= 3);
-            if (!sameRow) return;
+            if (slotRow(sourceSlot) !== slotRow(targetSlot)) return;
 
             // Swap ships
-            const temp = state.ships[sourceSlot];
-            state.ships[sourceSlot] = state.ships[targetSlot];
-            state.ships[targetSlot] = temp;
+            const temp = state.getSlot(sourceSlot);
+            state.setSlot(sourceSlot, state.getSlot(targetSlot));
+            state.setSlot(targetSlot, temp);
             renderFleet();
         });
     }
@@ -601,7 +633,7 @@ function _getSlot(el) {
     const slot = el.dataset.slot;
     if (slot == null) return -1;
     const num = parseInt(slot, 10);
-    return (isNaN(num) || num < 0 || num > 5) ? -1 : num;
+    return (isNaN(num) || num < 0 || num >= SLOT_COUNT) ? -1 : num;
 }
 
 function _getEquipIndex(el) {
@@ -615,7 +647,7 @@ function _getEquipIndex(el) {
 
 function handleShipSelected(slotIndex, gid) {
     const ship = getShipByGid(gid);
-    state.ships[slotIndex] = {
+    state.setSlot(slotIndex, {
         gid,
         level: 125,
         affinity: 'love',
@@ -623,7 +655,7 @@ function handleShipSelected(slotIndex, gid) {
         spWeapon: _defaultSPWeapon(ship),
         retrofit: ship?.retrofit ? true : undefined,
         fate: hasFateSimulation(ship) ? true : undefined,
-    };
+    });
     renderFleet();
 }
 
@@ -663,7 +695,7 @@ function _fillDedicatedSP(ships) {
 }
 
 function handleEquipSelected(slotIndex, equipIndex, equipId, level) {
-    const slotConfig = state.ships[slotIndex];
+    const slotConfig = state.getSlot(slotIndex);
     if (!slotConfig) return;
     if (!slotConfig.equips) slotConfig.equips = new Array(5).fill(null);
     slotConfig.equips[equipIndex] = equipId ? { id: equipId, level: clampLevel(level, 0, 13) } : null;
@@ -671,7 +703,7 @@ function handleEquipSelected(slotIndex, equipIndex, equipId, level) {
 }
 
 function handleSPWeaponSelected(slotIndex, spWeaponId, maxLevel) {
-    const slotConfig = state.ships[slotIndex];
+    const slotConfig = state.getSlot(slotIndex);
     if (!slotConfig) return;
     slotConfig.spWeapon = spWeaponId
         ? { id: spWeaponId, level: clampLevel(maxLevel, 0, _spMaxLevel(spWeaponId)) }
@@ -692,7 +724,7 @@ function handleTargetSelected(sel) {
 // ===== Level Stepper (Task 3) =====
 
 function _stepLevel(slotIndex, dir, shiftKey) {
-    const slotConfig = state.ships[slotIndex];
+    const slotConfig = state.getSlot(slotIndex);
     if (!slotConfig) return;
     const step = shiftKey ? 10 : 1;
     slotConfig.level = Math.max(1, Math.min(125, (slotConfig.level || 125) + dir * step));
@@ -700,7 +732,7 @@ function _stepLevel(slotIndex, dir, shiftKey) {
 }
 
 function _inlineEditLevel(el, slotIndex) {
-    const slotConfig = state.ships[slotIndex];
+    const slotConfig = state.getSlot(slotIndex);
     if (!slotConfig) return;
 
     const current = slotConfig.level || 125;
@@ -804,7 +836,7 @@ function _showLevelPopover(badge, min, max, currentVal, onChange, onCommit) {
 }
 
 function _showEnhancePopover(badge, slotIndex, equipIndex) {
-    const eq = state.ships[slotIndex]?.equips?.[equipIndex];
+    const eq = state.getSlot(slotIndex)?.equips?.[equipIndex];
     if (!eq) return;
 
     const equipInfo = getEquipById(eq.id);
@@ -817,7 +849,7 @@ function _showEnhancePopover(badge, slotIndex, equipIndex) {
 }
 
 function _showSPLevelPopover(badge, slotIndex) {
-    const sp = state.ships[slotIndex]?.spWeapon;
+    const sp = state.getSlot(slotIndex)?.spWeapon;
     if (!sp) return;
 
     // Derived, not hardcoded: 슈퍼 레인보우 망치 1호 has one level, and offering
@@ -885,6 +917,7 @@ function _fleetRecord(name) {
         name,
         timestamp: Date.now(),
         ships: serializeFleet(state.fleets[0]),
+        ...serializeSections(state),
     };
     if (state.fleets.length > 1) record.fleets = state.fleets.map(serializeFleet);
     // Boss metadata is display-only (portrait/tier on the save row) — loading
@@ -907,11 +940,19 @@ function _handleLoad(saveIndex) {
     state.fleets = _saveFleets(save).slice(0, MAX_FLEETS)
         .map(f => _fillDedicatedSP(deserializeFleet(f)));
     state.activeFleet = 0;
+    _applySections(deserializeSections(save));
     clearDamageCache();
     closeModal('saveLoadModal');
-    _renderFleetTabs();
+    _renderAllFleetTabs();
     renderFleet();
     showToast('불러오기 완료', 'success');
+}
+
+/** Put a decoded 잠수함대 / 지원함대 pair into state (save load and URL restore). */
+function _applySections({ subFleets, activeSubFleet, support }) {
+    state.subFleets = subFleets.map(_fillDedicatedSP);
+    state.activeSubFleet = activeSubFleet;
+    state.support = _fillDedicatedSP(support);
 }
 
 /**
@@ -981,7 +1022,7 @@ function _saveFleets(save) {
 }
 
 function _hasAnyShip() {
-    return state.fleets.some(f => f.some(Boolean));
+    return [...state.fleets, ...state.subFleets, state.support].some(f => f.some(Boolean));
 }
 
 /**
@@ -1013,9 +1054,9 @@ function _renderSaveSlotList() {
         const date = new Date(save.timestamp);
         const dateStr = `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
 
-        // Count occupied ship slots across every fleet the save carries
+        // Count occupied ship slots across every fleet the save carries, 잠수/지원 included
         const fleets = _saveFleets(save);
-        const shipCount = fleets.reduce(
+        const shipCount = [...fleets, ...(save.subFleets || []), save.support].reduce(
             (n, f) => n + (Array.isArray(f) ? f.filter(s => s !== null).length : 0), 0);
 
         // Ship name summary (first 3 names)
@@ -1193,7 +1234,8 @@ function _renderPresetList() {
         rendered++;
 
         const fleets = config.fleets;
-        const shipCount = fleets.reduce((n, f) => n + f.filter(Boolean).length, 0);
+        const shipCount = [...fleets, ...config.subFleets, config.support]
+            .reduce((n, f) => n + f.filter(Boolean).length, 0);
 
         const item = document.createElement('div');
         item.className = 'save-slot-item';
@@ -1271,7 +1313,7 @@ function _handlePresetLoad(index) {
     clearDamageCache();
     restoreFromUrl(presetCode(preset.code));
     closeModal('presetModal');
-    _renderFleetTabs();
+    _renderAllFleetTabs();
     renderFleet();
     showToast('불러오기 완료', 'success');
 }
@@ -1304,6 +1346,7 @@ function restoreFromUrl(encoded) {
     }
     state.fleets = config.fleets.map(_fillDedicatedSP);
     state.activeFleet = config.activeFleet;
+    _applySections(config);
     if (config.target) _applyDamageTarget(config.target);
 }
 

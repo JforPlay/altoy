@@ -1409,11 +1409,12 @@ function _computeStatsForSlot(slot, slotIndex, fleetShips, techBonuses, slots) {
     if (!res) return null;
     // The same resolved list carries both kinds; calculateShipStats keeps the stat
     // clauses and ignores the rest, sumDamageBuffs takes the damage multipliers.
+    // The loadout's 대세이렌 lands on the same tag attr the skills do, so it sums with them.
     return {
         ship,
         stats: res.stats,
         damageBuffs: {
-            ..._calc.sumDamageBuffs(passiveBuffs),
+            ..._calc.sumDamageBuffs([...passiveBuffs, ..._calc.equipDamageBuffs(slot)]),
             weaponMods: _calc.sumWeaponModifiers(passiveBuffs),
         },
     };

@@ -882,6 +882,26 @@ export function getShipBaseList(ship, useRetrofit) {
         ?? _getStatsForLB(ship, 'base_list', useRetrofit);
 }
 
+/** Stats an SP module can roll that the eight-stat grid does not label. */
+const EXTRA_STAT_LABELS = { luck: '행운', asw: '대잠' };
+
+/**
+ * The random half of an SP module's two stats, at the max roll the sim assumes —
+ * what the slot's indicator spells out. [] for a module with no random range.
+ * @returns {Array<{label: string, value: number}>}
+ */
+export function spRandomRolls(spWeapon) {
+    const out = [];
+    for (const n of [1, 2]) {
+        const value = spWeapon?.[`r${n}`];
+        const key = EQUIP_ATTR_TO_STAT[spWeapon?.[`attr_${n}`]];
+        if (!value || !key) continue;
+        const label = DISPLAY_STATS.find((s) => s.key === key)?.label || EXTRA_STAT_LABELS[key] || key;
+        out.push({ label, value });
+    }
+    return out;
+}
+
 /**
  * Get SP weapon stat bonuses for a ship slot. Every SP weapon — generic or
  * 전용 — is slot state now, so there is one path and no ship-data fallback.
@@ -900,8 +920,12 @@ function _getSPWeaponStatBonuses(slotConfig) {
         const lvl = spWeapon.levels[Math.max(0, levelIdx)];
         const stat1 = EQUIP_ATTR_TO_STAT[spWeapon.attr_1];
         const stat2 = EQUIP_ATTR_TO_STAT[spWeapon.attr_2];
-        if (stat1 && lvl.v1) bonuses[stat1] = (bonuses[stat1] || 0) + lvl.v1;
-        if (stat2 && lvl.v2) bonuses[stat2] = (bonuses[stat2] || 0) + lvl.v2;
+        // A crafted module rolls 0..r on top of each value (spweapon.lua GetAttributes);
+        // the sim assumes the max roll, and the SP slot says so (_buildSPSlotHTML).
+        const v1 = (lvl.v1 || 0) + (spWeapon.r1 || 0);
+        const v2 = (lvl.v2 || 0) + (spWeapon.r2 || 0);
+        if (stat1 && v1) bonuses[stat1] = (bonuses[stat1] || 0) + v1;
+        if (stat2 && v2) bonuses[stat2] = (bonuses[stat2] || 0) + v2;
     }
 
     return bonuses;
@@ -945,6 +969,23 @@ function _getEquipStatBonuses(equipId, enhanceLevel) {
     }
 
     return bonuses;
+}
+
+/**
+ * 대세이렌 피해 from the loadout, as a passive-shaped damage buff. Only the +11~+13
+ * tiers carry `anti_siren` (100 = 1%): ship.lua getEquipmentProperties sums it / 10000
+ * into AntiSiren and battleattr.lua seeds that as `DMG_TAG_EHC_N_99`, the same tag the
+ * 안티 세이렌 skills add to. The game applies it only in 대형작전 (getProperties' world
+ * flag) — where every Arbiter is fought; a META boss carries no N_99 tag, so it never matches.
+ * @returns {Array<{attr:string, value:number, type:string}>} [] when no equip carries it
+ */
+export function equipDamageBuffs(slotConfig) {
+    let antiSiren = 0;
+    for (const eq of slotConfig?.equips || []) {
+        const levels = eq && getEquipFullById(eq.id)?.levels;
+        if (levels) antiSiren += levels[Math.min(Math.max(0, eq.level || 0), levels.length - 1)]?.anti_siren || 0;
+    }
+    return antiSiren ? [{ attr: 'DMG_TAG_EHC_N_99', value: antiSiren / 10000, type: 'flat' }] : [];
 }
 
 /**

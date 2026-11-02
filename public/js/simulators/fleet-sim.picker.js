@@ -20,6 +20,7 @@ import {
     getEffectiveShipType,
 } from './fleet-sim.data.js';
 import { getAllMetaBosses } from './fleet-sim.data.js';
+import { SLOT_COUNT, ROW, slotRow } from './fleet-sim.saves.js';
 import { ARMOR_PRESETS } from '../engine/damage/index.js';
 
 // ===== State =====
@@ -94,19 +95,26 @@ export function setup(stateRef, cbs) {
 
 // ===== Public API =====
 
+/** ship_type_mapping `position` per slot row (fleet-sim.saves.js ROW). 잠수 covers
+ *  잠수함 / 잠수모함 / 범선-잠수 (템페스타), so the MOT sailboats come with it. */
+const ROW_POSITION = {
+    [ROW.MAIN]: '후열', [ROW.VANGUARD]: '전열', [ROW.SUB]: '잠수',
+    [ROW.SUPPORT_CARRIER]: '후열', [ROW.SUPPORT_SUB]: '잠수',
+};
+/** 지원함대 항모 row: 경항모 / 항모 only. */
+const SUPPORT_CARRIER_TYPES = new Set([6, 7]);
+
 /**
- * Open the ship picker for a given fleet slot.
- * Slots 0-2 = 후열 (back row), slots 3-5 = 전열 (front row).
- * @param {number} slotIndex - Fleet slot index (0-5)
+ * Open the ship picker for a given card slot (layout: fleet-sim.saves.js slotRef).
+ * @param {number} slotIndex - card slot index (0-14)
  */
 export function openShipPicker(slotIndex) {
     activeSlotIndex = slotIndex;
 
-    // Determine position based on slot index
-    const position = slotIndex < 3 ? '후열' : '전열';
-
-    // Get filtered ship list for this position
-    currentShipList = getShipsByPosition(position);
+    // Get filtered ship list for this slot's row
+    const row = slotRow(slotIndex);
+    currentShipList = getShipsByPosition(ROW_POSITION[row]);
+    if (row === ROW.SUPPORT_CARRIER) currentShipList = currentShipList.filter((s) => SUPPORT_CARRIER_TYPES.has(s.type));
 
     // Create search index
     shipSearchIndex = currentShipList.length > 0
@@ -187,7 +195,7 @@ export function openEquipPicker(slotIndex, equipIndex) {
     activeEquipIndex = equipIndex;
 
     // Get the ship at this slot
-    const slotConfig = state.ships[slotIndex];
+    const slotConfig = state.getSlot(slotIndex);
     const ship = slotConfig && slotConfig.gid ? getShipByGid(slotConfig.gid) : null;
 
     // Determine allowed equip types from ship's equip_X field, honoring the retrofit
@@ -251,7 +259,7 @@ export function openSPWeaponPicker(slotIndex) {
     activeSlotIndex = slotIndex;
     activeEquipIndex = -1; // Flag: SP weapon mode
 
-    const slotConfig = state.ships[slotIndex];
+    const slotConfig = state.getSlot(slotIndex);
     const ship = slotConfig && slotConfig.gid ? getShipByGid(slotConfig.gid) : null;
 
     let spWeapons = [];
@@ -756,10 +764,9 @@ function _renderShipGrid() {
 
     // Build set of already-assigned ship gids for marking
     const assignedGids = new Set();
-    if (state.ships) {
-        for (const slot of state.ships) {
-            if (slot && slot.gid != null) assignedGids.add(slot.gid);
-        }
+    for (let i = 0; i < SLOT_COUNT; i++) {
+        const slot = state.getSlot(i);
+        if (slot && slot.gid != null) assignedGids.add(slot.gid);
     }
 
     // Render
@@ -1036,7 +1043,7 @@ function _createEquipIcon(bgUrl, iconUrl, altText) {
  * For regular equips, checks equips[equipIndex].
  */
 function _slotHasEquip(slotIndex, equipIndex) {
-    const slotConfig = state.ships[slotIndex];
+    const slotConfig = state.getSlot(slotIndex);
     if (!slotConfig) return false;
 
     if (equipIndex === -1) {

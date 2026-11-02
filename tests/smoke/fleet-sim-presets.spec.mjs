@@ -158,7 +158,7 @@ test('overwriting replaces the fleet but keeps the name and the slot', async ({ 
 
     // Two fleets now, where the save has one — a merged record would keep the
     // old shape; the record is replaced instead.
-    await page.locator('[data-action="add-fleet"]').click();
+    await page.locator('#fleet-tabs [data-action="add-fleet"]').click();
     await addNamedShip(page, '애리조나');
 
     await page.locator('#save-load-btn').click();

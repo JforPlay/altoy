@@ -373,7 +373,9 @@ test('간략 보기 collapses a card to one row of portrait + 6 equip squares', 
     await page.goto(PAGE);
     await addShip(page);
     await page.locator('#view-toggle-btn').click();
-    await expect(page.locator('.fleet-grid')).toHaveAttribute('data-view', 'compact');
+    await expect(page.locator('.fleet-grid').first()).toHaveAttribute('data-view', 'compact');
+    // Main, 잠수함대 and 지원함대 grids switch together.
+    await expect(page.locator('.fleet-grid:not([data-view="compact"])')).toHaveCount(0);
 
     const card = page.locator('.ship-card[data-slot="0"]');
     const portrait = await card.locator('.ship-portrait').boundingBox();
@@ -415,12 +417,12 @@ test('compact view hides the controls and captions but keeps the level', async (
 test('the chosen view survives a reload', async ({ page }) => {
     await page.goto(PAGE);
     await page.locator('#view-toggle-btn').click();
-    await expect(page.locator('.fleet-grid')).toHaveAttribute('data-view', 'compact');
+    await expect(page.locator('.fleet-grid').first()).toHaveAttribute('data-view', 'compact');
     await page.reload();
-    await expect(page.locator('.fleet-grid')).toHaveAttribute('data-view', 'compact');
+    await expect(page.locator('.fleet-grid').first()).toHaveAttribute('data-view', 'compact');
     // And back again.
     await page.locator('#view-toggle-btn').click();
-    await expect(page.locator('.fleet-grid')).toHaveAttribute('data-view', 'default');
+    await expect(page.locator('.fleet-grid').first()).toHaveAttribute('data-view', 'default');
 });
 
 test.describe('mobile identity row (390px)', () => {

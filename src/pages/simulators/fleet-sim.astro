@@ -23,6 +23,10 @@ import '../../styles/simulators/fleet-sim.interactions.css';
 import '../../styles/simulators/fleet-sim.damage.css';
 import '../../styles/simulators/fleet-sim.tech.css';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+// 잠수함대 / 지원함대 card slots (layout: public/js/simulators/fleet-sim.saves.js slotRef).
+const SUB_SLOTS = [6, 7, 8];
+const SUPPORT_CARRIER_SLOTS = [9, 10, 11];
+const SUPPORT_SUB_SLOTS = [12, 13, 14];
 ---
 
 <Layout title="편성 시뮬레이터" theme="accent" {base}>
@@ -113,6 +117,64 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                             <span class="add-label">함순이 추가</span>
                         </button>
                     </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 잠수함대 — composition + stats only; it does not feed the damage panel.
+             Tabs populated by fleet-sim.main.js _renderFleetTabs('sub'). -->
+        <div class="fleet-tabs fleet-tabs--section" id="sub-fleet-tabs"></div>
+        <div class="fleet-grid" data-view="default">
+            <section class="fleet-section fleet-section--span">
+                <div class="fleet-section-header">
+                    <span class="material-symbols-outlined section-icon">propane</span>
+                    <h2>잠수함대 (Submarine)</h2>
+                </div>
+                <div class="ship-card-grid ship-card-grid--flow" id="sub-fleet-grid">
+                    {SUB_SLOTS.map((slot) => (
+                        <div class="ship-card ship-card--empty" data-slot={slot}>
+                            <button class="ship-card-add" aria-label="함순이 추가">
+                                <span class="material-symbols-outlined">add</span>
+                                <span class="add-label">함순이 추가</span>
+                            </button>
+                        </div>
+                    ))}
+                </div>
+            </section>
+        </div>
+
+        <!-- 지원함대 — 15·16지역 opening battle: 지원 항모 3 + 지원 잠수함 3 (16지역). No tabs. -->
+        <div class="fleet-grid fleet-grid--section" data-view="default">
+            <section class="fleet-section">
+                <div class="fleet-section-header">
+                    <span class="material-symbols-outlined section-icon">flight</span>
+                    <h2>지원함대 · 항모</h2>
+                </div>
+                <div class="ship-card-grid" id="support-carrier-grid">
+                    {SUPPORT_CARRIER_SLOTS.map((slot) => (
+                        <div class="ship-card ship-card--empty" data-slot={slot}>
+                            <button class="ship-card-add" aria-label="함순이 추가">
+                                <span class="material-symbols-outlined">add</span>
+                                <span class="add-label">함순이 추가</span>
+                            </button>
+                        </div>
+                    ))}
+                </div>
+            </section>
+            <section class="fleet-section">
+                <div class="fleet-section-header">
+                    <span class="material-symbols-outlined section-icon">propane</span>
+                    <h2>지원함대 · 잠수 (16지역)</h2>
+                </div>
+                <div class="ship-card-grid" id="support-sub-grid">
+                    {SUPPORT_SUB_SLOTS.map((slot) => (
+                        <div class="ship-card ship-card--empty" data-slot={slot}>
+                            <button class="ship-card-add" aria-label="함순이 추가">
+                                <span class="material-symbols-outlined">add</span>
+                                <span class="add-label">함순이 추가</span>
+                            </button>
+                        </div>
+                    ))}
                 </div>
             </section>
         </div>
