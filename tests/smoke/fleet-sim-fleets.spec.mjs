@@ -27,6 +27,14 @@ const SP_SHIP = '애리조나';
 const tabs = (page) => page.locator('#fleet-tabs [data-action="switch-fleet"]');
 const slot0 = (page) => page.locator('.ship-card[data-slot="0"]');
 
+/** Navigate and wait for boot. A cold boot structured-clones ~10 MB into
+ *  IndexedDB before the tab strip renders, which outlasts expect's 5 s
+ *  default on a loaded CI runner. */
+async function open(page, url = PAGE) {
+    await page.goto(url);
+    await expect(tabs(page).first()).toBeVisible({ timeout: 15_000 });
+}
+
 /** Put a named ship in slot 0. By name, not index — roster order gives no
  *  stable index for a specific ship. */
 async function addNamedShip(page, name) {
@@ -63,7 +71,7 @@ async function loadFirstSave(page) {
 }
 
 test('fleets hold their own ships, and switching preserves both', async ({ page }) => {
-    await page.goto(PAGE);
+    await open(page);
     await expect(tabs(page)).toHaveCount(1);
 
     await addNamedShip(page, SP_SHIP);
@@ -83,7 +91,7 @@ test('fleets hold their own ships, and switching preserves both', async ({ page 
 });
 
 test('the strip refuses to drop the last fleet or add a fifth', async ({ page }) => {
-    await page.goto(PAGE);
+    await open(page);
     const add = page.locator('#fleet-tabs [data-action="add-fleet"]');
     const remove = page.locator('#fleet-tabs [data-action="remove-fleet"]');
 
@@ -102,7 +110,7 @@ test('the strip refuses to drop the last fleet or add a fifth', async ({ page })
 });
 
 test('a single-fleet share link keeps the legacy {s} payload', async ({ page }) => {
-    await page.goto(PAGE);
+    await open(page);
     await addNamedShip(page, SP_SHIP);
 
     const payload = await sharedPayload(page);
@@ -114,7 +122,7 @@ test('a single-fleet share link keeps the legacy {s} payload', async ({ page }) 
 });
 
 test('a multi-fleet share link restores every fleet', async ({ page }) => {
-    await page.goto(PAGE);
+    await open(page);
     await addNamedShip(page, SP_SHIP);
     await page.locator('#fleet-tabs [data-action="add-fleet"]').click();
     await addNamedShip(page, '유니콘');
@@ -123,7 +131,7 @@ test('a multi-fleet share link restores every fleet', async ({ page }) => {
     expect(payload.f).toHaveLength(2);
     expect(payload.af).toBe(1);
 
-    await page.goto(page.url());
+    await open(page, page.url());
     await expect(tabs(page)).toHaveCount(2);
     await expect(tabs(page).nth(1)).toHaveClass(/is-active/);
     expect(await shipName(page)).toBe('유니콘');
@@ -132,7 +140,7 @@ test('a multi-fleet share link restores every fleet', async ({ page }) => {
 });
 
 test('a save carries all its fleets, and the library row says how many', async ({ page }) => {
-    await page.goto(PAGE);
+    await open(page);
     await addNamedShip(page, SP_SHIP);
     await page.locator('#fleet-tabs [data-action="add-fleet"]').click();
     await addNamedShip(page, '유니콘');
@@ -141,7 +149,7 @@ test('a save carries all its fleets, and the library row says how many', async (
     await expect(page.locator('#save-slot-list .save-slot-meta')).toContainText('2함대');
 
     // Reload so the load path hydrates from storage, not from live state.
-    await page.goto(PAGE);
+    await open(page);
     await expect(tabs(page)).toHaveCount(1);
     await loadFirstSave(page);
 
@@ -152,7 +160,7 @@ test('a save carries all its fleets, and the library row says how many', async (
 });
 
 test('an un-equipped 전용 특수 장비 stays un-equipped through a save/load', async ({ page }) => {
-    await page.goto(PAGE);
+    await open(page);
     await addNamedShip(page, SP_SHIP);
 
     const sp = slot0(page).locator('.equip-slot.sp-slot');
@@ -162,7 +170,7 @@ test('an un-equipped 전용 특수 장비 stays un-equipped through a save/load'
     await expect(sp).not.toHaveClass(/equipped/);
 
     await saveAs(page, '전용 해제');
-    await page.goto(PAGE);
+    await open(page);
     await loadFirstSave(page);
 
     // Before R3 both formats simply omitted the field, so the hydration step

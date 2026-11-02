@@ -123,7 +123,6 @@ function setupDriveSyncLauncher() {
 import { PAGE_CATALOG } from './pages.catalog.js';
 
 const EXTERNAL_LINKS = {
-    EXTERNAL_HEARING: 'https://999dulgi.github.io/azurlane-hearing/ships',
     EXTERNAL_EQUIPMENT: 'https://gateisbug.github.io/alit/#/item',
     EXTERNAL_ARCA_AZUR: 'https://arca.live/b/azurlane',
     EXTERNAL_ARCA_MANJUU: 'https://arca.live/b/manjuugame',
