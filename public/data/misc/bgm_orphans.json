@@ -2536,7 +2536,8 @@
             },
             {
                 "kind": "event",
-                "label": "템페스타와 안개 회랑"
+                "label": "템페스타와 안개 회랑",
+                "year": 2026
             },
             {
                 "kind": "event",
@@ -4610,7 +4611,8 @@
             },
             {
                 "kind": "event",
-                "label": "템페스타와 안개 회랑"
+                "label": "템페스타와 안개 회랑",
+                "year": 2026
             },
             {
                 "kind": "event",
@@ -11219,7 +11221,8 @@
             },
             {
                 "kind": "event",
-                "label": "템페스타와 안개 회랑"
+                "label": "템페스타와 안개 회랑",
+                "year": 2026
             },
             {
                 "kind": "main",
@@ -11581,7 +11584,8 @@
         "usage": [
             {
                 "kind": "event",
-                "label": "템페스타와 안개 회랑"
+                "label": "템페스타와 안개 회랑",
+                "year": 2026
             },
             {
                 "kind": "opsi",
@@ -11628,7 +11632,7 @@
                 "label": "엘리트 함대"
             }
         ],
-        "year": null
+        "year": 2026
     },
     "story-french2": {
         "name": "story-french2",
@@ -12486,7 +12490,8 @@
             },
             {
                 "kind": "event",
-                "label": "템페스타와 안개 회랑"
+                "label": "템페스타와 안개 회랑",
+                "year": 2026
             },
             {
                 "kind": "main",
@@ -14776,7 +14781,8 @@
             },
             {
                 "kind": "event",
-                "label": "템페스타와 안개 회랑"
+                "label": "템페스타와 안개 회랑",
+                "year": 2026
             },
             {
                 "kind": "map",
@@ -14848,7 +14854,8 @@
             },
             {
                 "kind": "event",
-                "label": "템페스타와 안개 회랑"
+                "label": "템페스타와 안개 회랑",
+                "year": 2026
             },
             {
                 "kind": "main",
@@ -14891,14 +14898,15 @@
         "usage": [
             {
                 "kind": "event",
-                "label": "템페스타와 안개 회랑"
+                "label": "템페스타와 안개 회랑",
+                "year": 2026
             },
             {
                 "kind": "event",
                 "label": "빛과 어둠의 이야기"
             }
         ],
-        "year": null
+        "year": 2026
     },
     "story-tempest-freedom": {
         "name": "story-tempest-freedom",
@@ -14919,7 +14927,8 @@
             },
             {
                 "kind": "event",
-                "label": "템페스타와 안개 회랑"
+                "label": "템페스타와 안개 회랑",
+                "year": 2026
             },
             {
                 "kind": "map",
@@ -14959,7 +14968,8 @@
             },
             {
                 "kind": "event",
-                "label": "템페스타와 안개 회랑"
+                "label": "템페스타와 안개 회랑",
+                "year": 2026
             },
             {
                 "kind": "event",
@@ -14997,7 +15007,8 @@
             },
             {
                 "kind": "event",
-                "label": "템페스타와 안개 회랑"
+                "label": "템페스타와 안개 회랑",
+                "year": 2026
             },
             {
                 "kind": "event",
@@ -15040,7 +15051,8 @@
         "usage": [
             {
                 "kind": "event",
-                "label": "템페스타와 안개 회랑"
+                "label": "템페스타와 안개 회랑",
+                "year": 2026
             },
             {
                 "kind": "event",
@@ -15051,7 +15063,7 @@
                 "label": "EP2-4 길 잃은 앤"
             }
         ],
-        "year": null
+        "year": 2026
     },
     "story-thehierophantv": {
         "name": "story-thehierophantv",
@@ -16149,7 +16161,8 @@
         "usage": [
             {
                 "kind": "event",
-                "label": "템페스타와 안개 회랑"
+                "label": "템페스타와 안개 회랑",
+                "year": 2026
             },
             {
                 "kind": "map",
@@ -16176,7 +16189,7 @@
                 "label": "WindFogCorridorMedalAlbumView"
             }
         ],
-        "year": null
+        "year": 2026
     },
     "theme-antarctica": {
         "name": "theme-antarctica",
@@ -16687,7 +16700,8 @@
         "usage": [
             {
                 "kind": "event",
-                "label": "템페스타와 안개 회랑"
+                "label": "템페스타와 안개 회랑",
+                "year": 2026
             },
             {
                 "kind": "opsi",
@@ -16734,7 +16748,7 @@
                 "label": "엘리트 함대"
             }
         ],
-        "year": null
+        "year": 2026
     },
     "theme-dailyfuture": {
         "name": "theme-dailyfuture",
@@ -17006,7 +17020,8 @@
             },
             {
                 "kind": "event",
-                "label": "템페스타와 안개 회랑"
+                "label": "템페스타와 안개 회랑",
+                "year": 2026
             },
             {
                 "kind": "opsi",
@@ -17037,7 +17052,8 @@
         "usage": [
             {
                 "kind": "event",
-                "label": "템페스타와 안개 회랑"
+                "label": "템페스타와 안개 회랑",
+                "year": 2026
             },
             {
                 "kind": "map",
@@ -17080,7 +17096,7 @@
                 "label": "WindFogCorridorMainPage"
             }
         ],
-        "year": null
+        "year": 2026
     },
     "theme-fool23-en": {
         "name": "theme-fool23-en",
@@ -17287,7 +17303,8 @@
             },
             {
                 "kind": "event",
-                "label": "템페스타와 안개 회랑"
+                "label": "템페스타와 안개 회랑",
+                "year": 2026
             },
             {
                 "kind": "map",
@@ -19305,7 +19322,8 @@
             },
             {
                 "kind": "event",
-                "label": "템페스타와 안개 회랑"
+                "label": "템페스타와 안개 회랑",
+                "year": 2026
             },
             {
                 "kind": "map",
@@ -19389,7 +19407,8 @@
             },
             {
                 "kind": "event",
-                "label": "템페스타와 안개 회랑"
+                "label": "템페스타와 안개 회랑",
+                "year": 2026
             },
             {
                 "kind": "map",

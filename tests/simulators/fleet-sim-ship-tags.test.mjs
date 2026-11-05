@@ -32,12 +32,14 @@ const stampedTags = new Set(
 );
 
 test('the pipeline still emits tag_list, and it covers the roster', () => {
-    assert.equal(ships.length, 895);   // 886 + 아마츠카제 (2026-09-10) + 새러토가·META (2026-09-17)
+    assert.equal(ships.length, 900);   // 886 + 아마츠카제 (2026-09-10) + 새러토가·META (2026-09-17)
     // + 호스타일/헤이스티/타이거/아즈치/이14/빅토리어스·META (2026-09-24), all with a tag_list
     // + 소브라지텔니·META (2026-09-30), with a tag_list
-    // 51 ships genuinely have none; a pipeline that dropped the field reads 888.
+    // + 메르쿠리/예른바르덴/셀리미예/오름린 랑기/리얄라 베이 (2026-11-05); 셀리미예's
+    //   ship_data_statistics tag_list is [] on every rung, the other four carry one
+    // 52 ships genuinely have none; a pipeline that dropped the field reads 900.
     const without = ships.filter((s) => !(s.tag_list || []).length).length;
-    assert.equal(without, 51);
+    assert.equal(without, 52);
     for (const name of ['Z-Class', 'Special Type', 'Fletcher-Class', 'Anshan-Class']) {
         assert.ok(staticTags.has(name), `class tag missing from the roster: ${name}`);
     }

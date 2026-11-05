@@ -7523,8 +7523,8 @@
         "연": "1820",
         "월": "5",
         "일": "19",
-        "group_id": "20140",
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/201190.webp"
+        "group_id": "960017",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600170.webp"
     },
     {
         "ID": "753",
@@ -7535,7 +7535,7 @@
         "연": "1797",
         "월": "2",
         "일": "22",
-        "group_id": "20140",
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/201190.webp"
-    },
+        "group_id": "960019",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600190.webp"
+    }
 ]

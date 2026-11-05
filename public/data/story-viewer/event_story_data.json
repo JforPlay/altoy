@@ -730086,9 +730086,9 @@
         "description": "EPS-1 시작",
         "icon": "",
         "subtype": 2,
-        "year": null,
-        "dateRange": "",
-        "faction": "",
+        "year": 2026,
+        "dateRange": "2026. 11. 5",
+        "faction": "템페스타",
         "ships": [],
         "route": "inline",
         "memory_id": [

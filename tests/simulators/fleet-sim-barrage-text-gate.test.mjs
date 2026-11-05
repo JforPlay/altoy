@@ -750,9 +750,17 @@ const BASELINE = {
   // MOVED 2026-10-22 by the 10/22 data update — corpus growth only: 전용 장비 checked
   // 93 -> 95 (95/95 agree), every other count in both corpora held. The two new roots
   // are the two new 전용 장비 (GB에게 맡겨 1014030, 규약의 서 1016180).
-  displayed: { checked: 959, disclosed: 180, silent: 62    // 2026-09-10: +3 아마츠카제; 2026-09-17: +1; 2026-09-24: +7; 2026-09-30: +4
+  //
+  // MOVED 2026-11-05 by the five-템페스타 data update (메르쿠리/예른바르덴/셀리미예/
+  // 오름린 랑기/리얄라 베이) — corpus growth only, diffed per root against the pre-update
+  // data: no existing root changed bucket, disclosed held in both corpora.
+  //   displayed  checked 959 -> 966 (152880 152910 152940 153010 30711 30731 30742),
+  //              silent   62 ->  66 (152770 30712 30732 30741)
+  //   전용 장비   checked  95 ->  97 (152930 153030),
+  //              silent  193 -> 196 (152790 152900 152980)
+  displayed: { checked: 966, disclosed: 180, silent: 66    // 2026-09-10: +3 아마츠카제; 2026-09-17: +1; 2026-09-24: +7; 2026-09-30: +4; 2026-11-05: +7
   },
-  spweapon: { checked: 95, disclosed: 51, silent: 193 },    // 2026-10-22: +2
+  spweapon: { checked: 97, disclosed: 51, silent: 196 },    // 2026-10-22: +2; 2026-11-05: +2
 };
 
 function assertCoverage(which, got) {

@@ -64,6 +64,9 @@ test('the set of records whose scope actually moves is the reviewed one', () => 
     }
     // +17190 상 마르티뉴 (2026-11-02): a buff-only skill (no skill_<id> record) the
     // processor now walks; its field clause reaches 템페스타 [96] only, same field-path shape.
+    // +152890/152900 수호의 날갯짓(+) (2026-11-05, 리얄라 베이): same shape; KR text
+    // 「아군 템페스타 함선의 장전(·명중)이 $2 상승」 matches the [96] loadSpeed/attackRating clauses.
     assert.deepEqual([...moved].sort(),
-        ['13240', '13620', '14060', '14402', '150460', '16880', '17190', '17600'].sort());
+        ['13240', '13620', '14060', '14402', '150460', '152890', '152900', '16880', '17190',
+            '17600'].sort());
 });

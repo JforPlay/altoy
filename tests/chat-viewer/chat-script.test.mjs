@@ -146,9 +146,11 @@ test('buildSpeakerIndex: 돌핀 owns a 1:1 and speaks in two group rooms', () =>
     const dolphin = buildSpeakerIndex(JUUS, USERNAMES).find(s => s.gid === DOLPHIN);
     assert.equal(dolphin.ownChat, '돌핀');
     assert.equal(dolphin.handle, 'Dolphin');
+    // 템페스타 채팅방 has two stories: 19 집무실의 보물? (5) and, since 2026-11-05,
+    // 417 해적 모험은 멀티 플레이! (2).
     assert.deepEqual(
         dolphin.appearances.map(a => [a.chatKey, a.count]).sort(),
-        [['이벤트 준비회', 1], ['템페스타 채팅방', 5]],
+        [['이벤트 준비회', 1], ['템페스타 채팅방', 2], ['템페스타 채팅방', 5]],
     );
 });
 
