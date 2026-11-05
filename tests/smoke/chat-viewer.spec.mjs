@@ -12,15 +12,17 @@
  */
 import { readFileSync } from 'node:fs';
 import { test, expect } from '@playwright/test';
-import { isGroupChat } from '../../public/js/chat-viewer/chat-viewer.script.js';
+import { isGroupChat, buildSpeakerIndex } from '../../public/js/chat-viewer/chat-viewer.script.js';
 
 const JUUS = 'chat-viewer/juus/';
 const DORM = 'chat-viewer/dorm3d/';
 const LINE_WAIT = { timeout: 10_000 }; // 재생 shows one line per 1.3 s
 
 // Chip counts follow the committed data, so a data refresh that adds a chat does not break the spec.
-const juusChats = Object.values(JSON.parse(readFileSync(new URL('../../public/data/chat-viewer/juus_chat_data.json', import.meta.url), 'utf8')));
+const juusData = JSON.parse(readFileSync(new URL('../../public/data/chat-viewer/juus_chat_data.json', import.meta.url), 'utf8'));
+const juusChats = Object.values(juusData);
 const GROUP_CHATS = juusChats.filter((stories) => isGroupChat(Object.values(stories)[0])).length;
+const DOLPHIN_ROOMS = buildSpeakerIndex(juusData).find((s) => s.name === '돌핀').appearances.length;
 
 async function openGanj(page) {
     await page.goto(JUUS);
@@ -146,10 +148,10 @@ test('함순이 search by @아이디 lists her 1:1 chat and the group rooms she 
     const speaker = page.locator('#chat-results .chat-hit-speaker', { hasText: '돌핀' });
     await expect(speaker).toBeVisible();
     await expect(speaker.locator('[data-open="chat"]')).toHaveCount(1);
-    await expect(speaker.locator('[data-open="speaker"]')).toHaveCount(2);
+    await expect(speaker.locator('[data-open="speaker"]')).toHaveCount(DOLPHIN_ROOMS);
     await expect(speaker.locator('[data-open="speaker"] .chat-hit-count').first()).toHaveText(/^채팅 \d+$/);
 
-    await speaker.locator('[data-open="speaker"]', { hasText: '템페스타 채팅방' }).click();
+    await speaker.locator('[data-open="speaker"][data-chat="템페스타 채팅방"][data-story="19"]').click();
     await expect(page.locator('#chat-head-name')).toHaveText('템페스타 채팅방');
     const jump = page.locator('#chat-jump');
     await expect(page.locator('#chat-head-sub')).toHaveText(/^그룹 채팅방 · 참여자 \d+명 · 스토리 \d+개$/);
