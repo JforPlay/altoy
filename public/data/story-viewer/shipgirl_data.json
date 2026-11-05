@@ -2371,6 +2371,10 @@
         "name": "곁에서 느껴지는 온기",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/1102011.webp"
     },
+    "1102012": {
+        "name": "더럽혀진 날개의 아르케",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/1102012.webp"
+    },
     "11100010": {
         "name": "라라 사타린 데빌룩",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/11100010.webp"
@@ -3798,6 +3802,10 @@
     "205074": {
         "name": "지혜로운 페다고그",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/205074.webp"
+    },
+    "205075": {
+        "name": "요염한 팜 파탈",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/205075.webp"
     },
     "205090": {
         "name": "하우",
@@ -6514,6 +6522,10 @@
     "399071": {
         "name": "기도하는 토끼 무녀",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/399071.webp"
+    },
+    "399072": {
+        "name": "데빌 오어 엔젤?",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/399072.webp"
     },
     "399080": {
         "name": "타카하시",
@@ -10783,6 +10795,14 @@
         "name": "아즈치",
         "icon": null
     },
+    "900563": {
+        "name": "？？？",
+        "icon": null
+    },
+    "900564": {
+        "name": "？？？",
+        "icon": null
+    },
     "901010": {
         "name": "르 마르스 ",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/901010.webp"
@@ -11159,6 +11179,10 @@
         "name": "은밀한 포옹의 속삭임",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600121.webp"
     },
+    "9600122": {
+        "name": "타락한 검은 날개의 유혹",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600122.webp"
+    },
     "9600130": {
         "name": "라임",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600130.webp"
@@ -11190,6 +11214,46 @@
     "9600161": {
         "name": "세이프 하우스 마스터",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600161.webp"
+    },
+    "9600170": {
+        "name": "메르쿠리",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600170.webp"
+    },
+    "9600171": {
+        "name": "사랑의 천사 메르쿠리",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600171.webp"
+    },
+    "9600180": {
+        "name": "예른바르덴",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600180.webp"
+    },
+    "9600181": {
+        "name": "방황하는 타락천사",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600181.webp"
+    },
+    "9600190": {
+        "name": "셀리미예",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600190.webp"
+    },
+    "9600191": {
+        "name": "그물에 빠진 예견자",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600191.webp"
+    },
+    "9600200": {
+        "name": "오름린 랑기",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600200.webp"
+    },
+    "9600201": {
+        "name": "순백의 포식자",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600201.webp"
+    },
+    "9600210": {
+        "name": "리얄라 베이",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600210.webp"
+    },
+    "9600211": {
+        "name": "특별 시련☆아이돌 천사",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600211.webp"
     },
     "9701010": {
         "name": "헌터·META",

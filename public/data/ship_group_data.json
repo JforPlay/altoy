@@ -20955,8 +20955,8 @@
         "nationality": 96,
         "type": 24,
         "description": [
-            "이벤트: 템페스타와 잠든 바다",
-            "중형함 건조"
+            "이벤트: 템페스타와 잠자는 바다",
+            "대형함 건조"
         ],
         "rarity": "SSR",
         "sp_weapon": true
@@ -20987,7 +20987,7 @@
         "nationality": 96,
         "type": 23,
         "description": [
-            "이벤트: 템페스타와 잠든 바다",
+            "이벤트: 템페스타와 잠자는 바다",
             "소형함 건조"
         ],
         "rarity": "SSR",
@@ -21019,7 +21019,7 @@
         "nationality": 96,
         "type": 22,
         "description": [
-            "이벤트: 템페스타와 잠든 바다",
+            "이벤트: 템페스타와 잠자는 바다",
             "특형함 건조"
         ],
         "rarity": "SSR",
@@ -21051,7 +21051,7 @@
         "nationality": 96,
         "type": 23,
         "description": [
-            "이벤트: 템페스타와 잠든 바다",
+            "이벤트: 템페스타와 잠자는 바다",
             "소형함 건조"
         ],
         "rarity": "SR",
@@ -21083,8 +21083,8 @@
         "nationality": 96,
         "type": 22,
         "description": [
-            "이벤트: 템페스타와 잠든 바다",
-            "특별 보급 (공훈치 소비)"
+            "이벤트: 템페스타와 잠자는 바다",
+            "연습 상점(랜덤 출현)"
         ],
         "rarity": "SR",
         "sp_weapon": true
@@ -21116,7 +21116,7 @@
         "type": 24,
         "description": [
             "이벤트: 템페스타와 자유 군도",
-            "중형함 건조"
+            "대형함 건조"
         ],
         "rarity": "SSR",
         "sp_weapon": true
@@ -21180,7 +21180,7 @@
         "type": 24,
         "description": [
             "이벤트: 템페스타와 자유 군도",
-            "중형함 건조"
+            "대형함 건조"
         ],
         "rarity": "SSR",
         "sp_weapon": true
@@ -21244,7 +21244,162 @@
         "type": 22,
         "description": [
             "이벤트: 템페스타와 자유 군도",
-            "특별 보급 (공훈치 소비)"
+            "연습 상점(랜덤 출현)"
+        ],
+        "rarity": "SR",
+        "sp_weapon": true
+    },
+    "960017": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600170.webp",
+        "name": "메르쿠리",
+        "add_get_attr": 2,
+        "add_get_shiptype": [
+            22,
+            23,
+            24
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 9,
+        "add_level_shiptype": [
+            22,
+            23,
+            24
+        ],
+        "add_level_value": 1,
+        "class": 960013,
+        "id": 960017,
+        "max_star": 6,
+        "pt_get": 13,
+        "pt_level": 19,
+        "pt_upgrage": 26,
+        "nationality": 96,
+        "type": 23,
+        "description": [
+            "이벤트: 템페스타와 안개 회랑"
+        ],
+        "rarity": "SSR",
+        "sp_weapon": true
+    },
+    "960018": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600180.webp",
+        "name": "예른바르덴",
+        "add_get_attr": 2,
+        "add_get_shiptype": [
+            22,
+            23,
+            24
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 1,
+        "add_level_shiptype": [
+            22,
+            23,
+            24
+        ],
+        "add_level_value": 2,
+        "class": 960018,
+        "id": 960018,
+        "max_star": 6,
+        "pt_get": 8,
+        "pt_level": 12,
+        "pt_upgrage": 16,
+        "nationality": 96,
+        "type": 22,
+        "description": [
+            "이벤트: 템페스타와 안개 회랑"
+        ],
+        "rarity": "SSR",
+        "sp_weapon": true
+    },
+    "960019": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600190.webp",
+        "name": "셀리미예",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            22,
+            23,
+            24
+        ],
+        "add_get_value": 2,
+        "add_level_attr": 2,
+        "add_level_shiptype": [
+            22,
+            23,
+            24
+        ],
+        "add_level_value": 1,
+        "class": 960019,
+        "id": 960019,
+        "max_star": 6,
+        "pt_get": 38,
+        "pt_level": 58,
+        "pt_upgrage": 78,
+        "nationality": 96,
+        "type": 24,
+        "description": [
+            "이벤트: 템페스타와 안개 회랑"
+        ],
+        "rarity": "SSR",
+        "sp_weapon": true
+    },
+    "960020": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600200.webp",
+        "name": "오름린 랑기",
+        "add_get_attr": 8,
+        "add_get_shiptype": [
+            22,
+            23,
+            24
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 1,
+        "add_level_shiptype": [
+            22,
+            23,
+            24
+        ],
+        "add_level_value": 1,
+        "class": 960020,
+        "id": 960020,
+        "max_star": 5,
+        "pt_get": 7,
+        "pt_level": 10,
+        "pt_upgrage": 14,
+        "nationality": 96,
+        "type": 23,
+        "description": [
+            "이벤트: 템페스타와 안개 회랑"
+        ],
+        "rarity": "SR",
+        "sp_weapon": true
+    },
+    "960021": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600210.webp",
+        "name": "리얄라 베이",
+        "add_get_attr": 2,
+        "add_get_shiptype": [
+            22,
+            23,
+            24
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 6,
+        "add_level_shiptype": [
+            22,
+            23,
+            24
+        ],
+        "add_level_value": 1,
+        "class": 960021,
+        "id": 960021,
+        "max_star": 5,
+        "pt_get": 28,
+        "pt_level": 42,
+        "pt_upgrage": 56,
+        "nationality": 96,
+        "type": 24,
+        "description": [
+            "이벤트: 템페스타와 안개 회랑"
         ],
         "rarity": "SR",
         "sp_weapon": true

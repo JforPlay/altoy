@@ -88999,6 +88999,1254 @@
             ]
         }
     },
+    "152940": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "attached_weapon_skill_id": [
+            {
+                "id": 152941
+            }
+        ],
+        "name": "메르쿠리",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600170.webp",
+        "class_name": "메르쿠리 ",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/152940.webp",
+        "skill_id": 152940,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 161901
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 161911
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 161910
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 161920
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "30741": {
+        "requirement": "Limit Break 1",
+        "weapon_true": true,
+        "name": "메르쿠리",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600170.webp",
+        "class_name": "메르쿠리 ",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/30740.webp",
+        "skill_id": 30741,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 171181
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 171181
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "30742": {
+        "requirement": "Limit Break 3",
+        "weapon_true": true,
+        "name": "메르쿠리",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600170.webp",
+        "class_name": "메르쿠리 ",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/30740.webp",
+        "skill_id": 30742,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 171182
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 171182
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "152910": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "name": "예른바르덴",
+        "position": "잠수",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600180.webp",
+        "class_name": "예른바르덴",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/152910.webp",
+        "skill_id": 152910,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 161891
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.4,
+                        "weapon_id": 161891
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.8,
+                        "weapon_id": 161891
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 161900
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.4,
+                        "weapon_id": 161900
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.8,
+                        "weapon_id": 161900
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "30731": {
+        "requirement": "Limit Break 1",
+        "weapon_true": true,
+        "name": "예른바르덴",
+        "position": "잠수",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600180.webp",
+        "class_name": "예른바르덴",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/30730.webp",
+        "skill_id": 30731,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 171171
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 171171
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "30732": {
+        "requirement": "Limit Break 3",
+        "weapon_true": true,
+        "name": "예른바르덴",
+        "position": "잠수",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600180.webp",
+        "class_name": "예른바르덴",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/30730.webp",
+        "skill_id": 30732,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 171172
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 171172
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "152930": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/152910.webp",
+        "name": "예른바르덴",
+        "weapon_true": true,
+        "position": "잠수",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600180.webp",
+        "class_name": "예른바르덴",
+        "skill_id": 152930,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "equip_index": 152930,
+                        "weapon_id": 161891
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.4,
+                        "equip_index": 152930,
+                        "weapon_id": 161891
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.8,
+                        "equip_index": 152930,
+                        "weapon_id": 161891
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "equip_index": 152930,
+                        "weapon_id": 161900
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.4,
+                        "equip_index": 152930,
+                        "weapon_id": 161900
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.8,
+                        "equip_index": 152930,
+                        "weapon_id": 161900
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "153010": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "name": "셀리미예",
+        "position": "후열",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600190.webp",
+        "class_name": "셀리미예",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/153010.webp",
+        "skill_id": 153010,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 184741
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 184751
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 184761
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 184771
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 184781
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 184750
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 184760
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 184770
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 184780
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 184790
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "153030": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/153010.webp",
+        "name": "셀리미예",
+        "weapon_true": true,
+        "position": "후열",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600190.webp",
+        "class_name": "셀리미예",
+        "skill_id": 153030,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "equip_index": 153030,
+                        "weapon_id": 184741
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "equip_index": 153030,
+                        "weapon_id": 184751
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "equip_index": 153030,
+                        "weapon_id": 184761
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "equip_index": 153030,
+                        "weapon_id": 184771
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "equip_index": 153030,
+                        "weapon_id": 184781
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "equip_index": 153030,
+                        "weapon_id": 184750
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "equip_index": 153030,
+                        "weapon_id": 184760
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "equip_index": 153030,
+                        "weapon_id": 184770
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "equip_index": 153030,
+                        "weapon_id": 184780
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "equip_index": 153030,
+                        "weapon_id": 184790
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "152770": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "name": "오름린 랑기",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600200.webp",
+        "class_name": "오름린 랑기",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/152770.webp",
+        "skill_id": 152770,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 184571
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184581
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 152773
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 184580
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184590
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 152773
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        }
+    },
+    "30711": {
+        "requirement": "Limit Break 1",
+        "weapon_true": true,
+        "attached_weapon_skill_id": [
+            {
+                "id": 152770
+            },
+            {
+                "id": 152790
+            }
+        ],
+        "name": "오름린 랑기",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600200.webp",
+        "class_name": "오름린 랑기",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/30710.webp",
+        "skill_id": 30711,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 171141
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 30713
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184571
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184581
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 152773
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184571
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184581
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 152793
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 171141
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 30713
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184580
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184590
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 152773
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184580
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184590
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 152793
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        }
+    },
+    "30712": {
+        "requirement": "Limit Break 3",
+        "weapon_true": true,
+        "attached_weapon_skill_id": [
+            {
+                "id": 152770
+            },
+            {
+                "id": 152790
+            }
+        ],
+        "name": "오름린 랑기",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600200.webp",
+        "class_name": "오름린 랑기",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/30710.webp",
+        "skill_id": 30712,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 171142
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 30713
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184571
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184581
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 152773
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184571
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184581
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 152793
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 171142
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 30713
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184580
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184590
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 152773
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184580
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184590
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 152793
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        }
+    },
+    "152790": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/152770.webp",
+        "name": "오름린 랑기",
+        "weapon_true": true,
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600200.webp",
+        "class_name": "오름린 랑기",
+        "skill_id": 152790,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 184571
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184581
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 152793
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 184580
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 184590
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 152793
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        }
+    },
+    "152880": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "name": "리얄라 베이",
+        "position": "후열",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600210.webp",
+        "class_name": "리얄라 베이",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/152880.webp",
+        "skill_id": 152880,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 161881
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 161890
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
     "800601": {
         "requirement": "Limit Break 1",
         "weapon_true": true,

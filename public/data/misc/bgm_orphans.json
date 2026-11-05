@@ -2039,6 +2039,10 @@
                 "label": "T6 비바람의 교향곡"
             },
             {
+                "kind": "map",
+                "label": "EXTRA 오름린 랑기의 시련"
+            },
+            {
                 "kind": "opsi",
                 "label": "소형 삼판 골격 괴수 무리"
             },
@@ -2053,10 +2057,6 @@
             {
                 "kind": "opsi",
                 "label": "보스 함대"
-            },
-            {
-                "kind": "opsi",
-                "label": "엘리트 함대"
             }
         ],
         "year": 2024
@@ -2533,6 +2533,14 @@
                 "kind": "event",
                 "label": "템페스타와 청춘의 샘",
                 "year": 2023
+            },
+            {
+                "kind": "event",
+                "label": "템페스타와 안개 회랑"
+            },
+            {
+                "kind": "event",
+                "label": "EP1-4 아가씨와 호위 담당"
             }
         ],
         "year": 2023
@@ -4599,6 +4607,10 @@
                 "label": "밤의 술집에서",
                 "year": 2025,
                 "gid": 1140002
+            },
+            {
+                "kind": "event",
+                "label": "템페스타와 안개 회랑"
             },
             {
                 "kind": "event",
@@ -11206,12 +11218,12 @@
                 "year": 2026
             },
             {
-                "kind": "main",
-                "label": "은빛 정상의 안개"
+                "kind": "event",
+                "label": "템페스타와 안개 회랑"
             },
             {
                 "kind": "main",
-                "label": "설경미종"
+                "label": "은빛 정상의 안개"
             }
         ],
         "year": 2024
@@ -11555,6 +11567,69 @@
         ],
         "year": null
     },
+    "story-fogsea-light": {
+        "name": "story-fogsea-light",
+        "cues": [
+            "映星启辉_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "映星启辉_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-fogsea-light/%E6%98%A0%E6%98%9F%E5%90%AF%E8%BE%89_PV.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "event",
+                "label": "템페스타와 안개 회랑"
+            },
+            {
+                "kind": "opsi",
+                "label": "소형 정찰함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "중형 정찰함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "대형 정찰함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "소형 주력함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "중형 주력함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "대형 주력함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "소형 호위함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "중형 호위함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "대형 호위함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "보스 함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "엘리트 함대"
+            }
+        ],
+        "year": null
+    },
     "story-french2": {
         "name": "story-french2",
         "cues": [
@@ -11655,12 +11730,24 @@
                 "year": 2026
             },
             {
+                "kind": "event",
+                "label": "빛과 어둠의 이야기"
+            },
+            {
                 "kind": "scene",
                 "label": "GhostSkinStoryActPage"
             },
             {
                 "kind": "scene",
                 "label": "SailingShip3SkinActPage"
+            },
+            {
+                "kind": "scene",
+                "label": "WindFogCorridorSkinPageUI"
+            },
+            {
+                "kind": "scene",
+                "label": "WindFogCorridorSkinStoryMainPage"
             }
         ],
         "year": 2024
@@ -12396,6 +12483,10 @@
                 "kind": "event",
                 "label": "Fight! 도시 구직 대작전!",
                 "year": 2026
+            },
+            {
+                "kind": "event",
+                "label": "템페스타와 안개 회랑"
             },
             {
                 "kind": "main",
@@ -14684,6 +14775,10 @@
                 "year": 2025
             },
             {
+                "kind": "event",
+                "label": "템페스타와 안개 회랑"
+            },
+            {
                 "kind": "map",
                 "label": "T1 템페스타의 '가지'"
             },
@@ -14752,6 +14847,10 @@
                 "year": 2026
             },
             {
+                "kind": "event",
+                "label": "템페스타와 안개 회랑"
+            },
+            {
                 "kind": "main",
                 "label": "높은 탑의 장미"
             },
@@ -14774,13 +14873,32 @@
             {
                 "kind": "map",
                 "label": "T4 임기응변"
-            },
-            {
-                "kind": "map",
-                "label": "T5 별밤의 격전"
             }
         ],
         "year": 2023
+    },
+    "story-tempest-daily-light": {
+        "name": "story-tempest-daily-light",
+        "cues": [
+            "云散潮舒_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "云散潮舒_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-tempest-daily-light/%E4%BA%91%E6%95%A3%E6%BD%AE%E8%88%92_PV.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "event",
+                "label": "템페스타와 안개 회랑"
+            },
+            {
+                "kind": "event",
+                "label": "빛과 어둠의 이야기"
+            }
+        ],
+        "year": null
     },
     "story-tempest-freedom": {
         "name": "story-tempest-freedom",
@@ -14800,6 +14918,10 @@
                 "year": 2025
             },
             {
+                "kind": "event",
+                "label": "템페스타와 안개 회랑"
+            },
+            {
                 "kind": "map",
                 "label": "EXTRA 프리덤폴리스의 이름에 걸고"
             },
@@ -14810,6 +14932,10 @@
             {
                 "kind": "event",
                 "label": "EP7-4 승리의 일격"
+            },
+            {
+                "kind": "event",
+                "label": "EP2-3 과거의 잔영"
             }
         ],
         "year": 2025
@@ -14830,6 +14956,14 @@
                 "kind": "event",
                 "label": "템페스타와 잠든 바다",
                 "year": 2024
+            },
+            {
+                "kind": "event",
+                "label": "템페스타와 안개 회랑"
+            },
+            {
+                "kind": "event",
+                "label": "EP6-3 달콤한 에필로그"
             }
         ],
         "year": 2024
@@ -14863,6 +14997,10 @@
             },
             {
                 "kind": "event",
+                "label": "템페스타와 안개 회랑"
+            },
+            {
+                "kind": "event",
                 "label": "EP1-3 회색 바위 섬"
             },
             {
@@ -14880,9 +15018,40 @@
             {
                 "kind": "event",
                 "label": "EP7-1 금속 암굴 조사"
+            },
+            {
+                "kind": "event",
+                "label": "EP2-1 방황하는 점술가"
             }
         ],
         "year": 2024
+    },
+    "story-tempest-oldpast": {
+        "name": "story-tempest-oldpast",
+        "cues": [
+            "古昔之战_shade"
+        ],
+        "tracks": [
+            {
+                "cue": "古昔之战_shade",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-tempest-oldpast/%E5%8F%A4%E6%98%94%E4%B9%8B%E6%88%98_shade.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "event",
+                "label": "템페스타와 안개 회랑"
+            },
+            {
+                "kind": "event",
+                "label": "EP2-2 성궤의 표식"
+            },
+            {
+                "kind": "event",
+                "label": "EP2-4 길 잃은 앤"
+            }
+        ],
+        "year": null
     },
     "story-thehierophantv": {
         "name": "story-thehierophantv",
@@ -15966,6 +16135,49 @@
         ],
         "year": 2024
     },
+    "theme-amahara-core": {
+        "name": "theme-amahara-core",
+        "cues": [
+            "天域逆潮_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "天域逆潮_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-amahara-core/%E5%A4%A9%E5%9F%9F%E9%80%86%E6%BD%AE_AL.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "event",
+                "label": "템페스타와 안개 회랑"
+            },
+            {
+                "kind": "map",
+                "label": "SP 심해의 잔향"
+            },
+            {
+                "kind": "event",
+                "label": "EP4-2 뭐 먹을까?"
+            },
+            {
+                "kind": "event",
+                "label": "EP4-5 다른 길을 찾아서"
+            },
+            {
+                "kind": "event",
+                "label": "EX-2 동료 간의 교류"
+            },
+            {
+                "kind": "scene",
+                "label": "MedalAlbumWindFogCorridorPage"
+            },
+            {
+                "kind": "scene",
+                "label": "WindFogCorridorMedalAlbumView"
+            }
+        ],
+        "year": null
+    },
     "theme-antarctica": {
         "name": "theme-antarctica",
         "cues": [
@@ -16461,6 +16673,69 @@
         ],
         "year": null
     },
+    "theme-crownpolis": {
+        "name": "theme-crownpolis",
+        "cues": [
+            "五海之王座_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "五海之王座_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-crownpolis/%E4%BA%94%E6%B5%B7%E4%B9%8B%E7%8E%8B%E5%BA%A7_AL.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "event",
+                "label": "템페스타와 안개 회랑"
+            },
+            {
+                "kind": "opsi",
+                "label": "소형 정찰함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "중형 정찰함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "대형 정찰함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "소형 주력함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "중형 주력함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "대형 주력함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "소형 호위함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "중형 호위함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "대형 호위함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "보스 함대"
+            },
+            {
+                "kind": "opsi",
+                "label": "엘리트 함대"
+            }
+        ],
+        "year": null
+    },
     "theme-dailyfuture": {
         "name": "theme-dailyfuture",
         "cues": [
@@ -16730,15 +17005,82 @@
                 "year": 2025
             },
             {
+                "kind": "event",
+                "label": "템페스타와 안개 회랑"
+            },
+            {
                 "kind": "opsi",
                 "label": "적 기함"
             },
             {
                 "kind": "opsi",
                 "label": "보스 함대"
+            },
+            {
+                "kind": "event",
+                "label": "EX-3 수성의 약속"
             }
         ],
         "year": 2025
+    },
+    "theme-fogsea": {
+        "name": "theme-fogsea",
+        "cues": [
+            "雾霭沉星之海_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "雾霭沉星之海_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-fogsea/%E9%9B%BE%E9%9C%AD%E6%B2%89%E6%98%9F%E4%B9%8B%E6%B5%B7_AL.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "event",
+                "label": "템페스타와 안개 회랑"
+            },
+            {
+                "kind": "map",
+                "label": "T1 밤하늘이 거꾸로 도는 날"
+            },
+            {
+                "kind": "map",
+                "label": "T2 성궤의 표식"
+            },
+            {
+                "kind": "map",
+                "label": "T3 뱀 괴수"
+            },
+            {
+                "kind": "opsi",
+                "label": "보스 함대"
+            },
+            {
+                "kind": "event",
+                "label": "EP3-2 천문대의 경보"
+            },
+            {
+                "kind": "event",
+                "label": "EP3-3 뱀 괴수"
+            },
+            {
+                "kind": "event",
+                "label": "EP4-4 별이 가라앉는 심연"
+            },
+            {
+                "kind": "event",
+                "label": "EP5-2 대치"
+            },
+            {
+                "kind": "event",
+                "label": "EX-4 6분의 1의 빛"
+            },
+            {
+                "kind": "scene",
+                "label": "WindFogCorridorMainPage"
+            }
+        ],
+        "year": null
     },
     "theme-fool23-en": {
         "name": "theme-fool23-en",
@@ -16944,6 +17286,10 @@
                 "year": 2025
             },
             {
+                "kind": "event",
+                "label": "템페스타와 안개 회랑"
+            },
+            {
                 "kind": "map",
                 "label": "EX 「비바람의 사제」"
             },
@@ -16969,15 +17315,11 @@
             },
             {
                 "kind": "event",
+                "label": "EP6-1 여신 교회의 계획"
+            },
+            {
+                "kind": "event",
                 "label": "EP4-4 템페스타의 선택"
-            },
-            {
-                "kind": "event",
-                "label": "EP5-1 어두운 비바람"
-            },
-            {
-                "kind": "event",
-                "label": "EX-2 템페스타의 메시지"
             }
         ],
         "year": 2024
@@ -18962,6 +19304,10 @@
                 "year": 2025
             },
             {
+                "kind": "event",
+                "label": "템페스타와 안개 회랑"
+            },
+            {
                 "kind": "map",
                 "label": "T1 초대장"
             },
@@ -19000,10 +19346,6 @@
             {
                 "kind": "opsi",
                 "label": "대형 주력함대"
-            },
-            {
-                "kind": "opsi",
-                "label": "소형 호위함대"
             }
         ],
         "year": 2025
@@ -19046,6 +19388,10 @@
                 "year": 2025
             },
             {
+                "kind": "event",
+                "label": "템페스타와 안개 회랑"
+            },
+            {
                 "kind": "map",
                 "label": "EX 찬란한 황금의 시대"
             },
@@ -19068,10 +19414,6 @@
             {
                 "kind": "opsi",
                 "label": "소형 주력 함대"
-            },
-            {
-                "kind": "opsi",
-                "label": "중형 주력 함대"
             }
         ],
         "year": 2023

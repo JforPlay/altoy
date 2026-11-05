@@ -374512,5 +374512,1105 @@
                 "anti_siren": 100
             }
         ]
+    },
+    "151280": {
+        "id": 151280,
+        "name": "더블 구형 포환",
+        "icon": "151280",
+        "rarity": 4,
+        "rarity_name": "SR",
+        "type": 10,
+        "type_name": "기타",
+        "type_name2": "기타",
+        "compare_group": 5,
+        "nationality": 96,
+        "nation_name": "템페스타",
+        "nation_code": "MOT",
+        "nation_image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/96.png",
+        "speciality": "<[NA]>",
+        "label": [
+            "MOT",
+            "DEV"
+        ],
+        "tech": 0,
+        "descrip": "주철로 만들어진 포환 2발이 나란히 놓여 있다. 화려하진 않지만 든든한 화력원이다.",
+        "ammo": 10,
+        "ammo_icon": [],
+        "ammo_info": [],
+        "torpedo_ammo": 0,
+        "equip_info": [
+            6
+        ],
+        "equip_parameters": {},
+        "attr_info": [
+            {
+                "key": "cannon",
+                "name": "포격",
+                "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/attribute/firepower_32.png",
+                "index": 1
+            },
+            {
+                "key": "hit",
+                "name": "명중",
+                "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/attribute/accuracy_32.png",
+                "index": 2
+            }
+        ],
+        "part_main": [
+            {
+                "id": 22,
+                "name": "범선-잠수",
+                "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/22.png"
+            },
+            {
+                "id": 23,
+                "name": "범선-전열",
+                "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/23.png"
+            },
+            {
+                "id": 24,
+                "name": "범선-후열",
+                "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/24.png"
+            }
+        ],
+        "part_sub": [
+            {
+                "id": 22,
+                "name": "범선-잠수",
+                "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/22.png"
+            },
+            {
+                "id": 23,
+                "name": "범선-전열",
+                "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/23.png"
+            },
+            {
+                "id": 24,
+                "name": "범선-후열",
+                "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/24.png"
+            }
+        ],
+        "levels": [
+            {
+                "level": 1,
+                "id": 151280,
+                "attr_1_value": "14",
+                "attr_2_value": 4,
+                "weapon_id": [],
+                "upgrade_gold": 20,
+                "upgrade_items": [
+                    [
+                        17001,
+                        1
+                    ]
+                ],
+                "scrap_gold": 16,
+                "scrap_items": [
+                    [
+                        17002,
+                        1
+                    ]
+                ],
+                "ship_type_forbidden": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    17,
+                    18,
+                    19,
+                    20,
+                    21
+                ],
+                "skill_id": [
+                    [
+                        61160,
+                        1
+                    ]
+                ]
+            },
+            {
+                "level": 2,
+                "id": 151281,
+                "attr_1_value": "16",
+                "attr_2_value": 4,
+                "weapon_id": [],
+                "upgrade_gold": 60,
+                "upgrade_items": [
+                    [
+                        17001,
+                        3
+                    ]
+                ],
+                "scrap_gold": 21,
+                "scrap_items": [
+                    [
+                        17001,
+                        1
+                    ],
+                    [
+                        17002,
+                        1
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61160,
+                        1
+                    ]
+                ]
+            },
+            {
+                "level": 3,
+                "id": 151282,
+                "attr_1_value": "18",
+                "attr_2_value": 5,
+                "weapon_id": [],
+                "upgrade_gold": 100,
+                "upgrade_items": [
+                    [
+                        17001,
+                        5
+                    ]
+                ],
+                "scrap_gold": 36,
+                "scrap_items": [
+                    [
+                        17001,
+                        2
+                    ],
+                    [
+                        17002,
+                        1
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61160,
+                        1
+                    ]
+                ]
+            },
+            {
+                "level": 4,
+                "id": 151283,
+                "attr_1_value": "20",
+                "attr_2_value": 5,
+                "weapon_id": [],
+                "upgrade_gold": 160,
+                "upgrade_items": [
+                    [
+                        17002,
+                        8
+                    ]
+                ],
+                "scrap_gold": 61,
+                "scrap_items": [
+                    [
+                        17001,
+                        3
+                    ],
+                    [
+                        17002,
+                        1
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61160,
+                        1
+                    ]
+                ]
+            },
+            {
+                "level": 5,
+                "id": 151284,
+                "attr_1_value": "22",
+                "attr_2_value": 6,
+                "weapon_id": [],
+                "upgrade_gold": 220,
+                "upgrade_items": [
+                    [
+                        17002,
+                        11
+                    ]
+                ],
+                "scrap_gold": 101,
+                "scrap_items": [
+                    [
+                        17001,
+                        3
+                    ],
+                    [
+                        17002,
+                        3
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61160,
+                        1
+                    ]
+                ]
+            },
+            {
+                "level": 6,
+                "id": 151285,
+                "attr_1_value": "24",
+                "attr_2_value": 7,
+                "weapon_id": [],
+                "upgrade_gold": 280,
+                "upgrade_items": [
+                    [
+                        17002,
+                        14
+                    ]
+                ],
+                "scrap_gold": 156,
+                "scrap_items": [
+                    [
+                        17001,
+                        3
+                    ],
+                    [
+                        17002,
+                        6
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61160,
+                        1
+                    ]
+                ]
+            },
+            {
+                "level": 7,
+                "id": 151286,
+                "attr_1_value": "26",
+                "attr_2_value": 7,
+                "weapon_id": [],
+                "upgrade_gold": 360,
+                "upgrade_items": [
+                    [
+                        17003,
+                        18
+                    ]
+                ],
+                "scrap_gold": 226,
+                "scrap_items": [
+                    [
+                        17001,
+                        3
+                    ],
+                    [
+                        17002,
+                        9
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61160,
+                        1
+                    ]
+                ]
+            },
+            {
+                "level": 8,
+                "id": 151287,
+                "attr_1_value": "28",
+                "attr_2_value": 8,
+                "weapon_id": [],
+                "upgrade_gold": 440,
+                "upgrade_items": [
+                    [
+                        17003,
+                        22
+                    ]
+                ],
+                "scrap_gold": 316,
+                "scrap_items": [
+                    [
+                        17001,
+                        3
+                    ],
+                    [
+                        17002,
+                        9
+                    ],
+                    [
+                        17003,
+                        5
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61160,
+                        1
+                    ]
+                ]
+            },
+            {
+                "level": 9,
+                "id": 151288,
+                "attr_1_value": "30",
+                "attr_2_value": 9,
+                "weapon_id": [],
+                "upgrade_gold": 520,
+                "upgrade_items": [
+                    [
+                        17003,
+                        26
+                    ]
+                ],
+                "scrap_gold": 426,
+                "scrap_items": [
+                    [
+                        17001,
+                        3
+                    ],
+                    [
+                        17002,
+                        9
+                    ],
+                    [
+                        17003,
+                        10
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61160,
+                        1
+                    ]
+                ]
+            },
+            {
+                "level": 10,
+                "id": 151289,
+                "attr_1_value": "32",
+                "attr_2_value": 10,
+                "weapon_id": [],
+                "upgrade_gold": 600,
+                "upgrade_items": [
+                    [
+                        17003,
+                        30
+                    ]
+                ],
+                "scrap_gold": 556,
+                "scrap_items": [
+                    [
+                        17001,
+                        3
+                    ],
+                    [
+                        17002,
+                        9
+                    ],
+                    [
+                        17003,
+                        16
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61160,
+                        1
+                    ]
+                ]
+            },
+            {
+                "level": 11,
+                "id": 151290,
+                "attr_1_value": "35",
+                "attr_2_value": 11,
+                "weapon_id": [],
+                "upgrade_gold": 700,
+                "upgrade_items": [
+                    [
+                        17004,
+                        35
+                    ],
+                    [
+                        17990,
+                        1
+                    ]
+                ],
+                "scrap_gold": 706,
+                "scrap_items": [
+                    [
+                        17001,
+                        3
+                    ],
+                    [
+                        17002,
+                        9
+                    ],
+                    [
+                        17003,
+                        24
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61160,
+                        1
+                    ]
+                ]
+            },
+            {
+                "level": 12,
+                "id": 151291,
+                "attr_1_value": "38",
+                "attr_2_value": 12,
+                "weapon_id": [],
+                "upgrade_gold": 0,
+                "upgrade_items": [],
+                "scrap_gold": 881,
+                "scrap_items": [
+                    [
+                        17001,
+                        3
+                    ],
+                    [
+                        17002,
+                        9
+                    ],
+                    [
+                        17003,
+                        24
+                    ],
+                    [
+                        17004,
+                        9
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61160,
+                        1
+                    ]
+                ],
+                "anti_siren": 100
+            }
+        ]
+    },
+    "151300": {
+        "id": 151300,
+        "name": "심연 아래의 조력자",
+        "icon": "151300",
+        "rarity": 5,
+        "rarity_name": "SSR",
+        "type": 10,
+        "type_name": "기타",
+        "type_name2": "기타",
+        "compare_group": 5,
+        "nationality": 96,
+        "nation_name": "템페스타",
+        "nation_code": "MOT",
+        "nation_image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/96.png",
+        "speciality": "<[NA]>",
+        "label": [
+            "MOT",
+            "DEV"
+        ],
+        "tech": 0,
+        "descrip": "이 포탄에는 심연 아래의 힘이 담겨 있다.",
+        "ammo": 10,
+        "ammo_icon": [],
+        "ammo_info": [],
+        "torpedo_ammo": 0,
+        "equip_info": [
+            6
+        ],
+        "equip_parameters": {},
+        "attr_info": [
+            {
+                "key": "cannon",
+                "name": "포격",
+                "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/attribute/firepower_32.png",
+                "index": 1
+            },
+            {
+                "key": "durability",
+                "name": "내구",
+                "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/attribute/health_32.png",
+                "index": 2
+            }
+        ],
+        "part_main": [
+            {
+                "id": 22,
+                "name": "범선-잠수",
+                "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/22.png"
+            },
+            {
+                "id": 23,
+                "name": "범선-전열",
+                "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/23.png"
+            },
+            {
+                "id": 24,
+                "name": "범선-후열",
+                "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/24.png"
+            }
+        ],
+        "part_sub": [
+            {
+                "id": 22,
+                "name": "범선-잠수",
+                "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/22.png"
+            },
+            {
+                "id": 23,
+                "name": "범선-전열",
+                "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/23.png"
+            },
+            {
+                "id": 24,
+                "name": "범선-후열",
+                "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/24.png"
+            }
+        ],
+        "levels": [
+            {
+                "level": 1,
+                "id": 151300,
+                "attr_1_value": "20",
+                "attr_2_value": 120,
+                "weapon_id": [],
+                "upgrade_gold": 20,
+                "upgrade_items": [
+                    [
+                        17001,
+                        1
+                    ]
+                ],
+                "scrap_gold": 25,
+                "scrap_items": [
+                    [
+                        17003,
+                        1
+                    ]
+                ],
+                "ship_type_forbidden": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    17,
+                    18,
+                    19,
+                    20,
+                    21
+                ],
+                "skill_id": [
+                    [
+                        61170,
+                        1
+                    ]
+                ]
+            },
+            {
+                "level": 2,
+                "id": 151301,
+                "attr_1_value": "22",
+                "attr_2_value": 138,
+                "weapon_id": [],
+                "upgrade_gold": 60,
+                "upgrade_items": [
+                    [
+                        17001,
+                        3
+                    ]
+                ],
+                "scrap_gold": 30,
+                "scrap_items": [
+                    [
+                        17001,
+                        1
+                    ],
+                    [
+                        17003,
+                        1
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61170,
+                        1
+                    ]
+                ]
+            },
+            {
+                "level": 3,
+                "id": 151302,
+                "attr_1_value": "24",
+                "attr_2_value": 156,
+                "weapon_id": [],
+                "upgrade_gold": 100,
+                "upgrade_items": [
+                    [
+                        17001,
+                        5
+                    ]
+                ],
+                "scrap_gold": 45,
+                "scrap_items": [
+                    [
+                        17001,
+                        2
+                    ],
+                    [
+                        17003,
+                        1
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61170,
+                        1
+                    ]
+                ]
+            },
+            {
+                "level": 4,
+                "id": 151303,
+                "attr_1_value": "26",
+                "attr_2_value": 174,
+                "weapon_id": [],
+                "upgrade_gold": 160,
+                "upgrade_items": [
+                    [
+                        17002,
+                        8
+                    ]
+                ],
+                "scrap_gold": 70,
+                "scrap_items": [
+                    [
+                        17001,
+                        3
+                    ],
+                    [
+                        17003,
+                        1
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61170,
+                        1
+                    ]
+                ]
+            },
+            {
+                "level": 5,
+                "id": 151304,
+                "attr_1_value": "28",
+                "attr_2_value": 192,
+                "weapon_id": [],
+                "upgrade_gold": 220,
+                "upgrade_items": [
+                    [
+                        17002,
+                        11
+                    ]
+                ],
+                "scrap_gold": 110,
+                "scrap_items": [
+                    [
+                        17001,
+                        3
+                    ],
+                    [
+                        17002,
+                        2
+                    ],
+                    [
+                        17003,
+                        1
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61170,
+                        1
+                    ]
+                ]
+            },
+            {
+                "level": 6,
+                "id": 151305,
+                "attr_1_value": "30",
+                "attr_2_value": 210,
+                "weapon_id": [],
+                "upgrade_gold": 280,
+                "upgrade_items": [
+                    [
+                        17002,
+                        14
+                    ]
+                ],
+                "scrap_gold": 165,
+                "scrap_items": [
+                    [
+                        17001,
+                        3
+                    ],
+                    [
+                        17002,
+                        5
+                    ],
+                    [
+                        17003,
+                        1
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61170,
+                        1
+                    ]
+                ]
+            },
+            {
+                "level": 7,
+                "id": 151306,
+                "attr_1_value": "32",
+                "attr_2_value": 228,
+                "weapon_id": [],
+                "upgrade_gold": 360,
+                "upgrade_items": [
+                    [
+                        17003,
+                        18
+                    ]
+                ],
+                "scrap_gold": 235,
+                "scrap_items": [
+                    [
+                        17001,
+                        3
+                    ],
+                    [
+                        17002,
+                        8
+                    ],
+                    [
+                        17003,
+                        1
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61170,
+                        1
+                    ]
+                ]
+            },
+            {
+                "level": 8,
+                "id": 151307,
+                "attr_1_value": "34",
+                "attr_2_value": 246,
+                "weapon_id": [],
+                "upgrade_gold": 440,
+                "upgrade_items": [
+                    [
+                        17003,
+                        22
+                    ]
+                ],
+                "scrap_gold": 325,
+                "scrap_items": [
+                    [
+                        17001,
+                        3
+                    ],
+                    [
+                        17002,
+                        8
+                    ],
+                    [
+                        17003,
+                        6
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61170,
+                        1
+                    ]
+                ]
+            },
+            {
+                "level": 9,
+                "id": 151308,
+                "attr_1_value": "36",
+                "attr_2_value": 264,
+                "weapon_id": [],
+                "upgrade_gold": 520,
+                "upgrade_items": [
+                    [
+                        17003,
+                        26
+                    ]
+                ],
+                "scrap_gold": 435,
+                "scrap_items": [
+                    [
+                        17001,
+                        3
+                    ],
+                    [
+                        17002,
+                        8
+                    ],
+                    [
+                        17003,
+                        11
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61170,
+                        1
+                    ]
+                ]
+            },
+            {
+                "level": 10,
+                "id": 151309,
+                "attr_1_value": "38",
+                "attr_2_value": 282,
+                "weapon_id": [],
+                "upgrade_gold": 600,
+                "upgrade_items": [
+                    [
+                        17003,
+                        30
+                    ]
+                ],
+                "scrap_gold": 565,
+                "scrap_items": [
+                    [
+                        17001,
+                        3
+                    ],
+                    [
+                        17002,
+                        8
+                    ],
+                    [
+                        17003,
+                        17
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61170,
+                        1
+                    ]
+                ]
+            },
+            {
+                "level": 11,
+                "id": 151310,
+                "attr_1_value": "40",
+                "attr_2_value": 300,
+                "weapon_id": [],
+                "upgrade_gold": 800,
+                "upgrade_items": [
+                    [
+                        17004,
+                        35
+                    ]
+                ],
+                "scrap_gold": 715,
+                "scrap_items": [
+                    [
+                        17001,
+                        3
+                    ],
+                    [
+                        17002,
+                        8
+                    ],
+                    [
+                        17003,
+                        25
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61170,
+                        1
+                    ]
+                ]
+            },
+            {
+                "level": 12,
+                "id": 151311,
+                "attr_1_value": "42",
+                "attr_2_value": 318,
+                "weapon_id": [],
+                "upgrade_gold": 1000,
+                "upgrade_items": [
+                    [
+                        17004,
+                        40
+                    ]
+                ],
+                "scrap_gold": 915,
+                "scrap_items": [
+                    [
+                        17001,
+                        3
+                    ],
+                    [
+                        17002,
+                        8
+                    ],
+                    [
+                        17003,
+                        25
+                    ],
+                    [
+                        17004,
+                        9
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61170,
+                        1
+                    ]
+                ],
+                "anti_siren": 100
+            },
+            {
+                "level": 13,
+                "id": 151312,
+                "attr_1_value": "44",
+                "attr_2_value": 336,
+                "weapon_id": [],
+                "upgrade_gold": 1200,
+                "upgrade_items": [
+                    [
+                        17004,
+                        45
+                    ],
+                    [
+                        17990,
+                        5
+                    ]
+                ],
+                "scrap_gold": 1165,
+                "scrap_items": [
+                    [
+                        17001,
+                        3
+                    ],
+                    [
+                        17002,
+                        8
+                    ],
+                    [
+                        17003,
+                        25
+                    ],
+                    [
+                        17004,
+                        19
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61170,
+                        1
+                    ]
+                ],
+                "anti_siren": 200
+            },
+            {
+                "level": 14,
+                "id": 151313,
+                "attr_1_value": "46",
+                "attr_2_value": 354,
+                "weapon_id": [],
+                "upgrade_gold": 0,
+                "upgrade_items": [],
+                "scrap_gold": 1465,
+                "scrap_items": [
+                    [
+                        17001,
+                        3
+                    ],
+                    [
+                        17002,
+                        8
+                    ],
+                    [
+                        17003,
+                        25
+                    ],
+                    [
+                        17004,
+                        30
+                    ]
+                ],
+                "ship_type_forbidden": [],
+                "skill_id": [
+                    [
+                        61170,
+                        1
+                    ]
+                ],
+                "anti_siren": 300
+            }
+        ]
     }
 }
