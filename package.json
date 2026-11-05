@@ -32,7 +32,7 @@
   "devDependencies": {
     "@anthropic-ai/sdk": "^0.115.0",
     "@astrojs/compiler": "^4.0.0",
-    "@playwright/test": "^1.60.0",
+    "@playwright/test": "^1.64.1",
     "acorn": "^8.15.0",
     "eslint": "^10.6.0",
     "globals": "^17.7.0",
