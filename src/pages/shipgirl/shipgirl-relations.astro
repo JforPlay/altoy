@@ -1,0 +1,48 @@
+---
+/**
+ * 함순이 관계도 — every shipgirl as one zoomable relationship web.
+ * Nations are countries, classes are provinces inside them; each line explains
+ * itself in the side panel. Data: public/data/relmap/ (built in data:split).
+ */
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/shipgirl/shipgirl-relations.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout title="함순이 관계도" {base}>
+    <div class="relmap">
+        <header class="page-header relmap-header">
+            <div class="page-header-title">
+                <span class="material-symbols-outlined">hub</span>
+                <div>
+                    <h1>함순이 관계도</h1>
+                    <p class="page-header-subtitle">휠/핀치로 확대, 드래그로 이동, 클릭으로 선택. 선 굵기 = 관계 점수, 선 색 = 가장 큰 근거.</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="relmap-wrap" id="relmap-wrap">
+            <canvas id="relmap-canvas" aria-label="함순이 관계도 지도"></canvas>
+
+            <div class="relmap-bar">
+                <div class="relmap-search">
+                    <input type="search" id="relmap-search" placeholder="함순이 검색" autocomplete="off" aria-label="함순이 검색">
+                    <div class="dropdown-content" id="relmap-search-dropdown"></div>
+                </div>
+                <button type="button" class="btn btn-secondary relmap-fit" id="relmap-fit">전체 보기</button>
+                <div class="relmap-chips" id="relmap-chips" role="group" aria-label="연결 종류"></div>
+                <label class="relmap-range">최소 점수
+                    <input type="range" id="relmap-min" min="0" max="12" step="1" value="0">
+                    <b id="relmap-min-value">0</b>
+                </label>
+                <span class="relmap-count" id="relmap-count"></span>
+            </div>
+
+            <aside class="relmap-panel scroll-styled hidden" id="relmap-panel"></aside>
+            <div class="relmap-tip hidden" id="relmap-tip"></div>
+            <div class="relmap-legend" id="relmap-legend"></div>
+            <div class="relmap-status" id="relmap-status"></div>
+        </div>
+    </div>
+    <script is:inline type="module" src={`${base}/js/shipgirl/shipgirl-relations.js`}></script>
+</Layout>

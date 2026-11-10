@@ -715,6 +715,11 @@
             "rarity": "SSR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/802020.webp"
         },
+        "802031": {
+            "name": "기샹",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/802030.webp"
+        },
         "901011": {
             "name": "르 마르스",
             "rarity": "R",
@@ -1232,10 +1237,20 @@
             "rarity": "UR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/718010.webp"
         },
+        "803011": {
+            "name": "쉬프랑",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/803010.webp"
+        },
         "805011": {
             "name": "리슐리외",
             "rarity": "SSR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/805010.webp"
+        },
+        "805021": {
+            "name": "리옹",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/805020.webp"
         },
         "903011": {
             "name": "포슈",
@@ -1261,6 +1276,11 @@
             "name": "스트라스부르",
             "rarity": "SSR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/904020.webp"
+        },
+        "905021": {
+            "name": "클레망소",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/905020.webp"
         },
         "9600021": {
             "name": "상 마르티뉴",
@@ -1748,6 +1768,11 @@
             "name": "크론시타트",
             "rarity": "UR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/718010.webp"
+        },
+        "807021": {
+            "name": "팽르베",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/807020.webp"
         },
         "808011": {
             "name": "쉬르쿠프",

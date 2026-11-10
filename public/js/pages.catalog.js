@@ -28,6 +28,7 @@ export const PAGE_CATALOG = [
     { key: 'SHIPGIRL_BUILD',    path: 'shipgirl/shipgirl-build-sim/', name: '함순이 건조확률 보기', description: '배너별 건조확률 상세확인',              icon: 'casino',       category: '함순이' },
     { key: 'SHIPGIRL_BIRTHDAY', path: 'shipgirl/shipgirl-birthday/', name: '함순이 생일',         description: '함순이 생일 확인하기',                  icon: 'cake',         category: '함순이' },
     { key: 'SHIPGIRL_STATS',    path: 'shipgirl/shipgirl-stats/',    name: '함순이 통계',         description: '함순이/스킨 통계 및 비교',              icon: 'bar_chart',    category: '함순이' },
+    { key: 'SHIPGIRL_RELATIONS', path: 'shipgirl/shipgirl-relations/', name: '함순이 관계도',     description: '함순이 사이의 대사·스토리 관계 지도',   icon: 'hub',          category: '함순이' },
     { key: 'CN_PREVIEW',        path: 'shipgirl/cn-preview/',        name: 'CN 선행 컨텐츠',       description: '중국 서버 선행 함순이/스킨 미리보기',    icon: 'update',       category: '함순이' },
     { key: 'SHIPGIRL_TRACKER',  path: 'shipgirl/shipgirl-tracker/',  name: '함순이 육성트래커',   description: '보유·육성 기록과 기술/진영 점수 관리',  icon: 'checklist',    category: '함순이' },
     { key: 'RESEARCH_TRACKER',  path: 'shipgirl/research-tracker/',  name: '개발함 트래커',       description: '상시 획득 가능 함순이 진영점수 트래커', icon: 'science',      category: '함순이' },
@@ -114,7 +115,7 @@ export const NAV_STRUCTURE = [
     {
         label: '함순이/스킨/대사',
         columns: [
-            { title: '함순이 정보', keys: ['SHIPGIRL_INFO', 'SHIPGIRL_BUILD', 'SHIPGIRL_BIRTHDAY', 'SHIPGIRL_STATS'] },
+            { title: '함순이 정보', keys: ['SHIPGIRL_INFO', 'SHIPGIRL_BUILD', 'SHIPGIRL_BIRTHDAY', 'SHIPGIRL_STATS', 'SHIPGIRL_RELATIONS'] },
             { title: '스킨 & 대사', keys: ['SKIN_DETAIL', 'SKIN_LIST', 'SKIN_POLL', 'SKIN_EXPRESSION'] },
             { title: '함순이 트래커', keys: ['SHIPGIRL_TRACKER', 'RESEARCH_TRACKER'] },
         ],

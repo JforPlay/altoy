@@ -1,0 +1,242 @@
+/* 함순이 관계도 — map canvas, overlay toolbar, evidence panel, tooltip, legend. */
+
+.relmap {
+  color: var(--text-primary);
+  line-height: 1.6;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 1rem 1rem;
+}
+
+.relmap-header { margin-bottom: 0.6rem; }
+
+.relmap-wrap {
+  position: relative;
+  height: calc(100vh - 190px);
+  min-height: 520px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--bg-secondary);
+}
+
+.relmap-wrap canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  cursor: grab;
+}
+.relmap-wrap canvas.is-dragging { cursor: grabbing; }
+
+/* ----- toolbar (floats over the map; clicks pass through the gaps) ----- */
+.relmap-bar {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+  pointer-events: none;
+  z-index: 2;
+}
+.relmap-bar > * { pointer-events: auto; }
+
+.relmap-search { position: relative; width: 200px; }
+.relmap-search input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 0.85rem;
+}
+.relmap-search input:focus { outline: none; border-color: var(--accent-blue); }
+.relmap-search .dropdown-content { margin-top: 0.25rem; z-index: var(--z-dropdown); }
+
+.relmap-fit { font-size: 0.8rem; padding: 0.3rem 0.65rem; }
+
+.relmap-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.relmap-chips .chip { font-size: 0.78rem; background: var(--card-bg); }
+.relmap-chips .chip:not(.active) { opacity: 0.6; }
+.relmap-chips .chip.active {
+  --chip-accent: var(--card-bg);
+  --chip-accent-text: var(--text-primary);
+  border-color: var(--text-secondary);
+}
+.relmap-swatch {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  flex: none;
+}
+
+.relmap-range,
+.relmap-count {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.2rem 0.5rem;
+}
+.relmap-range { display: flex; align-items: center; gap: 0.4rem; }
+.relmap-range input { width: 90px; }
+.relmap-range b { min-width: 1.2em; text-align: right; color: var(--text-primary); }
+
+/* ----- evidence panel ----- */
+.relmap-panel {
+  position: absolute;
+  top: 56px;
+  right: 10px;
+  bottom: 10px;
+  width: 340px;
+  max-width: calc(100% - 20px);
+  overflow-y: auto;
+  padding: 0.8rem;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  z-index: 3;
+}
+
+.relmap-head { display: flex; gap: 0.7rem; align-items: center; margin-bottom: 0.5rem; }
+.relmap-head img { width: 52px; height: 52px; border-radius: 50%; background: var(--bg-tertiary); flex: none; }
+.relmap-head h2 { margin: 0; font-size: 1.05rem; }
+.relmap-head h2 a { color: inherit; text-decoration: none; }
+.relmap-head h2 a:hover { text-decoration: underline; }
+.relmap-close {
+  margin-left: auto;
+  align-self: flex-start;
+  border: none;
+  background: none;
+  color: var(--text-secondary);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.relmap-hint { color: var(--text-secondary); font-size: 0.78rem; }
+.relmap-section { margin: 0.8rem 0 0.3rem; }
+
+.relmap-row {
+  display: flex;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 0.45rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  align-items: flex-start;
+}
+.relmap-row:hover,
+.relmap-row:focus-visible { background: var(--bg-secondary); outline: none; }
+.relmap-row img { width: 34px; height: 34px; border-radius: 50%; flex: none; background: var(--bg-tertiary); }
+.relmap-row-body { min-width: 0; flex: 1; }
+.relmap-row-name { font-weight: 600; display: flex; gap: 0.3rem; align-items: center; flex-wrap: wrap; }
+.relmap-row-score { margin-left: auto; font-weight: 400; color: var(--text-secondary); font-size: 0.74rem; }
+.relmap-quote { color: var(--text-secondary); font-size: 0.78rem; line-height: 1.45; margin-top: 0.15rem; overflow-wrap: anywhere; }
+.relmap-quote b { color: var(--text-primary); }
+.relmap-quote mark {
+  background: color-mix(in srgb, var(--accent-blue) 25%, transparent);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+.relmap-quote a { color: var(--accent-blue); }
+
+.relmap-play {
+  margin-left: 0.25rem;
+  padding: 0 0.35rem;
+  font-size: 0.68rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+/* ----- tooltip, legend, status ----- */
+.relmap-tip {
+  position: absolute;
+  pointer-events: none;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.78rem;
+  white-space: nowrap;
+  color: var(--text-primary);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  z-index: 4;
+}
+
+.relmap-legend {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  max-width: min(560px, calc(100% - 380px));
+  padding: 0.4rem 0.6rem;
+  font-size: 0.74rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+  z-index: 2;
+}
+.relmap-legend-line {
+  display: inline-block;
+  width: 14px;
+  height: 3px;
+  margin: 0 4px 0 8px;
+  vertical-align: 2px;
+  border-radius: 2px;
+}
+.relmap-legend-line:first-child { margin-left: 0; }
+.relmap-legend-line--dashed {
+  background: repeating-linear-gradient(90deg, var(--relmap-class-color, #64748b) 0 4px, transparent 4px 7px);
+}
+
+.relmap-status {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  z-index: 1;
+}
+.relmap-status:empty { display: none; }
+.relmap-status .page-status { pointer-events: auto; }
+
+/* ----- narrow screens: the panel becomes a bottom sheet, the legend hides ----- */
+@media (max-width: 700px) {
+  .relmap { padding: 0 0.5rem 0.5rem; }
+  .relmap-header .page-header-subtitle { display: none; }
+  .relmap-wrap { height: calc(100vh - 150px); min-height: 460px; }
+  .relmap-bar { top: 8px; left: 8px; right: 8px; gap: 0.3rem; }
+  .relmap-search { width: calc(100% - 90px); }
+  .relmap-range input { width: 70px; }
+  .relmap-legend { display: none; }
+  .relmap-panel {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    max-width: none;
+    max-height: 45vh;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+  }
+}
