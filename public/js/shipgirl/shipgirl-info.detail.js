@@ -5,7 +5,7 @@
  * State is shared via a ref passed to setup() from shipgirl-info.js.
  */
 
-import { createImg, IMG_FALLBACKS, showToast, resolveUrl, showElement, hideElement, DATA_FOR_TOY_BASE } from '../utils.js';
+import { createImg, IMG_FALLBACKS, showToast, resolveUrl, showElement, hideElement, escapeHtml, DATA_FOR_TOY_BASE } from '../utils.js';
 import { setupTooltipToggles } from '../global.script.js';
 import {
     getSkillInfo,
@@ -18,9 +18,11 @@ import {
     loadSkillToIconId,
     loadSkillDataTemplate,
     loadSkillTags,
+    loadArchiveDropEntries,
     getSkillTagRows
 } from './shipgirl-info.data.js';
 import { isEmptyTagRows } from './skill-tags.js';
+import { acquisitionRoutes } from './ship-acquisition.js';
 import { showMapsModal } from './shipgirl-info.maps.js';
 import { renderRetrofitMap } from './shipgirl-info.retrofit.js';
 import { renderEquipSlotSection } from './shipgirl-info.equip-slots.js';
@@ -102,7 +104,8 @@ export async function showDetailView(shipName, gid) {
             loadSkillIconData(),
             loadSkillToIconId(),
             loadSkillDataTemplate(),
-            loadSkillTags()
+            loadSkillTags(),
+            loadArchiveDropEntries()
         ]);
     } catch (error) {
         showToast('상세 데이터를 불러오는데 실패했습니다. 다시 시도해 주세요.', 'error');
@@ -159,6 +162,7 @@ function renderDetailView(ship) {
     const detailContent = document.getElementById('detailContent');
     detailContent.innerHTML = `
         ${renderDetailHeader(ship, nationalityInfo)}
+        ${renderAcquisitionSection(ship)}
         ${renderGiftSection(ship)}
         ${renderStatsSection(ship, limitBreakOptions)}
         ${renderEquipSlotSection(ship, getEquipTypeName)}
@@ -260,14 +264,9 @@ function renderDetailHeader(ship, nationalityInfo) {
                     </div>
                     ` : ''}
                 </div>
-                <div class="detail-drop-row">
-                    ${ship.description && ship.description.length > 0 ? `
-                        <p class="detail-drop-info"><strong>드랍 정보:</strong> <span class="drop-sources">${ship.description.join(', ')}</span></p>
-                    ` : ''}
-                    <button class="view-maps-btn" data-action="show-maps" data-ship-name="${ship.name}">
-                        <i class="fas fa-map-marked-alt"></i> 드랍 지역 보기
-                    </button>
-                </div>
+                ${ship.description && ship.description.length > 0 ? `
+                    <p class="detail-drop-info"><strong>획득 정보 (인게임 툴팁):</strong> <span class="drop-sources">${ship.description.join(', ')}</span></p>
+                ` : ''}
                 ${hasRetrofit && Object.keys(retrofitBonuses).length > 0 ? `
                     <div class="retrofit-bonus-section">
                         <h4 class="retrofit-bonus-title">개조 보너스</h4>
@@ -282,6 +281,30 @@ function renderDetailHeader(ship, nationalityInfo) {
                     </div>
                 ` : ''}
             </div>
+        </div>
+    `;
+}
+
+/**
+ * 실제 드랍 정보: routes from collected data (build pools, stage drops, archives,
+ * MrLar source codes) — the tooltip above is frozen at the ship's debut.
+ */
+function renderAcquisitionSection(ship) {
+    const routes = acquisitionRoutes(ship, state.archiveDropEntries?.[String(ship.gid)]);
+    const mapsButton = `
+        <button class="view-maps-btn" data-action="show-maps" data-ship-name="${escapeHtml(ship.name)}">
+            <i class="fas fa-map-marked-alt" aria-hidden="true"></i> 드랍 지역 보기
+        </button>`;
+    const body = routes.length
+        ? `<dl class="acquisition-list">${routes.map(r => `
+            <dt>${r.label}</dt>
+            <dd><span>${escapeHtml(r.text)}</span>${r.kind === 'map' ? mapsButton : ''}</dd>`).join('')}
+           </dl>`
+        : '<p class="acquisition-empty">상시 획득 경로가 없습니다. (이벤트 한정)</p>';
+    return `
+        <div class="acquisition-section">
+            <h3 class="section-title">실제 드랍 정보</h3>
+            ${body}
         </div>
     `;
 }

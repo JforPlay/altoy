@@ -10,6 +10,7 @@
 
 import { fetchJSONWithCache, createImg, IMG_FALLBACKS, createSearchIndex, ensureFuse, debounce, syncedStorage, RARITY_ORDER as rarityOrder, renderStatus } from '../utils.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
+import { isShopRoute, isOtherRoute, shopLabels, mapStages, stageLabel, archiveDropEntries } from './ship-acquisition.js';
 
 const { parseProgress } = ShipgirlTrackerUtils;
 
@@ -23,85 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // and the quick-add widget shows no results until the next user input.
     ensureFuse();
 
-    // Descriptions that are NOT map-drops or archive-drops but still grant the ship permanently.
-    // Map and archive drops come from generated indexes rather than description strings.
-    const NON_DROP_PERMANENT_PATTERNS = [
-        /^소형함 건조/,
-        /^중형함 건조/,
-        /^대형함 건조/,
-        /^특형함 건조/,
-        /^훈장/,
-        /^코어/,
-        /^군수 상점/,
-        /^원형 상점/,
-        /^함대 상점/,
-        /^연습 상점/,
-        /^지원 신청/,
-        /^특별 ?보급/,
-        /^상설 UR/,
-        /^UR Exchange/,
-        /^상점의 대함대/,
-        /^주간 임무/,
-        /^도감 업적/,
-        /^출석 스탬프/,
-        /^히든 임무/,
-        /^연구 ?도크/,
-    ];
-
-    const SHOP_PATTERNS = [
-        /^원형 상점 교환/,
-        /^군수 상점 교환/,
-        /^상점의 대함대 보급에서 획득/,
-        /^코어 상점/,
-        /^코어 교환/,
-        /^특별 ?보급/,
-        /^함대 상점 교환/,
-        /^훈장 상점 교환/,
-        /^훈장 교환/,
-    ];
-
-    // NOTE: the 상시 건조 group is driven by generated buildPoolGids, not this test.
-    // BUILD_TEST now only guards OTHER_TEST so a construction-described ship is never
-    // mislabeled as 기타 획득.
-    const BUILD_TEST = d => /건조/.test(d) && !/한정/.test(d) && !/이벤트/.test(d) && !/기간/.test(d);
-    const SHOP_TEST = d => SHOP_PATTERNS.some(p => p.test(d));
-    const OTHER_TEST = d => {
-        if (BUILD_TEST(d)) return false;
-        if (SHOP_TEST(d)) return false;
-        return NON_DROP_PERMANENT_PATTERNS.some(p => p.test(d));
-    };
-
-    // Map a description prefix to the shop name shown under the ship card.
-    // Order matters: more specific patterns first so "훈장 상점 교환" takes precedence
-    // over a hypothetical bare "훈장" prefix. Each rule must cover at least one entry
-    // in SHOP_PATTERNS so every shop-group ship resolves to a label.
-    //
-    // Hardcoded rollups:
-    //   군수 상점  + 특별 보급       → 연습전 상점 (both use 공훈치 from 연습전/PvP)
-    //   함대 상점  + 대함대 보급     → 대함대 상점 (unified guild/grand-fleet storefront)
-    const SHOP_LABEL_RULES = [
-        { pattern: /^원형 상점/, label: '원형 상점' },
-        { pattern: /^군수 상점/, label: '연습전 상점' },
-        { pattern: /^코어/, label: '코어 상점' },
-        { pattern: /^함대 상점/, label: '대함대 상점' },
-        { pattern: /^훈장 상점/, label: '훈장 상점' },
-        { pattern: /^훈장 교환/, label: '훈장 상점' },
-        { pattern: /^상점의 대함대/, label: '대함대 상점' },
-        { pattern: /^특별 ?보급/, label: '연습전 상점' },
-    ];
-
-    function getShopLabelForShip(ship) {
-        const labels = new Set();
-        for (const d of ship.description || []) {
-            for (const rule of SHOP_LABEL_RULES) {
-                if (rule.pattern.test(d)) {
-                    labels.add(rule.label);
-                    break;
-                }
-            }
-        }
-        return [...labels].join(', ');
-    }
+    // Tooltip route rules (shops / 기타) live in ship-acquisition.js, shared with shipgirl-info.
 
     const FACTION_ABBR = {
         '로열 네이비': 'HMS',
@@ -149,13 +72,13 @@ document.addEventListener('DOMContentLoaded', () => {
             key: 'shop',
             label: '상점 교환',
             icon: 'shopping_cart',
-            test: ship => (ship.description || []).some(SHOP_TEST),
+            test: ship => (ship.description || []).some(isShopRoute),
         },
         {
             key: 'other',
             label: '기타 획득',
             icon: 'storefront',
-            test: ship => (ship.description || []).some(OTHER_TEST),
+            test: ship => (ship.description || []).some(isOtherRoute),
         },
     ];
 
@@ -179,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const shopDropLabel = new Map();
 
     const MAX_MAP_STAGES_IN_LABEL = 3;
-    const ARCHIVE_DROP_INDEX_VERSION = 1;
     let progress = {};
     let pinned = new Set();
     let activeFaction = null;
@@ -251,33 +173,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (ship.gid != null && (ship.light || ship.heavy || ship.special)) {
                     buildPoolGids.add(String(ship.gid));
                 }
-                const maps = ship.maps;
-                if (!Array.isArray(maps) || ship.gid == null) continue;
-                const stages = [];
-                maps.forEach((area, chapterIdx) => {
-                    if (!Array.isArray(area) || area.length === 0) return;
-                    const chapter = chapterIdx + 1;
-                    for (const d of area) stages.push(`${chapter}-${d.map}`);
-                });
+                if (ship.gid == null) continue;
+                const stages = mapStages(ship.maps);
                 if (stages.length > 0) {
                     const gidStr = String(ship.gid);
                     mapDropGids.add(gidStr);
-                    const label = stages.length <= MAX_MAP_STAGES_IN_LABEL
-                        ? stages.join(', ')
-                        : `${stages.slice(0, MAX_MAP_STAGES_IN_LABEL).join(', ')} +${stages.length - MAX_MAP_STAGES_IN_LABEL}`;
-                    mapDropLabel.set(gidStr, label);
+                    mapDropLabel.set(gidStr, stageLabel(stages, MAX_MAP_STAGES_IN_LABEL));
                 }
             }
 
             // A missing or future-schema index costs only the 아카이브 group, so it
             // degrades to an empty group rather than failing the whole page. The
             // build-time shape guard is what keeps a broken file from shipping.
-            const archiveEntries = archiveDropIndex?.version === ARCHIVE_DROP_INDEX_VERSION
-                && archiveDropIndex.entries
-                && typeof archiveDropIndex.entries === 'object'
-                && !Array.isArray(archiveDropIndex.entries)
-                ? archiveDropIndex.entries
-                : null;
+            const archiveEntries = archiveDropEntries(archiveDropIndex);
             if (archiveEntries) {
                 for (const [gid, label] of Object.entries(archiveEntries)) {
                     archiveDropGids.add(gid);
@@ -291,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // We compute them for every ship; getRowLocation shows them on shop-group rows and
             // as the last fallback on rows of groups without their own label kind.
             for (const [gid, ship] of Object.entries(shipData)) {
-                const label = getShopLabelForShip(ship);
+                const label = shopLabels(ship.description).join(', ');
                 if (label) shopDropLabel.set(gid, label);
             }
 

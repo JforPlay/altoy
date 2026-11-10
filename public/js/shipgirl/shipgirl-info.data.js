@@ -7,6 +7,7 @@
 
 import { fetchJSON, fetchJSONWithCache } from '../utils.js';
 import { buildSkillTagRows } from './skill-tags.js';
+import { archiveDropEntries } from './ship-acquisition.js';
 
 'use strict';
 
@@ -18,6 +19,7 @@ let skillIconDataPromise = null;
 let skillToIconIdPromise = null;
 let skillDataTemplatePromise = null;
 let skillTagsPromise = null;
+let archiveDropPromise = null;
 
 export function setup(stateRef) {
     state = stateRef;
@@ -66,6 +68,17 @@ async function doLoadFullData() {
         console.warn('Full ship data load failed:', error);
         throw error;
     }
+}
+
+/**
+ * gid → 작전문서 label for the 실제 드랍 정보 section (2 KB). Optional: a failed or
+ * unknown-schema file leaves `state.archiveDropEntries` empty, costing only that row.
+ */
+export function loadArchiveDropEntries() {
+    archiveDropPromise ??= fetchJSONWithCache('data/shipgirl/archive_drop_index.json')
+        .then(archiveDropEntries, () => null)
+        .then((entries) => { state.archiveDropEntries = entries || {}; });
+    return archiveDropPromise;
 }
 
 export async function loadNationalityData() {
