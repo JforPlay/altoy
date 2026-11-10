@@ -10,7 +10,7 @@
 
 import { fetchJSONWithCache, createImg, IMG_FALLBACKS, createSearchIndex, ensureFuse, debounce, syncedStorage, RARITY_ORDER as rarityOrder, renderStatus } from '../utils.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
-import { isShopRoute, isOtherRoute, shopLabels, mapStages, stageLabel, archiveDropEntries } from './ship-acquisition.js';
+import { shopRoutes, otherRoutes, mapStages, stageLabel, archiveDropEntries } from './ship-acquisition.js';
 
 const { parseProgress } = ShipgirlTrackerUtils;
 
@@ -24,7 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // and the quick-add widget shows no results until the next user input.
     ensureFuse();
 
-    // Tooltip route rules (shops / 기타) live in ship-acquisition.js, shared with shipgirl-info.
+    // Shop / 기타 routes (MrLar `acquire` codes, tooltip fallback) live in ship-acquisition.js,
+    // shared with shipgirl-info's 실제 드랍 정보.
 
     const FACTION_ABBR = {
         '로열 네이비': 'HMS',
@@ -72,13 +73,13 @@ document.addEventListener('DOMContentLoaded', () => {
             key: 'shop',
             label: '상점 교환',
             icon: 'shopping_cart',
-            test: ship => (ship.description || []).some(isShopRoute),
+            test: ship => shopRoutes(ship).length > 0,
         },
         {
             key: 'other',
             label: '기타 획득',
             icon: 'storefront',
-            test: ship => (ship.description || []).some(isOtherRoute),
+            test: ship => otherRoutes(ship).length > 0,
         },
     ];
 
@@ -174,9 +175,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     buildPoolGids.add(String(ship.gid));
                 }
                 if (ship.gid == null) continue;
+                const gidStr = String(ship.gid);
+                // MrLar source codes ride on the group entry the SOURCE_GROUPS tests receive.
+                if (Array.isArray(ship.acquire) && shipData[gidStr]) shipData[gidStr].acquire = ship.acquire;
                 const stages = mapStages(ship.maps);
                 if (stages.length > 0) {
-                    const gidStr = String(ship.gid);
                     mapDropGids.add(gidStr);
                     mapDropLabel.set(gidStr, stageLabel(stages, MAX_MAP_STAGES_IN_LABEL));
                 }
@@ -195,11 +198,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('archive_drop_index.json unavailable or unsupported; 아카이브 그룹을 건너뜁니다.');
             }
 
-            // Shop labels are derived from each ship's description strings (no map data needed).
+            // Shop labels come from the `acquire` codes attached above (tooltip fallback).
             // We compute them for every ship; getRowLocation shows them on shop-group rows and
             // as the last fallback on rows of groups without their own label kind.
             for (const [gid, ship] of Object.entries(shipData)) {
-                const label = shopLabels(ship.description).join(', ');
+                const label = shopRoutes(ship).join(', ');
                 if (label) shopDropLabel.set(gid, label);
             }
 
