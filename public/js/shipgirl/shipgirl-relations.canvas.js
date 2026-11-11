@@ -7,13 +7,13 @@
  */
 import { nationColor, SOURCE_COLOR, visibleLinks } from './shipgirl-relations.model.js';
 import {
-    fitCamera, zoomAt, toScreen, toWorld, hitNode, pointInHull,
+    fitCamera, zoomAt, toScreen, toWorld, hitNode, pointInHull, rectsOverlap, rectHitsCircle, pinLabel,
+    CLASS_LABEL_ZOOM,
 } from './shipgirl-relations.camera.js';
 import { dataForToyUrl, onThemeChange } from '../utils.js';
 
 const ICON_MIN_PX = 7;     // node radius on screen before its icon loads
 const LABEL_MIN_PX = 13;   // …before its name shows
-const PROVINCE_LABEL_MIN_W = 46;
 const SIDE_PANEL_MIN_W = 700; // narrower viewports use a bottom sheet
 const TAU = Math.PI * 2;
 
@@ -45,10 +45,8 @@ export function createRelmapView({ wrap, canvas, tip, model, onSelect, onNation 
     const ctx = canvas.getContext('2d');
     const { nodes, nations, provinces, classes } = model;
     const nationOf = new Map(nations.map((n) => [n.nat, n]));
-    for (const p of provinces) {
-        const b = hullBounds(p.hull);
-        p.width = b.x1 - b.x0;
-    }
+    for (const c of nations) c.bounds = hullBounds(c.hull);
+    const nationsBySize = [...nations].sort((a, b) => b.count - a.count);
 
     let W = 0, H = 0, dpr = 1;
     let cam = { x: 0, y: 0, k: 0.3 };
@@ -219,52 +217,112 @@ export function createRelmapView({ wrap, canvas, tip, model, onSelect, onNation 
         drawLabels(k, f, linked, lit);
     }
 
+    // Labels in priority order, each claiming screen space the later ones must avoid:
+    // nation names (always shown), class names (always, from CLASS_LABEL_ZOOM, in the strip
+    // the layout reserved), then shipgirl names under their portraits — only where they fit,
+    // except the selected/hovered shipgirl and her links, who are named first.
     function drawLabels(k, f, linked, lit) {
         ctx.textAlign = 'center';
         ctx.lineJoin = 'round';
+        const placed = [];
+        const free = (b) => !placed.some((p) => rectsOverlap(b, p));
         const halo = (text, x, y, width) => {
             ctx.lineWidth = width; ctx.strokeStyle = theme.halo; ctx.strokeText(text, x, y);
             ctx.fillText(text, x, y);
         };
         labelBoxes = [];
-        const fade = Math.max(0, Math.min(1, (2.2 - k) / 1.2));
-        if (fade > 0) {
-            for (const c of nations) {
-                if (c.count < 20 && k < 0.55) continue;
-                const [sx, sy] = toScreen(cam, c.labelX, c.labelY, W, H);
-                const size = c.count >= 20 ? 13 + Math.sqrt(c.count) * 0.8 : 12;
-                ctx.font = `700 ${size}px ${theme.font}`;
-                ctx.globalAlpha = fade * (f ? 0.35 : 1);
-                ctx.fillStyle = hsl(c.nat, 42, 72);
-                halo(c.name, sx, sy, 4);
-                const w = ctx.measureText(c.name).width;
-                labelBoxes.push({ nat: c.nat, x0: sx - w / 2 - 4, x1: sx + w / 2 + 4, y0: sy - size, y1: sy + 4 });
+        const tags = [];
+
+        // nation names: biggest first; a collision nudges the smaller name instead of hiding
+        // it, and a nation zoomed past its name keeps it as a tag pinned inside the view
+        for (const c of nationsBySize) {
+            const [bx0, by0] = toScreen(cam, c.bounds.x0, c.bounds.y0, W, H);
+            const [bx1, by1] = toScreen(cam, c.bounds.x1, c.bounds.y1, W, H);
+            if (bx1 < 0 || bx0 > W || by1 < 0 || by0 > H) continue;
+            const size = c.count >= 20 ? 13 + Math.sqrt(c.count) * 0.8 : 12;
+            ctx.font = `700 ${size}px ${theme.font}`;
+            const w = ctx.measureText(c.name).width;
+            const [nx, ny] = toScreen(cam, c.labelX, c.labelY, W, H);
+            const { x, y, pinned } = pinLabel(nx, ny, w, size, { x0: bx0, y0: by0, x1: bx1, y1: by1 }, W, H);
+            const at = (dx, dy) => ({ x0: x + dx - w / 2 - 6, x1: x + dx + w / 2 + 6, y0: y + dy - size - 2, y1: y + dy + 6, x: x + dx, y: y + dy });
+            const step = size + 8;
+            let box = [[0, 0], [0, step], [0, -step], [w * 0.6, 0], [-w * 0.6, 0], [0, 2 * step]]
+                .map(([dx, dy]) => at(dx, dy)).find(free);
+            if (!box) {
+                if (c.count < 20 && k < 0.55) continue; // small collab nations yield in the overview
+                box = at(0, 0);
             }
+            placed.push(box);
+            labelBoxes.push({ nat: c.nat, x0: box.x0, x1: box.x1, y0: box.y0, y1: box.y1 });
+            if (pinned) { tags.push({ c, box, w, size }); continue; } // overlays: drawn last
+            ctx.globalAlpha = f ? 0.35 : 1;
+            ctx.fillStyle = hsl(c.nat, 42, 72);
+            halo(c.name, box.x, box.y, 4);
         }
-        // province (class) names: mid zoom, once the province is wide enough on screen
-        const pf = Math.max(0, Math.min(1, (k - 0.45) / 0.2, (3 - k) / 0.6));
+
+        // class names: fade in just below CLASS_LABEL_ZOOM, then always on
+        const pf = Math.max(0, Math.min(1, (k - CLASS_LABEL_ZOOM + 0.15) / 0.15));
         if (showClasses && pf > 0) {
             ctx.font = `600 11px ${theme.font}`;
             provinces.forEach((p, pi) => {
-                if (p.width * k < PROVINCE_LABEL_MIN_W) return;
                 const [sx, sy] = toScreen(cam, p.labelX, p.labelY, W, H);
-                if (sx < -60 || sx > W + 60 || sy < -20 || sy > H + 20) return;
+                if (sx < -80 || sx > W + 80 || sy < -20 || sy > H + 20) return;
+                const name = classes[p.cls].kr;
+                const w = ctx.measureText(name).width;
+                placed.push({ x0: sx - w / 2 - 3, x1: sx + w / 2 + 3, y0: sy - 11, y1: sy + 3 });
                 ctx.globalAlpha = pf * (f && f.province !== pi ? 0.3 : 1);
                 ctx.fillStyle = hsl(p.nat, 36, 75);
-                halo(classes[p.cls].kr, sx, sy, 3);
+                halo(name, sx, sy, 3);
             });
         }
-        ctx.globalAlpha = 1;
-        ctx.fillStyle = theme.text;
+
+        // shipgirl names: a plate right under the portrait; dimmed portraits don't block
+        const discs = [];
         for (const n of nodes) {
             const sr = n.r * k;
-            const show = f ? linked.has(n.i) || (lit.has(n.i) && sr >= LABEL_MIN_PX) : sr >= LABEL_MIN_PX;
-            if (!show) continue;
-            const [sx, sy] = toScreen(cam, n.x, n.y + n.r, W, H);
-            if (sx < -40 || sx > W + 40 || sy < -20 || sy > H + 20) continue;
-            ctx.font = n === f ? `700 14px ${theme.font}` : `12px ${theme.font}`;
-            halo(n.name, sx, sy + 13, 3);
+            if (sr < ICON_MIN_PX || (f && !lit.has(n.i))) continue;
+            const [sx, sy] = toScreen(cam, n.x, n.y, W, H);
+            if (sx + sr < -80 || sx - sr > W + 80 || sy + sr < -40 || sy - sr > H + 40) continue;
+            discs.push({ n, sx, sy, sr });
         }
+        const cands = [];
+        for (const n of nodes) {
+            const sr = n.r * k;
+            const show = n === f || (f ? linked.has(n.i) || (lit.has(n.i) && sr >= LABEL_MIN_PX) : sr >= LABEL_MIN_PX);
+            if (!show) continue;
+            const [sx, sy] = toScreen(cam, n.x, n.y, W, H);
+            if (sx < -60 || sx > W + 60 || sy < -40 || sy > H + 40) continue;
+            cands.push({ n, sx, sy, sr, pri: n === f ? 0 : linked.has(n.i) ? 1 : 2 });
+        }
+        cands.sort((a, b) => a.pri - b.pri || b.sr - a.sr);
+        ctx.textBaseline = 'middle';
+        // ponytail: linear scans over placed labels and portraits (~300 each at mid zoom);
+        // bucket them in a screen grid if this ever costs frames
+        for (const c of cands) {
+            const big = c.n === f;
+            ctx.font = big ? `700 14px ${theme.font}` : `12px ${theme.font}`;
+            const w = ctx.measureText(c.n.name).width + 8, h = big ? 19 : 16;
+            const y0 = c.sy + Math.max(c.sr, 3) + 2;
+            const b = { x0: c.sx - w / 2, x1: c.sx + w / 2, y0, y1: y0 + h };
+            if (!big && (!free(b) || discs.some((d) => d.n !== c.n && rectHitsCircle(b, d.sx, d.sy, d.sr * 0.94)))) continue;
+            placed.push(b);
+            ctx.globalAlpha = 0.82; ctx.fillStyle = theme.halo;
+            ctx.beginPath(); ctx.roundRect(b.x0, b.y0, w, h, 6); ctx.fill();
+            ctx.globalAlpha = 1; ctx.fillStyle = big ? theme.focus : theme.text;
+            ctx.fillText(c.n.name, c.sx, y0 + h / 2 + 0.5);
+        }
+        ctx.textBaseline = 'alphabetic';
+
+        // pinned nation tags float over everything under them
+        for (const { c, box, w, size } of tags) {
+            const alpha = f ? 0.35 : 1, th = size + 10;
+            ctx.font = `700 ${size}px ${theme.font}`;
+            ctx.beginPath(); ctx.roundRect(box.x - (w + 20) / 2, box.y - size - 3, w + 20, th, th / 2);
+            ctx.globalAlpha = alpha * 0.92; ctx.fillStyle = theme.halo; ctx.fill();
+            ctx.globalAlpha = alpha; ctx.strokeStyle = hsl(c.nat, 42, 60); ctx.lineWidth = 1.5; ctx.stroke();
+            ctx.fillStyle = hsl(c.nat, 42, 72); ctx.fillText(c.name, box.x, box.y);
+        }
+        ctx.globalAlpha = 1;
     }
 
     // ===== Pointer input =====

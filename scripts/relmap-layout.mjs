@@ -5,6 +5,7 @@
  * shipgirl. Pure and deterministic (Park–Miller RNG), so identical builds give
  * an identical map. Constants are the tuned values from the 2026-11-10 spike.
  */
+import { CLASS_LABEL_ZOOM, rectHitsCircle, rectsOverlap } from '../public/js/shipgirl/shipgirl-relations.camera.js';
 
 const NATION_PACK = 0.55;   // area packing for a nation's target radius
 const PROVINCE_PACK = 0.6;
@@ -12,6 +13,19 @@ const INNER_RING = 420;
 const OUTER_RING = 900;
 const NATION_ITER = 600;
 const SHIP_ITER = 450;
+const SETTLE_ITER = 80;  // strips + spacing only, after the forces stop
+
+// Class-name strip, in world units, sized for the zoom where every class name shows:
+// 11 px semibold text (+ halo) sitting 3 px above the province's top portrait.
+const STRIP_H = 15 / CLASS_LABEL_ZOOM;
+const STRIP_GAP = 3 / CLASS_LABEL_ZOOM;
+const classNamePx = (s) => [...s].reduce((w, ch) => w + (/[가-힣]/.test(ch) ? 11 : ch === ' ' ? 3 : 6.5), 0) + 10;
+
+/** World box a class name `kr` occupies above a province centred at cx whose top portrait edge is `top`. */
+export function classStrip(kr, cx, top) {
+    const half = classNamePx(kr) / CLASS_LABEL_ZOOM / 2;
+    return { x0: cx - half, x1: cx + half, y0: top - STRIP_GAP - STRIP_H, y1: top - STRIP_GAP };
+}
 
 // Monotone-chain convex hull of [x, y] points.
 function convexHull(pts) {
@@ -114,6 +128,50 @@ export function layoutRelmap({ nodes, links, provinces, mainNations, seed = 7 })
     }
 
     // ----- shipgirls -----
+    const shift = (members, dx, dy) => { for (const i of members) { P[i].x += dx; P[i].y += dy; } };
+    // Class-name strips: shove any other portrait out along the cheaper axis (the province
+    // gives a little too), and slide sister provinces apart when their strips collide.
+    function clearStrips() {
+        const strips = provs.map((p) => {
+            let top = Infinity, sx = 0;
+            for (const i of p.members) { top = Math.min(top, P[i].y - R[i]); sx += P[i].x; }
+            return { p, ...classStrip(p.kr ?? '', sx / p.members.length, top) };
+        });
+        for (const b of strips) {
+            for (let i = 0; i < nodes.length; i++) {
+                const r = R[i] + 2;
+                if (provOf[i] === b.p || !rectHitsCircle(b, P[i].x, P[i].y, r)) continue;
+                const up = P[i].y + r - b.y0, down = b.y1 - (P[i].y - r);
+                const left = P[i].x + r - b.x0, right = b.x1 - (P[i].x - r);
+                const m = Math.min(up, down, left, right);
+                const [mx, my] = m === up ? [0, -up] : m === down ? [0, down] : m === left ? [-left, 0] : [right, 0];
+                P[i].x += mx * 0.6; P[i].y += my * 0.6;
+                shift(b.p.members, -mx * 0.25, -my * 0.25);
+            }
+        }
+        for (let a = 0; a < strips.length; a++) {
+            for (let b = a + 1; b < strips.length; b++) {
+                const A = strips[a], B = strips[b];
+                if (A.p.nat !== B.p.nat || !rectsOverlap(A, B)) continue;
+                const ox = (Math.min(A.x1, B.x1) - Math.max(A.x0, B.x0)) / 4;
+                const s = A.x0 + A.x1 < B.x0 + B.x1 ? -1 : 1;
+                shift(A.p.members, s * ox, 0); shift(B.p.members, -s * ox, 0);
+            }
+        }
+    }
+    // ponytail: O(n²) collision, fine at ~1k nodes; grid-bucket it if the roster triples
+    function separate() {
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                const p = P[i], q = P[j], dx = q.x - p.x, dy = q.y - p.y, L = R[i] + R[j] + 3;
+                if (Math.abs(dx) > L || Math.abs(dy) > L) continue;
+                const d = Math.hypot(dx, dy) || 0.01;
+                if (d >= L) continue;
+                const f = ((L - d) / 2) * (nodes[i].nat === nodes[j].nat ? 1 : 1.5);
+                p.x -= (dx / d) * f; p.y -= (dy / d) * f; q.x += (dx / d) * f; q.y += (dy / d) * f;
+            }
+        }
+    }
     for (let it = 0; it < SHIP_ITER; it++) {
         const alpha = 1 - it / SHIP_ITER;
         for (const l of links) {
@@ -148,6 +206,7 @@ export function layoutRelmap({ nodes, links, provinces, mainNations, seed = 7 })
                 for (const i of q.members) { P[i].x += (ux * p.members.length) / tot; P[i].y += (uy * p.members.length) / tot; }
             }
         }
+        clearStrips();
         for (const c of C) {
             for (const i of c.members) {
                 const dx = c.x - P[i].x, dy = c.y - P[i].y, d = Math.hypot(dx, dy) || 1;
@@ -155,18 +214,10 @@ export function layoutRelmap({ nodes, links, provinces, mainNations, seed = 7 })
                 P[i].x += dx * k * alpha; P[i].y += dy * k * alpha;
             }
         }
-        // ponytail: O(n²) collision, fine at ~1k nodes; grid-bucket it if the roster triples
-        for (let i = 0; i < nodes.length; i++) {
-            for (let j = i + 1; j < nodes.length; j++) {
-                const p = P[i], q = P[j], dx = q.x - p.x, dy = q.y - p.y, L = R[i] + R[j] + 3;
-                if (Math.abs(dx) > L || Math.abs(dy) > L) continue;
-                const d = Math.hypot(dx, dy) || 0.01;
-                if (d >= L) continue;
-                const f = ((L - d) / 2) * (nodes[i].nat === nodes[j].nat ? 1 : 1.5);
-                p.x -= (dx / d) * f; p.y -= (dy / d) * f; q.x += (dx / d) * f; q.y += (dy / d) * f;
-            }
-        }
+        separate();
     }
+    // settle: only strips and spacing, so the final positions honour both
+    for (let it = 0; it < SETTLE_ITER; it++) { clearStrips(); separate(); }
 
     // ----- outlines and labels -----
     const top = (members) => Math.min(...members.map((i) => P[i].y - R[i]));
@@ -175,11 +226,11 @@ export function layoutRelmap({ nodes, links, provinces, mainNations, seed = 7 })
         xy: P.map((p) => [p.x, p.y]),
         nations: C.map((c) => ({
             nat: c.nat, members: c.members,
-            labelX: meanX(c.members), labelY: top(c.members) - 22,
+            labelX: meanX(c.members), labelY: top(c.members) - STRIP_GAP - STRIP_H - 12,
             hull: outline(c.members, P, R, 16, 10),
         })),
         provinces: provs.map((p) => ({
-            labelX: meanX(p.members), labelY: top(p.members) - 9,
+            labelX: meanX(p.members), labelY: top(p.members) - STRIP_GAP - 3 / CLASS_LABEL_ZOOM,
             hull: outline(p.members, P, R, 6, 8),
         })),
     };

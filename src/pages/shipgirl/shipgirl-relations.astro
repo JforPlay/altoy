@@ -7,40 +7,33 @@
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/shipgirl/shipgirl-relations.css';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const HELP = '휠/핀치로 확대, 드래그로 이동, 클릭으로 선택. 선 색 = 가장 큰 근거 · 선 굵기 = 관계 점수 · 원 크기 = 연결된 함순이 수 · 함급: 점선 테두리 = 같은 진영의 자매함 묶음';
 ---
 
 <Layout title="함순이 관계도" {base}>
     <div class="relmap">
-        <header class="page-header relmap-header">
-            <div class="page-header-title">
-                <span class="material-symbols-outlined">hub</span>
-                <div>
-                    <h1>함순이 관계도</h1>
-                    <p class="page-header-subtitle">휠/핀치로 확대, 드래그로 이동, 클릭으로 선택. 선 굵기 = 관계 점수, 선 색 = 가장 큰 근거.</p>
-                </div>
+        <div class="relmap-bar">
+            <h1 class="relmap-title"><span class="material-symbols-outlined" aria-hidden="true">hub</span>함순이 관계도</h1>
+            <div class="relmap-search">
+                <input type="search" id="relmap-search" placeholder="함순이 검색" autocomplete="off" aria-label="함순이 검색">
+                <div class="dropdown-content" id="relmap-search-dropdown"></div>
             </div>
-        </header>
-
-        <div class="relmap-wrap" id="relmap-wrap">
-            <canvas id="relmap-canvas" aria-label="함순이 관계도 지도"></canvas>
-
-            <div class="relmap-bar">
-                <div class="relmap-search">
-                    <input type="search" id="relmap-search" placeholder="함순이 검색" autocomplete="off" aria-label="함순이 검색">
-                    <div class="dropdown-content" id="relmap-search-dropdown"></div>
-                </div>
-                <button type="button" class="btn btn-secondary relmap-fit" id="relmap-fit">전체 보기</button>
+            <button type="button" class="btn btn-secondary relmap-fit" id="relmap-fit">전체 보기</button>
+            <div class="relmap-filters">
                 <div class="relmap-chips" id="relmap-chips" role="group" aria-label="연결 종류"></div>
                 <label class="relmap-range">최소 점수
                     <input type="range" id="relmap-min" min="0" max="12" step="1" value="0">
                     <b id="relmap-min-value">0</b>
                 </label>
-                <span class="relmap-count" id="relmap-count"></span>
             </div>
+            <span class="relmap-count" id="relmap-count"></span>
+            <span class="material-symbols-outlined relmap-help" tabindex="0" role="img" aria-label={HELP} title={HELP}>help</span>
+        </div>
 
+        <div class="relmap-wrap" id="relmap-wrap">
+            <canvas id="relmap-canvas" aria-label="함순이 관계도 지도"></canvas>
             <aside class="relmap-panel scroll-styled hidden" id="relmap-panel"></aside>
             <div class="relmap-tip hidden" id="relmap-tip"></div>
-            <div class="relmap-legend" id="relmap-legend"></div>
             <div class="relmap-status" id="relmap-status"></div>
         </div>
     </div>

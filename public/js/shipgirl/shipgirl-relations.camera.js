@@ -7,6 +7,9 @@
 
 export const MIN_ZOOM = 0.08;
 export const MAX_ZOOM = 3.5;
+// Every class name shows from this zoom on; the build-time layout reserves a strip
+// that size above each province, so a class name never covers a portrait.
+export const CLASS_LABEL_ZOOM = 0.9;
 const LABEL_HEADROOM = 60; // world px above the top nations for their names
 
 const clampZoom = (k) => Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, k));
@@ -43,6 +46,30 @@ export function hitNode(nodes, wx, wy, k) {
         if (Math.hypot(n.x - wx, n.y - wy) <= n.r + 3 / k) return n;
     }
     return null;
+}
+
+/** Screen-px rectangles {x0, y0, x1, y1} share area (touching edges don't count). */
+export function rectsOverlap(a, b) {
+    return a.x0 < b.x1 && a.x1 > b.x0 && a.y0 < b.y1 && a.y1 > b.y0;
+}
+
+/** Rectangle b reaches inside the circle (cx, cy, r). */
+export function rectHitsCircle(b, cx, cy, r) {
+    const nx = Math.max(b.x0, Math.min(cx, b.x1)), ny = Math.max(b.y0, Math.min(cy, b.y1));
+    return (nx - cx) ** 2 + (ny - cy) ** 2 < r * r;
+}
+
+/**
+ * Keep a nation name (baseline centre x, y; text width w; font size px) inside the
+ * part of its nation's screen box that is in the W×H view, so a nation you are
+ * zoomed into stays named. `pinned` says it left its natural spot.
+ */
+export function pinLabel(x, y, w, size, box, W, H) {
+    let px = x;
+    const lo = Math.max(box.x0, 0) + w / 2 + 8, hi = Math.min(box.x1, W) - w / 2 - 8;
+    if (lo <= hi) px = Math.max(lo, Math.min(x, hi));
+    const py = Math.max(size + 10, Math.min(y, Math.min(box.y1, H) - 6));
+    return { x: px, y: py, pinned: px !== x || py !== y };
 }
 
 /** Even-odd ray cast against a flat [x0, y0, x1, y1, …] polygon. */

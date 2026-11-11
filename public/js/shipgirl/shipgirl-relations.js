@@ -31,7 +31,6 @@ async function init() {
         minValue: document.getElementById('relmap-min-value'),
         count: document.getElementById('relmap-count'),
         fit: document.getElementById('relmap-fit'),
-        legend: document.getElementById('relmap-legend'),
     };
     if (!requireElements(el, 'ShipgirlRelations')) return;
 
@@ -118,7 +117,6 @@ async function init() {
         renderPanel();
     }
     renderChips(el.chips, state, applyFilter);
-    renderLegend(el.legend);
     el.min.addEventListener('input', () => {
         state.minScore = Number(el.min.value);
         el.minValue.textContent = el.min.value;
@@ -170,20 +168,4 @@ function renderChips(container, state, onChange) {
         });
         container.appendChild(chip);
     }
-}
-
-function renderLegend(container) {
-    const line = (color, label) => {
-        const i = document.createElement('span');
-        i.className = 'relmap-legend-line';
-        i.style.background = color;
-        return [i, label];
-    };
-    const sources = document.createElement('div');
-    for (const key of SOURCES) sources.append(...line(SOURCE_COLOR[key], SOURCE_LABEL[key]));
-    const notes = document.createElement('div');
-    const dashed = document.createElement('span');
-    dashed.className = 'relmap-legend-line relmap-legend-line--dashed';
-    notes.append(dashed, '함급: 점선 테두리 = 같은 진영의 자매함 묶음 · 선 굵기 = 관계 점수 · 원 크기 = 연결된 함순이 수');
-    container.append(sources, notes);
 }

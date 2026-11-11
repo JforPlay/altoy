@@ -311,7 +311,7 @@ export function buildRelmap({ ships, shipTags, voicelines, actorIndex, juusPosts
     const layout = layoutRelmap({
         nodes: ships.map((s, i) => ({ nat: s.nationality, r: radius[i] })),
         links: kept.map((l) => ({ a: l.a, b: l.b, score: l.score })),
-        provinces,
+        provinces: provinces.map((p) => ({ ...p, kr: classes[p.cls].kr })),
         mainNations: MAIN_NATIONS,
     });
 

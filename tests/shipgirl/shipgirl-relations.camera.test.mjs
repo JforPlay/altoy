@@ -6,7 +6,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-    fitCamera, zoomAt, toScreen, toWorld, hitNode, pointInHull,
+    fitCamera, zoomAt, toScreen, toWorld, hitNode, pointInHull, rectsOverlap, rectHitsCircle, pinLabel,
 } from '../../public/js/shipgirl/shipgirl-relations.camera.js';
 
 const W = 800, H = 600;
@@ -59,4 +59,44 @@ test('fitCamera keeps the bounds plus 60 px label headroom on screen', () => {
         for (const v of [ax, bx]) assert.ok(v >= 0 && v <= W, `x ${v}`);
         for (const v of [ay, by]) assert.ok(v >= 0 && v <= H, `y ${v}`);
     }
+});
+
+test("rectsOverlap: touching edges do not count, any shared area does", () => {
+    const a = { x0: 0, y0: 0, x1: 10, y1: 10 };
+    assert.equal(rectsOverlap(a, { x0: 10, y0: 0, x1: 20, y1: 10 }), false);
+    assert.equal(rectsOverlap(a, { x0: 9, y0: 9, x1: 20, y1: 20 }), true);
+    assert.equal(rectsOverlap(a, { x0: 2, y0: 12, x1: 8, y1: 20 }), false);
+});
+
+test("rectHitsCircle: a circle grazing a corner misses, one reaching inside hits", () => {
+    const b = { x0: 0, y0: 0, x1: 10, y1: 10 };
+    assert.equal(rectHitsCircle(b, 14, 14, 5), false); // corner gap √32 ≈ 5.66
+    assert.equal(rectHitsCircle(b, 13, 13, 5), true);
+    assert.equal(rectHitsCircle(b, 5, 5, 1), true); // centre inside
+    assert.equal(rectHitsCircle(b, 5, -6, 5), false);
+});
+
+test("pinLabel leaves a name that is already in view where it is", () => {
+    const box = { x0: 100, y0: 100, x1: 500, y1: 400 };
+    assert.deepEqual(pinLabel(300, 120, 80, 16, box, W, H), { x: 300, y: 120, pinned: false });
+});
+
+test("pinLabel pins a name scrolled off the top to the top edge of the view", () => {
+    const box = { x0: -200, y0: -300, x1: 600, y1: 500 };
+    const p = pinLabel(200, -280, 80, 16, box, W, H);
+    assert.deepEqual(p, { x: 200, y: 26, pinned: true }); // size + 10
+});
+
+test("pinLabel keeps a pinned name inside the visible part of its nation", () => {
+    const box = { x0: 500, y0: -300, x1: 1400, y1: 500 };
+    const p = pinLabel(950, -280, 80, 16, box, W, H);
+    assert.equal(p.x, W - 40 - 8); // right view edge minus half the name and 8 px
+    assert.equal(p.pinned, true);
+    const q = pinLabel(300, -100, 80, 16, { x0: -900, y0: -300, x1: 300, y1: 500 }, W, H);
+    assert.equal(q.x, 300 - 40 - 8); // the nation ends at x = 300
+});
+
+test("pinLabel never drops a name below the visible bottom of its nation", () => {
+    const box = { x0: 0, y0: -500, x1: 800, y1: 200 };
+    assert.equal(pinLabel(400, 450, 80, 16, box, W, H).y, 200 - 6);
 });
