@@ -86,3 +86,46 @@ test('class names sit in their strip and nation names sit above the strips', () 
         assert.ok(nation.labelY < classStrip('', 0, topOf(nation.members)).y0, `nation ${nation.nat}`);
     }
 });
+
+// Collab nations form their own block; an edge nation (Universal) is not pulled inward.
+// Main nations 1–6: 10 each; collab 101/102: 4 each; edge 98: 3, linked to every main nation.
+const MAINS = [1, 2, 3, 4, 5, 6];
+const sideNodes = [
+    ...MAINS.flatMap((nat) => Array.from({ length: 10 }, () => ({ nat, r: 7 }))),
+    ...[101, 102].flatMap((nat) => Array.from({ length: 4 }, () => ({ nat, r: 7 }))),
+    ...Array.from({ length: 3 }, () => ({ nat: 98, r: 7 })),
+];
+const sideLinks = [];
+for (let i = 0; i < 60; i++) sideLinks.push({ a: i, b: (i + 11) % 60, score: 4 });
+for (let k = 0; k < 3; k++) for (const nat of MAINS) sideLinks.push({ a: 68 + k, b: (nat - 1) * 10 + k, score: 12 });
+sideLinks.push({ a: 60, b: 0, score: 12 }, { a: 64, b: 30, score: 12 }); // collab ↔ main pulls are ignored
+const side = layoutRelmap({
+    nodes: sideNodes, links: sideLinks, provinces: [], mainNations: MAINS,
+    collabNations: [101, 102], edgeNations: [98],
+});
+const isCollab = (i) => sideNodes[i].nat >= 100;
+
+test('collab nations get one outline that holds them and no other shipgirl', () => {
+    assert.ok(side.collab, 'collab block emitted');
+    sideNodes.forEach((n, i) => {
+        assert.equal(pointInHull(side.collab.hull, side.xy[i][0], side.xy[i][1]), isCollab(i), `node ${i}`);
+    });
+});
+
+test('the collab block sits clear of the main nations, with a gap', () => {
+    const xs = (pred) => sideNodes.map((n, i) => i).filter(pred).map((i) => side.xy[i][0]);
+    const collabRight = Math.max(...xs(isCollab)) + 7, mainLeft = Math.min(...xs((i) => !isCollab(i))) - 7;
+    assert.ok(mainLeft - collabRight >= 60, `gap ${(mainLeft - collabRight).toFixed(1)}`);
+});
+
+test('an edge nation sits outside the main nations, not among them', () => {
+    const centre = (nat) => {
+        const m = sideNodes.map((n, i) => i).filter((i) => sideNodes[i].nat === nat);
+        return [0, 1].map((k) => m.reduce((s, i) => s + side.xy[i][k], 0) / m.length);
+    };
+    const mains = MAINS.map(centre);
+    const mid = [0, 1].map((k) => mains.reduce((s, c) => s + c[k], 0) / mains.length);
+    const far = (c) => Math.hypot(c[0] - mid[0], c[1] - mid[1]);
+    const edge = far(centre(98));
+    for (const [i, c] of mains.entries()) assert.ok(edge > far(c), `nation ${i + 1}: ${far(c).toFixed(0)} ≥ edge ${edge.toFixed(0)}`);
+});

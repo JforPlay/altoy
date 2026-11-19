@@ -1420,13 +1420,13 @@
       "commission_cost": [
         [
           4006,
-          1
+          4
         ]
       ],
       "commission_product": [
         [
           4005,
-          8
+          32
         ]
       ],
       "cost": [
@@ -1452,7 +1452,7 @@
       "second_product": [],
       "second_product_display": [],
       "ship_exp": 30,
-      "stamina_cost": 6,
+      "stamina_cost": 24,
       "task_filiter": [
         1,
         2
@@ -1487,13 +1487,13 @@
       "commission_cost": [
         [
           4008,
-          1
+          4
         ]
       ],
       "commission_product": [
         [
           4007,
-          4
+          16
         ]
       ],
       "cost": [
@@ -1519,7 +1519,7 @@
       "second_product": [],
       "second_product_display": [],
       "ship_exp": 30,
-      "stamina_cost": 6,
+      "stamina_cost": 24,
       "task_filiter": [
         1,
         2
@@ -1782,7 +1782,7 @@
       "is_condition": 0,
       "item_id": 4035,
       "name": "오이",
-      "production_limit": 5,
+      "production_limit": 8,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -1813,6 +1813,140 @@
       "unlock_type": 0,
       "vfx_offset": "",
       "workload": 36000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          4048,
+          4
+        ]
+      ],
+      "commission_product": [
+        [
+          4047,
+          8
+        ]
+      ],
+      "cost": [
+        [
+          4048,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          4047,
+          2
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 9900025,
+      "is_condition": 0,
+      "item_id": 4047,
+      "name": "설탕귤",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 150,
+      "stamina_cost": 30,
+      "task_filiter": [
+        1,
+        2
+      ],
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20130
+        ],
+        [
+          0.9,
+          20131
+        ],
+        [
+          1,
+          20173
+        ]
+      ],
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 90000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          4050,
+          4
+        ]
+      ],
+      "commission_product": [
+        [
+          4049,
+          12
+        ]
+      ],
+      "cost": [
+        [
+          4050,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          4049,
+          3
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 9900026,
+      "is_condition": 0,
+      "item_id": 4049,
+      "name": "푸른 대추",
+      "production_limit": 9,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 50,
+      "stamina_cost": 10,
+      "task_filiter": [
+        1,
+        2
+      ],
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20130
+        ],
+        [
+          0.9,
+          20131
+        ],
+        [
+          1,
+          20174
+        ]
+      ],
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 30000
     }
   ],
   "3": [
@@ -5189,7 +5323,7 @@
       "is_condition": 0,
       "item_id": 4009,
       "name": "곶감",
-      "production_limit": 5,
+      "production_limit": 8,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -5233,7 +5367,7 @@
       "is_condition": 0,
       "item_id": 4010,
       "name": "송이버섯 닭고기 스프",
-      "production_limit": 5,
+      "production_limit": 6,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -5277,7 +5411,7 @@
       "is_condition": 0,
       "item_id": 4013,
       "name": "당근과 배 주스",
-      "production_limit": 5,
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -5317,7 +5451,7 @@
       "is_condition": 0,
       "item_id": 4014,
       "name": "국화차",
-      "production_limit": 5,
+      "production_limit": 8,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -5357,7 +5491,7 @@
       "is_condition": 0,
       "item_id": 4023,
       "name": "갓 짜낸 파인애플 주스",
-      "production_limit": 5,
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -5401,7 +5535,7 @@
       "is_condition": 0,
       "item_id": 4024,
       "name": "영춘화차",
-      "production_limit": 5,
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -5445,7 +5579,7 @@
       "is_condition": 0,
       "item_id": 4025,
       "name": "죽순과 아스파라거스 냉채",
-      "production_limit": 5,
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -5489,7 +5623,7 @@
       "is_condition": 0,
       "item_id": 4026,
       "name": "새우 아스파라거스 볶음",
-      "production_limit": 5,
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -5529,7 +5663,7 @@
       "is_condition": 0,
       "item_id": 4037,
       "name": "오이 주스",
-      "production_limit": 5,
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -5569,7 +5703,7 @@
       "is_condition": 0,
       "item_id": 4038,
       "name": "수박 주스",
-      "production_limit": 5,
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -5613,7 +5747,7 @@
       "is_condition": 0,
       "item_id": 4039,
       "name": "적비름 주먹밥",
-      "production_limit": 5,
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -5657,7 +5791,7 @@
       "is_condition": 0,
       "item_id": 4040,
       "name": "토마토 달걀볶음",
-      "production_limit": 5,
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -5671,6 +5805,178 @@
       "unlock_type": 0,
       "vfx_offset": "",
       "workload": 9000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          4045,
+          2
+        ],
+        [
+          2602,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          4051,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 9900027,
+      "is_condition": 0,
+      "item_id": 4051,
+      "name": "겨울 표고버섯 닭고기 조림",
+      "production_limit": 12,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 40,
+      "stamina_cost": 8,
+      "task_filiter": [
+        1,
+        3
+      ],
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 24000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          4049,
+          2
+        ],
+        [
+          2002,
+          5
+        ]
+      ],
+      "commission_product": [
+        [
+          4052,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 9900028,
+      "is_condition": 0,
+      "item_id": 4052,
+      "name": "푸른 대추죽",
+      "production_limit": 12,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 15,
+      "stamina_cost": 3,
+      "task_filiter": [
+        1,
+        3
+      ],
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 9000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          4046,
+          2
+        ]
+      ],
+      "commission_product": [
+        [
+          4053,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 9900029,
+      "is_condition": 0,
+      "item_id": 4053,
+      "name": "물밤 케이크",
+      "production_limit": 12,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 20,
+      "stamina_cost": 4,
+      "task_filiter": [
+        1,
+        3
+      ],
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 12000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          4047,
+          2
+        ],
+        [
+          3004,
+          3
+        ]
+      ],
+      "commission_product": [
+        [
+          4054,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 9900030,
+      "is_condition": 0,
+      "item_id": 4054,
+      "name": "설탕귤 찹쌀떡",
+      "production_limit": 12,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 20,
+      "stamina_cost": 4,
+      "task_filiter": [
+        1,
+        3
+      ],
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 12000
     }
   ],
   "6": [
@@ -6642,7 +6948,7 @@
       "is_condition": 0,
       "item_id": 4011,
       "name": "가을 꽃다발",
-      "production_limit": 5,
+      "production_limit": 9,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -6722,7 +7028,7 @@
       "is_condition": 0,
       "item_id": 4027,
       "name": "말린 냉이",
-      "production_limit": 5,
+      "production_limit": 6,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -6766,7 +7072,7 @@
       "is_condition": 0,
       "item_id": 4028,
       "name": "봄의 꽃다발",
-      "production_limit": 5,
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -6806,7 +7112,7 @@
       "is_condition": 0,
       "item_id": 4041,
       "name": "자스민 에센셜 오일",
-      "production_limit": 5,
+      "production_limit": 6,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -6850,7 +7156,91 @@
       "is_condition": 0,
       "item_id": 4042,
       "name": "여름 꽃다발",
-      "production_limit": 5,
+      "production_limit": 12,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 10,
+      "stamina_cost": 2,
+      "task_filiter": [
+        1,
+        4
+      ],
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 6000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          4043,
+          3
+        ]
+      ],
+      "commission_product": [
+        [
+          4055,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 9900031,
+      "is_condition": 0,
+      "item_id": 4055,
+      "name": "매화 향낭",
+      "production_limit": 6,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 80,
+      "stamina_cost": 16,
+      "task_filiter": [
+        1,
+        4
+      ],
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 48000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          4043,
+          1
+        ],
+        [
+          4044,
+          4
+        ]
+      ],
+      "commission_product": [
+        [
+          4056,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 9900032,
+      "is_condition": 0,
+      "item_id": 4056,
+      "name": "겨울 꽃다발",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],

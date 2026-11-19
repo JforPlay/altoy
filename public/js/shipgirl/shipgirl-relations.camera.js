@@ -68,6 +68,7 @@ export function pinLabel(x, y, w, size, box, W, H) {
     let px = x;
     const lo = Math.max(box.x0, 0) + w / 2 + 8, hi = Math.min(box.x1, W) - w / 2 - 8;
     if (lo <= hi) px = Math.max(lo, Math.min(x, hi));
+    else px = Math.max(w / 2 + 8, Math.min(x, W - w / 2 - 8)); // nation narrower than its name: stay in view
     const py = Math.max(size + 10, Math.min(y, Math.min(box.y1, H) - 6));
     return { x: px, y: py, pinned: px !== x || py !== y };
 }

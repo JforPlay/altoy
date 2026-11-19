@@ -43,7 +43,7 @@ function hullBounds(h) {
  */
 export function createRelmapView({ wrap, canvas, tip, model, onSelect, onNation }) {
     const ctx = canvas.getContext('2d');
-    const { nodes, nations, provinces, classes } = model;
+    const { nodes, nations, provinces, classes, groups } = model;
     const nationOf = new Map(nations.map((n) => [n.nat, n]));
     for (const c of nations) c.bounds = hullBounds(c.hull);
     const nationsBySize = [...nations].sort((a, b) => b.count - a.count);
@@ -152,6 +152,16 @@ export function createRelmapView({ wrap, canvas, tip, model, onSelect, onNation 
         const lit = new Set(linked);
         if (f && showClasses) for (const m of f.mates) lit.add(m);
 
+        // group frames (콜라보) under the countries
+        ctx.setLineDash([10 / k, 6 / k]);
+        ctx.fillStyle = ctx.strokeStyle = theme.text;
+        ctx.lineWidth = 1.5 / k;
+        for (const g of groups) {
+            ctx.beginPath(); traceHull(ctx, g.hull);
+            ctx.globalAlpha = f ? 0.02 : 0.04; ctx.fill();
+            ctx.globalAlpha = f ? 0.2 : 0.45; ctx.stroke();
+        }
+        ctx.setLineDash([]); ctx.globalAlpha = 1;
         // countries
         for (const c of nations) {
             ctx.beginPath(); traceHull(ctx, c.hull);
@@ -233,6 +243,18 @@ export function createRelmapView({ wrap, canvas, tip, model, onSelect, onNation 
         labelBoxes = [];
         const tags = [];
 
+        // group names (콜라보) sit above their frame, ahead of the nation names
+        ctx.font = `700 16px ${theme.font}`;
+        for (const g of groups) {
+            const [x, y] = toScreen(cam, g.labelX, g.labelY, W, H);
+            if (x < -100 || x > W + 100 || y < -30 || y > H + 30) continue;
+            const w = ctx.measureText(g.name).width;
+            placed.push({ x0: x - w / 2 - 6, x1: x + w / 2 + 6, y0: y - 18, y1: y + 6 });
+            ctx.globalAlpha = f ? 0.3 : 0.75;
+            ctx.fillStyle = theme.text;
+            halo(g.name, x, y, 4);
+        }
+
         // nation names: biggest first; a collision nudges the smaller name instead of hiding
         // it, and a nation zoomed past its name keeps it as a tag pinned inside the view
         for (const c of nationsBySize) {
@@ -247,7 +269,7 @@ export function createRelmapView({ wrap, canvas, tip, model, onSelect, onNation 
             const at = (dx, dy) => ({ x0: x + dx - w / 2 - 6, x1: x + dx + w / 2 + 6, y0: y + dy - size - 2, y1: y + dy + 6, x: x + dx, y: y + dy });
             const step = size + 8;
             let box = [[0, 0], [0, step], [0, -step], [w * 0.6, 0], [-w * 0.6, 0], [0, 2 * step]]
-                .map(([dx, dy]) => at(dx, dy)).find(free);
+                .map(([dx, dy]) => at(dx, dy)).find((b) => free(b) && b.x0 >= 0 && b.x1 <= W);
             if (!box) {
                 if (c.count < 20 && k < 0.55) continue; // small collab nations yield in the overview
                 box = at(0, 0);

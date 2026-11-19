@@ -16927,6 +16927,10 @@
             },
             {
                 "kind": "scene",
+                "label": "BayardTecCatchupPage"
+            },
+            {
+                "kind": "scene",
                 "label": "BrestTecCatchupPage"
             },
             {
@@ -16956,10 +16960,6 @@
             {
                 "kind": "scene",
                 "label": "NewPlymouthTecCatchupPage"
-            },
-            {
-                "kind": "scene",
-                "label": "PlymouthTecCatchupPage"
             }
         ],
         "year": null

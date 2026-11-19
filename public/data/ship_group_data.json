@@ -4244,7 +4244,8 @@
             "한정 이벤트 : 샌드 플레이",
             "특별 보급 (공훈치 소비)"
         ],
-        "rarity": "SR"
+        "rarity": "SR",
+        "sp_weapon": true
     },
     "10730": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/107300.webp",
@@ -6400,7 +6401,8 @@
         "description": [
             "소형함 건조"
         ],
-        "rarity": "SSR"
+        "rarity": "SSR",
+        "sp_weapon": true
     },
     "20224": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/202240.webp",
@@ -19379,7 +19381,8 @@
         "nationality": 8,
         "type": 2,
         "description": [
-            "한정 이벤트: 어리석은 자의 천칭"
+            "이벤트: 어리석은 자의 천칭",
+            "소형함 건조"
         ],
         "rarity": "SSR"
     },
@@ -19435,7 +19438,8 @@
         "nationality": 8,
         "type": 3,
         "description": [
-            "한정 이벤트: 어리석은 자의 천칭"
+            "이벤트: 어리석은 자의 천칭",
+            "대형함 건조"
         ],
         "rarity": "SR"
     },
@@ -19584,7 +19588,8 @@
         "nationality": 8,
         "type": 5,
         "description": [
-            "한정 이벤트: 어리석은 자의 천칭"
+            "이벤트: 어리석은 자의 천칭",
+            "대형함 건조"
         ],
         "rarity": "SR"
     },
@@ -19724,7 +19729,8 @@
         "nationality": 8,
         "type": 7,
         "description": [
-            "한정 이벤트: 어리석은 자의 천칭"
+            "이벤트: 어리석은 자의 천칭",
+            "특형함 건조"
         ],
         "rarity": "SSR"
     },
@@ -20056,7 +20062,8 @@
         "nationality": 9,
         "type": 1,
         "description": [
-            "한정 이벤트: 어리석은 자의 천칭"
+            "이벤트: 어리석은 자의 천칭",
+            "연습 상점(랜덤 출현)"
         ],
         "rarity": "SR"
     },
@@ -20521,7 +20528,8 @@
         "nationality": 9,
         "type": 5,
         "description": [
-            "한정 이벤트: 어리석은 자의 천칭"
+            "이벤트: 어리석은 자의 천칭",
+            "대형함 건조"
         ],
         "rarity": "SSR"
     },

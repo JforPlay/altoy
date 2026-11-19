@@ -112,3 +112,10 @@ test('loadMatchingEvidence refetches once on a stale stamp, then gives up', asyn
 test('parseGraph keeps the build stamp', () => {
     assert.equal(parseGraph({ ...GRAPH, id: 'abc' }).id, 'abc');
 });
+
+test('parseGraph reads the 콜라보 frame, and none from a graph without groups', () => {
+    const hull = [0, 0, 40, 0, 40, 40];
+    assert.deepEqual(parseGraph({ ...GRAPH, groups: [['콜라보', 20, -60, hull]] }).groups,
+        [{ name: '콜라보', labelX: 20, labelY: -60, hull }]);
+    assert.deepEqual(parseGraph(GRAPH).groups, []);
+});

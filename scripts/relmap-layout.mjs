@@ -14,6 +14,9 @@ const OUTER_RING = 900;
 const NATION_ITER = 600;
 const SHIP_ITER = 450;
 const SETTLE_ITER = 80;  // strips + spacing only, after the forces stop
+const COLLAB_GAP = 160;  // between the main map and the collab block
+const COLLAB_PAD = 40;   // collab frame around its shipgirls (nation outlines pad 16)
+const NATION_GAP = 70;   // between nations' area circles
 
 // Class-name strip, in world units, sized for the zoom where every class name shows:
 // 11 px semibold text (+ halo) sitting 3 px above the province's top portrait.
@@ -58,10 +61,13 @@ function outline(members, P, R, pad, steps) {
 
 /**
  * Lay out nodes ({nat, r}) linked by {a, b, score} (node indices), grouping
- * province members ({nat, members}). Returns positions, nation outlines and
- * labels (nations in first-seen order) and province outlines and labels.
+ * province members ({nat, members}). `collabNations` relax as their own block,
+ * placed west of the main map inside one frame; `edgeNations` feel no
+ * cross-nation pull, so they settle on the rim instead of in the middle.
+ * Returns positions, nation outlines and labels (nations in first-seen order),
+ * province outlines and labels, and the collab frame (null without collabs).
  */
-export function layoutRelmap({ nodes, links, provinces, mainNations, seed = 7 }) {
+export function layoutRelmap({ nodes, links, provinces, mainNations, collabNations = [], edgeNations = [], seed = 7 }) {
     let state = seed;
     const rnd = () => (state = (state * 16807) % 2147483647) / 2147483647;
     const R = nodes.map((n) => n.r);
@@ -75,38 +81,74 @@ export function layoutRelmap({ nodes, links, provinces, mainNations, seed = 7 })
         byNat.get(n.nat).members.push(i);
     });
     const C = [...byNat.values()];
-    const outer = C.filter((c) => !mainNations.includes(c.nat));
-    for (const c of C) {
-        c.R = area(c.members, NATION_PACK);
+    for (const c of C) c.R = area(c.members, NATION_PACK);
+    const home = C.filter((c) => !collabNations.includes(c.nat));
+    const away = C.filter((c) => collabNations.includes(c.nat));
+    const outer = home.filter((c) => !mainNations.includes(c.nat));
+    for (const c of home) {
         const m = mainNations.indexOf(c.nat);
         const a = m >= 0 ? (m / mainNations.length) * Math.PI * 2 : (outer.indexOf(c) / outer.length) * Math.PI * 2 + 0.2;
         const ring = m >= 0 ? INNER_RING : OUTER_RING;
         c.x = Math.cos(a) * ring;
         c.y = Math.sin(a) * ring;
     }
-    const ci = new Map(C.map((c, i) => [c.nat, i]));
-    const cross = new Map(); // cross-nation link weight pulls related nations together
-    for (const l of links) {
-        const A = ci.get(nodes[l.a].nat), B = ci.get(nodes[l.b].nat);
-        if (A === B) continue;
-        const k = `${Math.min(A, B)}-${Math.max(A, B)}`;
-        cross.set(k, (cross.get(k) || 0) + l.score);
+    away.forEach((c, k) => {
+        const a = (k / away.length) * Math.PI * 2;
+        c.x = Math.cos(a) * INNER_RING * 0.5;
+        c.y = Math.sin(a) * INNER_RING * 0.5;
+    });
+    relaxNations(home.filter((c) => !edgeNations.includes(c.nat)));
+    relaxNations(away);
+    // an edge nation walks out from the middle along its start angle until it clears every nation
+    const settled = home.filter((c) => !edgeNations.includes(c.nat));
+    for (const c of home.filter((e) => edgeNations.includes(e.nat))) {
+        const mx = settled.reduce((s, q) => s + q.x, 0) / (settled.length || 1);
+        const my = settled.reduce((s, q) => s + q.y, 0) / (settled.length || 1);
+        const a = Math.atan2(c.y, c.x);
+        for (let d = 0; ; d += 5) {
+            c.x = mx + Math.cos(a) * d; c.y = my + Math.sin(a) * d;
+            if (settled.every((q) => Math.hypot(q.x - c.x, q.y - c.y) >= q.R + c.R + NATION_GAP)) break;
+        }
+        settled.push(c);
     }
-    for (let it = 0; it < NATION_ITER; it++) {
-        for (const [k, w] of cross) {
-            const [A, B] = k.split('-').map(Number), p = C[A], q = C[B];
-            const dx = q.x - p.x, dy = q.y - p.y, d = Math.hypot(dx, dy) || 1, L = p.R + q.R + 60;
-            const f = (d - L) * Math.min(w / 400, 1) * 0.01;
-            p.x += (dx / d) * f; p.y += (dy / d) * f; q.x -= (dx / d) * f; q.y -= (dy / d) * f;
+    if (away.length) {
+        // the collab block goes west of the main map, a gap apart, centred on it vertically
+        const box = (cs) => ({
+            x0: Math.min(...cs.map((c) => c.x - c.R)), x1: Math.max(...cs.map((c) => c.x + c.R)),
+            y: cs.reduce((s, c) => s + c.y, 0) / cs.length,
+        });
+        const h = box(home), w = box(away);
+        const dx = h.x0 - COLLAB_GAP - w.x1, dy = h.y - w.y;
+        for (const c of away) { c.x += dx; c.y += dy; }
+    }
+
+    // Relax nation centres around the origin: cross-nation link weight pulls related
+    // nations together, overlap pushes apart, a weak gravity packs.
+    function relaxNations(list) {
+        const at = new Map(list.map((c, i) => [c.nat, i]));
+        const cross = new Map();
+        for (const l of links) {
+            const A = at.get(nodes[l.a].nat), B = at.get(nodes[l.b].nat);
+            if (A === undefined || B === undefined || A === B) continue;
+            const k = `${Math.min(A, B)}-${Math.max(A, B)}`;
+            cross.set(k, (cross.get(k) || 0) + l.score);
         }
-        for (const p of C) {
-            for (const q of C) {
-                if (p === q) continue;
-                const dx = q.x - p.x, dy = q.y - p.y, d = Math.hypot(dx, dy) || 1, L = p.R + q.R + 70;
-                if (d < L) { const f = (L - d) * 0.25; p.x -= (dx / d) * f; p.y -= (dy / d) * f; }
+        for (let it = 0; it < NATION_ITER; it++) {
+            for (const [k, w] of cross) {
+                const [A, B] = k.split('-').map(Number), p = list[A], q = list[B];
+                const dx = q.x - p.x, dy = q.y - p.y, d = Math.hypot(dx, dy) || 1, L = p.R + q.R + NATION_GAP - 10;
+                const f = (d - L) * Math.min(w / 400, 1) * 0.01;
+                p.x += (dx / d) * f; p.y += (dy / d) * f; q.x -= (dx / d) * f; q.y -= (dy / d) * f;
             }
+            for (const p of list) {
+                for (const q of list) {
+                    if (p === q) continue;
+                    const dx = q.x - p.x, dy = q.y - p.y, d = Math.hypot(dx, dy) || 1, L = p.R + q.R + NATION_GAP;
+                    if (d < L) { const f = (L - d) * 0.25; p.x -= (dx / d) * f; p.y -= (dy / d) * f; }
+                }
+            }
+            for (const p of list) { p.x *= 0.995; p.y *= 0.995; }
         }
-        for (const p of C) { p.x *= 0.995; p.y *= 0.995; }
     }
 
     // ----- provinces: sunflower spiral inside the nation, biggest in the middle -----
@@ -222,7 +264,12 @@ export function layoutRelmap({ nodes, links, provinces, mainNations, seed = 7 })
     // ----- outlines and labels -----
     const top = (members) => Math.min(...members.map((i) => P[i].y - R[i]));
     const meanX = (members) => members.reduce((s, i) => s + P[i].x, 0) / members.length;
+    const collab = away.flatMap((c) => c.members);
     return {
+        collab: collab.length ? {
+            labelX: meanX(collab), labelY: top(collab) - COLLAB_PAD - 8,
+            hull: outline(collab, P, R, COLLAB_PAD, 12),
+        } : null,
         xy: P.map((p) => [p.x, p.y]),
         nations: C.map((c) => ({
             nat: c.nat, members: c.members,

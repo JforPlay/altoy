@@ -108399,7 +108399,8 @@
             "USS",
             "CV",
             "FT",
-            "F6F"
+            "F6F",
+            "BDZW"
         ],
         "tech": 1,
         "descrip": "0",
@@ -108660,7 +108661,8 @@
             "USS",
             "CV",
             "FT",
-            "F6F"
+            "F6F",
+            "BDZW"
         ],
         "tech": 2,
         "descrip": "0",
@@ -109061,7 +109063,8 @@
             "USS",
             "CV",
             "FT",
-            "F6F"
+            "F6F",
+            "BDZW"
         ],
         "tech": 3,
         "descrip": "0",
@@ -111595,7 +111598,8 @@
             "USS",
             "CV",
             "FT",
-            "HERK"
+            "HERK",
+            "BDZW"
         ],
         "tech": 0,
         "descrip": "고속 항공 로켓을 탑재한 F6F 헬캣 함재기",

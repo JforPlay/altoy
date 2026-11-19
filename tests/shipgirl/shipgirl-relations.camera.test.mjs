@@ -100,3 +100,11 @@ test("pinLabel never drops a name below the visible bottom of its nation", () =>
     const box = { x0: 0, y0: -500, x1: 800, y1: 200 };
     assert.equal(pinLabel(400, 450, 80, 16, box, W, H).y, 200 - 6);
 });
+
+test("pinLabel keeps a name wider than its nation inside the view", () => {
+    // a 40 px nation at the left edge, its 150 px name centred on it would start at x = -55
+    const p = pinLabel(20, 200, 150, 12, { x0: 0, y0: 180, x1: 40, y1: 240 }, W, H);
+    assert.equal(p.x, 75 + 8); // half the name + 8 px from the left edge
+    // the same nation mid-screen keeps its name centred and unpinned
+    assert.deepEqual(pinLabel(400, 200, 150, 12, { x0: 380, y0: 180, x1: 420, y1: 240 }, W, H), { x: 400, y: 200, pinned: false });
+});

@@ -758,9 +758,17 @@ const BASELINE = {
   //              silent   62 ->  66 (152770 30712 30732 30741)
   //   전용 장비   checked  95 ->  97 (152930 153030),
   //              silent  193 -> 196 (152790 152900 152980)
-  displayed: { checked: 966, disclosed: 180, silent: 66    // 2026-09-10: +3 아마츠카제; 2026-09-17: +1; 2026-09-24: +7; 2026-09-30: +4; 2026-11-05: +7
+  //
+  // MOVED 2026-11-19 by the 11/19 data update — corpus growth only, diffed per root
+  // against the pre-update data: no existing root changed bucket, none left.
+  //   displayed  silent   66 ->  67 (18430 — 에기르's new 운명 rung of 19430; the base
+  //              was already disclosed, so nothing that fired stopped firing)
+  //   전용 장비   checked  97 ->  98 (1012310 — 스위프트슈어 기사의 새벽별),
+  //              disclosed 51 -> 52 (1012500 — 바탄 VF-50 데빌캣츠),
+  //              silent  196 -> 198 (1012311 1012501, their sub-roots)
+  displayed: { checked: 966, disclosed: 180, silent: 67    // 2026-09-10: +3 아마츠카제; 2026-09-17: +1; 2026-09-24: +7; 2026-09-30: +4; 2026-11-05: +7; 2026-11-19: +1 silent
   },
-  spweapon: { checked: 97, disclosed: 51, silent: 196 },    // 2026-10-22: +2; 2026-11-05: +2
+  spweapon: { checked: 98, disclosed: 52, silent: 198 },    // 2026-10-22: +2; 2026-11-05: +2; 2026-11-19: +1 checked, +1 disclosed, +2 silent
 };
 
 function assertCoverage(which, got) {

@@ -327,6 +327,20 @@ test('an alias pointing at an unknown gid is skipped with a warning', () => {
     assert.ok(out.graph.nodes.every((n) => n[0] !== 99999));
 });
 
+test('collab nations (≥ 100) get one 콜라보 frame; none without them', () => {
+    assert.deepEqual(graph.groups, []);
+    const out = buildRelmap({
+        ships: ROSTER.map((s) => (s.gid === HYUGA || s.gid === FLETCHER ? { ...s, nationality: 101 } : s)),
+        shipTags: {}, voicelines: RICH_VOICE, actorIndex: RICH_ACTORS, juusPosts: JUUS,
+        nations: {}, classNames: {}, aliases: [],
+    });
+    assert.equal(out.graph.groups.length, 1);
+    const [name, labelX, labelY, hull] = out.graph.groups[0];
+    assert.equal(name, '콜라보');
+    assert.ok(Number.isInteger(labelX) && Number.isInteger(labelY));
+    assert.ok(hull.length >= 6 && hull.every(Number.isInteger));
+});
+
 // ---------- 설명 (description line) classes ----------
 test('descClass reads the class from a 설명 designation line', () => {
     const nations = ['비시아 성좌', '아이리스 리브레'];

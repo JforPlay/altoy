@@ -80,7 +80,9 @@ export function parseGraph(json) {
     });
     const nations = json.nations.map(([nat, name, labelX, labelY, count, hull]) => ({ nat, name, labelX, labelY, count, hull }));
     const provinces = json.provinces.map(([cls, nat, labelX, labelY, hull]) => ({ cls, nat, labelX, labelY, hull }));
-    const model = { id: json.id, nodes, links, nations, classes, provinces, byGid: new Map(nodes.map((n) => [n.gid, n])) };
+    // frames around nation groups (콜라보); absent in graphs built before them
+    const groups = (json.groups ?? []).map(([name, labelX, labelY, hull]) => ({ name, labelX, labelY, hull }));
+    const model = { id: json.id, nodes, links, nations, classes, provinces, groups, byGid: new Map(nodes.map((n) => [n.gid, n])) };
     visibleLinks(model, ALL_ON, 0);
     return model;
 }

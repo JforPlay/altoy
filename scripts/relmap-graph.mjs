@@ -19,6 +19,8 @@ const STOPLIST = new Set(['휴가', '차라', '공주', '보이시', '파고', '
 const SKIP_FIELDS = new Set(['함대 특수대사', '설명', '드랍 설명']);
 const FLEET_TEXT = /^\[.*?\]\s*:\s*([\s\S]*)$/;
 const MAIN_NATIONS = [1, 2, 4, 6, 8, 9, 7, 5, 3]; // inner ring of the map
+const EDGE_NATIONS = [98];       // Universal (부린): linked to everyone, kept on the rim
+const isCollabNation = (nat) => nat >= 100;
 const EVIDENCE_CAP = { fleet: 2, mention: 2, stories: 3 };
 
 // ===== Name matching =====
@@ -313,6 +315,8 @@ export function buildRelmap({ ships, shipTags, voicelines, actorIndex, juusPosts
         links: kept.map((l) => ({ a: l.a, b: l.b, score: l.score })),
         provinces: provinces.map((p) => ({ ...p, kr: classes[p.cls].kr })),
         mainNations: MAIN_NATIONS,
+        collabNations: [...new Set(ships.map((s) => s.nationality))].filter(isCollabNation),
+        edgeNations: EDGE_NATIONS,
     });
 
     // Evidence rows pair with graph links by position; a shared stamp lets the page
@@ -331,6 +335,9 @@ export function buildRelmap({ ships, shipTags, voicelines, actorIndex, juusPosts
             n.nat, nations[n.nat]?.name ?? '기타', Math.round(n.labelX), Math.round(n.labelY), n.members.length, n.hull,
         ]),
         classes: classes.map((c) => [c.kr, c.tag, c.members.map((g) => idx.get(g))]),
+        groups: layout.collab
+            ? [['콜라보', Math.round(layout.collab.labelX), Math.round(layout.collab.labelY), layout.collab.hull]]
+            : [],
         provinces: provinces.map((p, pi) => [
             p.cls, p.nat, Math.round(layout.provinces[pi].labelX), Math.round(layout.provinces[pi].labelY), layout.provinces[pi].hull,
         ]),

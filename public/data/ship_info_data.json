@@ -43801,6 +43801,24 @@
             180006
         ],
         "skin_id": 107290,
+        "sp_weapon": {
+            "icon": "15740",
+            "name": "VF-50 데빌캣츠",
+            "skill_upgrade": [
+                [
+                    0,
+                    1012500
+                ]
+            ],
+            "attribute_1": "air",
+            "attribute_2": "reload",
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 1012501
+                }
+            ]
+        },
         "class_name": "인디펜던스급",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/107290.webp",
         "equip_1": [
@@ -65948,6 +65966,25 @@
             180007
         ],
         "skin_id": 202230,
+        "sp_weapon": {
+            "icon": "15720",
+            "name": "기사의 새벽별",
+            "skill_upgrade": [
+                [
+                    0,
+                    1012310
+                ]
+            ],
+            "attribute_1": "cannon",
+            "attribute_2": "hit",
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 1012311,
+                    "time": 15
+                }
+            ]
+        },
         "class_name": "스위프트슈어급 ",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/202230.webp",
         "equip_1": [
@@ -158747,7 +158784,7 @@
             "19410": {
                 "id": 19410,
                 "parent": 19410,
-                "upgrade": null,
+                "upgrade": 18410,
                 "downgrade": null,
                 "requirement": "Default",
                 "weapon_true": false
@@ -158763,7 +158800,7 @@
             "19430": {
                 "id": 19430,
                 "parent": 19430,
-                "upgrade": null,
+                "upgrade": 18430,
                 "downgrade": null,
                 "requirement": "Default",
                 "weapon_true": true,
@@ -158796,6 +158833,30 @@
                 "downgrade": 19001,
                 "requirement": "Devs 30",
                 "weapon_true": false
+            },
+            "18410": {
+                "id": 18410,
+                "parent": 19410,
+                "upgrade": null,
+                "downgrade": 19410,
+                "requirement": "Fate Simulation 3",
+                "weapon_true": false
+            },
+            "18430": {
+                "id": 18430,
+                "parent": 19430,
+                "upgrade": null,
+                "downgrade": 19430,
+                "requirement": "Fate Simulation 5",
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 18432
+                    },
+                    {
+                        "id": 18434
+                    }
+                ]
             }
         },
         "base": {
@@ -158910,6 +158971,7 @@
             "health": 2027,
             "antiair": 69,
             "evasion": 5,
+            "luck": 25,
             "firepower": 78,
             "torpedo": 55,
             "reload": 46
@@ -192118,7 +192180,8 @@
             ]
         },
         "description": [
-            "한정 이벤트: 어리석은 자의 천칭"
+            "이벤트: 어리석은 자의 천칭",
+            "소형함 건조"
         ],
         "name": "기샹",
         "gift_dislike": [
@@ -192640,7 +192703,8 @@
             ]
         },
         "description": [
-            "한정 이벤트: 어리석은 자의 천칭"
+            "이벤트: 어리석은 자의 천칭",
+            "대형함 건조"
         ],
         "name": "쉬프랑",
         "gift_dislike": [
@@ -193932,7 +193996,8 @@
             ]
         },
         "description": [
-            "한정 이벤트: 어리석은 자의 천칭"
+            "이벤트: 어리석은 자의 천칭",
+            "대형함 건조"
         ],
         "name": "리옹",
         "gift_dislike": [
@@ -195185,7 +195250,8 @@
             ]
         },
         "description": [
-            "한정 이벤트: 어리석은 자의 천칭"
+            "이벤트: 어리석은 자의 천칭",
+            "특형함 건조"
         ],
         "name": "팽르베",
         "gift_dislike": [
@@ -198258,7 +198324,8 @@
             ]
         },
         "description": [
-            "한정 이벤트: 어리석은 자의 천칭"
+            "이벤트: 어리석은 자의 천칭",
+            "연습 상점(랜덤 출현)"
         ],
         "name": "케르생",
         "gift_dislike": [
@@ -202492,7 +202559,8 @@
             ]
         },
         "description": [
-            "한정 이벤트: 어리석은 자의 천칭"
+            "이벤트: 어리석은 자의 천칭",
+            "대형함 건조"
         ],
         "name": "클레망소",
         "gift_dislike": [
