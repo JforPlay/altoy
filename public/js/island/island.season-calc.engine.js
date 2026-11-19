@@ -368,9 +368,9 @@ function renderSeasonPass() {
     const thematicName = state.currentSeasonId !== null
         ? getSeasonThematicName(state.currentSeasonId)
         : null;
-    const headerTitle = thematicName
-        ? `아일랜드 ${seasonName} - ${thematicName}`
-        : `아일랜드 ${seasonName}`;
+    // S5+ names already carry the prefix ("아일랜드 개발 시즌V――겨울날의 여유").
+    const baseTitle = seasonName.startsWith('아일랜드') ? seasonName : `아일랜드 ${seasonName}`;
+    const headerTitle = thematicName ? `${baseTitle} - ${thematicName}` : baseTitle;
 
     container.innerHTML = `
         <div class="season-pass-container ${state.seasonPassCollapsed ? 'collapsed' : ''}">

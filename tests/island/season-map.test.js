@@ -37,10 +37,16 @@ const SEASONS = {
         name_short: '시즌Ⅳ',
         time: [[[2026, 8, 20], [0, 0, 0]], [[2026, 11, 19], [12, 0, 0]]],
     },
+    '5': {
+        id: 5,
+        name_short: '시즌V',
+        time: [[[2026, 11, 19], [0, 0, 0]], [[2027, 2, 17], [12, 0, 0]]],
+    },
 };
 
 const DURING_S3 = krWindowToMs([[2026, 6, 1], [0, 0, 0]]);
 const DURING_S4 = krWindowToMs([[2026, 9, 1], [0, 0, 0]]);
+const DURING_S5 = krWindowToMs([[2026, 12, 1], [0, 0, 0]]);
 
 test('krWindowToMs converts KST midnight to correct UTC ms', () => {
     // 2026-05-21 00:00:00 KST == 2026-05-20 15:00:00 UTC
@@ -64,9 +70,29 @@ test('findCurrentSeasonId picks the active season by time window', () => {
 });
 
 test('findCurrentSeasonId returns null between seasons', () => {
-    // After S4 ends, before any hypothetical S5
-    const afterS4 = krWindowToMs([[2026, 12, 1], [0, 0, 0]]);
-    assert.equal(findCurrentSeasonId(SEASONS, afterS4), null);
+    // After S5 ends, before any hypothetical S6
+    const afterS5 = krWindowToMs([[2027, 3, 1], [0, 0, 0]]);
+    assert.equal(findCurrentSeasonId(SEASONS, afterS5), null);
+});
+
+test('S5 is 겨울: its items are live, every older theme reports its latest run', () => {
+    _resetForTests();
+    initSeasonMap(SEASONS, { items: {}, nowMs: DURING_S5 });
+    assert.equal(findCurrentSeasonId(SEASONS, DURING_S5), 5);
+
+    const plum = getItemSeason(4043); // 매화
+    assert.equal(plum.theme, 'winter');
+    assert.equal(plum.seasonId, 5);
+    assert.equal(plum.label, '시즌V');
+    assert.equal(plum.isCurrent, true);
+
+    // 가을 ran S1 and S4 — after S4 it names S4, not S1.
+    assert.equal(getItemSeason(4005).seasonId, 4);
+    assert.equal(getItemSeason(4005).isCurrent, false);
+    assert.equal(getItemSeason(4019).seasonId, 2);
+    assert.equal(getItemSeason(4031).seasonId, 3);
+    assert.match(renderSeasonBadge(4056), /시즌V · 진행중/);
+    assert.match(renderSeasonBadge(4014), /시즌Ⅳ · 종료/);
 });
 
 test('lookupItemTheme resolves known IDs', () => {
@@ -76,6 +102,9 @@ test('lookupItemTheme resolves known IDs', () => {
     assert.equal(lookupItemTheme(4019), 'spring'); // 아스파라거스
     assert.equal(lookupItemTheme(4031), 'summer'); // 수박
     assert.equal(lookupItemTheme(4042), 'summer'); // 여름 꽃다발
+    assert.equal(lookupItemTheme(4043), 'winter'); // 매화
+    assert.equal(lookupItemTheme(4056), 'winter'); // 겨울 꽃다발
+    assert.equal(lookupItemTheme(4057), null);
 });
 
 test('lookupItemTheme returns null for non-seasonal IDs', () => {
@@ -86,13 +115,13 @@ test('lookupItemTheme returns null for non-seasonal IDs', () => {
 
 test('THEME_ID_RANGES blocks are contiguous and tightly bounded', () => {
     // Gaps would silently drop badges; a loose tail would mislabel the items a
-    // future 겨울 season ships instead of tripping the orphan warn.
+    // future new theme ships instead of tripping the orphan warn.
     let prevMax = 4000;
     for (const range of THEME_ID_RANGES) {
         assert.equal(range.min, prevMax + 1, `gap before block starting ${range.min}`);
         prevMax = range.max;
     }
-    assert.equal(prevMax, 4042, 'last known seasonal item is 4042 (여름 꽃다발)');
+    assert.equal(prevMax, 4056, 'last known seasonal item is 4056 (겨울 꽃다발)');
 });
 
 test('every season has a theme, and every theme has an item block', () => {
@@ -106,7 +135,7 @@ test('seasonsForTheme returns every run of a repeated theme', () => {
     // The whole point of the theme model: S4 re-ran S1's 가을 items.
     assert.deepEqual(seasonsForTheme('fall'), [1, 4]);
     assert.deepEqual(seasonsForTheme('spring'), [2]);
-    assert.deepEqual(seasonsForTheme('winter'), []);
+    assert.deepEqual(seasonsForTheme('winter'), [5]);
 });
 
 test('getItemSeason returns current-flag based on now', () => {
@@ -156,6 +185,7 @@ test('getSeasonThematicName resolves through the season theme', () => {
     assert.equal(getSeasonThematicName(2), '봄 특산품 경영');
     assert.equal(getSeasonThematicName(3), '여름 특산품 경영');
     assert.equal(getSeasonThematicName(4), '가을 특산품 경영');
+    assert.equal(getSeasonThematicName(5), '겨울 특산품 경영');
     assert.equal(getSeasonThematicName(99), null);
 });
 

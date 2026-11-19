@@ -22,11 +22,11 @@
  * They are hand-copied rather than derived because the only file carrying
  * them, `tasks.json`, is 755 KB and the island boots on ~160 KB.
  *
- * Verified against KR 8.5.63 (2026-08-20).
+ * Verified against KR data of 2026-11-19 (S5 겨울 launch).
  */
 
 /**
- * Item id block → theme. Bounds are TIGHT on purpose: a future 겨울 season
+ * Item id block → theme. Bounds are TIGHT on purpose: a future new theme
  * would add ids past the last block, and bucketing those into the previous
  * theme would print a confidently wrong "종료" badge on a live item. Leaving
  * them unmapped renders no badge and trips the orphan warn in initSeasonMap.
@@ -35,10 +35,11 @@ export const THEME_ID_RANGES = [
     { theme: 'fall',   min: 4001, max: 4014 }, // 가을 — 가을 국화 … 국화차
     { theme: 'spring', min: 4015, max: 4028 }, // 봄 — 봄 죽순 … 봄의 꽃다발
     { theme: 'summer', min: 4029, max: 4042 }, // 여름 — 자스민 … 여름 꽃다발
+    { theme: 'winter', min: 4043, max: 4056 }, // 겨울 — 매화 … 겨울 꽃다발
 ];
 
 /**
- * Season id → theme. KR has never run a 겨울 season: S4 went back to 가을.
+ * Season id → theme. S4 went back to 가을; S5 is the first 겨울.
  * When a new season launches, add one line here (and a THEME_ID_RANGES block
  * only if it ships item ids nobody has seen before).
  */
@@ -47,6 +48,7 @@ export const SEASON_THEMES = {
     2: 'spring', // 2026-02-26 ~ 2026-05-21
     3: 'summer', // 2026-05-21 ~ 2026-08-20
     4: 'fall',   // 2026-08-20 ~ 2026-11-19 — reuses S1's items
+    5: 'winter', // 2026-11-19 ~ 2027-02-17
 };
 
 /** Theme → the in-game title (island_task `series`, minus its brackets). */
@@ -54,6 +56,7 @@ export const THEME_NAMES = {
     fall: '가을 특산품 경영',
     spring: '봄 특산품 경영',
     summer: '여름 특산품 경영',
+    winter: '겨울 특산품 경영',
 };
 
 // ===== Pure Helpers (testable) =====
@@ -132,8 +135,8 @@ let _state = null;
  * The orphan scan: any 4xxx item id not covered by THEME_ID_RANGES
  * produces a single console.warn so a maintainer opening DevTools after
  * a future season launch sees the drift immediately. Because the blocks
- * are tightly bounded, a season that ships genuinely new items (e.g. a
- * first 겨울) trips this on its first load rather than mislabelling them.
+ * are tightly bounded, a season that ships genuinely new items (a new
+ * theme) trips this on its first load rather than mislabelling them.
  */
 export function initSeasonMap(seasonsData, opts = {}) {
     const nowMs = opts.nowMs ?? Date.now();
