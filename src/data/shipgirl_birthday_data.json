@@ -7537,5 +7537,29 @@
         "일": "22",
         "group_id": "960019",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9600190.webp"
+    },
+    {
+        "ID": "754",
+        "룽섭 이름": "리리엘 천사 공정대",
+        "레어도": "SSR",
+        "함종": "경항모",
+        "진영": "2.5차원",
+        "연": "",
+        "월": "5",
+        "일": "5",
+        "group_id": "1180001",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/11800010.webp"
+    },
+    {
+        "ID": "755",
+        "룽섭 이름": "미리엘라 천사 공정대",
+        "레어도": "SSR",
+        "함종": "경순",
+        "진영": "2.5차원",
+        "연": "",
+        "월": "12",
+        "일": "12",
+        "group_id": "1180002",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/11800020.webp"
     }
 ]

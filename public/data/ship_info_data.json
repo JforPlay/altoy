@@ -103201,10 +103201,10 @@
             "Musashi-Game"
         ],
         "timer": "00:29:00",
-        "light": false,
+        "light": true,
         "heavy": false,
         "special": false,
-        "limited": true,
+        "limited": false,
         "acquire": []
     },
     {
@@ -103462,7 +103462,9 @@
         "heavy": false,
         "special": false,
         "limited": false,
-        "acquire": []
+        "acquire": [
+            3
+        ]
     },
     {
         "id": 663,
@@ -105455,10 +105457,10 @@
             "FullBurst2"
         ],
         "timer": "01:05:00",
-        "light": false,
+        "light": true,
         "heavy": false,
         "special": false,
-        "limited": true,
+        "limited": false,
         "acquire": []
     },
     {
@@ -115043,10 +115045,12 @@
         ],
         "timer": "02:11:00",
         "light": false,
-        "heavy": false,
-        "special": false,
-        "limited": true,
-        "acquire": []
+        "heavy": true,
+        "special": true,
+        "limited": false,
+        "acquire": [
+            6
+        ]
     },
     {
         "id": 707,
@@ -121195,9 +121199,9 @@
         ],
         "timer": "04:20:00",
         "light": false,
-        "heavy": false,
+        "heavy": true,
         "special": false,
-        "limited": true,
+        "limited": false,
         "acquire": []
     },
     {
@@ -211758,7 +211762,8 @@
         "special": false,
         "limited": false,
         "acquire": [
-            11
+            11,
+            12
         ]
     },
     {
@@ -213959,7 +213964,9 @@
         "heavy": false,
         "special": false,
         "limited": false,
-        "acquire": []
+        "acquire": [
+            11
+        ]
     },
     {
         "id": 30003,
@@ -252212,6 +252219,550 @@
         ],
         "tag_list": [
             "NieR"
+        ],
+        "timer": null,
+        "light": false,
+        "heavy": false,
+        "special": false,
+        "limited": false,
+        "acquire": []
+    },
+    {
+        "id": 10181,
+        "gid": 1180001,
+        "sid": 11800011,
+        "nationality": 118,
+        "type": 6,
+        "rarity": "SSR",
+        "skill": {
+            "118010": {
+                "id": 118010,
+                "parent": 118010,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "118020": {
+                "id": 118020,
+                "parent": 118020,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 118021
+                    }
+                ]
+            }
+        },
+        "base": {
+            "11800011": {
+                "health": 854,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 49,
+                "aviation": 72,
+                "reload": 65,
+                "accuracy": 27,
+                "evasion": 19,
+                "speed": 28,
+                "luck": 25,
+                "asw": 24
+            },
+            "11800012": {
+                "health": 1062,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 61,
+                "aviation": 90,
+                "reload": 65,
+                "accuracy": 27,
+                "evasion": 19,
+                "speed": 28,
+                "luck": 25,
+                "asw": 30
+            },
+            "11800013": {
+                "health": 1479,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 85,
+                "aviation": 126,
+                "reload": 65,
+                "accuracy": 27,
+                "evasion": 19,
+                "speed": 28,
+                "luck": 25,
+                "asw": 42
+            },
+            "11800014": {
+                "health": 2104,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 122,
+                "aviation": 179,
+                "reload": 65,
+                "accuracy": 27,
+                "evasion": 19,
+                "speed": 28,
+                "luck": 25,
+                "asw": 59
+            }
+        },
+        "growth": {
+            "11800011": {
+                "health": 22935,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 1072,
+                "aviation": 919,
+                "reload": 450,
+                "accuracy": 441,
+                "evasion": 397,
+                "speed": 0,
+                "luck": 0,
+                "asw": 291
+            },
+            "11800012": {
+                "health": 22935,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 1072,
+                "aviation": 919,
+                "reload": 450,
+                "accuracy": 441,
+                "evasion": 397,
+                "speed": 0,
+                "luck": 0,
+                "asw": 291
+            },
+            "11800013": {
+                "health": 22935,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 1072,
+                "aviation": 919,
+                "reload": 450,
+                "accuracy": 441,
+                "evasion": 397,
+                "speed": 0,
+                "luck": 0,
+                "asw": 291
+            },
+            "11800014": {
+                "health": 22935,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 1072,
+                "aviation": 919,
+                "reload": 450,
+                "accuracy": 441,
+                "evasion": 397,
+                "speed": 0,
+                "luck": 0,
+                "asw": 291
+            }
+        },
+        "enhance": {
+            "aviation": 72,
+            "reload": 48
+        },
+        "armor": 2,
+        "base_list": {
+            "11800011": [
+                1,
+                1,
+                1
+            ],
+            "11800012": [
+                2,
+                1,
+                1
+            ],
+            "11800013": [
+                2,
+                2,
+                1
+            ],
+            "11800014": [
+                3,
+                3,
+                1
+            ]
+        },
+        "mounts": {
+            "11800011": [
+                1,
+                1,
+                1
+            ],
+            "11800012": [
+                2,
+                1,
+                1
+            ],
+            "11800013": [
+                2,
+                2,
+                1
+            ],
+            "11800014": [
+                3,
+                3,
+                1
+            ]
+        },
+        "description": [
+            "이벤트: 개막! 천사들의 벽람 무대"
+        ],
+        "name": "리리엘 천사 공정대/리리사",
+        "gift_dislike": [
+            180006,
+            180008
+        ],
+        "skin_id": 11800010,
+        "sp_weapon": {
+            "icon": "15960",
+            "name": "리리엘의 지팡이 ",
+            "skill_upgrade": [
+                [
+                    0,
+                    118030
+                ]
+            ],
+            "attribute_1": "air",
+            "attribute_2": "reload",
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 118032
+                },
+                {
+                    "id": 118033
+                },
+                {
+                    "id": 118034
+                },
+                {
+                    "id": 118035
+                },
+                {
+                    "id": 118036
+                },
+                {
+                    "id": 118037
+                },
+                {
+                    "id": 118038
+                }
+            ],
+            "trigger_cd": 1
+        },
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11800010.webp",
+        "equip_1": [
+            7
+        ],
+        "equip_2": [
+            8
+        ],
+        "equip_3": [
+            6
+        ],
+        "equip_4": [
+            10,
+            15
+        ],
+        "equip_5": [
+            10,
+            15
+        ],
+        "equipment_proficiency": [
+            1.45,
+            1.45,
+            0.8
+        ],
+        "equipment_proficiency_base": [
+            1.25,
+            1.35,
+            0.8
+        ],
+        "preload_count": [
+            0,
+            0,
+            0
+        ],
+        "default_equip_list": [
+            117,
+            118,
+            104
+        ],
+        "tag_list": [
+            "LilielSH0",
+            "LilielHA",
+            "Liliel"
+        ],
+        "timer": null,
+        "light": false,
+        "heavy": false,
+        "special": false,
+        "limited": false,
+        "acquire": []
+    },
+    {
+        "id": 10182,
+        "gid": 1180002,
+        "sid": 11800021,
+        "nationality": 118,
+        "type": 2,
+        "rarity": "SSR",
+        "skill": {
+            "118050": {
+                "id": 118050,
+                "parent": 118050,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 118051
+                    },
+                    {
+                        "id": 118052,
+                        "time": 10
+                    }
+                ]
+            },
+            "118060": {
+                "id": 118060,
+                "parent": 118060,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            }
+        },
+        "base": {
+            "11800021": {
+                "health": 734,
+                "firepower": 27,
+                "torpedo": 0,
+                "antiair": 66,
+                "aviation": 0,
+                "reload": 76,
+                "accuracy": 60,
+                "evasion": 39,
+                "speed": 40,
+                "luck": 25,
+                "asw": 36
+            },
+            "11800022": {
+                "health": 913,
+                "firepower": 34,
+                "torpedo": 0,
+                "antiair": 82,
+                "aviation": 0,
+                "reload": 76,
+                "accuracy": 60,
+                "evasion": 39,
+                "speed": 40,
+                "luck": 25,
+                "asw": 45
+            },
+            "11800023": {
+                "health": 1271,
+                "firepower": 47,
+                "torpedo": 0,
+                "antiair": 114,
+                "aviation": 0,
+                "reload": 76,
+                "accuracy": 60,
+                "evasion": 39,
+                "speed": 40,
+                "luck": 25,
+                "asw": 62
+            },
+            "11800024": {
+                "health": 1808,
+                "firepower": 67,
+                "torpedo": 0,
+                "antiair": 163,
+                "aviation": 0,
+                "reload": 76,
+                "accuracy": 60,
+                "evasion": 39,
+                "speed": 40,
+                "luck": 25,
+                "asw": 89
+            }
+        },
+        "growth": {
+            "11800021": {
+                "health": 20909,
+                "firepower": 373,
+                "torpedo": 0,
+                "antiair": 1386,
+                "aviation": 0,
+                "reload": 526,
+                "accuracy": 863,
+                "evasion": 737,
+                "speed": 0,
+                "luck": 0,
+                "asw": 423
+            },
+            "11800022": {
+                "health": 20909,
+                "firepower": 373,
+                "torpedo": 0,
+                "antiair": 1386,
+                "aviation": 0,
+                "reload": 526,
+                "accuracy": 863,
+                "evasion": 737,
+                "speed": 0,
+                "luck": 0,
+                "asw": 423
+            },
+            "11800023": {
+                "health": 20909,
+                "firepower": 373,
+                "torpedo": 0,
+                "antiair": 1386,
+                "aviation": 0,
+                "reload": 526,
+                "accuracy": 863,
+                "evasion": 737,
+                "speed": 0,
+                "luck": 0,
+                "asw": 423
+            },
+            "11800024": {
+                "health": 20909,
+                "firepower": 373,
+                "torpedo": 0,
+                "antiair": 1386,
+                "aviation": 0,
+                "reload": 526,
+                "accuracy": 863,
+                "evasion": 737,
+                "speed": 0,
+                "luck": 0,
+                "asw": 423
+            }
+        },
+        "enhance": {
+            "firepower": 27,
+            "reload": 56
+        },
+        "armor": 1,
+        "base_list": {
+            "11800021": [
+                1,
+                1,
+                1
+            ],
+            "11800022": [
+                1,
+                1,
+                1
+            ],
+            "11800023": [
+                2,
+                1,
+                1
+            ],
+            "11800024": [
+                2,
+                1,
+                1
+            ]
+        },
+        "mounts": {
+            "11800021": [
+                1,
+                1,
+                1
+            ],
+            "11800022": [
+                1,
+                1,
+                1
+            ],
+            "11800023": [
+                2,
+                1,
+                1
+            ],
+            "11800024": [
+                2,
+                1,
+                1
+            ]
+        },
+        "description": [
+            "이벤트: 개막! 천사들의 벽람 무대"
+        ],
+        "name": "미리엘라 천사 공정대/미카리",
+        "gift_dislike": [
+            180006,
+            180009
+        ],
+        "skin_id": 11800020,
+        "sp_weapon": {
+            "icon": "15980",
+            "name": "미리엘라의 활 ",
+            "skill_upgrade": [
+                [
+                    0,
+                    118070
+                ]
+            ],
+            "attribute_1": "cannon",
+            "attribute_2": "hit",
+            "weapon_true": false
+        },
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11800020.webp",
+        "equip_1": [
+            2
+        ],
+        "equip_2": [
+            1
+        ],
+        "equip_3": [
+            6
+        ],
+        "equip_4": [
+            10,
+            14
+        ],
+        "equip_5": [
+            10,
+            14
+        ],
+        "equipment_proficiency": [
+            1.15,
+            0.65,
+            1.2
+        ],
+        "equipment_proficiency_base": [
+            1,
+            0.6,
+            1.15
+        ],
+        "preload_count": [
+            0,
+            0,
+            0
+        ],
+        "default_equip_list": [
+            101,
+            100,
+            104
+        ],
+        "tag_list": [
+            "Mikari"
         ],
         "timer": null,
         "light": false,

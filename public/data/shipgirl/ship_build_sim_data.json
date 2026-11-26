@@ -460,6 +460,11 @@
             "rarity": "SSR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/301880.webp"
         },
+        "301891": {
+            "name": "하츠즈키",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/301890.webp"
+        },
         "302011": {
             "name": "유바리",
             "rarity": "SR",
@@ -469,6 +474,11 @@
             "name": "나가라",
             "rarity": "N",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/302040.webp"
+        },
+        "302061": {
+            "name": "나토리",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/302060.webp"
         },
         "302071": {
             "name": "유라",
@@ -1037,6 +1047,11 @@
             "rarity": "SR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/303170.webp"
         },
+        "303191": {
+            "name": "운젠",
+            "rarity": "UR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/303190.webp"
+        },
         "304021": {
             "name": "히에이",
             "rarity": "SR",
@@ -1076,6 +1091,11 @@
             "name": "키이",
             "rarity": "SSR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/305120.webp"
+        },
+        "305131": {
+            "name": "오와리",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/305130.webp"
         },
         "307081": {
             "name": "시나노",
@@ -1568,6 +1588,11 @@
             "name": "시마카제",
             "rarity": "UR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/301290.webp"
+        },
+        "303191": {
+            "name": "운젠",
+            "rarity": "UR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/303190.webp"
         },
         "305101": {
             "name": "무사시",

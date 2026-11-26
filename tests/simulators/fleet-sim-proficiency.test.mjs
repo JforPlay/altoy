@@ -168,7 +168,8 @@ test('the emitted 숙련도 corpus keeps its shape', () => {
   // + 13 (2026-11-02): buff-only skills (no skill_<id> record) the processor now walks —
   // ship skills 152840 / 18760 / 801220 and ten 특수장비 effect_id skills fleet-sim does not read.
   // + 1012500 (data update 2026-11-19, 바탄 VF-50 데빌캣츠 upgraded rung; label BDZW, gated).
-  assert.equal(skills.size, 125, 'skills carrying a 숙련도 row');
+  // + 118040 / 118041 (2026-11-26, 2.5차원의 유혹 collab 천사 공정대 + its rung; slot 1).
+  assert.equal(skills.size, 127, 'skills carrying a 숙련도 row');
   // Every record names at least one filter. A record with neither would buff every
   // weapon on the ship, which the matcher supports but no game record asks for —
   // if one appears, look at it before assuming the branch is right for it.
@@ -200,5 +201,7 @@ test('the gated share of the corpus is pinned', () => {
   // to prevent, and one that no other assertion can see.
   // 29 -> 30 (2026-11-19): + 1012500, gated on `weapon_group` (an unknown key, so the
   // buff stays off — apply on exact `true` only).
-  assert.equal(gated.size, 30);
+  // 30 -> 31 (2026-11-26): + 118040, gated on `nationality: 118` with minTargetNumber 2
+  // (two 2.5차원의 유혹 ships in the fleet); its ungated 118041 rung is not counted.
+  assert.equal(gated.size, 31);
 });

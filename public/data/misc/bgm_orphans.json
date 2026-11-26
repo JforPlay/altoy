@@ -4562,10 +4562,6 @@
             {
                 "kind": "scene",
                 "label": "AEBCSHestiaPage"
-            },
-            {
-                "kind": "scene",
-                "label": "AEBCSStoryPage"
             }
         ],
         "year": null
@@ -13824,6 +13820,51 @@
         ],
         "year": 2024
     },
+    "story-richang-lightsweet": {
+        "name": "story-richang-lightsweet",
+        "cues": [
+            "镜头下的流光_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "镜头下的流光_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-lightsweet/%E9%95%9C%E5%A4%B4%E4%B8%8B%E7%9A%84%E6%B5%81%E5%85%89_AL.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "event",
+                "label": "개막! 천사들의 벽람 무대 - 「무대편」"
+            },
+            {
+                "kind": "event",
+                "label": "개막! 천사들의 벽람 무대 - 「일상편」"
+            },
+            {
+                "kind": "skin",
+                "label": "몸도 마음도",
+                "gid": 1180001
+            },
+            {
+                "kind": "skin",
+                "label": "행운의 그대에게",
+                "gid": 1180002
+            },
+            {
+                "kind": "scene",
+                "label": "AEBCSStoryPage"
+            },
+            {
+                "kind": "scene",
+                "label": "TwoPointFiveAwardPage"
+            },
+            {
+                "kind": "scene",
+                "label": "TwoPointFiveStagePage"
+            }
+        ],
+        "year": null
+    },
     "story-richang-partynight": {
         "name": "story-richang-partynight",
         "cues": [
@@ -15974,6 +16015,53 @@
         ],
         "year": null
     },
+    "theme-25ds-az": {
+        "name": "theme-25ds-az",
+        "cues": [
+            "开幕！天使们的碧蓝舞台_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "开幕！天使们的碧蓝舞台_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-25ds-az/%E5%BC%80%E5%B9%95%EF%BC%81%E5%A4%A9%E4%BD%BF%E4%BB%AC%E7%9A%84%E7%A2%A7%E8%93%9D%E8%88%9E%E5%8F%B0_AL.opus"
+            }
+        ],
+        "usage": [
+            {
+                "kind": "event",
+                "label": "개막! 천사들의 벽람 무대 - 「무대편」"
+            },
+            {
+                "kind": "event",
+                "label": "개막! 천사들의 벽람 무대 - 「일상편」"
+            },
+            {
+                "kind": "opsi",
+                "label": "보스 함대"
+            },
+            {
+                "kind": "scene",
+                "label": "LoginScene"
+            },
+            {
+                "kind": "scene",
+                "label": "NewMainScene"
+            },
+            {
+                "kind": "scene",
+                "label": "TwoPointFiveKillPage"
+            },
+            {
+                "kind": "scene",
+                "label": "TwoPointFiveMainPage"
+            },
+            {
+                "kind": "scene",
+                "label": "TwoPointFiveOmenPage"
+            }
+        ],
+        "year": null
+    },
     "theme-akagi-inside": {
         "name": "theme-akagi-inside",
         "cues": [
@@ -16927,6 +17015,10 @@
             },
             {
                 "kind": "scene",
+                "label": "BayardCatchupPage"
+            },
+            {
+                "kind": "scene",
                 "label": "BayardTecCatchupPage"
             },
             {
@@ -16956,10 +17048,6 @@
             {
                 "kind": "scene",
                 "label": "KearsargeTecCatchUpPage"
-            },
-            {
-                "kind": "scene",
-                "label": "NewPlymouthTecCatchupPage"
             }
         ],
         "year": null
@@ -20363,6 +20451,10 @@
                 "year": 2023
             },
             {
+                "kind": "event",
+                "label": "개막! 천사들의 벽람 무대 - 「무대편」"
+            },
+            {
                 "kind": "main",
                 "label": "휘광의 성에서 피어나라"
             },
@@ -20393,10 +20485,6 @@
             {
                 "kind": "scene",
                 "label": "SkinGuide1Page"
-            },
-            {
-                "kind": "scene",
-                "label": "SkinMagazinePage1"
             }
         ],
         "year": 2023

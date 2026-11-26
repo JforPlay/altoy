@@ -766,9 +766,16 @@ const BASELINE = {
   //   전용 장비   checked  97 ->  98 (1012310 — 스위프트슈어 기사의 새벽별),
   //              disclosed 51 -> 52 (1012500 — 바탄 VF-50 데빌캣츠),
   //              silent  196 -> 198 (1012311 1012501, their sub-roots)
-  displayed: { checked: 966, disclosed: 180, silent: 67    // 2026-09-10: +3 아마츠카제; 2026-09-17: +1; 2026-09-24: +7; 2026-09-30: +4; 2026-11-05: +7; 2026-11-19: +1 silent
+  //
+  // MOVED 2026-11-26 by the 2.5차원의 유혹 collab (진영 118: 리리엘 / 미리엘라) — corpus
+  // growth only, diffed per root against the pre-update data: no existing root changed
+  // bucket, none left, disclosed held in both corpora.
+  //   displayed  checked 966 -> 968 (118020 리리엘 폭파, 118050 미리엘라 슛)
+  //   전용 장비   checked held at 98 (the two new scored roots 118030 / 118032 are
+  //              parser-declined), silent 198 -> 205 (118033-118038 118070, all new ids)
+  displayed: { checked: 968, disclosed: 180, silent: 67    // 2026-09-10: +3 아마츠카제; 2026-09-17: +1; 2026-09-24: +7; 2026-09-30: +4; 2026-11-05: +7; 2026-11-19: +1 silent; 2026-11-26: +2
   },
-  spweapon: { checked: 98, disclosed: 52, silent: 198 },    // 2026-10-22: +2; 2026-11-05: +2; 2026-11-19: +1 checked, +1 disclosed, +2 silent
+  spweapon: { checked: 98, disclosed: 52, silent: 205 },    // 2026-10-22: +2; 2026-11-05: +2; 2026-11-19: +1 checked, +1 disclosed, +2 silent; 2026-11-26: +7 silent
 };
 
 function assertCoverage(which, got) {

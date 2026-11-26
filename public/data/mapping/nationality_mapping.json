@@ -211,5 +211,12 @@
         "name": "니어 오토마타",
         "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
         "prefix": []
+    },
+    "118": {
+        "id": 118,
+        "code": "Ririsa",
+        "name": "2.5차원의 유혹",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
+        "prefix": []
     }
 }

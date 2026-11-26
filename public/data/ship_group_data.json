@@ -24255,5 +24255,27 @@
         ],
         "rarity": "SSR",
         "sp_weapon": true
+    },
+    "1180001": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/11800010.webp",
+        "name": "리리엘 천사 공정대/리리사",
+        "nationality": 118,
+        "type": 6,
+        "description": [
+            "이벤트: 개막! 천사들의 벽람 무대"
+        ],
+        "rarity": "SSR",
+        "sp_weapon": true
+    },
+    "1180002": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/11800020.webp",
+        "name": "미리엘라 천사 공정대/미카리",
+        "nationality": 118,
+        "type": 2,
+        "description": [
+            "이벤트: 개막! 천사들의 벽람 무대"
+        ],
+        "rarity": "SSR",
+        "sp_weapon": true
     }
 }

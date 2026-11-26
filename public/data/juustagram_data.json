@@ -31419,6 +31419,22 @@
         "op_reply2": "",
         "reply2_shipgirl": null
     },
+    "679": {
+        "id": 679,
+        "ship_group": 118001,
+        "message": "",
+        "name": "Liliel Angel Paratroopers",
+        "picture_persist": "",
+        "shipgirl_names": [
+            118001
+        ],
+        "op_option1": "",
+        "op_reply1": "",
+        "reply1_shipgirl": null,
+        "op_option2": "",
+        "op_reply2": "",
+        "reply2_shipgirl": null
+    },
     "68": {
         "id": 68,
         "ship_group": 30505,
@@ -31462,6 +31478,22 @@
         "op_reply2": "내년에도 함께 보러 오자.",
         "reply2_shipgirl": 30505,
         "picture": "juustagram/68.png"
+    },
+    "680": {
+        "id": 680,
+        "ship_group": 118002,
+        "message": "",
+        "name": "Miriella Angel Paratroopers",
+        "picture_persist": "",
+        "shipgirl_names": [
+            118002
+        ],
+        "op_option1": "",
+        "op_reply1": "",
+        "reply1_shipgirl": null,
+        "op_option2": "",
+        "op_reply2": "",
+        "reply2_shipgirl": null
     },
     "69": {
         "id": 69,

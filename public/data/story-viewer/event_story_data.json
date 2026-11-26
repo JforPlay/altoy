@@ -748637,6 +748637,4457 @@
             }
         ]
     },
+    "382": {
+        "id": 382,
+        "name": "개막! 천사들의 벽람 무대 - 「무대편」",
+        "description": "EPS-1 시작",
+        "icon": "",
+        "subtype": 2,
+        "year": null,
+        "dateRange": "",
+        "faction": "",
+        "ships": [],
+        "route": "inline",
+        "memory_id": [
+            {
+                "id": 5621,
+                "title": "이세계에서의 새로운 생활",
+                "condition": "EPS-1 시작",
+                "icon": "memory_tianshimengdebilanwutai1",
+                "mask": "bg/bg_memory",
+                "story": {
+                    "scripts": [
+                        {
+                            "asideType": 1,
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 1
+                            },
+                            "mode": 1,
+                            "sequence": [
+                                [
+                                    "개막! 천사들의 벽람 무대_FIX\n\n<size=45>이세계에서의 새로운 생활</size>",
+                                    1
+                                ]
+                            ],
+                            "stopbgm": true
+                        },
+                        {
+                            "asideType": 3,
+                            "bgm": "battle-boss-4",
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 0,
+                                "dur": 1
+                            },
+                            "mode": 1,
+                            "sequence": [
+                                [
+                                    "환상의 탑, ???",
+                                    1
+                                ],
+                                [
+                                    "???",
+                                    2
+                                ]
+                            ],
+                            "stopbgm": true
+                        },
+                        {
+                            "bgName": "star_level_bg_504",
+                            "dialogShake": {
+                                "number": 2,
+                                "speed": 0.09,
+                                "x": 8.5
+                            },
+                            "effects": [
+                                {
+                                    "active": true,
+                                    "name": "memoryFog"
+                                }
+                            ],
+                            "flashN": {
+                                "alpha": [
+                                    [
+                                        0,
+                                        1,
+                                        0.2,
+                                        0
+                                    ],
+                                    [
+                                        1,
+                                        0,
+                                        0.2,
+                                        0.2
+                                    ],
+                                    [
+                                        0,
+                                        1,
+                                        0.2,
+                                        0.4
+                                    ],
+                                    [
+                                        1,
+                                        0,
+                                        0.2,
+                                        0.6
+                                    ]
+                                ],
+                                "color": [
+                                    1,
+                                    1,
+                                    1,
+                                    1
+                                ]
+                            },
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 0,
+                                "dur": 1
+                            },
+                            "nameColor": "#A9F548FF",
+                            "say": "——!",
+                            "side": 2,
+                            "soundeffect": "event:/battle/boom2"
+                        },
+                        {
+                            "bgName": "star_level_bg_504",
+                            "nameColor": "#A9F548FF",
+                            "say": "포연이 자욱한 바다 위에서 두 소녀가 사방에서 날아드는 포격을 필사적으로 피하고 있다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_504",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "후우…… 하아…… 리리사, 왼쪽! 왼쪽에서 또 그 이상한 메카가 오고 있어!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_504",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "으아아아아! 세이렌 함대는 대체 왜 또 나타나는 거죠?!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_504",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "아까부터 말하는 「세이렌」은 대체 뭐야?!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_504",
+                            "dir": 1,
+                            "expression": 5,
+                            "nameColor": "#A9F548FF",
+                            "say": "음…… 이 세상의 악당 같은 거 아닐까요?",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_504",
+                            "dialogShake": {
+                                "number": 2,
+                                "speed": 0.09,
+                                "x": 8.5
+                            },
+                            "flashN": {
+                                "alpha": [
+                                    [
+                                        0,
+                                        1,
+                                        0.2,
+                                        0
+                                    ],
+                                    [
+                                        1,
+                                        0,
+                                        0.2,
+                                        0.2
+                                    ],
+                                    [
+                                        0,
+                                        1,
+                                        0.2,
+                                        0.4
+                                    ],
+                                    [
+                                        1,
+                                        0,
+                                        0.2,
+                                        0.6
+                                    ]
+                                ],
+                                "color": [
+                                    1,
+                                    1,
+                                    1,
+                                    1
+                                ]
+                            },
+                            "nameColor": "#A9F548FF",
+                            "say": "——!",
+                            "side": 2,
+                            "soundeffect": "event:/battle/boom2"
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_504",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "아니, 안 돼요! 지금은 설정 설명이나 하고 있을 때가 아니예요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_504",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "이렇게 멋진 의장을 장비해 놓고, 어떻게 사용하는지도 전혀 모르고 있잖아요……!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_504",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "제발, 움직여 줘!",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_504",
+                            "dialogShake": {
+                                "number": 2,
+                                "speed": 0.09,
+                                "x": 8.5
+                            },
+                            "flashN": {
+                                "alpha": [
+                                    [
+                                        0,
+                                        1,
+                                        0.2,
+                                        0
+                                    ],
+                                    [
+                                        1,
+                                        0,
+                                        0.2,
+                                        0.2
+                                    ],
+                                    [
+                                        0,
+                                        1,
+                                        0.2,
+                                        0.4
+                                    ],
+                                    [
+                                        1,
+                                        0,
+                                        0.2,
+                                        0.6
+                                    ]
+                                ],
+                                "color": [
+                                    1,
+                                    1,
+                                    1,
+                                    1
+                                ]
+                            },
+                            "nameColor": "#A9F548FF",
+                            "say": "——!",
+                            "side": 2,
+                            "soundeffect": "event:/battle/boom2"
+                        },
+                        {
+                            "bgName": "star_level_bg_504",
+                            "nameColor": "#A9F548FF",
+                            "say": "간신히 한 발 발사한 포탄은 세이렌 추격 부대의 머리 위를 훌쩍 넘어, 저 멀리 바다에 풍덩 떨어졌다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_504",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "앗……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_504",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "……스치지도 않았잖아?!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_504",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "이러다 순식간에 포위당하겠어! 누가 좀 도와줘——!",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_504",
+                            "bgm": "battle-boss-4",
+                            "dialogShake": {
+                                "number": 2,
+                                "speed": 0.09,
+                                "x": 8.5
+                            },
+                            "effects": [
+                                {
+                                    "active": true,
+                                    "name": "memoryFog"
+                                }
+                            ],
+                            "flashN": {
+                                "alpha": [
+                                    [
+                                        0,
+                                        1,
+                                        0.2,
+                                        0
+                                    ],
+                                    [
+                                        1,
+                                        0,
+                                        0.2,
+                                        0.2
+                                    ],
+                                    [
+                                        0,
+                                        1,
+                                        0.2,
+                                        0.4
+                                    ],
+                                    [
+                                        1,
+                                        0,
+                                        0.2,
+                                        0.6
+                                    ]
+                                ],
+                                "color": [
+                                    1,
+                                    1,
+                                    1,
+                                    1
+                                ]
+                            },
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 0,
+                                "dur": 1
+                            },
+                            "nameColor": "#A9F548FF",
+                            "say": "————!",
+                            "side": 2,
+                            "soundeffect": "event:/battle/boom2"
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "star_level_bg_504",
+                            "dir": 1,
+                            "expression": 4,
+                            "nameColor": "#A9F548FF",
+                            "say": "후후……드디어 찾았네, 길 잃은 손님들.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "star_level_bg_504",
+                            "dir": 1,
+                            "expression": 4,
+                            "nameColor": "#A9F548FF",
+                            "say": "정말이지, 세이렌 녀석들은 여전히 손님 대접하는 법을 모르네.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_504",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "흥, 서방님이 나쁜 녀석들은 전부 해치우고 오라고 해서 말이지! 받아라——!",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_539",
+                            "bgm": "level02",
+                            "effects": [
+                                {
+                                    "active": true,
+                                    "name": "memoryFog"
+                                }
+                            ],
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 0,
+                                "dur": 1
+                            },
+                            "nameColor": "#A9F548FF",
+                            "say": "포격이 멎고, 포연도 바닷바람 속으로 흩어져 사라졌다.",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_539",
+                            "nameColor": "#A9F548FF",
+                            "say": "프린츠 오이겐과 체셔는 여전히 거칠게 일렁이는 파도와 불꽃으로부터 두 사람을 감싸듯 그들 앞에 내려섰다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_539",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "끄, 끝난 건가……?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_539",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "대단해요……그렇게 많던 적이 순식간에……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_539",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "둘 다 괜찮아? 체셔가 데리러 왔으니까 이제 무서울 거 없다냥!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "star_level_bg_539",
+                            "dir": 1,
+                            "expression": 4,
+                            "nameColor": "#A9F548FF",
+                            "say": "후후, 둘 다 멍하니 있을 때가 아니야.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "star_level_bg_539",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "여기는 아직 안전하다고 할 수 없거든. 감사 인사도 설명도 모항으로 복귀하기 전까지는 미뤄 둬.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_539",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "응응! 지금부터는 체셔한테 맡겨!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_539",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "우리가 함께 있으니까, 나쁜 녀석은 아무도 접근하지 못하게 할 게냥!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "bgm": "theme-25ds-az",
+                            "dir": 1,
+                            "effects": [
+                                {
+                                    "active": false,
+                                    "name": "memoryFog"
+                                }
+                            ],
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 1,
+                                "dur": 1
+                            },
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 1
+                            },
+                            "location": [
+                                "모항, 만화연구부 부실",
+                                3
+                            ],
+                            "nameColor": "#A9F548FF",
+                            "say": "……아무튼 정말 엄청났어요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "프린츠 오이겐 씨와 체셔 씨가 정말 멋지게 세이렌들을 순식간에 물리쳐 주셨거든요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "마치 만화 속 히어로가 등장하는 장면 그 자체였어요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "응…… 두 사람이 와 준 덕분에 살았어. 안 그랬으면 우리 둘 다 어떻게 됐을지……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "네네, 저도 그렇게 생각해요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 6,
+                            "nameColor": "#A9F548FF",
+                            "say": "진짜 체셔 씨는 상상했던 것보다 만 배는 더 귀여웠어요! 에헤헤헤……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "당연히 오이겐 씨도 귀엽고, 이카즈치도 이나즈마도 귀엽고, 롱 아일랜드 씨도 귀여워요! 다들…… 엄청나게 귀여워요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 106011,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "에헤헤……그렇게 대놓고 칭찬하면 유령 씨도 부끄러워진다구~",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 5,
+                            "nameColor": "#A9F548FF",
+                            "say": "리리사, 너무 들떴어……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 7,
+                            "nameColor": "#A9F548FF",
+                            "say": "정말 미안해…… 우리가 갑자기 나타나서 괜히 민폐를……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 301110,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "괜찮아. 너희처럼 실수로 세이렌의 실험에 휘말린 손님은 그리 드물지 않거든.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 301120,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "지휘관님이나 저희나 이런 상황을 여러 번 겪어 봤거든요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 301110,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "과학부와 지휘관은 벌써 돌아갈 방법을 찾아보기 시작했어.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 301120,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "그러니 지금은 체험학습 기간이라고 생각하시고, 모항에서 느긋하게 지내다 가세요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 101177,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "마음껏 긴장을 풀고……신나게 놀아도 돼……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 331052,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 5,
+                            "nameColor": "#A9F548FF",
+                            "say": "저희 만화연구부는 언제든 견학 환영, 입니다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "이런 상황은 이미 익숙하다고……?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 5,
+                            "nameColor": "#A9F548FF",
+                            "say": "그렇다니…… 조금은 안심이 되네.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 6,
+                            "nameColor": "#A9F548FF",
+                            "say": "후후후…… 미카리, 이 상황이 얼마나 멋진 기회인지 아직도 모르겠어요?!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 5,
+                            "nameColor": "#A9F548FF",
+                            "say": "……멋진 기회? 데이터도 안 터져서 메시지 하나 못 보내는 이 상황이?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "그게 아니에요! 어제 저희를 구해 주신 체셔 씨와 오이겐 씨를 떠올려 보세요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "바다 위에서 멋지게 포격하며 적을 맞아 싸우는 모습, 정말 멋지고 눈부셨잖아요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "특히 체셔 씨의 그 귀엽고 듬직하면서도 눈부신 느낌…… 진짜 대단해요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "저도 그런 장비를 갖추고, 그 눈부신 매력을 표현해 보고 싶어요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 106011,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "오오…… 본인이 눈앞에 강림해서 의욕이 불타오른다는 거지~?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 331052,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 5,
+                            "nameColor": "#A9F548FF",
+                            "say": "정말 공감이에요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 5,
+                            "nameColor": "#A9F548FF",
+                            "say": "계속 그런 생각을 했구나……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 5,
+                            "nameColor": "#A9F548FF",
+                            "say": "하지만 그런 느낌이면…… 나한테 그런 존재는 프린츠 오이겐 씨 같아.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "주변에 포탄이 날아다니는데도 내내 여유롭고 침착했잖아.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "무슨 일이 일어나도 능숙하게 상황을 정리해 버리는 느낌이랄까……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 301110,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "그럼 미카리도 프린츠 오이겐 코스프레에 도전해 보지 않을래?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "미카리라면 오이겐 씨 특유의 어른스럽고 우아한 분위기도 분명 잘 살릴 수 있을 거예요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 5,
+                            "nameColor": "#A9F548FF",
+                            "say": "……아직 아무 말도 안 했는데?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 6,
+                            "nameColor": "#A9F548FF",
+                            "say": "뭐, 시험 삼아 해 보는 정도라면…… 괜찮겠지.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "하지만 하기로 한 이상, 대충 하지는 않을 거야.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "물론이죠! 무엇보다 이곳에서 처음 도전하는 코스프레니까요!",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_570",
+                            "nameColor": "#A9F548FF",
+                            "say": "리리사가 잔뜩 의욕을 다지자, 만화연구부의 문이 열렸다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 106011,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "새로 나온 멀티플레이 게임을 이것저것 가져왔어~",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "역시 유령 씨……가 아니라, 언제 나갔다 오신 거예요?!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 401230,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "정말, 롱 아일랜드. 갑자기 손님을 게임에 초대하다니 실례잖아요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 401230,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "갓 구운 과자를 가져왔어요. 두 분은 달콤한 거라도 드시면서 좀 쉬세요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 312010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "우후후~ 아카시도 평소에 자주 쓰는 보급품을 가져왔다냥!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 312010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "그런데 아까 리리사가 말한 코스프레 이야기…… 아카시 귀에도 똑똑히 들어왔다냥~",
+                            "side": 2
+                        },
+                        {
+                            "actor": 312010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "필요한 물건이 있으면 언제든 아카시를 찾아오라냥~",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "정말요?! 만세! 미카리, 우리 모항 코스프레 대작전에 희망이 보이기 시작했어요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 5,
+                            "nameColor": "#A9F548FF",
+                            "say": "하아…… 정말, 어쩔 수 없네.",
+                            "side": 2
+                        },
+                        {
+                            "blackBg": true,
+                            "effects": [
+                                {
+                                    "active": true,
+                                    "name": "tianshimendewutai"
+                                }
+                            ],
+                            "mode": 1,
+                            "sequence": [
+                                [
+                                    "",
+                                    1
+                                ]
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "id": 5622,
+                "title": "발표회를 열자!",
+                "condition": "EPS-2 시작",
+                "icon": "memory_tianshimengdebilanwutai1",
+                "mask": "bg/bg_memory",
+                "story": {
+                    "fadeOut": 1.5,
+                    "id": "TIANSHIMENDEBILANWUTAIZHANHUI2",
+                    "mode": 2,
+                    "scripts": [
+                        {
+                            "asideType": 1,
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 1
+                            },
+                            "mode": 1,
+                            "sequence": [
+                                [
+                                    "개막! 천사들의 벽람 무대_FIX\n\n<size=45>2 발표회를 열자!</size>",
+                                    1
+                                ]
+                            ],
+                            "stopbgm": true
+                        },
+                        {
+                            "bgName": "star_level_bg_570",
+                            "bgm": "theme-25ds-az",
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 0,
+                                "dur": 1
+                            },
+                            "nameColor": "#A9F548FF",
+                            "say": "만화연구부에서 모두와 왁자지껄하게 어울리는 사이, 리리사는 어느새 「포교」 모드에 돌입해 있었다.",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_570",
+                            "nameColor": "#A9F548FF",
+                            "say": "한편 미카리는 만화책을 한 손에 든 채 화제에 동참하면서도, 그런 모두의 모습을 관찰하고 있었다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "올 때 짐을 전부 챙겨 오길 잘했어요~",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "이것 좀 보세요……『리리엘 외전』의 이 권은 그야말로 역대급이에요! 이 생동감 넘치는 컷 구성, 보기만 해도 마음이 뜨거워지지 않나요?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 106011,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "정말 그래~ 전투 장면도 멋지고… 진짜 재미있어~!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 331052,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 5,
+                            "nameColor": "#A9F548FF",
+                            "say": "거기에 새로운 메카 설정까지 더해지면 분명 더 멋질 거예요……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 5,
+                            "nameColor": "#A9F548FF",
+                            "say": "(어디에 있든 리리사는 여전하네. 게다가 여기 있는 사람들도……평소의 우리랑 똑같아. 다른 세계에 왔다는 느낌이 안 들어)",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_570",
+                            "nameColor": "#A9F548FF",
+                            "say": "한창 이야기가 무르익던 중, 복도에서 활기찬 발소리가 울려 퍼졌다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "짜자잔——! 리리사! 미카리! 체셔가 친구들을 데리고 놀러 왔다냥! 슬슬 체셔가 보고 싶던 참이지~?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 202340,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "안녕~! 모항에 귀여운 신입이 두 명 왔다는 소식을 듣고 리버풀도 서둘러 달려왔어!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 201370,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "나도 왔어! 다 같이 신나게 게임하자!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 4,
+                            "nameColor": "#A9F548FF",
+                            "say": "후후, 꽤 떠들썩하네. 틸레, 마침 잘 온 것 같아.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 401020,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "네. 하지만 방금 Z23을 회의에 부르러 가야 하니 잠깐 들러야 한다고……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 4,
+                            "nameColor": "#A9F548FF",
+                            "say": "후후, 회의 같은 건 나중으로 미뤄도 돼. 모처럼 왔으니 틸레도 같이 놀자.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "(프린츠 오이겐 씨랑 체셔 씨다……!)",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "프린츠 오이겐 씨, 체셔 씨. 어제는 정말 감사했어요…… 두 분이 와 주시지 않았더라면……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 4,
+                            "nameColor": "#A9F548FF",
+                            "say": "별것도 아닌걸. 후후, 딱딱한 이야기는 됐어.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 4,
+                            "nameColor": "#A9F548FF",
+                            "say": "그보다 둘 다 모항 구경은 어땠어? 꽤 재미있는 곳이지?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "응, 다들 정말 친절한데다 지내기도 불편하지 않고……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "친절하기만 한 게 아니라…… 다들 눈부시게 반짝여요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 4,
+                            "nameColor": "#A9F548FF",
+                            "say": "그래서 말인데……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "두 분도 마침 여기 계시니, 하나 부탁드리고 싶은 게 있어요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 4,
+                            "nameColor": "#A9F548FF",
+                            "say": "응? 체셔가 해줬으면 하는 거라도 있어?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "두 분을 코스프레하고 싶은데, 그래도 될까요?!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "어제 저희를 구해 주신 그 순간이 정말 강렬하게 기억에 남아서요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "그래서 제가 가장 잘하는 방식으로 그 감동을 표현하고 싶어요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "미카리는 프린츠 오이겐 씨를 맡아 줬으면 해요! 분명 잘 어울릴 거예요! 해 주시리라 믿어요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 5,
+                            "nameColor": "#A9F548FF",
+                            "say": "하아… 그렇게 나올 줄 알았어. 정말… 그렇게 말하면 거절할 수가 없잖아.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 4,
+                            "nameColor": "#A9F548FF",
+                            "say": "체셔처럼 꾸미고 사진도 찍고 싶다는 거냥?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 202340,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "각자 귀엽고 예쁜 옷을 걸치고 사진을 찍는 거지? 멋지다! 리버풀도 해 보고 싶어!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 201370,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "나도! 멋진 포즈로 사진 찍을래!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 331052,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "그것만이 아니에요…… 리리사 씨, 자세히 설명해 주시겠어요……?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 4,
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 0.5,
+                                "dur": 0.5
+                            },
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 0.5
+                            },
+                            "nameColor": "#A9F548FF",
+                            "say": "그렇구나. 뭐, 내가 도움이 될 수 있다면 기꺼이 협력할게.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 312010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "으흐흐흐…… 돈 냄새가 풀풀 난다냥!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 106011,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "다들 관심을 보이는데, 우리끼리 사진 몇 장 찍고 끝내긴 아깝네~",
+                            "side": 2
+                        },
+                        {
+                            "actor": 101177,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "다른 동료들도…… 관심 있는 사람이…… 더 있을 거야……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 331052,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "이참에 아예 본격적으로 발표회를 여는 건 어떤가요?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "발표회?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 401230,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "거창한 행사가 아니라, 좋아하는 사람들끼리 하는 발표회 정도의 규모면 관리하기 쉽겠죠.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 312010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "무대도 조명도 소품도, 의상 보강까지…… 전부 아카시에게 맡겨 달라냥!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 401230,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "기획서는 제가 정리할게요. 지금부터 시작하면 내일 아침에는 지휘관님께 제출할 수 있어요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "좋아! 그럼 체셔는 다른 친구들에게 알리고 올게! 어서 시작하자!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "자, 잠시만요. 일이 너무 일사천리로 진행되는 거 아닌가요…?!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "아무리 그래도…… 장소나 예산 같은 게 어떻게 하루 만에 정해져?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "expression": 4,
+                            "nameColor": "#A9F548FF",
+                            "say": "장소…… 예산…… 후후, 여긴 모항이잖아?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "맞아, 맞아! 하루면 충분해!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "추, 추진력이 엄청나네……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "(다정하고 유쾌한 데다, 하기로 마음먹으면 전력을 다해 임하는…… 역시 내가 알고 있는 모두의 모습 그대로야!)",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_570",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "알겠습니다! 다들 힘을 보태 주신다면, 저희도 최선을 다할게요!",
+                            "side": 2
+                        }
+                    ]
+                }
+            },
+            {
+                "id": 5623,
+                "title": "발표회를 향해",
+                "condition": "EPS-3 시작",
+                "icon": "memory_tianshimengdebilanwutai1",
+                "mask": "bg/bg_memory",
+                "story": {
+                    "fadeOut": 1.5,
+                    "id": "TIANSHIMENDEBILANWUTAIZHANHUI3",
+                    "mode": 2,
+                    "scripts": [
+                        {
+                            "asideType": 1,
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 1
+                            },
+                            "mode": 1,
+                            "sequence": [
+                                [
+                                    "개막! 천사들의 벽람 무대_FIX\n\n<size=45>3 발표회를 향해</size>",
+                                    1
+                                ]
+                            ],
+                            "stopbgm": true
+                        },
+                        {
+                            "asideType": 4,
+                            "blackBg": true,
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 1
+                            },
+                            "mode": 1,
+                            "rectAlpha": 0,
+                            "rectMargin": [
+                                100,
+                                100,
+                                200,
+                                200
+                            ],
+                            "sequence": [
+                                [
+                                    "「개최까지 앞으로 3일」",
+                                    0
+                                ]
+                            ],
+                            "spacing": 30
+                        },
+                        {
+                            "bgName": "bg_main_day",
+                            "bgm": "theme-25ds-az",
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 0,
+                                "dur": 1
+                            },
+                            "nameColor": "#A9F548FF",
+                            "say": "지휘관의 허가가 떨어지자 만화연구부가 주도하는 발표회는 곧바로 준비 단계에 들어갔다.",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "bg_main_day",
+                            "nameColor": "#A9F548FF",
+                            "say": "명목상으로는 동아리 활동이었지만, 모항 사람들의 열의는 리리사와 미카리의 상상을 훨씬 뛰어넘었다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 1,
+                                "dur": 1
+                            },
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 1
+                            },
+                            "location": [
+                                "모항, 만화연구부 임시 의상 스튜디오",
+                                3
+                            ],
+                            "nameColor": "#A9F548FF",
+                            "say": "음…… 여기 어깨선은 조금 더 좁히고, 치맛자락도 체셔 씨의 원래 의상처럼 풍성한 느낌을 살려서……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "여기 리본은 그냥 묶기만 하면 조금 처지니까, 안쪽에 안감을 한 겹 덧대는 게 좋겠어요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 202300,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "어머! 리리사 씨는 정말 작업이 능숙하네요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 503010,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "바느질뿐 아니라 모델의 의상과 장비 구조까지 이렇게 잘 이해하고 계시다니… 대단하세요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 108080,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "훌쩍…… 디자인화를 조금 봤을 뿐인데 어디를 손봐야 할지 바로 알아내다니…… 대단해……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 4,
+                            "nameColor": "#A9F548FF",
+                            "say": "아, 아니에요! 예전부터 조금씩 쌓아온 경험일 뿐인걸요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "이런 의상에서 중요한 건 「얼마나 똑같은가」만이 아니에요. 입고 나서 잘 움직일 수 있는지, 캐릭터다운 포즈를 취할 수 있는지도 생각해야 해요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "체셔 씨는 움직임이 활기차고, 산뜻한 귀여움도 있으니까 의상이 너무 무거워지면 안 돼요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "리리사, 그렇게 진지하게 임해 주다니… 체셔, 감격해서 울 것 같아!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "그럼 오이겐 씨 의상은?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "오이겐 씨의 의상은 좀 더 성숙하고, 여유로운 분위기를 자아내죠.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "그러니까 이쪽 소맷부리는 조금 넓혀도 좋을 것 같아요……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 4,
+                            "nameColor": "#A9F548FF",
+                            "say": "괜찮아. 미카리가 입으면 또 다른 매력이 느껴질 테니까.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 5,
+                            "nameColor": "#A9F548FF",
+                            "say": "갑자기 부담감이 커지는데……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 401230,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "흠… 진행 상황으로 보면, 오늘 밤 안에는 완성할 수 있겠네요.",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_150",
+                            "nameColor": "#A9F548FF",
+                            "say": "다들 바느질 상태와 장식을 확인하고 있자, 밖에서 운반용 수레를 미는 소리가 들려왔다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 312010,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "으흐흐~ 다들 기다렸지냥? 액세서리와 소품, 거기에 의장까지 완성됐다냥!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "와아, 세세한 부분까지 굉장히 정교하네요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "――어라? 이 빛나는 건……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "아카시 씨, 이 브로치에 박혀 있는 건…… 혹시 진짜 사파이어인가요?!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 312010,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "냥? 당연한 거 아니냥?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "하지만…… 그냥 무대용 소품인데, 진짜 보석까지 쓰다니……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "폐하께서 그러셨어! 손님들을 위해 무대를 준비하는 거니, 그에 걸맞은 것들을 갖춰야 한다고!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "흐흥, 게다가 로열 네이비한테는 이 정도쯤 아무것도 아니야!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "어때, 리리사? 엄청 반짝반짝하지?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "네, 눈부실 정도로 반짝거려요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "설마 이 의장도…… 전부 진짜는… 아니지?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 312010,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "완성도를 높이려면 무기도 진짜여야 한다냥!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 312010,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "이건 아직 시작에 불과하다냥!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 312010,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "의상이 완성되면 마지막 손질은 아카시가 할 테니, 꼭 넘겨 달라냥!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "……마지막 손질이요?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 312010,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "그렇다냥. 두 사람의 의상에 모항의 기술을 살짝 적용할 필요가 있다냥~",
+                            "side": 2
+                        },
+                        {
+                            "actor": 301110,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 4,
+                            "nameColor": "#A9F548FF",
+                            "say": "그렇구나! 그거 말하는 거지?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 301120,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "네, 맞아요! 그거겠죠!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 5,
+                            "nameColor": "#A9F548FF",
+                            "say": "그 모항의 기술이라는 게… 대체 뭔데?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 312010,
+                            "bgName": "star_level_bg_150",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "걱정 말라냥! 두 사람의 등장을 화려하게 연출해 줄 작은 기술일 뿐이다냥!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "expression": 3,
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 1,
+                                "dur": 1
+                            },
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 1
+                            },
+                            "location": [
+                                "모항, 발표회 무대",
+                                3
+                            ],
+                            "nameColor": "#A9F548FF",
+                            "say": "여기가 발표회가 열릴 무대인가요?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 401230,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "네. 규모가 그리 크지는 않지만 관람석과 촬영 공간, 대기실까지 제대로 마련해 뒀어요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 301110,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "입구 안내판도 준비했어.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 301120,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "응원용 깃발도 완성했어요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 106011,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "무대 연출은 유령 씨에게 맡겨 줘~",
+                            "side": 2
+                        },
+                        {
+                            "actor": 101177,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "라피는…… 무대 뒤에서 다들 너무 긴장하지 않도록 말을 걸어 줄게……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "우와아…… 다들 정말 든든해요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "조명 스탠드에 반사판, 레일 카메라까지…… 설비가 너무 본격적인 거 아니야?!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "전문 촬영 스튜디오에도 이 정도 장비는 다 갖춰져 있지 않을 텐데……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 107030,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "후후~ 모처럼 발표회를 여는 거니까, 마음껏 빛날 수 있는 무대로 만들어야지!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 601080,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "촬영 위치 전부 확인 완료! 당일에 반드시 최고의 순간을 포착해 보이겠어!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 102340,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "앵글도 조명도 관객석의 반응도, 전부 우리한테 맡겨!",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_527",
+                            "nameColor": "#A9F548FF",
+                            "say": "모항의 동료들이 진지하게 장비를 조정하고 무대를 꾸며 나가는 모습을 보며, 리리사와 미카리의 마음속에는 똑같은 감정이 흘러넘쳤다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "대단해…… 다들 정말 이 무대를 위해 온 힘을 다해 주고 계시네요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "그래. 그러니까 우리도 최고의 무대로 보답하자!",
+                            "side": 2
+                        }
+                    ]
+                }
+            },
+            {
+                "id": 5624,
+                "title": "온천에서의 휴식",
+                "condition": "EPS-4 시작",
+                "icon": "memory_tianshimengdebilanwutai1",
+                "mask": "bg/bg_memory",
+                "story": {
+                    "fadeOut": 1.5,
+                    "id": "TIANSHIMENDEBILANWUTAIZHANHUI4",
+                    "mode": 2,
+                    "scripts": [
+                        {
+                            "asideType": 1,
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 1
+                            },
+                            "mode": 1,
+                            "sequence": [
+                                [
+                                    "개막! 천사들의 벽람 무대_FIX\n\n<size=45>4 온천에서의 휴식</size>",
+                                    1
+                                ]
+                            ],
+                            "stopbgm": true
+                        },
+                        {
+                            "asideType": 4,
+                            "blackBg": true,
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 1
+                            },
+                            "mode": 1,
+                            "rectAlpha": 0,
+                            "rectMargin": [
+                                100,
+                                100,
+                                200,
+                                200
+                            ],
+                            "sequence": [
+                                [
+                                    "「개최까지 앞으로 1일」",
+                                    0
+                                ]
+                            ],
+                            "spacing": 30
+                        },
+                        {
+                            "bgName": "star_level_bg_172",
+                            "bgm": "theme-warmwinter-daily",
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 0,
+                                "dur": 1
+                            },
+                            "nameColor": "#A9F548FF",
+                            "say": "발표회를 하루 앞둔 저녁, 분주했던 준비도 마침내 일단락되었다.",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_172",
+                            "nameColor": "#A9F548FF",
+                            "say": "리리사와 미카리의 긴장을 풀어 주기 위해 모항 동료들은 두 사람을 온천으로 초대했다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "온천……이요?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "아! 혹시 이거, 작품이 몇 화 진행되면 꼭 한 번씩 나오는 서비스 에피소드인가요?!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 5,
+                            "nameColor": "#A9F548FF",
+                            "say": "뭐, 느긋하게 쉴 수 있다면야 좋지…… 요 며칠 이것저것 하느라 몸이 녹초가 됐거든.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "맞아요! 내일 최상의 컨디션으로 무대에 서려면, 오늘은 온천을 마음껏 즐겨야 해요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 4,
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 1,
+                                "dur": 1
+                            },
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 1
+                            },
+                            "location": [
+                                "모항, 온천",
+                                3
+                            ],
+                            "nameColor": "#A9F548FF",
+                            "say": "실례합니다……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "우와…………",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_172",
+                            "nameColor": "#A9F548FF",
+                            "say": "문을 여는 순간, 두 사람은 온천의 김과 웃음소리가 어우러진 광경에 넋을 잃었다.",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_172",
+                            "nameColor": "#A9F548FF",
+                            "say": "자욱한 수증기 너머로 글래머러스한 몸매들이 여럿 눈에 들어왔다.",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_172",
+                            "nameColor": "#A9F548FF",
+                            "say": "탕에 몸을 담근 모항의 동료들은 저마다 담소를 나누거나, 느긋하게 쉬면서 각기 다른 매력을 뽐내고 있었다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 806011,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "후우…… 이렇게 느긋하게 몸을 담그고 있으니 몸도 마음도 차분해지네.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 802041,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 8,
+                            "nameColor": "#A9F548FF",
+                            "say": "그러게요. 계속 바빴으니 가끔은 이렇게 아무것도 하지 않고 시간을 보내는 것도 중요하죠.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 703021,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "음…… 물 온도가 딱 좋군. 나가면 가볍게 한잔하러 갈까?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 603042,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "쿠르스크, 내일은 발표회도 있으니까 너무 많이 마시지 마.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 702071,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "맞아. 숙취 때문에 오프닝을 놓치기라도 하면 아깝잖아.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 703021,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "그건 그렇군. 모처럼 만화연구부에서 여는 발표회니 처음부터 제대로 즐겨야지.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 705071,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "그러고 보니 다들 발표회 소식은 이미 들었어?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 802041,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 5,
+                            "nameColor": "#A9F548FF",
+                            "say": "후후, 만화연구부에서 코스프레 발표회를 연다는 이야기가 요즘 모항에서 화제잖아요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 102151,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "특히 밖에서 온 두 사람이 동료들의 의상을 입고 등장한다는 소식에 다들 기대하고 있어.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 705071,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "어떤 발표가 될지는 아직 모르지만…… 그래서 더 기대가 된단 말이지.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 102151,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 7,
+                            "nameColor": "#A9F548FF",
+                            "say": "내용을 미리 알아 버리면, 내일 느낄 놀라움이 줄어들지도 몰라.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 907012,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "네. 저도 내일을 위해 모르는 편이 좋다고 생각해요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 802041,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 8,
+                            "nameColor": "#A9F548FF",
+                            "say": "맞아요. 발표회인 만큼 어떤 무대가 펼쳐질지 기대하는 것도 즐거움 중 하나니까요.",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_172",
+                            "nameColor": "#A9F548FF",
+                            "say": "동료들의 이야기에 귀를 기울이던 리리사와 미카리는 말없이 눈빛을 주고받았다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 5,
+                            "nameColor": "#A9F548FF",
+                            "say": "그렇구나…… 다들 이렇게나 발표회를 기대하고 있을 줄이야.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "네…… 점점 더 실수하면 안 되겠다는 생각이 들어요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "모처럼 온천에 왔는데, 괜히 긴장만 더 하면 어떻게 해.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 4,
+                            "nameColor": "#A9F548FF",
+                            "say": "아, 알고 있어요! 오늘은 쉬러 온 거니까요!",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_172",
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 0.5,
+                                "dur": 0.5
+                            },
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 0.5
+                            },
+                            "nameColor": "#A9F548FF",
+                            "say": "온천 분위기에 조금 익숙해졌을 무렵, 리리사와 미카리도 탕에 몸을 담갔다.",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_172",
+                            "nameColor": "#A9F548FF",
+                            "say": "따뜻한 수증기가 느릿하게 피어오르고, 귓가에 들려오는 대화와 웃음소리가 두 사람의 긴장된 마음을 조금씩 풀어 주었다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 7,
+                            "nameColor": "#A9F548FF",
+                            "say": "……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "리리사? 왜 그래? 신경 쓰이는 거라도 있어?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 7,
+                            "nameColor": "#A9F548FF",
+                            "say": "아뇨, 그냥…… 다들 평소에 모항에서 볼 때랑 조금 다른 것 같아서요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "다르다고?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 7,
+                            "nameColor": "#A9F548FF",
+                            "say": "네. 평소 모항에서 보는 모습은 멋지고 듬직하다는 느낌인데……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "이렇게 긴장을 풀고 있을 때의 자연스러운 모습도 정말 근사해요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 7,
+                            "nameColor": "#A9F548FF",
+                            "say": "무심코 머리를 정리하거나 탕 가장자리에 기대서 이야기를 나눌 때라든가……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "우와…… 멋진 포즈 없이도 자연스레 나오는 매력이란 건 역시 표현하기 가장 어려운 것 같아요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 5,
+                            "nameColor": "#A9F548FF",
+                            "say": "결국 또 발표회 생각을 하고 있네……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "하지만 내일이 드디어 본무대인걸요! 저런 자연스럽게 빛나는 느낌을 조금이라도 표현할 수 있으면 좋을 것 같아서요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "……응? 미카리? 왜 그러세요…?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 5,
+                            "nameColor": "#A9F548FF",
+                            "say": "나 말이지, 정작 중요한 부분에서 밀리고 있는 것 같은데……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 7,
+                            "nameColor": "#A9F548FF",
+                            "say": "아……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 7,
+                            "nameColor": "#A9F548FF",
+                            "say": "다들 똑같은 여자잖아?! 그런데 어떻게 저렇게……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "매일 꾸준히 노력해서 그런 걸까요…? 아니면 특별한 비법이라도……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "진짜 그런 비법이 있다고 해도 대체 누구한테 그걸 물어 봐?!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_172",
+                            "dir": 1,
+                            "expression": 7,
+                            "nameColor": "#A9F548FF",
+                            "say": "……",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_167",
+                            "bgm": "theme-25ds-az",
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 0.5,
+                                "dur": 0.5
+                            },
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 0.5
+                            },
+                            "location": [
+                                "모항, 온천 밖",
+                                3
+                            ],
+                            "nameColor": "#A9F548FF",
+                            "say": "온천에서 나온 리리사와 미카리는 옷을 갈아입고, 한결 편안해진 기분으로 귀로에 올랐다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 107250,
+                            "bgName": "star_level_bg_167",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "안녕하세요~ 거기 두 손님. 왠지 긴장이 풀린 얼굴이네요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 107250,
+                            "bgName": "star_level_bg_167",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "벌써 발표회가 내일이니 오늘 밤은 푹 주무세요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 107250,
+                            "bgName": "star_level_bg_167",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "자, 우유 받으세요. 아카시가 팔아 달라고 부탁한 물건인데, 두 분께는 한 병씩 무료로 드릴게요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 107250,
+                            "bgName": "star_level_bg_167",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "돌아가서 푹 쉬세요~",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_167",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "잠깐…… 혹시 이게 그 비법일까요……?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_167",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "그런 얘기를 들어본 것 같기도…… 다들 몸매가 좋은 건 이 우유 덕분인 건가?!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_167",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "카우펜스 씨! 그 우유 몇 병만 더…… 아니, 남은 거 전부 나한테 팔아!",
+                            "side": 2
+                        }
+                    ]
+                }
+            },
+            {
+                "id": 5625,
+                "title": "발표회, 대성공!",
+                "condition": "EPS-5 시작",
+                "icon": "memory_tianshimengdebilanwutai1",
+                "mask": "bg/bg_memory",
+                "story": {
+                    "fadeOut": 1.5,
+                    "id": "TIANSHIMENDEBILANWUTAIZHANHUI5",
+                    "mode": 2,
+                    "scripts": [
+                        {
+                            "asideType": 1,
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 1
+                            },
+                            "mode": 1,
+                            "sequence": [
+                                [
+                                    "개막! 천사들의 벽람 무대_FIX\n\n<size=45>5 발표회, 대성공!</size>",
+                                    1
+                                ]
+                            ],
+                            "stopbgm": true
+                        },
+                        {
+                            "asideType": 4,
+                            "blackBg": true,
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 1
+                            },
+                            "mode": 1,
+                            "rectAlpha": 0,
+                            "rectMargin": [
+                                100,
+                                100,
+                                200,
+                                200
+                            ],
+                            "sequence": [
+                                [
+                                    "「개최 당일」",
+                                    0
+                                ]
+                            ],
+                            "spacing": 30
+                        },
+                        {
+                            "bgName": "star_level_bg_527",
+                            "bgm": "story-richang-lightsweet",
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 0,
+                                "dur": 1
+                            },
+                            "location": [
+                                "모항, 발표회 무대",
+                                3
+                            ],
+                            "nameColor": "#A9F548FF",
+                            "say": "드디어 모항 만화연구부의 발표회가 막을 올렸다.",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_527",
+                            "nameColor": "#A9F548FF",
+                            "say": "지휘관과 모항 동료들이 행사장에 도착하자, 멀리서도 만화연구부가 준비한 무대가 한눈에 들어왔다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 201210,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "와, 무대가 벌써 완성됐네요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 702010,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "조명부터 무대 장치, 객석까지 완벽하게 배치되어 있네요. 꽤 공을 들인 모양이에요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 102080,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "무대가 이렇게 빛나니까, 나도 지지 않을 정도로 화려하게 등장해야겠어♪",
+                            "side": 2
+                        },
+                        {
+                            "actor": 102160,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "분명 기발한 연출을 잔뜩 준비했겠지. 어떤 무대를 볼 수 있을지 벌써부터 설레는걸.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 102160,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "자세한 내용까지는 모르지만, 이 정도로 준비했으니 그냥 무언가를 발표하는 데서 끝나지는 않을 거야.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 702010,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "무슨 일이 벌어질지 모른다는 게 현장 관람의 묘미죠.",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_527",
+                            "nameColor": "#A9F548FF",
+                            "say": "무대 앞에 동료들이 하나둘 모여들었고, 다들 공연 시작을 손꼽아 기다렸다.",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_527",
+                            "nameColor": "#A9F548FF",
+                            "say": "한편 촬영팀도 일찌감치 자리를 잡고 이 특별한 무대를 기록할 준비를 마쳤다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 601080,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "에헤헤, 메인 촬영 위치 준비 완료! 오늘은 멋진 순간들을 하나도 놓치지 않고 모조리 담아내겠어!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 102340,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "조명팀 이상 무! 언제든 본 공연 개시 가능!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 303030,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "동아리 발표회…… 이런 행사는 매일 볼 수 있는 게 아니니까!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 102340,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "맞아, 오늘은 멋진 사진을 잔뜩 남겨야지!",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_196",
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 0.5,
+                                "dur": 0.5
+                            },
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 0.5
+                            },
+                            "location": [
+                                "모항, 발표회 무대",
+                                3
+                            ],
+                            "nameColor": "#A9F548FF",
+                            "say": "무대 뒤에서는 만화연구부 멤버들이 마지막 점검을 진행하고 있었다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 301110,
+                            "bgName": "star_level_bg_196",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "무대 뒤 출입구, 확인 완료!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 301120,
+                            "bgName": "star_level_bg_196",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "촬영팀에서도 준비 완료 신호가 왔어요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 331052,
+                            "bgName": "star_level_bg_196",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "소품도 문제없어요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 101177,
+                            "bgName": "star_level_bg_196",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "의상도…… 완벽해……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 106011,
+                            "bgName": "star_level_bg_196",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "이세계에서 온 손님들, 모항의 무대, 동시 공개라니…… 이건 완전 특별편 최종화급 전개잖아!",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_196",
+                            "nameColor": "#A9F548FF",
+                            "say": "무대 옆에서는 곧 무대에 오를 리리사와 미카리 곁을 체셔와 프린츠 오이겐이 지키고 있었다.",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_196",
+                            "nameColor": "#A9F548FF",
+                            "say": "리리사와 미카리는 이날을 위해 준비한 첫 번째 의상을 입고 있었다.",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_196",
+                            "nameColor": "#A9F548FF",
+                            "say": "첫 번째로 선보일 캐릭터는 두 사람에게 가장 익숙한 인물인 리리엘과 미리엘라였다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_196",
+                            "dir": 1,
+                            "expression": 7,
+                            "nameColor": "#A9F548FF",
+                            "say": "후우…… 심호흡. 리리사, 넌 할 수 있어. 모항 전체가 주목하는 무대…… 열심히 할게요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_196",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "그래그래! 평소처럼 기운차게 뛰어나가면 돼!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "star_level_bg_196",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "당당하게 말이야. 며칠 동안 열심히 연습한 성과를 모두에게 보여 줘.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_196",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "고마워요. 오이겐 씨, 체셔 씨.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_196",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "두 분과 다른 분들이 도와주지 않았다면, 오늘 이 발표회는 없었을 거예요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_196",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "그러니…… 감사의 마음을 담아 저희의 가장 멋진 모습을 모두에게 보여 드리고 싶어요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_196",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "응응! 여기서 리리사를 온 힘을 다해 응원할게!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "star_level_bg_196",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "미카리도 리허설 때처럼 연습한 걸 그대로 발휘하기만 하면 문제없을 거야.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_196",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "응, 잘하고 올게!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "star_level_bg_196",
+                            "dir": 1,
+                            "expression": 4,
+                            "nameColor": "#A9F548FF",
+                            "say": "후후, 그럼 모두를 깜짝 놀라게 해 주고 와~",
+                            "side": 2
+                        },
+                        {
+                            "actor": 301110,
+                            "bgName": "star_level_bg_196",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "그럼 카운트다운 시작!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 301120,
+                            "bgName": "star_level_bg_196",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "셋, 둘, 하나——",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_527",
+                            "bgm": "theme-25ds-az",
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 1,
+                                "dur": 1
+                            },
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 1
+                            },
+                            "nameColor": "#A9F548FF",
+                            "say": "갑자기 무대 조명이 꺼졌다. 행사장의 웅성거림도 그에 맞춰 순식간에 잦아들었다.",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_527",
+                            "nameColor": "#A9F548FF",
+                            "say": "드디어 리리사와 미카리의 차례가 찾아왔다.",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_527",
+                            "nameColor": "#A9F548FF",
+                            "say": "모두 앞에 모습을 드러낸…… 두 천사……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "어떤 궁지에 몰리더라도, 이 구세의 날개는 꺾이지 않아요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "설령 절망의 파도가 밀려오더라도, 이 칠흑의 날개로 산산조각 내 주겠어!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "애타게 바라 온 꿈의 고동을 가슴에 품고… 천사 공정대 리리엘!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "그저 사랑이 흘러넘치는 대로… 천사 공정대 미리엘라!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 102160,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "의상과 동작이 아주 잘 어우러지네. 이 무대에 얼마나 정성을 쏟았는지 느껴져.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 201210,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "네네, 둘 다 정말 즐거워 보여서 다행이에요!",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_527",
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": false,
+                                "delay": 0.25,
+                                "dur": 0.25
+                            },
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": false,
+                                "dur": 0.25
+                            },
+                            "nameColor": "#A9F548FF",
+                            "say": "찰칵! 찰칵!",
+                            "side": 2,
+                            "soundeffect": "event:/ui/kuaimen"
+                        },
+                        {
+                            "actor": 601080,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "찰칵! 찰칵!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 102340,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "이것도 저것도―― 전부 찍어 버릴 거야!",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_527",
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 0.5,
+                                "dur": 0.5
+                            },
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 0.5
+                            },
+                            "nameColor": "#A9F548FF",
+                            "say": "무대 위에서 두 사람은 등을 맞대고 섰다. 등 뒤의 날개가 조명 아래에서 살며시 흔들렸다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "무대 위에서 두 사람은 등을 맞대고 섰다. 등 뒤의 날개가 조명 아래에서 살며시 흔들렸다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "하지만 저희의 여행은 아직 끝나지 않았습니다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "낯설지만 따뜻한 이곳에서 새로운 동료들을 만난 일.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "포화 속에서 저희에게 손을 내밀어 준, 태양처럼 눈부시고 아기 고양이처럼 사랑스러운――",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800010,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "전쟁 한복판에서도 여유로운 미소를 지으며, 어떤 위기도 극복할 수 있다는 믿음을 주는――",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800020,
+                            "bgName": "star_level_bg_527",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "부디 지켜봐 주세요.",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_527",
+                            "nameColor": "#A9F548FF",
+                            "say": "저희가 이 모항에서 손에 넣은 또 다른 빛을!",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_527",
+                            "nameColor": "#A9F548FF",
+                            "say": "한 발의 포성과 함께, 무대 주변에서 화려한 불꽃과 빛줄기가 터져 나왔다.",
+                            "side": 2
+                        },
+                        {
+                            "actorName": "리리엘 천사 공정대/리리사",
+                            "bgName": "bg_2.5ds_cg1",
+                            "dir": 1,
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": false,
+                                "delay": 1,
+                                "dur": 1
+                            },
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": false,
+                                "dur": 1
+                            },
+                            "nameColor": "#A9F548FF",
+                            "say": "짜잔! 다들 지금 체셔 모습을 보고 깜짝 놀랐냥?",
+                            "side": 2
+                        },
+                        {
+                            "actorName": "미리엘라 천사 공정대/미카리",
+                            "bgName": "bg_2.5ds_cg1",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "짜잔! 다들 지금 체셔 모습을 보고 깜짝 놀랐냥?",
+                            "side": 2
+                        },
+                        {
+                            "actorName": "리리엘 천사 공정대/리리사",
+                            "bgName": "bg_2.5ds_cg1",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "후후~ 그렇게 빤히 바라보고, 혹시 내 매력에 푹 빠진 거야?",
+                            "side": 2
+                        },
+                        {
+                            "actorName": "미리엘라 천사 공정대/미카리",
+                            "bgName": "bg_2.5ds_cg1",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "세이렌이여, 이 새로운 힘을 똑똑히 맛보아라!",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "bg_2.5ds_cg1",
+                            "dialogShake": {
+                                "number": 2,
+                                "speed": 0.09,
+                                "x": 8.5
+                            },
+                            "effects": [
+                                {
+                                    "active": true,
+                                    "name": "juqing02"
+                                }
+                            ],
+                            "flashN": {
+                                "alpha": [
+                                    [
+                                        0,
+                                        1,
+                                        0.2,
+                                        0
+                                    ],
+                                    [
+                                        1,
+                                        0,
+                                        0.2,
+                                        0.2
+                                    ],
+                                    [
+                                        0,
+                                        1,
+                                        0.2,
+                                        0.4
+                                    ],
+                                    [
+                                        1,
+                                        0,
+                                        0.2,
+                                        0.6
+                                    ]
+                                ],
+                                "color": [
+                                    1,
+                                    1,
+                                    1,
+                                    1
+                                ]
+                            },
+                            "nameColor": "#A9F548FF",
+                            "say": "동료들과… 그리고 지휘관과 함께, 그 음모를 산산조각 내 주겠어!",
+                            "side": 2,
+                            "soundeffect": "event:/battle/boom2"
+                        },
+                        {
+                            "actorName": "샌디에이고",
+                            "bgName": "bg_2.5ds_cg1",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "portrait": "shengdiyage",
+                            "say": "——!",
+                            "side": 2
+                        },
+                        {
+                            "actorName": "재블린",
+                            "bgName": "bg_2.5ds_cg1",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "portrait": "biaoqiang",
+                            "say": "대단해! 눈 깜짝할 사이에 옷을 갈아입었어!",
+                            "side": 2
+                        },
+                        {
+                            "actorName": "아브로라",
+                            "bgName": "bg_2.5ds_cg1",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "portrait": "afuleer",
+                            "say": "리리사 씨의 체셔도 정말 귀엽고, 미카리 씨의 프린츠 오이겐도 정말 멋져요!",
+                            "side": 2
+                        },
+                        {
+                            "actorName": "미리엘라 천사 공정대/미카리",
+                            "bgName": "bg_2.5ds_cg1",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "의상뿐만 아니라 동경과 감사의 마음까지 잘 표현했네요.",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "bg_2.5ds_cg1",
+                            "nameColor": "#A9F548FF",
+                            "say": "다들, 이번 무대, 마음에 들었어?",
+                            "side": 2,
+                            "soundeffect": "event:/ui/kuaimen"
+                        },
+                        {
+                            "bgName": "bg_2.5ds_cg1",
+                            "nameColor": "#A9F548FF",
+                            "say": "그 대사에 맞춰 조명이 한곳으로 모였고, 리리사와 미카리는 동시에 마지막 포즈를 취했다.",
+                            "side": 2
+                        },
+                        {
+                            "actorName": "체셔",
+                            "bgName": "bg_2.5ds_cg1",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "portrait": "chaijun",
+                            "say": "무대 위 하늘에는 형형색색의 불꽃이 연달아 터져 올랐고, 행사장에서는 귀가 먹먹할 만큼 커다란 환호성이 터져 나왔다.",
+                            "side": 2
+                        },
+                        {
+                            "actorName": "프린츠 오이겐",
+                            "bgName": "bg_2.5ds_cg1",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "portrait": "ougen",
+                            "say": "리리사! 미카리! 둘 다 정말 최고였어!",
+                            "side": 2
+                        },
+                        {
+                            "actorName": "미리엘라 천사 공정대/미카리",
+                            "bgName": "bg_2.5ds_cg1",
+                            "dir": 1,
+                            "expression": 7,
+                            "nameColor": "#A9F548FF",
+                            "say": "후후, 아무래도 이번 특별 발표회는 대성공인 모양이네.",
+                            "side": 2
+                        },
+                        {
+                            "actorName": "미리엘라 천사 공정대/미카리",
+                            "bgName": "bg_2.5ds_cg1",
+                            "dir": 1,
+                            "expression": 4,
+                            "nameColor": "#A9F548FF",
+                            "say": "미카리…… 이런 기적으로 가득한 곳에서 이렇게 따뜻한 동료들과 함께 빛날 수 있다니……",
+                            "side": 2
+                        },
+                        {
+                            "actorName": "미리엘라 천사 공정대/미카리",
+                            "bgName": "bg_2.5ds_cg1",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "여긴 우리 인생에서 가장 멋지고, 가장 신비로운 최고의 무대야!",
+                            "side": 2,
+                            "soundeffect": "event:/ui/kuaimen"
+                        },
+                        {
+                            "asideType": 4,
+                            "blackBg": true,
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 1
+                            },
+                            "mode": 1,
+                            "rectAlpha": 0,
+                            "rectMargin": [
+                                100,
+                                100,
+                                200,
+                                200
+                            ],
+                            "sequence": [
+                                [
+                                    "개막! 천사들의 벽람 무대_FIX\n\n<size=45>5 발표회, 대성공!</size>",
+                                    0
+                                ]
+                            ],
+                            "spacing": 30
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "383": {
+        "id": 383,
+        "name": "개막! 천사들의 벽람 무대 - 「일상편」",
+        "description": "「천사 무대 L」 DAY3 클리어",
+        "icon": "",
+        "subtype": 2,
+        "year": null,
+        "dateRange": "",
+        "faction": "",
+        "ships": [],
+        "route": "inline",
+        "memory_id": [
+            {
+                "id": 5631,
+                "title": "리리사의 다과회 특훈",
+                "condition": "「천사 무대 L」 DAY3 클리어",
+                "icon": "memory_tianshimengdebilanwutai2",
+                "mask": "bg/bg_memory",
+                "story": {
+                    "fadeOut": 1.5,
+                    "id": "TIANSHIMENDEBILANWUTAIRICHANG1",
+                    "mode": 2,
+                    "scripts": [
+                        {
+                            "asideType": 3,
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 1
+                            },
+                            "mode": 1,
+                            "sequence": [
+                                [
+                                    "로열 네이비, 기숙사 구역",
+                                    1
+                                ],
+                                [
+                                    "발표회가 열리기 며칠 전",
+                                    2
+                                ]
+                            ],
+                            "stopbgm": true
+                        },
+                        {
+                            "bgName": "star_level_bg_600",
+                            "bgm": "theme-25ds-az",
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 0,
+                                "dur": 1
+                            },
+                            "nameColor": "#A9F548FF",
+                            "say": "화려하고 호화로운 연회장에는 형형색색의 다과가 줄지어 놓여 있었다. 그 한가운데, 유독 눈길을 끄는 곳에는 거대한 초상화가 당당하게 걸려 있다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 205100,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "리리사, 내 다과회에 온 걸 환영해!",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_600",
+                            "nameColor": "#A9F548FF",
+                            "say": "자신의 초상화 아래에서 가슴을 펴고 의기양양하게 허리에 손을 얹은 밸리언트는 평소보다 더 당당하고 커보였다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800011,
+                            "actor_rotation": 25,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "우와…… 대단해요! 여기가 밸리언트 씨가 다과회를 주최하는 곳이군요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 205100,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "후훗, 이 연회장은 리리사를 대접하려고 내가 직접 꾸민 거야. 이 초상화도 특별 주문 제작한 거라고!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 205100,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "어때? 위엄이 넘치고, 아주 당당해 보이지?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800011,
+                            "actor_rotation": 25,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "네! 받침대 위에 올라서 계신 모습이 정말 멋져요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 205100,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "받침대 얘기는 안 해도 되거든!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 205090,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "으흠, 슬슬 본론으로 들어가서……다과회를 시작하죠.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 207050,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "리리사 씨, 괜찮으시면 제 옆에 앉으세요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800011,
+                            "actor_rotation": 25,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "그럼…… 호의를 받아들일게요.",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_600",
+                            "nameColor": "#A9F548FF",
+                            "say": "익숙하지 않은 분위기에 조금 긴장하고 있던 리리사에게 얼마 지나지 않아 낯익은 인물이 찻주전자를 들고 달려왔다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "리리사, 마침 잘 왔어! 자, 갓 우려낸 차야~!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800011,
+                            "actor_rotation": 25,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "앗, 감사합니다!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800011,
+                            "actor_rotation": 25,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "체셔 씨는 차도 잘 우리시네요. 메이드복은 그냥 취미로 입으시는 줄 알았어요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "후후~ 체셔를 얕보면 곤란하지~",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "리리사가 체셔 코스프레를 하려고 공부하는 것처럼, 체셔도 메이드답게 행동할 수 있도록 메이드대 사람들한테 배웠거든!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800011,
+                            "actor_rotation": 25,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "그렇군요…… 체셔 씨 코스프레를 완벽하게 해내려면, 차 우리는 법도 제대로 익혀야겠어요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800011,
+                            "actor_rotation": 25,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "생각난 김에 바로…… 체셔 씨, 차 우리는 법을 가르쳐 주시겠어요?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "우와~ 이런 부탁은 처음 받아 봐! 정말 기뻐!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "그럼 옆 휴게실에서 차 우리기 특훈, 시작!",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_600",
+                            "nameColor": "#A9F548FF",
+                            "say": "체셔는 폴짝폴짝 뛰며 리리사를 휴게실로 데려갔다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 205100,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "차 우리는 법을 배우려면 벨파스트에게 부탁하는 편이 확실할 것 같은데……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 205090,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "하지만 그러면 체셔다운 느낌이 사라지지 않을까요?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 207050,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "그건 그렇죠……",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_600",
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 1,
+                                "dur": 1
+                            },
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 1
+                            },
+                            "nameColor": "#A9F548FF",
+                            "say": "잠시 후, 체셔의 작은 격려를 받으며 리리사는 조심스럽게 차를 모두의 앞에 가져왔다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800011,
+                            "actor_rotation": 25,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "여러분, 드세요……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "체셔가 직접 전수한 리리사 특제 차야! 어서 마셔 봐!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 205100,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "호오……?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 205090,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "으음……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 207050,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "expression": 4,
+                            "nameColor": "#A9F548FF",
+                            "say": "이건……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800011,
+                            "actor_rotation": 25,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "왜 그러세요…… 제가 우린 차에 뭔가 문제가 있나요?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 207050,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "expression": 7,
+                            "nameColor": "#A9F548FF",
+                            "say": "아니요, 정말 맛있어요. 다만, 뭐라고 해야 할까……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 205100,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "체셔다운 차를 목표로 한 거라면, 조금 방향이 어긋났을지도 모르겠네……후훗.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "응? 체셔도 마셔 볼래!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "우와……리리사, 정말 오늘 처음 우린 거 맞아?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "체셔가 우린 것보다 훨씬 맛있잖아! 충격이야……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800011,
+                            "actor_rotation": 25,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "네? 그, 그런가요……?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "우냥~ 우냥~ 우냐앙~ 어째서냥? 순식간에 리리사한테 추월당해 버렸다냥!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800011,
+                            "actor_rotation": 25,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "expression": 4,
+                            "nameColor": "#A9F548FF",
+                            "say": "저기……그건 체셔 씨가 잘 가르쳐 주셨기 때문이라냥!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "리리사, 방금 「냥」이라고 했지~?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800011,
+                            "actor_rotation": 25,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "expression": 6,
+                            "nameColor": "#A9F548FF",
+                            "say": "저도 모르게…… 앗! 이걸 노리신 거군요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "에헤헤~ 「냥」이라고 했으니까 이것도 달아 줘야겠네!",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_600",
+                            "nameColor": "#A9F548FF",
+                            "say": "체셔는 귀여운 고양이 귀 머리 장식을 꺼내더니, 눈 깜짝할 사이에 리리사에게 달아 주었다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "짜잔~ 더 귀여워질 수 있는 비밀 병기야!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800011,
+                            "actor_rotation": 25,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "이건…… 고양이 귀 장식인가요? 어라, 뭔가 저절로 움직이는데요?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "흐흥, 감정에 반응해서 움직이는 고양이 귀야.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "예를 들어 싫은 걸 떠올리면 이렇게 귀가 축 처지고……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800011,
+                            "actor_rotation": 25,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "아까보다 더 쫑긋 서 있는데요……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "에헤헤, 체셔는 항상 즐거워서, 뭘 떠올려도 기쁜 것들뿐이거든!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800011,
+                            "actor_rotation": 25,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "항상 즐겁다…… 체셔 씨가 어떤 분인지 조금 알 것 같아요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "에헤헤, 고양이 귀도 아직 잔뜩 있고, 리리사와 함께 나누고 싶은 즐거운 것도 잔뜩 있어!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 299030,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "하지만 지금은 우선 같이 다과회를 마음껏 즐기자!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800011,
+                            "actor_rotation": 25,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "네! 열심히 즐길게요!",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "star_level_bg_600",
+                            "nameColor": "#A9F548FF",
+                            "say": "환하게 터지는 미소와 환성에 둘러싸여 다과회는 점점 더 활기를 띠어 갔다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 205100,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 0.5,
+                                "dur": 0.5
+                            },
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 0.5
+                            },
+                            "nameColor": "#A9F548FF",
+                            "say": "후우……오늘은 왠지 평소 다과회보다 더 떠들썩한 것 같네.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 207050,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "아마도 「체셔가 두 명」이나 있기 때문이겠죠.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 205090,
+                            "bgName": "star_level_bg_600",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "곧 있을 발표회가 더욱 기대되네요.",
+                            "side": 2
+                        }
+                    ]
+                }
+            },
+            {
+                "id": 5632,
+                "title": "미카리, 일에 매진하다",
+                "condition": "「천사 무대 M」 DAY3 클리어",
+                "icon": "memory_tianshimengdebilanwutai2",
+                "mask": "bg/bg_memory",
+                "story": {
+                    "fadeOut": 1.5,
+                    "id": "TIANSHIMENDEBILANWUTAIRICHANG2",
+                    "mode": 2,
+                    "scripts": [
+                        {
+                            "asideType": 3,
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 1
+                            },
+                            "mode": 1,
+                            "sequence": [
+                                [
+                                    "메탈 블러드, 집무 구역",
+                                    1
+                                ],
+                                [
+                                    "발표회가 열리기 며칠 전",
+                                    2
+                                ]
+                            ],
+                            "stopbgm": true
+                        },
+                        {
+                            "actor": 11800021,
+                            "actor_rotation": 350,
+                            "bgName": "bg_guild_red_n",
+                            "bgm": "story-richang-lightsweet",
+                            "dir": 1,
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 0,
+                                "dur": 1
+                            },
+                            "nameColor": "#A9F548FF",
+                            "say": "으음…… 방 번호를 보면 여기가 맞는 것 같은데…… (똑똑)",
+                            "side": 2,
+                            "soundeffect": "event:/ui/knockdoor1"
+                        },
+                        {
+                            "actorName": "프린츠 오이겐",
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "portrait": "ougen",
+                            "say": "미카리구나? 들어와.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800021,
+                            "actor_rotation": 350,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "expression": 1,
+                            "flashin": {
+                                "alpha": [
+                                    1,
+                                    0
+                                ],
+                                "black": true,
+                                "delay": 0.5,
+                                "dur": 0.5
+                            },
+                            "flashout": {
+                                "alpha": [
+                                    0,
+                                    1
+                                ],
+                                "black": true,
+                                "dur": 0.5
+                            },
+                            "nameColor": "#A9F548FF",
+                            "say": "실례할게. 갑자기 찾아와서 미안해.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "괜찮아. 오히려 딱 좋은 타이밍에 왔어. 틸레의 잔소리에 진절머리가 나던 참이거든.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 401020,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "……자기 입으로 「일이야 어떻게든 되겠지」라고 해 놓고, 결국 마감 직전까지 내팽개쳐 두셨잖아요. 네?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 401020,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "비스마르크 씨 쪽도 난감해 하시면서, 오늘 안에 서류를 제출시키라고 감시를 부탁하셨는데……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 401020,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "방금 「딱 좋은 타이밍」이라고 하신 건……무슨 뜻이죠?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "말 그대로야. 내 「어떻게든 되겠지」가 방금 도착했거든.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800021,
+                            "actor_rotation": 360,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "도착했다니……설마 그 「어떻게든 되겠지」가 나라는 거야?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "정답. 전에 「진짜 프린츠 오이겐」이 되어 보고 싶다고 했잖아?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "조금 실망스러울지도 모르지만, 내 진짜 일상은 이래. 조금 지루한 동료들과 재미없는 일뿐이지.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "어쨌든 날 도와주기만 하면 100% 순도 그대로인 내 일상을 체험할 수 있을 거야.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800021,
+                            "actor_rotation": 350,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "하아…… 열심히는 하겠지만, 이 서류…… 내가 처리할 수 있을까?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "걱정할 필요 없어. 내가 맡은 일은 어렵지 않아서 똑똑한 미카리라면 금방 요령을 익힐 거야. 틸레도 옆에서 가르쳐 줄 테고.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 401020,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "……하아, 그렇게 될 줄 알았어요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800021,
+                            "actor_rotation": 350,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "그래, 그럼 잘 부탁해. 틸레.",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "bg_guild_red_n",
+                            "nameColor": "#A9F548FF",
+                            "say": "Z2에게 배우며 서류 작업을 시작한 미카리는 금세 요령을 익혔는지 능숙하게 일을 처리하기 시작했다.",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "bg_guild_red_n",
+                            "nameColor": "#A9F548FF",
+                            "say": "「프린츠 오이겐」이 성실하게 일하는 기묘한 광경에 이끌리기라도 한 듯, 메탈 블러드의 함선들이 하나둘 모여들었다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 405020,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "프린츠 오이겐이 이렇게 성실하게 일하다니, 별일이네……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 405020,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "잠깐…… 책상 앞에 앉아 있는 건 오이겐이 아니잖아? 진짜는 옆에서 차를 마시고 있는 쪽……?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 407010,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "음? 저건…… 미카리인가? 오이겐 대신 일하고 있는 모양인데.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 405010,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "제법 그럴듯하군. 다만……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403010,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "다들 하나같이 책상 주변에 모여서…… 뭐 재미있는 일이라도 있어?",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "bg_guild_red_n",
+                            "nameColor": "#A9F548FF",
+                            "say": "미카리와 Z2의 노력으로 미처리 서류는 빠르게 줄어들었고, 순식간에 모든 서류를 제출할 수 있는 상태가 되었다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800021,
+                            "actor_rotation": 350,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "expression": 3,
+                            "nameColor": "#A9F548FF",
+                            "say": "후우, 일을 끝내고 나니 정말 상쾌하네!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800021,
+                            "actor_rotation": 350,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "내 업무 능력은 어땠어? 「진짜 프린츠 오이겐」으로서 합격이야?",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "bg_guild_red_n",
+                            "nameColor": "#A9F548FF",
+                            "say": "아까부터 주변에서 지켜보던 메탈 블러드 함선들은 저마다 고개를 끄덕였고, 그러더니 곧 다시 고개를 저었다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800021,
+                            "actor_rotation": 350,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "어디가 잘못된 걸까……? 서류 처리에 문제라도 있었어?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 401020,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "아뇨, 미카리 씨의 업무 능력은 완벽했습니다……오히려 그 완벽함이 문제라고 해야 할까요…… 네.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403010,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "오이겐 그 녀석은 서류 작업 같은 건 평소에 제대로 손도 안 댄다고.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403010,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "expression": 2,
+                            "nameColor": "#A9F548FF",
+                            "say": "한 손으로 귀찮다는 듯 펜을 끄적이고, 다른 한 손은…… 턱을 괴거나 손가락을 입에 물거나 하지.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800021,
+                            "actor_rotation": 350,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "……어라, 그랬어……?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "후후후, 날 흉내 내려면 이런 사소한 몸짓에도 신경 써야지.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "음…… 다음엔 틸레를 부려 먹는 것부터 시작해 볼까?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 401020,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "잠깐만요!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800021,
+                            "actor_rotation": 350,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "expression": 9,
+                            "nameColor": "#A9F548FF",
+                            "say": "저기…… 틸레, 물 한 잔 부탁해도 될까?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 401020,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "여기 있습니다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800021,
+                            "actor_rotation": 350,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "expression": 5,
+                            "nameColor": "#A9F548FF",
+                            "say": "고마워!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800021,
+                            "actor_rotation": 350,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "……이런 식으로 부려 먹으면 돼?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "아쉽지만 조금 달라. 더 자연스럽게 부려 먹어야지. 알겠어? 핵심은 「자연스럽게」 하는 거야.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 401020,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "그건 어렵겠죠. 미카리 씨는 어디 사는 누구와는 달리 성실한 분이시니까요.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 499050,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "오이겐이 사흘 동안 할 일을 가볍게 끝내다니, 미카리는 정말 유능한걸.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 401020,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "그렇고말고요. 네.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403020,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "오이겐도 미카리처럼 성실하고 효율적으로 일하면, 틸레도 훨씬 편해질 텐데!",
+                            "side": 2
+                        },
+                        {
+                            "actor": 401020,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "전적으로 동감합니다. 네.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800021,
+                            "actor_rotation": 350,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "expression": 9,
+                            "nameColor": "#A9F548FF",
+                            "say": "칭찬해 줘서 고마워. 에헤헤……",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "bg_guild_red_n",
+                            "nameColor": "#A9F548FF",
+                            "say": "미카리의 주변으로 동료들이 하나둘 모여들었다.",
+                            "side": 2
+                        },
+                        {
+                            "bgName": "bg_guild_red_n",
+                            "nameColor": "#A9F548FF",
+                            "say": "그러자 미카리는 문득…… 숨이 막힐 정도의 압박감을 느끼기 시작했다.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800021,
+                            "actor_rotation": 350,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "expression": 7,
+                            "nameColor": "#A9F548FF",
+                            "say": "(아드미랄 히퍼와 틸레를 제외한 메탈 블러드 사람들…… 몸매가 너무 완벽하잖아……!)",
+                            "side": 2
+                        },
+                        {
+                            "actor": 405020,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "미카리, 갑자기 조용한데 왜 그래? 어디 불편한 데라도 있어?",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403010,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "expression": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "미카리는 아무 말 안 했지만, 난 어떤 기분인지 알 것 같아……",
+                            "side": 2
+                        },
+                        {
+                            "actor": 403030,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "nameColor": "#A9F548FF",
+                            "say": "흐음? 무슨 기분……? 전혀 공감이 안 되는데.",
+                            "side": 2
+                        },
+                        {
+                            "actor": 11800021,
+                            "actorName": "미리엘라 천사 공정대/미카리 & 아드미랄 히퍼",
+                            "actor_rotation": 350,
+                            "bgName": "bg_guild_red_n",
+                            "dir": 1,
+                            "expression": 8,
+                            "hideOther": true,
+                            "nameColor": "#A9F548FF",
+                            "say": "……네가 이해할 리가 없지!",
+                            "side": 0,
+                            "subActors": [
+                                {
+                                    "actor": 403010,
+                                    "dir": 1,
+                                    "hidePaintObj": true,
+                                    "paintingNoise": false,
+                                    "pos": {
+                                        "x": 1125,
+                                        "y": 0
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        ]
+    },
     "1000": {
         "id": 1000,
         "name": "TB 육성 계획",

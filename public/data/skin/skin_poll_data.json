@@ -29854,5 +29854,53 @@
         "스킨 태그": "쁘띠모션, 배경, 브금",
         "진영": "NieRAutomata",
         "레어도": "SSR"
+    },
+    "2488": {
+        "클뜯 id": 11800010,
+        "함순이 이름": "리리엘 천사 공정대/리리사",
+        "한글 함순이 + 스킨 이름": "리리엘 천사 공정대/리리사",
+        "깔끔한 일러": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11800010.webp",
+        "전체 일러": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/11800010/painting.png",
+        "ASMR 일러": null,
+        "스킨 타입 - 한글": null,
+        "스킨 태그": "X",
+        "진영": "Ririsa",
+        "레어도": "SSR"
+    },
+    "2489": {
+        "클뜯 id": 11800011,
+        "함순이 이름": "리리엘 천사 공정대/리리사",
+        "한글 함순이 + 스킨 이름": "몸도 마음도",
+        "깔끔한 일러": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11800011.webp",
+        "전체 일러": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/11800011/painting.png",
+        "ASMR 일러": null,
+        "스킨 타입 - 한글": "사복",
+        "스킨 태그": "쁘띠모션, 배경, 브금",
+        "진영": "Ririsa",
+        "레어도": "SSR"
+    },
+    "2490": {
+        "클뜯 id": 11800020,
+        "함순이 이름": "미리엘라 천사 공정대/미카리",
+        "한글 함순이 + 스킨 이름": "미리엘라 천사 공정대/미카리",
+        "깔끔한 일러": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11800020.webp",
+        "전체 일러": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/11800020/painting.png",
+        "ASMR 일러": null,
+        "스킨 타입 - 한글": null,
+        "스킨 태그": "X",
+        "진영": "Ririsa",
+        "레어도": "SSR"
+    },
+    "2491": {
+        "클뜯 id": 11800021,
+        "함순이 이름": "미리엘라 천사 공정대/미카리",
+        "한글 함순이 + 스킨 이름": "행운의 그대에게",
+        "깔끔한 일러": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11800021.webp",
+        "전체 일러": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/11800021/painting.png",
+        "ASMR 일러": null,
+        "스킨 타입 - 한글": "사복",
+        "스킨 태그": "쁘띠모션, 배경, 브금",
+        "진영": "Ririsa",
+        "레어도": "SSR"
     }
 }
